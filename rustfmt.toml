@@ -1,0 +1,5 @@
+version = "Two"
+edition = "2018"
+fn_args_layout = "Compressed"
+fn_single_line = true
+indent_style = "Visual"
