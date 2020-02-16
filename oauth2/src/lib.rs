@@ -38,7 +38,7 @@ pub enum TokenError {
 
 #[derive(Error, Debug)]
 pub enum ValidationError {
-    #[error("Failed to do do validation: {0}")]
+    #[error("Failed to do validation: {0}")]
     Reqwest(reqwest::AsyncHttpClientError),
 }
 
