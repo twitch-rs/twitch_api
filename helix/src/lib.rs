@@ -2,14 +2,13 @@
 //!
 //! ---
 
-use thiserror::Error;
 use std::io;
+use thiserror::Error;
 use twitch_oauth2;
 
 pub mod streams;
 
 static TWITCH_HELIX_STREAMS: &str = "https://api.twitch.tv/helix/";
-
 
 #[cfg(test)]
 mod tests {
@@ -24,16 +23,13 @@ pub struct HelixClient {
 }
 impl HelixClient {
     /// Access GetStreams builder.
-    pub fn get_streams() -> () {
-    }
+    pub fn get_streams() -> () {}
 }
-
-
 
 pub trait Request {
     const GET: &'static str;
     type Result;
-    fn request(&self, oauth: twitch_oauth2::AppAccessToken)-> Result<Self::Result, RequestError>;
+    fn request(&self, oauth: twitch_oauth2::AppAccessToken) -> Result<Self::Result, RequestError>;
 }
 
 pub trait Paginated {
@@ -47,5 +43,5 @@ pub enum RequestError {
     #[error("io error")]
     IOError(#[from] io::Error),
     #[error("something happened")]
-    Other
+    Other,
 }

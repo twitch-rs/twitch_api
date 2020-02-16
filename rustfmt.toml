@@ -3,3 +3,5 @@ edition = "2018"
 fn_args_layout = "Compressed"
 fn_single_line = true
 indent_style = "Visual"
+merge_imports = true
+reorder_imports = true

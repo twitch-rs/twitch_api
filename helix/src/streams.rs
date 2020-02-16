@@ -1,6 +1,5 @@
-
-use typed_builder::TypedBuilder;
 use serde::Deserialize;
+use typed_builder::TypedBuilder;
 
 #[derive(PartialEq, TypedBuilder, Deserialize)]
 pub struct GetStreamsReq {
@@ -8,7 +7,7 @@ pub struct GetStreamsReq {
     after: String,
     #[builder(default)]
     before: String,
-    #[builder(default=20)]
+    #[builder(default = 20)]
     first: usize, //max 100, default 20
     #[builder(default)]
     game_id: Vec<String>,
@@ -18,7 +17,6 @@ pub struct GetStreamsReq {
     user_id: String,
     #[builder(default)]
     user_login: String,
-    
 }
 
 pub struct GetStreams {
@@ -29,7 +27,7 @@ pub struct GetStreams {
     type_: String,
     title: String,
     viewer_count: usize,
-    language: String, 
+    language: String,
     thumbnail_url: String, // variable height/width returned
-    tag_ids: Vec<String>, // TODO: Make better
+    tag_ids: Vec<String>,  // TODO: Make better
 }
