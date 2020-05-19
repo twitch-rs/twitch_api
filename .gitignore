@@ -1,2 +1,13 @@
-/target/
-
+**/target/
+**/*.rs.bk
+**/*.rsx
+**/*.db
+**/.env
+**/*.iml
+**/.idea/
+**/logfile*
+**/.vscode
+**/*.old
+coverage_reports/
+/cargo-timing*.html
+**/.cargo
