@@ -159,6 +159,7 @@ impl From<oauth2::Scope> for Scope {
 pub trait TwitchToken {
     fn client_id(&self) -> &str;
     fn token(&self) -> &AccessToken;
+    fn login(&self) -> Option<&str>;
     async fn refresh_token(&mut self) -> Result<(), RefreshTokenError>;
     fn expires(&self) -> Option<std::time::Instant>;
 }
@@ -178,6 +179,7 @@ pub struct AppAccessToken {
     expires: Option<std::time::Instant>,
     client_id: ClientId,
     client_secret: Option<ClientSecret>,
+    login: Option<String>,
     scopes: Option<Vec<Scope>>,
 }
 
@@ -186,6 +188,8 @@ impl TwitchToken for AppAccessToken {
     fn client_id(&self) -> &str { &self.client_id }
 
     fn token(&self) -> &AccessToken { &self.access_token }
+
+    fn login(&self) -> Option<&str> { self.login.as_deref() }
 
     async fn refresh_token(&mut self) -> Result<(), RefreshTokenError> {
         self.refresh_token().await
@@ -204,6 +208,8 @@ pub enum TokenError {
     ),
     #[error(transparent)]
     ParseError(#[from] oauth2::url::ParseError),
+    #[error("could not get validation for token")]
+    ValidationError(#[from] ValidationError),
     #[error("?")]
     Other,
 }
@@ -219,6 +225,7 @@ impl AppAccessToken {
         access_token: String,
         client_id: String,
         client_secret: Option<String>,
+        login: Option<String>,
         scopes: Option<Vec<Scope>>,
     ) -> AppAccessToken
     {
@@ -227,6 +234,7 @@ impl AppAccessToken {
             refresh_token: None,
             client_id: ClientId::new(client_id),
             client_secret: client_secret.map(ClientSecret::new),
+            login,
             expires: None,
             scopes,
         }
@@ -239,6 +247,7 @@ impl AppAccessToken {
             token.secret().to_owned(),
             validated.client_id,
             None,
+            validated.login,
             validated.scopes,
         ))
     }
@@ -268,18 +277,23 @@ impl AppAccessToken {
             .request_async(async_http_client)
             .await
             .map_err(TokenError::RequestError)?;
-
-        Ok(AppAccessToken {
+        
+        let mut app_access = AppAccessToken {
             access_token: response.access_token().clone(),
             refresh_token: response.refresh_token().cloned(),
             expires: response.expires_in().map(|dur| now + dur),
             client_id: ClientId::new(client_id),
             client_secret: Some(ClientSecret::new(client_secret)),
+            login: None,
             scopes: response
                 .scopes()
                 .cloned()
                 .map(|s| s.into_iter().map(|s| s.into()).collect()),
-        })
+        };
+
+        let validated = app_access.validate_token().await?;
+        app_access.login = validated.login;
+        Ok(app_access)
     }
 
     pub async fn refresh_token(&mut self) -> Result<(), RefreshTokenError> {
@@ -323,6 +337,7 @@ impl AppAccessToken {
 pub struct UserToken {
     access_token: AccessToken,
     client_id: ClientId,
+    login: Option<String>,
     refresh_token: Option<RefreshToken>,
     expires: Option<std::time::Instant>,
     scopes: Vec<Scope>,
@@ -333,13 +348,15 @@ impl UserToken {
         access_token: String,
         refresh_token: Option<String>,
         client_id: String,
+        login: Option<String>,
         scopes: Option<Vec<Scope>>,
     ) -> UserToken
     {
         UserToken {
             access_token: AccessToken::new(access_token),
-            refresh_token: refresh_token.map(RefreshToken::new),
             client_id: ClientId::new(client_id),
+            login,
+            refresh_token: refresh_token.map(RefreshToken::new),
             expires: None,
             scopes: scopes.unwrap_or_else(Vec::new),
         }
@@ -356,6 +373,7 @@ impl UserToken {
             token.secret().to_owned(),
             refresh_token,
             validated.client_id,
+            validated.login,
             validated.scopes,
         ))
     }
@@ -367,6 +385,8 @@ impl TwitchToken for UserToken {
 
     fn token(&self) -> &AccessToken { &self.access_token }
 
+    fn login(&self) -> Option<&str> { self.login.as_deref() }
+
     async fn refresh_token(&mut self) -> Result<(), RefreshTokenError> {
         Err(RefreshTokenError::NoRefreshToken)
     }
@@ -374,7 +394,7 @@ impl TwitchToken for UserToken {
     fn expires(&self) -> Option<std::time::Instant> { None }
 }
 
-async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, ValidationError> {
+pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, ValidationError> {
     use oauth2::http::{header::AUTHORIZATION, HeaderMap, Method};
     let auth_header = format!("OAuth {}", token.secret());
     let mut headers = HeaderMap::new();
