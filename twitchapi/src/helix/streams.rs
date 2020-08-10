@@ -27,11 +27,7 @@ pub enum StreamType {
 
 impl StreamType {
     pub fn is_live(&self) -> bool {
-        if let StreamType::Live = self {
-            true
-        } else {
-            false
-        }
+        matches!(self, StreamType::Live)
     }
 }
 
