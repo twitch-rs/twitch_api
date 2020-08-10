@@ -1,6 +1,6 @@
 [package]
 name = "twitch_oauth2"
-version = "0.1.0"
+version = "0.0.0"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/Emilgardis/twitch_utils"
@@ -11,6 +11,8 @@ documentation = "https://docs.rs/twitch_oauth2"
 readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+default = []
 
 [dependencies]
 oauth2 = { version = "3.0.0", features = ["futures-03", "reqwest-010"], default-features = false }
@@ -18,3 +20,9 @@ thiserror = "1.0.20"
 serde = "1.0.114"
 serde_json = "1.0.57"
 async-trait = "0.1.36"
+
+
+
+[dev-dependencies]
+tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
+dotenv = "0.15.0"
