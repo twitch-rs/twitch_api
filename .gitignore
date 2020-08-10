@@ -6,7 +6,6 @@
 **/*.iml
 **/.idea/
 **/logfile*
-**/.vscode
 **/*.old
 coverage_reports/
 /cargo-timing*.html
