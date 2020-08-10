@@ -1,13 +1,31 @@
 [package]
-name = "twitch_helix"
+name = "twitch_api2"
 version = "0.1.0"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+repository = "https://github.com/Emilgardis/twitch_utils"
+license = "MIT OR Apache-2.0"
+description = "Wrapper for Twitch Helix API & TMI"
+keywords = ["oauth", "twitch","async","asynchronous", "api"]
+documentation = "https://docs.rs/twitch_api2"
+readme = "README.md"
 
 [dependencies]
-typed-builder = "0.5.1"
-thiserror = "1.0.10"
-twitch-oauth2 = {path = "../oauth2", version = "0.1.0"}
-serde = { version = "1.0", features = ["derive"] }
+typed-builder = "0.6.0"
+thiserror = "1.0.20"
+twitch-oauth2 = "0.1.0"
+serde = { version = "1.0.114", features = ["derive"] }
+serde_derive = "1.0.114"
+serde_urlencoded = "0.6.1"
+async-trait = "0.1.36"
+serde_json = "1.0.57"
+reqwest = "0.10.7"
+url = "2.1.1"
+slog = "2.5.2"
+tokio = { version = "0.2.22", features = ["time"] }
+[features]
+default = []
+
+[dev-dependencies]
+tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
+dotenv = "0.15.0"

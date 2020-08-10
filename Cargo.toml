@@ -1,5 +1,9 @@
 [workspace]
 members = [
-        "helix",
+        "twitchapi",
         "oauth2",
 ]
+
+
+[patch.crates-io]
+twitch_oauth2 = { path = "./oauth2"}
