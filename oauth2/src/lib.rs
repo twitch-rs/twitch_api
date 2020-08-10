@@ -1,6 +1,6 @@
 #![deny(intra_doc_link_resolution_failure)]
 #![deny(missing_docs)]
-#![doc(html_root_url = "https://docs.rs/twitch_oauth2/0.0.0")]
+#![doc(html_root_url = "https://docs.rs/twitch_oauth2/0.1.0")]
 //! [![github]](https://github.com/emilgardis/twitch_oauth2)&ensp;[![crates-io]](https://crates.io/crates/twitch_oauth2)&ensp;[![docs-rs]](https://docs.rs/twitch_oauth2)
 //!
 //! [github]: https://img.shields.io/badge/github-emilgardis/twitch__utils-8da0cb?style=for-the-badge&labelColor=555555&logo=github"

@@ -1,6 +1,6 @@
 #![deny(intra_doc_link_resolution_failure)]
 #![warn(missing_docs)]
-#![doc(html_root_url = "https://docs.rs/twitch_api2/0.0.0")]
+#![doc(html_root_url = "https://docs.rs/twitch_api2/0.1.0")]
 //! Rust library for talking with the new Twitch API aka. "Helix" and TMI.
 //!
 //! [![github]](https://github.com/emilgardis/twitch_api2)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs]](https://docs.rs/twitch_api2)
