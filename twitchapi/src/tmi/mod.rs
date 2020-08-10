@@ -14,11 +14,12 @@ impl TMIClient {
     pub fn new_with_client(client: reqwest::Client) -> TMIClient { TMIClient { client } }
 
     pub async fn get_chatters(&self, broadcaster: &str) -> Result<GetChatters, RequestError> {
+        
         let url = format!(
             "{}{}{}{}",
             crate::TWITCH_TMI_URL,
             "group/user/",
-            broadcaster.replace('#', ""),
+            broadcaster.replace('#', "").to_ascii_lowercase(),
             "/chatters"
         );
         let req = self.client.get(&url).send().await?;

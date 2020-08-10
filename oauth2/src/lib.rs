@@ -406,7 +406,7 @@ async fn revoke_token(token: AccessToken, client_id: ClientId) -> Result<(), Rev
     params.insert("token", token.secret());
     let req = oauth2::HttpRequest {
         url: Url::parse_with_params("https://id.twitch.tv/oauth2/revoke", &params)
-            .expect("unexpectedly failed to parse validate url"),
+            .expect("unexpectedly failed to parse revoke url"),
         method: Method::GET,
         headers: HeaderMap::new(),
         body: vec![],
