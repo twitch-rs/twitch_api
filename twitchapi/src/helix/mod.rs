@@ -1,3 +1,4 @@
+//! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
 use serde::{Deserialize, Serialize};
 use std::{convert::TryInto, io, sync::Arc};
 use tokio::sync;
@@ -9,6 +10,8 @@ pub mod streams;
 pub mod users;
 
 pub use twitch_oauth2::Scope;
+
+/// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
 #[derive(Clone)]
 pub struct HelixClient {
     token: Arc<sync::RwLock<Box<dyn TwitchToken + Send + Sync>>>,
@@ -17,6 +20,7 @@ pub struct HelixClient {
 }
 
 impl HelixClient {
+    /// Create a new client with a default [reqwest::Client]
     pub fn new<T>(token: Box<T>) -> HelixClient
     where T: TwitchToken + Sized + Send + Sync + 'static {
         let client = reqwest::Client::new();
@@ -26,8 +30,10 @@ impl HelixClient {
         }
     }
 
+    /// Retrieve a clone of the [reqwest::Client] inside this [HelixClient]
     pub fn clone_client(&self) -> reqwest::Client { self.client.clone() }
 
+    /// Get a [tokio::time::Delay] that will return when the token attached to this client expires
     pub async fn monitor_expire(&self) -> Option<tokio::time::Delay> {
         self.token()
             .await
@@ -37,10 +43,12 @@ impl HelixClient {
             .map(tokio::time::delay_until)
     }
 
+    /// Access the underlying [TwitchToken] from this client
     pub async fn token(&self) -> sync::RwLockReadGuard<'_, Box<dyn TwitchToken + Send + Sync>> {
         self.token.read().await
     }
 
+    /// Refresh the underlying [TwitchToken]
     pub async fn refresh_token(&self) -> Result<(), twitch_oauth2::RefreshTokenError> {
         let mut token = self.token.write().await;
         token.as_mut().refresh_token().await?;
@@ -48,6 +56,7 @@ impl HelixClient {
     }
 
     // FIXME: allow multiple?
+    /// Get information about users channel with specific id
     pub async fn get_channel_information(
         &self,
         broadcaster_id: String,
@@ -73,6 +82,7 @@ impl HelixClient {
         Ok(response)
     }
 
+    /// Get user information. See [users::get_users]
     pub async fn get_users<F>(
         &self,
         builder: F,
@@ -85,6 +95,7 @@ impl HelixClient {
         Ok(response)
     }
 
+    /// Get clip information. See [clips::get_clips]
     pub async fn get_clips<F>(
         &self,
         builder: F,
@@ -99,6 +110,7 @@ impl HelixClient {
         Ok(response)
     }
 
+    /// Request on a valid [Request] endpoint
     pub async fn req_get<R, D>(&self, request: R) -> Result<Response<R, D>, RequestError>
     where
         R: Request<Response = D> + Request,
@@ -158,27 +170,38 @@ impl HelixClient {
     }
 }
 
+/// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
 #[async_trait::async_trait]
 pub trait Request: serde::Serialize {
+    /// The path to the endpoint relative to the helix root. eg. `channels` for [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information)
     const PATH: &'static str;
+    /// Scopes needed by this endpoint
     const SCOPE: &'static [twitch_oauth2::Scope];
+    /// Optional scopes needed by this endpoint
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    /// Response type. twitch's response will  deserialize to this. 
     type Response;
+    /// Defines layout of the url parameters. By default uses [serde_urlencoded]
     fn query(&self) -> Result<String, serde_urlencoded::ser::Error> {
         serde_urlencoded::to_string(&self)
     }
 }
 
+/// Helix endpoint PUTs information
 pub trait RequestPut: Request {}
 
+/// Helix endpoint GETs information
 pub trait RequestGet: Request {}
 
+/// Response retrieved from endpoint. Data is the type in [Request::Response]
 #[derive(PartialEq, Debug)]
 pub struct Response<R, D>
 where R: Request<Response = D> {
+    ///  Twitch's response field for `data`.
     pub data: Vec<D>,
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
     pub pagination: Pagination,
+    /// The request that was sent, used for [Paginated]
     pub request: R,
 }
 
@@ -187,6 +210,7 @@ where
     R: Request<Response = D> + Clone + Paginated,
     D: serde::de::DeserializeOwned,
 {
+    /// Get the next page in the responses.
     pub async fn get_next(
         &self,
         client: &HelixClient,
@@ -202,18 +226,27 @@ where
     }
 }
 
+/// Request can be paginated with a cursor
 pub trait Paginated {
+    /// Should returns the current pagination cursor.
+    /// 
+    /// # Notes
+    /// 
+    /// Use [Cursor.cursor] as [Option::None] if no cursor is found.
     fn set_pagination(&mut self, cursor: Cursor);
 }
-
+/// A cursor for pagination. This is needed because of how pagination is represented in the [New Twitch API](https://dev.twitch.tv/docs/api)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone, Default)]
 pub struct Pagination {
     #[serde(default)]
     cursor: Option<Cursor>,
 }
 
+/// A cursor is a pointer to the current "page" in thje twitch api pagination
 pub type Cursor = String;
 
+/// Errors for [HelixClient::req_get] and similar functions.
+#[allow(missing_docs)]
 #[derive(thiserror::Error, Debug)]
 pub enum RequestError {
     #[error("url could not be parsed")]
@@ -241,6 +274,12 @@ pub enum RequestError {
     },
 }
 
+/// Repeat url query items with name
+/// 
+/// ```rust
+/// let users = &["emilgardis", "jtv", "tmi"].iter().map(<_>::to_string).collect::<Vec<_>>();
+///  assert_eq!(&twitch_api2::helix::repeat_query("user", users), "user=emilgardis&user=jtv&user=tmi")
+/// ```
 pub fn repeat_query(name: &str, items: &[String]) -> String {
     let mut s = String::new();
     for (idx, item) in items.iter().enumerate() {

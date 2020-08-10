@@ -1,11 +1,17 @@
+//! Endpoints regarding channels
+
+#[doc(inline)]
 pub use get_channel_information::{GetChannel, GetChannelRequest};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
+/// Gets channel information for users.
+/// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
 pub mod get_channel_information {
     use super::*;
+    /// Query Parameters for [Get Channel Information](super::get_channel_information)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     pub struct GetChannelRequest {
         /// ID of the channel
@@ -13,6 +19,7 @@ pub mod get_channel_information {
         pub broadcaster_id: String,
     }
 
+    /// Return Values for [Get Channel Information](super::get_channel_information)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     pub struct GetChannel {
         /// Channel’s streaming status

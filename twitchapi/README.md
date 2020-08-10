@@ -1,4 +1,4 @@
-Twitch API | Wrapper for Twitch Helix API & TMI
+Twitch API2 | Rust library for talking with the new Twitch API aka. "Helix" and TMI.
 ============================================
 
 [<img alt="github" src="https://img.shields.io/badge/github-emilgardis/twitch__utils-8da0cb?style=for-the-badge&labelColor=555555&logo=github" height="20">](https://github.com/emilgardis/twitch_utils)

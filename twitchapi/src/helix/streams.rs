@@ -1,10 +1,14 @@
+//! Endpoints regarding streams
+
+
+#[doc(inline)]
 pub use get_streams::{GetStreams, GetStreamsRequest};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
-/// Gotten from [GetStreams::_type]
+/// Gotten from [GetStreams.type_](get_streams::GetStreams#structfield.type_)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
 pub enum StreamType {
     /// Stream is live.
@@ -26,14 +30,17 @@ pub enum StreamType {
 }
 
 impl StreamType {
+    /// Check if the stream is live or not
     pub fn is_live(&self) -> bool {
         matches!(self, StreamType::Live)
     }
 }
-
+/// Gets information about active streams.
+/// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
 pub mod get_streams {
     use super::*;
 
+    /// Query Parameters for [Get Streams](super::get_streams)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     pub struct GetStreamsRequest {
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
@@ -67,6 +74,7 @@ pub mod get_streams {
         pub user_login: Vec<String>,
     }
 
+    /// Return Values for [Get Streams](super::get_streams)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     pub struct GetStreams {
         /// ID of the game being played on the stream.

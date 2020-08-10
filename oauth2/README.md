@@ -1,4 +1,4 @@
-Twitch Oauth2 | Oauth2 for Twitch endpoints
+Twitch OAuth2 | OAuth2 for Twitch endpoints
 ============================================
 
 [<img alt="github" src="https://img.shields.io/badge/github-emilgardis/twitch__utils-8da0cb?style=for-the-badge&labelColor=555555&logo=github" height="20">](https://github.com/emilgardis/twitch_utils)

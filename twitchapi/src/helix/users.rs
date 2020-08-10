@@ -1,11 +1,18 @@
+//! Endpoints regarding users
+
+
+#[doc(inline)]
 pub use get_users::{GetUsers, GetUsersRequest};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
+/// Gets information about one or more specified Twitch users.
+/// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
 pub mod get_users {
     use super::*;
+    /// Query Parameters for [Get Users](super::get_users)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     pub struct GetUsersRequest {
         /// User ID. Multiple user IDs can be specified. Limit: 100.
@@ -18,6 +25,7 @@ pub mod get_users {
         login: Vec<String>,
     }
 
+    /// Return Values for [Get Users](super::get_users)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     pub struct GetUsers {
         /// User’s broadcaster type: "partner", "affiliate", or "".
@@ -26,7 +34,7 @@ pub mod get_users {
         pub description: Option<String>,
         /// User’s display name.
         pub display_name: String,
-        /// User’s email address. Returned if the request includes the user:read:email scope.
+        /// User’s email address. Returned if the request includes the [user:read:email scope](twitch_oauth2::Scope::UserReadEmail).
         pub email: Option<String>,
         /// User’s ID.
         pub id: String,

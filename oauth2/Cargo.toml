@@ -1,6 +1,6 @@
 [package]
 name = "twitch_oauth2"
-version = "0.0.0"
+version = "0.0.0" # remember to update html_root_url
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/Emilgardis/twitch_utils"
