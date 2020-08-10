@@ -1,7 +1,7 @@
-version = "Two"
-edition = "2018"
-fn_args_layout = "Compressed"
+condense_wildcard_suffixes = true
+brace_style = "PreferSameLine"
 fn_single_line = true
-indent_style = "Visual"
-merge_imports = true
-reorder_imports = true
+where_single_line = true
+use_field_init_shorthand = true
+reorder_impl_items = true
+edition = "2018"
