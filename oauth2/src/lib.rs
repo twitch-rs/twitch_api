@@ -26,7 +26,7 @@ pub enum Scope {
     #[serde(rename = "user:read:email")]
     UserReadEmail,
     /// Read authorized user’s stream key.
-    /// 
+    ///
     /// # Note:
     /// This scope seems to not work, even though it is documented.
     #[serde(rename = "user:read:stream_key")]
@@ -319,42 +319,60 @@ impl AppAccessToken {
     }
 }
 
-// #[derive(Debug, Clone)]
-// pub struct UserToken {
-//     access_token: AccessToken,
-//     client_id: String,
-//     refresh_token: Option<RefreshToken>,
-//     expires: Option<std::time::Instant>,
-//     scope: Vec<Scope>,
-// }
+#[derive(Debug, Clone)]
+pub struct UserToken {
+    access_token: AccessToken,
+    client_id: ClientId,
+    refresh_token: Option<RefreshToken>,
+    expires: Option<std::time::Instant>,
+    scopes: Vec<Scope>,
+}
 
-// impl UserToken {
-//     #[allow(unused_variables)]
-//     pub async fn get_authorize(
-//         client_id: String,
-//         redirect: Url,
-//         scopes: Vec<String>,
-//         force_verify: bool,
-//         state: Option<String>,
-//     ) -> Result<UserToken, ()>
-//     {
-//         //let url = Url::parse_with_params("https://id.twitch.tv/oauth2/authorize").unwrap();
-//         todo!()
-//     }
-// }
+impl UserToken {
+    pub fn from_existing_unchecked(
+        access_token: String,
+        refresh_token: Option<String>,
+        client_id: String,
+        scopes: Option<Vec<Scope>>,
+    ) -> UserToken
+    {
+        UserToken {
+            access_token: AccessToken::new(access_token),
+            refresh_token: refresh_token.map(RefreshToken::new),
+            client_id: ClientId::new(client_id),
+            expires: None,
+            scopes: scopes.unwrap_or_else(Vec::new),
+        }
+    }
 
-// #[async_trait::async_trait]
-// impl TwitchToken for UserToken {
-//     fn client_id(&self) -> &str { &self.client_id }
+    pub async fn from_existing(
+        access_token: String,
+        refresh_token: Option<String>,
+    ) -> Result<UserToken, ValidationError>
+    {
+        let token = AccessToken::new(access_token);
+        let validated = validate_token(&token).await?;
+        Ok(Self::from_existing_unchecked(
+            token.secret().to_owned(),
+            refresh_token,
+            validated.client_id,
+            validated.scopes,
+        ))
+    }
+}
 
-//     fn token(&self) -> &AccessToken { &self.access_token }
+#[async_trait::async_trait]
+impl TwitchToken for UserToken {
+    fn client_id(&self) -> &str { &self.client_id }
 
-//     async fn refresh_token(&mut self) -> Result<(), RefreshTokenError> {
-//         Err(RefreshTokenError::NoRefreshToken)
-//     }
+    fn token(&self) -> &AccessToken { &self.access_token }
 
-//     fn expires(&self) -> Option<std::time::Instant> { None }
-// }
+    async fn refresh_token(&mut self) -> Result<(), RefreshTokenError> {
+        Err(RefreshTokenError::NoRefreshToken)
+    }
+
+    fn expires(&self) -> Option<std::time::Instant> { None }
+}
 
 async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, ValidationError> {
     use oauth2::http::{header::AUTHORIZATION, HeaderMap, Method};
