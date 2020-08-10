@@ -9,7 +9,7 @@ async fn main() {
     )
     .await
     .unwrap();
-    let client = twitchapi::HelixClient::new(Box::new(token));
+    let client = twitch_api2::HelixClient::new(Box::new(token));
     let response = client
         .get_streams(|b| {
             b.user_login(vec!["LCS".to_string(), "asmongold".to_string()])
@@ -20,6 +20,6 @@ async fn main() {
     println!("{:?}", response.data);
     println!("{:?}", response.get_next(&client).await);
 
-    let client_tmi = twitchapi::TMIClient::new_with_client(client.clone_client());
+    let client_tmi = twitch_api2::TMIClient::new_with_client(client.clone_client());
     println!("{:?}", client_tmi.get_chatters("desertheartsrecords").await);
 }
