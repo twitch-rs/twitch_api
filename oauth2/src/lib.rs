@@ -1,7 +1,7 @@
 #![deny(intra_doc_link_resolution_failure)]
 #![deny(missing_docs)]
 #![doc(html_root_url = "https://docs.rs/twitch_oauth2/0.1.0")]
-//! [![github]](https://github.com/emilgardis/twitch_oauth2)&ensp;[![crates-io]](https://crates.io/crates/twitch_oauth2)&ensp;[![docs-rs]](https://docs.rs/twitch_oauth2)
+//! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_oauth2)&ensp;[![docs-rs]](https://docs.rs/twitch_oauth2)
 //!
 //! [github]: https://img.shields.io/badge/github-emilgardis/twitch__utils-8da0cb?style=for-the-badge&labelColor=555555&logo=github"
 //! [crates-io]: https://img.shields.io/crates/v/twitch_oauth2.svg?style=for-the-badge&color=fc8d62&logo=rust"
@@ -192,14 +192,16 @@ pub trait TwitchToken {
     async fn refresh_token(&mut self) -> Result<(), RefreshTokenError>;
     /// Get instant when token will expire.
     fn expires(&self) -> Option<std::time::Instant>;
-    /// Validate this token. Should be checked repeatedly.
+    /// Validate this token. Should be checked on regularly, according to <https://dev.twitch.tv/docs/authentication#validating-requests>
     async fn validate_token(&self) -> Result<ValidatedToken, ValidationError>
     where Self: Sized {
         validate_token(&self.token()).await
     }
 }
 
-/// Token validation returned from [`https://id.twitch.tv/oauth2/validate`](https://dev.twitch.tv/docs/authentication#validating-requests)
+/// Token validation returned from `https://id.twitch.tv/oauth2/validate`
+///
+/// See <https://dev.twitch.tv/docs/authentication#validating-requests>
 #[derive(Debug, Clone, Deserialize)]
 pub struct ValidatedToken {
     /// Client ID associated to the token. Twitch requires this in all helix api calls
@@ -286,7 +288,7 @@ impl AppAccessToken {
         }
     }
 
-    /// Assemble token and validate it. Retrieves [`login`](AppAccessToken.login), [`client_id`](AppAccessToken.client_id) and [`scopes`](AppAccessToken.scopes), will not get client_secret.
+    /// Assemble token and validate it. Retrieves [`login`](TwitchToken::login), [`client_id`](TwitchToken::client_id) and [`scopes`](TwitchToken::scopes), will not get client_secret.
     pub async fn from_existing(access_token: String) -> Result<AppAccessToken, ValidationError> {
         let token = AccessToken::new(access_token);
         let validated = validate_token(&token).await?;
@@ -351,7 +353,7 @@ impl AppAccessToken {
 
     /// Refresh the token, call if it has expired.
     ///
-    /// Uses [https://dev.twitch.tv/docs/authentication#refreshing-access-tokens]
+    /// See <https://dev.twitch.tv/docs/authentication#refreshing-access-tokens>
     pub async fn refresh_token(&mut self) -> Result<(), RefreshTokenError> {
         let now = std::time::Instant::now();
         let refresh_token = if let Some(ref token) = self.refresh_token {
@@ -416,7 +418,7 @@ impl UserToken {
         }
     }
 
-    /// Assemble token and validate it. Retrieves [`login`](UserToken.login), [`client_id`](UserToken.client_id) and [`scopes`](UserToken.scopes), will not get client_secret.
+    /// Assemble token and validate it. Retrieves [`login`](TwitchToken::login), [`client_id`](TwitchToken::client_id) and [`scopes`](TwitchToken::scopes)
     pub async fn from_existing(
         access_token: impl Into<String>,
         refresh_token: impl Into<Option<String>>,
@@ -449,7 +451,7 @@ impl TwitchToken for UserToken {
     fn expires(&self) -> Option<std::time::Instant> { None }
 }
 
-/// Validate this token. Should be checked repeatedly.
+/// Validate this token. Should be checked on regularly, according to <https://dev.twitch.tv/docs/authentication#validating-requests>
 pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, ValidationError> {
     use oauth2::http::{header::AUTHORIZATION, HeaderMap, Method};
     let auth_header = format!("OAuth {}", token.secret());
@@ -475,8 +477,7 @@ pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, Valid
     Ok(::serde_json::from_slice(&resp).unwrap())
 }
 
-/// Revoke the token, uses [https://dev.twitch.tv/docs/authentication#revoking-access-tokens]
-pub async fn revoke_token(token: AccessToken, client_id: ClientId) -> Result<(), RevokeTokenError> {
+/// Revoke the token. See <https://dev.twitch.tv/docs/authentication#revoking-access-tokens>
     use oauth2::http::{HeaderMap, Method, StatusCode};
     use std::collections::HashMap;
     let mut params = HashMap::new();
