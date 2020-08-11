@@ -140,7 +140,7 @@ impl HelixClient {
         let req = self
             .client
             .get(url.clone())
-            .header("Client-ID", token.client_id())
+            .header("Client-ID", token.client_id().as_str())
             .bearer_auth(token.token().secret())
             .send()
             .await?;

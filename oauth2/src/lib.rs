@@ -22,11 +22,11 @@ use oauth2::{
     basic::{BasicErrorResponse, BasicErrorResponseType, BasicTokenType},
     reqwest::{self, async_http_client},
     url::Url,
-    AccessToken, AsyncClientCredentialsTokenRequest, AsyncRefreshTokenRequest, AuthUrl, Client,
-    ClientId, ClientSecret, ExtraTokenFields, RefreshToken, RequestTokenError,
-    StandardErrorResponse, TokenResponse, TokenType,
+    AsyncClientCredentialsTokenRequest, AsyncRefreshTokenRequest, AuthUrl, Client,
+    ExtraTokenFields, RequestTokenError, StandardErrorResponse, TokenResponse, TokenType,
 };
 
+pub use oauth2::{AccessToken, ClientId, ClientSecret, RefreshToken};
 use serde::{Deserialize, Serialize};
 
 use std::time::Duration;
@@ -34,7 +34,7 @@ use thiserror::Error;
 
 /// Scopes for twitch.
 ///
-/// https://dev.twitch.tv/docs/authentication/#scopes
+/// <https://dev.twitch.tv/docs/authentication/#scopes>
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub enum Scope {
     /// View analytics data for your extensions.
@@ -180,10 +180,10 @@ impl From<oauth2::Scope> for Scope {
 }
 
 /// Trait for twitch tokens to get fields and generalize over [AppAccessToken] and [UserToken]
-#[async_trait::async_trait]
+#[async_trait::async_trait(?Send)]
 pub trait TwitchToken {
     /// Get the client-id. Twitch requires this in all helix api calls
-    fn client_id(&self) -> &str;
+    fn client_id(&self) -> &ClientId;
     /// Get the [AccessToken] for authenticating
     fn token(&self) -> &AccessToken;
     /// Get the username associated to this token
@@ -192,10 +192,17 @@ pub trait TwitchToken {
     async fn refresh_token(&mut self) -> Result<(), RefreshTokenError>;
     /// Get instant when token will expire.
     fn expires(&self) -> Option<std::time::Instant>;
+    /// Retrieve scopes attached to the token
+    fn scopes(&self) -> Option<&[Scope]>;
     /// Validate this token. Should be checked on regularly, according to <https://dev.twitch.tv/docs/authentication#validating-requests>
     async fn validate_token(&self) -> Result<ValidatedToken, ValidationError>
     where Self: Sized {
         validate_token(&self.token()).await
+    }
+    /// Revoke the token. See <https://dev.twitch.tv/docs/authentication#revoking-access-tokens>
+    async fn revoke_token(self) -> Result<(), RevokeTokenError>
+    where Self: Sized {
+        revoke_token(self.token(), self.client_id()).await
     }
 }
 
@@ -205,7 +212,7 @@ pub trait TwitchToken {
 #[derive(Debug, Clone, Deserialize)]
 pub struct ValidatedToken {
     /// Client ID associated to the token. Twitch requires this in all helix api calls
-    pub client_id: String,
+    pub client_id: ClientId,
     /// Username associated to the token
     pub login: Option<String>,
     /// User ID associated to the token
@@ -226,9 +233,9 @@ pub struct AppAccessToken {
     scopes: Option<Vec<Scope>>,
 }
 
-#[async_trait::async_trait]
+#[async_trait::async_trait(?Send)]
 impl TwitchToken for AppAccessToken {
-    fn client_id(&self) -> &str { &self.client_id }
+    fn client_id(&self) -> &ClientId { &self.client_id }
 
     fn token(&self) -> &AccessToken { &self.access_token }
 
@@ -239,6 +246,8 @@ impl TwitchToken for AppAccessToken {
     }
 
     fn expires(&self) -> Option<std::time::Instant> { self.expires }
+
+    fn scopes(&self) -> Option<&[Scope]> { self.scopes.as_deref() }
 }
 /// Errors for [AppAccessToken::get_app_access_token]
 #[allow(missing_docs)]
@@ -263,7 +272,11 @@ pub enum TokenError {
 #[allow(missing_docs)]
 #[derive(Error, Debug)]
 pub enum ValidationError {
-    #[error("failed to do validation: {0}")]
+    #[error("deserializations failed")]
+    DeserializeError(#[from] serde_json::Error),
+    #[error("validation failed")]
+    NotValid,
+    #[error("failed to request validation: {0}")]
     Reqwest(reqwest::AsyncHttpClientError),
 }
 
@@ -271,8 +284,8 @@ impl AppAccessToken {
     /// Assemble token without checks.
     pub fn from_existing_unchecked(
         access_token: String,
-        client_id: String,
-        client_secret: Option<String>,
+        client_id: impl Into<ClientId>,
+        client_secret: impl Into<Option<ClientSecret>>,
         login: Option<String>,
         scopes: Option<Vec<Scope>>,
     ) -> AppAccessToken
@@ -280,8 +293,8 @@ impl AppAccessToken {
         AppAccessToken {
             access_token: AccessToken::new(access_token),
             refresh_token: None,
-            client_id: ClientId::new(client_id),
-            client_secret: client_secret.map(ClientSecret::new),
+            client_id: client_id.into(),
+            client_secret: client_secret.into(),
             login,
             expires: None,
             scopes,
@@ -308,15 +321,15 @@ impl AppAccessToken {
 
     /// Generate app access token via [OAuth client credentials flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-client-credentials-flow)
     pub async fn get_app_access_token(
-        client_id: String,
-        client_secret: String,
+        client_id: ClientId,
+        client_secret: ClientSecret,
         scopes: Vec<Scope>,
     ) -> Result<AppAccessToken, TokenError>
     {
         let now = std::time::Instant::now();
         let client = TwitchClient::new(
-            ClientId::new(client_id.clone()),
-            Some(ClientSecret::new(client_secret.clone())),
+            client_id.clone(),
+            Some(client_secret.clone()),
             AuthUrl::new("https://id.twitch.tv/oauth2/authorize".to_owned())
                 .expect("unexpected failure to parse auth url for app_access_token"),
             Some(oauth2::TokenUrl::new(
@@ -337,8 +350,8 @@ impl AppAccessToken {
             access_token: response.access_token().clone(),
             refresh_token: response.refresh_token().cloned(),
             expires: response.expires_in().map(|dur| now + dur),
-            client_id: ClientId::new(client_id),
-            client_secret: Some(ClientSecret::new(client_secret)),
+            client_id,
+            client_secret: Some(client_secret),
             login: None,
             scopes: response
                 .scopes()
@@ -381,11 +394,6 @@ impl AppAccessToken {
         self.access_token = res.access_token;
         Ok(())
     }
-
-    /// Revoke the token, uses [https://dev.twitch.tv/docs/authentication#revoking-access-tokens]
-    pub async fn revoke_token(self) -> Result<(), RevokeTokenError> {
-        revoke_token(self.access_token, self.client_id).await
-    }
 }
 /// An User Token from the [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-implicit-code-flow) or [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-authorization-code-flow)
 #[derive(Debug, Clone)]
@@ -401,18 +409,18 @@ pub struct UserToken {
 impl UserToken {
     /// Assemble token without checks.
     pub fn from_existing_unchecked(
-        access_token: String,
-        refresh_token: Option<String>,
-        client_id: String,
+        access_token: impl Into<AccessToken>,
+        refresh_token: impl Into<Option<RefreshToken>>,
+        client_id: impl Into<ClientId>,
         login: Option<String>,
         scopes: Option<Vec<Scope>>,
     ) -> UserToken
     {
         UserToken {
-            access_token: AccessToken::new(access_token),
-            client_id: ClientId::new(client_id),
+            access_token: access_token.into(),
+            client_id: client_id.into(),
             login,
-            refresh_token: refresh_token.map(RefreshToken::new),
+            refresh_token: refresh_token.into(),
             expires: None,
             scopes: scopes.unwrap_or_else(Vec::new),
         }
@@ -420,14 +428,14 @@ impl UserToken {
 
     /// Assemble token and validate it. Retrieves [`login`](TwitchToken::login), [`client_id`](TwitchToken::client_id) and [`scopes`](TwitchToken::scopes)
     pub async fn from_existing(
-        access_token: impl Into<String>,
-        refresh_token: impl Into<Option<String>>,
+        access_token: impl Into<AccessToken>,
+        refresh_token: impl Into<Option<RefreshToken>>,
     ) -> Result<UserToken, ValidationError>
     {
-        let token = AccessToken::new(access_token.into());
+        let token = access_token.into();
         let validated = validate_token(&token).await?;
         Ok(Self::from_existing_unchecked(
-            token.secret().to_owned(),
+            token,
             refresh_token.into(),
             validated.client_id,
             validated.login,
@@ -436,9 +444,9 @@ impl UserToken {
     }
 }
 
-#[async_trait::async_trait]
+#[async_trait::async_trait(?Send)]
 impl TwitchToken for UserToken {
-    fn client_id(&self) -> &str { &self.client_id }
+    fn client_id(&self) -> &ClientId { &self.client_id }
 
     fn token(&self) -> &AccessToken { &self.access_token }
 
@@ -449,11 +457,14 @@ impl TwitchToken for UserToken {
     }
 
     fn expires(&self) -> Option<std::time::Instant> { None }
+
+    fn scopes(&self) -> Option<&[Scope]> { Some(self.scopes.as_slice()) }
 }
 
 /// Validate this token. Should be checked on regularly, according to <https://dev.twitch.tv/docs/authentication#validating-requests>
 pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, ValidationError> {
-    use oauth2::http::{header::AUTHORIZATION, HeaderMap, Method};
+    use oauth2::http::{header::AUTHORIZATION, HeaderMap, Method, StatusCode};
+
     let auth_header = format!("OAuth {}", token.secret());
     let mut headers = HeaderMap::new();
     headers.insert(
@@ -472,12 +483,24 @@ pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, Valid
 
     let resp = oauth2::reqwest::async_http_client(req)
         .await
-        .map_err(ValidationError::Reqwest)?
-        .body;
-    Ok(::serde_json::from_slice(&resp).unwrap())
+        .map_err(ValidationError::Reqwest)?;
+    eprintln!("{:?}", resp);
+    match resp.status_code {
+        c if c.is_success() => Ok(serde_json::from_slice(&resp.body)?),
+        c if c == StatusCode::UNAUTHORIZED => Err(ValidationError::NotValid),
+        _ => {
+            // TODO: Document this with a log call
+            Err(ValidationError::NotValid)
+        }
+    }
 }
 
 /// Revoke the token. See <https://dev.twitch.tv/docs/authentication#revoking-access-tokens>
+pub async fn revoke_token(
+    token: &AccessToken,
+    client_id: &ClientId,
+) -> Result<(), RevokeTokenError>
+{
     use oauth2::http::{HeaderMap, Method, StatusCode};
     use std::collections::HashMap;
     let mut params = HashMap::new();
@@ -486,7 +509,7 @@ pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, Valid
     let req = oauth2::HttpRequest {
         url: Url::parse_with_params("https://id.twitch.tv/oauth2/revoke", &params)
             .expect("unexpectedly failed to parse revoke url"),
-        method: Method::GET,
+        method: Method::POST,
         headers: HeaderMap::new(),
         body: vec![],
     };
