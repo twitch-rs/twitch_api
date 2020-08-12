@@ -242,7 +242,7 @@ pub struct Pagination {
     cursor: Option<Cursor>,
 }
 
-/// A cursor is a pointer to the current "page" in thje twitch api pagination
+/// A cursor is a pointer to the current "page" in the twitch api pagination
 pub type Cursor = String;
 
 /// Errors for [HelixClient::req_get] and similar functions.
