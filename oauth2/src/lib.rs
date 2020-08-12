@@ -242,6 +242,9 @@ impl TwitchToken for AppAccessToken {
         } else {
             return Err(RefreshTokenError::NoRefreshToken);
         };
+        self.access_token = access_token;
+        self.expires = expires;
+        self.refresh_token = refresh_token;
         Ok(())
     }
 
