@@ -1,6 +1,5 @@
 //! Endpoints regarding users
 
-
 #[doc(inline)]
 pub use get_users::{GetUsers, GetUsersRequest};
 

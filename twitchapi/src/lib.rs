@@ -16,22 +16,22 @@
 //! ```rust,no_run
 //! use twitch_api2::{Client, helix::channel::GetChannelRequest};
 //! use twitch_oauth2::{AppAccessToken, Scope, TokenError, TwitchToken};
-//! 
+//!
 //! # #[tokio::main]
 //! # async fn run() -> Result<(), Box<dyn std::error::Error + 'static>> {
 //! # let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
 //! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret".to_string());
-//! let client = 
+//! let client =
 //!     match AppAccessToken::get_app_access_token(client_id, client_secret, Scope::all()).await {
 //!         Ok(t) => Client::with_token(t).unwrap(),
 //!         Err(TokenError::RequestError(e)) => panic!("got error: {:?}", e),
 //!         Err(e) => panic!(e),
 //!     };
-//! 
+//!
 //! let req = GetChannelRequest {
 //!     broadcaster_id: client.helix.token().await.as_ref().validate_token().await?.user_id,
 //! };
-//! 
+//!
 //! println!("{:?}", &client.helix.req_get(req).await?.data[0].title);
 //! # Ok(())
 //! # }

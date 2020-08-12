@@ -20,8 +20,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
             .expect("Please set env: TWITCH_TOKEN or pass token as first argument"),
         None,
     )
-    .await
-    ?;
+    .await?;
 
     let client = HelixClient::new(Box::new(token));
     let client_tmi = TMIClient::new_with_client(client.clone_client());

@@ -1,6 +1,5 @@
 //! Endpoints regarding streams
 
-
 #[doc(inline)]
 pub use get_streams::{GetStreams, GetStreamsRequest};
 
@@ -31,9 +30,7 @@ pub enum StreamType {
 
 impl StreamType {
     /// Check if the stream is live or not
-    pub fn is_live(&self) -> bool {
-        matches!(self, StreamType::Live)
-    }
+    pub fn is_live(&self) -> bool { matches!(self, StreamType::Live) }
 }
 /// Gets information about active streams.
 /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
