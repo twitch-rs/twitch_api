@@ -1,4 +1,5 @@
 pre-release-replacements = [
   {file="README.md", search="twitch_api2/[a-z0-9\\.-]+/twitch_api2", replace="{{crate_name}}/{{version}}/{{crate_name}}"},
   {file="src/lib.rs", search="https://docs.rs/twitch_api2/[a-z0-9\\.-]+", replace="https://docs.rs/{{crate_name}}/{{version}}"},
+  {file="Cargo.toml", search="https://docs.rs/twitch_api2/[a-z0-9\\.-]+", replace="https://docs.rs/{{crate_name}}/{{version}}"},
 ]
