@@ -50,7 +50,9 @@ impl HelixClient {
     }
 
     /// Access the underlying [TwitchToken] from this client
-    pub async fn validate_token(&self) -> Result<twitch_oauth2::ValidatedToken, twitch_oauth2::ValidationError> {
+    pub async fn validate_token(
+        &self,
+    ) -> Result<twitch_oauth2::ValidatedToken, twitch_oauth2::ValidationError> {
         let t = self.token().await;
         t.validate_token().await
     }
@@ -62,65 +64,25 @@ impl HelixClient {
         Ok(())
     }
 
-    // FIXME: allow multiple?
-    /// Get information about users channel with specific id
-    pub async fn get_channel_information(
-        &self,
-        broadcaster_id: String,
-    ) -> Result<Option<channel::GetChannel>, RequestError>
-    {
-        let req = channel::GetChannelRequest { broadcaster_id };
-        let response = self.req_get(req).await?;
-        Ok(response.data.into_iter().next())
-    }
-
-    /// Access GetStreams builder.
-    pub async fn get_streams<F>(
-        &self,
-        builder: F,
-    ) -> Result<Response<streams::GetStreamsRequest, streams::GetStreams>, RequestError>
-    where
-        F: FnOnce(
-            streams::get_streams::GetStreamsRequestBuilder<((), (), (), (), (), (), ())>,
-        ) -> streams::GetStreamsRequest,
-    {
-        let req = builder(streams::GetStreamsRequest::builder());
-        let response = self.req_get(req).await?;
-        Ok(response)
-    }
-
-    /// Get user information. See [users::get_users]
-    pub async fn get_users<F>(
-        &self,
-        builder: F,
-    ) -> Result<Response<users::GetUsersRequest, users::GetUsers>, RequestError>
-    where
-        F: FnOnce(users::get_users::GetUsersRequestBuilder<((), ())>) -> users::GetUsersRequest,
-    {
-        let req = builder(users::GetUsersRequest::builder());
-        let response = self.req_get(req).await?;
-        Ok(response)
-    }
-
-    /// Get clip information. See [clips::get_clips]
-    pub async fn get_clips<F>(
-        &self,
-        builder: F,
-    ) -> Result<Response<clips::GetClipsRequest, clips::GetClips>, RequestError>
-    where
-        F: FnOnce(
-            clips::get_clips::GetClipsRequestBuilder<((), (), (), (), (), (), (), ())>,
-        ) -> clips::GetClipsRequest,
-    {
-        let req = builder(clips::GetClipsRequest::builder());
-        let response = self.req_get(req).await?;
-        Ok(response)
-    }
-
     /// Request on a valid [Request] endpoint
+    ///
+    /// ```rust,no_run
+    /// # #[tokio::main]
+    /// # async fn main() {
+    /// #   use twitch_api2::helix::{HelixClient, channel};
+    /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
+    /// #       twitch_oauth2::AccessToken::new("totallyvalidtoken".to_string()), None,
+    /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, None));
+    ///     let req = channel::GetChannelRequest::builder().broadcaster_id("").build();
+    ///     let client = HelixClient::new(token);
+    ///     let response = client.req_get(req).await;
+    /// # }
+    /// # // fn main() {run()}
+    /// ```
+    #[allow(clippy::needless_doctest_main)]
     pub async fn req_get<R, D>(&self, request: R) -> Result<Response<R, D>, RequestError>
     where
-        R: Request<Response = D> + Request,
+        R: Request<Response = D> + Request + RequestGet,
         D: serde::de::DeserializeOwned, {
         #[derive(PartialEq, Deserialize, Debug)]
         struct InnerResponse<D> {
@@ -214,7 +176,7 @@ where R: Request<Response = D> {
 
 impl<R, D> Response<R, D>
 where
-    R: Request<Response = D> + Clone + Paginated,
+    R: Request<Response = D> + Clone + Paginated + RequestGet,
     D: serde::de::DeserializeOwned,
 {
     /// Get the next page in the responses.
