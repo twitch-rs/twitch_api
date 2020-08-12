@@ -6,6 +6,7 @@ use twitch_oauth2::TwitchToken;
 
 pub mod channel;
 pub mod clips;
+pub mod moderation;
 pub mod streams;
 pub mod users;
 
@@ -46,6 +47,12 @@ impl HelixClient {
     /// Access the underlying [TwitchToken] from this client
     pub async fn token(&self) -> sync::RwLockReadGuard<'_, Box<dyn TwitchToken + Send + Sync>> {
         self.token.read().await
+    }
+
+    /// Access the underlying [TwitchToken] from this client
+    pub async fn validate_token(&self) -> Result<twitch_oauth2::ValidatedToken, twitch_oauth2::ValidationError> {
+        let t = self.token().await;
+        t.validate_token().await
     }
 
     /// Refresh the underlying [TwitchToken]
@@ -179,7 +186,7 @@ pub trait Request: serde::Serialize {
     const SCOPE: &'static [twitch_oauth2::Scope];
     /// Optional scopes needed by this endpoint
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
-    /// Response type. twitch's response will  deserialize to this. 
+    /// Response type. twitch's response will  deserialize to this.
     type Response;
     /// Defines layout of the url parameters. By default uses [serde_urlencoded]
     fn query(&self) -> Result<String, serde_urlencoded::ser::Error> {
@@ -212,7 +219,7 @@ where
 {
     /// Get the next page in the responses.
     pub async fn get_next(
-        &self,
+        self,
         client: &HelixClient,
     ) -> Result<Option<Response<R, D>>, RequestError>
     {
@@ -229,9 +236,9 @@ where
 /// Request can be paginated with a cursor
 pub trait Paginated {
     /// Should returns the current pagination cursor.
-    /// 
+    ///
     /// # Notes
-    /// 
+    ///
     /// Use [Cursor.cursor] as [Option::None] if no cursor is found.
     fn set_pagination(&mut self, cursor: Cursor);
 }
@@ -275,7 +282,7 @@ pub enum RequestError {
 }
 
 /// Repeat url query items with name
-/// 
+///
 /// ```rust
 /// let users = &["emilgardis", "jtv", "tmi"].iter().map(<_>::to_string).collect::<Vec<_>>();
 ///  assert_eq!(&twitch_api2::helix::repeat_query("user", users), "user=emilgardis&user=jtv&user=tmi")

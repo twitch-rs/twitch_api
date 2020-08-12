@@ -18,11 +18,11 @@ pub mod get_users {
         /// User ID. Multiple user IDs can be specified. Limit: 100.
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        id: Vec<String>,
+        pub id: Vec<String>,
         /// User login name. Multiple login names can be specified. Limit: 100.
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        login: Vec<String>,
+        pub login: Vec<String>,
     }
 
     /// Return Values for [Get Users](super::get_users)

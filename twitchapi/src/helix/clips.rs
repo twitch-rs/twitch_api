@@ -17,37 +17,37 @@ pub mod get_clips {
         /// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
-        broadcaster_id: Option<String>,
+        pub broadcaster_id: Option<String>,
         /// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
-        game_id: Option<String>,
+        pub game_id: Option<String>,
         /// ID of the clip being queried. Limit: 100.
         /// FIXME: This is not currently supported, we don't query correctly on ids. See [crate::helix::streams]
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        id: Vec<String>,
+        pub id: Vec<String>,
         // one of above is needed.
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
-        after: Option<String>,
+        pub after: Option<helix::Cursor>,
         /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
-        before: Option<String>,
+        pub before: Option<String>,
         /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, started_at also must be specified; otherwise, the time period is ignored.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
-        ended_at: Option<String>,
+        pub ended_at: Option<String>,
         /// Maximum number of objects to return. Maximum: 100. Default: 20.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
-        first: Option<usize>,
+        pub first: Option<usize>,
         /// Starting date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
-        started_at: Option<String>,
+        pub started_at: Option<String>,
     }
 
     /// Return Values for [Get Clips](super::get_clips)

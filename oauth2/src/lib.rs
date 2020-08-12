@@ -197,7 +197,7 @@ pub trait TwitchToken {
     fn scopes(&self) -> Option<&[Scope]>;
     /// Validate this token. Should be checked on regularly, according to <https://dev.twitch.tv/docs/authentication#validating-requests>
     async fn validate_token(&self) -> Result<ValidatedToken, ValidationError>
-    where Self: Sized {
+    {
         validate_token(&self.token()).await
     }
     /// Revoke the token. See <https://dev.twitch.tv/docs/authentication#revoking-access-tokens>
@@ -457,7 +457,7 @@ pub struct ValidatedToken {
 pub enum ValidationError {
     #[error("deserializations failed")]
     DeserializeError(#[from] serde_json::Error),
-    #[error("validation failed")]
+    #[error("token is not valid")]
     NotValid,
     #[error("twitch returned an unexpected status: {0} - {1}")]
     TwitchError(oauth2::http::StatusCode, String),
@@ -488,7 +488,6 @@ pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, Valid
     let resp = oauth2::reqwest::async_http_client(req)
         .await
         .map_err(ValidationError::Reqwest)?;
-    eprintln!("{:?}", resp);
     match resp.status_code {
         status if status.is_success() => Ok(serde_json::from_slice(&resp.body)?),
         status if status == StatusCode::UNAUTHORIZED => Err(ValidationError::NotValid),
