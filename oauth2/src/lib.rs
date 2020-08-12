@@ -11,10 +11,19 @@
 //!
 //! <h5>OAuth2 for Twitch endpoints</h5>
 //!
-//! ```rust,ignore
-//!     use twitch_oauth2::TwitchToken;
-//!     let user_token = UserToken::from_existing("sometokenherewhichisvalidornot").await.unwrap();
-//!     println!("user_token: {}", user_token.token().secret())
+//! ```rust,no_run
+//! # use twitch_oauth2::{TwitchToken, UserToken, AccessToken};
+//! # #[tokio::main]
+//! # async fn run() {
+//!     let token = AccessToken::new("sometokenherewhichisvalidornot".to_string());
+//! 
+//!     match UserToken::from_existing(token, None).await {
+//!         Ok(t) => println!("user_token: {}", t.token().secret()),
+//!         Err(ValidationError::NotValid) => println!("token is not authorized for use"),
+//!         Err(e) => println!("got error: {}", e),
+//!     }
+//! # }
+//! # fn main() {run()}
 //! ```
 
 use oauth2::helpers;
@@ -26,6 +35,7 @@ use oauth2::{
     ExtraTokenFields, RequestTokenError, StandardErrorResponse, TokenResponse, TokenType,
 };
 
+#[doc(no_inline)]
 pub use oauth2::{AccessToken, ClientId, ClientSecret, RefreshToken};
 use serde::{Deserialize, Serialize};
 
@@ -196,8 +206,7 @@ pub trait TwitchToken {
     /// Retrieve scopes attached to the token
     fn scopes(&self) -> Option<&[Scope]>;
     /// Validate this token. Should be checked on regularly, according to <https://dev.twitch.tv/docs/authentication#validating-requests>
-    async fn validate_token(&self) -> Result<ValidatedToken, ValidationError>
-    {
+    async fn validate_token(&self) -> Result<ValidatedToken, ValidationError> {
         validate_token(&self.token()).await
     }
     /// Revoke the token. See <https://dev.twitch.tv/docs/authentication#revoking-access-tokens>
@@ -253,7 +262,6 @@ pub enum TokenError {
     #[error("?")]
     Other,
 }
-
 
 impl AppAccessToken {
     /// Assemble token without checks.
@@ -493,12 +501,13 @@ pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, Valid
         status if status == StatusCode::UNAUTHORIZED => Err(ValidationError::NotValid),
         status => {
             // TODO: Document this with a log call
-            Err(ValidationError::TwitchError(status, String::from_utf8_lossy(&resp.body).into_owned()))
+            Err(ValidationError::TwitchError(
+                status,
+                String::from_utf8_lossy(&resp.body).into_owned(),
+            ))
         }
     }
 }
-
-
 
 /// Revoke the token. See <https://dev.twitch.tv/docs/authentication#revoking-access-tokens>
 pub async fn revoke_token(

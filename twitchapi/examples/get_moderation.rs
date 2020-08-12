@@ -1,23 +1,32 @@
+use twitch_api2::{
+    helix::moderation::{
+        get_moderators::GetModeratorsRequest, GetBannedEventsRequest, GetBannedUsersRequest,
+        GetModeratorsEventsRequest,
+    },
+    HelixClient, TMIClient,
+};
+use twitch_oauth2::{AccessToken, Scope, UserToken};
+
 #[tokio::main]
 async fn main() {
     dotenv::dotenv().unwrap();
     let mut args = std::env::args().skip(1);
-    let scopes = twitch_oauth2::Scope::all();
-    let token = twitch_oauth2::UserToken::from_existing(
+    let scopes = Scope::all();
+    let token = UserToken::from_existing(
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
-            .map(|t| twitch_oauth2::AccessToken::new(t))
+            .map(|t| AccessToken::new(t))
             .expect("Please set env: TWITCH_TOKEN or pass token as first argument"),
         None,
     )
     .await
     .unwrap();
 
-    let client = twitch_api2::HelixClient::new(Box::new(token));
-    let client_tmi = twitch_api2::TMIClient::new_with_client(client.clone_client());
+    let client = HelixClient::new(Box::new(token));
+    let client_tmi = TMIClient::new_with_client(client.clone_client());
 
-    let moderators_req = twitch_api2::helix::moderation::get_moderators::GetModeratorsRequest {
+    let moderators_req = GetModeratorsRequest {
         broadcaster_id: client.validate_token().await.unwrap().user_id.unwrap(),
         after: None,
     };
@@ -30,7 +39,7 @@ async fn main() {
         println!("{:?}", response.data);
     }
 
-    let moderator_events_req = twitch_api2::helix::moderation::GetModeratorsEventsRequest {
+    let moderator_events_req = GetModeratorsEventsRequest {
         broadcaster_id: client.validate_token().await.unwrap().user_id.unwrap(),
         user_id: vec![],
         after: None,
@@ -45,7 +54,7 @@ async fn main() {
         println!("{:?}", response.data);
     }
 
-    let banned_users_req = twitch_api2::helix::moderation::GetBannedUsersRequest {
+    let banned_users_req = GetBannedUsersRequest {
         broadcaster_id: client.validate_token().await.unwrap().user_id.unwrap(),
         user_id: vec![],
         after: None,
@@ -58,7 +67,7 @@ async fn main() {
         println!("{:?}", response.data);
     }
 
-    let banned_users_req = twitch_api2::helix::moderation::GetBannedEventsRequest {
+    let banned_users_req = GetBannedEventsRequest {
         broadcaster_id: client.validate_token().await.unwrap().user_id.unwrap(),
         user_id: vec![],
         after: None,

@@ -18,6 +18,7 @@ pub use helix::{channel, clips, streams, users, HelixClient};
 #[doc(inline)]
 pub use tmi::TMIClient;
 
+#[doc(no_inline)]
 pub use twitch_oauth2;
 
 pub mod helix;

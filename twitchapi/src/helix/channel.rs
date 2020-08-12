@@ -15,7 +15,7 @@ pub mod get_channel_information {
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     pub struct GetChannelRequest {
         /// ID of the channel
-        #[builder(default)]
+        #[builder(default, setter(into))]
         pub broadcaster_id: String,
     }
 
