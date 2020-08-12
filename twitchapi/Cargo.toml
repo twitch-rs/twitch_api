@@ -1,19 +1,19 @@
 [package]
-name = "twitch_api2"
+name = "twitch_api2" 
 version = "0.1.1" # remember to update html_root_url
-authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
-edition = "2018"
-repository = "https://github.com/Emilgardis/twitch_utils"
-license = "MIT OR Apache-2.0"
-description = "Library for talking with the new Twitch API aka. \"Helix\" and TMI."
-keywords = ["oauth", "twitch","async","asynchronous", "api"]
-documentation = "https://docs.rs/twitch_api2/0.1.0"
-readme = "README.md"
+authors = ["Emil Gardström <emil.gardstrom@gmail.com>"] 
+edition = "2018" 
+repository = "https://github.com/Emilgardis/twitch_utils" 
+license = "MIT OR Apache-2.0" 
+description = "Library for talking with the new Twitch API aka. \"Helix\" and TMI." 
+keywords = ["oauth", "twitch", "async", "asynchronous", "api"] 
+documentation = "https://docs.rs/twitch_api2/0.1.0" 
+readme = "README.md" 
 
 [dependencies]
 typed-builder = "0.6.0"
 thiserror = "1.0.20"
-twitch_oauth2 = "0.1.0"
+twitch_oauth2 = { version = "0.1.0" }
 serde = { version = "1.0.114", features = ["derive"] }
 serde_derive = "1.0.114"
 serde_urlencoded = "0.6.1"
