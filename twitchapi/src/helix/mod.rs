@@ -12,8 +12,8 @@ pub mod users;
 pub use twitch_oauth2::Scope;
 
 /// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
-///
-/// You may prefer to use tokens and just use
+/// 
+/// Provides [HelixClient::req_get] for requesting endpoints which uses [GET method][RequestGet].
 #[derive(Clone)]
 pub struct HelixClient {
     client: reqwest::Client,
@@ -176,12 +176,12 @@ where
 }
 
 /// Request can be paginated with a cursor
-pub trait Paginated {
+pub trait Paginated: Request {
     /// Should returns the current pagination cursor.
     ///
     /// # Notes
     ///
-    /// Use [Cursor.cursor] as [Option::None] if no cursor is found.
+    /// Pass [Option::None] if no cursor is found.
     fn set_pagination(&mut self, cursor: Cursor);
 }
 /// A cursor for pagination. This is needed because of how pagination is represented in the [New Twitch API](https://dev.twitch.tv/docs/api)

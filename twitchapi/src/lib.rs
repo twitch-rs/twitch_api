@@ -1,8 +1,6 @@
 #![deny(intra_doc_link_resolution_failure)]
 #![warn(missing_docs)]
 #![doc(html_root_url = "https://docs.rs/twitch_api2/0.2.2")]
-//! Rust library for talking with the new Twitch API aka. "Helix" and TMI.
-//!
 //! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs]](https://docs.rs/twitch_api2/0.2.2/twitch_api2)
 //!
 //! [github]: https://img.shields.io/badge/github-emilgardis/twitch__utils-8da0cb?style=for-the-badge&labelColor=555555&logo=github"
@@ -11,7 +9,7 @@
 //!
 //! <br>
 //!
-//! <h5>Use Twitch endpoints fearlessly</h5>
+//! <h5>Rust library for talking with the new Twitch API aka. "Helix" and TMI. Use Twitch endpoints fearlessly!</h5>
 //!
 //! ```rust,no_run
 //! use twitch_api2::{Client, helix::channel::GetChannelRequest};
@@ -37,8 +35,7 @@
 //! # }
 //! # fn main() {run().unwrap();}
 //! ```
-//!
-//!
+
 #[doc(no_inline)]
 pub use crate::helix::HelixClient;
 #[doc(no_inline)]
