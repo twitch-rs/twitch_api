@@ -13,6 +13,7 @@ pub mod get_channel_information {
     use super::*;
     /// Query Parameters for [Get Channel Information](super::get_channel_information)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
     pub struct GetChannelRequest {
         /// ID of the channel
         #[builder(setter(into))]
@@ -21,6 +22,7 @@ pub mod get_channel_information {
 
     /// Return Values for [Get Channel Information](super::get_channel_information)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
     pub struct GetChannel {
         /// Channel’s streaming status
         pub status: Option<String>,

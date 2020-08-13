@@ -23,6 +23,7 @@ pub mod get_moderators {
     // Maximum: 100
     /// Query Parameters for [Get Moderators](super::get_moderators)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
     pub struct GetModeratorsRequest {
         /// Provided `broadcaster_id` must match the `user_id` in the auth token.
         pub broadcaster_id: String,
@@ -34,6 +35,7 @@ pub mod get_moderators {
 
     /// Return Values for [Get Moderators](super::get_moderators)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
     pub struct GetModerators {
         /// User ID of moderator
         ///
@@ -67,6 +69,7 @@ pub mod get_moderator_events {
 
     /// Query Parameters for [Get Moderators Events](super::get_moderator_events)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
     pub struct GetModeratorEventsRequest {
         /// Provided `broadcaster_id` must match the `user_id` in the auth token.
         pub broadcaster_id: String,
@@ -85,6 +88,7 @@ pub mod get_moderator_events {
 
     /// Return Values for [Get Moderators Events](super::get_moderator_events)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
     pub struct GetModeratorEvents {
         /// Event ID
         pub id: String,
@@ -135,6 +139,7 @@ pub mod get_banned_users {
 
     /// Query Parameters for [Get Banned Users](super::get_banned_users)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
     pub struct GetBannedUsersRequest {
         /// Provided `broadcaster_id` must match the `user_id` in the auth token.
         pub broadcaster_id: String,
@@ -152,6 +157,7 @@ pub mod get_banned_users {
 
     /// Return Values for [Get Banned Users](super::get_banned_users)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
     pub struct GetBannedUsers {
         /// User ID of a user who has been banned.
         pub user_id: String,
@@ -198,6 +204,7 @@ pub mod get_banned_events {
 
     /// Query Parameters for [Get Banned Events](super::get_banned_events)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
     pub struct GetBannedEventsRequest {
         /// Provided `broadcaster_id` must match the `user_id` in the auth token.
         pub broadcaster_id: String,
@@ -212,13 +219,14 @@ pub mod get_banned_events {
         #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
         /// Maximum number of objects to return. Maximum: 100. Default: 20.
-        #[builder(default)]
+        #[builder(default, setter(into))]
         #[serde(skip_serializing_if = "Option::is_none")]
         pub first: Option<usize>,
     }
 
     /// Return Values for [Get Banned Events](super::get_banned_events)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
     pub struct GetBannedEvents {
         /// Event ID
         pub id: String,

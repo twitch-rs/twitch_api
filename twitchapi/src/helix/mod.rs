@@ -195,30 +195,31 @@ pub struct Pagination {
 pub type Cursor = String;
 
 /// Errors for [HelixClient::req_get] and similar functions.
-#[allow(missing_docs)]
-#[derive(thiserror::Error, Debug)]
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum RequestError {
-    #[error("url could not be parsed")]
+    /// url could not be parsed
     UrlParseError(#[from] url::ParseError),
-    #[error("io error")]
+    /// io error
     IOError(#[from] io::Error),
-    #[error("deserialization failed")]
+    /// deserialization failed
     DeserializeError(#[from] serde_json::Error),
-    #[error("Could not serialize request to query")]
+    /// Could not serialize request to query
     QuerySerializeError(#[from] serde_urlencoded::ser::Error),
-    #[error("request failed from reqwests side")]
+    /// request failed from reqwests side
     RequestError(#[from] reqwest::Error),
-    #[error("no pagination found")]
+    /// no pagination found
     NoPage,
-    #[error("something happened")]
+    /// something happened
     Other,
-    #[error(
-        "helix returned error {status:?} - {error} when calling `{url}` with message: {message}"
-    )]
+    /// helix returned error {status:?} - {error} when calling `{url}` with message: {message}
     HelixRequestError {
+        /// Error message related to status code
         error: String,
+        /// Status code of error, usually 400-499
         status: reqwest::StatusCode,
+        /// Error message from Twitch
         message: String,
+        /// URL to the endpoint
         url: url::Url,
     },
 }

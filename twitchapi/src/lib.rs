@@ -28,9 +28,9 @@
 //!         Err(e) => panic!(e),
 //!     };
 //! let client = Client::new();
-//! let req = GetChannelRequest {
-//!     broadcaster_id: "27620241".to_string(),
-//! };
+//! let req = GetChannelRequest::builder()
+//!     .broadcaster_id("27620241")
+//!     .build();
 //!
 //! println!("{:?}", &client.helix.req_get(req, &token).await?.data[0].title);
 //! # Ok(())

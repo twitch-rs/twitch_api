@@ -13,6 +13,7 @@ pub mod get_users {
     use super::*;
     /// Query Parameters for [Get Users](super::get_users)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
     pub struct GetUsersRequest {
         /// User ID. Multiple user IDs can be specified. Limit: 100.
         #[builder(default)]
@@ -26,6 +27,7 @@ pub mod get_users {
 
     /// Return Values for [Get Users](super::get_users)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
     pub struct GetUsers {
         /// User’s broadcaster type: "partner", "affiliate", or "".
         pub broadcaster_type: Option<String>,

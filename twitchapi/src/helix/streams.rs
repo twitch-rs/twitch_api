@@ -9,6 +9,7 @@ use typed_builder::TypedBuilder;
 
 /// Gotten from [GetStreams.type_](get_streams::GetStreams#structfield.type_)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
+#[non_exhaustive]
 pub enum StreamType {
     /// Stream is live.
     #[serde(rename = "live")]
@@ -39,6 +40,7 @@ pub mod get_streams {
 
     /// Query Parameters for [Get Streams](super::get_streams)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
     pub struct GetStreamsRequest {
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
@@ -73,6 +75,7 @@ pub mod get_streams {
 
     /// Return Values for [Get Streams](super::get_streams)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
     pub struct GetStreams {
         /// ID of the game being played on the stream.
         pub game_id: String,

@@ -38,10 +38,9 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     let client = HelixClient::new();
 
     println!("====Moderators====");
-    let moderators_req = GetModeratorsRequest {
-        broadcaster_id: broadcaster_id.clone(),
-        after: None,
-    };
+    let moderators_req = GetModeratorsRequest::builder()
+        .broadcaster_id(broadcaster_id.clone())
+        .build();
 
     let mut response = client.req_get(moderators_req, &token).await?;
     println!("{:?}", response.data);
@@ -52,11 +51,9 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     }
 
     println!("====Last 20 Moderator Events====");
-    let moderator_events_req = GetModeratorEventsRequest {
-        broadcaster_id: broadcaster_id.clone(),
-        user_id: vec![],
-        after: None,
-    };
+    let moderator_events_req = GetModeratorEventsRequest::builder()
+        .broadcaster_id(broadcaster_id.clone())
+        .build();
 
     let mut response = client.req_get(moderator_events_req, &token).await?;
     println!("{:?}", response.data);
@@ -68,11 +65,9 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     }
 
     println!("====Banned users====");
-    let banned_users_req = GetBannedUsersRequest {
-        broadcaster_id: broadcaster_id.clone(),
-        user_id: vec![],
-        after: None,
-    };
+    let banned_users_req = GetBannedUsersRequest::builder()
+        .broadcaster_id(broadcaster_id.clone())
+        .build();
     let mut response = client.req_get(banned_users_req, &token).await?;
     println!(
         "{:?}",
@@ -96,12 +91,10 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     }
 
     println!("====Last 10 Banned Events====");
-    let banned_events_req = GetBannedEventsRequest {
-        broadcaster_id: broadcaster_id.clone(),
-        user_id: vec![],
-        after: None,
-        first: Some(10),
-    };
+    let banned_events_req = GetBannedEventsRequest::builder()
+        .broadcaster_id(broadcaster_id.clone())
+        .first(Some(10))
+        .build();
     let mut response = client.req_get(banned_events_req, &token).await?;
     println!("{:?}", response.data);
 

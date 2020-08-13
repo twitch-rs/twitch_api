@@ -32,6 +32,8 @@ impl TMIClient {
     /// Get all the chatters in the chat
     /// 
     /// # Notes
+    /// 
+    /// This function will aside from url sanitize the broadcasters username, will also remove any `#` and make it lowercase ascii
     pub async fn get_chatters(&self, broadcaster: &str) -> Result<GetChatters, RequestError> {
         let url = format!(
             "{}{}{}{}",
@@ -47,6 +49,8 @@ impl TMIClient {
 }
 
 /// Returned by TMI at `https://tmi.twitch.tv/group/user/{broadcaster}/chatters`
+/// 
+/// See [TMIClient::get_chatters]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GetChatters {
     /// Amount of connected users

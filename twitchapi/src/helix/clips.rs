@@ -13,6 +13,7 @@ pub mod get_clips {
     use super::*;
     /// Query Parameters for [Get Clips](super::get_clips)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
     pub struct GetClipsRequest {
         /// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
         #[builder(default)]
@@ -52,6 +53,7 @@ pub mod get_clips {
 
     /// Return Values for [Get Clips](super::get_clips)
     #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+    #[non_exhaustive]
     pub struct GetClips {
         /// User ID of the stream from which the clip was created.
         pub broadcaster_id: String,
