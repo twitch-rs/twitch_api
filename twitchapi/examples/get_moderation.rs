@@ -1,11 +1,11 @@
 use twitch_api2::{
     helix::moderation::{
-        get_moderators::GetModeratorsRequest, GetBannedEventsRequest, GetBannedUsersRequest,
-        GetModeratorEventsRequest,
+        GetBannedEventsRequest, GetBannedUsersRequest, GetModeratorEventsRequest,
+        GetModeratorsRequest,
     },
-    HelixClient, TMIClient,
+    HelixClient,
 };
-use twitch_oauth2::{AccessToken, Scope, TwitchToken, UserToken};
+use twitch_oauth2::{AccessToken, TwitchToken, UserToken};
 
 fn main() {
     use std::error::Error;
@@ -36,7 +36,6 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     let broadcaster_id = token.validate_token().await?.user_id.unwrap();
 
     let client = HelixClient::new();
-    let client_tmi = TMIClient::with_client(client.clone_client());
 
     println!("====Moderators====");
     let moderators_req = GetModeratorsRequest {

@@ -1,11 +1,10 @@
 use twitch_api2::{helix::streams::GetStreamsRequest, HelixClient, TMIClient};
-use twitch_oauth2::{AccessToken, Scope, UserToken};
+use twitch_oauth2::{AccessToken, UserToken};
 
 #[tokio::main]
 async fn main() {
     dotenv::dotenv().unwrap();
     let mut args = std::env::args().skip(1);
-    let scopes = Scope::all();
     let token = UserToken::from_existing(
         std::env::var("TWITCH_TOKEN")
             .ok()
@@ -20,7 +19,7 @@ async fn main() {
     let client = HelixClient::new();
     let client_tmi = TMIClient::with_client(client.clone_client());
 
-    let mut streams: Vec<String> = args.map(|a| a.to_string()).collect();
+    let streams: Vec<String> = args.map(|a| a.to_string()).collect();
     let req = GetStreamsRequest::builder().build();
 
     let response = client.req_get(req, &token).await.unwrap();
