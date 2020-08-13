@@ -1026,12 +1026,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c111b5bd5695e56cffe5129854aa230b39c93a305372fdbb2668ca2394eea9f8"
 
 [[package]]
-name = "slog"
-version = "2.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1cc9c640a4adbfbcc11ffb95efe5aa7af7309e002adab54b185507dbf2377b99"
-
-[[package]]
 name = "smallvec"
 version = "0.6.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1216,7 +1210,6 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "serde_urlencoded",
- "slog",
  "thiserror",
  "tokio",
  "twitch_oauth2",

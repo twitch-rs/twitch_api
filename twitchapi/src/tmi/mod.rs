@@ -2,6 +2,13 @@
 use serde::{Deserialize, Serialize};
 
 /// Client for the twitch TMI endpoint, almost entirely undocumented and certainly not supported.
+/// 
+/// # Examples
+/// 
+/// ```rust,no_run
+/// let client = TMIClient::new();
+/// println!("{:?}", client.get_chatters("justintvfan10"))
+/// ```
 #[derive(Default, Clone)]
 pub struct TMIClient {
     client: reqwest::Client,
@@ -18,6 +25,8 @@ impl TMIClient {
     pub fn with_client(client: reqwest::Client) -> TMIClient { TMIClient { client } }
 
     /// Get all the chatters in the chat
+    /// 
+    /// # Notes
     pub async fn get_chatters(&self, broadcaster: &str) -> Result<GetChatters, RequestError> {
         let url = format!(
             "{}{}{}{}",

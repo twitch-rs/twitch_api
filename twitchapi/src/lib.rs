@@ -11,6 +11,8 @@
 //!
 //! <h5>Rust library for talking with the new Twitch API aka. "Helix" and TMI. Use Twitch endpoints fearlessly!</h5>
 //!
+//! # Examples
+//!
 //! ```rust,no_run
 //! use twitch_api2::{Client, helix::channel::GetChannelRequest};
 //! use twitch_oauth2::{AppAccessToken, Scope, TokenError, TwitchToken};
@@ -36,43 +38,47 @@
 //! # fn main() {run().unwrap();}
 //! ```
 
+#[cfg(feature = "helix")]
 #[doc(no_inline)]
 pub use crate::helix::HelixClient;
+#[cfg(feature = "tmi")]
 #[doc(no_inline)]
 pub use crate::tmi::TMIClient;
 
+#[cfg(feature = "helix")]
 #[doc(no_inline)]
 pub use twitch_oauth2;
 
+#[cfg(feature = "helix")]
 pub mod helix;
+#[cfg(feature = "tmi")]
 pub mod tmi;
 
+#[cfg(feature = "helix")]
 static TWITCH_HELIX_URL: &str = "https://api.twitch.tv/helix/";
+#[cfg(feature = "tmi")]
 static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
 
 /// Client for Twitch APIs.
-#[derive(Clone)]
+#[derive(Clone, Default)]
+#[non_exhaustive]
 pub struct Client {
     /// Helix endpoint. See [helix]
+    #[cfg(feature = "helix")]
     pub helix: HelixClient,
     /// TMI endpoint. See [tmi]
+    #[cfg(feature = "tmi")]
     pub tmi: TMIClient,
 }
 
 impl Client {
     /// Create a new [Client]
-    pub fn new() -> Result<Client, Error> {
+    #[cfg(all(feature = "helix", feature = "tmi"))]
+    pub fn new() -> Client {
         let helix = HelixClient::new();
         Ok(Client {
             tmi: TMIClient::with_client(helix.clone_client()),
             helix,
         })
     }
-}
-
-#[allow(missing_docs)]
-#[derive(Debug, thiserror::Error)]
-pub enum Error {
-    #[error("could not make token")]
-    TokenError(#[from] twitch_oauth2::TokenError),
 }

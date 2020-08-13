@@ -1,29 +1,41 @@
 [package]
-name = "twitch_api2" 
+name = "twitch_api2"
 version = "0.2.3"
-authors = ["Emil Gardström <emil.gardstrom@gmail.com>"] 
-edition = "2018" 
-repository = "https://github.com/Emilgardis/twitch_utils" 
-license = "MIT OR Apache-2.0" 
-description = "Library for talking with the new Twitch API aka. \"Helix\" and TMI." 
-keywords = ["oauth", "twitch", "async", "asynchronous", "api"] 
-documentation = "https://docs.rs/twitch_api2/0.2.3" 
-readme = "README.md" 
+authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
+edition = "2018"
+repository = "https://github.com/Emilgardis/twitch_utils"
+license = "MIT OR Apache-2.0"
+description = "Library for talking with the new Twitch API aka. \"Helix\" and TMI."
+keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
+documentation = "https://docs.rs/twitch_api2/0.2.3"
+readme = "README.md"
 
 [dependencies]
 typed-builder = "0.6.0"
 thiserror = "1.0.20"
-twitch_oauth2 = { version = "^0.3.0"}
-serde = { version = "1.0.115", features = ["derive"] }
-serde_derive = "1.0.115"
-serde_urlencoded = "0.6.1"
-async-trait = "0.1.37"
-serde_json = "1.0.57"
-reqwest = "0.10.7"
-url = "2.1.1"
-slog = "2.5.2"
+twitch_oauth2 = { version = "^0.3.0", optional = true }
+serde = { version = "1.0.115", features = ["derive"], optional = true }
+serde_derive = { version = "1.0.115", optional = true }
+serde_urlencoded = { version = "0.6.1", optional = true }
+async-trait = { version = "0.1.37", optional = true }
+serde_json = { version = "1.0.57", optional = true }
+reqwest = { version = "0.10.7", optional = true }
+url = { version = "2.1.1", optional = true }
+
 [features]
-default = []
+default = ["tmi", "helix"]
+
+helix = [
+    "twitch_oauth2",
+    "url",
+    "reqwest",
+    "serde",
+    "serde_derive",
+    "serde_urlencoded",
+    "async-trait",
+    "serde_json",
+]
+tmi = ["reqwest", "serde", "serde_json"]
 
 [dev-dependencies]
 tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
