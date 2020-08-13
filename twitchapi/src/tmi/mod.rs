@@ -66,9 +66,9 @@ pub struct Chatters {
     pub moderators: Vec<Nickname>,
     /// Twitch Staff in the chat, have a staff badge.
     pub staff: Vec<Nickname>,
-    /// Twitch Admins in the chat, have a admin badge, akin to [Chatters.global_mods].
+    /// Twitch Admins in the chat, have an admin badge, akin to [Chatters::global_mods].
     pub admins: Vec<Nickname>,
-    /// Twitch Global Moderators in the chat, have a admin badge, akin to [Chatters.global_mods].
+    /// Twitch Global Moderators in the chat, have an admin badge, akin to [Chatters::global_mods].
     pub global_mods: Vec<Nickname>,
     /// Regular viewer in the chat, includes followers and subscribers.
     pub viewers: Vec<Nickname>,
@@ -78,13 +78,10 @@ pub struct Chatters {
 pub type Nickname = String;
 
 /// Errors for [TMIClient] requests
-#[allow(missing_docs)]
-#[derive(thiserror::Error, Debug)]
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum RequestError {
-    #[error("deserialization failed")]
+    /// deserialization failed
     DeserializeError(#[from] serde_json::Error),
-    #[error("request failed")]
+    /// request failed
     RequestError(#[from] reqwest::Error),
-    #[error("something happened")]
-    Other,
 }
