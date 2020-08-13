@@ -6,8 +6,13 @@ use serde::{Deserialize, Serialize};
 /// # Examples
 /// 
 /// ```rust,no_run
+/// # use twitch_api2::tmi::TMIClient; use std::error::Error;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn Error>> {
 /// let client = TMIClient::new();
-/// println!("{:?}", client.get_chatters("justinfan10"))
+/// println!("{:?}", client.get_chatters("justinfan10").await?);
+/// # Ok(())
+/// # }
 /// ```
 #[derive(Default, Clone)]
 pub struct TMIClient {

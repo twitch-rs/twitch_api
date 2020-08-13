@@ -27,7 +27,7 @@
 //!         Err(TokenError::RequestError(e)) => panic!("got error: {:?}", e),
 //!         Err(e) => panic!(e),
 //!     };
-//! let client = Client::new()?;
+//! let client = Client::new();
 //! let req = GetChannelRequest {
 //!     broadcaster_id: "27620241".to_string(),
 //! };
@@ -76,9 +76,9 @@ impl Client {
     #[cfg(all(feature = "helix", feature = "tmi"))]
     pub fn new() -> Client {
         let helix = HelixClient::new();
-        Ok(Client {
+        Client {
             tmi: TMIClient::with_client(helix.clone_client()),
             helix,
-        })
+        }
     }
 }
