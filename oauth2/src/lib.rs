@@ -36,11 +36,12 @@ use oauth2::{
 
 #[doc(no_inline)]
 pub use oauth2::{AccessToken, ClientId, ClientSecret, RefreshToken};
-use serde::{Deserialize, Serialize};
 
-use std::time::Duration;
+use displaydoc::Display;
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
+use std::time::Duration;
 /// Scopes for twitch.
 ///
 /// <https://dev.twitch.tv/docs/authentication/#scopes>
@@ -271,15 +272,15 @@ impl TwitchToken for AppAccessToken {
 }
 /// Errors for [AppAccessToken::get_app_access_token]
 #[allow(missing_docs)]
-#[derive(Error, Debug)]
+#[derive(Error, Debug, Display)]
 pub enum TokenError {
-    #[error("request for token failed. {0}")]
+    /// request for token failed. {0}
     RequestError(RequestTokenError<reqwest::AsyncHttpClientError, TwitchTokenErrorResponse>),
-    #[error(transparent)]
+    /// ransparen
     ParseError(#[from] oauth2::url::ParseError),
-    #[error("could not get validation for token")]
+    /// could not get validation for token
     ValidationError(#[from] ValidationError),
-    #[error("?")]
+    /// ?
     Other,
 }
 
@@ -447,16 +448,15 @@ pub struct ValidatedToken {
 }
 
 /// Errors for [validate_token]
-#[allow(missing_docs)]
-#[derive(Error, Debug)]
+#[derive(Error, Debug, Display)]
 pub enum ValidationError {
-    #[error("deserializations failed")]
+    /// deserializations failed
     DeserializeError(#[from] serde_json::Error),
-    #[error("token is not authorized for use")]
+    /// token is not authorized for use
     NotAuthorized,
-    #[error("twitch returned an unexpected status: {0} - {1}")]
-    TwitchError(oauth2::http::StatusCode, String),
-    #[error("failed to request validation: {0}")]
+    /// twitch returned an unexpected status: {0}
+    TwitchError(TwitchTokenErrorResponse),
+    /// failed to request validation: {0}
     Reqwest(reqwest::AsyncHttpClientError),
 }
 
@@ -490,10 +490,10 @@ pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, Valid
         status if status == StatusCode::UNAUTHORIZED => Err(ValidationError::NotAuthorized),
         status => {
             // TODO: Document this with a log call
-            Err(ValidationError::TwitchError(
+            Err(ValidationError::TwitchError(TwitchTokenErrorResponse {
                 status,
-                String::from_utf8_lossy(&resp.body).into_owned(),
-            ))
+                message: String::from_utf8_lossy(&resp.body).into_owned(),
+            }))
         }
     }
 }
@@ -573,31 +573,31 @@ pub async fn refresh_token(
 
 /// Errors for [revoke_token]
 #[allow(missing_docs)]
-#[derive(Error, Debug)]
+#[derive(Error, Debug, Display)]
 pub enum RevokeTokenError {
-    #[error("400 Bad Request: {0}")]
+    /// 400 Bad Request: {0}
     BadRequest(String),
-    #[error("failed to do revokation: {0}")]
+    /// failed to do revokation: {0}
     Reqwest(reqwest::AsyncHttpClientError),
-    #[error("got unexpected return: {0:?}")]
+    /// got unexpected return: {0:?}
     Other(oauth2::HttpResponse),
 }
 
 /// Errors for [TwitchToken::refresh_token]
 #[allow(missing_docs)]
-#[derive(Error, Debug)]
+#[derive(Error, Debug, Display)]
 pub enum RefreshTokenError {
-    #[error("400 Bad Request: {0}")]
+    /// 400 Bad Request: {0}
     BadRequest(String),
-    #[error("failed to do refresh: {0}")]
+    /// failed to do refresh: {0}
     Reqwest(reqwest::AsyncHttpClientError),
-    #[error("got unexpected return: {0:?}")]
+    /// got unexpected return: {0:?}
     Other(oauth2::HttpResponse),
-    #[error("request for token failed. {0}")]
+    /// request for token failed. {0}
     RequestError(RequestTokenError<reqwest::AsyncHttpClientError, TwitchTokenErrorResponse>),
-    #[error(transparent)]
+    /// ransparen
     ParseError(#[from] oauth2::url::ParseError),
-    #[error("no refresh token found")]
+    /// no refresh token found
     NoRefreshToken,
 }
 
@@ -655,6 +655,13 @@ mod status_code {
         ser.serialize_u16(status.as_u16())
     }
 }
+
+impl std::fmt::Display for TwitchTokenErrorResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} {}", self.status.as_u16(), self.message)
+    }
+}
+
 impl<EF, TT> oauth2::TokenResponse<TT> for TwitchTokenResponse<EF, TT>
 where
     TT: TokenType,
