@@ -43,7 +43,7 @@ impl HelixClient {
     /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
     /// #       twitch_oauth2::AccessToken::new("totallyvalidtoken".to_string()), None,
     /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, None));
-    ///     let req = channel::GetChannelRequest::builder().broadcaster_id("").build();
+    ///     let req = channel::GetChannelRequest::builder().broadcaster_id("123456").build();
     ///     let client = HelixClient::new();
     ///     let response = client.req_get(req, &token).await;
     /// # }
