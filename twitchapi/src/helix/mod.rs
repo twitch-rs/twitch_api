@@ -1,7 +1,6 @@
 //! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
 use serde::{Deserialize, Serialize};
-use std::{convert::TryInto, io, sync::Arc};
-use tokio::sync;
+use std::{convert::TryInto, io};
 use twitch_oauth2::TwitchToken;
 
 pub mod channel;
@@ -163,7 +162,7 @@ where
     pub async fn get_next(
         self,
         client: &HelixClient,
-        token: (&impl TwitchToken),
+        token: &impl TwitchToken,
     ) -> Result<Option<Response<R, D>>, RequestError>
     {
         let mut req = self.request.clone();
