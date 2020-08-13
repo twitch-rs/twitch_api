@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 /// 
 /// ```rust,no_run
 /// let client = TMIClient::new();
-/// println!("{:?}", client.get_chatters("justintvfan10"))
+/// println!("{:?}", client.get_chatters("justinfan10"))
 /// ```
 #[derive(Default, Clone)]
 pub struct TMIClient {
