@@ -113,6 +113,12 @@ impl HelixClient {
     }
 }
 
+impl Default for HelixClient {
+    fn default() -> Self {
+        HelixClient::new()
+    }
+}
+
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
 #[async_trait::async_trait]
 pub trait Request: serde::Serialize {
