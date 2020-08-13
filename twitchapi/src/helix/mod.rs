@@ -13,56 +13,26 @@ pub mod users;
 pub use twitch_oauth2::Scope;
 
 /// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
+///
+/// You may prefer to use tokens and just use
 #[derive(Clone)]
 pub struct HelixClient {
-    token: Arc<sync::RwLock<Box<dyn TwitchToken + Send + Sync>>>,
     client: reqwest::Client,
     // TODO: Implement rate limiter...
 }
 
 impl HelixClient {
+    /// Create a new client with with an existing [reqwest::Client]
+    pub fn with_client(client: reqwest::Client) -> HelixClient { HelixClient { client } }
+
     /// Create a new client with a default [reqwest::Client]
-    pub fn new<T>(token: Box<T>) -> HelixClient
-    where T: TwitchToken + Sized + Send + Sync + 'static {
+    pub fn new() -> HelixClient {
         let client = reqwest::Client::new();
-        HelixClient {
-            token: Arc::new(sync::RwLock::new(token)),
-            client,
-        }
+        HelixClient::with_client(client)
     }
 
     /// Retrieve a clone of the [reqwest::Client] inside this [HelixClient]
     pub fn clone_client(&self) -> reqwest::Client { self.client.clone() }
-
-    /// Get a [tokio::time::Delay] that will return when the token attached to this client expires
-    pub async fn monitor_expire(&self) -> Option<tokio::time::Delay> {
-        self.token()
-            .await
-            .as_ref()
-            .expires()
-            .map(tokio::time::Instant::from_std)
-            .map(tokio::time::delay_until)
-    }
-
-    /// Access the underlying [TwitchToken] from this client
-    pub async fn token(&self) -> sync::RwLockReadGuard<'_, Box<dyn TwitchToken + Send + Sync>> {
-        self.token.read().await
-    }
-
-    /// Access the underlying [TwitchToken] from this client
-    pub async fn validate_token(
-        &self,
-    ) -> Result<twitch_oauth2::ValidatedToken, twitch_oauth2::ValidationError> {
-        let t = self.token().await;
-        t.validate_token().await
-    }
-
-    /// Refresh the underlying [TwitchToken]
-    pub async fn refresh_token(&self) -> Result<(), twitch_oauth2::RefreshTokenError> {
-        let mut token = self.token.write().await;
-        token.as_mut().refresh_token().await?;
-        Ok(())
-    }
 
     /// Request on a valid [Request] endpoint
     ///
@@ -74,16 +44,21 @@ impl HelixClient {
     /// #       twitch_oauth2::AccessToken::new("totallyvalidtoken".to_string()), None,
     /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, None));
     ///     let req = channel::GetChannelRequest::builder().broadcaster_id("").build();
-    ///     let client = HelixClient::new(token);
-    ///     let response = client.req_get(req).await;
+    ///     let client = HelixClient::new();
+    ///     let response = client.req_get(req, &token).await;
     /// # }
     /// # // fn main() {run()}
     /// ```
     #[allow(clippy::needless_doctest_main)]
-    pub async fn req_get<R, D>(&self, request: R) -> Result<Response<R, D>, RequestError>
+    pub async fn req_get<R, D>(
+        &self,
+        request: R,
+        token: &impl TwitchToken,
+    ) -> Result<Response<R, D>, RequestError>
     where
         R: Request<Response = D> + Request + RequestGet,
-        D: serde::de::DeserializeOwned, {
+        D: serde::de::DeserializeOwned,
+    {
         #[derive(PartialEq, Deserialize, Debug)]
         struct InnerResponse<D> {
             data: Vec<D>,
@@ -105,7 +80,6 @@ impl HelixClient {
             request.query()?
         ))?;
 
-        let token = self.token().await;
         let req = self
             .client
             .get(url.clone())
@@ -183,12 +157,13 @@ where
     pub async fn get_next(
         self,
         client: &HelixClient,
+        token: (&impl TwitchToken),
     ) -> Result<Option<Response<R, D>>, RequestError>
     {
         let mut req = self.request.clone();
         if let Some(ref cursor) = self.pagination.cursor {
             req.set_pagination(cursor.clone());
-            client.req_get(req).await.map(Some)
+            client.req_get(req, token).await.map(Some)
         } else {
             Ok(None)
         }

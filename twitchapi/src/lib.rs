@@ -1,9 +1,9 @@
 #![deny(intra_doc_link_resolution_failure)]
 #![warn(missing_docs)]
-#![doc(html_root_url = "https://docs.rs/twitch_api2/0.2.3")]
+#![doc(html_root_url = "https://docs.rs/twitch_api2/0.2.2")]
 //! Rust library for talking with the new Twitch API aka. "Helix" and TMI.
 //!
-//! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs]](https://docs.rs/twitch_api2/0.2.3/twitch_api2)
+//! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs]](https://docs.rs/twitch_api2/0.2.2/twitch_api2)
 //!
 //! [github]: https://img.shields.io/badge/github-emilgardis/twitch__utils-8da0cb?style=for-the-badge&labelColor=555555&logo=github"
 //! [crates-io]: https://img.shields.io/crates/v/twitch_api2.svg?style=for-the-badge&color=fc8d62&logo=rust"
@@ -21,18 +21,18 @@
 //! # async fn run() -> Result<(), Box<dyn std::error::Error + 'static>> {
 //! # let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
 //! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret".to_string());
-//! let client =
+//! let token =
 //!     match AppAccessToken::get_app_access_token(client_id, client_secret, Scope::all()).await {
-//!         Ok(t) => Client::with_token(t).unwrap(),
+//!         Ok(t) => t,
 //!         Err(TokenError::RequestError(e)) => panic!("got error: {:?}", e),
 //!         Err(e) => panic!(e),
 //!     };
-//!
+//! let client = Client::new()?;
 //! let req = GetChannelRequest {
-//!     broadcaster_id: client.helix.token().await.as_ref().validate_token().await?.user_id,
+//!     broadcaster_id: "27620241".to_string(),
 //! };
 //!
-//! println!("{:?}", &client.helix.req_get(req).await?.data[0].title);
+//! println!("{:?}", &client.helix.req_get(req, &token).await?.data[0].title);
 //! # Ok(())
 //! # }
 //! # fn main() {run().unwrap();}
@@ -63,25 +63,11 @@ pub struct Client {
 }
 
 impl Client {
-    /// Create a new [Client] with an [twitch_oauth2::AppAccessToken]
-    pub async fn new(
-        client_id: twitch_oauth2::ClientId,
-        client_secret: twitch_oauth2::ClientSecret,
-        scopes: Vec<twitch_oauth2::Scope>,
-    ) -> Result<Client, Error>
-    {
-        let token =
-            twitch_oauth2::AppAccessToken::get_app_access_token(client_id, client_secret, scopes)
-                .await?;
-        Client::with_token(token)
-    }
-
-    /// Create a new [Client] with a generic [twitch_oauth2::TwitchToken]
-    pub fn with_token<T>(token: T) -> Result<Client, Error>
-    where T: twitch_oauth2::TwitchToken + Sized + Send + Sync + 'static {
-        let helix = HelixClient::new(token.into());
+    /// Create a new [Client]
+    pub fn new() -> Result<Client, Error> {
+        let helix = HelixClient::new();
         Ok(Client {
-            tmi: TMIClient::new_with_client(helix.clone_client()),
+            tmi: TMIClient::with_client(helix.clone_client()),
             helix,
         })
     }

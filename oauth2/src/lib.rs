@@ -215,6 +215,23 @@ pub trait TwitchToken {
     }
 }
 
+#[async_trait::async_trait(?Send)]
+impl<T: TwitchToken> TwitchToken for Box<T> {
+    fn client_id(&self) -> &ClientId { (**self).client_id() }
+
+    fn token(&self) -> &AccessToken { (**self).token() }
+
+    fn login(&self) -> Option<&str> { (**self).login() }
+
+    async fn refresh_token(&mut self) -> Result<(), RefreshTokenError> {
+        (**self).refresh_token().await
+    }
+
+    fn expires(&self) -> Option<std::time::Instant> { (**self).expires() }
+
+    fn scopes(&self) -> Option<&[Scope]> { (**self).scopes() }
+}
+
 /// An App Access Token from the [OAuth client credentials flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-client-credentials-flow)
 #[derive(Debug, Clone)]
 pub struct AppAccessToken {
@@ -287,7 +304,7 @@ impl AppAccessToken {
         }
     }
 
-    /// Assemble token and validate it. Retrieves [`login`](TwitchToken::login), [`client_id`](TwitchToken::client_id) and [`scopes`](TwitchToken::scopes).
+    /// Assemble token and validate it. Retrieves [`client_id`](TwitchToken::client_id) and [`scopes`](TwitchToken::scopes).
     pub async fn from_existing(
         access_token: AccessToken,
         client_secret: ClientSecret,
@@ -299,7 +316,7 @@ impl AppAccessToken {
             token,
             validated.client_id,
             client_secret,
-            Some(validated.login),
+            None,
             validated.scopes,
         ))
     }
@@ -331,7 +348,7 @@ impl AppAccessToken {
             .await
             .map_err(TokenError::RequestError)?;
 
-        let mut app_access = AppAccessToken {
+        let app_access = AppAccessToken {
             access_token: response.access_token().clone(),
             refresh_token: response.refresh_token().cloned(),
             expires: response.expires_in().map(|dur| now + dur),
@@ -344,8 +361,7 @@ impl AppAccessToken {
                 .map(|s| s.into_iter().map(|s| s.into()).collect()),
         };
 
-        let validated = app_access.validate_token().await?;
-        app_access.login = Some(validated.login);
+        let _ = app_access.validate_token().await?; // Sanity check
         Ok(app_access)
     }
 }
@@ -392,7 +408,7 @@ impl UserToken {
             token,
             refresh_token.into(),
             validated.client_id,
-            Some(validated.login),
+            validated.login,
             validated.scopes,
         ))
     }
@@ -420,12 +436,12 @@ impl TwitchToken for UserToken {
 /// See <https://dev.twitch.tv/docs/authentication#validating-requests>
 #[derive(Debug, Clone, Deserialize)]
 pub struct ValidatedToken {
-    /// Client ID associated to the token. Twitch requires this in all helix api calls
+    /// Client ID associated with the token. Twitch requires this in all helix api calls
     pub client_id: ClientId,
-    /// Username associated to the token
-    pub login: String,
-    /// User ID associated to the token
-    pub user_id: String,
+    /// Username associated with the token
+    pub login: Option<String>,
+    /// User ID associated with the token
+    pub user_id: Option<String>,
     /// Scopes attached to the token.
     pub scopes: Option<Vec<Scope>>,
 }

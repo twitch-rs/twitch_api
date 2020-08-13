@@ -1,17 +1,28 @@
 use twitch_api2::{
     helix::moderation::{
         get_moderators::GetModeratorsRequest, GetBannedEventsRequest, GetBannedUsersRequest,
-        GetModeratorsEventsRequest,
+        GetModeratorEventsRequest,
     },
     HelixClient, TMIClient,
 };
-use twitch_oauth2::{AccessToken, Scope, UserToken};
+use twitch_oauth2::{AccessToken, Scope, TwitchToken, UserToken};
+
+fn main() {
+    use std::error::Error;
+    if let Err(err) = run() {
+        println!("Error: {}", err);
+        let mut e: &'_ dyn Error = err.as_ref();
+        while let Some(cause) = e.source() {
+            println!("Caused by: {:?}", cause);
+            e = cause;
+        }
+    }
+}
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
+async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     dotenv::dotenv().unwrap();
     let mut args = std::env::args().skip(1);
-    let scopes = Scope::all();
     let token = UserToken::from_existing(
         std::env::var("TWITCH_TOKEN")
             .ok()
@@ -22,60 +33,80 @@ async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
     )
     .await?;
 
-    let client = HelixClient::new(Box::new(token));
-    let client_tmi = TMIClient::new_with_client(client.clone_client());
+    let broadcaster_id = token.validate_token().await?.user_id.unwrap();
 
+    let client = HelixClient::new();
+    let client_tmi = TMIClient::with_client(client.clone_client());
+
+    println!("====Moderators====");
     let moderators_req = GetModeratorsRequest {
-        broadcaster_id: client.validate_token().await?.user_id,
+        broadcaster_id: broadcaster_id.clone(),
         after: None,
     };
 
-    let mut response = client.req_get(moderators_req).await?;
+    let mut response = client.req_get(moderators_req, &token).await?;
+    println!("{:?}", response.data);
 
-    println!("====Moderators====\n{:?}", response.data);
-    while let Ok(Some(new_response)) = response.get_next(&client).await {
+    while let Ok(Some(new_response)) = response.get_next(&client, &token).await {
         response = new_response;
         println!("{:?}", response.data);
     }
 
-    let moderator_events_req = GetModeratorsEventsRequest {
-        broadcaster_id: client.validate_token().await?.user_id,
+    println!("====Last 20 Moderator Events====");
+    let moderator_events_req = GetModeratorEventsRequest {
+        broadcaster_id: broadcaster_id.clone(),
         user_id: vec![],
         after: None,
     };
 
-    let mut response = client.req_get(moderator_events_req).await?;
+    let mut response = client.req_get(moderator_events_req, &token).await?;
+    println!("{:?}", response.data);
 
     // /mod and /unmod events
-    println!("====Moderator Events====\n{:?}", response.data);
-    while let Ok(Some(new_response)) = response.get_next(&client).await {
+    while let Ok(Some(new_response)) = response.get_next(&client, &token).await {
         response = new_response;
         println!("{:?}", response.data);
     }
 
+    println!("====Banned users====");
     let banned_users_req = GetBannedUsersRequest {
-        broadcaster_id: client.validate_token().await?.user_id,
+        broadcaster_id: broadcaster_id.clone(),
         user_id: vec![],
         after: None,
     };
-    let mut response = client.req_get(banned_users_req).await?;
+    let mut response = client.req_get(banned_users_req, &token).await?;
+    println!(
+        "{:?}",
+        response
+            .data
+            .iter()
+            .map(|user| &user.user_name)
+            .collect::<Vec<_>>()
+    );
 
-    println!("====Banned users====\n{:?}", response.data);
-    while let Ok(Some(new_response)) = response.get_next(&client).await {
+    while let Ok(Some(new_response)) = response.get_next(&client, &token).await {
         response = new_response;
-        println!("{:?}", response.data);
+        println!(
+            "{:?}",
+            response
+                .data
+                .iter()
+                .map(|user| &user.user_name)
+                .collect::<Vec<_>>()
+        );
     }
 
-    let banned_users_req = GetBannedEventsRequest {
-        broadcaster_id: client.validate_token().await?.user_id,
+    println!("====Last 10 Banned Events====");
+    let banned_events_req = GetBannedEventsRequest {
+        broadcaster_id: broadcaster_id.clone(),
         user_id: vec![],
         after: None,
         first: Some(10),
     };
-    let mut response = client.req_get(banned_users_req).await?;
+    let mut response = client.req_get(banned_events_req, &token).await?;
+    println!("{:?}", response.data);
 
-    println!("====Last 10 Banned Events====\n{:?}", response.data);
-    while let Ok(Some(new_response)) = response.get_next(&client).await {
+    while let Ok(Some(new_response)) = response.get_next(&client, &token).await {
         response = new_response;
         println!("{:?}", response.data);
     }

@@ -17,13 +17,13 @@ async fn main() {
     .await
     .unwrap();
 
-    let client = HelixClient::new(Box::new(token));
-    let client_tmi = TMIClient::new_with_client(client.clone_client());
+    let client = HelixClient::new();
+    let client_tmi = TMIClient::with_client(client.clone_client());
 
     let mut streams: Vec<String> = args.map(|a| a.to_string()).collect();
     let req = GetStreamsRequest::builder().build();
 
-    let response = client.req_get(req).await.unwrap();
+    let response = client.req_get(req, &token).await.unwrap();
 
     println!("GetStreams:\n\t{:?}", response.data);
     if let Some(stream) = streams.get(0) {

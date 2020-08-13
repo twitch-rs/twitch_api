@@ -11,11 +11,11 @@ impl TMIClient {
     /// Create a new client with a default [reqwest::Client]
     pub fn new() -> TMIClient {
         let client = reqwest::Client::new();
-        TMIClient::new_with_client(client)
+        TMIClient::with_client(client)
     }
 
     /// Create a new client with an existing [reqwest::Client]
-    pub fn new_with_client(client: reqwest::Client) -> TMIClient { TMIClient { client } }
+    pub fn with_client(client: reqwest::Client) -> TMIClient { TMIClient { client } }
 
     /// Get all the chatters in the chat
     pub async fn get_chatters(&self, broadcaster: &str) -> Result<GetChatters, RequestError> {

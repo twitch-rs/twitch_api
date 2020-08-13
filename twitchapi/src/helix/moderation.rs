@@ -6,9 +6,9 @@ pub use get_banned_events::{GetBannedEvents, GetBannedEventsRequest};
 #[doc(inline)]
 pub use get_banned_users::{GetBannedUsers, GetBannedUsersRequest};
 #[doc(inline)]
-pub use get_moderators::{GetModerators, GetModeratorsRequest};
+pub use get_moderator_events::{GetModeratorEvents, GetModeratorEventsRequest};
 #[doc(inline)]
-pub use get_moderators_events::{GetModeratorsEvents, GetModeratorsEventsRequest};
+pub use get_moderators::{GetModerators, GetModeratorsRequest};
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
@@ -60,14 +60,14 @@ pub mod get_moderators {
 }
 
 /// Returns a list of moderators or users added and removed as moderators from a channel.
-/// [`get-moderators-events`](https://dev.twitch.tv/docs/api/reference#get-moderators-events)
-pub mod get_moderators_events {
+/// [`get-moderator-events`](https://dev.twitch.tv/docs/api/reference#get-moderator-events)
+pub mod get_moderator_events {
     use super::*;
     use std::collections::HashMap;
 
-    /// Query Parameters for [Get Moderators Events](super::get_moderators_events)
+    /// Query Parameters for [Get Moderators Events](super::get_moderator_events)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
-    pub struct GetModeratorsEventsRequest {
+    pub struct GetModeratorEventsRequest {
         /// Provided `broadcaster_id` must match the `user_id` in the auth token.
         pub broadcaster_id: String,
         // FIXME: Twitch docs sucks...
@@ -83,9 +83,9 @@ pub mod get_moderators_events {
         pub after: Option<helix::Cursor>,
     }
 
-    /// Return Values for [Get Moderators Events](super::get_moderators_events)
+    /// Return Values for [Get Moderators Events](super::get_moderator_events)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
-    pub struct GetModeratorsEvents {
+    pub struct GetModeratorEvents {
         /// Event ID
         pub id: String,
         // FIXME: Twitch docs sucks...
@@ -99,8 +99,8 @@ pub mod get_moderators_events {
         pub event_data: HashMap<String, String>,
     }
 
-    impl helix::Request for GetModeratorsEventsRequest {
-        type Response = GetModeratorsEvents;
+    impl helix::Request for GetModeratorEventsRequest {
+        type Response = GetModeratorEvents;
 
         const PATH: &'static str = "moderation/moderators/events";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
@@ -121,9 +121,9 @@ pub mod get_moderators_events {
         }
     }
 
-    impl helix::RequestGet for GetModeratorsEventsRequest {}
+    impl helix::RequestGet for GetModeratorEventsRequest {}
 
-    impl helix::Paginated for GetModeratorsEventsRequest {
+    impl helix::Paginated for GetModeratorEventsRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
     }
 }
