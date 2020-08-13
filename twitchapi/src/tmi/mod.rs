@@ -2,9 +2,9 @@
 use serde::{Deserialize, Serialize};
 
 /// Client for the twitch TMI endpoint, almost entirely undocumented and certainly not supported.
-/// 
+///
 /// # Examples
-/// 
+///
 /// ```rust,no_run
 /// # use twitch_api2::tmi::TMIClient; use std::error::Error;
 /// # #[tokio::main]
@@ -30,9 +30,9 @@ impl TMIClient {
     pub fn with_client(client: reqwest::Client) -> TMIClient { TMIClient { client } }
 
     /// Get all the chatters in the chat
-    /// 
+    ///
     /// # Notes
-    /// 
+    ///
     /// This function will aside from url sanitize the broadcasters username, will also remove any `#` and make it lowercase ascii
     pub async fn get_chatters(&self, broadcaster: &str) -> Result<GetChatters, RequestError> {
         let url = format!(
@@ -49,7 +49,7 @@ impl TMIClient {
 }
 
 /// Returned by TMI at `https://tmi.twitch.tv/group/user/{broadcaster}/chatters`
-/// 
+///
 /// See [TMIClient::get_chatters]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GetChatters {

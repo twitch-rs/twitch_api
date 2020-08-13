@@ -22,6 +22,8 @@ pub mod get_moderators {
     // Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
     // Maximum: 100
     /// Query Parameters for [Get Moderators](super::get_moderators)
+    ///
+    /// [`get-moderators`](https://dev.twitch.tv/docs/api/reference#get-moderators)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetModeratorsRequest {
@@ -34,6 +36,8 @@ pub mod get_moderators {
     }
 
     /// Return Values for [Get Moderators](super::get_moderators)
+    ///
+    /// [`get-moderators`](https://dev.twitch.tv/docs/api/reference#get-moderators)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct GetModerators {
@@ -68,6 +72,8 @@ pub mod get_moderator_events {
     use std::collections::HashMap;
 
     /// Query Parameters for [Get Moderators Events](super::get_moderator_events)
+    ///
+    /// [`get-moderator-events`](https://dev.twitch.tv/docs/api/reference#get-moderator-events)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetModeratorEventsRequest {
@@ -87,6 +93,8 @@ pub mod get_moderator_events {
     }
 
     /// Return Values for [Get Moderators Events](super::get_moderator_events)
+    ///
+    /// [`get-moderator-events`](https://dev.twitch.tv/docs/api/reference#get-moderator-events)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct GetModeratorEvents {
@@ -138,6 +146,8 @@ pub mod get_banned_users {
     use super::*;
 
     /// Query Parameters for [Get Banned Users](super::get_banned_users)
+    ///
+    /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetBannedUsersRequest {
@@ -156,6 +166,8 @@ pub mod get_banned_users {
     }
 
     /// Return Values for [Get Banned Users](super::get_banned_users)
+    ///
+    /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct GetBannedUsers {
@@ -203,6 +215,8 @@ pub mod get_banned_events {
     use std::collections::HashMap;
 
     /// Query Parameters for [Get Banned Events](super::get_banned_events)
+    ///
+    /// [`get-banned-events`](https://dev.twitch.tv/docs/api/reference#get-banned-events)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetBannedEventsRequest {
@@ -225,6 +239,8 @@ pub mod get_banned_events {
     }
 
     /// Return Values for [Get Banned Events](super::get_banned_events)
+    ///
+    /// [`get-banned-events`](https://dev.twitch.tv/docs/api/reference#get-banned-events)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct GetBannedEvents {

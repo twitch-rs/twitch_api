@@ -18,7 +18,7 @@
 //! use twitch_oauth2::{AppAccessToken, Scope, TokenError, TwitchToken};
 //!
 //! # #[tokio::main]
-//! # async fn run() -> Result<(), Box<dyn std::error::Error + 'static>> {
+//! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
 //! # let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
 //! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret".to_string());
 //! let token =
@@ -35,7 +35,6 @@
 //! println!("{:?}", &client.helix.req_get(req, &token).await?.data[0].title);
 //! # Ok(())
 //! # }
-//! # fn main() {run().unwrap();}
 //! ```
 
 #[cfg(feature = "helix")]

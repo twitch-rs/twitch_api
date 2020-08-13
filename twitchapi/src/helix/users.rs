@@ -1,5 +1,22 @@
 //! Endpoints regarding users
-
+//! 
+//! # Examples
+//!
+//! ```rust,no_run
+//! # use twitch_api2::helix::{HelixClient, users::GetUsersRequest};
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
+//! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+//! # let token = twitch_oauth2::UserToken::from_existing(token, None).await?;
+//! let client = HelixClient::new();
+//! let req = GetUsersRequest::builder()
+//!     .login(vec!["justinfan1337".to_string()])
+//!     .build();
+//!
+//! println!("{:?}", &client.req_get(req, &token).await?.data);
+//! # Ok(())
+//! # }
+//! ```
 #[doc(inline)]
 pub use get_users::{GetUsers, GetUsersRequest};
 
@@ -12,6 +29,8 @@ use typed_builder::TypedBuilder;
 pub mod get_users {
     use super::*;
     /// Query Parameters for [Get Users](super::get_users)
+    ///
+    /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetUsersRequest {
@@ -26,6 +45,8 @@ pub mod get_users {
     }
 
     /// Return Values for [Get Users](super::get_users)
+    ///
+    /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct GetUsers {

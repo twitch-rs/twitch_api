@@ -12,7 +12,7 @@ pub mod users;
 pub use twitch_oauth2::Scope;
 
 /// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
-/// 
+///
 /// Provides [HelixClient::req_get] for requesting endpoints which uses [GET method][RequestGet].
 #[derive(Clone)]
 pub struct HelixClient {
@@ -113,9 +113,7 @@ impl HelixClient {
 }
 
 impl Default for HelixClient {
-    fn default() -> Self {
-        HelixClient::new()
-    }
+    fn default() -> Self { HelixClient::new() }
 }
 
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference

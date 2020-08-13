@@ -1,5 +1,24 @@
 //! Endpoints regarding clips
-
+//!
+//! # Examples
+//!
+//! ```rust,no_run
+//! # use twitch_api2::helix::{HelixClient, clips::GetClipsRequest};
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
+//! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+//! # let token = twitch_oauth2::UserToken::from_existing(token, None).await?;
+//! let client = HelixClient::new();
+//! let req = GetClipsRequest::builder()
+//!     .game_id("1234".to_string())
+//!     .first(100) // max 100, 20 if left unspecified
+//!     .build();
+//!
+//!
+//! println!("{:?}", &client.req_get(req, &token).await?.data.get(0));
+//! # Ok(())
+//! # }
+//! ```
 #[doc(inline)]
 pub use get_clips::{GetClips, GetClipsRequest};
 
@@ -12,6 +31,8 @@ use typed_builder::TypedBuilder;
 pub mod get_clips {
     use super::*;
     /// Query Parameters for [Get Clips](super::get_clips)
+    ///
+    /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetClipsRequest {
@@ -20,7 +41,7 @@ pub mod get_clips {
         #[serde(skip_serializing_if = "Option::is_none")]
         pub broadcaster_id: Option<String>,
         /// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
-        #[builder(default)]
+        #[builder(default, setter(into))]
         #[serde(skip_serializing_if = "Option::is_none")]
         pub game_id: Option<String>,
         /// ID of the clip being queried. Limit: 100.
@@ -42,7 +63,7 @@ pub mod get_clips {
         #[serde(skip_serializing_if = "Option::is_none")]
         pub ended_at: Option<String>,
         /// Maximum number of objects to return. Maximum: 100. Default: 20.
-        #[builder(default)]
+        #[builder(default, setter(into))]
         #[serde(skip_serializing_if = "Option::is_none")]
         pub first: Option<usize>,
         /// Starting date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.
@@ -52,6 +73,8 @@ pub mod get_clips {
     }
 
     /// Return Values for [Get Clips](super::get_clips)
+    ///
+    /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
     #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct GetClips {

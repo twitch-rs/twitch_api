@@ -1,5 +1,23 @@
 //! Endpoints regarding streams
-
+//! 
+//! # Examples
+//!
+//! ```rust,no_run
+//! # use twitch_api2::helix::{HelixClient, streams::GetStreamsRequest};
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
+//! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+//! # let token = twitch_oauth2::UserToken::from_existing(token, None).await?;
+//! let client = HelixClient::new();
+//! let req = GetStreamsRequest::builder()
+//!     .user_login(vec!["justinfan1337".to_string()])
+//!     .build();
+//!
+//! // If this doesn't return a result, that would mean the stream is not live.
+//! println!("{:?}", &client.req_get(req, &token).await?.data.get(0));
+//! # Ok(())
+//! # }
+//! ```
 #[doc(inline)]
 pub use get_streams::{GetStreams, GetStreamsRequest};
 
@@ -39,6 +57,8 @@ pub mod get_streams {
     use super::*;
 
     /// Query Parameters for [Get Streams](super::get_streams)
+    ///
+    /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetStreamsRequest {
@@ -64,7 +84,7 @@ pub mod get_streams {
         #[serde(skip_serializing_if = "Option::is_none")]
         pub language: Option<String>,
         /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
-        #[builder(default)]
+        #[builder(default, setter(into))]
         #[serde(skip_serializing_if = "Vec::is_empty")]
         pub user_id: Vec<String>,
         /// Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.
@@ -74,6 +94,8 @@ pub mod get_streams {
     }
 
     /// Return Values for [Get Streams](super::get_streams)
+    ///
+    /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct GetStreams {

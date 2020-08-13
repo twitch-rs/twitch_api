@@ -1,4 +1,23 @@
-//! Endpoints regarding channels
+//! Endpoints regarding channels'
+//!
+//! # Examples
+//! 
+//! ```rust,no_run
+//! # use twitch_api2::helix::{HelixClient, channel::GetChannelRequest};
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
+//! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+//! # let token = twitch_oauth2::UserToken::from_existing(token, None).await?;
+//! let client = HelixClient::new();
+//! let req = GetChannelRequest::builder()
+//!     .broadcaster_id("1234")
+//!     .build();
+//! 
+//! // Get Channel Request only returns one entry.
+//! println!("{:?}", &client.req_get(req, &token).await?.data.get(0));
+//! # Ok(())
+//! # }
+//! ```
 
 #[doc(inline)]
 pub use get_channel_information::{GetChannel, GetChannelRequest};
@@ -12,6 +31,8 @@ use typed_builder::TypedBuilder;
 pub mod get_channel_information {
     use super::*;
     /// Query Parameters for [Get Channel Information](super::get_channel_information)
+    ///
+    /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetChannelRequest {
@@ -21,6 +42,8 @@ pub mod get_channel_information {
     }
 
     /// Return Values for [Get Channel Information](super::get_channel_information)
+    ///
+    /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct GetChannel {
