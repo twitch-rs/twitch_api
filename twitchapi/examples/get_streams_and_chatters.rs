@@ -25,6 +25,7 @@ async fn main() {
 
     let response = client.req_get(req, &token).await.unwrap();
 
+    // Note: This will fetch chatters in the current most viewed stream, might spam your console a bit.
     println!("GetStreams:\n\t{:?}", response.data);
     if let Some(stream) = streams.get(0) {
         println!("{:?}", client_tmi.get_chatters(stream).await);
