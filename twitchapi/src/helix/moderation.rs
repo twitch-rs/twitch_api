@@ -27,9 +27,9 @@ pub mod get_moderators {
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetModeratorsRequest {
-        /// Provided `broadcaster_id` must match the `user_id` in the auth token.
+        /// Must match the User ID in the Bearer token.
         pub broadcaster_id: String,
-        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
+        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
@@ -77,7 +77,7 @@ pub mod get_moderator_events {
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetModeratorEventsRequest {
-        /// Provided `broadcaster_id` must match the `user_id` in the auth token.
+        /// Must match the User ID in the Bearer token.
         pub broadcaster_id: String,
         // FIXME: Twitch docs sucks...
         /// Filters the results and only returns a status object for users who are moderators in this channel and have a matching user_id.
@@ -86,7 +86,7 @@ pub mod get_moderator_events {
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
         pub user_id: Vec<String>,
-        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
+        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
@@ -151,7 +151,7 @@ pub mod get_banned_users {
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetBannedUsersRequest {
-        /// Provided `broadcaster_id` must match the `user_id` in the auth token.
+        /// Must match the User ID in the Bearer token.
         pub broadcaster_id: String,
         /// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.
         /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
@@ -159,7 +159,7 @@ pub mod get_banned_users {
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
         pub user_id: Vec<String>,
-        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
+        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
@@ -220,7 +220,7 @@ pub mod get_banned_events {
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetBannedEventsRequest {
-        /// Provided `broadcaster_id` must match the `user_id` in the auth token.
+        /// Must match the User ID in the Bearer token.
         pub broadcaster_id: String,
         /// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.
         /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
@@ -228,7 +228,7 @@ pub mod get_banned_events {
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
         pub user_id: Vec<String>,
-        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
+        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
