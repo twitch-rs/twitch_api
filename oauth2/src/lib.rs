@@ -282,7 +282,7 @@ impl TwitchToken for AppAccessToken {
 pub enum TokenError {
     /// request for token failed. {0}
     RequestError(RequestTokenError<reqwest::AsyncHttpClientError, TwitchTokenErrorResponse>),
-    /// ransparen
+    /// could not parse url
     ParseError(#[from] oauth2::url::ParseError),
     /// could not get validation for token
     ValidationError(#[from] ValidationError),
@@ -605,7 +605,7 @@ pub enum RefreshTokenError {
     Other(oauth2::HttpResponse),
     /// request for token failed. {0}
     RequestError(RequestTokenError<reqwest::AsyncHttpClientError, TwitchTokenErrorResponse>),
-    /// ransparen
+    /// could not parse url
     ParseError(#[from] oauth2::url::ParseError),
     /// no refresh token found
     NoRefreshToken,
