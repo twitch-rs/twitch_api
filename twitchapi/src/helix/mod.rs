@@ -228,7 +228,7 @@ pub trait Request: serde::Serialize {
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     /// Response type. twitch's response will  deserialize to this.
     type Response;
-    /// Defines layout of the url parameters. By default uses [serde_urlencoded]
+    /// Defines layout of the url parameters.
     fn query(&self) -> Result<String, ser::Error> { ser::to_string(&self) }
 }
 
