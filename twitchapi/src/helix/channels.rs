@@ -1,4 +1,4 @@
-//! Endpoints regarding channels'
+//! Endpoints regarding channels
 //!
 //! # Examples
 //!
@@ -116,10 +116,6 @@ pub mod modify_channel_information {
     pub enum ModifyChannelInformation {
         /// 204 - Channel/Stream updated successfully
         Success,
-        /// 400 - Missing Query Parameter
-        MissingQueryParameter,
-        /// 500 - Internal Server Error; Failed to update channel
-        InternalServerError,
     }
 
     impl std::convert::TryFrom<http::StatusCode> for ModifyChannelInformation {
@@ -128,13 +124,7 @@ pub mod modify_channel_information {
         fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
             match s {
                 http::StatusCode::NO_CONTENT => Ok(ModifyChannelInformation::Success),
-                http::StatusCode::BAD_REQUEST => {
-                    Ok(ModifyChannelInformation::MissingQueryParameter)
-                }
-                http::StatusCode::INTERNAL_SERVER_ERROR => {
-                    Ok(ModifyChannelInformation::InternalServerError)
-                }
-                other => Err(format!("got status code: {:?}", other).into()),
+                other => Err(other.canonical_reason().unwrap_or("").into()),
             }
         }
     }
