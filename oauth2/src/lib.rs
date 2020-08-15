@@ -464,7 +464,8 @@ pub enum ValidationError {
 ///
 /// Should be checked on regularly, according to <https://dev.twitch.tv/docs/authentication#validating-requests>
 pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, ValidationError> {
-    use oauth2::http::{header::AUTHORIZATION, HeaderMap, Method, StatusCode};
+    use oauth2::http::{header::AUTHORIZATION, HeaderMap, Method};
+    use http::StatusCode;
 
     let auth_header = format!("OAuth {}", token.secret());
     let mut headers = HeaderMap::new();
@@ -485,16 +486,17 @@ pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, Valid
     let resp = oauth2::reqwest::async_http_client(req)
         .await
         .map_err(ValidationError::Reqwest)?;
-    match resp.status_code {
-        status if status.is_success() => Ok(serde_json::from_slice(&resp.body)?),
-        status if status == StatusCode::UNAUTHORIZED => Err(ValidationError::NotAuthorized),
-        status => {
+    match StatusCode::from_u16(resp.status_code.as_u16()) {
+        Ok(status) if status.is_success() => Ok(serde_json::from_slice(&resp.body)?),
+        Ok(status) if status == StatusCode::UNAUTHORIZED => Err(ValidationError::NotAuthorized),
+        Ok(status) => {
             // TODO: Document this with a log call
             Err(ValidationError::TwitchError(TwitchTokenErrorResponse {
                 status,
                 message: String::from_utf8_lossy(&resp.body).into_owned(),
             }))
         }
+        Err(_) => unreachable!("converting from different http versions for the statuscode failed...")
     }
 }
 
@@ -627,12 +629,13 @@ where
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct TwitchTokenErrorResponse {
     #[serde(with = "status_code")]
-    status: oauth2::http::StatusCode,
+    status: http::StatusCode,
     message: String,
 }
 
-mod status_code {
-    use oauth2::http::StatusCode;
+#[doc(hidden)]
+pub mod status_code {
+    use http::StatusCode;
     use serde::{
         de::{Deserialize, Error, Unexpected},
         Deserializer, Serializer,

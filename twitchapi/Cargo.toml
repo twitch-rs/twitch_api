@@ -21,6 +21,7 @@ async-trait = { version = "0.1.37", optional = true }
 serde_json = { version = "1.0.57", optional = true }
 reqwest = { version = "0.10.7", optional = true }
 url = { version = "2.1.1", optional = true }
+http = { version = "0.2.1", optional = true }
 
 [features]
 default = ["tmi", "helix"]
@@ -33,6 +34,7 @@ helix = [
     "serde_derive",
     "async-trait",
     "serde_json",
+    "http",
 ]
 tmi = ["reqwest", "serde", "serde_json"]
 

@@ -2,6 +2,8 @@
 
 use crate::helix;
 #[doc(inline)]
+pub use check_automod_status::{CheckAutoModStatus, CheckAutoModStatusRequest, CheckAutoModStatusBody};
+#[doc(inline)]
 pub use get_banned_events::{GetBannedEvents, GetBannedEventsRequest};
 #[doc(inline)]
 pub use get_banned_users::{GetBannedUsers, GetBannedUsersRequest};
@@ -83,7 +85,7 @@ pub mod get_moderator_events {
         pub broadcaster_id: String,
         // FIXME: Twitch docs sucks...
         /// Filters the results and only returns a status object for users who are moderators in this channel and have a matching user_id.
-        /// Format: Repeated Query Parameter, eg. /moderation/Moderators?broadcaster_id=1&user_id=2&user_id=3
+        /// Format: Repeated Query Parameter, eg. /moderation/moderators?broadcaster_id=1&user_id=2&user_id=3
         /// Maximum: 100
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
@@ -241,5 +243,70 @@ pub mod get_banned_events {
 
     impl helix::Paginated for GetBannedEventsRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
+    }
+}
+
+/// Determines whether a string message meets the channel’s AutoMod requirements.
+/// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
+pub mod check_automod_status {
+    use super::*;
+    /// Query Parameters for [Check AutoMod Status](super::check_automod_status)
+    ///
+    /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
+    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
+    pub struct CheckAutoModStatusRequest {
+        /// Must match the User ID in the Bearer token.
+        #[builder(setter(into))]
+        pub broadcaster_id: String,
+    }
+
+    /// Body Parameters for [Check AutoMod Status](super::check_automod_status)
+    ///
+    /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
+    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+    #[non_exhaustive]
+    pub struct CheckAutoModStatusBody {
+        /// Developer-generated identifier for mapping messages to results.
+        #[builder(setter(into))]
+        msg_id: String,
+        /// Message text.
+        #[builder(setter(into))]
+        msg_text: String,
+        /// User ID of the sender.
+        #[builder(setter(into))]
+        user_id: String,
+    }
+
+    /// Return Values for [Check AutoMod Status](super::check_automod_status)
+    ///
+    /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
+    #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
+    pub struct CheckAutoModStatus {
+        /// The msg_id passed in the body of the POST message. Maps each message to its status.
+        msg_id: String,
+        /// Indicates if this message meets AutoMod requirements.
+        is_permitted: bool,
+    }
+
+    impl helix::Request for CheckAutoModStatusRequest {
+        type Response = CheckAutoModStatus;
+
+        const PATH: &'static str = "moderation/enforcements/status";
+        const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
+    }
+
+    impl helix::RequestPost for CheckAutoModStatusRequest {
+        type Body = Vec<CheckAutoModStatusBody>;
+
+        fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
+            #[derive(Serialize)]
+            struct InnerBody<'a> {
+                data: &'a Vec<CheckAutoModStatusBody>,
+            }
+
+            serde_json::to_string(&InnerBody { data: &body })
+        }
     }
 }

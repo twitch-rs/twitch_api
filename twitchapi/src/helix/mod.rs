@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::{convert::TryInto, io};
 use twitch_oauth2::TwitchToken;
 
-pub mod channel;
+pub mod channels;
 pub mod clips;
 pub mod moderation;
 pub mod streams;
@@ -25,6 +25,20 @@ pub struct HelixClient {
     // TODO: Implement rate limiter...
 }
 
+#[derive(PartialEq, Deserialize, Debug)]
+struct InnerResponse<D> {
+    data: Vec<D>,
+    /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
+    #[serde(default)]
+    pagination: Pagination,
+}
+#[derive(Deserialize, Clone, Debug)]
+struct HelixRequestError {
+    error: String,
+    status: u16,
+    message: String,
+}
+
 impl HelixClient {
     /// Create a new client with with an existing [reqwest::Client]
     pub fn with_client(client: reqwest::Client) -> HelixClient { HelixClient { client } }
@@ -38,7 +52,7 @@ impl HelixClient {
     /// Retrieve a clone of the [reqwest::Client] inside this [HelixClient]
     pub fn clone_client(&self) -> reqwest::Client { self.client.clone() }
 
-    /// Request on a valid [Request] endpoint
+    /// Request on a valid [RequestGet] endpoint
     ///
     /// ```rust,no_run
     /// # #[tokio::main]
@@ -47,13 +61,12 @@ impl HelixClient {
     /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
     /// #       twitch_oauth2::AccessToken::new("totallyvalidtoken".to_string()), None,
     /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, None));
-    ///     let req = channel::GetChannelRequest::builder().broadcaster_id("123456").build();
+    ///     let req = channel::GetChannelInformationRequest::builder().broadcaster_id("123456").build();
     ///     let client = HelixClient::new();
     ///     let response = client.req_get(req, &token).await;
     /// # }
     /// # // fn main() {run()}
     /// ```
-    #[allow(clippy::needless_doctest_main)]
     pub async fn req_get<R, D>(
         &self,
         request: R,
@@ -63,20 +76,6 @@ impl HelixClient {
         R: Request<Response = D> + Request + RequestGet,
         D: serde::de::DeserializeOwned,
     {
-        #[derive(PartialEq, Deserialize, Debug)]
-        struct InnerResponse<D> {
-            data: Vec<D>,
-            /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
-            #[serde(default)]
-            pagination: Pagination,
-        }
-        #[derive(Deserialize, Clone, Debug)]
-        pub struct HelixRequestError {
-            error: String,
-            status: u16,
-            message: String,
-        }
-
         let url = url::Url::parse(&format!(
             "{}{}?{}",
             crate::TWITCH_HELIX_URL,
@@ -99,7 +98,7 @@ impl HelixClient {
             message,
         }) = serde_json::from_str::<HelixRequestError>(&text)
         {
-            return Err(RequestError::HelixRequestError {
+            return Err(RequestError::HelixRequestGetError {
                 error,
                 status: status
                     .try_into()
@@ -114,6 +113,103 @@ impl HelixClient {
             pagination: response.pagination,
             request,
         })
+    }
+
+    /// Request on a valid [RequestPost] endpoint
+    pub async fn req_post<R, B, D>(
+        &self,
+        request: R,
+        body: B,
+        token: &impl TwitchToken,
+    ) -> Result<Response<R, D>, RequestError>
+    where
+        R: Request<Response = D> + Request + RequestPost<Body = B>,
+        B: serde::Serialize,
+        D: serde::de::DeserializeOwned,
+    {
+        let url = url::Url::parse(&format!(
+            "{}{}?{}",
+            crate::TWITCH_HELIX_URL,
+            <R as Request>::PATH,
+            request.query()?
+        ))?;
+
+        let body = request.body(&body)?;
+        // eprintln!("\n\nbody is ------------ {} ------------", body);
+        let req = self
+            .client
+            .post(url.clone())
+            .header("Client-ID", token.client_id().as_str())
+            .header("Content-Type", "application/json")
+            .bearer_auth(token.token().secret())
+            .body(body.clone())
+            .send()
+            .await?;
+        let text = req.text().await?;
+        // eprintln!("\n\nmessage is ------------ {} ------------", text);
+        if let Ok(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = serde_json::from_str::<HelixRequestError>(&text)
+        {
+            return Err(RequestError::HelixRequestPutError {
+                error,
+                status: status
+                    .try_into()
+                    .unwrap_or_else(|_| reqwest::StatusCode::BAD_REQUEST),
+                message,
+                url,
+                body,
+            });
+        }
+        let response: InnerResponse<D> = serde_json::from_str(&text)?;
+        Ok(Response {
+            data: response.data,
+            pagination: response.pagination,
+            request,
+        })
+    }
+
+    /// Request on a valid [RequestPatch] endpoint
+    pub async fn req_patch<R, B, D>(
+        &self,
+        request: R,
+        body: B,
+        token: &impl TwitchToken,
+    ) -> Result<D, RequestError>
+    where
+        R: Request<Response = D> + Request + RequestPatch<Body = B>,
+        B: serde::Serialize,
+        D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
+    {
+        let url = url::Url::parse(&format!(
+            "{}{}?{}",
+            crate::TWITCH_HELIX_URL,
+            <R as Request>::PATH,
+            request.query()?
+        ))?;
+
+        let body = request.body(&body)?;
+        // eprintln!("\n\nbody is ------------ {} ------------", body);
+        let req = self
+            .client
+            .patch(url.clone())
+            .header("Client-ID", token.client_id().as_str())
+            .header("Content-Type", "application/json")
+            .bearer_auth(token.token().secret())
+            .body(body.clone())
+            .send()
+            .await?;
+        match req.status().try_into() {
+            Ok(result) => Ok(result),
+            Err(err) => Err(RequestError::HelixRequestPatchError {
+                status: req.status(),
+                message: err.to_string(),
+                url,
+                body,
+            }),
+        }
     }
 }
 
@@ -136,8 +232,26 @@ pub trait Request: serde::Serialize {
     fn query(&self) -> Result<String, ser::Error> { ser::to_string(&self) }
 }
 
-/// Helix endpoint PUTs information
-pub trait RequestPut: Request {}
+/// Helix endpoint POSTs information
+pub trait RequestPost: Request {
+    /// Body parameters
+    type Body: serde::Serialize;
+
+    /// Create body text from [RequestPost::Body]
+    fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
+        serde_json::to_string(body)
+    }
+}
+
+/// Helix endpoint PATCHs information
+pub trait RequestPatch: Request {
+    type Body: serde::Serialize;
+
+    /// Create body text from [RequestPost::Body]
+    fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
+        serde_json::to_string(body)
+    }
+}
 
 /// Helix endpoint GETs information
 pub trait RequestGet: Request {}
@@ -202,7 +316,7 @@ pub enum RequestError {
     UrlParseError(#[from] url::ParseError),
     /// io error
     IOError(#[from] io::Error),
-    /// deserialization failed
+    /// deserialization failed when processing request result
     DeserializeError(#[from] serde_json::Error),
     /// Could not serialize request to query
     QuerySerializeError(#[from] ser::Error),
@@ -210,18 +324,44 @@ pub enum RequestError {
     RequestError(#[from] reqwest::Error),
     /// no pagination found
     NoPage,
-    /// something happened
-    Other,
-    /// helix returned error {status:?} - {error} when calling `{url}` with message: {message}
-    HelixRequestError {
+    /// could not parse response from patch:  {0}
+    PatchParseError(std::borrow::Cow<'static, str>),
+    /// {0}
+    Custom(std::borrow::Cow<'static, str>),
+    /// helix returned error {status:?} - {error}: {message:?} when calling `GET {url}`
+    HelixRequestGetError {
         /// Error message related to status code
         error: String,
         /// Status code of error, usually 400-499
-        status: reqwest::StatusCode,
+        status: http::StatusCode,
         /// Error message from Twitch
         message: String,
         /// URL to the endpoint
         url: url::Url,
+    },
+    /// helix returned error {status:?} - {error}: {message:?} when calling `PUT {url}: "{body}"`
+    HelixRequestPutError {
+        /// Error message related to status code
+        error: String,
+        /// Status code of error, usually 400-499
+        status: http::StatusCode,
+        /// Error message from Twitch
+        message: String,
+        /// URL to the endpoint
+        url: url::Url,
+        /// Body sent with PUT
+        body: String,
+    },
+    /// helix returned error {status:?}: {message:?} when calling `PATCH {url}: "{body}"`
+    HelixRequestPatchError {
+        /// Status code of error, usually 400-499
+        status: http::StatusCode,
+        /// Error message from Twitch
+        message: String,
+        /// URL to the endpoint
+        url: url::Url,
+        /// Body sent with PUT
+        body: String,
     },
 }
 

@@ -45,7 +45,6 @@ pub mod get_clips {
         #[serde(skip_serializing_if = "Option::is_none")]
         pub game_id: Option<String>,
         /// ID of the clip being queried. Limit: 100.
-        /// FIXME: This is not currently supported, we don't query correctly on ids. See [crate::helix::streams]
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
         pub id: Vec<String>,
