@@ -51,8 +51,6 @@ pub mod get_channel_information {
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct GetChannelInformation {
-        /// Channel’s streaming status
-        pub status: Option<String>,
         /// Twitch User ID of this channel owner
         pub broadcaster_id: String,
         /// Current game ID being played on the channel
