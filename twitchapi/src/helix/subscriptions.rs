@@ -57,19 +57,19 @@ pub mod get_broadcaster_subscriptions {
     #[non_exhaustive]
     pub struct GetBroadcasterSubscriptions {
         /// User ID of the broadcaster.
-        broadcaster_id: String,
+        pub broadcaster_id: String,
         /// Display name of the broadcaster.
-        broadcaster_name: String,
+        pub broadcaster_name: String,
         /// Determines if the subscription is a gift subscription.
-        is_gift: bool,
+        pub is_gift: bool,
         /// Type of subscription (Tier 1, Tier 2, Tier 3). 1000 = Tier 1, 2000 = Tier 2, 3000 = Tier 3 subscriptions.
-        tier: String,
+        pub tier: String,
         /// Name of the subscription.
-        plan_name: String,
+        pub plan_name: String,
         /// ID of the subscribed user.
-        user_id: String,
+        pub user_id: String,
         /// Display name of the subscribed user.
-        user_name: String,
+        pub user_name: String,
     }
 
     impl helix::Request for GetBroadcasterSubscriptionsRequest {

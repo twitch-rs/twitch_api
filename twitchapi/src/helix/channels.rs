@@ -25,6 +25,10 @@ pub use get_channel_information::{GetChannelInformation, GetChannelInformationRe
 pub use modify_channel_information::{
     ModifyChannelInformation, ModifyChannelInformationBody, ModifyChannelInformationRequest,
 };
+#[doc(inline)]
+pub use start_commercial::{
+    CommercialLength, StartCommercial, StartCommercialBody, StartCommercialRequest,
+};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
@@ -136,5 +140,114 @@ pub mod modify_channel_information {
 
     impl helix::RequestPatch for ModifyChannelInformationRequest {
         type Body = ModifyChannelInformationBody;
+    }
+}
+
+/// Starts a commercial on a specified channel.
+/// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
+pub mod start_commercial {
+    use super::*;
+    /// Length of the commercial in seconds
+    #[derive(
+        displaydoc::Display,
+        serde_repr::Serialize_repr,
+        serde_repr::Deserialize_repr,
+        Debug,
+        Clone,
+        PartialEq,
+        Eq,
+    )]
+    #[repr(u64)]
+    #[non_exhaustive]
+    pub enum CommercialLength {
+        /// 30s
+        Length30 = 30,
+        /// 60s
+        Length60 = 60,
+        /// 90s
+        Length90 = 90,
+        /// 120s
+        Length120 = 120,
+        /// 150s
+        Length150 = 150,
+        /// 180s
+        Length180 = 180,
+    }
+
+    /// Error for the `TryFrom` on [CommercialLength]
+    #[derive(thiserror::Error, Debug, displaydoc::Display)]
+    pub enum CommercialLengthParseError {
+        /// invalid length of {0}
+        InvalidLength(u64),
+    }
+
+    impl StartCommercialRequest {
+        /// Create a new [StartCommercialRequest]
+        pub fn new() -> Self { StartCommercialRequest {} }
+    }
+    // Not implementing builder since it's not really needed...
+    /// Query Parameters for [Start Commercial](super::start_commercial)
+    ///
+    /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
+    #[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
+    pub struct StartCommercialRequest {}
+
+    impl Default for StartCommercialRequest {
+        fn default() -> Self { StartCommercialRequest::new() }
+    }
+
+    impl std::convert::TryFrom<u64> for CommercialLength {
+        type Error = CommercialLengthParseError;
+
+        fn try_from(l: u64) -> Result<Self, Self::Error> {
+            match l {
+                30 => Ok(CommercialLength::Length30),
+                60 => Ok(CommercialLength::Length60),
+                90 => Ok(CommercialLength::Length90),
+                120 => Ok(CommercialLength::Length120),
+                150 => Ok(CommercialLength::Length150),
+                180 => Ok(CommercialLength::Length180),
+                other => Err(CommercialLengthParseError::InvalidLength(other)),
+            }
+        }
+    }
+    /// Body Parameters for [Start Commercial](super::start_commercial)
+    ///
+    /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
+    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
+    pub struct StartCommercialBody {
+        /// ID of the channel requesting a commercial
+        pub broadcaster_id: String,
+        /// Desired length of the commercial in seconds. Valid options are 30, 60, 90, 120, 150, 180.
+        #[builder(setter(into))]
+        pub length: CommercialLength,
+    }
+
+    /// Return Values for [Start Commercial](super::start_commercial)
+    ///
+    /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
+    #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
+    pub struct StartCommercial {
+        /// Length of the triggered commercial
+        pub length: CommercialLength,
+        /// Provides contextual information on why the request failed
+        pub message: String,
+        /// Seconds until the next commercial can be served on this channel
+        pub retry_after: u64,
+    }
+
+    impl helix::Request for StartCommercialRequest {
+        type Response = StartCommercial;
+
+        const PATH: &'static str = "channels/commercial";
+        const SCOPE: &'static [twitch_oauth2::Scope] =
+            &[twitch_oauth2::Scope::ChannelEditCommercial];
+    }
+
+    impl helix::RequestPost for StartCommercialRequest {
+        type Body = StartCommercialBody;
     }
 }

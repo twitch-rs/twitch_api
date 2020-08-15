@@ -107,7 +107,7 @@ pub mod get_moderator_events {
         /// Event ID
         pub id: String,
         // FIXME: Twitch docs sucks...
-        /// Displays `moderation.moderator.ban` or `moderation.moderator.unban`
+        /// Displays `moderation.moderator.add` or `moderation.moderator.remove`
         pub event_type: String,
         /// RFC3339 formatted timestamp for events.
         pub event_timestamp: String,
@@ -271,13 +271,13 @@ pub mod check_automod_status {
     pub struct CheckAutoModStatusBody {
         /// Developer-generated identifier for mapping messages to results.
         #[builder(setter(into))]
-        msg_id: String,
+        pub msg_id: String,
         /// Message text.
         #[builder(setter(into))]
-        msg_text: String,
+        pub msg_text: String,
         /// User ID of the sender.
         #[builder(setter(into))]
-        user_id: String,
+        pub user_id: String,
     }
 
     /// Return Values for [Check AutoMod Status](super::check_automod_status)
@@ -287,9 +287,9 @@ pub mod check_automod_status {
     #[non_exhaustive]
     pub struct CheckAutoModStatus {
         /// The msg_id passed in the body of the POST message. Maps each message to its status.
-        msg_id: String,
+        pub msg_id: String,
         /// Indicates if this message meets AutoMod requirements.
-        is_permitted: bool,
+        pub is_permitted: bool,
     }
 
     impl helix::Request for CheckAutoModStatusRequest {

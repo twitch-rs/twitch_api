@@ -106,6 +106,9 @@ pub enum Scope {
     /// View your channel points custom reward redemptions
     #[serde(rename = "channel:read:redemptions")]
     ChannelReadRedemptions,
+    /// Start a commercial on authorized channels
+    #[serde(rename = "channel:edit:commercial")]
+    ChannelEditCommercial,
     /// Other scope that is not implemented.
     Other(String),
 }
@@ -133,6 +136,7 @@ impl Scope {
             WhispersEdit => "whispers:edit".to_string(),
             ModerationRead => "moderation:read".to_string(),
             ChannelReadRedemptions => "channel:read:redemptions".to_string(),
+            ChannelEditCommercial => "channel:edit:commercial".to_string(),
             Other(s) => s.clone(),
         };
         oauth2::Scope::new(s)
@@ -159,6 +163,7 @@ impl Scope {
             Scope::WhispersEdit,
             Scope::ModerationRead,
             Scope::ChannelReadRedemptions,
+            Scope::ChannelEditCommercial,
         ]
     }
 }
@@ -185,6 +190,7 @@ impl From<oauth2::Scope> for Scope {
             "whispers:edit" => WhispersEdit,
             "moderation:read" => ModerationRead,
             "channel:read:redemptions" => ChannelReadRedemptions,
+            "channel:edit::commercial" => ChannelEditCommercial,
             s => Other(s.to_string()),
         }
     }

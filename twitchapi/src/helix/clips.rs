@@ -56,7 +56,7 @@ pub mod get_clips {
         /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
-        pub before: Option<String>,
+        pub before: Option<helix::Cursor>,
         /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, started_at also must be specified; otherwise, the time period is ignored.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
