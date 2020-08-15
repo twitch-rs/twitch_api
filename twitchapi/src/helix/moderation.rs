@@ -2,7 +2,9 @@
 
 use crate::helix;
 #[doc(inline)]
-pub use check_automod_status::{CheckAutoModStatus, CheckAutoModStatusRequest, CheckAutoModStatusBody};
+pub use check_automod_status::{
+    CheckAutoModStatus, CheckAutoModStatusBody, CheckAutoModStatusRequest,
+};
 #[doc(inline)]
 pub use get_banned_events::{GetBannedEvents, GetBannedEventsRequest};
 #[doc(inline)]

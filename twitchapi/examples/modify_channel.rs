@@ -38,7 +38,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     let data = twitch_api2::helix::channels::ModifyChannelInformationBody::builder()
         .title("Hello World!")
         .build();
-    
+
     println!("scopes: {:?}", token.scopes());
     let response = client.req_patch(req, data, &token).await?;
     println!("{:?}", response);

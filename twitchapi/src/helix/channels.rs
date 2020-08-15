@@ -22,7 +22,9 @@
 #[doc(inline)]
 pub use get_channel_information::{GetChannelInformation, GetChannelInformationRequest};
 #[doc(inline)]
-pub use modify_channel_information::{ModifyChannelInformation, ModifyChannelInformationRequest, ModifyChannelInformationBody};
+pub use modify_channel_information::{
+    ModifyChannelInformation, ModifyChannelInformationBody, ModifyChannelInformationRequest,
+};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
@@ -74,7 +76,6 @@ pub mod get_channel_information {
     impl helix::RequestGet for GetChannelInformationRequest {}
 }
 
-
 /// Gets channel information for users.
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
 pub mod modify_channel_information {
@@ -123,13 +124,17 @@ pub mod modify_channel_information {
 
     impl std::convert::TryFrom<http::StatusCode> for ModifyChannelInformation {
         type Error = std::borrow::Cow<'static, str>;
-    
+
         fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
             match s {
                 http::StatusCode::NO_CONTENT => Ok(ModifyChannelInformation::Success),
-                http::StatusCode::BAD_REQUEST => Ok(ModifyChannelInformation::MissingQueryParameter),
-                http::StatusCode::INTERNAL_SERVER_ERROR => Ok(ModifyChannelInformation::InternalServerError),
-                other => Err(format!("got status code: {:?}", other).into())
+                http::StatusCode::BAD_REQUEST => {
+                    Ok(ModifyChannelInformation::MissingQueryParameter)
+                }
+                http::StatusCode::INTERNAL_SERVER_ERROR => {
+                    Ok(ModifyChannelInformation::InternalServerError)
+                }
+                other => Err(format!("got status code: {:?}", other).into()),
             }
         }
     }

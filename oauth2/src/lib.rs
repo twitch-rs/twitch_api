@@ -464,8 +464,8 @@ pub enum ValidationError {
 ///
 /// Should be checked on regularly, according to <https://dev.twitch.tv/docs/authentication#validating-requests>
 pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, ValidationError> {
-    use oauth2::http::{header::AUTHORIZATION, HeaderMap, Method};
     use http::StatusCode;
+    use oauth2::http::{header::AUTHORIZATION, HeaderMap, Method};
 
     let auth_header = format!("OAuth {}", token.secret());
     let mut headers = HeaderMap::new();
@@ -496,7 +496,9 @@ pub async fn validate_token(token: &AccessToken) -> Result<ValidatedToken, Valid
                 message: String::from_utf8_lossy(&resp.body).into_owned(),
             }))
         }
-        Err(_) => unreachable!("converting from different http versions for the statuscode failed...")
+        Err(_) => {
+            unreachable!("converting from different http versions for the statuscode failed...")
+        }
     }
 }
 
