@@ -107,7 +107,11 @@ impl<'input, 'output> ser::Serializer for Serializer<'input, 'output> {
         })
     }
 
-    fn serialize_map(self, _len: Option<usize>) -> Result<Self::SerializeMap, Self::Error> { Ok(MapSerializer{ urlencoder: self.urlencoder}) }
+    fn serialize_map(self, _len: Option<usize>) -> Result<Self::SerializeMap, Self::Error> {
+        Ok(MapSerializer {
+            urlencoder: self.urlencoder,
+        })
+    }
 
     fn serialize_tuple_variant(
         self,
@@ -368,35 +372,63 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
 
     fn serialize_tuple(self, _len: usize) -> Result<Self::SerializeTuple, Self::Error> { Ok(self) }
 
-    fn serialize_bool(self, _v: bool) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_bool(self, _v: bool) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_i8(self, _v: i8) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_i8(self, _v: i8) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_i16(self, _v: i16) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_i16(self, _v: i16) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_i32(self, _v: i32) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_i32(self, _v: i32) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_i64(self, _v: i64) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_i64(self, _v: i64) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_u8(self, _v: u8) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_u8(self, _v: u8) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_u16(self, _v: u16) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_u16(self, _v: u16) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_u32(self, _v: u32) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_u32(self, _v: u32) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_u64(self, _v: u64) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_u64(self, _v: u64) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_f32(self, _v: f32) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_f32(self, _v: f32) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_f64(self, _v: f64) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_f64(self, _v: f64) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_char(self, _v: char) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_char(self, _v: char) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
-    fn serialize_bytes(self, _v: &[u8]) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_bytes(self, _v: &[u8]) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
     fn serialize_unit(self) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
 
-    fn serialize_unit_struct(self, _name: &'static str) -> Result<Self::Ok, Self::Error> { Err(Error::field_not_supported()) }
+    fn serialize_unit_struct(self, _name: &'static str) -> Result<Self::Ok, Self::Error> {
+        Err(Error::field_not_supported())
+    }
 
     fn serialize_unit_variant(
         self,
@@ -482,7 +514,8 @@ impl<'input, 'output> ser::SerializeSeq for FieldSerializer<'input, 'output> {
         value.serialize(PairSerializer {
             key: self.key,
             urlencoder: self.urlencoder,
-        })
+        })?;
+        Ok(())
     }
 
     fn end(self) -> Result<Self::Ok, Self::Error> { Ok(self.urlencoder) }
@@ -497,7 +530,8 @@ impl<'input, 'output> ser::SerializeTuple for FieldSerializer<'input, 'output> {
         value.serialize(PairSerializer {
             key: self.key,
             urlencoder: self.urlencoder,
-        })
+        })?;
+        Ok(())
     }
 
     fn end(self) -> Result<Self::Ok, Self::Error> { Ok(self.urlencoder) }
@@ -510,101 +544,109 @@ struct PairSerializer<'input, 'output> {
 
 impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
     type Error = Error;
-    type Ok = ();
+    type Ok = &'output mut UrlEncodedSerializer<'input, String>;
     type SerializeMap = Impossible<Self::Ok, Error>;
     type SerializeSeq = Impossible<Self::Ok, Error>;
     type SerializeStruct = Impossible<Self::Ok, Error>;
     type SerializeStructVariant = Impossible<Self::Ok, Error>;
-    type SerializeTuple = Impossible<Self::Ok, Error>;
+    type SerializeTuple = Self;
     type SerializeTupleStruct = Impossible<Self::Ok, Error>;
     type SerializeTupleVariant = Impossible<Self::Ok, Error>;
 
     fn serialize_str(self, v: &str) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_i8(self, v: i8) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_i16(self, v: i16) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_i32(self, v: i32) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_i64(self, v: i64) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_u8(self, v: u8) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_u16(self, v: u16) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_u32(self, v: u32) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_u64(self, v: u64) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_f32(self, v: f32) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_f64(self, v: f64) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
     fn serialize_bool(self, v: bool) -> Result<Self::Ok, Self::Error> {
         self.urlencoder
             .append_pair(self.key, &v.serialize(ValueSerializer)?);
-        Ok(())
+        Ok(self.urlencoder)
     }
 
-    fn serialize_char(self, _v: char) -> Result<Self::Ok, Self::Error> { Err(Error::pair_not_supported()) }
+    fn serialize_none(self) -> Result<Self::Ok, Self::Error> { Ok(self.urlencoder) }
 
-    fn serialize_bytes(self, _v: &[u8]) -> Result<Self::Ok, Self::Error> { Err(Error::pair_not_supported()) }
-
-    fn serialize_none(self) -> Result<Self::Ok, Self::Error> { Err(Error::pair_not_supported()) }
-
-    fn serialize_some<T: ?Sized>(self, _value: &T) -> Result<Self::Ok, Self::Error>
+    fn serialize_some<T: ?Sized>(self, value: &T) -> Result<Self::Ok, Self::Error>
     where T: serde::Serialize {
+        self.urlencoder
+            .append_pair(self.key, &value.serialize(ValueSerializer)?);
+        Ok(self.urlencoder)
+    }
+
+    fn serialize_char(self, _v: char) -> Result<Self::Ok, Self::Error> {
+        Err(Error::pair_not_supported())
+    }
+
+    fn serialize_bytes(self, _v: &[u8]) -> Result<Self::Ok, Self::Error> {
         Err(Error::pair_not_supported())
     }
 
     fn serialize_unit(self) -> Result<Self::Ok, Self::Error> { Err(Error::pair_not_supported()) }
 
-    fn serialize_unit_struct(self, _name: &'static str) -> Result<Self::Ok, Self::Error> { Err(Error::pair_not_supported()) }
+    fn serialize_unit_struct(self, _name: &'static str) -> Result<Self::Ok, Self::Error> {
+        Err(Error::pair_not_supported())
+    }
 
     fn serialize_unit_variant(
         self,
@@ -644,7 +686,7 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         Err(Error::pair_not_supported())
     }
 
-    fn serialize_tuple(self, _len: usize) -> Result<Self::SerializeTuple, Self::Error> { Err(Error::pair_not_supported()) }
+    fn serialize_tuple(self, _len: usize) -> Result<Self::SerializeTuple, Self::Error> { Ok(self) }
 
     fn serialize_tuple_struct(
         self,
@@ -689,6 +731,20 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
     {
         Err(Error::pair_not_supported())
     }
+}
+
+impl<'input, 'output> ser::SerializeTuple for PairSerializer<'input, 'output> {
+    type Error = Error;
+    type Ok = &'output mut UrlEncodedSerializer<'input, String>;
+
+    fn serialize_element<T: ?Sized>(&mut self, value: &T) -> Result<(), Self::Error>
+    where T: serde::Serialize {
+        self.urlencoder
+            .append_pair(self.key, &value.serialize(ValueSerializer)?);
+        Ok(())
+    }
+
+    fn end(self) -> Result<Self::Ok, Self::Error> { Ok(self.urlencoder) }
 }
 
 struct ValueSerializer;
@@ -808,7 +864,9 @@ impl ser::Serializer for ValueSerializer {
         Err(Error::value_not_supported())
     }
 
-    fn serialize_tuple(self, _len: usize) -> Result<Self::SerializeTuple, Self::Error> { Err(Error::value_not_supported()) }
+    fn serialize_tuple(self, _len: usize) -> Result<Self::SerializeTuple, Self::Error> {
+        Err(Error::value_not_supported())
+    }
 
     fn serialize_tuple_struct(
         self,
@@ -862,7 +920,8 @@ fn serialize_query() {
         filter: String,
         maybe: Option<String>,
         possibly: Option<(String,)>,
-        ids: Vec<String>,
+        ids: Vec<Option<String>>,
+        ids2: Vec<u64>,
         stuff: (u8, f32, &'static str),
         extras: std::collections::BTreeMap<i32, &'static str>,
     }
@@ -871,12 +930,13 @@ fn serialize_query() {
         filter: "1".to_string(),
         maybe: None,
         possibly: Some(("sure thing".to_string(),)),
-        ids: vec!["2".to_string(), "3".to_string(), "4".to_string()],
+        ids: vec![Some("2".to_string()), Some("3".to_string())],
+        ids2: vec![4],
         stuff: (32, -35f32, "ha"),
         extras: [(1i32, "one"), (2, "two")].into_iter().copied().collect(),
     };
     assert_eq!(
         to_string(req).unwrap(),
-        "filter=1&possibly=sure+thing&ids=2&ids=3&ids=4&stuff=32&stuff=-35&stuff=ha&1=one&2=two"
+        "filter=1&possibly=sure+thing&ids=2&ids=3&ids2=4&stuff=32&stuff=-35&stuff=ha&1=one&2=two"
     )
 }
