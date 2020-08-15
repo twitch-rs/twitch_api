@@ -3,15 +3,14 @@
 //! # Examples
 //!
 //! ```rust,no_run
-//! # use twitch_api2::helix::{HelixClient, clips::GetBroadcasterSubscriptionsRequest};
+//! # use twitch_api2::helix::{HelixClient, subscriptions::GetBroadcasterSubscriptionsRequest};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(token, None).await?;
 //! let client = HelixClient::new();
 //! let req = GetBroadcasterSubscriptionsRequest::builder()
-//!     .game_id("1234".to_string())
-//!     .first(100) // max 100, 20 if left unspecified
+//!     .broadcaster_id("1234")
 //!     .build();
 //!
 //!
@@ -20,7 +19,9 @@
 //! # }
 //! ```
 #[doc(inline)]
-pub use get_broadcaster_subscriptions::{GetBroadcasterSubscriptions, GetBroadcasterSubscriptionsRequest};
+pub use get_broadcaster_subscriptions::{
+    GetBroadcasterSubscriptions, GetBroadcasterSubscriptionsRequest,
+};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
@@ -37,6 +38,7 @@ pub mod get_broadcaster_subscriptions {
     #[non_exhaustive]
     pub struct GetBroadcasterSubscriptionsRequest {
         /// User ID of the broadcaster. Must match the User ID in the Bearer token.
+        #[builder(setter(into))]
         pub broadcaster_id: String,
         /// Unique identifier of account to get subscription status of. Accepts up to 100 values.
         #[builder(default)]
@@ -54,7 +56,7 @@ pub mod get_broadcaster_subscriptions {
     #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct GetBroadcasterSubscriptions {
-        /// User ID of the broadcaster. 
+        /// User ID of the broadcaster.
         broadcaster_id: String,
         /// Display name of the broadcaster.
         broadcaster_name: String,
@@ -66,7 +68,7 @@ pub mod get_broadcaster_subscriptions {
         plan_name: String,
         /// ID of the subscribed user.
         user_id: String,
-        /// Display name of the subscribed user. 
+        /// Display name of the subscribed user.
         user_name: String,
     }
 
@@ -74,7 +76,8 @@ pub mod get_broadcaster_subscriptions {
         type Response = GetBroadcasterSubscriptions;
 
         const PATH: &'static str = "subscriptions";
-        const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadSubscriptions];
+        const SCOPE: &'static [twitch_oauth2::Scope] =
+            &[twitch_oauth2::Scope::ChannelReadSubscriptions];
     }
 
     impl helix::RequestGet for GetBroadcasterSubscriptionsRequest {}

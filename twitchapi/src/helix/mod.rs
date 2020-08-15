@@ -7,8 +7,13 @@ pub mod channel;
 pub mod clips;
 pub mod moderation;
 pub mod streams;
+pub mod subscriptions;
 pub mod users;
 
+pub(crate) mod ser;
+pub use ser::Error;
+
+#[doc(no_inline)]
 pub use twitch_oauth2::Scope;
 
 /// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
@@ -128,9 +133,7 @@ pub trait Request: serde::Serialize {
     /// Response type. twitch's response will  deserialize to this.
     type Response;
     /// Defines layout of the url parameters. By default uses [serde_urlencoded]
-    fn query(&self) -> Result<String, serde_urlencoded::ser::Error> {
-        serde_urlencoded::to_string(&self)
-    }
+    fn query(&self) -> Result<String, ser::Error> { ser::to_string(&self) }
 }
 
 /// Helix endpoint PUTs information
@@ -202,7 +205,7 @@ pub enum RequestError {
     /// deserialization failed
     DeserializeError(#[from] serde_json::Error),
     /// Could not serialize request to query
-    QuerySerializeError(#[from] serde_urlencoded::ser::Error),
+    QuerySerializeError(#[from] ser::Error),
     /// request failed from reqwests side
     RequestError(#[from] reqwest::Error),
     /// no pagination found

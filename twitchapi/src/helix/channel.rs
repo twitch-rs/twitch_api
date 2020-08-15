@@ -1,7 +1,7 @@
 //! Endpoints regarding channels'
 //!
 //! # Examples
-//! 
+//!
 //! ```rust,no_run
 //! # use twitch_api2::helix::{HelixClient, channel::GetChannelRequest};
 //! # #[tokio::main]
@@ -12,7 +12,7 @@
 //! let req = GetChannelRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
-//! 
+//!
 //! // Get Channel Request only returns one entry.
 //! println!("{:?}", &client.req_get(req, &token).await?.data.get(0));
 //! # Ok(())

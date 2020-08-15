@@ -1,5 +1,5 @@
 //! Endpoints regarding users
-//! 
+//!
 //! # Examples
 //!
 //! ```rust,no_run
@@ -79,16 +79,6 @@ pub mod get_users {
         const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
         const PATH: &'static str = "users";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
-
-        fn query(&self) -> Result<String, serde_urlencoded::ser::Error> {
-            let mut s = String::new();
-            s.push_str(&helix::repeat_query("id", self.id.as_slice()));
-            if !s.is_empty() && !self.login.is_empty() {
-                s.push_str("&")
-            }
-            s.push_str(&helix::repeat_query("login", self.login.as_slice()));
-            Ok(s)
-        }
     }
 
     impl helix::RequestGet for GetUsersRequest {}

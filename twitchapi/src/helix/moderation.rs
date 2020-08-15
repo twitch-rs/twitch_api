@@ -28,6 +28,7 @@ pub mod get_moderators {
     #[non_exhaustive]
     pub struct GetModeratorsRequest {
         /// Must match the User ID in the Bearer token.
+        #[builder(setter(into))]
         pub broadcaster_id: String,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
@@ -78,6 +79,7 @@ pub mod get_moderator_events {
     #[non_exhaustive]
     pub struct GetModeratorEventsRequest {
         /// Must match the User ID in the Bearer token.
+        #[builder(setter(into))]
         pub broadcaster_id: String,
         // FIXME: Twitch docs sucks...
         /// Filters the results and only returns a status object for users who are moderators in this channel and have a matching user_id.
@@ -116,21 +118,6 @@ pub mod get_moderator_events {
 
         const PATH: &'static str = "moderation/moderators/events";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
-
-        fn query(&self) -> Result<String, serde_urlencoded::ser::Error> {
-            let mut qs = Vec::new();
-            qs.push(("broadcaster_id", self.broadcaster_id.clone()));
-            //: Option<helix::Cursor>,
-            if let Some(ref after) = self.after {
-                qs.push(("after", after.clone()))
-            }
-            let mut s = serde_urlencoded::to_string(qs)?;
-            if !s.is_empty() && !self.user_id.is_empty() {
-                s.push_str("&")
-            }
-            s.push_str(&helix::repeat_query("user_id", self.user_id.as_slice()));
-            Ok(s)
-        }
     }
 
     impl helix::RequestGet for GetModeratorEventsRequest {}
@@ -152,6 +139,7 @@ pub mod get_banned_users {
     #[non_exhaustive]
     pub struct GetBannedUsersRequest {
         /// Must match the User ID in the Bearer token.
+        #[builder(setter(into))]
         pub broadcaster_id: String,
         /// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.
         /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
@@ -184,21 +172,6 @@ pub mod get_banned_users {
 
         const PATH: &'static str = "moderation/banned";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
-
-        fn query(&self) -> Result<String, serde_urlencoded::ser::Error> {
-            let mut qs = Vec::new();
-            qs.push(("broadcaster_id", self.broadcaster_id.clone()));
-            //: Option<helix::Cursor>,
-            if let Some(ref after) = self.after {
-                qs.push(("after", after.clone()))
-            }
-            let mut s = serde_urlencoded::to_string(qs)?;
-            if !s.is_empty() && !self.user_id.is_empty() {
-                s.push_str("&")
-            }
-            s.push_str(&helix::repeat_query("user_id", self.user_id.as_slice()));
-            Ok(s)
-        }
     }
 
     impl helix::RequestGet for GetBannedUsersRequest {}
@@ -221,6 +194,7 @@ pub mod get_banned_events {
     #[non_exhaustive]
     pub struct GetBannedEventsRequest {
         /// Must match the User ID in the Bearer token.
+        #[builder(setter(into))]
         pub broadcaster_id: String,
         /// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.
         /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
@@ -261,24 +235,6 @@ pub mod get_banned_events {
 
         const PATH: &'static str = "moderation/banned/events";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
-
-        fn query(&self) -> Result<String, serde_urlencoded::ser::Error> {
-            let mut qs = Vec::new();
-            qs.push(("broadcaster_id", self.broadcaster_id.clone()));
-            //: Option<helix::Cursor>,
-            if let Some(ref after) = self.after {
-                qs.push(("after", after.clone()))
-            }
-            if let Some(ref first) = self.first {
-                qs.push(("first", first.to_string()))
-            }
-            let mut s = serde_urlencoded::to_string(qs)?;
-            if !s.is_empty() && !self.user_id.is_empty() {
-                s.push_str("&")
-            }
-            s.push_str(&helix::repeat_query("user_id", self.user_id.as_slice()));
-            Ok(s)
-        }
     }
 
     impl helix::RequestGet for GetBannedEventsRequest {}

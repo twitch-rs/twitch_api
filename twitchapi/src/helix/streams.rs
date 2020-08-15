@@ -1,5 +1,5 @@
 //! Endpoints regarding streams
-//! 
+//!
 //! # Examples
 //!
 //! ```rust,no_run
@@ -129,43 +129,6 @@ pub mod get_streams {
 
         const PATH: &'static str = "streams";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
-
-        fn query(&self) -> Result<String, serde_urlencoded::ser::Error> {
-            let mut qs = Vec::new();
-            //: Option<helix::Cursor>,
-            if let Some(ref after) = self.after {
-                qs.push(("after", after.clone()))
-            }
-            //: Option<String>,
-            if let Some(ref before) = self.before {
-                qs.push(("before", before.clone()))
-            }
-            //: Option<usize>,
-            if let Some(ref first) = self.first {
-                qs.push(("first", first.to_string()))
-            }
-            //: Option<String>,
-            if let Some(ref language) = self.language {
-                qs.push(("language", language.clone()))
-            }
-            let mut s = serde_urlencoded::to_string(qs)?;
-            if !s.is_empty() && !self.game_id.is_empty() {
-                s.push_str("&")
-            }
-            s.push_str(&helix::repeat_query("game_id", self.game_id.as_slice()));
-            if !s.is_empty() && !self.user_id.is_empty() {
-                s.push_str("&")
-            }
-            s.push_str(&helix::repeat_query("user_id", self.user_id.as_slice()));
-            if !s.is_empty() && !self.user_login.is_empty() {
-                s.push_str("&")
-            }
-            s.push_str(&helix::repeat_query(
-                "user_login",
-                self.user_login.as_slice(),
-            ));
-            Ok(s)
-        }
     }
 
     impl helix::RequestGet for GetStreamsRequest {}

@@ -1210,7 +1210,6 @@ dependencies = [
  "serde",
  "serde_derive",
  "serde_json",
- "serde_urlencoded",
  "thiserror",
  "tokio",
  "twitch_oauth2",
