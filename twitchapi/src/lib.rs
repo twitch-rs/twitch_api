@@ -14,7 +14,7 @@
 //! # Examples
 //!
 //! ```rust,no_run
-//! use twitch_api2::{Client, helix::channel::GetChannelRequest};
+//! use twitch_api2::{Client, helix::channels::GetChannelInformationRequest};
 //! use twitch_oauth2::{AppAccessToken, Scope, TokenError, TwitchToken};
 //!
 //! # #[tokio::main]
@@ -28,7 +28,7 @@
 //!         Err(e) => panic!(e),
 //!     };
 //! let client = Client::new();
-//! let req = GetChannelRequest::builder()
+//! let req = GetChannelInformationRequest::builder()
 //!     .broadcaster_id("27620241")
 //!     .build();
 //!

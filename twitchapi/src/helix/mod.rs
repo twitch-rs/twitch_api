@@ -57,11 +57,11 @@ impl HelixClient {
     /// ```rust,no_run
     /// # #[tokio::main]
     /// # async fn main() {
-    /// #   use twitch_api2::helix::{HelixClient, channel};
+    /// #   use twitch_api2::helix::{HelixClient, channels};
     /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
     /// #       twitch_oauth2::AccessToken::new("totallyvalidtoken".to_string()), None,
     /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, None));
-    ///     let req = channel::GetChannelInformationRequest::builder().broadcaster_id("123456").build();
+    ///     let req = channels::GetChannelInformationRequest::builder().broadcaster_id("123456").build();
     ///     let client = HelixClient::new();
     ///     let response = client.req_get(req, &token).await;
     /// # }
@@ -245,6 +245,7 @@ pub trait RequestPost: Request {
 
 /// Helix endpoint PATCHs information
 pub trait RequestPatch: Request {
+    /// Body parameters
     type Body: serde::Serialize;
 
     /// Create body text from [RequestPost::Body]

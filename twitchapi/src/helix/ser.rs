@@ -933,7 +933,7 @@ fn serialize_query() {
         ids: vec![Some("2".to_string()), Some("3".to_string())],
         ids2: vec![4],
         stuff: (32, -35f32, "ha"),
-        extras: [(1i32, "one"), (2, "two")].into_iter().copied().collect(),
+        extras: [(1i32, "one"), (2, "two")].iter().copied().collect(),
     };
     assert_eq!(
         to_string(req).unwrap(),

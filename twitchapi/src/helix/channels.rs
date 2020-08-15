@@ -3,13 +3,13 @@
 //! # Examples
 //!
 //! ```rust,no_run
-//! # use twitch_api2::helix::{HelixClient, channels::GetChannelRequest};
+//! # use twitch_api2::helix::{HelixClient, channels::GetChannelInformationRequest};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(token, None).await?;
 //! let client = HelixClient::new();
-//! let req = GetChannelRequest::builder()
+//! let req = GetChannelInformationRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
 //!
