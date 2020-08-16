@@ -27,7 +27,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
-            .map(|t| AccessToken::new(t))
+            .map(AccessToken::new)
             .expect("Please set env: TWITCH_TOKEN or pass token as first argument"),
         None,
     )

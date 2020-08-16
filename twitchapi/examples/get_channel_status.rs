@@ -1,8 +1,5 @@
-use twitch_api2::{
-    helix::{streams::GetStreamsRequest, users::GetUsersRequest},
-    HelixClient,
-};
-use twitch_oauth2::{AccessToken, TwitchToken, UserToken};
+use twitch_api2::{helix::streams::GetStreamsRequest, HelixClient};
+use twitch_oauth2::{AccessToken, UserToken};
 
 fn main() {
     use std::error::Error;
@@ -24,7 +21,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
-            .map(|t| AccessToken::new(t))
+            .map(AccessToken::new)
             .expect("Please set env: TWITCH_TOKEN or pass token as first argument"),
         None,
     )
