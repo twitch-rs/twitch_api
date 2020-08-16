@@ -9,7 +9,7 @@ description = "Library for talking with the new Twitch API aka. \"Helix\" and TM
 keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
 documentation = "https://docs.rs/twitch_api2/0.3.0"
 readme = "README.md"
-
+build = "build.rs"
 [dependencies]
 typed-builder = "0.6.0"
 thiserror = "1.0.20"
@@ -43,3 +43,7 @@ tmi = ["reqwest", "serde", "serde_json"]
 [dev-dependencies]
 tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
 dotenv = "0.15.0"
+
+[build-dependencies]
+version_check = "0.9.2"
+
