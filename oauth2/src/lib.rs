@@ -1,5 +1,5 @@
-#![deny(intra_doc_link_resolution_failure)]
-#![deny(missing_docs)]
+#![allow(unknown_lints)] // remove once broken_intra_doc_links is on stable
+#![deny(missing_docs, broken_intra_doc_links)]
 #![doc(html_root_url = "https://docs.rs/twitch_oauth2/0.4.0")]
 //! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_oauth2)&ensp;[![docs-rs]](https://docs.rs/twitch_oauth2/0.4.0/twitch_oauth2)
 //!

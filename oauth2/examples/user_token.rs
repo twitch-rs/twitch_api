@@ -6,12 +6,12 @@ async fn main() {
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
-            .map(|t| twitch_oauth2::AccessToken::new(t))
+            .map(twitch_oauth2::AccessToken::new)
             .expect("Please set env: TWITCH_TOKEN or pass token as first argument"),
         std::env::var("TWITCH_REFRESH_TOKEN")
             .ok()
             .or_else(|| args.next())
-            .map(|t| twitch_oauth2::RefreshToken::new(t.into())),
+            .map(twitch_oauth2::RefreshToken::new),
     )
     .await
     .unwrap();

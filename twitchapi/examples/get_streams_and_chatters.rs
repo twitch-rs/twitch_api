@@ -9,7 +9,7 @@ async fn main() {
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
-            .map(|t| AccessToken::new(t))
+            .map(AccessToken::new)
             .expect("Please set env: TWITCH_TOKEN or pass token as first argument"),
         None,
     )
@@ -19,7 +19,7 @@ async fn main() {
     let client = HelixClient::new();
     let client_tmi = TMIClient::with_client(client.clone_client());
 
-    let streams: Vec<String> = args.map(|a| a.to_string()).collect();
+    let streams: Vec<String> = args.collect();
     let req = GetStreamsRequest::builder().build();
 
     let response = client.req_get(req, &token).await.unwrap();
