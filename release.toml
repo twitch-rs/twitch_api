@@ -1,3 +1,5 @@
 no-dev-version = true
 pre-release-commit-message = "release {{crate_name}} {{version}}"
 tag-message = "release {{crate_name}} {{tag_name}}"
+disable-publish = true
+disable-tag = true

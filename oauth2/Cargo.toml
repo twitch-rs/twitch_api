@@ -1,13 +1,13 @@
 [package]
 name = "twitch_oauth2"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/Emilgardis/twitch_utils"
 license = "MIT OR Apache-2.0"
 description = "Oauth2 for Twitch endpoints"
 keywords = ["oauth", "twitch","async","asynchronous"]
-documentation = "https://docs.rs/twitch_oauth2/0.4.0"
+documentation = "https://docs.rs/twitch_oauth2/0.4.1"
 readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
