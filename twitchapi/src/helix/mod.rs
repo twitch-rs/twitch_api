@@ -67,14 +67,15 @@ impl HelixClient {
     /// # }
     /// # // fn main() {run()}
     /// ```
-    pub async fn req_get<R, D>(
+    pub async fn req_get<R, D, T>(
         &self,
         request: R,
-        token: &impl TwitchToken,
+        token: &T,
     ) -> Result<Response<R, D>, RequestError>
     where
         R: Request<Response = D> + Request + RequestGet,
         D: serde::de::DeserializeOwned,
+        T: TwitchToken + ?Sized,
     {
         let url = url::Url::parse(&format!(
             "{}{}?{}",
@@ -116,16 +117,17 @@ impl HelixClient {
     }
 
     /// Request on a valid [RequestPost] endpoint
-    pub async fn req_post<R, B, D>(
+    pub async fn req_post<R, B, D, T>(
         &self,
         request: R,
         body: B,
-        token: &impl TwitchToken,
+        token: &T,
     ) -> Result<Response<R, D>, RequestError>
     where
         R: Request<Response = D> + Request + RequestPost<Body = B>,
         B: serde::Serialize,
         D: serde::de::DeserializeOwned,
+        T: TwitchToken + ?Sized,
     {
         let url = url::Url::parse(&format!(
             "{}{}?{}",
@@ -172,16 +174,17 @@ impl HelixClient {
     }
 
     /// Request on a valid [RequestPatch] endpoint
-    pub async fn req_patch<R, B, D>(
+    pub async fn req_patch<R, B, D, T>(
         &self,
         request: R,
         body: B,
-        token: &impl TwitchToken,
+        token: &T,
     ) -> Result<D, RequestError>
     where
         R: Request<Response = D> + Request + RequestPatch<Body = B>,
         B: serde::Serialize,
         D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
+        T: TwitchToken + ?Sized,
     {
         let url = url::Url::parse(&format!(
             "{}{}?{}",
