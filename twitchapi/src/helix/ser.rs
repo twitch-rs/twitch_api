@@ -31,50 +31,58 @@ pub enum Error {
     /// serializer only supports structs and maps on top-level
     TopLevelNotSupported {
         /// Location this was triggered
+        #[cfg(nightly)]
         location: &'static std::panic::Location<'static>,
     },
-    /// field serializer only supports ...
+    /// field serializer only supports strings, sequences, options, maps and tuples
     FieldNotSupported {
         /// Location this was triggered
+        #[cfg(nightly)]
         location: &'static std::panic::Location<'static>,
     },
-    /// pair serializer only supports ...
+    /// pair serializer only supports strings, integers, floats, bools. options
     PairNotSupported {
         /// Location this was triggered
+        #[cfg(nightly)]
         location: &'static std::panic::Location<'static>,
     },
     /// value serializer only supports primitive types
     ValueNotSupported {
         /// Location this was triggered
+        #[cfg(nightly)]
         location: &'static std::panic::Location<'static>,
     },
 }
 
 impl Error {
-    #[track_caller]
+    #[cfg_attr(nightly, track_caller)]
     fn top_level_not_supported() -> Self {
         Error::TopLevelNotSupported {
+            #[cfg(nightly)]
             location: std::panic::Location::caller(),
         }
     }
 
-    #[track_caller]
+    #[cfg_attr(nightly, track_caller)]
     fn field_not_supported() -> Self {
         Error::FieldNotSupported {
+            #[cfg(nightly)]
             location: std::panic::Location::caller(),
         }
     }
 
-    #[track_caller]
+    #[cfg_attr(nightly, track_caller)]
     fn pair_not_supported() -> Self {
         Error::PairNotSupported {
+            #[cfg(nightly)]
             location: std::panic::Location::caller(),
         }
     }
 
-    #[track_caller]
+    #[cfg_attr(nightly, track_caller)]
     fn value_not_supported() -> Self {
-        Error::PairNotSupported {
+        Error::ValueNotSupported {
+            #[cfg(nightly)]
             location: std::panic::Location::caller(),
         }
     }
