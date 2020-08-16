@@ -1,7 +1,7 @@
 #![allow(unknown_lints)] // remove once broken_intra_doc_links is on stable
 #![deny(missing_docs, broken_intra_doc_links)]
-#![doc(html_root_url = "https://docs.rs/twitch_api2/0.4.0")]
-//! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs]](https://docs.rs/twitch_api2/0.4.0/twitch_api2)
+#![doc(html_root_url = "https://docs.rs/twitch_api2/0.4.1")]
+//! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs]](https://docs.rs/twitch_api2/0.4.1/twitch_api2)
 //!
 //! [github]: https://img.shields.io/badge/github-emilgardis/twitch__utils-8da0cb?style=for-the-badge&labelColor=555555&logo=github"
 //! [crates-io]: https://img.shields.io/crates/v/twitch_api2.svg?style=for-the-badge&color=fc8d62&logo=rust"
