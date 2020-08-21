@@ -13,9 +13,10 @@ readme = "README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [features]
 default = []
+reqwest = ["oauth2/reqwest-010"]
 
 [dependencies]
-oauth2 = { version = "3.0.0", features = ["futures-03", "reqwest-010"], default-features = false }
+oauth2 = { version = "4.0.0-alpha.1", features = [], default-features = false }
 thiserror = "1.0.20"
 displaydoc = "0.1.7"
 serde = "1.0.115"
@@ -28,3 +29,8 @@ http = "0.2.1"
 [dev-dependencies]
 tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
 dotenv = "0.15.0"
+
+[[example]]
+name = "user_token"
+path = "examples/user_token.rs"
+required-features = ["reqwest"]
