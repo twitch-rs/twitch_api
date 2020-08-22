@@ -19,10 +19,11 @@
 //!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
+//! # let surf_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests
 //! # let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
 //! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret".to_string());
 //! let token =
-//!     match AppAccessToken::get_app_access_token(client_id, client_secret, Scope::all()).await {
+//!     match AppAccessToken::get_app_access_token(surf_http_client, client_id, client_secret, Scope::all()).await {
 //!         Ok(t) => t,
 //!         Err(TokenError::RequestError(e)) => panic!("got error: {:?}", e),
 //!         Err(e) => panic!(e),

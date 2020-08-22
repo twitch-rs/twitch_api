@@ -24,6 +24,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     dotenv::dotenv().unwrap();
     let mut args = std::env::args().skip(1);
     let token = UserToken::from_existing(
+        twitch_oauth2::surf_http_client,
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())

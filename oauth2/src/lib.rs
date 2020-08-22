@@ -15,9 +15,10 @@
 //! # use twitch_oauth2::{TwitchToken, UserToken, AccessToken, ValidationError};
 //! # #[tokio::main]
 //! # async fn run() {
+//! # let reqwest_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests
 //!     let token = AccessToken::new("sometokenherewhichisvalidornot".to_string());
 //!
-//!     match UserToken::from_existing(token, None).await {
+//!     match UserToken::from_existing(reqwest_http_client, token, None).await {
 //!         Ok(t) => println!("user_token: {}", t.token().secret()),
 //!         Err(e) => panic!("got error: {}", e),
 //!     }
@@ -34,15 +35,77 @@ use oauth2::{
 #[doc(no_inline)]
 pub use oauth2::{AccessToken, ClientId, ClientSecret, RefreshToken};
 
-use displaydoc::Display;
 use serde::{Deserialize, Serialize};
-use thiserror::Error;
 
 use std::{future::Future, time::Duration};
 
 #[doc(no_inline)]
-#[cfg(feature="reqwest")]
-pub use oauth2::reqwest::async_http_client;
+#[cfg(feature = "reqwest_client")]
+pub use oauth2::reqwest::async_http_client as reqwest_http_client;
+
+#[doc(no_inline)]
+#[cfg(feature = "surf_client")]
+pub use surf_client::surf_http_client;
+
+#[doc(hidden)]
+pub async fn dummy_http_client(_: HttpRequest) -> Result<HttpResponse, DummyError> {
+    Err(DummyError)
+}
+
+#[doc(hidden)]
+#[derive(Debug, thiserror::Error)]
+#[error("this client does not do anything, only used for documentation test that only checks")]
+pub struct DummyError;
+
+#[doc(no_inline)]
+#[cfg(feature = "surf_client")]
+pub mod surf_client {
+    //! Client for `surf`
+    use oauth2::{HttpRequest, HttpResponse};
+
+    /// Possible errors from [surf_http_client]
+    #[derive(Debug, displaydoc::Display, thiserror::Error)]
+    pub enum SurfError {
+        /// surf failed to do the request: {0}
+        Surf(surf::Error),
+        /// could not construct header value
+        InvalidHeaderValue(#[from] oauth2::http::header::InvalidHeaderValue),
+        /// could not construct header name
+        InvalidHeaderName(#[from] oauth2::http::header::InvalidHeaderName),
+    }
+
+    /// Surf client for http
+    pub async fn surf_http_client(request: HttpRequest) -> Result<HttpResponse, SurfError> {
+        let client = surf::Client::new();
+        let method: http_types::Method = request.method.into();
+        let mut req = surf::Request::new(method, request.url);
+
+        for (name, value) in &request.headers {
+            let value = surf::http::headers::HeaderValue::from_bytes(value.as_bytes().to_vec())
+                .map_err(SurfError::Surf)?;
+            req.append_header(name.as_str(), value);
+        }
+
+        req.body_bytes(&request.body);
+
+        let mut response = client.send(req).await.map_err(SurfError::Surf)?;
+        let headers = response
+            .iter()
+            .map(|(k, v)| {
+                Ok((
+                    oauth2::http::header::HeaderName::from_bytes(k.as_str().as_bytes())?,
+                    oauth2::http::HeaderValue::from_str(v.as_str())?,
+                ))
+            })
+            .collect::<Result<_, SurfError>>()?;
+        Ok(HttpResponse {
+            body: response.body_bytes().await.map_err(SurfError::Surf)?,
+            status_code: response.status().into(),
+            headers,
+        })
+    }
+}
+
 /// Scopes for twitch.
 ///
 /// <https://dev.twitch.tv/docs/authentication/#scopes>
@@ -314,7 +377,7 @@ impl TwitchToken for AppAccessToken {
 }
 /// Errors for [AppAccessToken::get_app_access_token]
 #[allow(missing_docs)]
-#[derive(Error, Debug, Display)]
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum TokenError<RE: std::error::Error + 'static> {
     /// request for token failed. {0}
     RequestError(RequestTokenError<RE, TwitchTokenErrorResponse>),
@@ -480,15 +543,11 @@ impl TwitchToken for UserToken {
 
     fn login(&self) -> Option<&str> { self.login.as_deref() }
 
-    async fn refresh_token<RE, C, F>(
-        &mut self,
-        _: C,
-    ) -> Result<(), RefreshTokenError<RE>>
+    async fn refresh_token<RE, C, F>(&mut self, _: C) -> Result<(), RefreshTokenError<RE>>
     where
         RE: std::error::Error + 'static,
         C: FnOnce(HttpRequest) -> F,
-        F: Future<Output = Result<HttpResponse, RE>>,
-    {
+        F: Future<Output = Result<HttpResponse, RE>>, {
         Err(RefreshTokenError::NoRefreshToken)
     }
 
@@ -513,7 +572,7 @@ pub struct ValidatedToken {
 }
 
 /// Errors for [validate_token]
-#[derive(Error, Debug, Display)]
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum ValidationError<RE: std::error::Error> {
     /// deserializations failed
     DeserializeError(#[from] serde_json::Error),
@@ -599,7 +658,9 @@ where
         body: vec![],
     };
 
-    let resp = http_client(req).await.map_err(RevokeTokenError::RequestError)?;
+    let resp = http_client(req)
+        .await
+        .map_err(RevokeTokenError::RequestError)?;
     match resp.status_code {
         StatusCode::BAD_REQUEST => Err(RevokeTokenError::BadRequest(
             String::from_utf8(resp.body)
@@ -656,7 +717,7 @@ where
 
 /// Errors for [revoke_token]
 #[allow(missing_docs)]
-#[derive(Error, Debug, Display)]
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum RevokeTokenError<RE: std::error::Error + 'static> {
     /// 400 Bad Request: {0}
     BadRequest(String),
@@ -668,7 +729,7 @@ pub enum RevokeTokenError<RE: std::error::Error + 'static> {
 
 /// Errors for [TwitchToken::refresh_token]
 #[allow(missing_docs)]
-#[derive(Error, Debug, Display)]
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum RefreshTokenError<RE: std::error::Error + 'static> {
     /// 400 Bad Request: {0}
     BadRequest(String),
