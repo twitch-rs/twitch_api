@@ -29,7 +29,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     .await
     .unwrap();
 
-    let client = HelixClient::new();
+    let client: HelixClient<reqwest::Client> = HelixClient::new();
 
     let req = GetStreamsRequest::builder()
         .user_login(vec![args.next().unwrap()])

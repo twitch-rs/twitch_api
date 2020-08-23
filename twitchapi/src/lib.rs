@@ -1,5 +1,6 @@
 #![allow(unknown_lints)] // remove once broken_intra_doc_links is on stable
 #![deny(missing_docs, broken_intra_doc_links)]
+#![feature(in_band_lifetimes)]
 #![doc(html_root_url = "https://docs.rs/twitch_api2/0.4.1")]
 //! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs]](https://docs.rs/twitch_api2/0.4.1/twitch_api2)
 //!
@@ -49,6 +50,9 @@ pub use crate::tmi::TMIClient;
 #[doc(no_inline)]
 pub use twitch_oauth2;
 
+pub mod client;
+pub use client::Client;
+
 #[cfg(feature = "helix")]
 pub mod helix;
 #[cfg(feature = "tmi")]
@@ -62,21 +66,23 @@ static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
 /// Client for Twitch APIs.
 #[derive(Clone, Default)]
 #[non_exhaustive]
-pub struct Client {
+pub struct TwitchClient<'a, C>
+where C: Client<'a> {
     /// Helix endpoint. See [helix]
     #[cfg(feature = "helix")]
-    pub helix: HelixClient,
+    pub helix: HelixClient<'a, C>,
     /// TMI endpoint. See [tmi]
     #[cfg(feature = "tmi")]
-    pub tmi: TMIClient,
+    pub tmi: TMIClient<'a, C>,
 }
 
-impl Client {
+impl<'a, C: Client<'a>> TwitchClient<'a, C> {
     /// Create a new [Client]
     #[cfg(all(feature = "helix", feature = "tmi"))]
-    pub fn new() -> Client {
+    pub fn new() -> TwitchClient<'a, C>
+    where C: Clone + Default {
         let helix = HelixClient::new();
-        Client {
+        TwitchClient {
             tmi: TMIClient::with_client(helix.clone_client()),
             helix,
         }
