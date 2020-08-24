@@ -54,7 +54,7 @@ pub async fn dummy_http_client(_: HttpRequest) -> Result<HttpResponse, DummyErro
 
 #[doc(hidden)]
 #[derive(Debug, thiserror::Error)]
-#[error("this client does not do anything, only used for documentation test that only checks")]
+#[error("this client does not do anything, only used for documentation test that only checks code integrity")]
 pub struct DummyError;
 
 #[doc(no_inline)]
