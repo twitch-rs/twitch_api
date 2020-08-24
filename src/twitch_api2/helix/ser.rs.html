@@ -949,6 +949,10 @@
 <span id="948">948</span>
 <span id="949">949</span>
 <span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! application/x-www-form-urlencoded serializer. that follows twitch spec</span>
 <span class="doccomment">//!</span>
@@ -982,26 +986,30 @@
     <span class="ident">Custom</span>(<span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span>),
     <span class="doccomment">/// serializer only supports structs and maps on top-level</span>
     <span class="ident">TopLevelNotSupported</span> {
-        <span class="doccomment">/// Location this was triggered</span>
+        <span class="doccomment">/// Location where this was triggered</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">nightly</span>)]</span>
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">nightly</span>)))]</span>
         <span class="ident">location</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">std</span>::<span class="ident">panic</span>::<span class="ident">Location</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>,
     },
     <span class="doccomment">/// field serializer only supports strings, sequences, options, maps and tuples</span>
     <span class="ident">FieldNotSupported</span> {
-        <span class="doccomment">/// Location this was triggered</span>
+        <span class="doccomment">/// Location where this was triggered</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">nightly</span>)]</span>
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">nightly</span>)))]</span>
         <span class="ident">location</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">std</span>::<span class="ident">panic</span>::<span class="ident">Location</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>,
     },
     <span class="doccomment">/// pair serializer only supports strings, integers, floats, bools. options</span>
     <span class="ident">PairNotSupported</span> {
-        <span class="doccomment">/// Location this was triggered</span>
+        <span class="doccomment">/// Location where this was triggered</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">nightly</span>)]</span>
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">nightly</span>)))]</span>
         <span class="ident">location</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">std</span>::<span class="ident">panic</span>::<span class="ident">Location</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>,
     },
     <span class="doccomment">/// value serializer only supports primitive types</span>
     <span class="ident">ValueNotSupported</span> {
-        <span class="doccomment">/// Location this was triggered</span>
+        <span class="doccomment">/// Location where this was triggered</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">nightly</span>)]</span>
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">nightly</span>)))]</span>
         <span class="ident">location</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">std</span>::<span class="ident">panic</span>::<span class="ident">Location</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>,
     },
 }

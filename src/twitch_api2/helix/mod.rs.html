@@ -433,6 +433,20 @@
 <span id="432">432</span>
 <span id="433">433</span>
 <span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -455,11 +469,25 @@
 <span class="doccomment">/// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Provides [HelixClient::req_get] for requesting endpoints which uses [GET method][RequestGet].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Most [clients][crate::HttpClient] will be able to use the `&#39;static` lifetime</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust,no_run</span>
+<span class="doccomment">/// # use twitch_api2::{HelixClient}; pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}</span>
+<span class="doccomment">/// pub struct MyStruct {</span>
+<span class="doccomment">///     twitch: HelixClient&lt;&#39;static, reqwest::Client&gt;,</span>
+<span class="doccomment">///     token: twitch_oauth2::AppAccessToken,</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// // etc</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// See [HttpClient][crate::HttpClient] for implemented http clients, you can also define your own if needed.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>)))]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>
-<span class="kw">where</span> <span class="ident">C</span>: <span class="kw">crate</span>::<span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+<span class="kw">where</span> <span class="ident">C</span>: <span class="kw">crate</span>::<span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">client</span>: <span class="ident">C</span>,
     <span class="ident">_pd</span>: <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> ()<span class="op">&gt;</span>, <span class="comment">// TODO: Implement rate limiter...</span>
 }
@@ -479,7 +507,7 @@
     <span class="ident">message</span>: <span class="ident">String</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="kw">crate</span>::<span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="kw">crate</span>::<span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Create a new client with with an existing client</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_client</span>(<span class="ident">client</span>: <span class="ident">C</span>) <span class="op">-&gt;</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
         <span class="ident">HelixClient</span> {
@@ -488,14 +516,14 @@
         }
     }
 
-    <span class="doccomment">/// Create a new [HelixClient] with a default [Client][crate::Client]</span>
+    <span class="doccomment">/// Create a new [HelixClient] with a default [HttpClient][crate::HttpClient]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>
     <span class="kw">where</span> <span class="ident">C</span>: <span class="ident">Default</span> {
         <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">C</span>::<span class="ident">default</span>();
         <span class="ident">HelixClient</span>::<span class="ident">with_client</span>(<span class="ident">client</span>)
     }
 
-    <span class="doccomment">/// Retrieve a clone of the [Client][crate::Client] inside this [HelixClient]</span>
+    <span class="doccomment">/// Retrieve a clone of the [HttpClient][crate::HttpClient] inside this [HelixClient]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_client</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">C</span>
     <span class="kw">where</span> <span class="ident">C</span>: <span class="ident">Clone</span> {
         <span class="self">self</span>.<span class="ident">client</span>.<span class="ident">clone</span>()
@@ -522,7 +550,7 @@
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
         <span class="ident">request</span>: <span class="ident">R</span>,
         <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">RequestError</span><span class="op">&lt;&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="kw">crate</span>::<span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>::<span class="ident">Error</span><span class="op">&gt;&gt;</span>
+    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">RequestError</span><span class="op">&lt;&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="kw">crate</span>::<span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>::<span class="ident">Error</span><span class="op">&gt;&gt;</span>
     <span class="kw">where</span>
         <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestGet</span>,
         <span class="ident">D</span>: <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">DeserializeOwned</span>,
@@ -580,7 +608,7 @@
         <span class="ident">request</span>: <span class="ident">R</span>,
         <span class="ident">body</span>: <span class="ident">B</span>,
         <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">RequestError</span><span class="op">&lt;&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="kw">crate</span>::<span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>::<span class="ident">Error</span><span class="op">&gt;&gt;</span>
+    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">RequestError</span><span class="op">&lt;&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="kw">crate</span>::<span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>::<span class="ident">Error</span><span class="op">&gt;&gt;</span>
     <span class="kw">where</span>
         <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestPost</span><span class="op">&lt;</span><span class="ident">Body</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
         <span class="ident">B</span>: <span class="ident">serde</span>::<span class="ident">Serialize</span>,
@@ -645,7 +673,7 @@
         <span class="ident">request</span>: <span class="ident">R</span>,
         <span class="ident">body</span>: <span class="ident">B</span>,
         <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">D</span>, <span class="ident">RequestError</span><span class="op">&lt;&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="kw">crate</span>::<span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>::<span class="ident">Error</span><span class="op">&gt;&gt;</span>
+    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">D</span>, <span class="ident">RequestError</span><span class="op">&lt;&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="kw">crate</span>::<span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>::<span class="ident">Error</span><span class="op">&gt;&gt;</span>
     <span class="kw">where</span>
         <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestPatch</span><span class="op">&lt;</span><span class="ident">Body</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
         <span class="ident">B</span>: <span class="ident">serde</span>::<span class="ident">Serialize</span>,
@@ -694,7 +722,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>
-<span class="kw">where</span> <span class="ident">C</span>: <span class="kw">crate</span>::<span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Default</span>
+<span class="kw">where</span> <span class="ident">C</span>: <span class="kw">crate</span>::<span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Default</span>
 {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-&gt;</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> { <span class="ident">HelixClient</span>::<span class="ident">new</span>() }
 }
@@ -757,11 +785,11 @@
     <span class="ident">D</span>: <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">DeserializeOwned</span>,
 {
     <span class="doccomment">/// Get the next page in the responses.</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_next</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="kw">crate</span>::<span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_next</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="kw">crate</span>::<span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>,
         <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">TwitchToken</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;&gt;</span>, <span class="ident">RequestError</span><span class="op">&lt;&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="kw">crate</span>::<span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>::<span class="ident">Error</span><span class="op">&gt;&gt;</span>
+    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;&gt;</span>, <span class="ident">RequestError</span><span class="op">&lt;&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="kw">crate</span>::<span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>::<span class="ident">Error</span><span class="op">&gt;&gt;</span>
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">clone</span>();
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">cursor</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span> {
