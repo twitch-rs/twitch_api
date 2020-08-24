@@ -61,7 +61,7 @@ pub async fn validate_token<RE, C, F>(
     token: &AccessToken,
 ) -> Result<ValidatedToken, ValidationError<RE>>
 where
-    RE: std::error::Error + 'static,
+    RE: std::error::Error + Send + Sync + 'static,
     C: FnOnce(HttpRequest) -> F,
     F: Future<Output = Result<HttpResponse, RE>>,
 {
@@ -110,7 +110,7 @@ pub async fn revoke_token<RE, C, F>(
     client_id: &ClientId,
 ) -> Result<(), RevokeTokenError<RE>>
 where
-    RE: std::error::Error + 'static,
+    RE: std::error::Error + Send + Sync + 'static,
     C: FnOnce(HttpRequest) -> F,
     F: Future<Output = Result<HttpResponse, RE>>,
 {
@@ -157,7 +157,7 @@ pub async fn refresh_token<RE, C, F>(
     RefreshTokenError<RE>,
 >
 where
-    RE: std::error::Error + 'static,
+    RE: std::error::Error + Send + Sync + 'static,
     C: FnOnce(HttpRequest) -> F,
     F: Future<Output = Result<HttpResponse, RE>>,
 {

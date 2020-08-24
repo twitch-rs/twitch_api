@@ -19,7 +19,7 @@
 //! use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::TokenError};
 //!
 //! # #[tokio::main]
-//! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
+//! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let surf_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests
 //! # let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
 //! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret".to_string());
@@ -106,6 +106,7 @@ impl<C: HttpClient<'static>> TwitchClient<'static, C> {
         }
     }
 }
+
 impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
     /// Create a new [TwitchClient] with an existing [HttpClient]
     #[cfg(all(feature = "helix", feature = "tmi"))]

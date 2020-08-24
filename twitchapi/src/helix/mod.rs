@@ -372,7 +372,7 @@ pub type Cursor = String;
 
 /// Errors for [HelixClient::req_get] and similar functions.
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-pub enum RequestError<RE: std::error::Error + 'static> {
+pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// http crate returned an error
     HttpError(#[from] http::Error),
     /// could not parse body as utf8: {1}

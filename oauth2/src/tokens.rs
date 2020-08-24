@@ -31,7 +31,7 @@ pub trait TwitchToken {
         http_client: C,
     ) -> Result<(), RefreshTokenError<RE>>
     where
-        RE: std::error::Error + 'static,
+        RE: std::error::Error + Send + Sync + 'static,
         C: FnOnce(HttpRequest) -> F,
         F: Future<Output = Result<HttpResponse, RE>>;
     /// Get instant when token will expire.
@@ -44,7 +44,7 @@ pub trait TwitchToken {
         http_client: C,
     ) -> Result<ValidatedToken, ValidationError<RE>>
     where
-        RE: std::error::Error + 'static,
+        RE: std::error::Error + Send + Sync + 'static,
         C: FnOnce(HttpRequest) -> F,
         F: Future<Output = Result<HttpResponse, RE>>,
     {
@@ -54,7 +54,7 @@ pub trait TwitchToken {
     async fn revoke_token<RE, C, F>(self, http_client: C) -> Result<(), RevokeTokenError<RE>>
     where
         Self: Sized,
-        RE: std::error::Error + 'static,
+        RE: std::error::Error + Send + Sync + 'static,
         C: FnOnce(HttpRequest) -> F,
         F: Future<Output = Result<HttpResponse, RE>>, {
         crate::revoke_token(http_client, self.token(), self.client_id()).await
@@ -74,7 +74,7 @@ impl<T: TwitchToken> TwitchToken for Box<T> {
         http_client: C,
     ) -> Result<(), RefreshTokenError<RE>>
     where
-        RE: std::error::Error + 'static,
+        RE: std::error::Error + Send + Sync + 'static,
         C: FnOnce(HttpRequest) -> F,
         F: Future<Output = Result<HttpResponse, RE>>,
     {

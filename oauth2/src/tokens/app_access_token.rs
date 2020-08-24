@@ -32,7 +32,7 @@ impl TwitchToken for AppAccessToken {
         http_client: C,
     ) -> Result<(), RefreshTokenError<RE>>
     where
-        RE: std::error::Error + 'static,
+        RE: std::error::Error + Send + Sync + 'static,
         C: FnOnce(HttpRequest) -> F,
         F: Future<Output = Result<HttpResponse, RE>>,
     {
@@ -81,7 +81,7 @@ impl AppAccessToken {
         client_secret: ClientSecret,
     ) -> Result<AppAccessToken, ValidationError<RE>>
     where
-        RE: std::error::Error + 'static,
+        RE: std::error::Error + Send + Sync + 'static,
         C: FnOnce(HttpRequest) -> F,
         F: Future<Output = Result<HttpResponse, RE>>,
     {
@@ -104,7 +104,7 @@ impl AppAccessToken {
         scopes: Vec<Scope>,
     ) -> Result<AppAccessToken, TokenError<RE>>
     where
-        RE: std::error::Error + 'static,
+        RE: std::error::Error + Send + Sync + 'static,
         C: Fn(HttpRequest) -> F,
         F: Future<Output = Result<HttpResponse, RE>>,
     {
