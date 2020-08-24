@@ -19,10 +19,10 @@ pub use twitch_oauth2::Scope;
 /// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
 ///
 /// Provides [HelixClient::req_get] for requesting endpoints which uses [GET method][RequestGet].
-/// 
-/// 
+///
+///
 /// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
-/// 
+///
 /// ```rust,no_run
 /// # use twitch_api2::{HelixClient}; pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
 /// pub struct MyStruct {
@@ -31,7 +31,7 @@ pub use twitch_oauth2::Scope;
 /// }
 /// // etc
 /// ```
-/// 
+///
 /// See [HttpClient][crate::HttpClient] for implemented http clients, you can also define your own if needed.
 #[cfg(feature = "helix")]
 #[cfg_attr(nightly, doc(cfg(feature = "helix")))]

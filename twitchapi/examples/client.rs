@@ -12,7 +12,6 @@ fn main() {
     }
 }
 
-
 #[tokio::main]
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     dotenv::dotenv().unwrap();

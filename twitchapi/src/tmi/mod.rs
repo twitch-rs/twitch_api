@@ -15,9 +15,9 @@ use serde::{Deserialize, Serialize};
 /// # Ok(())
 /// # }
 /// ```
-/// 
+///
 /// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
-/// 
+///
 /// ```rust,no_run
 /// # use twitch_api2::{TMIClient}; pub mod surf {pub type Client = twitch_api2::client::DummyHttpClient;}
 /// pub struct MyStruct {
@@ -26,7 +26,7 @@ use serde::{Deserialize, Serialize};
 /// }
 /// // etc
 /// ```
-/// 
+///
 /// See [HttpClient][crate::HttpClient] for implemented http clients, you can also define your own if needed.
 #[cfg(feature = "tmi")]
 #[cfg_attr(nightly, doc(cfg(feature = "tmi")))] // FIXME: This doc_cfg does nothing
