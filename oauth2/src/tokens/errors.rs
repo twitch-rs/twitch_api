@@ -3,7 +3,7 @@
 use crate::id::TwitchTokenErrorResponse;
 use oauth2::HttpResponse as OAuth2HttpResponse;
 use oauth2::RequestTokenError;
-/// Errors for [AppAccessToken::get_app_access_token]
+/// General errors for talking with twitch, currently only used in [AppAccessToken::get_app_access_token][crate::tokens::AppAccessToken::get_app_access_token]
 #[allow(missing_docs)]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum TokenError<RE: std::error::Error + 'static> {

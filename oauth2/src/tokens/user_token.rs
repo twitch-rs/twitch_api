@@ -1,10 +1,10 @@
-use oauth2::{
-    HttpRequest, HttpResponse,
-    
+use crate::tokens::{
+    errors::{RefreshTokenError, ValidationError},
+    Scope, TwitchToken,
 };
 use oauth2::{AccessToken, ClientId, RefreshToken};
+use oauth2::{HttpRequest, HttpResponse};
 use std::future::Future;
-use crate::tokens::{errors::{RefreshTokenError, ValidationError}, Scope, TwitchToken};
 
 /// An User Token from the [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-implicit-code-flow) or [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-authorization-code-flow)
 #[derive(Debug, Clone)]

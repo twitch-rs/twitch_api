@@ -2,13 +2,13 @@
 //!
 //! This is enables you to use your own http implementation.
 //! For example, say you have a http client that has a "client" named `foo::Client`.
-//! 
+//!
 //! Our client has a function `call` which looks something like this
 //! ```rust,no_run
 //! # struct Client;type ClientError = std::io::Error; impl Client {
 //! async fn call(&self, req: http::Request<Vec<u8>>) -> Result<http::Response<Vec<u8>>, ClientError> {
 //! # stringify!(
-//!     ... 
+//!     ...
 //! # ); todo!()
 //! }
 //! # }
@@ -26,11 +26,11 @@
 //!     }
 //! }
 //! ```
-//! 
+//!
 //! Of course, sometimes the clients use different types for their responses and requests. but simply translate them into [http] types and it will work.
-//! 
+//!
 //! See the source of this module for the implementation of [Client] for [surf](https://crates.io/crates/surf) and [reqwest](https://crates.io/crates/reqwest) if you need inspiration.
-//! 
+//!
 
 use std::error::Error;
 use std::future::Future;
@@ -53,12 +53,12 @@ pub trait Client<'a>: Send + 'a {
 impl<'a, F, R, E> Client<'a> for F
 where
     F: Fn(Req) -> R + Send + Sync + 'a,
-    R: Future<Output = Result<Response,E>> + Send + Sync + 'a,
+    R: Future<Output = Result<Response, E>> + Send + Sync + 'a,
     E: Error + Send + Sync + 'static,
 {
     type Error = E;
 
-    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response,Self::Error>> {
+    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
         Box::pin((self)(request))
     }
 }

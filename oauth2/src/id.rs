@@ -3,9 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use oauth2::helpers;
-use oauth2::{
-    basic::BasicTokenType, Client, ExtraTokenFields, TokenType,
-};
+use oauth2::{basic::BasicTokenType, Client, ExtraTokenFields, TokenType};
 
 use crate::AccessToken;
 use std::time::Duration;
