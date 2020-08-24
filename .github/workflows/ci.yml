@@ -137,7 +137,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --docs --all-features
+          args: --doc --all-features
       - name: Check twitch_oauth2 docs
         uses: actions-rs/cargo@v1
         with:
