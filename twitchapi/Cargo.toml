@@ -61,7 +61,7 @@ required-features = ["twitch_oauth2/reqwest_client", "reqwest"]
 [[example]]
 name = "get_moderation"
 path = "examples/get_moderation.rs"
-required-features = ["twitch_oauth2/surf_client", "surf", "http-types/hyperium_http"]
+required-features = ["twitch_oauth2/surf_client", "surf", "http-types"]
 
 [[example]]
 name = "get_streams_and_chatters"
@@ -72,3 +72,6 @@ required-features = ["twitch_oauth2/surf_client"]
 name = "modify_channel"
 path = "examples/modify_channel.rs"
 required-features = ["twitch_oauth2/surf_client"]
+
+[package.metadata.docs.rs]
+features = ["tmi", "helix", "surf", "reqwest"]

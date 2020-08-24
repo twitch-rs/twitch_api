@@ -1,5 +1,6 @@
 #![allow(unknown_lints)] // remove once broken_intra_doc_links is on stable
 #![deny(missing_docs, broken_intra_doc_links)]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![doc(html_root_url = "https://docs.rs/twitch_api2/0.4.1")]
 //! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs]](https://docs.rs/twitch_api2/0.4.1/twitch_api2)
 //!
@@ -38,12 +39,18 @@
 //! # Ok(())
 //! # }
 //! ```
+//!
 
 #[cfg(feature = "helix")]
-#[doc(no_inline)]
+pub mod helix;
+#[cfg(feature = "tmi")]
+pub mod tmi;
+
+#[cfg(feature = "helix")]
+#[doc(inline)]
 pub use crate::helix::HelixClient;
 #[cfg(feature = "tmi")]
-#[doc(no_inline)]
+#[doc(inline)]
 pub use crate::tmi::TMIClient;
 
 #[cfg(feature = "helix")]
@@ -55,11 +62,6 @@ pub use client::Client;
 
 #[doc(hidden)]
 pub use client::DummyHttpClient;
-
-#[cfg(feature = "helix")]
-pub mod helix;
-#[cfg(feature = "tmi")]
-pub mod tmi;
 
 #[cfg(feature = "helix")]
 static TWITCH_HELIX_URL: &str = "https://api.twitch.tv/helix/";

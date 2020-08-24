@@ -15,6 +15,8 @@ use serde::{Deserialize, Serialize};
 /// # Ok(())
 /// # }
 /// ```
+#[cfg(feature = "tmi")]
+#[cfg_attr(nightly, doc(cfg(feature = "tmi")))] // FIXME: This doc_cfg does nothing
 #[derive(Default, Clone)]
 pub struct TMIClient<'a, C: crate::Client<'a>> {
     client: C,
@@ -28,12 +30,18 @@ impl<'a, C: crate::Client<'a>> TMIClient<'a, C> {
         TMIClient::with_client(C::default())
     }
 
-    /// Create a new client with an existing [reqwest::Client]
+    /// Create a new [TMIClient] with an existing [Client][crate::Client]
     pub fn with_client(client: C) -> TMIClient<'a, C> {
         TMIClient {
             client,
             _pd: std::marker::PhantomData::default(),
         }
+    }
+
+    /// Retrieve a clone of the [Client][crate::Client] inside this [TMIClient]
+    pub fn clone_client(&self) -> C
+    where C: Clone {
+        self.client.clone()
     }
 
     /// Get all the chatters in the chat

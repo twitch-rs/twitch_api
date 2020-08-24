@@ -31,7 +31,11 @@ pub trait Client<'a>: Send + 'a {
 //}
 
 #[cfg(feature = "reqwest")]
-impl<'a> Client<'a> for reqwest::Client {
+use reqwest::Client as ReqwestClient;
+
+#[cfg(feature = "reqwest")]
+#[cfg_attr(nightly, doc(cfg(feature = "reqwest")))] // FIXME: This doc_cfg does nothing
+impl<'a> Client<'a> for ReqwestClient {
     type Error = reqwest::Error;
 
     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
@@ -55,8 +59,9 @@ impl<'a> Client<'a> for reqwest::Client {
     }
 }
 
-/// Possible errors from [surf_http_client]
-#[cfg(feature = "surf")]
+/// Possible errors from [Client::req()] when using [surf::Client]
+#[cfg(all(feature = "surf", feature = "url", feature = "http-types"))]
+// #[cfg_attr(nightly, doc(cfg(all(feature = "surf", feature = "url", feature = "http-types"))))]
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
 pub enum SurfError {
     /// surf failed to do the request: {0}
@@ -68,9 +73,15 @@ pub enum SurfError {
     /// uri could not be translated into an url.
     UrlError(#[from] url::ParseError),
 }
+#[cfg(all(feature = "surf", feature = "http-types", feature = "url"))]
+use surf::Client as SurfClient;
 
-#[cfg(all(feature = "surf", feature = "http-types"))]
-impl<'a> Client<'a> for surf::Client {
+#[cfg(all(feature = "surf", feature = "http-types", feature = "url"))]
+#[cfg_attr(
+    nightly,
+    doc(cfg(all(feature = "surf", feature = "url", feature = "http-types")))
+)] // FIXME: This doc_cfg does nothing
+impl<'a> Client<'a> for SurfClient {
     type Error = SurfError;
 
     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {

@@ -1,5 +1,6 @@
 #![allow(unknown_lints)] // remove once broken_intra_doc_links is on stable
 #![deny(missing_docs, broken_intra_doc_links)]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![doc(html_root_url = "https://docs.rs/twitch_oauth2/0.4.1")]
 //! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_oauth2)&ensp;[![docs-rs]](https://docs.rs/twitch_oauth2/0.4.1/twitch_oauth2)
 //!
@@ -39,14 +40,6 @@ use serde::{Deserialize, Serialize};
 
 use std::{future::Future, time::Duration};
 
-#[doc(no_inline)]
-#[cfg(feature = "reqwest_client")]
-pub use oauth2::reqwest::async_http_client as reqwest_http_client;
-
-#[doc(no_inline)]
-#[cfg(feature = "surf_client")]
-pub use surf_client::surf_http_client;
-
 #[doc(hidden)]
 pub async fn dummy_http_client(_: HttpRequest) -> Result<HttpResponse, DummyError> {
     Err(DummyError)
@@ -57,52 +50,68 @@ pub async fn dummy_http_client(_: HttpRequest) -> Result<HttpResponse, DummyErro
 #[error("this client does not do anything, only used for documentation test that only checks code integrity")]
 pub struct DummyError;
 
-#[doc(no_inline)]
-#[cfg(feature = "surf_client")]
-pub mod surf_client {
-    //! Client for `surf`
-    use oauth2::{HttpRequest, HttpResponse};
+/// Provides different http clients
+pub mod client {
 
-    /// Possible errors from [surf_http_client]
-    #[derive(Debug, displaydoc::Display, thiserror::Error)]
-    pub enum SurfError {
-        /// surf failed to do the request: {0}
-        Surf(surf::Error),
-        /// could not construct header value
-        InvalidHeaderValue(#[from] oauth2::http::header::InvalidHeaderValue),
-        /// could not construct header name
-        InvalidHeaderName(#[from] oauth2::http::header::InvalidHeaderName),
-    }
+    #[doc(inline)]
+    #[cfg(feature = "reqwest_client")]
+    #[cfg_attr(nightly, doc(cfg(feature = "reqwest_client")))]
+    pub use oauth2::reqwest::async_http_client as reqwest_http_client;
 
-    /// Surf client for http
-    pub async fn surf_http_client(request: HttpRequest) -> Result<HttpResponse, SurfError> {
-        let client = surf::Client::new();
-        let method: http_types::Method = request.method.into();
-        let mut req = surf::Request::new(method, request.url);
+    #[doc(inline)]
+    #[cfg(feature = "surf_client")]
+    pub use surf_client::http_client as surf_http_client;
 
-        for (name, value) in &request.headers {
-            let value = surf::http::headers::HeaderValue::from_bytes(value.as_bytes().to_vec())
-                .map_err(SurfError::Surf)?;
-            req.append_header(name.as_str(), value);
+    #[doc(inline)]
+    #[cfg(feature = "surf_client")]
+    pub use surf_client::Error as SurfError;
+
+    #[cfg(feature = "surf_client")]
+    mod surf_client {
+        use oauth2::{HttpRequest, HttpResponse};
+
+        /// Possible errors for [surf_http_client][http_client]
+        #[derive(Debug, displaydoc::Display, thiserror::Error)]
+        pub enum Error {
+            /// surf failed to do the request: {0}
+            Surf(surf::Error),
+            /// could not construct header value
+            InvalidHeaderValue(#[from] oauth2::http::header::InvalidHeaderValue),
+            /// could not construct header name
+            InvalidHeaderName(#[from] oauth2::http::header::InvalidHeaderName),
         }
 
-        req.body_bytes(&request.body);
+        ///  Asynchronous HTTP client using [Surf][surf::Client]
+        #[cfg_attr(nightly, doc(cfg(feature = "surf_client")))]
+        pub async fn http_client(request: HttpRequest) -> Result<HttpResponse, Error> {
+            let client = surf::Client::new();
+            let method: http_types::Method = request.method.into();
+            let mut req = surf::Request::new(method, request.url);
 
-        let mut response = client.send(req).await.map_err(SurfError::Surf)?;
-        let headers = response
-            .iter()
-            .map(|(k, v)| {
-                Ok((
-                    oauth2::http::header::HeaderName::from_bytes(k.as_str().as_bytes())?,
-                    oauth2::http::HeaderValue::from_str(v.as_str())?,
-                ))
+            for (name, value) in &request.headers {
+                let value = surf::http::headers::HeaderValue::from_bytes(value.as_bytes().to_vec())
+                    .map_err(Error::Surf)?;
+                req.append_header(name.as_str(), value);
+            }
+
+            req.body_bytes(&request.body);
+
+            let mut response = client.send(req).await.map_err(Error::Surf)?;
+            let headers = response
+                .iter()
+                .map(|(k, v)| {
+                    Ok((
+                        oauth2::http::header::HeaderName::from_bytes(k.as_str().as_bytes())?,
+                        oauth2::http::HeaderValue::from_str(v.as_str())?,
+                    ))
+                })
+                .collect::<Result<_, Error>>()?;
+            Ok(HttpResponse {
+                body: response.body_bytes().await.map_err(Error::Surf)?,
+                status_code: response.status().into(),
+                headers,
             })
-            .collect::<Result<_, SurfError>>()?;
-        Ok(HttpResponse {
-            body: response.body_bytes().await.map_err(SurfError::Surf)?,
-            status_code: response.status().into(),
-            headers,
-        })
+        }
     }
 }
 

@@ -7,7 +7,7 @@ async fn main() {
     dotenv::dotenv().unwrap();
     let mut args = std::env::args().skip(1);
     let token = UserToken::from_existing(
-        twitch_oauth2::surf_http_client,
+        twitch_oauth2::client::surf_http_client,
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
@@ -30,10 +30,7 @@ async fn main() {
     // Note: This will fetch chatters in the current most viewed stream, might spam your console a bit.
     println!("GetStreams:\n\t{:?}", response.data);
     if let Some(stream) = streams.get(0) {
-        println!(
-            "{:?}",
-            client_tmi.get_chatters(streams.get(0).unwrap()).await
-        );
+        println!("{:?}", client_tmi.get_chatters(stream).await);
     } else if let Some(stream) = response.data.get(0).map(|stream| &stream.user_name) {
         println!("{:?}", client_tmi.get_chatters(&stream).await);
     }

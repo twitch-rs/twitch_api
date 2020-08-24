@@ -19,6 +19,8 @@ pub use twitch_oauth2::Scope;
 /// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
 ///
 /// Provides [HelixClient::req_get] for requesting endpoints which uses [GET method][RequestGet].
+#[cfg(feature = "helix")]
+#[cfg_attr(nightly, doc(cfg(feature = "helix")))]
 #[derive(Clone)]
 pub struct HelixClient<'a, C>
 where C: crate::Client<'a> {
@@ -50,14 +52,14 @@ impl<'a, C: crate::Client<'a>> HelixClient<'a, C> {
         }
     }
 
-    /// Create a new client with a default [reqwest::Client]
+    /// Create a new [HelixClient] with a default [Client][crate::Client]
     pub fn new() -> HelixClient<'a, C>
     where C: Default {
         let client = C::default();
         HelixClient::with_client(client)
     }
 
-    /// Retrieve a clone of the [reqwest::Client] inside this [HelixClient]
+    /// Retrieve a clone of the [Client][crate::Client] inside this [HelixClient]
     pub fn clone_client(&self) -> C
     where C: Clone {
         self.client.clone()

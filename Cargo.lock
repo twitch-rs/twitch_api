@@ -2038,6 +2038,7 @@ dependencies = [
  "surf",
  "thiserror",
  "tokio",
+ "version_check",
 ]
 
 [[package]]

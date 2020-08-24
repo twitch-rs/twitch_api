@@ -9,7 +9,7 @@ description = "Oauth2 for Twitch endpoints"
 keywords = ["oauth", "twitch", "async", "asynchronous"]
 documentation = "https://docs.rs/twitch_oauth2/0.4.1"
 readme = "README.md"
-
+build = "build.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [features]
 default = []
@@ -31,7 +31,13 @@ http-types = { version = "2.4.0", optional = true }
 tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
 dotenv = "0.15.0"
 
+[build-dependencies]
+version_check = "0.9.2"
+
 [[example]]
 name = "user_token"
 path = "examples/user_token.rs"
 required-features = ["surf_client"]
+
+[package.metadata.docs.rs]
+features = ["reqwest_client", "surf_client"]
