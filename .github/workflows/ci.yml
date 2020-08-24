@@ -1,4 +1,7 @@
 name: CI
+env:
+  CI_TWITCH_OAUTH2_FEATURES: "surf_client reqwest_client"
+  CI_TWITCH_API2_FEATURES: "twitch_oauth2/surf_client twitch_oauth2/reqwest_client surf reqwest url http-types"
 on:
   pull_request:
     branches: [master]
@@ -7,13 +10,14 @@ on:
 jobs:
   ci:
     name: CI
-    needs: [test, fmt, clippy]
+    needs: [test, fmt, clippy, docs]
     runs-on: ubuntu-latest
     steps:
       - name: Done
         run: exit 0
   test:
     name: Tests
+
     strategy:
       fail-fast: false
       matrix:
@@ -79,28 +83,12 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --target ${{ matrix.target }} --manifest-path=oauth2/Cargo.toml --all-targets --all-features
+          args: --target ${{ matrix.target }} --manifest-path=oauth2/Cargo.toml --all-targets --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
       - name: Test twitch_api2
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --target ${{ matrix.target }} --manifest-path=twitchapi/Cargo.toml --all-targets --all-features
-      - name: Install cargo-cache
-        uses: actions-rs/install@v0.1
-        if: steps.cache.outputs.cache-hit != 'true'
-        with:
-          crate: cargo-cache
-          use-tool-cache: true
-      - name: Cleanup cache
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: cargo cache -a
-      # https://github.com/rust-lang/rust/issues/29497
-      - name: Cleanup windows cache
-        if: steps.cache.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
-        shell: bash
-        run: |
-          rm -rf ~/.cargo/git/checkouts
-          rm -rf ~/.cargo/registry/index
+          args: --target ${{ matrix.target }} --manifest-path=twitchapi/Cargo.toml --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
   
   fmt:
     name: Rustfmt
@@ -130,8 +118,29 @@ jobs:
           toolchain: nightly
           override: true
           components: clippy
-      - name: Run clippy --all-targets -- -D warnings
+      - name: Run clippy --all-targets --all-features -- -D warnings
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --all-targets -- -D warnings
+          args: --all-targets --all-features -- -D warnings 
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+      # We do the following to make sure docs.rs can document properly without anything broken, and that docs are working.
+      - name: Check twitch_oauth2 docs
+        uses: actions-rs/cargo@v1
+        with:
+          command: doc
+          args: --no-deps --manifest-path=oauth2/Cargo.toml --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
+      - name: Check twitch_api2 docs
+        uses: actions-rs/cargo@v1
+        with:
+          command: doc
+          args: --no-deps --manifest-path=twitchapi/Cargo.toml --features "${{ env.CI_TWITCH_API2_FEATURES }}" 
