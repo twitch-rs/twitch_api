@@ -16,6 +16,12 @@ jobs:
           profile: minimal
           toolchain: nightly
           override: true
+      - name: Cache cargo
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/.cargo
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
       - name: build twitch_oauth2 docs
         uses: actions-rs/cargo@v1
         with:
