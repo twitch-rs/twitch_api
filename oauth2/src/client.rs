@@ -1,4 +1,6 @@
 //! Provides different http clients
+//! 
+//! If you want to provide your own client, see [oauth2] documentation.
 #[doc(inline)]
 #[cfg(feature = "reqwest_client")]
 #[cfg_attr(nightly, doc(cfg(feature = "reqwest_client")))]

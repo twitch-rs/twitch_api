@@ -13,7 +13,7 @@
 //! <h5>OAuth2 for Twitch endpoints</h5>
 //!
 //! ```rust,no_run
-//! # use twitch_oauth2::{TwitchToken, UserToken, AccessToken, ValidationError};
+//! # use twitch_oauth2::{TwitchToken, UserToken, AccessToken, tokens::errors::ValidationError};
 //! # #[tokio::main]
 //! # async fn run() {
 //! # let reqwest_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests

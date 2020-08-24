@@ -16,7 +16,7 @@
 //!
 //! ```rust,no_run
 //! use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
-//! use twitch_oauth2::{AppAccessToken, Scope, TokenError, TwitchToken};
+//! use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::TokenError};
 //!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
@@ -26,7 +26,7 @@
 //! let token =
 //!     match AppAccessToken::get_app_access_token(surf_http_client, client_id, client_secret, Scope::all()).await {
 //!         Ok(t) => t,
-//!         Err(TokenError::RequestError(e)) => panic!("got error: {:?}", e),
+//!         Err(TokenError::Request(e)) => panic!("got error: {:?}", e),
 //!         Err(e) => panic!(e),
 //!     };
 //! let client = TwitchClient::new();

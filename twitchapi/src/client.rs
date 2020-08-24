@@ -1,4 +1,37 @@
-//! Different clients you can use with this crate.
+//! Different clients you can use with this crate to call the auth server.
+//!
+//! This is enables you to use your own http implementation.
+//! For example, say you have a http client that has a "client" named `foo::Client`.
+//! 
+//! Our client has a function `call` which looks something like this
+//! ```rust,no_run
+//! # struct Client;type ClientError = std::io::Error; impl Client {
+//! async fn call(&self, req: http::Request<Vec<u8>>) -> Result<http::Response<Vec<u8>>, ClientError> {
+//! # stringify!(
+//!     ... 
+//! # ); todo!()
+//! }
+//! # }
+//! ```
+//! To use that for token requests we do the following.
+//!
+//! ```no_run
+//! use twitch_api2::client::{BoxedFuture, Req, Response};
+//! # mod foo { use twitch_api2::client::{BoxedFuture, Req, Response}; pub struct Client; impl Client{pub async fn call(&self, req: Req)-> Result<Response, ClientError>{unimplemented!()}} pub type ClientError = std::io::Error;}
+//! impl<'a> twitch_api2::Client<'a> for foo::Client {
+//!     type Error = foo::ClientError;
+//!
+//!     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+//!         Box::pin(self.call(request))
+//!     }
+//! }
+//! ```
+//! 
+//! Of course, sometimes the clients use different types for their responses and requests. but simply translate them into [http] types and it will work.
+//! 
+//! See the source of this module for the implementation of [Client] for [surf](https://crates.io/crates/surf) and [reqwest](https://crates.io/crates/reqwest) if you need inspiration.
+//! 
+
 use std::error::Error;
 use std::future::Future;
 
@@ -17,18 +50,18 @@ pub trait Client<'a>: Send + 'a {
     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, <Self as Client>::Error>>;
 }
 
-//impl<'a, F, R, E> Client<'a> for F
-//where
-//    F: Fn(Req) -> R + Send + Sync + 'a,
-//    R: Future<Output = Result<Response,E>> + Send + Sync + 'a,
-//    E: Error + Send + Sync + 'static,
-//{
-//    type Error = E;
-//
-//    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response,Self::Error>> {
-//        Box::pin((self)(request))
-//    }
-//}
+impl<'a, F, R, E> Client<'a> for F
+where
+    F: Fn(Req) -> R + Send + Sync + 'a,
+    R: Future<Output = Result<Response,E>> + Send + Sync + 'a,
+    E: Error + Send + Sync + 'static,
+{
+    type Error = E;
+
+    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response,Self::Error>> {
+        Box::pin((self)(request))
+    }
+}
 
 #[cfg(feature = "reqwest")]
 use reqwest::Client as ReqwestClient;
@@ -39,16 +72,19 @@ impl<'a> Client<'a> for ReqwestClient {
     type Error = reqwest::Error;
 
     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+        // Reqwest plays really nice here and has a try_from on `http::Request` -> `reqwest::Request`
         use std::convert::TryFrom;
         let req = match reqwest::Request::try_from(request) {
             Ok(req) => req,
             Err(e) => return Box::pin(async { Err(e) }),
         };
         Box::pin(async move {
+            // Send the request and translate to `http::Response`
             let mut response = self.execute(req).await?;
             let mut result = http::Response::builder();
             let headers = result
                 .headers_mut()
+                // This should not fail, we just created the response.
                 .expect("expected to get headers mut when building response");
             std::mem::swap(headers, response.headers_mut());
             let result = result.version(response.version());
@@ -85,13 +121,18 @@ impl<'a> Client<'a> for SurfClient {
     type Error = SurfError;
 
     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+        // First we translate the `http::Request` method and uri into types that surf understands.
+
         let method: surf::http::Method = request.method().clone().into();
+
         let url = match url::Url::parse(&request.uri().to_string()) {
             Ok(url) => url,
             Err(err) => return Box::pin(async move { Err(err.into()) }),
         };
+        // Construct the request
         let mut req = surf::Request::new(method, url);
 
+        // move the headers into the surf request
         for (name, value) in request.headers().iter() {
             let value =
                 match surf::http::headers::HeaderValue::from_bytes(value.as_bytes().to_vec())
@@ -103,9 +144,11 @@ impl<'a> Client<'a> for SurfClient {
             req.append_header(name.as_str(), value);
         }
 
+        // assembly the request, now we can send that to our `surf::Client`
         req.body_bytes(&request.body());
 
         Box::pin(async move {
+            // Send the request and translate the response into a `http::Response`
             let mut response = self.send(req).await.map_err(SurfError::Surf)?;
             let mut result = http::Response::builder();
 
