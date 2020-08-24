@@ -402,18 +402,18 @@ impl AppAccessToken {
     /// Assemble token without checks.
     pub fn from_existing_unchecked(
         access_token: AccessToken,
-        client_id: impl Into<ClientId>,
-        client_secret: impl Into<ClientSecret>,
-        login: Option<String>,
+        client_id: ClientId,
+        client_secret: ClientSecret,
+        login: impl Into<Option<String>>,
         scopes: Option<Vec<Scope>>,
     ) -> AppAccessToken
     {
         AppAccessToken {
             access_token,
             refresh_token: None,
-            client_id: client_id.into(),
-            client_secret: client_secret.into(),
-            login,
+            client_id,
+            client_secret,
+            login: login.into(),
             expires: None,
             scopes,
         }
@@ -524,7 +524,7 @@ impl UserToken {
     /// Assemble token and validate it. Retrieves [`login`](TwitchToken::login), [`client_id`](TwitchToken::client_id) and [`scopes`](TwitchToken::scopes)
     pub async fn from_existing<RE, C, F>(
         http_client: C,
-        access_token: impl Into<AccessToken>,
+        access_token: AccessToken,
         refresh_token: impl Into<Option<RefreshToken>>,
     ) -> Result<UserToken, ValidationError<RE>>
     where
@@ -532,10 +532,9 @@ impl UserToken {
         C: FnOnce(HttpRequest) -> F,
         F: Future<Output = Result<HttpResponse, RE>>,
     {
-        let token = access_token.into();
-        let validated = validate_token(http_client, &token).await?;
+        let validated = validate_token(http_client, &access_token).await?;
         Ok(Self::from_existing_unchecked(
-            token,
+            access_token,
             refresh_token.into(),
             validated.client_id,
             validated.login,
