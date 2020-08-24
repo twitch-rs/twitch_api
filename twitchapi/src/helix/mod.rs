@@ -58,7 +58,7 @@ struct HelixRequestError {
 }
 
 impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
-    /// Create a new client with with an existing client
+    /// Create a new client with an existing client
     pub fn with_client(client: C) -> HelixClient<'a, C> {
         HelixClient {
             client,
@@ -372,7 +372,7 @@ pub type Cursor = String;
 
 /// Errors for [HelixClient::req_get] and similar functions.
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-pub enum RequestError<RE: std::error::Error + 'static> {
+pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// http crate returned an error
     HttpError(#[from] http::Error),
     /// could not parse body as utf8: {1}

@@ -44,7 +44,7 @@ impl UserToken {
         refresh_token: impl Into<Option<RefreshToken>>,
     ) -> Result<UserToken, ValidationError<RE>>
     where
-        RE: std::error::Error + 'static,
+        RE: std::error::Error + Send + Sync + 'static,
         C: FnOnce(HttpRequest) -> F,
         F: Future<Output = Result<HttpResponse, RE>>,
     {
@@ -69,7 +69,7 @@ impl TwitchToken for UserToken {
 
     async fn refresh_token<RE, C, F>(&mut self, _: C) -> Result<(), RefreshTokenError<RE>>
     where
-        RE: std::error::Error + 'static,
+        RE: std::error::Error + Send + Sync + 'static,
         C: FnOnce(HttpRequest) -> F,
         F: Future<Output = Result<HttpResponse, RE>>, {
         Err(RefreshTokenError::NoRefreshToken)

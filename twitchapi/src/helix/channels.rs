@@ -5,7 +5,7 @@
 //! ```rust,no_run
 //! # use twitch_api2::helix::{HelixClient, channels::GetChannelInformationRequest};
 //! # #[tokio::main]
-//! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
+//! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
 //! let client = HelixClient::new();

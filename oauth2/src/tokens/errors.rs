@@ -6,7 +6,7 @@ use oauth2::RequestTokenError;
 /// General errors for talking with twitch, currently only used in [AppAccessToken::get_app_access_token][crate::tokens::AppAccessToken::get_app_access_token]
 #[allow(missing_docs)]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-pub enum TokenError<RE: std::error::Error + 'static> {
+pub enum TokenError<RE: std::error::Error + Send + Sync + 'static> {
     /// request for token failed. {0}
     Request(RequestTokenError<RE, TwitchTokenErrorResponse>),
     /// could not parse url
@@ -31,7 +31,7 @@ pub enum ValidationError<RE: std::error::Error> {
 /// Errors for [revoke_token][crate::revoke_token]
 #[allow(missing_docs)]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-pub enum RevokeTokenError<RE: std::error::Error + 'static> {
+pub enum RevokeTokenError<RE: std::error::Error + Send + Sync + 'static> {
     /// 400 Bad Request: {0}
     BadRequest(String),
     /// failed to do revokation: {0}
@@ -43,7 +43,7 @@ pub enum RevokeTokenError<RE: std::error::Error + 'static> {
 /// Errors for [TwitchToken::refresh_token][crate::TwitchToken::refresh_token]
 #[allow(missing_docs)]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-pub enum RefreshTokenError<RE: std::error::Error + 'static> {
+pub enum RefreshTokenError<RE: std::error::Error + Send + Sync + 'static> {
     /// request for token failed. {0}
     RequestError(RequestTokenError<RE, TwitchTokenErrorResponse>),
     /// could not parse url
