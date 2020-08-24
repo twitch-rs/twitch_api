@@ -79,12 +79,12 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --target ${{ matrix.target }} --mainfest-path=oauth2/Cargo.toml --all-targets --all-features
+          args: --target ${{ matrix.target }} --manifest-path=oauth2/Cargo.toml --all-targets --all-features
       - name: Test twitch_api2
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --target ${{ matrix.target }} --mainfest-path=twitchapi/Cargo.toml --all-targets --all-features
+          args: --target ${{ matrix.target }} --manifest-path=twitchapi/Cargo.toml --all-targets --all-features
       - name: Install cargo-cache
         uses: actions-rs/install@v0.1
         if: steps.cache.outputs.cache-hit != 'true'
