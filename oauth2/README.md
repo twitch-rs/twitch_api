@@ -9,9 +9,9 @@ Twitch OAuth2 | OAuth2 for Twitch endpoints
 
 [Twitch Docs Authentication Guide](https://dev.twitch.tv/docs/authentication)
 
+See documentation for more info: <https://docs.rs/twitch_oauth2>
 
-
-#### License
+<h5> License </h5>
 
 <sup>
 Licensed under either of <a href="LICENSE-APACHE">Apache License, Version
