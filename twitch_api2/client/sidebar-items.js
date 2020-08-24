@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SurfError","Possible errors from [Client::req()] when using [surf::Client]"]],"trait":[["Client","A client that can do requests"]],"type":[["BoxedFuture","A boxed future, mimics `futures::future::BoxFuture`"],["Req","The request type we're expecting with body."],["Response","The response type we're expecting with body"]]});

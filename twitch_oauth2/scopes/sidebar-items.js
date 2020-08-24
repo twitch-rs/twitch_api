@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Scope","Scopes for twitch."]]});

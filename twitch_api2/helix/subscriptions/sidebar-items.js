@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["get_broadcaster_subscriptions","Get all of a broadcaster’s subscriptions. `get-broadcaster-subscriptions`"]],"struct":[["GetBroadcasterSubscriptions","Return Values for Get Broadcaster Subscriptions"],["GetBroadcasterSubscriptionsRequest","Query Parameters for Get Broadcaster Subscriptions"]]});

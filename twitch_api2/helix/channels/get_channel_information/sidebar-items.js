@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GetChannelInformation","Return Values for Get Channel Information"],["GetChannelInformationRequest","Query Parameters for Get Channel Information"]]});

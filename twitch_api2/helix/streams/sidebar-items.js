@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["StreamType","Gotten from GetStreams.type_"]],"mod":[["get_streams","Gets information about active streams. `get-streams`"]],"struct":[["GetStreams","Return Values for Get Streams"],["GetStreamsRequest","Query Parameters for Get Streams"]]});
