@@ -74,6 +74,8 @@ impl<'a, C: crate::Client<'a>> HelixClient<'a, C> {
     /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, None));
     ///     let req = channels::GetChannelInformationRequest::builder().broadcaster_id("123456").build();
     ///     let client = HelixClient::new();
+    /// # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
+    ///
     ///     let response = client.req_get(req, &token).await;
     /// # }
     /// # // fn main() {run()}

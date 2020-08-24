@@ -15,7 +15,7 @@
 //! # Examples
 //!
 //! ```rust,no_run
-//! use twitch_api2::{Client, helix::channels::GetChannelInformationRequest};
+//! use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
 //! use twitch_oauth2::{AppAccessToken, Scope, TokenError, TwitchToken};
 //!
 //! # #[tokio::main]
@@ -29,7 +29,8 @@
 //!         Err(TokenError::RequestError(e)) => panic!("got error: {:?}", e),
 //!         Err(e) => panic!(e),
 //!     };
-//! let client = Client::new();
+//! let client = TwitchClient::new();
+//! # let _: &TwitchClient<twitch_api2::DummyHttpClient> = &client;
 //! let req = GetChannelInformationRequest::builder()
 //!     .broadcaster_id("27620241")
 //!     .build();
@@ -52,6 +53,9 @@ pub use twitch_oauth2;
 
 pub mod client;
 pub use client::Client;
+
+#[doc(hidden)]
+pub use client::DummyHttpClient;
 
 #[cfg(feature = "helix")]
 pub mod helix;

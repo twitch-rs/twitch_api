@@ -28,9 +28,13 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     )
     .await?;
 
-    let broadcaster_id = token.validate_token().await?.user_id.unwrap();
+    let broadcaster_id = token
+        .validate_token(twitch_oauth2::surf_http_client)
+        .await?
+        .user_id
+        .unwrap();
 
-    let client = HelixClient::new();
+    let client = HelixClient::with_client(surf::Client::new());
 
     let req = twitch_api2::helix::channels::ModifyChannelInformationRequest::builder()
         .broadcaster_id(&broadcaster_id)

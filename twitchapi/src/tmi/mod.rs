@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn Error>> {
 /// let client = TMIClient::new();
+/// # let _: &TMIClient<twitch_api2::DummyHttpClient> = &client;
 /// println!("{:?}", client.get_chatters("justinfan10").await?);
 /// # Ok(())
 /// # }
@@ -58,8 +59,10 @@ impl<'a, C: crate::Client<'a>> TMIClient<'a, C> {
         let req = self
             .client
             .req(req)
-            .await.map_err(|e| RequestError::RequestError(Box::new(e)))?;
-        let text = std::str::from_utf8(&req.body()).map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
+            .await
+            .map_err(|e| RequestError::RequestError(Box::new(e)))?;
+        let text = std::str::from_utf8(&req.body())
+            .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
         serde_json::from_str(text).map_err(Into::into)
     }
 }

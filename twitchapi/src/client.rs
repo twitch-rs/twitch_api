@@ -1,30 +1,31 @@
 //! Different clients you can use with this crate.
 use std::error::Error;
 use std::future::Future;
-use std::sync::Arc;
 
+/// A boxed future, mimics `futures::future::BoxFuture`
 pub type BoxedFuture<'a, T> = std::pin::Pin<Box<dyn Future<Output = T> + Send + 'a>>;
 
+/// The request type we're expecting with body.
 pub type Req = http::Request<Vec<u8>>;
-pub type Res<E> = Result<http::Response<Vec<u8>>, E>;
-
+/// The response type we're expecting with body
+pub type Response = http::Response<Vec<u8>>;
 /// A client that can do requests
 pub trait Client<'a>: Send + 'a {
     /// Error returned by the client
     type Error: Error + Send + Sync + 'static;
     /// Send a request
-    fn req(&'a self, request: Req) -> BoxedFuture<'a, Res<<Self as Client>::Error>>;
+    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, <Self as Client>::Error>>;
 }
 
 //impl<'a, F, R, E> Client<'a> for F
 //where
 //    F: Fn(Req) -> R + Send + Sync + 'a,
-//    R: Future<Output = Res<E>> + Send + Sync + 'a,
+//    R: Future<Output = Result<Response,E>> + Send + Sync + 'a,
 //    E: Error + Send + Sync + 'static,
 //{
 //    type Error = E;
 //
-//    fn req(&'a self, request: Req) -> BoxedFuture<'a, Res<Self::Error>> {
+//    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response,Self::Error>> {
 //        Box::pin((self)(request))
 //    }
 //}
@@ -33,7 +34,7 @@ pub trait Client<'a>: Send + 'a {
 impl Client<'a> for reqwest::Client {
     type Error = reqwest::Error;
 
-    fn req(&'a self, request: Req) -> BoxedFuture<'a, Res<Self::Error>> {
+    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
         use std::convert::TryFrom;
         let req = match reqwest::Request::try_from(request) {
             Ok(req) => req,
@@ -68,11 +69,11 @@ pub enum SurfError {
     UrlError(#[from] url::ParseError),
 }
 
-#[cfg(all(feature = "surf", feature="http-types"))]
+#[cfg(all(feature = "surf", feature = "http-types"))]
 impl Client<'a> for surf::Client {
     type Error = SurfError;
 
-    fn req(&'a self, request: Req) -> BoxedFuture<'a, Res<Self::Error>> {
+    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
         let method: surf::http::Method = request.method().clone().into();
         let url = match url::Url::parse(&request.uri().to_string()) {
             Ok(url) => url,
@@ -116,13 +117,28 @@ impl Client<'a> for surf::Client {
                     surf::http::Version::Http2_0 => http::Version::HTTP_2,
                     surf::http::Version::Http3_0 => http::Version::HTTP_3,
                     // TODO: Log this somewhere...
-                    _ => http::Version::HTTP_3, 
+                    _ => http::Version::HTTP_3,
                 })
             } else {
                 result
             };
-            Ok(result.body(response.body_bytes().await.map_err(SurfError::Surf)?)
-            .expect("mismatch reqwest -> http conversion should not fail"))
+            Ok(result
+                .body(response.body_bytes().await.map_err(SurfError::Surf)?)
+                .expect("mismatch reqwest -> http conversion should not fail"))
         })
+    }
+}
+
+#[doc(hidden)]
+#[derive(Debug, Default, thiserror::Error, Clone)]
+/// A client that will never work, used to trick documentation tests
+#[error("this client does not do anything, only used for documentation test that only checks")]
+pub struct DummyHttpClient;
+
+impl Client<'a> for DummyHttpClient {
+    type Error = DummyHttpClient;
+
+    fn req(&'a self, _: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+        Box::pin(async { Err(DummyHttpClient) })
     }
 }

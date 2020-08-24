@@ -489,9 +489,9 @@ checksum = "134951f4028bdadb9b84baf4232681efbf277da25144b9b0ad65df75946c422b"
 
 [[package]]
 name = "encoding_rs"
-version = "0.8.23"
+version = "0.8.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e8ac63f94732332f44fe654443c46f6375d1939684c17b0afb6cb56b0456e171"
+checksum = "a51b8cf747471cb9499b6d59e59b0444f4c90eba8968c4e44874e92b5b64ace2"
 dependencies = [
  "cfg-if",
 ]
@@ -1762,6 +1762,27 @@ checksum = "502d53007c02d7605a05df1c1a73ee436952781653da5d0bf57ad608f66932c1"
 [[package]]
 name = "surf"
 version = "2.0.0-alpha.4"
+source = "git+https://github.com/http-rs/surf.git?rev=49be6a930c17771b98c5a8a961bdf2b9ac1b2063#49be6a930c17771b98c5a8a961bdf2b9ac1b2063"
+dependencies = [
+ "async-std",
+ "async-trait",
+ "encoding_rs",
+ "futures-util",
+ "http-client",
+ "http-types",
+ "log",
+ "mime_guess",
+ "pin-project-lite",
+ "serde",
+ "serde_json",
+ "serde_urlencoded",
+ "url",
+ "web-sys",
+]
+
+[[package]]
+name = "surf"
+version = "2.0.0-alpha.4"
 source = "git+https://github.com/http-rs/surf.git?branch=main#49be6a930c17771b98c5a8a961bdf2b9ac1b2063"
 dependencies = [
  "async-std",
@@ -2014,7 +2035,7 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "serde_repr",
- "surf",
+ "surf 2.0.0-alpha.4 (git+https://github.com/http-rs/surf.git?rev=49be6a930c17771b98c5a8a961bdf2b9ac1b2063)",
  "thiserror",
  "tokio",
  "twitch_oauth2",
@@ -2035,7 +2056,7 @@ dependencies = [
  "oauth2",
  "serde",
  "serde_json",
- "surf",
+ "surf 2.0.0-alpha.4 (git+https://github.com/http-rs/surf.git?branch=main)",
  "thiserror",
  "tokio",
 ]

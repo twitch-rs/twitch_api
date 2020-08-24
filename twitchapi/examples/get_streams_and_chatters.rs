@@ -1,5 +1,5 @@
-use twitch_api2::{helix::streams::GetStreamsRequest, HelixClient};
 use twitch_api2::TMIClient;
+use twitch_api2::{helix::streams::GetStreamsRequest, HelixClient};
 use twitch_oauth2::{AccessToken, UserToken};
 
 #[tokio::main]
