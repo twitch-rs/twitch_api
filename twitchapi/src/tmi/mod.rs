@@ -15,22 +15,35 @@ use serde::{Deserialize, Serialize};
 /// # Ok(())
 /// # }
 /// ```
+/// 
+/// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
+/// 
+/// ```rust,no_run
+/// # use twitch_api2::{TMIClient}; pub mod surf {pub type Client = twitch_api2::client::DummyHttpClient;}
+/// pub struct MyStruct {
+///     twitch: TMIClient<'static, surf::Client>,
+///     token: twitch_oauth2::AppAccessToken,
+/// }
+/// // etc
+/// ```
+/// 
+/// See [HttpClient][crate::HttpClient] for implemented http clients, you can also define your own if needed.
 #[cfg(feature = "tmi")]
 #[cfg_attr(nightly, doc(cfg(feature = "tmi")))] // FIXME: This doc_cfg does nothing
 #[derive(Default, Clone)]
-pub struct TMIClient<'a, C: crate::Client<'a>> {
+pub struct TMIClient<'a, C: crate::HttpClient<'a>> {
     client: C,
     _pd: std::marker::PhantomData<&'a ()>,
 }
 
-impl<'a, C: crate::Client<'a>> TMIClient<'a, C> {
+impl<'a, C: crate::HttpClient<'a>> TMIClient<'a, C> {
     /// Create a new client with a default
     pub fn new() -> TMIClient<'a, C>
     where C: Default {
         TMIClient::with_client(C::default())
     }
 
-    /// Create a new [TMIClient] with an existing [Client][crate::Client]
+    /// Create a new [TMIClient] with an existing [HttpClient][crate::HttpClient]
     pub fn with_client(client: C) -> TMIClient<'a, C> {
         TMIClient {
             client,
@@ -38,7 +51,7 @@ impl<'a, C: crate::Client<'a>> TMIClient<'a, C> {
         }
     }
 
-    /// Retrieve a clone of the [Client][crate::Client] inside this [TMIClient]
+    /// Retrieve a clone of the [HttpClient][crate::HttpClient] inside this [TMIClient]
     pub fn clone_client(&self) -> C
     where C: Clone {
         self.client.clone()
@@ -52,7 +65,7 @@ impl<'a, C: crate::Client<'a>> TMIClient<'a, C> {
     pub async fn get_chatters(
         &'a self,
         broadcaster: &str,
-    ) -> Result<GetChatters, RequestError<<C as crate::Client<'a>>::Error>>
+    ) -> Result<GetChatters, RequestError<<C as crate::HttpClient<'a>>::Error>>
     {
         let url = format!(
             "{}{}{}{}",

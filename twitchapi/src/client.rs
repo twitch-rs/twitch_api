@@ -18,7 +18,7 @@
 //! ```no_run
 //! use twitch_api2::client::{BoxedFuture, Req, Response};
 //! # mod foo { use twitch_api2::client::{BoxedFuture, Req, Response}; pub struct Client; impl Client{pub fn call(&self, req: http::Request<Vec<u8>>) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>> {unimplemented!()}} pub type ClientError = std::io::Error;}
-//! impl<'a> twitch_api2::Client<'a> for foo::Client {
+//! impl<'a> twitch_api2::HttpClient<'a> for foo::Client {
 //!     type Error = foo::ClientError;
 //!
 //!     fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
@@ -32,7 +32,7 @@
 //!  ```rust,no_run
 //! # use twitch_api2::client::{BoxedFuture, Req, Response};
 //! # mod foo { use twitch_api2::client::{BoxedFuture, Req, Response}; pub struct Client; impl Client{pub fn call(&self, req: http::Request<Vec<u8>>) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>> {unimplemented!()}} pub type ClientError = std::io::Error;}
-//! # impl<'a> twitch_api2::Client<'a> for foo::Client {
+//! # impl<'a> twitch_api2::HttpClient<'a> for foo::Client {
 //! #     type Error = foo::ClientError;
 //! #    fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
 //! #        let fut = self.call(request);

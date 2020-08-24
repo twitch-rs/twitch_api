@@ -21,7 +21,7 @@ pub use twitch_oauth2::Scope;
 /// Provides [HelixClient::req_get] for requesting endpoints which uses [GET method][RequestGet].
 /// 
 /// 
-/// If you don't want to introduce the lifetime to your program, you can use the `'static` lifetime.
+/// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
 /// 
 /// ```rust,no_run
 /// # use twitch_api2::{HelixClient}; pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
@@ -32,12 +32,12 @@ pub use twitch_oauth2::Scope;
 /// // etc
 /// ```
 /// 
-/// See [client][crate::client] for implemented clients, you can also define your own if needed.
+/// See [HttpClient][crate::HttpClient] for implemented http clients, you can also define your own if needed.
 #[cfg(feature = "helix")]
 #[cfg_attr(nightly, doc(cfg(feature = "helix")))]
 #[derive(Clone)]
 pub struct HelixClient<'a, C>
-where C: crate::Client<'a> {
+where C: crate::HttpClient<'a> {
     client: C,
     _pd: std::marker::PhantomData<&'a ()>, // TODO: Implement rate limiter...
 }
@@ -57,7 +57,7 @@ struct HelixRequestError {
     message: String,
 }
 
-impl<'a, C: crate::Client<'a>> HelixClient<'a, C> {
+impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     /// Create a new client with with an existing client
     pub fn with_client(client: C) -> HelixClient<'a, C> {
         HelixClient {
@@ -66,14 +66,14 @@ impl<'a, C: crate::Client<'a>> HelixClient<'a, C> {
         }
     }
 
-    /// Create a new [HelixClient] with a default [Client][crate::Client]
+    /// Create a new [HelixClient] with a default [HttpClient][crate::HttpClient]
     pub fn new() -> HelixClient<'a, C>
     where C: Default {
         let client = C::default();
         HelixClient::with_client(client)
     }
 
-    /// Retrieve a clone of the [Client][crate::Client] inside this [HelixClient]
+    /// Retrieve a clone of the [HttpClient][crate::HttpClient] inside this [HelixClient]
     pub fn clone_client(&self) -> C
     where C: Clone {
         self.client.clone()
@@ -100,7 +100,7 @@ impl<'a, C: crate::Client<'a>> HelixClient<'a, C> {
         &'a self,
         request: R,
         token: &T,
-    ) -> Result<Response<R, D>, RequestError<<C as crate::Client<'a>>::Error>>
+    ) -> Result<Response<R, D>, RequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestGet,
         D: serde::de::DeserializeOwned,
@@ -158,7 +158,7 @@ impl<'a, C: crate::Client<'a>> HelixClient<'a, C> {
         request: R,
         body: B,
         token: &T,
-    ) -> Result<Response<R, D>, RequestError<<C as crate::Client<'a>>::Error>>
+    ) -> Result<Response<R, D>, RequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestPost<Body = B>,
         B: serde::Serialize,
@@ -223,7 +223,7 @@ impl<'a, C: crate::Client<'a>> HelixClient<'a, C> {
         request: R,
         body: B,
         token: &T,
-    ) -> Result<D, RequestError<<C as crate::Client<'a>>::Error>>
+    ) -> Result<D, RequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestPatch<Body = B>,
         B: serde::Serialize,
@@ -272,7 +272,7 @@ impl<'a, C: crate::Client<'a>> HelixClient<'a, C> {
 }
 
 impl<'a, C> Default for HelixClient<'a, C>
-where C: crate::Client<'a> + Default
+where C: crate::HttpClient<'a> + Default
 {
     fn default() -> HelixClient<'a, C> { HelixClient::new() }
 }
@@ -335,11 +335,11 @@ where
     D: serde::de::DeserializeOwned,
 {
     /// Get the next page in the responses.
-    pub async fn get_next<'a, C: crate::Client<'a>>(
+    pub async fn get_next<'a, C: crate::HttpClient<'a>>(
         self,
         client: &'a HelixClient<'a, C>,
         token: &impl TwitchToken,
-    ) -> Result<Option<Response<R, D>>, RequestError<<C as crate::Client<'a>>::Error>>
+    ) -> Result<Option<Response<R, D>>, RequestError<<C as crate::HttpClient<'a>>::Error>>
     {
         let mut req = self.request.clone();
         if let Some(ref cursor) = self.pagination.cursor {
