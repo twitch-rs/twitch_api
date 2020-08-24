@@ -1781,27 +1781,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "surf"
-version = "2.0.0-alpha.4"
-source = "git+https://github.com/http-rs/surf.git?branch=main#49be6a930c17771b98c5a8a961bdf2b9ac1b2063"
-dependencies = [
- "async-std",
- "async-trait",
- "encoding_rs",
- "futures-util",
- "http-client",
- "http-types",
- "log",
- "mime_guess",
- "pin-project-lite",
- "serde",
- "serde_json",
- "serde_urlencoded",
- "url",
- "web-sys",
-]
-
-[[package]]
 name = "syn"
 version = "1.0.39"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2035,7 +2014,7 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "serde_repr",
- "surf 2.0.0-alpha.4 (git+https://github.com/http-rs/surf.git?rev=49be6a930c17771b98c5a8a961bdf2b9ac1b2063)",
+ "surf",
  "thiserror",
  "tokio",
  "twitch_oauth2",
@@ -2056,7 +2035,7 @@ dependencies = [
  "oauth2",
  "serde",
  "serde_json",
- "surf 2.0.0-alpha.4 (git+https://github.com/http-rs/surf.git?branch=main)",
+ "surf",
  "thiserror",
  "tokio",
 ]

@@ -31,7 +31,7 @@ pub trait Client<'a>: Send + 'a {
 //}
 
 #[cfg(feature = "reqwest")]
-impl Client<'a> for reqwest::Client {
+impl<'a> Client<'a> for reqwest::Client {
     type Error = reqwest::Error;
 
     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
@@ -70,7 +70,7 @@ pub enum SurfError {
 }
 
 #[cfg(all(feature = "surf", feature = "http-types"))]
-impl Client<'a> for surf::Client {
+impl<'a> Client<'a> for surf::Client {
     type Error = SurfError;
 
     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
@@ -135,7 +135,7 @@ impl Client<'a> for surf::Client {
 #[error("this client does not do anything, only used for documentation test that only checks")]
 pub struct DummyHttpClient;
 
-impl Client<'a> for DummyHttpClient {
+impl<'a> Client<'a> for DummyHttpClient {
     type Error = DummyHttpClient;
 
     fn req(&'a self, _: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
