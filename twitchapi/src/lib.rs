@@ -69,6 +69,19 @@ static TWITCH_HELIX_URL: &str = "https://api.twitch.tv/helix/";
 static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
 
 /// Client for Twitch APIs.
+/// 
+/// If you don't want to introduce the lifetime to your program, you can use the `'static` lieftime.
+/// 
+/// ```rust,no_run
+/// # use twitch_api2::{TwitchClient}; pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
+/// pub struct MyStruct {
+///     twitch: TwitchClient<'static, reqwest::Client>,
+///     token: twitch_oauth2::AppAccessToken,
+/// }
+/// // etc
+/// ```
+/// 
+/// See [client] for implemented clients, you can also define your own if needed.
 #[derive(Clone, Default)]
 #[non_exhaustive]
 pub struct TwitchClient<'a, C>
@@ -81,12 +94,24 @@ where C: Client<'a> {
     pub tmi: TMIClient<'a, C>,
 }
 
-impl<'a, C: Client<'a>> TwitchClient<'a, C> {
+impl<C: Client<'static>> TwitchClient<'static, C> {
     /// Create a new [Client]
     #[cfg(all(feature = "helix", feature = "tmi"))]
-    pub fn new() -> TwitchClient<'a, C>
+    pub fn new() -> TwitchClient<'static, C>
     where C: Clone + Default {
         let helix = HelixClient::new();
+        TwitchClient {
+            tmi: TMIClient::with_client(helix.clone_client()),
+            helix,
+        }
+    }
+}
+impl<'a, C: Client<'a>> TwitchClient<'a, C> {
+    /// Create a new [Client] with an existing [Client]
+    #[cfg(all(feature = "helix", feature = "tmi"))]
+    pub fn with_client(client: C) -> TwitchClient<'a, C>
+    where C: Clone +  {
+        let helix = HelixClient::with_client(client);
         TwitchClient {
             tmi: TMIClient::with_client(helix.clone_client()),
             helix,

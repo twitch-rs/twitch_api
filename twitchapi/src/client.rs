@@ -6,27 +6,46 @@
 //! Our client has a function `call` which looks something like this
 //! ```rust,no_run
 //! # struct Client;type ClientError = std::io::Error; impl Client {
-//! async fn call(&self, req: http::Request<Vec<u8>>) -> Result<http::Response<Vec<u8>>, ClientError> {
+//! fn call(&self, req: http::Request<Vec<u8>>) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>> {
 //! # stringify!(
 //!     ...
 //! # ); todo!()
 //! }
 //! # }
 //! ```
-//! To use that for token requests we do the following.
+//! To use that for requests we do the following.
 //!
 //! ```no_run
 //! use twitch_api2::client::{BoxedFuture, Req, Response};
-//! # mod foo { use twitch_api2::client::{BoxedFuture, Req, Response}; pub struct Client; impl Client{pub async fn call(&self, req: Req)-> Result<Response, ClientError>{unimplemented!()}} pub type ClientError = std::io::Error;}
+//! # mod foo { use twitch_api2::client::{BoxedFuture, Req, Response}; pub struct Client; impl Client{pub fn call(&self, req: http::Request<Vec<u8>>) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>> {unimplemented!()}} pub type ClientError = std::io::Error;}
 //! impl<'a> twitch_api2::Client<'a> for foo::Client {
 //!     type Error = foo::ClientError;
 //!
-//!     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
-//!         Box::pin(self.call(request))
+//!     fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
+//!         let fut = self.call(request);
+//!         Box::pin(async {fut.await})
 //!     }
 //! }
 //! ```
+//! We can then use it like usual.
 //!
+//!  ```rust,no_run
+//! # use twitch_api2::client::{BoxedFuture, Req, Response};
+//! # mod foo { use twitch_api2::client::{BoxedFuture, Req, Response}; pub struct Client; impl Client{pub fn call(&self, req: http::Request<Vec<u8>>) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>> {unimplemented!()}} pub type ClientError = std::io::Error;}
+//! # impl<'a> twitch_api2::Client<'a> for foo::Client {
+//! #     type Error = foo::ClientError;
+//! #    fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
+//! #        let fut = self.call(request);
+//! #        Box::pin(async {fut.await})
+//! #    }
+//! # }
+//! # use twitch_api2::{TwitchClient};
+//! pub struct MyStruct {
+//!     twitch: TwitchClient<'static, foo::Client>,
+//!     token: twitch_oauth2::AppAccessToken,
+//! }
+//!
+//! ```
 //! Of course, sometimes the clients use different types for their responses and requests. but simply translate them into [http] types and it will work.
 //!
 //! See the source of this module for the implementation of [Client] for [surf](https://crates.io/crates/surf) and [reqwest](https://crates.io/crates/reqwest) if you need inspiration.
@@ -63,24 +82,26 @@ where
     }
 }
 
-#[cfg(feature = "reqwest")]
+#[cfg(feature = "reqwest_client")]
 use reqwest::Client as ReqwestClient;
 
-#[cfg(feature = "reqwest")]
-#[cfg_attr(nightly, doc(cfg(feature = "reqwest")))] // FIXME: This doc_cfg does nothing
+#[cfg(feature = "reqwest_client")]
+#[cfg_attr(nightly, doc(cfg(feature = "reqwest_client")))] // FIXME: This doc_cfg does nothing
 impl<'a> Client<'a> for ReqwestClient {
     type Error = reqwest::Error;
 
-    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+    fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
         // Reqwest plays really nice here and has a try_from on `http::Request` -> `reqwest::Request`
         use std::convert::TryFrom;
         let req = match reqwest::Request::try_from(request) {
             Ok(req) => req,
             Err(e) => return Box::pin(async { Err(e) }),
         };
+        // We need to "call" the execute outside the async closure to not capture self.
+        let fut = self.execute(req);
         Box::pin(async move {
-            // Send the request and translate to `http::Response`
-            let mut response = self.execute(req).await?;
+            // Await the request and translate to `http::Response`
+            let mut response = fut.await?;
             let mut result = http::Response::builder();
             let headers = result
                 .headers_mut()
@@ -96,8 +117,8 @@ impl<'a> Client<'a> for ReqwestClient {
 }
 
 /// Possible errors from [Client::req()] when using [surf::Client]
-#[cfg(all(feature = "surf", feature = "url", feature = "http-types"))]
-// #[cfg_attr(nightly, doc(cfg(all(feature = "surf", feature = "url", feature = "http-types"))))]
+#[cfg(feature = "surf_client")]
+// #[cfg_attr(nightly, doc(cfg(feature="surf_client")))]
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
 pub enum SurfError {
     /// surf failed to do the request: {0}
@@ -109,18 +130,15 @@ pub enum SurfError {
     /// uri could not be translated into an url.
     UrlError(#[from] url::ParseError),
 }
-#[cfg(all(feature = "surf", feature = "http-types", feature = "url"))]
+#[cfg(feature = "surf_client")]
 use surf::Client as SurfClient;
 
-#[cfg(all(feature = "surf", feature = "http-types", feature = "url"))]
-#[cfg_attr(
-    nightly,
-    doc(cfg(all(feature = "surf", feature = "url", feature = "http-types")))
-)] // FIXME: This doc_cfg does nothing
+#[cfg(feature = "surf_client")]
+#[cfg_attr(nightly, doc(cfg(feature = "surf_client")))] // FIXME: This doc_cfg does nothing
 impl<'a> Client<'a> for SurfClient {
     type Error = SurfError;
 
-    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+    fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
         // First we translate the `http::Request` method and uri into types that surf understands.
 
         let method: surf::http::Method = request.method().clone().into();
@@ -147,9 +165,11 @@ impl<'a> Client<'a> for SurfClient {
         // assembly the request, now we can send that to our `surf::Client`
         req.body_bytes(&request.body());
 
+        // We need to "call" the send outside the async closure to not capture self.
+        let fut = self.send(req);
         Box::pin(async move {
             // Send the request and translate the response into a `http::Response`
-            let mut response = self.send(req).await.map_err(SurfError::Surf)?;
+            let mut response = fut.await.map_err(SurfError::Surf)?;
             let mut result = http::Response::builder();
 
             let mut response_headers: http::header::HeaderMap = response
@@ -178,7 +198,7 @@ impl<'a> Client<'a> for SurfClient {
             };
             Ok(result
                 .body(response.body_bytes().await.map_err(SurfError::Surf)?)
-                .expect("mismatch reqwest -> http conversion should not fail"))
+                .expect("mismatch surf -> http conversion should not fail"))
         })
     }
 }

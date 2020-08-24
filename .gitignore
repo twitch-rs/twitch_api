@@ -5,6 +5,7 @@
 **/.env
 **/*.iml
 **/.idea/
+**/.vscode
 **/logfile*
 **/*.old
 coverage_reports/
