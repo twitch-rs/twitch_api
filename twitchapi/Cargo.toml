@@ -41,6 +41,16 @@ helix = [
 ]
 tmi = ["serde", "serde_json"]
 
+surf_client = [
+    "surf",
+    "url",
+    "http-types"
+]
+
+reqwest_client = ["reqwest"]
+
+all = ["tmi", "helix", "surf_client", "reqwest_client"]
+
 [dev-dependencies]
 tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
 dotenv = "0.15.0"
