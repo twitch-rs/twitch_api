@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [windows-latest, ubuntu-latest]
         rust: [1.45.2, nightly]
         target:
           # - i686-pc-windows-msvc
@@ -117,6 +117,12 @@ jobs:
           toolchain: nightly
           override: true
           components: clippy
+      - name: Cache cargo
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/.cargo
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
       - name: Run clippy --all-targets --all-features -- -D warnings
         uses: actions-rs/cargo@v1
         with:
@@ -132,6 +138,12 @@ jobs:
           profile: minimal
           toolchain: nightly
           override: true
+      - name: Cache cargo
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/.cargo
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
       # We do the following to make sure docs.rs can document properly without anything broken, and that docs are working.
       - name: Run doc tests
         uses: actions-rs/cargo@v1
