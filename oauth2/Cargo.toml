@@ -15,6 +15,7 @@ build = "build.rs"
 default = []
 reqwest_client = ["oauth2/reqwest-010"]
 surf_client = ["surf","http-types", "http-types/hyperium_http"]
+all = ["surf_client", "reqwest_client"]
 
 [dependencies]
 oauth2 = { version = "4.0.0-alpha.1", features = [], default-features = false }

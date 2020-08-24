@@ -1,6 +1,5 @@
-use twitch_api2::{helix::streams::GetStreamsRequest, HelixClient};
+use twitch_api2::{helix::streams::GetStreamsRequest, TwitchClient};
 use twitch_oauth2::{AccessToken, UserToken};
-
 fn main() {
     use std::error::Error;
     if let Err(err) = run() {
@@ -26,18 +25,20 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
             .expect("Please set env: TWITCH_TOKEN or pass token as first argument"),
         None,
     )
-    .await
-    .unwrap();
+    .await?;
 
-    let client: HelixClient<'static, reqwest::Client> = HelixClient::new();
+    let client = Foo::default();
 
     let req = GetStreamsRequest::builder()
-        .user_login(vec![args.next().unwrap()])
+        .user_login(vec![args.next().expect("please provide an username")])
         .build();
-
-    let response = client.req_get(req, &token).await.unwrap();
-
-    // Note: This will fetch chatters in the current most viewed stream, might spam your console a bit.
-    println!("Stream information:\n\t{:?}", response.data);
+    client.client.helix.clone_client();
+    let response = client.client.helix.req_get(req, &token).await?;
+    println!("{:?}", response);
     Ok(())
+}
+
+#[derive(Default)]
+pub struct Foo {
+    client: TwitchClient<'static, reqwest::Client>,
 }

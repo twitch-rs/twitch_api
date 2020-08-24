@@ -30,26 +30,30 @@ pub enum Error {
     Custom(Cow<'static, str>),
     /// serializer only supports structs and maps on top-level
     TopLevelNotSupported {
-        /// Location this was triggered
+        /// Location where this was triggered
         #[cfg(nightly)]
+        #[cfg_attr(nightly, doc(cfg(nightly)))]
         location: &'static std::panic::Location<'static>,
     },
     /// field serializer only supports strings, sequences, options, maps and tuples
     FieldNotSupported {
-        /// Location this was triggered
+        /// Location where this was triggered
         #[cfg(nightly)]
+        #[cfg_attr(nightly, doc(cfg(nightly)))]
         location: &'static std::panic::Location<'static>,
     },
     /// pair serializer only supports strings, integers, floats, bools. options
     PairNotSupported {
-        /// Location this was triggered
+        /// Location where this was triggered
         #[cfg(nightly)]
+        #[cfg_attr(nightly, doc(cfg(nightly)))]
         location: &'static std::panic::Location<'static>,
     },
     /// value serializer only supports primitive types
     ValueNotSupported {
-        /// Location this was triggered
+        /// Location where this was triggered
         #[cfg(nightly)]
+        #[cfg_attr(nightly, doc(cfg(nightly)))]
         location: &'static std::panic::Location<'static>,
     },
 }

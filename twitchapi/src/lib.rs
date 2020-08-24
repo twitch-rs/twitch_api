@@ -58,7 +58,7 @@ pub use crate::tmi::TMIClient;
 pub use twitch_oauth2;
 
 pub mod client;
-pub use client::Client;
+pub use client::Client as HttpClient;
 
 #[doc(hidden)]
 pub use client::DummyHttpClient;
@@ -69,10 +69,23 @@ static TWITCH_HELIX_URL: &str = "https://api.twitch.tv/helix/";
 static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
 
 /// Client for Twitch APIs.
+///
+/// Most [http clients][crate::HttpClient] will be able to use the `'static` lifetime
+///
+/// ```rust,no_run
+/// # use twitch_api2::{TwitchClient}; pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
+/// pub struct MyStruct {
+///     twitch: TwitchClient<'static, reqwest::Client>,
+///     token: twitch_oauth2::AppAccessToken,
+/// }
+/// // etc
+/// ```
+///
+/// See [client] for implemented clients, you can also define your own if needed.
 #[derive(Clone, Default)]
 #[non_exhaustive]
 pub struct TwitchClient<'a, C>
-where C: Client<'a> {
+where C: HttpClient<'a> {
     /// Helix endpoint. See [helix]
     #[cfg(feature = "helix")]
     pub helix: HelixClient<'a, C>,
@@ -81,12 +94,24 @@ where C: Client<'a> {
     pub tmi: TMIClient<'a, C>,
 }
 
-impl<'a, C: Client<'a>> TwitchClient<'a, C> {
-    /// Create a new [Client]
+impl<C: HttpClient<'static>> TwitchClient<'static, C> {
+    /// Create a new [TwitchClient]
     #[cfg(all(feature = "helix", feature = "tmi"))]
-    pub fn new() -> TwitchClient<'a, C>
+    pub fn new() -> TwitchClient<'static, C>
     where C: Clone + Default {
         let helix = HelixClient::new();
+        TwitchClient {
+            tmi: TMIClient::with_client(helix.clone_client()),
+            helix,
+        }
+    }
+}
+impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
+    /// Create a new [TwitchClient] with an existing [HttpClient]
+    #[cfg(all(feature = "helix", feature = "tmi"))]
+    pub fn with_client(client: C) -> TwitchClient<'a, C>
+    where C: Clone {
+        let helix = HelixClient::with_client(client);
         TwitchClient {
             tmi: TMIClient::with_client(helix.clone_client()),
             helix,

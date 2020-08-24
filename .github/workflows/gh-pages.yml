@@ -1,7 +1,7 @@
 name: github pages
 env:
-  CI_TWITCH_OAUTH2_FEATURES: "surf_client reqwest_client"
-  CI_TWITCH_API2_FEATURES: "twitch_oauth2/surf_client twitch_oauth2/reqwest_client surf reqwest url http-types"
+  CI_TWITCH_OAUTH2_FEATURES: "all"
+  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all"
 on:
   push:
     branches:

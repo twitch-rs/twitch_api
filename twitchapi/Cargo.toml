@@ -10,11 +10,11 @@ keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
 documentation = "https://docs.rs/twitch_api2/0.4.1"
 readme = "README.md"
 build = "build.rs"
+
 [dependencies]
 typed-builder = "0.6.0"
 thiserror = "1.0.20"
 displaydoc = "0.1.7"
-futures = "0.3.5"
 http = "0.2.1"
 url = { version = "2.1.1", optional = true }
 twitch_oauth2 = { version = "^0.4.0", optional = true }
@@ -41,9 +41,20 @@ helix = [
 ]
 tmi = ["serde", "serde_json"]
 
+surf_client = [
+    "surf",
+    "url",
+    "http-types"
+]
+
+reqwest_client = ["reqwest"]
+
+all = ["tmi", "helix", "surf_client", "reqwest_client"]
+
 [dev-dependencies]
 tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
 dotenv = "0.15.0"
+futures = "0.3.5"
 
 [build-dependencies]
 version_check = "0.9.2"
@@ -52,16 +63,17 @@ version_check = "0.9.2"
 [[example]]
 name = "automod_check"
 path = "examples/automod_check.rs"
-required-features = ["twitch_oauth2/reqwest_client", "reqwest"]
+required-features = ["twitch_oauth2/surf_client", "surf"]
+
 [[example]]
 name = "get_channel_status"
 path = "examples/get_channel_status.rs"
-required-features = ["twitch_oauth2/reqwest_client", "reqwest"]
+required-features = ["twitch_oauth2/reqwest_client", "reqwest_client"]
 
 [[example]]
 name = "get_moderation"
 path = "examples/get_moderation.rs"
-required-features = ["twitch_oauth2/surf_client", "surf", "http-types"]
+required-features = ["twitch_oauth2/surf_client", "surf_client"]
 
 [[example]]
 name = "get_streams_and_chatters"
@@ -72,6 +84,12 @@ required-features = ["twitch_oauth2/surf_client"]
 name = "modify_channel"
 path = "examples/modify_channel.rs"
 required-features = ["twitch_oauth2/surf_client"]
+
+[[example]]
+name = "client"
+path = "examples/client.rs"
+required-features = ["twitch_oauth2/reqwest_client", "reqwest"]
+
 
 [package.metadata.docs.rs]
 features = ["tmi", "helix", "surf", "reqwest"]
