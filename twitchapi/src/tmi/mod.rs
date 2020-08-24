@@ -10,31 +10,50 @@ use serde::{Deserialize, Serialize};
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn Error>> {
 /// let client = TMIClient::new();
+/// # let _: &TMIClient<twitch_api2::DummyHttpClient> = &client;
 /// println!("{:?}", client.get_chatters("justinfan10").await?);
 /// # Ok(())
 /// # }
 /// ```
+#[cfg(feature = "tmi")]
+#[cfg_attr(nightly, doc(cfg(feature = "tmi")))] // FIXME: This doc_cfg does nothing
 #[derive(Default, Clone)]
-pub struct TMIClient {
-    client: reqwest::Client,
+pub struct TMIClient<'a, C: crate::Client<'a>> {
+    client: C,
+    _pd: std::marker::PhantomData<&'a ()>,
 }
 
-impl TMIClient {
-    /// Create a new client with a default [reqwest::Client]
-    pub fn new() -> TMIClient {
-        let client = reqwest::Client::new();
-        TMIClient::with_client(client)
+impl<'a, C: crate::Client<'a>> TMIClient<'a, C> {
+    /// Create a new client with a default
+    pub fn new() -> TMIClient<'a, C>
+    where C: Default {
+        TMIClient::with_client(C::default())
     }
 
-    /// Create a new client with an existing [reqwest::Client]
-    pub fn with_client(client: reqwest::Client) -> TMIClient { TMIClient { client } }
+    /// Create a new [TMIClient] with an existing [Client][crate::Client]
+    pub fn with_client(client: C) -> TMIClient<'a, C> {
+        TMIClient {
+            client,
+            _pd: std::marker::PhantomData::default(),
+        }
+    }
+
+    /// Retrieve a clone of the [Client][crate::Client] inside this [TMIClient]
+    pub fn clone_client(&self) -> C
+    where C: Clone {
+        self.client.clone()
+    }
 
     /// Get all the chatters in the chat
     ///
     /// # Notes
     ///
     /// This function will aside from url sanitize the broadcasters username, will also remove any `#` and make it lowercase ascii
-    pub async fn get_chatters(&self, broadcaster: &str) -> Result<GetChatters, RequestError> {
+    pub async fn get_chatters(
+        &'a self,
+        broadcaster: &str,
+    ) -> Result<GetChatters, RequestError<<C as crate::Client<'a>>::Error>>
+    {
         let url = format!(
             "{}{}{}{}",
             crate::TWITCH_TMI_URL,
@@ -42,9 +61,17 @@ impl TMIClient {
             broadcaster.replace('#', "").to_ascii_lowercase(),
             "/chatters"
         );
-        let req = self.client.get(&url).send().await?;
-        let text = req.text().await;
-        serde_json::from_str(&text?).map_err(Into::into)
+        let req = http::Request::builder()
+            .uri(url)
+            .body(Vec::with_capacity(0))?;
+        let req = self
+            .client
+            .req(req)
+            .await
+            .map_err(|e| RequestError::RequestError(Box::new(e)))?;
+        let text = std::str::from_utf8(&req.body())
+            .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
+        serde_json::from_str(text).map_err(Into::into)
     }
 }
 
@@ -83,9 +110,13 @@ pub type Nickname = String;
 
 /// Errors for [TMIClient] requests
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-pub enum RequestError {
+pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
+    /// http crate returned an error
+    HttpError(#[from] http::Error),
     /// deserialization failed
     DeserializeError(#[from] serde_json::Error),
     /// request failed
-    RequestError(#[from] reqwest::Error),
+    RequestError(#[from] Box<RE>),
+    /// could not parse body as utf8: {1}
+    Utf8Error(Vec<u8>, std::str::Utf8Error),
 }

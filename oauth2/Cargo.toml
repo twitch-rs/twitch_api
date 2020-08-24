@@ -6,25 +6,38 @@ edition = "2018"
 repository = "https://github.com/Emilgardis/twitch_utils"
 license = "MIT OR Apache-2.0"
 description = "Oauth2 for Twitch endpoints"
-keywords = ["oauth", "twitch","async","asynchronous"]
+keywords = ["oauth", "twitch", "async", "asynchronous"]
 documentation = "https://docs.rs/twitch_oauth2/0.4.1"
 readme = "README.md"
-
+build = "build.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [features]
 default = []
+reqwest_client = ["oauth2/reqwest-010"]
+surf_client = ["surf","http-types", "http-types/hyperium_http"]
 
 [dependencies]
-oauth2 = { version = "3.0.0", features = ["futures-03", "reqwest-010"], default-features = false }
+oauth2 = { version = "4.0.0-alpha.1", features = [], default-features = false }
 thiserror = "1.0.20"
 displaydoc = "0.1.7"
 serde = "1.0.115"
 serde_json = "1.0.57"
-async-trait = "0.1.37"
+async-trait = "0.1.38"
 http = "0.2.1"
-
-
+surf = { version = "2.0.0-alpha.4", optional = true, git = "https://github.com/http-rs/surf.git", rev = "49be6a930c17771b98c5a8a961bdf2b9ac1b2063" }
+http-types = { version = "2.4.0", optional = true }
 
 [dev-dependencies]
 tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
 dotenv = "0.15.0"
+
+[build-dependencies]
+version_check = "0.9.2"
+
+[[example]]
+name = "user_token"
+path = "examples/user_token.rs"
+required-features = ["surf_client"]
+
+[package.metadata.docs.rs]
+features = ["reqwest_client", "surf_client"]

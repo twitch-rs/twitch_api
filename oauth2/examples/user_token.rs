@@ -3,6 +3,7 @@ async fn main() {
     dotenv::dotenv().unwrap();
     let mut args = std::env::args().skip(1);
     let token = twitch_oauth2::UserToken::from_existing(
+        twitch_oauth2::client::surf_http_client,
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())

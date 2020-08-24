@@ -18,6 +18,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     dotenv::dotenv().unwrap();
     let mut args = std::env::args().skip(1);
     let token = UserToken::from_existing(
+        twitch_oauth2::client::reqwest_http_client,
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
@@ -28,7 +29,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     .await
     .unwrap();
 
-    let client = HelixClient::new();
+    let client: HelixClient<reqwest::Client> = HelixClient::new();
 
     let req = GetStreamsRequest::builder()
         .user_login(vec![args.next().unwrap()])

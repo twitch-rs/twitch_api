@@ -7,8 +7,9 @@
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-//! # let token = twitch_oauth2::UserToken::from_existing(token, None).await?;
+//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
 //! let client = HelixClient::new();
+//! # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
 //! let req = GetBroadcasterSubscriptionsRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();

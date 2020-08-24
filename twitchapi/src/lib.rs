@@ -1,5 +1,6 @@
 #![allow(unknown_lints)] // remove once broken_intra_doc_links is on stable
 #![deny(missing_docs, broken_intra_doc_links)]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![doc(html_root_url = "https://docs.rs/twitch_api2/0.4.1")]
 //! [![github]](https://github.com/emilgardis/twitch_utils)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs]](https://docs.rs/twitch_api2/0.4.1/twitch_api2)
 //!
@@ -14,20 +15,22 @@
 //! # Examples
 //!
 //! ```rust,no_run
-//! use twitch_api2::{Client, helix::channels::GetChannelInformationRequest};
+//! use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
 //! use twitch_oauth2::{AppAccessToken, Scope, TokenError, TwitchToken};
 //!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
+//! # let surf_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests
 //! # let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
 //! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret".to_string());
 //! let token =
-//!     match AppAccessToken::get_app_access_token(client_id, client_secret, Scope::all()).await {
+//!     match AppAccessToken::get_app_access_token(surf_http_client, client_id, client_secret, Scope::all()).await {
 //!         Ok(t) => t,
 //!         Err(TokenError::RequestError(e)) => panic!("got error: {:?}", e),
 //!         Err(e) => panic!(e),
 //!     };
-//! let client = Client::new();
+//! let client = TwitchClient::new();
+//! # let _: &TwitchClient<twitch_api2::DummyHttpClient> = &client;
 //! let req = GetChannelInformationRequest::builder()
 //!     .broadcaster_id("27620241")
 //!     .build();
@@ -36,22 +39,29 @@
 //! # Ok(())
 //! # }
 //! ```
+//!
 
 #[cfg(feature = "helix")]
-#[doc(no_inline)]
+pub mod helix;
+#[cfg(feature = "tmi")]
+pub mod tmi;
+
+#[cfg(feature = "helix")]
+#[doc(inline)]
 pub use crate::helix::HelixClient;
 #[cfg(feature = "tmi")]
-#[doc(no_inline)]
+#[doc(inline)]
 pub use crate::tmi::TMIClient;
 
 #[cfg(feature = "helix")]
 #[doc(no_inline)]
 pub use twitch_oauth2;
 
-#[cfg(feature = "helix")]
-pub mod helix;
-#[cfg(feature = "tmi")]
-pub mod tmi;
+pub mod client;
+pub use client::Client;
+
+#[doc(hidden)]
+pub use client::DummyHttpClient;
 
 #[cfg(feature = "helix")]
 static TWITCH_HELIX_URL: &str = "https://api.twitch.tv/helix/";
@@ -61,21 +71,23 @@ static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
 /// Client for Twitch APIs.
 #[derive(Clone, Default)]
 #[non_exhaustive]
-pub struct Client {
+pub struct TwitchClient<'a, C>
+where C: Client<'a> {
     /// Helix endpoint. See [helix]
     #[cfg(feature = "helix")]
-    pub helix: HelixClient,
+    pub helix: HelixClient<'a, C>,
     /// TMI endpoint. See [tmi]
     #[cfg(feature = "tmi")]
-    pub tmi: TMIClient,
+    pub tmi: TMIClient<'a, C>,
 }
 
-impl Client {
+impl<'a, C: Client<'a>> TwitchClient<'a, C> {
     /// Create a new [Client]
     #[cfg(all(feature = "helix", feature = "tmi"))]
-    pub fn new() -> Client {
+    pub fn new() -> TwitchClient<'a, C>
+    where C: Clone + Default {
         let helix = HelixClient::new();
-        Client {
+        TwitchClient {
             tmi: TMIClient::with_client(helix.clone_client()),
             helix,
         }

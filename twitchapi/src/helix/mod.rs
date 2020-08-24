@@ -19,10 +19,13 @@ pub use twitch_oauth2::Scope;
 /// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
 ///
 /// Provides [HelixClient::req_get] for requesting endpoints which uses [GET method][RequestGet].
+#[cfg(feature = "helix")]
+#[cfg_attr(nightly, doc(cfg(feature = "helix")))]
 #[derive(Clone)]
-pub struct HelixClient {
-    client: reqwest::Client,
-    // TODO: Implement rate limiter...
+pub struct HelixClient<'a, C>
+where C: crate::Client<'a> {
+    client: C,
+    _pd: std::marker::PhantomData<&'a ()>, // TODO: Implement rate limiter...
 }
 
 #[derive(PartialEq, Deserialize, Debug)]
@@ -32,6 +35,7 @@ struct InnerResponse<D> {
     #[serde(default)]
     pagination: Pagination,
 }
+
 #[derive(Deserialize, Clone, Debug)]
 struct HelixRequestError {
     error: String,
@@ -39,18 +43,27 @@ struct HelixRequestError {
     message: String,
 }
 
-impl HelixClient {
-    /// Create a new client with with an existing [reqwest::Client]
-    pub fn with_client(client: reqwest::Client) -> HelixClient { HelixClient { client } }
+impl<'a, C: crate::Client<'a>> HelixClient<'a, C> {
+    /// Create a new client with with an existing client
+    pub fn with_client(client: C) -> HelixClient<'a, C> {
+        HelixClient {
+            client,
+            _pd: std::marker::PhantomData::default(),
+        }
+    }
 
-    /// Create a new client with a default [reqwest::Client]
-    pub fn new() -> HelixClient {
-        let client = reqwest::Client::new();
+    /// Create a new [HelixClient] with a default [Client][crate::Client]
+    pub fn new() -> HelixClient<'a, C>
+    where C: Default {
+        let client = C::default();
         HelixClient::with_client(client)
     }
 
-    /// Retrieve a clone of the [reqwest::Client] inside this [HelixClient]
-    pub fn clone_client(&self) -> reqwest::Client { self.client.clone() }
+    /// Retrieve a clone of the [Client][crate::Client] inside this [HelixClient]
+    pub fn clone_client(&self) -> C
+    where C: Clone {
+        self.client.clone()
+    }
 
     /// Request on a valid [RequestGet] endpoint
     ///
@@ -63,15 +76,17 @@ impl HelixClient {
     /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, None));
     ///     let req = channels::GetChannelInformationRequest::builder().broadcaster_id("123456").build();
     ///     let client = HelixClient::new();
+    /// # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
+    ///
     ///     let response = client.req_get(req, &token).await;
     /// # }
     /// # // fn main() {run()}
     /// ```
     pub async fn req_get<R, D, T>(
-        &self,
+        &'a self,
         request: R,
         token: &T,
-    ) -> Result<Response<R, D>, RequestError>
+    ) -> Result<Response<R, D>, RequestError<<C as crate::Client<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestGet,
         D: serde::de::DeserializeOwned,
@@ -83,15 +98,22 @@ impl HelixClient {
             <R as Request>::PATH,
             request.query()?
         ))?;
-
-        let req = self
-            .client
-            .get(url.clone())
+        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
+            .map_err(|_| RequestError::Custom("Could not make token into headervalue".into()))?;
+        bearer.set_sensitive(true);
+        let req = http::Request::builder()
+            .method(http::Method::GET)
+            .uri(url.to_string())
             .header("Client-ID", token.client_id().as_str())
-            .bearer_auth(token.token().secret())
-            .send()
-            .await?;
-        let text = req.text().await?;
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(Vec::with_capacity(0))?;
+        let response = self
+            .client
+            .req(req)
+            .await
+            .map_err(RequestError::RequestError)?;
+        let text = std::str::from_utf8(&response.body())
+            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
         //eprintln!("\n\nmessage is ------------ {} ------------", text);
         if let Ok(HelixRequestError {
             error,
@@ -103,7 +125,7 @@ impl HelixClient {
                 error,
                 status: status
                     .try_into()
-                    .unwrap_or_else(|_| reqwest::StatusCode::BAD_REQUEST),
+                    .unwrap_or_else(|_| http::StatusCode::BAD_REQUEST),
                 message,
                 url,
             });
@@ -118,11 +140,11 @@ impl HelixClient {
 
     /// Request on a valid [RequestPost] endpoint
     pub async fn req_post<R, B, D, T>(
-        &self,
+        &'a self,
         request: R,
         body: B,
         token: &T,
-    ) -> Result<Response<R, D>, RequestError>
+    ) -> Result<Response<R, D>, RequestError<<C as crate::Client<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestPost<Body = B>,
         B: serde::Serialize,
@@ -138,16 +160,24 @@ impl HelixClient {
 
         let body = request.body(&body)?;
         // eprintln!("\n\nbody is ------------ {} ------------", body);
-        let req = self
-            .client
-            .post(url.clone())
+
+        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
+            .map_err(|_| RequestError::Custom("Could not make token into headervalue".into()))?;
+        bearer.set_sensitive(true);
+        let req = http::Request::builder()
+            .method(http::Method::POST)
+            .uri(url.to_string())
             .header("Client-ID", token.client_id().as_str())
             .header("Content-Type", "application/json")
-            .bearer_auth(token.token().secret())
-            .body(body.clone())
-            .send()
-            .await?;
-        let text = req.text().await?;
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(body.clone().into_bytes())?;
+        let response = self
+            .client
+            .req(req)
+            .await
+            .map_err(RequestError::RequestError)?;
+        let text = std::str::from_utf8(&response.body())
+            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
         // eprintln!("\n\nmessage is ------------ {} ------------", text);
         if let Ok(HelixRequestError {
             error,
@@ -159,7 +189,7 @@ impl HelixClient {
                 error,
                 status: status
                     .try_into()
-                    .unwrap_or_else(|_| reqwest::StatusCode::BAD_REQUEST),
+                    .unwrap_or_else(|_| http::StatusCode::BAD_REQUEST),
                 message,
                 url,
                 body,
@@ -175,11 +205,11 @@ impl HelixClient {
 
     /// Request on a valid [RequestPatch] endpoint
     pub async fn req_patch<R, B, D, T>(
-        &self,
+        &'a self,
         request: R,
         body: B,
         token: &T,
-    ) -> Result<D, RequestError>
+    ) -> Result<D, RequestError<<C as crate::Client<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestPatch<Body = B>,
         B: serde::Serialize,
@@ -195,19 +225,30 @@ impl HelixClient {
 
         let body = request.body(&body)?;
         // eprintln!("\n\nbody is ------------ {} ------------", body);
-        let req = self
-            .client
-            .patch(url.clone())
+
+        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
+            .map_err(|_| RequestError::Custom("Could not make token into headervalue".into()))?;
+        bearer.set_sensitive(true);
+        let req = http::Request::builder()
+            .method(http::Method::PATCH)
+            .uri(url.to_string())
             .header("Client-ID", token.client_id().as_str())
             .header("Content-Type", "application/json")
-            .bearer_auth(token.token().secret())
-            .body(body.clone())
-            .send()
-            .await?;
-        match req.status().try_into() {
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(body.clone().into_bytes())?;
+        let response = self
+            .client
+            .req(req)
+            .await
+            .map_err(RequestError::RequestError)?;
+        //let text = std::str::from_utf8(&response.body())
+        //    .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
+        // eprintln!("\n\nmessage is ------------ {} ------------", text);
+
+        match response.status().try_into() {
             Ok(result) => Ok(result),
             Err(err) => Err(RequestError::HelixRequestPatchError {
-                status: req.status(),
+                status: response.status(),
                 message: err.to_string(),
                 url,
                 body,
@@ -216,8 +257,10 @@ impl HelixClient {
     }
 }
 
-impl Default for HelixClient {
-    fn default() -> Self { HelixClient::new() }
+impl<'a, C> Default for HelixClient<'a, C>
+where C: crate::Client<'a> + Default
+{
+    fn default() -> HelixClient<'a, C> { HelixClient::new() }
 }
 
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
@@ -278,11 +321,11 @@ where
     D: serde::de::DeserializeOwned,
 {
     /// Get the next page in the responses.
-    pub async fn get_next(
+    pub async fn get_next<'a, C: crate::Client<'a>>(
         self,
-        client: &HelixClient,
+        client: &'a HelixClient<'a, C>,
         token: &impl TwitchToken,
-    ) -> Result<Option<Response<R, D>>, RequestError>
+    ) -> Result<Option<Response<R, D>>, RequestError<<C as crate::Client<'a>>::Error>>
     {
         let mut req = self.request.clone();
         if let Some(ref cursor) = self.pagination.cursor {
@@ -315,7 +358,11 @@ pub type Cursor = String;
 
 /// Errors for [HelixClient::req_get] and similar functions.
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-pub enum RequestError {
+pub enum RequestError<RE: std::error::Error + 'static> {
+    /// http crate returned an error
+    HttpError(#[from] http::Error),
+    /// could not parse body as utf8: {1}
+    Utf8Error(Vec<u8>, std::str::Utf8Error),
     /// url could not be parsed
     UrlParseError(#[from] url::ParseError),
     /// io error
@@ -325,7 +372,7 @@ pub enum RequestError {
     /// Could not serialize request to query
     QuerySerializeError(#[from] ser::Error),
     /// request failed from reqwests side
-    RequestError(#[from] reqwest::Error),
+    RequestError(RE),
     /// no pagination found
     NoPage,
     /// could not parse response from patch:  {0}
