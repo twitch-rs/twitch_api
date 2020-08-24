@@ -508,7 +508,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="kw">crate</span>::<span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new client with with an existing client</span>
+    <span class="doccomment">/// Create a new client with an existing client</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_client</span>(<span class="ident">client</span>: <span class="ident">C</span>) <span class="op">-&gt;</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
         <span class="ident">HelixClient</span> {
             <span class="ident">client</span>,
@@ -822,7 +822,7 @@
 
 <span class="doccomment">/// Errors for [HelixClient::req_get] and similar functions.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror</span>::<span class="ident">Error</span>, <span class="ident">Debug</span>, <span class="ident">displaydoc</span>::<span class="ident">Display</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RequestError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RequestError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="doccomment">/// http crate returned an error</span>
     <span class="ident">HttpError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">http</span>::<span class="ident">Error</span>),
     <span class="doccomment">/// could not parse body as utf8: {1}</span>

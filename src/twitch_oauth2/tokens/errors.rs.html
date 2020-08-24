@@ -61,7 +61,7 @@
 <span class="doccomment">/// General errors for talking with twitch, currently only used in [AppAccessToken::get_app_access_token][crate::tokens::AppAccessToken::get_app_access_token]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror</span>::<span class="ident">Error</span>, <span class="ident">Debug</span>, <span class="ident">displaydoc</span>::<span class="ident">Display</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TokenError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TokenError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="doccomment">/// request for token failed. {0}</span>
     <span class="ident">Request</span>(<span class="ident">RequestTokenError</span><span class="op">&lt;</span><span class="ident">RE</span>, <span class="ident">TwitchTokenErrorResponse</span><span class="op">&gt;</span>),
     <span class="doccomment">/// could not parse url</span>
@@ -86,7 +86,7 @@
 <span class="doccomment">/// Errors for [revoke_token][crate::revoke_token]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror</span>::<span class="ident">Error</span>, <span class="ident">Debug</span>, <span class="ident">displaydoc</span>::<span class="ident">Display</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RevokeTokenError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RevokeTokenError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="doccomment">/// 400 Bad Request: {0}</span>
     <span class="ident">BadRequest</span>(<span class="ident">String</span>),
     <span class="doccomment">/// failed to do revokation: {0}</span>
@@ -98,7 +98,7 @@
 <span class="doccomment">/// Errors for [TwitchToken::refresh_token][crate::TwitchToken::refresh_token]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror</span>::<span class="ident">Error</span>, <span class="ident">Debug</span>, <span class="ident">displaydoc</span>::<span class="ident">Display</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="doccomment">/// request for token failed. {0}</span>
     <span class="ident">RequestError</span>(<span class="ident">RequestTokenError</span><span class="op">&lt;</span><span class="ident">RE</span>, <span class="ident">TwitchTokenErrorResponse</span><span class="op">&gt;</span>),
     <span class="doccomment">/// could not parse url</span>

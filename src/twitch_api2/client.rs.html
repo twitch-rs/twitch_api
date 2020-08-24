@@ -217,6 +217,9 @@
 <span id="216">216</span>
 <span id="217">217</span>
 <span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Different clients you can use with this crate to call the auth server.</span>
 <span class="doccomment">//!</span>
@@ -266,6 +269,9 @@
 <span class="doccomment">//! }</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! If your client is from a remote crate, you can use [the newtype pattern](https://github.com/rust-unofficial/patterns/blob/607fcb00c4ecb9c6317e4e101e16dc15717758bd/patterns/newtype.md)</span>
+<span class="doccomment">//!</span>
 <span class="doccomment">//! Of course, sometimes the clients use different types for their responses and requests. but simply translate them into [http] types and it will work.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! See the source of this module for the implementation of [Client] for [surf](https://crates.io/crates/surf) and [reqwest](https://crates.io/crates/reqwest) if you need inspiration.</span>

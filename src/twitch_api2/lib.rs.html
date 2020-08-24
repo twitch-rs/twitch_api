@@ -119,6 +119,7 @@
 <span id="118">118</span>
 <span id="119">119</span>
 <span id="120">120</span>
+<span id="121">121</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unknown_lints</span>)]</span> <span class="comment">// remove once broken_intra_doc_links is on stable</span>
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>, <span class="ident">broken_intra_doc_links</span>)]</span>
@@ -141,7 +142,7 @@
 <span class="doccomment">//! use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::TokenError};</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # #[tokio::main]</span>
-<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + &#39;static&gt;&gt; {</span>
+<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
 <span class="doccomment">//! # let surf_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests</span>
 <span class="doccomment">//! # let client_id = twitch_oauth2::ClientId::new(&quot;validclientid&quot;.to_string());</span>
 <span class="doccomment">//! # let client_secret = twitch_oauth2::ClientSecret::new(&quot;validclientsecret&quot;.to_string());</span>
@@ -228,6 +229,7 @@
         }
     }
 }
+
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span> <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Create a new [TwitchClient] with an existing [HttpClient]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>))]</span>

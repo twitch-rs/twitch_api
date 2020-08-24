@@ -127,7 +127,7 @@
         <span class="ident">refresh_token</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">RefreshToken</span><span class="op">&gt;&gt;</span>,
     ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">UserToken</span>, <span class="ident">ValidationError</span><span class="op">&lt;</span><span class="ident">RE</span><span class="op">&gt;&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">C</span>: <span class="ident">FnOnce</span>(<span class="ident">HttpRequest</span>) <span class="op">-&gt;</span> <span class="ident">F</span>,
         <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HttpResponse</span>, <span class="ident">RE</span><span class="op">&gt;&gt;</span>,
     {
@@ -152,7 +152,7 @@
 
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">refresh_token</span><span class="op">&lt;</span><span class="ident">RE</span>, <span class="ident">C</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="ident">C</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="ident">RE</span><span class="op">&gt;&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">C</span>: <span class="ident">FnOnce</span>(<span class="ident">HttpRequest</span>) <span class="op">-&gt;</span> <span class="ident">F</span>,
         <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HttpResponse</span>, <span class="ident">RE</span><span class="op">&gt;&gt;</span>, {
         <span class="prelude-val">Err</span>(<span class="ident">RefreshTokenError</span>::<span class="ident">NoRefreshToken</span>)
