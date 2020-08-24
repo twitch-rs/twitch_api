@@ -58,7 +58,7 @@ struct HelixRequestError {
 }
 
 impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
-    /// Create a new client with with an existing client
+    /// Create a new client with an existing client
     pub fn with_client(client: C) -> HelixClient<'a, C> {
         HelixClient {
             client,
