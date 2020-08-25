@@ -1,5 +1,0 @@
-pre-release-replacements = [
-  {file="README.md", search="twitch_oauth2/[a-z0-9\\.-]+/twitch_oauth2", replace="{{crate_name}}/{{version}}/{{crate_name}}"},
-  {file="src/lib.rs", search="https://docs.rs/twitch_oauth2/[a-z0-9\\.-]+", replace="https://docs.rs/{{crate_name}}/{{version}}"},
-  {file="Cargo.toml", search="https://docs.rs/twitch_oauth2/[a-z0-9\\.-]+", replace="https://docs.rs/{{crate_name}}/{{version}}"},
-]
