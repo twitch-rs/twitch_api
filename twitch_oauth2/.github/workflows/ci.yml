@@ -1,0 +1,152 @@
+name: CI
+env:
+  CI_TWITCH_OAUTH2_FEATURES: "all"
+on:
+  pull_request:
+    branches: [master]
+    types: [opened, reopened, synchronize]
+  push:
+    branches: [master]
+jobs:
+  ci:
+    name: CI
+    needs: [test, fmt, clippy, docs]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Done
+        run: exit 0
+  test:
+    name: Tests
+    if: github.event_name == 'pull_request'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        rust: [1.45.2, nightly]
+        target:
+          # - i686-pc-windows-msvc
+          - x86_64-pc-windows-msvc
+          # - i686-pc-windows-gnu
+          # - x86_64-pc-windows-gnu
+          # - i686-unknown-linux-gnu
+          - x86_64-unknown-linux-gnu
+          - x86_64-apple-darwin
+        exclude:
+          - os: windows-latest
+            target: x86_64-apple-darwin
+          # - os: windows-latest
+          #   target: i686-unknown-linux-gnu
+          - os: windows-latest
+            target: x86_64-unknown-linux-gnu
+          # - os: macos-latest
+          #   target: i686-pc-windows-msvc
+          - os: macos-latest
+            target: x86_64-pc-windows-msvc
+          # - os: macos-latest
+          #   target: i686-pc-windows-gnu
+          # - os: macos-latest
+          #   target: x86_64-pc-windows-gnu
+          # - os: macos-latest
+          #   target: i686-unknown-linux-gnu
+          - os: macos-latest
+            target: x86_64-unknown-linux-gnu
+          # - os: ubuntu-latest
+          #   target: i686-pc-windows-msvc
+          - os: ubuntu-latest
+            target: x86_64-pc-windows-msvc
+          # - os: ubuntu-latest
+          #   target: i686-pc-windows-gnu
+          # - os: ubuntu-latest
+          #   target: x86_64-pc-windows-gnu
+          - os: ubuntu-latest
+            target: x86_64-apple-darwin
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          target: ${{ matrix.target }}
+          override: true
+      - name: Ready cache
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo chown -R $(whoami):$(id -ng) ~/.cargo/
+      - name: Cache cargo
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/.cargo
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Test twitch_oauth2
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --target ${{ matrix.target }} --all-targets --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
+  fmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+          components: rustfmt
+      - name: Run fmt --all -- --check
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+          components: clippy
+      - name: Cache cargo
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/.cargo
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Run clippy --all-targets --all-features -- -D warnings
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: --all-targets --all-features -- -D warnings 
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+      - name: Cache cargo
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/.cargo
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      # We do the following to make sure docs.rs can document properly without anything broken, and that docs are working.
+      - name: Run doc tests
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --doc --all-features
+      - name: Check twitch_oauth2 docs
+        uses: actions-rs/cargo@v1
+        with:
+          command: doc
+          args: --no-deps --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
