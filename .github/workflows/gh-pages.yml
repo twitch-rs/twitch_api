@@ -22,16 +22,11 @@ jobs:
         with:
           path: ~/.cargo
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: build twitch_oauth2 docs
+      - name: build docs
         uses: actions-rs/cargo@v1
         with:
           command: doc
-          args: --no-deps --manifest-path=oauth2/Cargo.toml --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
-      - name: build twitch_api2 docs
-        uses: actions-rs/cargo@v1
-        with:
-          command: doc
-          args: --no-deps --manifest-path=twitchapi/Cargo.toml --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}" -p twitch_api2 -p twitch_oauth2
       - name: move index.html
         run: cp ./index.html ./target/doc/index.html
       - name: Deploy

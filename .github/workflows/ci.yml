@@ -84,12 +84,12 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --target ${{ matrix.target }} --manifest-path=oauth2/Cargo.toml --all-targets --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
+          args: --target ${{ matrix.target }} --manifest-path=twitch_oauth2/Cargo.toml --all-targets --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
       - name: Test twitch_api2
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --target ${{ matrix.target }} --manifest-path=twitchapi/Cargo.toml --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --target ${{ matrix.target }} --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
@@ -155,9 +155,9 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: doc
-          args: --no-deps --manifest-path=oauth2/Cargo.toml --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
+          args: --no-deps --manifest-path=twitch_oauth2/Cargo.toml --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
       - name: Check twitch_api2 docs
         uses: actions-rs/cargo@v1
         with:
           command: doc
-          args: --no-deps --manifest-path=twitchapi/Cargo.toml --features "${{ env.CI_TWITCH_API2_FEATURES }}" 
+          args: --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}" 
