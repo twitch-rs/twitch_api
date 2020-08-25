@@ -3,7 +3,7 @@ name = "twitch_api2"
 version = "0.4.1"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
-repository = "https://github.com/Emilgardis/twitch_utils"
+repository = "https://github.com/Emilgardis/twitch_api2"
 license = "MIT OR Apache-2.0"
 description = "Library for talking with the new Twitch API aka. \"Helix\" and TMI."
 keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
@@ -17,7 +17,6 @@ thiserror = "1.0.20"
 displaydoc = "0.1.7"
 http = "0.2.1"
 url = { version = "2.1.1", optional = true }
-twitch_oauth2 = { version = "^0.4.0", optional = true }
 twitch_oauth2 = { version = "^0.4.0", optional = true, path = "twitch_oauth2/" }
 serde = { version = "1.0.115", features = ["derive"], optional = true }
 serde_derive = { version = "1.0.115", optional = true }
