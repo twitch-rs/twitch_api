@@ -1,6 +1,7 @@
 name: github pages
 env:
   CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all"
+  RUSTDOCFLAGS: "-Z unstable-options --html-in-header=docs/pre-content.html"
 on:
   push:
     branches:
@@ -23,13 +24,17 @@ jobs:
         with:
           path: ~/.cargo
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: mention 40 character commit rev in doc
+        run: sed -i "s/{{commit}}/$(git rev-parse HEAD)/g" docs/pre-content.html
+      - name: mention short commit rev in doc
+        run: sed -i "s/{{commit}}/$(git rev-parse --short HEAD)/g" docs/pre-content.html
       - name: build docs
         uses: actions-rs/cargo@v1
         with:
           command: doc
           args: --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}" -p twitch_api2 -p twitch_oauth2
       - name: move index.html
-        run: cp ./index.html ./target/doc/index.html
+        run: cp ./docs/index.html ./target/doc/index.html
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
