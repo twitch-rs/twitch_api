@@ -72,18 +72,19 @@ pub trait Client<'a>: Send + 'a {
     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, <Self as Client>::Error>>;
 }
 
-impl<'a, F, R, E> Client<'a> for F
-where
-    F: Fn(Req) -> R + Send + Sync + 'a,
-    R: Future<Output = Result<Response, E>> + Send + Sync + 'a,
-    E: Error + Send + Sync + 'static,
-{
-    type Error = E;
-
-    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
-        Box::pin((self)(request))
-    }
-}
+// This makes errors very muddy, preferably we'd actually use rustc_on_unimplemented, but that is highly not recommended (and doesn't work 100% for me at least)
+// impl<'a, F, R, E> Client<'a> for F
+// where
+//     F: Fn(Req) -> R + Send + Sync + 'a,
+//     R: Future<Output = Result<Response, E>> + Send + Sync + 'a,
+//     E: Error + Send + Sync + 'static,
+// {
+//     type Error = E;
+//
+//     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+//         Box::pin((self)(request))
+//     }
+// }
 
 #[cfg(feature = "reqwest_client")]
 use reqwest::Client as ReqwestClient;
@@ -206,7 +207,6 @@ impl<'a> Client<'a> for SurfClient {
     }
 }
 
-#[doc(hidden)]
 #[derive(Debug, Default, thiserror::Error, Clone)]
 /// A client that will never work, used to trick documentation tests
 #[error("this client does not do anything, only used for documentation test that only checks")]
