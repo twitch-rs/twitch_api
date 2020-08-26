@@ -63,8 +63,9 @@ jobs:
             target: x86_64-apple-darwin
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: Install rust
         uses: actions-rs/toolchain@v1
         with:
@@ -80,21 +81,18 @@ jobs:
         with:
           path: ~/.cargo
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Test twitch_oauth2
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --target ${{ matrix.target }} --manifest-path=oauth2/Cargo.toml --all-targets --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
       - name: Test twitch_api2
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --target ${{ matrix.target }} --manifest-path=twitchapi/Cargo.toml --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --target ${{ matrix.target }} --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -112,6 +110,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -134,6 +134,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -151,13 +153,8 @@ jobs:
         with:
           command: test
           args: --doc --all-features
-      - name: Check twitch_oauth2 docs
-        uses: actions-rs/cargo@v1
-        with:
-          command: doc
-          args: --no-deps --manifest-path=oauth2/Cargo.toml --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
       - name: Check twitch_api2 docs
         uses: actions-rs/cargo@v1
         with:
           command: doc
-          args: --no-deps --manifest-path=twitchapi/Cargo.toml --features "${{ env.CI_TWITCH_API2_FEATURES }}" 
+          args: --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}" 
