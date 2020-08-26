@@ -27,7 +27,7 @@ jobs:
       - name: mention 40 character commit rev in doc
         run: sed -i "s/{{commit}}/$(git rev-parse HEAD)/g" docs/pre-content.html
       - name: mention short commit rev in doc
-        run: sed -i "s/{{commit}}/$(git rev-parse --short HEAD)/g" docs/pre-content.html
+        run: sed -i "s/{{commit_short}}/$(git rev-parse --short HEAD)/g" docs/pre-content.html
       - name: build docs
         uses: actions-rs/cargo@v1
         with:
