@@ -21,7 +21,7 @@
 //! ```
 
 #[doc(inline)]
-pub use get_channel_information::{GetChannelInformation, GetChannelInformationRequest};
+pub use get_channel_information::{ChannelInformation, GetChannelInformationRequest};
 #[doc(inline)]
 pub use modify_channel_information::{
     ModifyChannelInformation, ModifyChannelInformationBody, ModifyChannelInformationRequest,
@@ -55,7 +55,7 @@ pub mod get_channel_information {
     /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
-    pub struct GetChannelInformation {
+    pub struct ChannelInformation {
         /// Twitch User ID of this channel owner
         pub broadcaster_id: String,
         /// Current game ID being played on the channel
@@ -70,7 +70,7 @@ pub mod get_channel_information {
     }
 
     impl helix::Request for GetChannelInformationRequest {
-        type Response = GetChannelInformation;
+        type Response = ChannelInformation;
 
         const PATH: &'static str = "channels";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
