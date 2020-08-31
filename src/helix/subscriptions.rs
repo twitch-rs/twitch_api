@@ -21,7 +21,7 @@
 //! ```
 #[doc(inline)]
 pub use get_broadcaster_subscriptions::{
-    GetBroadcasterSubscriptions, GetBroadcasterSubscriptionsRequest,
+    BroadcasterSubscriptions, GetBroadcasterSubscriptionsRequest,
 };
 
 use crate::helix;
@@ -56,7 +56,7 @@ pub mod get_broadcaster_subscriptions {
     /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
     #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
     #[non_exhaustive]
-    pub struct GetBroadcasterSubscriptions {
+    pub struct BroadcasterSubscriptions {
         /// User ID of the broadcaster.
         pub broadcaster_id: String,
         /// Display name of the broadcaster.
@@ -74,7 +74,7 @@ pub mod get_broadcaster_subscriptions {
     }
 
     impl helix::Request for GetBroadcasterSubscriptionsRequest {
-        type Response = GetBroadcasterSubscriptions;
+        type Response = BroadcasterSubscriptions;
 
         const PATH: &'static str = "subscriptions";
         const SCOPE: &'static [twitch_oauth2::Scope] =
