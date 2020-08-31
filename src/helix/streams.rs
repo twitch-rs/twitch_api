@@ -20,7 +20,7 @@
 //! # }
 //! ```
 #[doc(inline)]
-pub use get_streams::{Streams, GetStreamsRequest};
+pub use get_streams::{Stream, GetStreamsRequest};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
@@ -99,7 +99,7 @@ pub mod get_streams {
     /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
-    pub struct Streams {
+    pub struct Stream {
         /// ID of the game being played on the stream.
         pub game_id: String,
         /// Stream ID.
@@ -126,7 +126,7 @@ pub mod get_streams {
     }
 
     impl helix::Request for GetStreamsRequest {
-        type Response = Streams;
+        type Response = Stream;
 
         const PATH: &'static str = "streams";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
