@@ -8,6 +8,7 @@ pub mod clips;
 pub mod moderation;
 pub mod streams;
 pub mod subscriptions;
+pub mod tags;
 pub mod users;
 
 pub(crate) mod ser;

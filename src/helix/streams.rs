@@ -22,6 +22,9 @@
 #[doc(inline)]
 pub use get_streams::{GetStreamsRequest, Stream};
 
+#[doc(inline)]
+pub use get_stream_tags::{GetStreamTagsRequest, Tag};
+
 use crate::helix;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
@@ -137,4 +140,36 @@ pub mod get_streams {
     impl helix::Paginated for GetStreamsRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
     }
+}
+
+/// Gets information about active streams.
+/// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
+pub mod get_stream_tags {
+    use super::*;
+
+    /// Query Parameters for [Get Stream Tags](super::get_stream_tags)
+    ///
+    /// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
+    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
+    pub struct GetStreamTagsRequest {
+        // FIXME: twitch docs sucks
+        /// ID of the stream whose tags are going to be fetched
+        #[builder(setter(into))]
+        pub broadcaster_id: String,
+    }
+
+    /// Return Values for [Get Stream Tags](super::get_stream_tags)
+    ///
+    /// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
+    pub type Tag = helix::tags::TwitchTag;
+
+    impl helix::Request for GetStreamTagsRequest {
+        type Response = Tag;
+
+        const PATH: &'static str = "streams/tags";
+        const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    }
+
+    impl helix::RequestGet for GetStreamTagsRequest {}
 }
