@@ -10,9 +10,9 @@ pub use get_banned_events::{BannedEvents, GetBannedEventsRequest};
 #[doc(inline)]
 pub use get_banned_users::{BannedUsers, GetBannedUsersRequest};
 #[doc(inline)]
-pub use get_moderator_events::{ModeratorEvents, GetModeratorEventsRequest};
+pub use get_moderator_events::{GetModeratorEventsRequest, ModeratorEvents};
 #[doc(inline)]
-pub use get_moderators::{Moderators, GetModeratorsRequest};
+pub use get_moderators::{GetModeratorsRequest, Moderators};
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
