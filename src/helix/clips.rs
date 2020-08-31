@@ -21,7 +21,7 @@
 //! # }
 //! ```
 #[doc(inline)]
-pub use get_clips::{Clips, GetClipsRequest};
+pub use get_clips::{Clip, GetClipsRequest};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
@@ -77,7 +77,7 @@ pub mod get_clips {
     /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
     #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
     #[non_exhaustive]
-    pub struct Clips {
+    pub struct Clip {
         /// User ID of the stream from which the clip was created.
         pub broadcaster_id: String,
         /// Display name corresponding to broadcaster_id.
@@ -109,7 +109,7 @@ pub mod get_clips {
     }
 
     impl helix::Request for GetClipsRequest {
-        type Response = Clips;
+        type Response = Clip;
 
         const PATH: &'static str = "clips";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
