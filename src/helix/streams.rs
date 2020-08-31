@@ -26,7 +26,7 @@ use crate::helix;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
-/// Gotten from [GetStreams.type_](get_streams::GetStreams#structfield.type_)
+/// Gotten from [Stream.type_](get_streams::Stream#structfield.type_)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum StreamType {
