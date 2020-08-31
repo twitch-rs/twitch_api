@@ -19,7 +19,7 @@
 //! # }
 //! ```
 #[doc(inline)]
-pub use get_users::{User, GetUsersRequest};
+pub use get_users::{GetUsersRequest, User};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};

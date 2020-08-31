@@ -20,7 +20,7 @@
 //! # }
 //! ```
 #[doc(inline)]
-pub use get_streams::{Stream, GetStreamsRequest};
+pub use get_streams::{GetStreamsRequest, Stream};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
