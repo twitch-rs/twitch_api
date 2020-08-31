@@ -19,7 +19,7 @@
 //! # }
 //! ```
 #[doc(inline)]
-pub use get_users::{GetUsers, GetUsersRequest};
+pub use get_users::{Users, GetUsersRequest};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
@@ -50,7 +50,7 @@ pub mod get_users {
     /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
-    pub struct GetUsers {
+    pub struct Users {
         /// User’s broadcaster type: "partner", "affiliate", or "".
         pub broadcaster_type: Option<String>,
         /// User’s channel description.
@@ -75,7 +75,7 @@ pub mod get_users {
     }
 
     impl helix::Request for GetUsersRequest {
-        type Response = GetUsers;
+        type Response = Users;
 
         const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
         const PATH: &'static str = "users";
