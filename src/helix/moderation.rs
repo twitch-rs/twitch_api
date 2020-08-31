@@ -6,13 +6,13 @@ pub use check_automod_status::{
     CheckAutoModStatus, CheckAutoModStatusBody, CheckAutoModStatusRequest,
 };
 #[doc(inline)]
-pub use get_banned_events::{GetBannedEvents, GetBannedEventsRequest};
+pub use get_banned_events::{BannedEvents, GetBannedEventsRequest};
 #[doc(inline)]
-pub use get_banned_users::{GetBannedUsers, GetBannedUsersRequest};
+pub use get_banned_users::{BannedUsers, GetBannedUsersRequest};
 #[doc(inline)]
-pub use get_moderator_events::{GetModeratorEvents, GetModeratorEventsRequest};
+pub use get_moderator_events::{ModeratorEvents, GetModeratorEventsRequest};
 #[doc(inline)]
-pub use get_moderators::{GetModerators, GetModeratorsRequest};
+pub use get_moderators::{Moderators, GetModeratorsRequest};
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
@@ -45,7 +45,7 @@ pub mod get_moderators {
     /// [`get-moderators`](https://dev.twitch.tv/docs/api/reference#get-moderators)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
-    pub struct GetModerators {
+    pub struct Moderators {
         /// User ID of moderator
         ///
         /// Twitch says: `User ID of a user who has been banned.` but this seems wrong.
@@ -57,7 +57,7 @@ pub mod get_moderators {
     }
 
     impl helix::Request for GetModeratorsRequest {
-        type Response = GetModerators;
+        type Response = Moderators;
 
         const PATH: &'static str = "moderation/moderators";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
@@ -103,7 +103,7 @@ pub mod get_moderator_events {
     /// [`get-moderator-events`](https://dev.twitch.tv/docs/api/reference#get-moderator-events)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
-    pub struct GetModeratorEvents {
+    pub struct ModeratorEvents {
         /// Event ID
         pub id: String,
         // FIXME: Twitch docs sucks...
@@ -118,7 +118,7 @@ pub mod get_moderator_events {
     }
 
     impl helix::Request for GetModeratorEventsRequest {
-        type Response = GetModeratorEvents;
+        type Response = ModeratorEvents;
 
         const PATH: &'static str = "moderation/moderators/events";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
@@ -162,7 +162,7 @@ pub mod get_banned_users {
     /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
-    pub struct GetBannedUsers {
+    pub struct BannedUsers {
         /// User ID of a user who has been banned.
         pub user_id: String,
         /// Display name of a user who has been banned.
@@ -172,7 +172,7 @@ pub mod get_banned_users {
     }
 
     impl helix::Request for GetBannedUsersRequest {
-        type Response = GetBannedUsers;
+        type Response = BannedUsers;
 
         const PATH: &'static str = "moderation/banned";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
@@ -221,7 +221,7 @@ pub mod get_banned_events {
     /// [`get-banned-events`](https://dev.twitch.tv/docs/api/reference#get-banned-events)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
-    pub struct GetBannedEvents {
+    pub struct BannedEvents {
         /// Event ID
         pub id: String,
         /// Displays `moderation.user.ban` or `moderation.user.unban`
@@ -235,7 +235,7 @@ pub mod get_banned_events {
     }
 
     impl helix::Request for GetBannedEventsRequest {
-        type Response = GetBannedEvents;
+        type Response = BannedEvents;
 
         const PATH: &'static str = "moderation/banned/events";
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
