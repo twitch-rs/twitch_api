@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GetStreams","Return Values for Get Streams"],["GetStreamsRequest","Query Parameters for Get Streams"]]});
+initSidebarItems({"struct":[["GetStreamsRequest","Query Parameters for Get Streams"],["Stream","Return Values for Get Streams"]]});

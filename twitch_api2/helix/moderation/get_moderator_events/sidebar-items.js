@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GetModeratorEvents","Return Values for Get Moderators Events"],["GetModeratorEventsRequest","Query Parameters for Get Moderators Events"]]});
+initSidebarItems({"struct":[["GetModeratorEventsRequest","Query Parameters for Get Moderators Events"],["ModeratorEvents","Return Values for Get Moderators Events"]]});

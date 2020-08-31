@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["get_users","Gets information about one or more specified Twitch users. `get-users`"]],"struct":[["GetUsers","Return Values for Get Users"],["GetUsersRequest","Query Parameters for Get Users"]]});
+initSidebarItems({"mod":[["get_users","Gets information about one or more specified Twitch users. `get-users`"]],"struct":[["GetUsersRequest","Query Parameters for Get Users"],["User","Return Values for Get Users"]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GetClips","Return Values for Get Clips"],["GetClipsRequest","Query Parameters for Get Clips"]]});
+initSidebarItems({"struct":[["Clip","Return Values for Get Clips"],["GetClipsRequest","Query Parameters for Get Clips"]]});
