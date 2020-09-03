@@ -361,6 +361,7 @@ pub trait Paginated: Request {
     /// Pass [Option::None] if no cursor is found.
     fn set_pagination(&mut self, cursor: Cursor);
 }
+
 /// A cursor for pagination. This is needed because of how pagination is represented in the [New Twitch API](https://dev.twitch.tv/docs/api)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone, Default)]
 pub struct Pagination {
