@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GetGamesRequest","Query Parameters for Get Games"]],"type":[["Game","Return Values for Get Games"]]});

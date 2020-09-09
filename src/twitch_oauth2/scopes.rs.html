@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `twitch_oauth2/src/scopes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>scopes.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/1f30a846717b98b66a577ff5d86f4c765288edcb">1f30a84</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/a149e2cc3367d9b72496f86568840f2751b1c4c1">a149e2c</a></p>
 <style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../twitch_oauth2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -236,35 +236,35 @@
 
 <span class="kw">impl</span> <span class="ident">Scope</span> {
     <span class="doccomment">/// Get [Scope] as [oauth2::Scope]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_oauth_scope</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">oauth2</span>::<span class="ident">Scope</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_oauth_scope</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">oauth2</span>::<span class="ident">Scope</span> {
         <span class="kw">use</span> <span class="self">self</span>::<span class="ident">Scope</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">AnalyticsReadExtensions</span> <span class="op">=&gt;</span> <span class="string">&quot;analytics:read:extensions&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">UserEdit</span> <span class="op">=&gt;</span> <span class="string">&quot;user:edit&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">UserReadEmail</span> <span class="op">=&gt;</span> <span class="string">&quot;user:read:email&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">UserReadStreamKey</span> <span class="op">=&gt;</span> <span class="string">&quot;user:read:stream_key&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ClipsEdit</span> <span class="op">=&gt;</span> <span class="string">&quot;clips:edit&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">BitsRead</span> <span class="op">=&gt;</span> <span class="string">&quot;bits:read&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">AnalyticsReadGames</span> <span class="op">=&gt;</span> <span class="string">&quot;analytics:read:games&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">UserEditBroadcast</span> <span class="op">=&gt;</span> <span class="string">&quot;user:edit:broadcast&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">UserReadBroadcast</span> <span class="op">=&gt;</span> <span class="string">&quot;user:read:broadcast&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChatRead</span> <span class="op">=&gt;</span> <span class="string">&quot;chat:read&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChatEdit</span> <span class="op">=&gt;</span> <span class="string">&quot;chat:edit&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelModerate</span> <span class="op">=&gt;</span> <span class="string">&quot;channel:moderate&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelReadSubscriptions</span> <span class="op">=&gt;</span> <span class="string">&quot;channel:read:subscriptions&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelReadHypeTrain</span> <span class="op">=&gt;</span> <span class="string">&quot;channel:read:hype_train&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">WhispersRead</span> <span class="op">=&gt;</span> <span class="string">&quot;whispers:read&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">WhispersEdit</span> <span class="op">=&gt;</span> <span class="string">&quot;whispers:edit&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ModerationRead</span> <span class="op">=&gt;</span> <span class="string">&quot;moderation:read&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelReadRedemptions</span> <span class="op">=&gt;</span> <span class="string">&quot;channel:read:redemptions&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelEditCommercial</span> <span class="op">=&gt;</span> <span class="string">&quot;channel:edit:commercial&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">Other</span>(<span class="ident">s</span>) <span class="op">=&gt;</span> <span class="ident">s</span>.<span class="ident">clone</span>(),
+            <span class="ident">AnalyticsReadExtensions</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;analytics:read:extensions&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">UserEdit</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;user:edit&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">UserReadEmail</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;user:read:email&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">UserReadStreamKey</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;user:read:stream_key&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ClipsEdit</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;clips:edit&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">BitsRead</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;bits:read&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">AnalyticsReadGames</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;analytics:read:games&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">UserEditBroadcast</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;user:edit:broadcast&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">UserReadBroadcast</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;user:read:broadcast&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChatRead</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;chat:read&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChatEdit</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;chat:edit&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelModerate</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;channel:moderate&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelReadSubscriptions</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;channel:read:subscriptions&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelReadHypeTrain</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;channel:read:hype_train&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">WhispersRead</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;whispers:read&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">WhispersEdit</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;whispers:edit&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ModerationRead</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;moderation:read&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelReadRedemptions</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;channel:read:redemptions&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelEditCommercial</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;channel:edit:commercial&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">Other</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">s</span>.<span class="ident">clone</span>(),
         };
         <span class="ident">oauth2</span>::<span class="ident">Scope</span>::<span class="ident">new</span>(<span class="ident">s</span>)
     }
 
     <span class="doccomment">/// Get a vec of all defined twitch [Scopes][Scope]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>() <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Scope</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Scope</span><span class="op">&gt;</span> {
         <span class="macro">vec</span><span class="macro">!</span>[
             <span class="ident">Scope</span>::<span class="ident">AnalyticsReadExtensions</span>,
             <span class="ident">Scope</span>::<span class="ident">UserEdit</span>,
@@ -290,29 +290,29 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">oauth2</span>::<span class="ident">Scope</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Scope</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">scope</span>: <span class="ident">oauth2</span>::<span class="ident">Scope</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">scope</span>: <span class="ident">oauth2</span>::<span class="ident">Scope</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">use</span> <span class="self">self</span>::<span class="ident">Scope</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="ident">scope</span>.<span class="ident">as_str</span>() {
-            <span class="string">&quot;analytics:read:extensions&quot;</span> <span class="op">=&gt;</span> <span class="ident">AnalyticsReadExtensions</span>,
-            <span class="string">&quot;user:edit&quot;</span> <span class="op">=&gt;</span> <span class="ident">UserEdit</span>,
-            <span class="string">&quot;user:read:email&quot;</span> <span class="op">=&gt;</span> <span class="ident">UserReadEmail</span>,
-            <span class="string">&quot;user:read:stream_key&quot;</span> <span class="op">=&gt;</span> <span class="ident">Scope</span>::<span class="ident">UserReadStreamKey</span>,
-            <span class="string">&quot;clips:edit&quot;</span> <span class="op">=&gt;</span> <span class="ident">ClipsEdit</span>,
-            <span class="string">&quot;bits:read&quot;</span> <span class="op">=&gt;</span> <span class="ident">BitsRead</span>,
-            <span class="string">&quot;analytics:read:games&quot;</span> <span class="op">=&gt;</span> <span class="ident">AnalyticsReadGames</span>,
-            <span class="string">&quot;user:edit:broadcast&quot;</span> <span class="op">=&gt;</span> <span class="ident">UserEditBroadcast</span>,
-            <span class="string">&quot;user:read:broadcast&quot;</span> <span class="op">=&gt;</span> <span class="ident">UserReadBroadcast</span>,
-            <span class="string">&quot;chat:read&quot;</span> <span class="op">=&gt;</span> <span class="ident">ChatRead</span>,
-            <span class="string">&quot;chat:edit&quot;</span> <span class="op">=&gt;</span> <span class="ident">ChatEdit</span>,
-            <span class="string">&quot;channel:moderate&quot;</span> <span class="op">=&gt;</span> <span class="ident">ChannelModerate</span>,
-            <span class="string">&quot;channel:read:subscriptions&quot;</span> <span class="op">=&gt;</span> <span class="ident">ChannelReadSubscriptions</span>,
-            <span class="string">&quot;channel:read:hype_train&quot;</span> <span class="op">=&gt;</span> <span class="ident">ChannelReadHypeTrain</span>,
-            <span class="string">&quot;whispers:read&quot;</span> <span class="op">=&gt;</span> <span class="ident">WhispersRead</span>,
-            <span class="string">&quot;whispers:edit&quot;</span> <span class="op">=&gt;</span> <span class="ident">WhispersEdit</span>,
-            <span class="string">&quot;moderation:read&quot;</span> <span class="op">=&gt;</span> <span class="ident">ModerationRead</span>,
-            <span class="string">&quot;channel:read:redemptions&quot;</span> <span class="op">=&gt;</span> <span class="ident">ChannelReadRedemptions</span>,
-            <span class="string">&quot;channel:edit::commercial&quot;</span> <span class="op">=&gt;</span> <span class="ident">ChannelEditCommercial</span>,
-            <span class="ident">s</span> <span class="op">=&gt;</span> <span class="ident">Other</span>(<span class="ident">s</span>.<span class="ident">to_string</span>()),
+            <span class="string">&quot;analytics:read:extensions&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnalyticsReadExtensions</span>,
+            <span class="string">&quot;user:edit&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UserEdit</span>,
+            <span class="string">&quot;user:read:email&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UserReadEmail</span>,
+            <span class="string">&quot;user:read:stream_key&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Scope</span>::<span class="ident">UserReadStreamKey</span>,
+            <span class="string">&quot;clips:edit&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ClipsEdit</span>,
+            <span class="string">&quot;bits:read&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">BitsRead</span>,
+            <span class="string">&quot;analytics:read:games&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnalyticsReadGames</span>,
+            <span class="string">&quot;user:edit:broadcast&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UserEditBroadcast</span>,
+            <span class="string">&quot;user:read:broadcast&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UserReadBroadcast</span>,
+            <span class="string">&quot;chat:read&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ChatRead</span>,
+            <span class="string">&quot;chat:edit&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ChatEdit</span>,
+            <span class="string">&quot;channel:moderate&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ChannelModerate</span>,
+            <span class="string">&quot;channel:read:subscriptions&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ChannelReadSubscriptions</span>,
+            <span class="string">&quot;channel:read:hype_train&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ChannelReadHypeTrain</span>,
+            <span class="string">&quot;whispers:read&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">WhispersRead</span>,
+            <span class="string">&quot;whispers:edit&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">WhispersEdit</span>,
+            <span class="string">&quot;moderation:read&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ModerationRead</span>,
+            <span class="string">&quot;channel:read:redemptions&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ChannelReadRedemptions</span>,
+            <span class="string">&quot;channel:edit::commercial&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ChannelEditCommercial</span>,
+            <span class="ident">s</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Other</span>(<span class="ident">s</span>.<span class="ident">to_string</span>()),
         }
     }
 }
