@@ -1,6 +1,6 @@
 [package]
 name = "twitch_api2"
-version = "0.4.1"
+version = "0.5.0-alpha.1"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/Emilgardis/twitch_api2"
