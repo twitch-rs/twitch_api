@@ -17,14 +17,14 @@ thiserror = "1.0.20"
 displaydoc = "0.1.7"
 http = "0.2.1"
 url = { version = "2.1.1", optional = true }
-twitch_oauth2 = { version = "^0.4.0", optional = true, path = "twitch_oauth2/" }
+twitch_oauth2 = { version = "0.5.0-alpha.1", optional = true, path = "twitch_oauth2/" }
 serde = { version = "1.0.115", features = ["derive"], optional = true }
 serde_derive = { version = "1.0.115", optional = true }
 async-trait = { version = "0.1.40", optional = true }
 serde_json = { version = "1.0.57", optional = true }
 serde_repr = { version = "0.1.6", optional = true }
-reqwest = { version = "0.10.7", optional = true }
-surf = { version = "2.0.0-alpha.4", optional = true, git = "https://github.com/http-rs/surf.git", rev = "49be6a930c17771b98c5a8a961bdf2b9ac1b2063" }
+reqwest = { version = "0.10.8", optional = true }
+surf = { version = "2.0.0-alpha.5", optional = true }
 http-types = { version = "2.4.0", optional = true, features = ["hyperium_http"] }
 
 [features]
