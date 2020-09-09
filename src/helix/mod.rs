@@ -5,6 +5,7 @@ use twitch_oauth2::TwitchToken;
 
 pub mod channels;
 pub mod clips;
+pub mod games;
 pub mod moderation;
 pub mod streams;
 pub mod subscriptions;
