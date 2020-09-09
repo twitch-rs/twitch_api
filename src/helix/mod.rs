@@ -139,9 +139,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         {
             return Err(RequestError::HelixRequestGetError {
                 error,
-                status: status
-                    .try_into()
-                    .unwrap_or_else(|_| http::StatusCode::BAD_REQUEST),
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
                 url,
             });
@@ -203,9 +201,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         {
             return Err(RequestError::HelixRequestPutError {
                 error,
-                status: status
-                    .try_into()
-                    .unwrap_or_else(|_| http::StatusCode::BAD_REQUEST),
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
                 url,
                 body,
@@ -444,7 +440,7 @@ pub fn repeat_query(name: &str, items: &[String]) -> String {
     for (idx, item) in items.iter().enumerate() {
         s.push_str(&format!("{}={}", name, item));
         if idx + 1 != items.len() {
-            s.push_str("&")
+            s.push('&')
         }
     }
     s
