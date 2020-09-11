@@ -82,6 +82,7 @@ static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
 /// ```
 ///
 /// See [client] for implemented clients, you can also define your own if needed.
+#[cfg(any(feature = "helix", feature = "tmi"))]
 #[derive(Clone, Default)]
 #[non_exhaustive]
 pub struct TwitchClient<'a, C>
@@ -94,6 +95,7 @@ where C: HttpClient<'a> {
     pub tmi: TMIClient<'a, C>,
 }
 
+#[cfg(any(feature = "helix", feature = "tmi"))]
 impl<C: HttpClient<'static>> TwitchClient<'static, C> {
     /// Create a new [TwitchClient]
     #[cfg(all(feature = "helix", feature = "tmi"))]
@@ -107,6 +109,7 @@ impl<C: HttpClient<'static>> TwitchClient<'static, C> {
     }
 }
 
+#[cfg(any(feature = "helix", feature = "tmi"))]
 impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
     /// Create a new [TwitchClient] with an existing [HttpClient]
     #[cfg(all(feature = "helix", feature = "tmi"))]
