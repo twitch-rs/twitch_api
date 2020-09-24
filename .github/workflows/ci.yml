@@ -17,7 +17,7 @@ jobs:
         run: exit 0
   test:
     name: Tests
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || startsWith(github.ref, 'master/')
     strategy:
       fail-fast: false
       matrix:
