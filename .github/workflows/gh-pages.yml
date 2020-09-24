@@ -1,6 +1,6 @@
 name: github pages
 env:
-  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all"
+  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all unsupported"
   RUSTDOCFLAGS: "-Z unstable-options --html-in-header=docs/pre-content.html"
 on:
   push:

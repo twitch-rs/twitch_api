@@ -1,6 +1,6 @@
 name: CI
 env:
-  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all"
+  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all unsupported"
 on:
   pull_request:
     branches: [master]
@@ -138,6 +138,16 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --all-targets --no-default-features --features "tmi" -- -D warnings
+      - name: Run clippy --all-targets --no-default-features --features "pubsub" -- -D warnings
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-targets --no-default-features --features "pubsub" -- -D warnings
+      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}" -- -D warnings
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}" -- -D warnings
       - name: Run clippy --all-targets --all-features -- -D warnings
         uses: actions-rs/clippy-check@v1
         with:

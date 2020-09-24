@@ -22,21 +22,23 @@ serde = { version = "1.0.117", features = ["derive"] }
 serde_derive = "1.0.117"
 async-trait = { version = "0.1.41", optional = true }
 serde_json = { version = "1.0.59", optional = true }
-serde_repr = { version = "0.1.6", optional = true }
+serde_repr = { version = "0.1.6" }
 reqwest = { version = "0.10.8", optional = true }
 surf = { version = "2.0.0", optional = true }
 http-types = { version = "2.4.0", optional = true, features = ["hyperium_http"] }
 
 [features]
-default = ["tmi", "helix"]
+default = ["tmi", "helix", "pubsub"]
 
 client = ["twitch_oauth2"]
+
+unsupported = []
+allow_unknown_fields = []
 
 helix = [
     "url",
     "async-trait",
     "serde_json",
-    "serde_repr",
     "typed-builder",
 ]
 
@@ -51,7 +53,9 @@ surf_client = [
 
 reqwest_client = ["reqwest", "client"]
 
-all = ["tmi", "helix", "surf_client", "reqwest_client", "client"]
+pubsub = ["serde_json"]
+
+all = ["tmi", "helix", "surf_client", "reqwest_client", "client", "pubsub"]
 
 [dev-dependencies]
 tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
@@ -109,4 +113,4 @@ required-features = ["twitch_oauth2/reqwest_client", "reqwest_client"]
 
 
 [package.metadata.docs.rs]
-features = ["tmi", "helix", "surf_client", "reqwest_client", "client"]
+features = ["all", "unsupported"]

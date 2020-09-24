@@ -1,6 +1,6 @@
 #![allow(unknown_lints)] // remove once broken_intra_doc_links is on stable
 #![deny(missing_docs, broken_intra_doc_links)]
-#![cfg_attr(nightly, feature(doc_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg, doc_spotlight))]
 #![doc(html_root_url = "https://docs.rs/twitch_api2/0.4.1")]
 #![cfg_attr(all(nightly, doctest), feature(external_doc))]
 //! [![github]](https://github.com/emilgardis/twitch_api2)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api2/0.4.1/twitch_api2)
@@ -50,9 +50,15 @@ pub struct ReadmeDoctests;
 pub mod types;
 
 #[cfg(feature = "helix")]
+#[cfg_attr(nightly, doc(cfg(feature = "helix")))]
 pub mod helix;
 #[cfg(feature = "tmi")]
+#[cfg_attr(nightly, doc(cfg(feature = "tmi")))]
 pub mod tmi;
+
+#[cfg(feature = "pubsub")]
+#[cfg_attr(nightly, doc(cfg(feature = "pubsub")))]
+pub mod pubsub;
 
 #[cfg(all(feature = "helix", feature = "client"))]
 #[doc(inline)]
@@ -69,6 +75,7 @@ pub use twitch_oauth2;
 #[cfg_attr(nightly, doc(cfg(feature = "client")))]
 pub mod client;
 #[cfg(feature = "client")]
+#[cfg_attr(nightly, doc(cfg(feature = "client")))]
 pub use client::Client as HttpClient;
 
 #[doc(hidden)]
@@ -77,10 +84,16 @@ pub use client::DummyHttpClient;
 
 /// Location of Twitch Helix
 #[cfg(feature = "helix")]
+#[cfg_attr(nightly, doc(cfg(feature = "helix")))]
 pub static TWITCH_HELIX_URL: &str = "https://api.twitch.tv/helix/";
 /// Location of Twitch TMI
 #[cfg(feature = "tmi")]
+#[cfg_attr(nightly, doc(cfg(feature = "tmi")))]
 pub static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
+/// Location to twitch PubSub
+#[cfg(feature = "pubsub")]
+#[cfg_attr(nightly, doc(cfg(feature = "pubsub")))]
+pub static TWITCH_PUBSUB_URL: &str = "wss://pubsub-edge.twitch.tv";
 
 /// Client for Twitch APIs.
 ///
@@ -97,6 +110,10 @@ pub static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
 ///
 /// See [client] for implemented clients, you can also define your own if needed.
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
+#[cfg_attr(
+    nightly,
+    doc(cfg(all(feature = "client", any(feature = "helix", feature = "tmi"))))
+)]
 #[derive(Clone, Default)]
 #[non_exhaustive]
 pub struct TwitchClient<'a, C>
@@ -126,6 +143,10 @@ impl<C: HttpClient<'static>> TwitchClient<'static, C> {
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
 impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
     /// Create a new [TwitchClient] with an existing [HttpClient]
+    #[cfg_attr(
+        nightly,
+        doc(cfg(all(feature = "client", any(feature = "helix", feature = "tmi"))))
+    )]
     #[cfg(any(feature = "helix", feature = "tmi"))]
     pub fn with_client(client: C) -> TwitchClient<'a, C>
     where C: Clone {

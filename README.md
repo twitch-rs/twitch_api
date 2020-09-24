@@ -49,7 +49,7 @@ This crate aims to target
   * Implemented, see [implemented endpoints](#tmi)
 * [Webhooks](https://dev.twitch.tv/docs/api/webhooks-reference)
 * [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
-  * see [pubsub branch](Emilgardis/twitch_api2/tree/pubsub)
+  * Partially implemented, see [implemented topics](#pubsub)
 * [Extensions](https://dev.twitch.tv/docs/extensions/reference)
 
 This crate should also be able to be used for
@@ -213,6 +213,28 @@ There are no current plans to support
 | :------------- | :-------------------------------------------------------- |
 | ✔ Get Chatters | `https://tmi.twitch.tv/group/user/{broadcaster}/chatters` |
 | ✔ Get Hosts    | `https://tmi.twitch.tv/hosts`                             |
+
+
+### PubSub
+
+| Endpoint                                | Topic                                           |                                                                                             |
+| :-------------------------------------- | :---------------------------------------------- | :------------------------------------------------------------------------------------------ |
+| 🔨 Bits V1                               | `channel-bits-events-v1.<channel ID>`           | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)-->          |
+| ✔ Bits V2                               | `channel-bits-events-v2.<channel ID>`           | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)-->          |
+| 🔨 Bits Badge Notificaton                | `channel-bits-badge-unlocks.<channel_id>`       | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)-->          |
+| ✔ Channel Points                        | `channel-points-channel-v1.<channel_id>`        | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_points)               |
+| ✔ Channel Subscriptions                 | `channel-subscribe-events-v1.<channel ID>`      | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_subscriptions)--> |
+| ✔ Chat Moderator Actions                | `chat_moderator_actions.<channel ID>`           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/moderation)                   |
+| ✔ Chat Moderator Actions (undocumented) | `chat_moderator_actions.<channel ID>.<user_id>` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/moderation)                   |
+| 🔨 Whispers                              | `whispers.<user ID>`                            | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/whispers)                     |
+| ✔ Channel Cheer Events                  | `channel-cheer-events-public-v1.<user ID>`      | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_cheer)                |
+| ✔ Channel Sub Gifts V1                  | `channel-sub-gifts-v1.<user ID>`                | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_sub_gifts)            |
+| ✔ Following                             | `following.<user ID>`                           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/following)                    |
+| ✔ Hype Train Events V1                  | `hype-train-events-v1.<user ID>`                | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/hype_train)                   |
+| ✔ Hype Train Events V1 Rewards          | `hype-train-events-v1.<user ID>`                | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/hype_train)                   |
+| ✔ Raid                                  | `raid.<user ID>`                                | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/raid)                         |
+| ✔ Video Playback                        | `video-playback.<username>`                     | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/video_playback)               |
+| ✔ Video Playback By ID                  | `video-playback-by-id.<user ID>`                | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/video_playback)               |
 
 
 <h5> License </h5>
