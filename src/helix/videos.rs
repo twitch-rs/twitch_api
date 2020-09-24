@@ -50,10 +50,10 @@ pub enum VideoPeriod {
     Month,
 }
 
-/// Type of video
+/// Type of video. See
 #[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
-pub enum VideoType {
+pub enum VideoTypeFilter {
     /// All video types
     All,
     /// A uploaded video
@@ -62,16 +62,6 @@ pub enum VideoType {
     Archive,
     /// A highlight
     Highlight,
-}
-
-/// Type of video
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
-#[serde(rename_all = "lowercase")]
-pub enum VideoPrivacy {
-    /// Video is public
-    Public,
-    /// Video is private
-    Private,
 }
 
 /// Gets video information by video ID (one or more), user ID (one only), or game ID (one only).
@@ -117,7 +107,7 @@ pub mod get_videos {
         /// Type of video. Valid values: "all", "upload", "archive", "highlight". Default: "all".
         #[serde(rename = "type")]
         #[builder(default, setter(into))]
-        pub type_: Option<VideoType>,
+        pub type_: Option<VideoTypeFilter>,
     }
 
     /// Return Values for [Get Videos](super::get_videos)
@@ -127,34 +117,34 @@ pub mod get_videos {
     #[non_exhaustive]
     pub struct Video {
         /// Date when the video was created.
-        created_at: types::Timestamp,
+        pub created_at: types::Timestamp,
         /// Description of the video.
-        description: String,
+        pub description: String,
         /// Length of the video.
-        duration: String,
+        pub duration: String,
         /// ID of the video.
-        id: types::VideoId,
+        pub id: types::VideoId,
         /// Language of the video.
-        language: String,
+        pub language: String,
         /// Date when the video was published.
-        published_at: types::Timestamp,
+        pub published_at: types::Timestamp,
         /// Template URL for the thumbnail of the video.
-        thumbnail_url: String,
+        pub thumbnail_url: String,
         /// Title of the video.
-        title: String,
+        pub title: String,
         /// Type of video. Valid values: "upload", "archive", "highlight".
         #[serde(rename = "type")]
-        type_: VideoType,
+        pub type_: types::VideoType,
         /// URL of the video.
-        url: String,
+        pub url: String,
         /// ID of the user who owns the video.
-        user_id: types::UserId,
+        pub user_id: types::UserId,
         /// Display name corresponding to user_id.
-        user_name: types::DisplayName,
+        pub user_name: types::DisplayName,
         /// Number of times the video has been viewed.
-        view_count: i64,
+        pub view_count: i64,
         /// Indicates whether the video is publicly viewable. Valid values: "public", "private".
-        viewable: VideoPrivacy,
+        pub viewable: types::VideoPrivacy,
     }
 
     impl helix::Request for GetVideosRequest {
