@@ -72,6 +72,11 @@ path = "examples/get_channel_status.rs"
 required-features = ["twitch_oauth2/reqwest_client", "reqwest_client"]
 
 [[example]]
+name = "get_hosts"
+path = "examples/get_hosts.rs"
+required-features = ["surf_client"]
+
+[[example]]
 name = "get_moderation"
 path = "examples/get_moderation.rs"
 required-features = ["twitch_oauth2/surf_client", "surf_client"]
