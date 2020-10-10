@@ -121,7 +121,7 @@ impl<'a> Client<'a> for ReqwestClient {
 }
 
 /// Possible errors from [Client::req()] when using [surf::Client]
-#[cfg(feature = "surf_client")]
+#[cfg(any(feature = "surf_client", feature = "surf"))]
 // #[cfg_attr(nightly, doc(cfg(feature="surf_client")))]
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
 pub enum SurfError {
@@ -134,10 +134,10 @@ pub enum SurfError {
     /// uri could not be translated into an url.
     UrlError(#[from] url::ParseError),
 }
-#[cfg(feature = "surf_client")]
+#[cfg(any(feature = "surf_client", feature = "surf"))]
 use surf::Client as SurfClient;
 
-#[cfg(feature = "surf_client")]
+#[cfg(any(feature = "surf_client", feature = "surf"))]
 #[cfg_attr(nightly, doc(cfg(feature = "surf_client")))] // FIXME: This doc_cfg does nothing
 impl<'a> Client<'a> for SurfClient {
     type Error = SurfError;

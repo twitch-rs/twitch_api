@@ -96,6 +96,10 @@ name = "client"
 path = "examples/client.rs"
 required-features = ["twitch_oauth2/reqwest_client", "reqwest"]
 
+[[example]]
+name = "remove_followers"
+path = "examples/remove_followers.rs"
+required-features = ["twitch_oauth2/surf_client"]
 
 [package.metadata.docs.rs]
-features = ["tmi", "helix", "surf", "reqwest"]
+features = ["tmi", "helix", "surf_client", "reqwest_client"]
