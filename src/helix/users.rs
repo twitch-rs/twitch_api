@@ -24,6 +24,9 @@ pub use get_users::{GetUsersRequest, User};
 #[doc(inline)]
 pub use get_users_follows::{GetUsersFollowsRequest, UsersFollows};
 
+#[doc(inline)]
+pub use delete_user_follows::{DeleteUserFollows, DeleteUserFollowsRequest};
+
 use crate::helix;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
@@ -153,4 +156,65 @@ pub mod get_users_follows {
     impl helix::Paginated for GetUsersFollowsRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor); }
     }
+}
+
+/// Deletes a specified user from the followers of a specified channel.
+/// [`delete-user-follows`](https://dev.twitch.tv/docs/api/reference#delete-user-follows)
+///
+/// # Notes
+///
+/// This doesn't seem to work, use irc /block function instead.
+pub mod delete_user_follows {
+    use super::*;
+    /// Query Parameters for [Delete Users Follows](super::delete_users_follows)
+    ///
+    /// [`delete-user-follows`](https://dev.twitch.tv/docs/api/reference#delete-user-follows)
+    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
+    pub struct DeleteUserFollowsRequest {
+        /// User ID of the follower
+        #[builder(default, setter(into))]
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub from_id: Option<String>,
+        /// Channel to be unfollowed by the user
+        #[builder(default, setter(into))]
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub to_id: Option<String>,
+    }
+    /// Return Values for [[Delete Users Follows](super::delete_users_follows)
+    ///
+    /// [`delete-user-follows`](https://dev.twitch.tv/docs/api/reference#delete-user-follows)
+    #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
+    pub enum DeleteUserFollows {
+        /// 204 - User successfully deleted from list of channel followers
+        Success,
+        /// 400 - Missing Query Parameter
+        MissingQuery,
+        /// 422 - Entity cannot be processed
+        ProcessingError,
+    }
+
+    impl std::convert::TryFrom<http::StatusCode> for DeleteUserFollows {
+        type Error = std::borrow::Cow<'static, str>;
+
+        fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
+            match s {
+                http::StatusCode::NO_CONTENT => Ok(DeleteUserFollows::Success),
+                http::StatusCode::BAD_REQUEST => Ok(DeleteUserFollows::MissingQuery),
+                http::StatusCode::UNPROCESSABLE_ENTITY => Ok(DeleteUserFollows::Success),
+                other => Err(other.canonical_reason().unwrap_or("").into()),
+            }
+        }
+    }
+
+    impl helix::Request for DeleteUserFollowsRequest {
+        type Response = DeleteUserFollows;
+
+        const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
+        const PATH: &'static str = "users/follows";
+        const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditFollows];
+    }
+
+    impl helix::RequestDelete for DeleteUserFollowsRequest {}
 }

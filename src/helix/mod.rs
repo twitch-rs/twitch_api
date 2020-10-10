@@ -267,6 +267,68 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             }),
         }
     }
+
+    /// Request on a valid [RequestDelete] endpoint
+    pub async fn req_delete<R, D, T>(
+        &'a self,
+        request: R,
+        token: &T,
+    ) -> Result<D, RequestError<<C as crate::HttpClient<'a>>::Error>>
+    where
+        R: Request<Response = D> + Request + RequestDelete,
+        D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
+        T: TwitchToken + ?Sized,
+    {
+        let url = url::Url::parse(&format!(
+            "{}{}?{}",
+            crate::TWITCH_HELIX_URL,
+            <R as Request>::PATH,
+            request.query()?
+        ))?;
+
+        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
+            .map_err(|_| RequestError::Custom("Could not make token into headervalue".into()))?;
+        bearer.set_sensitive(true);
+        let req = http::Request::builder()
+            .method(http::Method::DELETE)
+            .uri(url.to_string())
+            .header("Client-ID", token.client_id().as_str())
+            .header("Content-Type", "application/json")
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(Vec::with_capacity(0))?;
+        let response = self
+            .client
+            .req(req)
+            .await
+            .map_err(RequestError::RequestError)?;
+        let text = std::str::from_utf8(&response.body())
+            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
+        // eprintln!("\n\nmessage is ------------ {} ------------", text);
+
+        if let Ok(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = serde_json::from_str::<HelixRequestError>(&text)
+        {
+            return Err(RequestError::HelixRequestDeleteError {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                url,
+            });
+        }
+
+        match response.status().try_into() {
+            Ok(result) => Ok(result),
+            Err(err) => Err(RequestError::HelixRequestDeleteError {
+                error: String::new(),
+                status: response.status(),
+                message: err.to_string(),
+                url,
+            }),
+        }
+    }
 }
 
 impl<'a, C> Default for HelixClient<'a, C>
@@ -311,6 +373,9 @@ pub trait RequestPatch: Request {
         serde_json::to_string(body)
     }
 }
+
+/// Helix endpoint DELETEs information
+pub trait RequestDelete: Request {}
 
 /// Helix endpoint GETs information
 pub trait RequestGet: Request {}
@@ -424,8 +489,19 @@ pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
         message: String,
         /// URL to the endpoint
         url: url::Url,
-        /// Body sent with PUT
+        /// Body sent with PATCH
         body: String,
+    },
+    /// helix returned error {status:?}- {error}: {message:?} when calling `DELETE {url}`
+    HelixRequestDeleteError {
+        /// Error message related to status code
+        error: String,
+        /// Status code of error, usually 400-499
+        status: http::StatusCode,
+        /// Error message from Twitch
+        message: String,
+        /// URL to the endpoint
+        url: url::Url,
     },
 }
 
