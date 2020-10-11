@@ -56,11 +56,12 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
             Some(user) => user.id.clone(),
             None => continue,
         };
-        let req = twitch_api2::helix::users::DeleteUserFollowsRequest::builder()
-            .from_id(user_id)
-            .to_id(Some(broadcaster_id.clone()))
+        let req = twitch_api2::helix::users::CreateUserFollowsRequest::default();
+        let body = twitch_api2::helix::users::CreateUserFollowsBody::builder()
+            .to_id(user_id)
+            .from_id(broadcaster_id.clone())
             .build();
-        let response = client.req_delete(req, &token).await?;
+        let response = client.req_post(req, body, &token).await?;
         println!("{:?}", response);
     }
 

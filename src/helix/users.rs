@@ -27,6 +27,9 @@ pub use get_users_follows::{GetUsersFollowsRequest, UsersFollows};
 #[doc(inline)]
 pub use delete_user_follows::{DeleteUserFollows, DeleteUserFollowsRequest};
 
+#[doc(inline)]
+pub use create_user_follows::{CreateUserFollows, CreateUserFollowsBody, CreateUserFollowsRequest};
+
 use crate::helix;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
@@ -163,7 +166,7 @@ pub mod get_users_follows {
 ///
 /// # Notes
 ///
-/// This doesn't seem to work, use irc /block function instead.
+/// This doesn't seem to work for removing people who follow owner of token. Use irc `/block <user_login>` for that
 pub mod delete_user_follows {
     use super::*;
     /// Query Parameters for [Delete Users Follows](super::delete_user_follows)
@@ -217,4 +220,106 @@ pub mod delete_user_follows {
     }
 
     impl helix::RequestDelete for DeleteUserFollowsRequest {}
+}
+
+/// Adds a specified user to the followers of a specified channel.
+/// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
+pub mod create_user_follows {
+    use std::convert::TryInto;
+
+    use super::*;
+    /// Query Parameters for [Create Users Follows](super::create_user_follows)
+    ///
+    /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
+    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+    #[non_exhaustive]
+    pub struct CreateUserFollowsRequest {}
+
+    /// Body Parameters for [Create Users Follows](super::create_user_follows)
+    ///
+    /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
+    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+    #[non_exhaustive]
+    pub struct CreateUserFollowsBody {
+        /// User ID of the follower
+        #[builder(default, setter(into))]
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub from_id: Option<String>,
+        /// ID of the channel to be followed by the user
+        #[builder(default, setter(into))]
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub to_id: Option<String>,
+    }
+
+    /// Return Values for [[Create Users Follows](super::create_user_follows)
+    ///
+    /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
+    #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
+    pub enum CreateUserFollows {
+        // FIXME: Twitch docs....
+        /// 204 or 200 - Successfully created follows
+        Success,
+        /// 400 - Missing Query Parameter
+        MissingQuery,
+        /// 422 - Entity cannot be processed
+        ProcessingError,
+    }
+
+    impl std::convert::TryFrom<http::StatusCode> for CreateUserFollows {
+        type Error = std::borrow::Cow<'static, str>;
+
+        fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
+            match s {
+                http::StatusCode::NO_CONTENT | http::StatusCode::OK => {
+                    Ok(CreateUserFollows::Success)
+                }
+                http::StatusCode::BAD_REQUEST => Ok(CreateUserFollows::MissingQuery),
+                http::StatusCode::UNPROCESSABLE_ENTITY => Ok(CreateUserFollows::Success),
+                other => Err(other.canonical_reason().unwrap_or("").into()),
+            }
+        }
+    }
+
+    impl helix::Request for CreateUserFollowsRequest {
+        type Response = CreateUserFollows;
+
+        const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
+        const PATH: &'static str = "users/follows";
+        const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditFollows];
+    }
+
+    impl helix::RequestPost for CreateUserFollowsRequest {
+        type Body = CreateUserFollowsBody;
+
+        fn result<RE>(
+            self,
+            url: &url::Url,
+            body: &str,
+            response: http::Response<Vec<u8>>,
+        ) -> Result<
+            helix::Response<Self, <Self as helix::Request>::Response>,
+            helix::RequestError<RE>,
+        >
+        where
+            RE: std::error::Error + Send + Sync + 'static,
+            Self: Sized,
+        {
+            let response = response.status().try_into().map_err(|_| {
+                // This path should never be taken, but just to be sure we do this
+                helix::RequestError::HelixRequestPostError {
+                    status: response.status(),
+                    url: url.clone(),
+                    body: body.to_string(),
+                    message: String::new(), // FIXME: None, but this branch should really never be hit
+                    error: String::new(),
+                }
+            })?;
+            Ok(helix::Response {
+                data: vec![response],
+                pagination: <_>::default(),
+                request: self,
+            })
+        }
+    }
 }

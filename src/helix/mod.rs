@@ -199,20 +199,16 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             message,
         }) = serde_json::from_str::<HelixRequestError>(&text)
         {
-            return Err(RequestError::HelixRequestPutError {
+            return Err(RequestError::HelixRequestPostError {
                 error,
                 status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
-                url,
-                body,
+                url: url.clone(),
+                body: body.to_string(),
             });
         }
-        let response: InnerResponse<D> = serde_json::from_str(&text)?;
-        Ok(Response {
-            data: response.data,
-            pagination: response.pagination,
-            request,
-        })
+
+        request.result(&url, &body, response)
     }
 
     /// Request on a valid [RequestPatch] endpoint
@@ -225,7 +221,8 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     where
         R: Request<Response = D> + Request + RequestPatch<Body = B>,
         B: serde::Serialize,
-        D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
+        D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
+            + serde::de::DeserializeOwned,
         T: TwitchToken + ?Sized,
     {
         let url = url::Url::parse(&format!(
@@ -276,7 +273,8 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     ) -> Result<D, RequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestDelete,
-        D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
+        D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
+            + serde::de::DeserializeOwned,
         T: TwitchToken + ?Sized,
     {
         let url = url::Url::parse(&format!(
@@ -347,7 +345,7 @@ pub trait Request: serde::Serialize {
     /// Optional scopes needed by this endpoint
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     /// Response type. twitch's response will  deserialize to this.
-    type Response;
+    type Response: serde::de::DeserializeOwned;
     /// Defines layout of the url parameters.
     fn query(&self) -> Result<String, ser::Error> { ser::to_string(&self) }
 }
@@ -360,6 +358,27 @@ pub trait RequestPost: Request {
     /// Create body text from [RequestPost::Body]
     fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
         serde_json::to_string(body)
+    }
+
+    /// Parse response. Override for different behavior
+    fn result<RE>(
+        self,
+        _url: &url::Url,
+        _body: &str,
+        response: http::Response<Vec<u8>>,
+    ) -> Result<Response<Self, <Self as Request>::Response>, RequestError<RE>>
+    where
+        RE: std::error::Error + Send + Sync + 'static,
+        Self: Sized,
+    {
+        let text = std::str::from_utf8(&response.body())
+            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
+        let response: InnerResponse<<Self as Request>::Response> = serde_json::from_str(&text)?;
+        Ok(Response {
+            data: response.data,
+            pagination: response.pagination,
+            request: self,
+        })
     }
 }
 
@@ -383,7 +402,9 @@ pub trait RequestGet: Request {}
 /// Response retrieved from endpoint. Data is the type in [Request::Response]
 #[derive(PartialEq, Debug)]
 pub struct Response<R, D>
-where R: Request<Response = D> {
+where
+    R: Request<Response = D>,
+    D: serde::de::DeserializeOwned, {
     ///  Twitch's response field for `data`.
     pub data: Vec<D>,
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
@@ -470,6 +491,19 @@ pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
     },
     /// helix returned error {status:?} - {error}: {message:?} when calling `PUT {url}: "{body}"`
     HelixRequestPutError {
+        /// Error message related to status code
+        error: String,
+        /// Status code of error, usually 400-499
+        status: http::StatusCode,
+        /// Error message from Twitch
+        message: String,
+        /// URL to the endpoint
+        url: url::Url,
+        /// Body sent with PUT
+        body: String,
+    },
+    /// helix returned error {status:?} - {error}: {message:?} when calling `POST {url}: "{body}"`
+    HelixRequestPostError {
         /// Error message related to status code
         error: String,
         /// Status code of error, usually 400-499
