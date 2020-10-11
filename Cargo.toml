@@ -97,8 +97,8 @@ path = "examples/client.rs"
 required-features = ["twitch_oauth2/reqwest_client", "reqwest"]
 
 [[example]]
-name = "remove_followers"
-path = "examples/remove_followers.rs"
+name = "create_follower"
+path = "examples/create_follower.rs"
 required-features = ["twitch_oauth2/surf_client"]
 
 [package.metadata.docs.rs]
