@@ -166,7 +166,7 @@ pub mod get_users_follows {
 /// This doesn't seem to work, use irc /block function instead.
 pub mod delete_user_follows {
     use super::*;
-    /// Query Parameters for [Delete Users Follows](super::delete_users_follows)
+    /// Query Parameters for [Delete Users Follows](super::delete_user_follows)
     ///
     /// [`delete-user-follows`](https://dev.twitch.tv/docs/api/reference#delete-user-follows)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
@@ -181,7 +181,7 @@ pub mod delete_user_follows {
         #[serde(skip_serializing_if = "Option::is_none")]
         pub to_id: Option<String>,
     }
-    /// Return Values for [[Delete Users Follows](super::delete_users_follows)
+    /// Return Values for [[Delete Users Follows](super::delete_user_follows)
     ///
     /// [`delete-user-follows`](https://dev.twitch.tv/docs/api/reference#delete-user-follows)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
