@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/helix/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/271a47b6faafc0a7edd4c756466623e182ab576b">271a47b</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/4c5a7b87726a079d967b100b9fe7cb06abd2c3b1">4c5a7b8</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -450,6 +450,116 @@
 <span id="445">445</span>
 <span id="446">446</span>
 <span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -652,20 +762,16 @@
             <span class="ident">message</span>,
         }) <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>)
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RequestError</span>::<span class="ident">HelixRequestPutError</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RequestError</span>::<span class="ident">HelixRequestPostError</span> {
                 <span class="ident">error</span>,
                 <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>),
                 <span class="ident">message</span>,
-                <span class="ident">url</span>,
-                <span class="ident">body</span>,
+                <span class="ident">url</span>: <span class="ident">url</span>.<span class="ident">clone</span>(),
+                <span class="ident">body</span>: <span class="ident">body</span>.<span class="ident">to_string</span>(),
             });
         }
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">InnerResponse</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">Response</span> {
-            <span class="ident">data</span>: <span class="ident">response</span>.<span class="ident">data</span>,
-            <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>,
-            <span class="ident">request</span>,
-        })
+
+        <span class="ident">request</span>.<span class="ident">result</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>, <span class="kw-2">&amp;</span><span class="ident">body</span>, <span class="ident">response</span>)
     }
 
     <span class="doccomment">/// Request on a valid [RequestPatch] endpoint</span>
@@ -678,7 +784,8 @@
     <span class="kw">where</span>
         <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestPatch</span><span class="op">&lt;</span><span class="ident">Body</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
         <span class="ident">B</span>: <span class="ident">serde</span>::<span class="ident">Serialize</span>,
-        <span class="ident">D</span>: <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">http</span>::<span class="ident">StatusCode</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">D</span>: <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">http</span>::<span class="ident">StatusCode</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
+            <span class="op">+</span> <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">DeserializeOwned</span>,
         <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
     {
         <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">url</span>::<span class="ident">Url</span>::<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
@@ -720,6 +827,69 @@
             }),
         }
     }
+
+    <span class="doccomment">/// Request on a valid [RequestDelete] endpoint</span>
+    <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">req_delete</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
+        <span class="ident">request</span>: <span class="ident">R</span>,
+        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">D</span>, <span class="ident">RequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="kw">crate</span>::<span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestDelete</span>,
+        <span class="ident">D</span>: <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">http</span>::<span class="ident">StatusCode</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
+            <span class="op">+</span> <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">DeserializeOwned</span>,
+        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    {
+        <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">url</span>::<span class="ident">Url</span>::<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
+            <span class="string">&quot;{}{}?{}&quot;</span>,
+            <span class="kw">crate</span>::<span class="ident">TWITCH_HELIX_URL</span>,
+            <span class="op">&lt;</span><span class="ident">R</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span>::<span class="ident">PATH</span>,
+            <span class="ident">request</span>.<span class="ident">query</span>()<span class="question-mark">?</span>
+        ))<span class="question-mark">?</span>;
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bearer</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_str</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Bearer {}&quot;</span>, <span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>()))
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">RequestError</span>::<span class="ident">Custom</span>(<span class="string">&quot;Could not make token into headervalue&quot;</span>.<span class="ident">into</span>()))<span class="question-mark">?</span>;
+        <span class="ident">bearer</span>.<span class="ident">set_sensitive</span>(<span class="bool-val">true</span>);
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Request</span>::<span class="ident">builder</span>()
+            .<span class="ident">method</span>(<span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">DELETE</span>)
+            .<span class="ident">uri</span>(<span class="ident">url</span>.<span class="ident">to_string</span>())
+            .<span class="ident">header</span>(<span class="string">&quot;Client-ID&quot;</span>, <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())
+            .<span class="ident">header</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
+            .<span class="ident">header</span>(<span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">AUTHORIZATION</span>, <span class="ident">bearer</span>)
+            .<span class="ident">body</span>(<span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="number">0</span>))<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">client</span>
+            .<span class="ident">req</span>(<span class="ident">req</span>)
+            .<span class="ident">await</span>
+            .<span class="ident">map_err</span>(<span class="ident">RequestError</span>::<span class="ident">RequestError</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">response</span>.<span class="ident">body</span>())
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">RequestError</span>::<span class="ident">Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>))<span class="question-mark">?</span>;
+        <span class="comment">// eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);</span>
+
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
+            <span class="ident">error</span>,
+            <span class="ident">status</span>,
+            <span class="ident">message</span>,
+        }) <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>)
+        {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RequestError</span>::<span class="ident">HelixRequestDeleteError</span> {
+                <span class="ident">error</span>,
+                <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>),
+                <span class="ident">message</span>,
+                <span class="ident">url</span>,
+            });
+        }
+
+        <span class="kw">match</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">try_into</span>() {
+            <span class="prelude-val">Ok</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">RequestError</span>::<span class="ident">HelixRequestDeleteError</span> {
+                <span class="ident">error</span>: <span class="ident">String</span>::<span class="ident">new</span>(),
+                <span class="ident">status</span>: <span class="ident">response</span>.<span class="ident">status</span>(),
+                <span class="ident">message</span>: <span class="ident">err</span>.<span class="ident">to_string</span>(),
+                <span class="ident">url</span>,
+            }),
+        }
+    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>
@@ -738,7 +908,7 @@
     <span class="doccomment">/// Optional scopes needed by this endpoint</span>
     <span class="kw">const</span> <span class="ident">OPT_SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[];
     <span class="doccomment">/// Response type. twitch&#39;s response will  deserialize to this.</span>
-    <span class="kw">type</span> <span class="ident">Response</span>;
+    <span class="kw">type</span> <span class="ident">Response</span>: <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">DeserializeOwned</span>;
     <span class="doccomment">/// Defines layout of the url parameters.</span>
     <span class="kw">fn</span> <span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">ser</span>::<span class="ident">Error</span><span class="op">&gt;</span> { <span class="ident">ser</span>::<span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) }
 }
@@ -751,6 +921,27 @@
     <span class="doccomment">/// Create body text from [RequestPost::Body]</span>
     <span class="kw">fn</span> <span class="ident">body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">body</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Body</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">serde_json</span>::<span class="ident">to_string</span>(<span class="ident">body</span>)
+    }
+
+    <span class="doccomment">/// Parse response. Override for different behavior</span>
+    <span class="kw">fn</span> <span class="ident">result</span><span class="op">&lt;</span><span class="ident">RE</span><span class="op">&gt;</span>(
+        <span class="self">self</span>,
+        <span class="ident">_url</span>: <span class="kw-2">&amp;</span><span class="ident">url</span>::<span class="ident">Url</span>,
+        <span class="ident">_body</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+        <span class="ident">response</span>: <span class="ident">http</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span>::<span class="ident">Response</span><span class="op">&gt;</span>, <span class="ident">RequestError</span><span class="op">&lt;</span><span class="ident">RE</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    {
+        <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">response</span>.<span class="ident">body</span>())
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">RequestError</span>::<span class="ident">Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>))<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">InnerResponse</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span>::<span class="ident">Response</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="ident">Response</span> {
+            <span class="ident">data</span>: <span class="ident">response</span>.<span class="ident">data</span>,
+            <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>,
+            <span class="ident">request</span>: <span class="self">self</span>,
+        })
     }
 }
 
@@ -765,13 +956,18 @@
     }
 }
 
+<span class="doccomment">/// Helix endpoint DELETEs information</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestDelete</span>: <span class="ident">Request</span> {}
+
 <span class="doccomment">/// Helix endpoint GETs information</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestGet</span>: <span class="ident">Request</span> {}
 
 <span class="doccomment">/// Response retrieved from endpoint. Data is the type in [Request::Response]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>
-<span class="kw">where</span> <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> {
+<span class="kw">where</span>
+    <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span>,
+    <span class="ident">D</span>: <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">DeserializeOwned</span>, {
     <span class="doccomment">///  Twitch&#39;s response field for `data`.</span>
     <span class="kw">pub</span> <span class="ident">data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.</span>
@@ -869,8 +1065,10 @@
         <span class="doccomment">/// Body sent with PUT</span>
         <span class="ident">body</span>: <span class="ident">String</span>,
     },
-    <span class="doccomment">/// helix returned error {status:?}: {message:?} when calling `PATCH {url}: &quot;{body}&quot;`</span>
-    <span class="ident">HelixRequestPatchError</span> {
+    <span class="doccomment">/// helix returned error {status:?} - {error}: {message:?} when calling `POST {url}: &quot;{body}&quot;`</span>
+    <span class="ident">HelixRequestPostError</span> {
+        <span class="doccomment">/// Error message related to status code</span>
+        <span class="ident">error</span>: <span class="ident">String</span>,
         <span class="doccomment">/// Status code of error, usually 400-499</span>
         <span class="ident">status</span>: <span class="ident">http</span>::<span class="ident">StatusCode</span>,
         <span class="doccomment">/// Error message from Twitch</span>
@@ -879,6 +1077,28 @@
         <span class="ident">url</span>: <span class="ident">url</span>::<span class="ident">Url</span>,
         <span class="doccomment">/// Body sent with PUT</span>
         <span class="ident">body</span>: <span class="ident">String</span>,
+    },
+    <span class="doccomment">/// helix returned error {status:?}: {message:?} when calling `PATCH {url}: &quot;{body}&quot;`</span>
+    <span class="ident">HelixRequestPatchError</span> {
+        <span class="doccomment">/// Status code of error, usually 400-499</span>
+        <span class="ident">status</span>: <span class="ident">http</span>::<span class="ident">StatusCode</span>,
+        <span class="doccomment">/// Error message from Twitch</span>
+        <span class="ident">message</span>: <span class="ident">String</span>,
+        <span class="doccomment">/// URL to the endpoint</span>
+        <span class="ident">url</span>: <span class="ident">url</span>::<span class="ident">Url</span>,
+        <span class="doccomment">/// Body sent with PATCH</span>
+        <span class="ident">body</span>: <span class="ident">String</span>,
+    },
+    <span class="doccomment">/// helix returned error {status:?}- {error}: {message:?} when calling `DELETE {url}`</span>
+    <span class="ident">HelixRequestDeleteError</span> {
+        <span class="doccomment">/// Error message related to status code</span>
+        <span class="ident">error</span>: <span class="ident">String</span>,
+        <span class="doccomment">/// Status code of error, usually 400-499</span>
+        <span class="ident">status</span>: <span class="ident">http</span>::<span class="ident">StatusCode</span>,
+        <span class="doccomment">/// Error message from Twitch</span>
+        <span class="ident">message</span>: <span class="ident">String</span>,
+        <span class="doccomment">/// URL to the endpoint</span>
+        <span class="ident">url</span>: <span class="ident">url</span>::<span class="ident">Url</span>,
     },
 }
 
