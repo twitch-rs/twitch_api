@@ -128,28 +128,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(RequestError::RequestError)?;
-        let text = std::str::from_utf8(&response.body())
-            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
-        //eprintln!("\n\nmessage is ------------ {} ------------", text);
-        if let Ok(HelixRequestError {
-            error,
-            status,
-            message,
-        }) = serde_json::from_str::<HelixRequestError>(&text)
-        {
-            return Err(RequestError::HelixRequestGetError {
-                error,
-                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
-                message,
-                url,
-            });
-        }
-        let response: InnerResponse<D> = serde_json::from_str(&text)?;
-        Ok(Response {
-            data: response.data,
-            pagination: response.pagination,
-            request,
-        })
+        request.parse_response(&url, response)
     }
 
     /// Request on a valid [RequestPost] endpoint
@@ -190,25 +169,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(RequestError::RequestError)?;
-        let text = std::str::from_utf8(&response.body())
-            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
-        // eprintln!("\n\nmessage is ------------ {} ------------", text);
-        if let Ok(HelixRequestError {
-            error,
-            status,
-            message,
-        }) = serde_json::from_str::<HelixRequestError>(&text)
-        {
-            return Err(RequestError::HelixRequestPostError {
-                error,
-                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
-                message,
-                url: url.clone(),
-                body: body.to_string(),
-            });
-        }
-
-        request.result(&url, &body, response)
+        request.parse_response(&url, &body, response)
     }
 
     /// Request on a valid [RequestPatch] endpoint
@@ -253,16 +214,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         //let text = std::str::from_utf8(&response.body())
         //    .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
         // eprintln!("\n\nmessage is ------------ {} ------------", text);
-
-        match response.status().try_into() {
-            Ok(result) => Ok(result),
-            Err(err) => Err(RequestError::HelixRequestPatchError {
-                status: response.status(),
-                message: err.to_string(),
-                url,
-                body,
-            }),
-        }
+        request.parse_response(&url, &body, response)
     }
 
     /// Request on a valid [RequestDelete] endpoint
@@ -299,36 +251,11 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(RequestError::RequestError)?;
-        let text = std::str::from_utf8(&response.body())
-            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
-        // eprintln!("\n\nmessage is ------------ {} ------------", text);
-
-        if let Ok(HelixRequestError {
-            error,
-            status,
-            message,
-        }) = serde_json::from_str::<HelixRequestError>(&text)
-        {
-            return Err(RequestError::HelixRequestDeleteError {
-                error,
-                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
-                message,
-                url,
-            });
-        }
-
-        match response.status().try_into() {
-            Ok(result) => Ok(result),
-            Err(err) => Err(RequestError::HelixRequestDeleteError {
-                error: String::new(),
-                status: response.status(),
-                message: err.to_string(),
-                url,
-            }),
-        }
+        request.parse_response(&url, response)
     }
 }
 
+#[cfg(feature = "client")]
 impl<'a, C> Default for HelixClient<'a, C>
 where C: crate::HttpClient<'a> + Default
 {
@@ -361,10 +288,10 @@ pub trait RequestPost: Request {
     }
 
     /// Parse response. Override for different behavior
-    fn result<RE>(
+    fn parse_response<RE>(
         self,
-        _url: &url::Url,
-        _body: &str,
+        url: &url::Url,
+        body: &str,
         response: http::Response<Vec<u8>>,
     ) -> Result<Response<Self, <Self as Request>::Response>, RequestError<RE>>
     where
@@ -373,6 +300,20 @@ pub trait RequestPost: Request {
     {
         let text = std::str::from_utf8(&response.body())
             .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
+        if let Ok(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = serde_json::from_str::<HelixRequestError>(&text)
+        {
+            return Err(RequestError::HelixRequestPostError {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                url: url.clone(),
+                body: body.to_string(),
+            });
+        }
         let response: InnerResponse<<Self as Request>::Response> = serde_json::from_str(&text)?;
         Ok(Response {
             data: response.data,
@@ -391,13 +332,112 @@ pub trait RequestPatch: Request {
     fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
         serde_json::to_string(body)
     }
+
+    /// Parse response. Override for different behavior
+    fn parse_response<RE>(
+        self,
+        url: &url::Url,
+        body: &str,
+        response: http::Response<Vec<u8>>,
+    ) -> Result<<Self as Request>::Response, RequestError<RE>>
+    where
+        RE: std::error::Error + Send + Sync + 'static,
+        <Self as Request>::Response:
+            std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
+        Self: Sized,
+    {
+        match response.status().try_into() {
+            Ok(result) => Ok(result),
+            Err(err) => Err(RequestError::HelixRequestPatchError {
+                status: response.status(),
+                message: err.to_string(),
+                url: url.clone(),
+                body: body.to_string(),
+            }),
+        }
+    }
 }
 
 /// Helix endpoint DELETEs information
-pub trait RequestDelete: Request {}
+pub trait RequestDelete: Request {
+    /// Parse response. Override for different behavior
+    fn parse_response<RE>(
+        self,
+        url: &url::Url,
+        response: http::Response<Vec<u8>>,
+    ) -> Result<<Self as Request>::Response, RequestError<RE>>
+    where
+        RE: std::error::Error + Send + Sync + 'static,
+        <Self as Request>::Response:
+            std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
+        Self: Sized,
+    {
+        let text = std::str::from_utf8(&response.body())
+            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
+        // eprintln!("\n\nmessage is ------------ {} ------------", text);
+
+        if let Ok(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = serde_json::from_str::<HelixRequestError>(&text)
+        {
+            return Err(RequestError::HelixRequestDeleteError {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                url: url.clone(),
+            });
+        }
+
+        match response.status().try_into() {
+            Ok(result) => Ok(result),
+            Err(err) => Err(RequestError::HelixRequestDeleteError {
+                error: String::new(),
+                status: response.status(),
+                message: err.to_string(),
+                url: url.clone(),
+            }),
+        }
+    }
+}
 
 /// Helix endpoint GETs information
-pub trait RequestGet: Request {}
+pub trait RequestGet: Request {
+    /// Parse response. Override for different behavior
+    fn parse_response<RE>(
+        self,
+        url: &url::Url,
+        response: http::Response<Vec<u8>>,
+    ) -> Result<Response<Self, <Self as Request>::Response>, RequestError<RE>>
+    where
+        RE: std::error::Error + Send + Sync + 'static,
+        Self: Sized,
+    {
+        let text = std::str::from_utf8(&response.body())
+            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
+        //eprintln!("\n\nmessage is ------------ {} ------------", text);
+        if let Ok(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = serde_json::from_str::<HelixRequestError>(&text)
+        {
+            return Err(RequestError::HelixRequestGetError {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                url: url.clone(),
+            });
+        }
+        let response: InnerResponse<_> = serde_json::from_str(&text)?;
+        Ok(Response {
+            data: response.data,
+            pagination: response.pagination,
+            request: self,
+        })
+    }
+}
 
 /// Response retrieved from endpoint. Data is the type in [Request::Response]
 #[derive(PartialEq, Debug)]
@@ -413,6 +453,7 @@ where
     pub request: R,
 }
 
+#[cfg(feature = "client")]
 impl<R, D> Response<R, D>
 where
     R: Request<Response = D> + Clone + Paginated + RequestGet,
