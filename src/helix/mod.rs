@@ -35,8 +35,8 @@ pub use twitch_oauth2::Scope;
 /// ```
 ///
 /// See [HttpClient][crate::HttpClient] for implemented http clients, you can also define your own if needed.
-#[cfg(feature = "helix")]
-#[cfg_attr(nightly, doc(cfg(feature = "helix")))]
+#[cfg(all(feature = "client"))]
+#[cfg_attr(nightly, doc(all(feature = "helix", feature = "client")))]
 #[derive(Clone)]
 pub struct HelixClient<'a, C>
 where C: crate::HttpClient<'a> {
@@ -51,7 +51,6 @@ struct InnerResponse<D> {
     #[serde(default)]
     pagination: Pagination,
 }
-
 #[derive(Deserialize, Clone, Debug)]
 struct HelixRequestError {
     error: String,
@@ -59,6 +58,7 @@ struct HelixRequestError {
     message: String,
 }
 
+#[cfg(feature = "client")]
 impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     /// Create a new client with an existing client
     pub fn with_client(client: C) -> HelixClient<'a, C> {
