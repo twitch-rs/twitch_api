@@ -111,6 +111,7 @@ pub mod get_all_stream_tags {
         type Response = Tag;
 
         const PATH: &'static str = "tags/streams";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     }
 

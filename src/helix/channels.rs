@@ -73,6 +73,7 @@ pub mod get_channel_information {
         type Response = ChannelInformation;
 
         const PATH: &'static str = "channels";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     }
 
@@ -136,6 +137,7 @@ pub mod modify_channel_information {
         type Response = ModifyChannelInformation;
 
         const PATH: &'static str = "channels";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditBroadcast];
     }
 
@@ -244,6 +246,7 @@ pub mod start_commercial {
         type Response = StartCommercial;
 
         const PATH: &'static str = "channels/commercial";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] =
             &[twitch_oauth2::Scope::ChannelEditCommercial];
     }

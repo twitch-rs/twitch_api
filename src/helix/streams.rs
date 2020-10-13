@@ -132,6 +132,7 @@ pub mod get_streams {
         type Response = Stream;
 
         const PATH: &'static str = "streams";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     }
 
@@ -168,6 +169,7 @@ pub mod get_stream_tags {
         type Response = Tag;
 
         const PATH: &'static str = "streams/tags";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     }
 

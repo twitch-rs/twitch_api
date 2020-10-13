@@ -86,8 +86,10 @@ pub mod get_users {
     impl helix::Request for GetUsersRequest {
         type Response = User;
 
+        #[cfg(feature = "client")]
         const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
         const PATH: &'static str = "users";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     }
 
@@ -150,8 +152,10 @@ pub mod get_users_follows {
     impl helix::Request for GetUsersFollowsRequest {
         type Response = UsersFollows;
 
+        #[cfg(feature = "client")]
         const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
         const PATH: &'static str = "users/follows";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     }
 
@@ -214,8 +218,10 @@ pub mod delete_user_follows {
     impl helix::Request for DeleteUserFollowsRequest {
         type Response = DeleteUserFollows;
 
+        #[cfg(feature = "client")]
         const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
         const PATH: &'static str = "users/follows";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditFollows];
     }
 
@@ -284,8 +290,10 @@ pub mod create_user_follows {
     impl helix::Request for CreateUserFollowsRequest {
         type Response = CreateUserFollows;
 
+        #[cfg(feature = "client")]
         const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
         const PATH: &'static str = "users/follows";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditFollows];
     }
 
