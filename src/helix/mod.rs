@@ -1,4 +1,32 @@
 //! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
+//!
+//!
+//! Aside from using [HelixClient] as described on [the crate documentation](crate),
+//! you can decide to use this library without any specific client implementation.
+//!
+//! ```rust,no_run
+//! use twitch_api2::helix::{self, Request, RequestGet, users::{GetUsersRequest, User}};
+//!
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+//!
+//! let request = GetUsersRequest::builder()
+//!     .login(vec!["justintv123".to_string()])
+//!     .build();
+//!
+//! // Send it however you want
+//! // Create a [http::Response<Vec<u8>>] with RequestGet::create_request, which takes an access token and a client_id
+//! let response = send_http_request(request.create_request("accesstoken", "client_id")?)?;
+//!
+//! // then parse the response
+//! let uri = request.get_uri()?;
+//! let user: helix::Response<_, User> = request.parse_response(&uri,response)?;
+//! println!("{:#?}", user);
+//! # Ok(())
+//! # }
+//! # fn send_http_request(_: http::Request<Vec<u8>>) -> Result<http::Response<Vec<u8>>,&'static str> {todo!()}
+//! ```
+//!
 use serde::{Deserialize, Serialize};
 use std::{convert::TryInto, str::FromStr};
 use twitch_oauth2::TwitchToken;
@@ -210,6 +238,16 @@ pub trait Request: serde::Serialize {
     type Response: serde::de::DeserializeOwned;
     /// Defines layout of the url parameters.
     fn query(&self) -> Result<String, ser::Error> { ser::to_string(&self) }
+    /// Returns full URI for the request, including query parameters.
+    fn get_uri(&self) -> Result<http::Uri, InvalidUri> {
+        http::Uri::from_str(&format!(
+            "{}{}?{}",
+            crate::TWITCH_HELIX_URL,
+            <Self as Request>::PATH,
+            self.query()?
+        ))
+        .map_err(Into::into)
+    }
 }
 
 /// Helix endpoint POSTs information
@@ -230,12 +268,7 @@ pub trait RequestPost: Request {
         client_id: &str,
     ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
     {
-        let uri = http::Uri::from_str(&format!(
-            "{}{}?{}",
-            crate::TWITCH_HELIX_URL,
-            <Self as Request>::PATH,
-            self.query()?
-        ))?;
+        let uri = self.get_uri()?;
 
         let body = self.body(&body)?;
         // eprintln!("\n\nbody is ------------ {} ------------", body);
@@ -309,12 +342,7 @@ where <Self as Request>::Response:
         client_id: &str,
     ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
     {
-        let uri = http::Uri::from_str(&format!(
-            "{}{}?{}",
-            crate::TWITCH_HELIX_URL,
-            <Self as Request>::PATH,
-            self.query()?
-        ))?;
+        let uri = self.get_uri()?;
 
         let body = self.body(&body)?;
         // eprintln!("\n\nbody is ------------ {} ------------", body);
@@ -364,12 +392,7 @@ pub trait RequestDelete: Request {
         client_id: &str,
     ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
     {
-        let uri = http::Uri::from_str(&format!(
-            "{}{}?{}",
-            crate::TWITCH_HELIX_URL,
-            <Self as Request>::PATH,
-            self.query()?
-        ))?;
+        let uri = self.get_uri()?;
 
         let mut bearer =
             http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
@@ -436,12 +459,7 @@ pub trait RequestGet: Request {
         client_id: &str,
     ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
     {
-        let uri = http::Uri::from_str(&format!(
-            "{}{}?{}",
-            crate::TWITCH_HELIX_URL,
-            <Self as Request>::PATH,
-            self.query()?
-        ))?;
+        let uri = self.get_uri()?;
 
         let mut bearer =
             http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
@@ -579,16 +597,23 @@ pub enum ClientRequestError<RE: std::error::Error + Send + Sync + 'static> {
 /// Could not create request
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum CreateRequestError {
-    /// Could not serialize request to query
-    QuerySerializeError(#[from] ser::Error),
     /// http crate returned an error
     HttpError(#[from] http::Error),
-    /// URI could not be parsed
-    UriParseError(#[from] http::uri::InvalidUri),
     /// serialization of body failed
     SerializeError(#[from] serde_json::Error),
+    /// Could not assemble URI for request
+    InvalidUri(#[from] InvalidUri),
     /// {0}
     Custom(std::borrow::Cow<'static, str>),
+}
+
+/// Errors that can happen when creating [http::Uri] for [Request]
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
+pub enum InvalidUri {
+    /// URI could not be parsed
+    UriParseError(#[from] http::uri::InvalidUri),
+    /// Could not serialize request to query
+    QuerySerializeError(#[from] ser::Error),
 }
 
 /// Could not parse GET response

@@ -16,6 +16,7 @@
 //!
 //! ```rust,no_run
 //! use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
+//! use twitch_oauth2::client::surf_http_client;
 //! use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::TokenError};
 //!
 //! # #[tokio::main]
