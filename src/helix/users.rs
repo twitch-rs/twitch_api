@@ -228,14 +228,14 @@ pub mod create_user_follows {
     use std::convert::TryInto;
 
     use super::*;
-    /// Query Parameters for [Create Users Follows](super::create_user_follows)
+    /// Query Parameters for [Create User Follows](super::create_user_follows)
     ///
     /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
     #[non_exhaustive]
     pub struct CreateUserFollowsRequest {}
 
-    /// Body Parameters for [Create Users Follows](super::create_user_follows)
+    /// Body Parameters for [Create User Follows](super::create_user_follows)
     ///
     /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
     #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
@@ -251,7 +251,7 @@ pub mod create_user_follows {
         pub to_id: Option<String>,
     }
 
-    /// Return Values for [[Create Users Follows](super::create_user_follows)
+    /// Return Values for [Create User Follows](super::create_user_follows)
     ///
     /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
