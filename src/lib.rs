@@ -54,7 +54,7 @@ pub use crate::helix::HelixClient;
 #[doc(inline)]
 pub use crate::tmi::TMIClient;
 
-#[cfg(feature = "helix")]
+#[cfg(all(feature = "helix", feature = "client"))]
 #[doc(no_inline)]
 pub use twitch_oauth2;
 
@@ -68,10 +68,12 @@ pub use client::Client as HttpClient;
 #[cfg(feature = "client")]
 pub use client::DummyHttpClient;
 
+/// Location of Twitch Helix
 #[cfg(feature = "helix")]
-static TWITCH_HELIX_URL: &str = "https://api.twitch.tv/helix/";
+pub static TWITCH_HELIX_URL: &str = "https://api.twitch.tv/helix/";
+/// Location of Twitch TMI
 #[cfg(feature = "tmi")]
-static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
+pub static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
 
 /// Client for Twitch APIs.
 ///

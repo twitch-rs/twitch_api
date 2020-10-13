@@ -77,6 +77,7 @@ pub mod get_broadcaster_subscriptions {
         type Response = BroadcasterSubscriptions;
 
         const PATH: &'static str = "subscriptions";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] =
             &[twitch_oauth2::Scope::ChannelReadSubscriptions];
     }

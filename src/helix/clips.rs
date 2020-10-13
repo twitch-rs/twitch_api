@@ -112,6 +112,7 @@ pub mod get_clips {
         type Response = Clip;
 
         const PATH: &'static str = "clips";
+        #[cfg(feature = "client")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     }
 

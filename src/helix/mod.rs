@@ -29,6 +29,7 @@
 //!
 use serde::{Deserialize, Serialize};
 use std::{convert::TryInto, str::FromStr};
+#[cfg(feature = "client")]
 use twitch_oauth2::TwitchToken;
 
 pub mod channels;
@@ -44,6 +45,7 @@ pub(crate) mod ser;
 pub use ser::Error;
 
 #[doc(no_inline)]
+#[cfg(feature = "client")]
 pub use twitch_oauth2::Scope;
 
 /// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
@@ -231,8 +233,10 @@ pub trait Request: serde::Serialize {
     /// The path to the endpoint relative to the helix root. eg. `channels` for [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information)
     const PATH: &'static str;
     /// Scopes needed by this endpoint
+    #[cfg(feature = "client")]
     const SCOPE: &'static [twitch_oauth2::Scope];
     /// Optional scopes needed by this endpoint
+    #[cfg(feature = "client")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     /// Response type. twitch's response will  deserialize to this.
     type Response: serde::de::DeserializeOwned;
