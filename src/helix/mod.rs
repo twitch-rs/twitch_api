@@ -1,6 +1,6 @@
 //! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
 use serde::{Deserialize, Serialize};
-use std::{convert::TryInto, io};
+use std::{convert::TryInto, str::FromStr};
 use twitch_oauth2::TwitchToken;
 
 pub mod channels;
@@ -108,29 +108,14 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         D: serde::de::DeserializeOwned,
         T: TwitchToken + ?Sized,
     {
-        let url = url::Url::parse(&format!(
-            "{}{}?{}",
-            crate::TWITCH_HELIX_URL,
-            <R as Request>::PATH,
-            request.query()?
-        ))?;
-        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
-            .map_err(|_| {
-                ClientRequestError::Custom("Could not make token into headervalue".into())
-            })?;
-        bearer.set_sensitive(true);
-        let req = http::Request::builder()
-            .method(http::Method::GET)
-            .uri(url.to_string())
-            .header("Client-ID", token.client_id().as_str())
-            .header(http::header::AUTHORIZATION, bearer)
-            .body(Vec::with_capacity(0))?;
+        let req = request.create_request(token.token().secret(), token.client_id().as_str())?;
+        let uri = req.uri().clone();
         let response = self
             .client
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request.parse_response(&url, response).map_err(Into::into)
+        request.parse_response(&uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [RequestPost] endpoint
@@ -146,36 +131,15 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         D: serde::de::DeserializeOwned,
         T: TwitchToken + ?Sized,
     {
-        let url = url::Url::parse(&format!(
-            "{}{}?{}",
-            crate::TWITCH_HELIX_URL,
-            <R as Request>::PATH,
-            request.query()?
-        ))?;
-
-        let body = request.body(&body)?;
-        // eprintln!("\n\nbody is ------------ {} ------------", body);
-
-        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
-            .map_err(|_| {
-                ClientRequestError::Custom("Could not make token into headervalue".into())
-            })?;
-        bearer.set_sensitive(true);
-        let req = http::Request::builder()
-            .method(http::Method::POST)
-            .uri(url.to_string())
-            .header("Client-ID", token.client_id().as_str())
-            .header("Content-Type", "application/json")
-            .header(http::header::AUTHORIZATION, bearer)
-            .body(body.clone().into_bytes())?;
+        let req =
+            request.create_request(body, token.token().secret(), token.client_id().as_str())?;
+        let uri = req.uri().clone();
         let response = self
             .client
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request
-            .parse_response(&url, &body, response)
-            .map_err(Into::into)
+        request.parse_response(&uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [RequestPatch] endpoint
@@ -192,39 +156,15 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             + serde::de::DeserializeOwned,
         T: TwitchToken + ?Sized,
     {
-        let url = url::Url::parse(&format!(
-            "{}{}?{}",
-            crate::TWITCH_HELIX_URL,
-            <R as Request>::PATH,
-            request.query()?
-        ))?;
-
-        let body = request.body(&body)?;
-        // eprintln!("\n\nbody is ------------ {} ------------", body);
-
-        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
-            .map_err(|_| {
-                ClientRequestError::Custom("Could not make token into headervalue".into())
-            })?;
-        bearer.set_sensitive(true);
-        let req = http::Request::builder()
-            .method(http::Method::PATCH)
-            .uri(url.to_string())
-            .header("Client-ID", token.client_id().as_str())
-            .header("Content-Type", "application/json")
-            .header(http::header::AUTHORIZATION, bearer)
-            .body(body.clone().into_bytes())?;
+        let req =
+            request.create_request(body, token.token().secret(), token.client_id().as_str())?;
+        let uri = req.uri().clone();
         let response = self
             .client
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        //let text = std::str::from_utf8(&response.body())
-        //    .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
-        // eprintln!("\n\nmessage is ------------ {} ------------", text);
-        request
-            .parse_response(&url, &body, response)
-            .map_err(Into::into)
+        request.parse_response(&uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [RequestDelete] endpoint
@@ -239,31 +179,14 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             + serde::de::DeserializeOwned,
         T: TwitchToken + ?Sized,
     {
-        let url = url::Url::parse(&format!(
-            "{}{}?{}",
-            crate::TWITCH_HELIX_URL,
-            <R as Request>::PATH,
-            request.query()?
-        ))?;
-
-        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
-            .map_err(|_| {
-                ClientRequestError::Custom("Could not make token into headervalue".into())
-            })?;
-        bearer.set_sensitive(true);
-        let req = http::Request::builder()
-            .method(http::Method::DELETE)
-            .uri(url.to_string())
-            .header("Client-ID", token.client_id().as_str())
-            .header("Content-Type", "application/json")
-            .header(http::header::AUTHORIZATION, bearer)
-            .body(Vec::with_capacity(0))?;
+        let req = request.create_request(token.token().secret(), token.client_id().as_str())?;
+        let uri = req.uri().clone();
         let response = self
             .client
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request.parse_response(&url, response).map_err(Into::into)
+        request.parse_response(&uri, response).map_err(Into::into)
     }
 }
 
@@ -299,11 +222,43 @@ pub trait RequestPost: Request {
         serde_json::to_string(body)
     }
 
+    /// Get Request to use in your client
+    fn create_request(
+        &self,
+        body: Self::Body,
+        token: &str,
+        client_id: &str,
+    ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
+    {
+        let uri = http::Uri::from_str(&format!(
+            "{}{}?{}",
+            crate::TWITCH_HELIX_URL,
+            <Self as Request>::PATH,
+            self.query()?
+        ))?;
+
+        let body = self.body(&body)?;
+        // eprintln!("\n\nbody is ------------ {} ------------", body);
+
+        let mut bearer =
+            http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
+                CreateRequestError::Custom("Could not make token into headervalue".into())
+            })?;
+        bearer.set_sensitive(true);
+        http::Request::builder()
+            .method(http::Method::POST)
+            .uri(uri)
+            .header("Client-ID", client_id)
+            .header("Content-Type", "application/json")
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(body.into_bytes())
+            .map_err(Into::into)
+    }
+
     /// Parse response. Override for different behavior
     fn parse_response(
         self,
-        url: &url::Url,
-        body: &str,
+        uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPostError>
     where
@@ -321,8 +276,8 @@ pub trait RequestPost: Request {
                 error,
                 status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
-                url: url.clone(),
-                body: body.to_string(),
+                uri: uri.clone(),
+                body: response.body().clone(),
             });
         }
         let response: InnerResponse<<Self as Request>::Response> = serde_json::from_str(&text)?;
@@ -344,11 +299,43 @@ pub trait RequestPatch: Request {
         serde_json::to_string(body)
     }
 
+    /// Get Request to use in your client
+    fn create_request(
+        &self,
+        body: Self::Body,
+        token: &str,
+        client_id: &str,
+    ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
+    {
+        let uri = http::Uri::from_str(&format!(
+            "{}{}?{}",
+            crate::TWITCH_HELIX_URL,
+            <Self as Request>::PATH,
+            self.query()?
+        ))?;
+
+        let body = self.body(&body)?;
+        // eprintln!("\n\nbody is ------------ {} ------------", body);
+
+        let mut bearer =
+            http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
+                CreateRequestError::Custom("Could not make token into headervalue".into())
+            })?;
+        bearer.set_sensitive(true);
+        http::Request::builder()
+            .method(http::Method::PATCH)
+            .uri(uri)
+            .header("Client-ID", client_id)
+            .header("Content-Type", "application/json")
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(body.into_bytes())
+            .map_err(Into::into)
+    }
+
     /// Parse response. Override for different behavior
     fn parse_response(
         self,
-        url: &url::Url,
-        body: &str,
+        uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<<Self as Request>::Response, HelixRequestPatchError>
     where
@@ -361,8 +348,8 @@ pub trait RequestPatch: Request {
             Err(err) => Err(HelixRequestPatchError {
                 status: response.status(),
                 message: err.to_string(),
-                url: url.clone(),
-                body: body.to_string(),
+                uri: uri.clone(),
+                body: response.body().clone(),
             }),
         }
     }
@@ -370,10 +357,39 @@ pub trait RequestPatch: Request {
 
 /// Helix endpoint DELETEs information
 pub trait RequestDelete: Request {
+    /// Get Request to use in your client
+    fn create_request(
+        &self,
+        token: &str,
+        client_id: &str,
+    ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
+    {
+        let uri = http::Uri::from_str(&format!(
+            "{}{}?{}",
+            crate::TWITCH_HELIX_URL,
+            <Self as Request>::PATH,
+            self.query()?
+        ))?;
+
+        let mut bearer =
+            http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
+                CreateRequestError::Custom("Could not make token into headervalue".into())
+            })?;
+        bearer.set_sensitive(true);
+        http::Request::builder()
+            .method(http::Method::DELETE)
+            .uri(uri)
+            .header("Client-ID", client_id)
+            .header("Content-Type", "application/json")
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(Vec::with_capacity(0))
+            .map_err(Into::into)
+    }
+
     /// Parse response. Override for different behavior
     fn parse_response(
         self,
-        url: &url::Url,
+        uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<<Self as Request>::Response, HelixRequestDeleteError>
     where
@@ -395,7 +411,7 @@ pub trait RequestDelete: Request {
                 error,
                 status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
-                url: url.clone(),
+                uri: uri.clone(),
             });
         }
 
@@ -405,7 +421,7 @@ pub trait RequestDelete: Request {
                 error: String::new(),
                 status: response.status(),
                 message: err.to_string(),
-                url: url.clone(),
+                uri: uri.clone(),
             }),
         }
     }
@@ -413,10 +429,39 @@ pub trait RequestDelete: Request {
 
 /// Helix endpoint GETs information
 pub trait RequestGet: Request {
+    /// Get Request to use in your client
+    fn create_request(
+        &self,
+        token: &str,
+        client_id: &str,
+    ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
+    {
+        let uri = http::Uri::from_str(&format!(
+            "{}{}?{}",
+            crate::TWITCH_HELIX_URL,
+            <Self as Request>::PATH,
+            self.query()?
+        ))?;
+
+        let mut bearer =
+            http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
+                CreateRequestError::Custom("Could not make token into headervalue".into())
+            })?;
+        bearer.set_sensitive(true);
+        http::Request::builder()
+            .method(http::Method::GET)
+            .uri(uri)
+            .header("Client-ID", client_id)
+            .header("Content-Type", "application/json")
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(Vec::with_capacity(0))
+            .map_err(Into::into)
+    }
+
     /// Parse response. Override for different behavior
     fn parse_response(
         self,
-        url: &url::Url,
+        uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestGetError>
     where
@@ -435,7 +480,7 @@ pub trait RequestGet: Request {
                 error,
                 status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
-                url: url.clone(),
+                uri: uri.clone(),
             });
         }
         let response: InnerResponse<_> = serde_json::from_str(&text)?;
@@ -507,46 +552,49 @@ pub type Cursor = String;
 /// Errors for [HelixClient::req_get] and similar functions.
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum ClientRequestError<RE: std::error::Error + Send + Sync + 'static> {
-    /// http crate returned an error
-    HttpError(#[from] http::Error),
-    /// url could not be parsed
-    UrlParseError(#[from] url::ParseError),
-    /// io error
-    IOError(#[from] io::Error),
-    // done on body serializing
-    /// deserialization failed when processing request result
-    DeserializeError(#[from] serde_json::Error),
-    /// Could not serialize request to query
-    QuerySerializeError(#[from] ser::Error),
     /// request failed from reqwests side
     RequestError(RE),
     /// no pagination found
     NoPage,
-    /// could not parse response from patch:  {0}
-    PatchParseError(std::borrow::Cow<'static, str>),
-    /// {0}
-    Custom(std::borrow::Cow<'static, str>),
-    #[error(transparent)]
+    /// Could not create request
+    CreateRequestError(#[from] CreateRequestError),
     /// Could not parse GET response
+    #[error(transparent)]
     HelixRequestGetError(#[from] HelixRequestGetError),
     //#[error(transparent)]
     /// Could not parse PUT response
     HelixRequestPutError(#[from] HelixRequestPutError),
-    #[error(transparent)]
     /// Could not parse POST response
+    #[error(transparent)]
     HelixRequestPostError(#[from] HelixRequestPostError),
     //#[error(transparent)]
     /// Could not parse PATCH response
     HelixRequestPatchError(#[from] HelixRequestPatchError),
-    #[error(transparent)]
     /// Could not parse DELETE response
+    #[error(transparent)]
     HelixRequestDeleteError(#[from] HelixRequestDeleteError),
+    /// {0}
+    Custom(std::borrow::Cow<'static, str>),
+}
+/// Could not create request
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
+pub enum CreateRequestError {
+    /// Could not serialize request to query
+    QuerySerializeError(#[from] ser::Error),
+    /// http crate returned an error
+    HttpError(#[from] http::Error),
+    /// URI could not be parsed
+    UriParseError(#[from] http::uri::InvalidUri),
+    /// serialization of body failed
+    SerializeError(#[from] serde_json::Error),
+    /// {0}
+    Custom(std::borrow::Cow<'static, str>),
 }
 
-/// Could not parse GET response 
+/// Could not parse GET response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum HelixRequestGetError {
-    /// helix returned error {status:?} - {error}: {message:?} when calling `GET {url}`
+    /// helix returned error {status:?} - {error}: {message:?} when calling `GET {uri}`
     Error {
         /// Error message related to status code
         error: String,
@@ -554,8 +602,8 @@ pub enum HelixRequestGetError {
         status: http::StatusCode,
         /// Error message from Twitch
         message: String,
-        /// URL to the endpoint
-        url: url::Url,
+        /// URI to the endpoint
+        uri: http::Uri,
     },
     /// could not parse body as utf8: {1}
     Utf8Error(Vec<u8>, std::str::Utf8Error),
@@ -563,7 +611,7 @@ pub enum HelixRequestGetError {
     DeserializeError(#[from] serde_json::Error),
 }
 
-/// helix returned error {status:?} - {error}: {message:?} when calling `PUT {url}: "{body}"`
+/// helix returned error {status:?} - {error}: {message:?} when calling `PUT {uri}` with a body
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub struct HelixRequestPutError {
     /// Error message related to status code
@@ -572,16 +620,16 @@ pub struct HelixRequestPutError {
     status: http::StatusCode,
     /// Error message from Twitch
     message: String,
-    /// URL to the endpoint
-    url: url::Url,
+    /// URI to the endpoint
+    uri: http::Uri,
     /// Body sent with PUT
-    body: String,
+    body: Vec<u8>,
 }
 
-/// Could not parse POST response 
+/// Could not parse POST response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum HelixRequestPostError {
-    /// helix returned error {status:?} - {error}: {message:?} when calling `POST {url}: "{body}"`
+    /// helix returned error {status:?} - {error}: {message:?} when calling `POST {uri}` with a body
     Error {
         /// Error message related to status code
         error: String,
@@ -589,10 +637,10 @@ pub enum HelixRequestPostError {
         status: http::StatusCode,
         /// Error message from Twitch
         message: String,
-        /// URL to the endpoint
-        url: url::Url,
+        /// URI to the endpoint
+        uri: http::Uri,
         /// Body sent with PUT
-        body: String,
+        body: Vec<u8>,
     },
     /// could not parse body as utf8: {1}
     Utf8Error(Vec<u8>, std::str::Utf8Error),
@@ -600,23 +648,23 @@ pub enum HelixRequestPostError {
     DeserializeError(#[from] serde_json::Error),
 }
 
-/// helix returned error {status:?}: {message:?} when calling `PATCH {url}: "{body}"`
+/// helix returned error {status:?}: {message:?} when calling `PATCH {uri}` with a body
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub struct HelixRequestPatchError {
     /// Status code of error, usually 400-499
     status: http::StatusCode,
     /// Error message from Twitch
     message: String,
-    /// URL to the endpoint
-    url: url::Url,
+    /// URI to the endpoint
+    uri: http::Uri,
     /// Body sent with PATCH
-    body: String,
+    body: Vec<u8>,
 }
 
-/// Could not parse DELETE response 
+/// Could not parse DELETE response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum HelixRequestDeleteError {
-    /// helix returned error {status:?}- {error}: {message:?} when calling `DELETE {url}`
+    /// helix returned error {status:?}- {error}: {message:?} when calling `DELETE {uri}`
     Error {
         /// Error message related to status code
         error: String,
@@ -624,8 +672,8 @@ pub enum HelixRequestDeleteError {
         status: http::StatusCode,
         /// Error message from Twitch
         message: String,
-        /// URL to the endpoint
-        url: url::Url,
+        /// URI to the endpoint
+        uri: http::Uri,
     },
     /// could not parse body as utf8: {1}
     Utf8Error(Vec<u8>, std::str::Utf8Error),

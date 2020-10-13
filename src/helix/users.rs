@@ -294,8 +294,7 @@ pub mod create_user_follows {
 
         fn parse_response(
             self,
-            url: &url::Url,
-            body: &str,
+            uri: &http::Uri,
             response: http::Response<Vec<u8>>,
         ) -> Result<
             helix::Response<Self, <Self as helix::Request>::Response>,
@@ -305,28 +304,28 @@ pub mod create_user_follows {
             Self: Sized,
         {
             let text = std::str::from_utf8(&response.body())
-            .map_err(|e| helix::HelixRequestPostError::Utf8Error(response.body().clone(), e))?;
-        if let Ok(helix::HelixRequestError {
-            error,
-            status,
-            message,
-        }) = serde_json::from_str::<helix::HelixRequestError>(&text)
-        {
-            return Err(helix::HelixRequestPostError::Error {
+                .map_err(|e| helix::HelixRequestPostError::Utf8Error(response.body().clone(), e))?;
+            if let Ok(helix::HelixRequestError {
                 error,
-                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                status,
                 message,
-                url: url.clone(),
-                body: body.to_string(),
-            });
-        }
+            }) = serde_json::from_str::<helix::HelixRequestError>(&text)
+            {
+                return Err(helix::HelixRequestPostError::Error {
+                    error,
+                    status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                    message,
+                    uri: uri.clone(),
+                    body: response.body().clone(),
+                });
+            }
 
             let response = response.status().try_into().map_err(|_| {
                 // This path should never be taken, but just to be sure we do this
                 helix::HelixRequestPostError::Error {
                     status: response.status(),
-                    url: url.clone(),
-                    body: body.to_string(),
+                    uri: uri.clone(),
+                    body: response.body().clone(),
                     message: String::new(), // FIXME: None, but this branch should really never be hit
                     error: String::new(),
                 }
