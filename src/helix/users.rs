@@ -292,22 +292,21 @@ pub mod create_user_follows {
     impl helix::RequestPost for CreateUserFollowsRequest {
         type Body = CreateUserFollowsBody;
 
-        fn parse_response<RE>(
+        fn parse_response(
             self,
             url: &url::Url,
             body: &str,
             response: http::Response<Vec<u8>>,
         ) -> Result<
             helix::Response<Self, <Self as helix::Request>::Response>,
-            helix::RequestError<RE>,
+            helix::HelixRequestPostError,
         >
         where
-            RE: std::error::Error + Send + Sync + 'static,
             Self: Sized,
         {
             let response = response.status().try_into().map_err(|_| {
                 // This path should never be taken, but just to be sure we do this
-                helix::RequestError::HelixRequestPostError {
+                helix::HelixRequestPostError::Error {
                     status: response.status(),
                     url: url.clone(),
                     body: body.to_string(),

@@ -102,7 +102,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         &'a self,
         request: R,
         token: &T,
-    ) -> Result<Response<R, D>, RequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestGet,
         D: serde::de::DeserializeOwned,
@@ -115,7 +115,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             request.query()?
         ))?;
         let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
-            .map_err(|_| RequestError::Custom("Could not make token into headervalue".into()))?;
+            .map_err(|_| {
+                ClientRequestError::Custom("Could not make token into headervalue".into())
+            })?;
         bearer.set_sensitive(true);
         let req = http::Request::builder()
             .method(http::Method::GET)
@@ -127,8 +129,8 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(RequestError::RequestError)?;
-        request.parse_response(&url, response)
+            .map_err(ClientRequestError::RequestError)?;
+        request.parse_response(&url, response).map_err(Into::into)
     }
 
     /// Request on a valid [RequestPost] endpoint
@@ -137,7 +139,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request: R,
         body: B,
         token: &T,
-    ) -> Result<Response<R, D>, RequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestPost<Body = B>,
         B: serde::Serialize,
@@ -155,7 +157,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         // eprintln!("\n\nbody is ------------ {} ------------", body);
 
         let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
-            .map_err(|_| RequestError::Custom("Could not make token into headervalue".into()))?;
+            .map_err(|_| {
+                ClientRequestError::Custom("Could not make token into headervalue".into())
+            })?;
         bearer.set_sensitive(true);
         let req = http::Request::builder()
             .method(http::Method::POST)
@@ -168,8 +172,10 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(RequestError::RequestError)?;
-        request.parse_response(&url, &body, response)
+            .map_err(ClientRequestError::RequestError)?;
+        request
+            .parse_response(&url, &body, response)
+            .map_err(Into::into)
     }
 
     /// Request on a valid [RequestPatch] endpoint
@@ -178,7 +184,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request: R,
         body: B,
         token: &T,
-    ) -> Result<D, RequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<D, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestPatch<Body = B>,
         B: serde::Serialize,
@@ -197,7 +203,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         // eprintln!("\n\nbody is ------------ {} ------------", body);
 
         let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
-            .map_err(|_| RequestError::Custom("Could not make token into headervalue".into()))?;
+            .map_err(|_| {
+                ClientRequestError::Custom("Could not make token into headervalue".into())
+            })?;
         bearer.set_sensitive(true);
         let req = http::Request::builder()
             .method(http::Method::PATCH)
@@ -210,11 +218,13 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(RequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?;
         //let text = std::str::from_utf8(&response.body())
         //    .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
         // eprintln!("\n\nmessage is ------------ {} ------------", text);
-        request.parse_response(&url, &body, response)
+        request
+            .parse_response(&url, &body, response)
+            .map_err(Into::into)
     }
 
     /// Request on a valid [RequestDelete] endpoint
@@ -222,7 +232,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         &'a self,
         request: R,
         token: &T,
-    ) -> Result<D, RequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<D, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestDelete,
         D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
@@ -237,7 +247,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         ))?;
 
         let mut bearer = http::HeaderValue::from_str(&format!("Bearer {}", token.token().secret()))
-            .map_err(|_| RequestError::Custom("Could not make token into headervalue".into()))?;
+            .map_err(|_| {
+                ClientRequestError::Custom("Could not make token into headervalue".into())
+            })?;
         bearer.set_sensitive(true);
         let req = http::Request::builder()
             .method(http::Method::DELETE)
@@ -250,8 +262,8 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(RequestError::RequestError)?;
-        request.parse_response(&url, response)
+            .map_err(ClientRequestError::RequestError)?;
+        request.parse_response(&url, response).map_err(Into::into)
     }
 }
 
@@ -288,25 +300,24 @@ pub trait RequestPost: Request {
     }
 
     /// Parse response. Override for different behavior
-    fn parse_response<RE>(
+    fn parse_response(
         self,
         url: &url::Url,
         body: &str,
         response: http::Response<Vec<u8>>,
-    ) -> Result<Response<Self, <Self as Request>::Response>, RequestError<RE>>
+    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPostError>
     where
-        RE: std::error::Error + Send + Sync + 'static,
         Self: Sized,
     {
         let text = std::str::from_utf8(&response.body())
-            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
+            .map_err(|e| HelixRequestPostError::Utf8Error(response.body().clone(), e))?;
         if let Ok(HelixRequestError {
             error,
             status,
             message,
         }) = serde_json::from_str::<HelixRequestError>(&text)
         {
-            return Err(RequestError::HelixRequestPostError {
+            return Err(HelixRequestPostError::Error {
                 error,
                 status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
@@ -334,21 +345,20 @@ pub trait RequestPatch: Request {
     }
 
     /// Parse response. Override for different behavior
-    fn parse_response<RE>(
+    fn parse_response(
         self,
         url: &url::Url,
         body: &str,
         response: http::Response<Vec<u8>>,
-    ) -> Result<<Self as Request>::Response, RequestError<RE>>
+    ) -> Result<<Self as Request>::Response, HelixRequestPatchError>
     where
-        RE: std::error::Error + Send + Sync + 'static,
         <Self as Request>::Response:
             std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
         Self: Sized,
     {
         match response.status().try_into() {
             Ok(result) => Ok(result),
-            Err(err) => Err(RequestError::HelixRequestPatchError {
+            Err(err) => Err(HelixRequestPatchError {
                 status: response.status(),
                 message: err.to_string(),
                 url: url.clone(),
@@ -361,19 +371,18 @@ pub trait RequestPatch: Request {
 /// Helix endpoint DELETEs information
 pub trait RequestDelete: Request {
     /// Parse response. Override for different behavior
-    fn parse_response<RE>(
+    fn parse_response(
         self,
         url: &url::Url,
         response: http::Response<Vec<u8>>,
-    ) -> Result<<Self as Request>::Response, RequestError<RE>>
+    ) -> Result<<Self as Request>::Response, HelixRequestDeleteError>
     where
-        RE: std::error::Error + Send + Sync + 'static,
         <Self as Request>::Response:
             std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
         Self: Sized,
     {
         let text = std::str::from_utf8(&response.body())
-            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
+            .map_err(|e| HelixRequestDeleteError::Utf8Error(response.body().clone(), e))?;
         // eprintln!("\n\nmessage is ------------ {} ------------", text);
 
         if let Ok(HelixRequestError {
@@ -382,7 +391,7 @@ pub trait RequestDelete: Request {
             message,
         }) = serde_json::from_str::<HelixRequestError>(&text)
         {
-            return Err(RequestError::HelixRequestDeleteError {
+            return Err(HelixRequestDeleteError::Error {
                 error,
                 status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
@@ -392,7 +401,7 @@ pub trait RequestDelete: Request {
 
         match response.status().try_into() {
             Ok(result) => Ok(result),
-            Err(err) => Err(RequestError::HelixRequestDeleteError {
+            Err(err) => Err(HelixRequestDeleteError::Error {
                 error: String::new(),
                 status: response.status(),
                 message: err.to_string(),
@@ -405,17 +414,16 @@ pub trait RequestDelete: Request {
 /// Helix endpoint GETs information
 pub trait RequestGet: Request {
     /// Parse response. Override for different behavior
-    fn parse_response<RE>(
+    fn parse_response(
         self,
         url: &url::Url,
         response: http::Response<Vec<u8>>,
-    ) -> Result<Response<Self, <Self as Request>::Response>, RequestError<RE>>
+    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestGetError>
     where
-        RE: std::error::Error + Send + Sync + 'static,
         Self: Sized,
     {
         let text = std::str::from_utf8(&response.body())
-            .map_err(|e| RequestError::Utf8Error(response.body().clone(), e))?;
+            .map_err(|e| HelixRequestGetError::Utf8Error(response.body().clone(), e))?;
         //eprintln!("\n\nmessage is ------------ {} ------------", text);
         if let Ok(HelixRequestError {
             error,
@@ -423,7 +431,7 @@ pub trait RequestGet: Request {
             message,
         }) = serde_json::from_str::<HelixRequestError>(&text)
         {
-            return Err(RequestError::HelixRequestGetError {
+            return Err(HelixRequestGetError::Error {
                 error,
                 status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
@@ -464,7 +472,7 @@ where
         self,
         client: &'a HelixClient<'a, C>,
         token: &impl TwitchToken,
-    ) -> Result<Option<Response<R, D>>, RequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Option<Response<R, D>>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     {
         let mut req = self.request.clone();
         if let Some(ref cursor) = self.pagination.cursor {
@@ -498,15 +506,14 @@ pub type Cursor = String;
 
 /// Errors for [HelixClient::req_get] and similar functions.
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
+pub enum ClientRequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// http crate returned an error
     HttpError(#[from] http::Error),
-    /// could not parse body as utf8: {1}
-    Utf8Error(Vec<u8>, std::str::Utf8Error),
     /// url could not be parsed
     UrlParseError(#[from] url::ParseError),
     /// io error
     IOError(#[from] io::Error),
+    // done on body serializing
     /// deserialization failed when processing request result
     DeserializeError(#[from] serde_json::Error),
     /// Could not serialize request to query
@@ -519,8 +526,28 @@ pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
     PatchParseError(std::borrow::Cow<'static, str>),
     /// {0}
     Custom(std::borrow::Cow<'static, str>),
+    #[error(transparent)]
+    /// Could not parse GET response
+    HelixRequestGetError(#[from] HelixRequestGetError),
+    //#[error(transparent)]
+    /// Could not parse PUT response
+    HelixRequestPutError(#[from] HelixRequestPutError),
+    #[error(transparent)]
+    /// Could not parse POST response
+    HelixRequestPostError(#[from] HelixRequestPostError),
+    //#[error(transparent)]
+    /// Could not parse PATCH response
+    HelixRequestPatchError(#[from] HelixRequestPatchError),
+    #[error(transparent)]
+    /// Could not parse DELETE response
+    HelixRequestDeleteError(#[from] HelixRequestDeleteError),
+}
+
+/// Could not parse GET response 
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
+pub enum HelixRequestGetError {
     /// helix returned error {status:?} - {error}: {message:?} when calling `GET {url}`
-    HelixRequestGetError {
+    Error {
         /// Error message related to status code
         error: String,
         /// Status code of error, usually 400-499
@@ -530,21 +557,32 @@ pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
         /// URL to the endpoint
         url: url::Url,
     },
-    /// helix returned error {status:?} - {error}: {message:?} when calling `PUT {url}: "{body}"`
-    HelixRequestPutError {
-        /// Error message related to status code
-        error: String,
-        /// Status code of error, usually 400-499
-        status: http::StatusCode,
-        /// Error message from Twitch
-        message: String,
-        /// URL to the endpoint
-        url: url::Url,
-        /// Body sent with PUT
-        body: String,
-    },
+    /// could not parse body as utf8: {1}
+    Utf8Error(Vec<u8>, std::str::Utf8Error),
+    /// deserialization failed when processing request result
+    DeserializeError(#[from] serde_json::Error),
+}
+
+/// helix returned error {status:?} - {error}: {message:?} when calling `PUT {url}: "{body}"`
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
+pub struct HelixRequestPutError {
+    /// Error message related to status code
+    error: String,
+    /// Status code of error, usually 400-499
+    status: http::StatusCode,
+    /// Error message from Twitch
+    message: String,
+    /// URL to the endpoint
+    url: url::Url,
+    /// Body sent with PUT
+    body: String,
+}
+
+/// Could not parse POST response 
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
+pub enum HelixRequestPostError {
     /// helix returned error {status:?} - {error}: {message:?} when calling `POST {url}: "{body}"`
-    HelixRequestPostError {
+    Error {
         /// Error message related to status code
         error: String,
         /// Status code of error, usually 400-499
@@ -556,19 +594,30 @@ pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
         /// Body sent with PUT
         body: String,
     },
-    /// helix returned error {status:?}: {message:?} when calling `PATCH {url}: "{body}"`
-    HelixRequestPatchError {
-        /// Status code of error, usually 400-499
-        status: http::StatusCode,
-        /// Error message from Twitch
-        message: String,
-        /// URL to the endpoint
-        url: url::Url,
-        /// Body sent with PATCH
-        body: String,
-    },
+    /// could not parse body as utf8: {1}
+    Utf8Error(Vec<u8>, std::str::Utf8Error),
+    /// deserialization failed when processing request result
+    DeserializeError(#[from] serde_json::Error),
+}
+
+/// helix returned error {status:?}: {message:?} when calling `PATCH {url}: "{body}"`
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
+pub struct HelixRequestPatchError {
+    /// Status code of error, usually 400-499
+    status: http::StatusCode,
+    /// Error message from Twitch
+    message: String,
+    /// URL to the endpoint
+    url: url::Url,
+    /// Body sent with PATCH
+    body: String,
+}
+
+/// Could not parse DELETE response 
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
+pub enum HelixRequestDeleteError {
     /// helix returned error {status:?}- {error}: {message:?} when calling `DELETE {url}`
-    HelixRequestDeleteError {
+    Error {
         /// Error message related to status code
         error: String,
         /// Status code of error, usually 400-499
@@ -578,6 +627,8 @@ pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
         /// URL to the endpoint
         url: url::Url,
     },
+    /// could not parse body as utf8: {1}
+    Utf8Error(Vec<u8>, std::str::Utf8Error),
 }
 
 /// Repeat url query items with name
