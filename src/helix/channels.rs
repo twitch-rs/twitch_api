@@ -79,7 +79,7 @@ pub mod get_channel_information {
     impl helix::RequestGet for GetChannelInformationRequest {}
 }
 
-/// Gets channel information for users.
+/// Modify channel information for users.
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
 pub mod modify_channel_information {
     use super::*;
