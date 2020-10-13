@@ -87,12 +87,12 @@ required-features = ["twitch_oauth2/surf_client", "surf_client"]
 [[example]]
 name = "get_streams_and_chatters"
 path = "examples/get_streams_and_chatters.rs"
-required-features = ["twitch_oauth2/surf_client"]
+required-features = ["twitch_oauth2/surf_client", "surf_client"]
 
 [[example]]
 name = "modify_channel"
 path = "examples/modify_channel.rs"
-required-features = ["twitch_oauth2/surf_client"]
+required-features = ["twitch_oauth2/surf_client", "surf_client"]
 
 [[example]]
 name = "client"
