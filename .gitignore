@@ -1,3 +1,4 @@
+
 **/target/
 **/*.rs.bk
 **/*.rsx
@@ -5,7 +6,7 @@
 **/.env
 **/*.iml
 **/.idea/
-**/.vscode
+**/.vscode/*.*
 **/logfile*
 **/*.old
 **/*.log
@@ -14,3 +15,5 @@ coverage_reports/
 **/.cargo
 **/.*
 !.github/
+!.vscode/
+!.vscode/settings.json
