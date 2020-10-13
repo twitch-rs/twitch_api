@@ -156,7 +156,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --doc --all-features
+          args: --doc --features "${{ env.CI_TWITCH_API2_FEATURES }}"
       - name: Check twitch_api2 docs
         uses: actions-rs/cargo@v1
         with:
