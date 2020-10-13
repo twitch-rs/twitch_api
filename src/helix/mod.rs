@@ -290,7 +290,9 @@ pub trait RequestPost: Request {
 }
 
 /// Helix endpoint PATCHs information
-pub trait RequestPatch: Request {
+pub trait RequestPatch: Request
+where <Self as Request>::Response:
+        std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>> {
     /// Body parameters
     type Body: serde::Serialize;
 
@@ -339,8 +341,6 @@ pub trait RequestPatch: Request {
         response: http::Response<Vec<u8>>,
     ) -> Result<<Self as Request>::Response, HelixRequestPatchError>
     where
-        <Self as Request>::Response:
-            std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
         Self: Sized,
     {
         match response.status().try_into() {
@@ -639,7 +639,7 @@ pub enum HelixRequestPostError {
         message: String,
         /// URI to the endpoint
         uri: http::Uri,
-        /// Body sent with PUT
+        /// Body sent with POST
         body: Vec<u8>,
     },
     /// could not parse body as utf8: {1}
