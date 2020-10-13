@@ -292,7 +292,7 @@ pub mod create_user_follows {
     impl helix::RequestPost for CreateUserFollowsRequest {
         type Body = CreateUserFollowsBody;
 
-        fn result<RE>(
+        fn parse_response<RE>(
             self,
             url: &url::Url,
             body: &str,
