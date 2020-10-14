@@ -82,7 +82,9 @@ pub mod get_channel_information {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = GetChannelInformationRequest::builder().broadcaster_id("44445592".to_string()).build();
+        let req = GetChannelInformationRequest::builder()
+            .broadcaster_id("44445592".to_string())
+            .build();
 
         // From twitch docs
         let data = br#"
@@ -183,7 +185,9 @@ pub mod modify_channel_information {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = ModifyChannelInformationRequest::builder().broadcaster_id(String::from("0")).build();
+        let req = ModifyChannelInformationRequest::builder()
+            .broadcaster_id(String::from("0"))
+            .build();
 
         // From twitch docs
         let data = br#""#.to_vec();

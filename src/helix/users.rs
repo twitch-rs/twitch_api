@@ -98,7 +98,9 @@ pub mod get_users {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = GetUsersRequest::builder().id(vec!["44322889".to_string()]).build();
+        let req = GetUsersRequest::builder()
+            .id(vec!["44322889".to_string()])
+            .build();
 
         // From twitch docs
         let data = br#"
@@ -198,7 +200,9 @@ pub mod get_users_follows {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = GetUsersFollowsRequest::builder().to_id("23161357".to_string()).build();
+        let req = GetUsersFollowsRequest::builder()
+            .to_id("23161357".to_string())
+            .build();
 
         // From twitch docs
         let data = br#"
@@ -301,11 +305,12 @@ pub mod delete_user_follows {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = DeleteUserFollowsRequest::builder().to_id("41245072".to_string()).build();
+        let req = DeleteUserFollowsRequest::builder()
+            .to_id("41245072".to_string())
+            .build();
 
         // From twitch docs
-        let data = br#""#
-        .to_vec();
+        let data = br#""#.to_vec();
 
         let http_response = http::Response::builder().status(204).body(data).unwrap();
         // FIXME: I have not tested this in production
@@ -440,8 +445,7 @@ pub mod create_user_follows {
         let req = CreateUserFollowsRequest::builder().build();
 
         // From twitch docs
-        let data = br#""#
-        .to_vec();
+        let data = br#""#.to_vec();
 
         let http_response = http::Response::builder().status(200).body(data).unwrap();
         // This is marked as 204 in twitch docs, but in reality it's 200
