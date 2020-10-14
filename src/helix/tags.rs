@@ -93,7 +93,7 @@ pub mod get_all_stream_tags {
         #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
         /// Maximum number of objects to return. Maximum: 100. Default: 20.
-        #[builder(default)]
+        #[builder(default, setter(into))]
         #[serde(skip_serializing_if = "Option::is_none")]
         pub first: Option<usize>,
         /// ID of a tag. Multiple IDs can be specified. If provided, only the specified tag(s) is(are) returned. Maximum of 100.

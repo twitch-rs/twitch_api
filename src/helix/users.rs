@@ -115,11 +115,11 @@ pub mod get_users_follows {
         #[serde(skip_serializing_if = "Option::is_none")]
         pub first: Option<usize>,
         /// User ID. The request returns information about users who are being followed by the from_id user.
-        #[builder(default)]
+        #[builder(default, setter(into))]
         #[serde(skip_serializing_if = "Option::is_none")]
         pub from_id: Option<String>,
         /// User ID. The request returns information about users who are following the to_id user.
-        #[builder(default)]
+        #[builder(default, setter(into))]
         #[serde(skip_serializing_if = "Option::is_none")]
         pub to_id: Option<String>,
     }
