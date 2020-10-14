@@ -78,6 +78,35 @@ pub mod get_channel_information {
     }
 
     impl helix::RequestGet for GetChannelInformationRequest {}
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetChannelInformationRequest::builder().broadcaster_id("44445592".to_string()).build();
+
+        // From twitch docs
+        let data = br#"
+        {
+          "data": [
+            {
+              "broadcaster_id": "44445592",
+              "broadcaster_name": "pokimane",
+              "broadcaster_language": "en",
+              "game_id": "21779",
+              "game_name": "League of Legends",
+              "title": "title"
+            }
+          ]
+        }
+        "#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
 }
 
 /// Modify channel information for users.
@@ -120,6 +149,10 @@ pub mod modify_channel_information {
     pub enum ModifyChannelInformation {
         /// 204 - Channel/Stream updated successfully
         Success,
+        /// 400 - Missing Query Parameter
+        MissingQuery,
+        /// Internal Server Error; Failed to update channel
+        InternalServerError,
     }
 
     impl std::convert::TryFrom<http::StatusCode> for ModifyChannelInformation {
@@ -128,6 +161,8 @@ pub mod modify_channel_information {
         fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
             match s {
                 http::StatusCode::NO_CONTENT => Ok(ModifyChannelInformation::Success),
+                // FIXME: Twitch docs says 204 is success...
+                http::StatusCode::OK => Ok(ModifyChannelInformation::Success),
                 other => Err(other.canonical_reason().unwrap_or("").into()),
             }
         }
@@ -143,6 +178,21 @@ pub mod modify_channel_information {
 
     impl helix::RequestPatch for ModifyChannelInformationRequest {
         type Body = ModifyChannelInformationBody;
+    }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = ModifyChannelInformationRequest::builder().broadcaster_id(String::from("0")).build();
+
+        // From twitch docs
+        let data = br#""#.to_vec();
+
+        let http_response = http::Response::builder().status(200).body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
     }
 }
 
@@ -253,5 +303,29 @@ pub mod start_commercial {
 
     impl helix::RequestPost for StartCommercialRequest {
         type Body = StartCommercialBody;
+    }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = StartCommercialRequest {};
+
+        // From twitch docs
+        let data = br#"
+{
+    "data": [{
+      "length" : 60,
+      "message" : "",
+      "retry_after" : 480
+    }]
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
     }
 }

@@ -94,6 +94,37 @@ pub mod get_users {
     }
 
     impl helix::RequestGet for GetUsersRequest {}
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetUsersRequest::builder().id(vec!["44322889".to_string()]).build();
+
+        // From twitch docs
+        let data = br#"
+{
+    "data": [{
+        "id": "44322889",
+        "login": "dallas",
+        "display_name": "dallas",
+        "type": "staff",
+        "broadcaster_type": "",
+        "description": "Just a gamer playing games and chatting. :)",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-profile_image-1a2c906ee2c35f12-300x300.png",
+        "offline_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-channel_offline_image-1a2c906ee2c35f12-1920x1080.png",
+        "view_count": 191836881,
+        "email": "login@provider.com"
+    }]
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
 }
 
 /// Gets information on follow relationships between two Twitch users.
@@ -163,6 +194,46 @@ pub mod get_users_follows {
     impl helix::Paginated for GetUsersFollowsRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor); }
     }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetUsersFollowsRequest::builder().to_id("23161357".to_string()).build();
+
+        // From twitch docs
+        let data = br#"
+{
+    "total": 12345,
+    "data":
+    [
+        {
+            "from_id": "171003792",
+            "from_name": "IIIsutha067III",
+            "to_id": "23161357",
+            "to_name": "LIRIK",
+            "followed_at": "2017-08-22T22:55:24Z"
+        },
+        {
+            "from_id": "113627897",
+            "from_name": "Birdman616",
+            "to_id": "23161357",
+            "to_name": "LIRIK",
+            "followed_at": "2017-08-22T22:55:04Z"
+        }
+    ],
+    "pagination":{
+        "cursor": "eyJiIjpudWxsLCJhIjoiMTUwMzQ0MTc3NjQyNDQyMjAwMCJ9"
+    }
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
 }
 
 /// Deletes a specified user from the followers of a specified channel.
@@ -226,6 +297,23 @@ pub mod delete_user_follows {
     }
 
     impl helix::RequestDelete for DeleteUserFollowsRequest {}
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = DeleteUserFollowsRequest::builder().to_id("41245072".to_string()).build();
+
+        // From twitch docs
+        let data = br#""#
+        .to_vec();
+
+        let http_response = http::Response::builder().status(204).body(data).unwrap();
+        // FIXME: I have not tested this in production
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
 }
 
 /// Adds a specified user to the followers of a specified channel.
@@ -344,5 +432,22 @@ pub mod create_user_follows {
                 request: self,
             })
         }
+    }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = CreateUserFollowsRequest::builder().build();
+
+        // From twitch docs
+        let data = br#""#
+        .to_vec();
+
+        let http_response = http::Response::builder().status(200).body(data).unwrap();
+        // This is marked as 204 in twitch docs, but in reality it's 200
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
     }
 }
