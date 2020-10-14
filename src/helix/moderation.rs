@@ -73,7 +73,9 @@ pub mod get_moderators {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = GetModeratorsRequest::builder().broadcaster_id("198704263".to_string()).build();
+        let req = GetModeratorsRequest::builder()
+            .broadcaster_id("198704263".to_string())
+            .build();
 
         // From twitch docs
         let data = br#"
@@ -167,7 +169,9 @@ pub mod get_moderator_events {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = GetModeratorEventsRequest::builder().broadcaster_id("198704263".to_string()).build();
+        let req = GetModeratorEventsRequest::builder()
+            .broadcaster_id("198704263".to_string())
+            .build();
 
         // From twitch docs
         let data = br#"
@@ -282,7 +286,9 @@ pub mod get_banned_users {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = GetBannedUsersRequest::builder().broadcaster_id("198704263".to_string()).build();
+        let req = GetBannedUsersRequest::builder()
+            .broadcaster_id("198704263".to_string())
+            .build();
 
         // From twitch docs
         let data = br#"
@@ -381,7 +387,9 @@ pub mod get_banned_events {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = GetBannedEventsRequest::builder().broadcaster_id("198704263".to_string()).build();
+        let req = GetBannedEventsRequest::builder()
+            .broadcaster_id("198704263".to_string())
+            .build();
 
         // From twitch docs
         let data = br#"
@@ -510,7 +518,9 @@ pub mod check_automod_status {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = CheckAutoModStatusRequest::builder().broadcaster_id("198704263".to_string()).build();
+        let req = CheckAutoModStatusRequest::builder()
+            .broadcaster_id("198704263".to_string())
+            .build();
 
         // From twitch docs
         let data = br#"

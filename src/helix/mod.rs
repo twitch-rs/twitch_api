@@ -375,7 +375,6 @@ where <Self as Request>::Response:
     where
         Self: Sized,
     {
-        
         match response.status().try_into() {
             Ok(result) => Ok(result),
             Err(err) => Err(HelixRequestPatchError {

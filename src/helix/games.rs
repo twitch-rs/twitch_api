@@ -61,7 +61,9 @@ pub mod get_games {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = GetGamesRequest::builder().id(vec!["493057".to_string()]).build();
+        let req = GetGamesRequest::builder()
+            .id(vec!["493057".to_string()])
+            .build();
 
         // From twitch docs
         let data = br#"

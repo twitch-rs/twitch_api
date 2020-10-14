@@ -195,7 +195,6 @@ pub mod get_streams {
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
-
 }
 
 /// Gets information about active streams.
@@ -233,7 +232,9 @@ pub mod get_stream_tags {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = GetStreamTagsRequest::builder().broadcaster_id("198704263".to_string()).build();
+        let req = GetStreamTagsRequest::builder()
+            .broadcaster_id("198704263".to_string())
+            .build();
 
         // From twitch docs
         let data = "\

@@ -91,7 +91,9 @@ pub mod get_broadcaster_subscriptions {
     #[test]
     fn parse_response() {
         use helix::*;
-        let req = GetBroadcasterSubscriptionsRequest::builder().broadcaster_id("123".to_string()).build();
+        let req = GetBroadcasterSubscriptionsRequest::builder()
+            .broadcaster_id("123".to_string())
+            .build();
 
         // From twitch docs. Malformed example on https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions
         let data = br#"
