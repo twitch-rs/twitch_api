@@ -87,4 +87,37 @@ pub mod get_broadcaster_subscriptions {
     impl helix::Paginated for GetBroadcasterSubscriptionsRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
     }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetBroadcasterSubscriptionsRequest::builder().broadcaster_id("123".to_string()).build();
+
+        // From twitch docs. Malformed example on https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions
+        let data = br#"
+{
+    "data": [
+        {
+        "broadcaster_id": "123",
+        "broadcaster_name": "test_user",
+        "is_gift": true,
+        "tier": "1000",
+        "plan_name": "The Ninjas",
+        "user_id": "123",
+        "user_name": "snoirf"
+        }
+    ],
+    "pagination": {
+        "cursor": "xxxx"
+    }
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
 }

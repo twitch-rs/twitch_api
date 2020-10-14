@@ -69,6 +69,38 @@ pub mod get_moderators {
     impl helix::Paginated for GetModeratorsRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
     }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetModeratorsRequest::builder().broadcaster_id("198704263".to_string()).build();
+
+        // From twitch docs
+        let data = br#"
+{
+    "data": [
+        {
+            "user_id": "424596340",
+            "user_name": "quotrok"
+        },
+        {
+            "user_id": "424596340",
+            "user_name": "quotrok"
+        }
+    ],
+    "pagination": {
+        "cursor": "eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6IjEwMDQ3MzA2NDo4NjQwNjU3MToxSVZCVDFKMnY5M1BTOXh3d1E0dUdXMkJOMFcifX0"
+    }
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
 }
 
 /// Returns a list of moderators or users added and removed as moderators from a channel.
@@ -131,6 +163,66 @@ pub mod get_moderator_events {
     impl helix::Paginated for GetModeratorEventsRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
     }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetModeratorEventsRequest::builder().broadcaster_id("198704263".to_string()).build();
+
+        // From twitch docs
+        let data = br#"
+{
+    "data": [
+        {
+        "id": "1IVBTnDSUDApiBQW4UBcVTK4hPr",
+        "event_type": "moderation.moderator.remove",
+        "event_timestamp": "2019-03-15T18:18:14Z",
+        "version": "1.0",
+        "event_data": {
+            "broadcaster_id": "198704263",
+            "broadcaster_name": "aan22209",
+            "user_id": "423374343",
+            "user_name": "glowillig"
+        }
+        },
+        {
+        "id": "1IVIPQdYIEnD8nJ376qkASDzsj7",
+        "event_type": "moderation.moderator.add",
+        "event_timestamp": "2019-03-15T19:15:13Z",
+        "version": "1.0",
+        "event_data": {
+            "broadcaster_id": "198704263",
+            "broadcaster_name": "aan22209",
+            "user_id": "423374343",
+            "user_name": "glowillig"
+        }
+        },
+        {
+        "id": "1IVBTP7gG61oXLMu7fvnRhrpsro",
+        "event_type": "moderation.moderator.remove",
+        "event_timestamp": "2019-03-15T18:18:11Z",
+        "version": "1.0",
+        "event_data": {
+            "broadcaster_id": "198704263",
+            "broadcaster_name": "aan22209",
+            "user_id": "424596340",
+            "user_name": "quotrok"
+        }
+        }
+    ],
+    "pagination": {
+        "cursor": "eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6IjEwMDQ3MzA2NDo4NjQwNjU3MToxSVZCVDFKMnY5M1BTOXh3d1E0dUdXMkJOMFcifX0"
+    }
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
 }
 
 /// Returns all banned and timed-out users in a channel.
@@ -186,6 +278,40 @@ pub mod get_banned_users {
     impl helix::Paginated for GetBannedUsersRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
     }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetBannedUsersRequest::builder().broadcaster_id("198704263".to_string()).build();
+
+        // From twitch docs
+        let data = br#"
+{
+    "data": [
+        {
+        "user_id": "423374343",
+        "user_name": "glowillig",
+        "expires_at": "2019-03-15T02:00:28Z"
+        },
+        {
+        "user_id": "424596340",
+        "user_name": "quotrok",
+        "expires_at": "2018-08-07T02:07:55Z"
+        }
+    ],
+    "pagination": {
+        "cursor": "eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6IjEwMDQ3MzA2NDo4NjQwNjU3MToxSVZCVDFKMnY5M1BTOXh3d1E0dUdXMkJOMFcifX0"
+    }
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
 }
 
 /// Returns all banned and timed-out users in a channel.
@@ -233,6 +359,7 @@ pub mod get_banned_events {
         pub event_timestamp: String,
         /// Returns the version of the endpoint.
         pub version: String,
+        // FIXME: Should be a struct, maybe
         /// Returns `broadcaster_id`, `broadcaster_name`, `user_id`, `user_name`, and `expires_at`.
         pub event_data: HashMap<String, String>,
     }
@@ -249,6 +376,69 @@ pub mod get_banned_events {
 
     impl helix::Paginated for GetBannedEventsRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
+    }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetBannedEventsRequest::builder().broadcaster_id("198704263".to_string()).build();
+
+        // From twitch docs
+        let data = br#"
+{
+    "data": [
+    {
+        "id": "1IPFqAb0p0JncbPSTEPhx8JF1Sa",
+        "event_type": "moderation.user.ban",
+        "event_timestamp": "2019-03-13T15:55:14Z",
+        "version": "1.0",
+        "event_data": {
+        "broadcaster_id": "198704263",
+        "broadcaster_name": "aan22209",
+        "user_id": "424596340",
+        "user_name": "quotrok",
+        "expires_at": ""
+        }
+    },
+    {
+        "id": "1IPFsDv5cs4mxfJ1s2O9Q5flf4Y",
+        "event_type": "moderation.user.unban",
+        "event_timestamp": "2019-03-13T15:55:30Z",
+        "version": "1.0",
+        "event_data": {
+        "broadcaster_id": "198704263",
+        "broadcaster_name": "aan22209",
+        "user_id": "424596340",
+        "user_name": "quotrok",
+        "expires_at": ""
+        }
+    },
+    {
+        "id": "1IPFqmlu9W2q4mXXjULyM8zX0rb",
+        "event_type": "moderation.user.ban",
+        "event_timestamp": "2019-03-13T15:55:19Z",
+        "version": "1.0",
+        "event_data": {
+        "broadcaster_id": "198704263",
+        "broadcaster_name": "aan22209",
+        "user_id": "424596340",
+        "user_name": "quotrok",
+        "expires_at": ""
+        }
+    }
+    ],
+    "pagination": {
+    "cursor": "eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6IjE5OTYwNDI2MzoyMDIxMjA1MzE6MUlQRnFtbHU5VzJxNG1YWGpVTHlNOHpYMHJiIn19"
+    }
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
     }
 }
 
@@ -315,5 +505,34 @@ pub mod check_automod_status {
 
             serde_json::to_string(&InnerBody { data: &body })
         }
+    }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = CheckAutoModStatusRequest::builder().broadcaster_id("198704263".to_string()).build();
+
+        // From twitch docs
+        let data = br#"
+{
+   "data": [
+     {
+       "msg_id": "123",
+       "is_permitted": true
+     },
+     {
+       "msg_id": "393",
+       "is_permitted": false
+     }
+   ]
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
     }
 }

@@ -141,6 +141,61 @@ pub mod get_streams {
     impl helix::Paginated for GetStreamsRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
     }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetStreamsRequest::builder().build();
+
+        // From twitch docs. example 1 in https://dev.twitch.tv/docs/api/reference#get-streams is malformed
+        let data = br#"
+{
+    "data": [
+        {
+            "id": "26007494656",
+            "user_id": "23161357",
+            "user_name": "LIRIK",
+            "game_id": "417752",
+            "type": "live",
+            "title": "Hey Guys, It's Monday - Twitter: @Lirik",
+            "viewer_count": 32575,
+            "started_at": "2017-08-14T16:08:32Z",
+            "language": "en",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg",
+            "tag_ids":  [
+                "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
+            ]
+        },
+        {
+            "id": "26007494656",
+            "user_id": "23161357",
+            "user_name": "LIRIK",
+            "game_id": "417752",
+            "type": "live",
+            "title": "Hey Guys, It's Monday - Twitter: @Lirik",
+            "viewer_count": 32575,
+            "started_at": "2017-08-14T16:08:32Z",
+            "language": "en",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg",
+            "tag_ids":  [
+                "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
+            ]
+        }
+    ],
+    "pagination": {
+        "cursor": "eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6MjB9fQ=="
+    }
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
+
 }
 
 /// Gets information about active streams.
@@ -174,4 +229,52 @@ pub mod get_stream_tags {
     }
 
     impl helix::RequestGet for GetStreamTagsRequest {}
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetStreamTagsRequest::builder().broadcaster_id("198704263".to_string()).build();
+
+        // From twitch docs
+        let data = "\
+{\n\
+    \"data\": [\n\
+        {\n\
+            \"tag_id\": \"621fb5bf-5498-4d8f-b4ac-db4d40d401bf\",\n\
+            \"is_auto\": false,\n\
+            \"localization_names\": {\n\
+                \"bg-bg\": \"Завършване без продължаване\",\n\
+                \"cs-cz\": \"Na jeden z&aacute;tah\",\n\
+                \"da-dk\": \"Continue klaret\"\n\
+            },\n\
+            \"localization_descriptions\": {\n\
+                \"bg-bg\": \"За потоци с акцент върху завършване на аркадна игра с монети, в която не се използва продължаване\",\n\
+                \"cs-cz\": \"Pro vys&iacute;l&aacute;n&iacute; s důrazem na plněn&iacute; mincov&yacute;ch ark&aacute;dov&yacute;ch her bez použit&iacute; pokračov&aacute;n&iacute;.\",\n\
+                \"da-dk\": \"Til streams med v&aelig;gt p&aring; at gennemf&oslash;re et arkadespil uden at bruge continues\"\n\
+            }\n\
+        },\n\
+        {\n\
+            \"tag_id\": \"79977fb9-f106-4a87-a386-f1b0f99783dd\",\n\
+            \"is_auto\": false,\n\
+            \"localization_names\": {\n\
+                \"bg-bg\": \"PvE\",\n\
+                \"cs-cz\": \"PvE\"\n\
+            },\n\
+            \"localization_descriptions\": {\n\
+                \"bg-bg\": \"За потоци с акцент върху PVE геймплей\",\n\
+                \"cs-cz\": \"Pro vys&iacute;l&aacute;n&iacute; s důrazem na hratelnost \\\"hr&aacute;č vs. prostřed&iacute;\\\".\",\n\
+                \"da-dk\": \"Til streams med v&aelig;gt p&aring; spil, hvor det er spilleren mod omgivelserne.\"\n\
+            }\n\
+        }\n\
+    ]\n\
+}\n\
+"
+        .as_bytes().to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
 }

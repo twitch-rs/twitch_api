@@ -57,6 +57,40 @@ pub mod get_games {
     }
 
     impl helix::RequestGet for GetGamesRequest {}
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetGamesRequest::builder().id(vec!["493057".to_string()]).build();
+
+        // From twitch docs
+        let data = br#"
+{
+    "data": [
+        {
+            "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-52x72.jpg",
+            "id": "33214",
+            "name": "Fortnite"
+        },
+        {
+            "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-52x72.jpg",
+            "id": "33214",
+            "name": "Fortnite"
+        }
+    ],
+    "pagination": {
+    "cursor": "eyJiIjpudWxsLCJhIjp7IkN"
+  }
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
 }
 
 /// Gets games sorted by number of current viewers on Twitch, most popular first.
@@ -102,5 +136,37 @@ pub mod get_top_games {
 
     impl helix::Paginated for GetTopGamesRequest {
         fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
+    }
+
+    #[test]
+    fn parse_response() {
+        use helix::*;
+        let req = GetTopGamesRequest::builder().build();
+
+        // From twitch docs
+        let data = br#"
+{
+    "data": [
+      {
+        "id": "493057",
+        "name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+        "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
+      },
+      {
+        "id": "493057",
+        "name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+        "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
+      }
+    ],
+    "pagination":{"cursor":"eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6MjB9fQ=="}
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
     }
 }
