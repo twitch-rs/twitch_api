@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/client.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/b356d7da778f3fb8a3b496218f4929c22d12c013">b356d7d</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/6266a4ae6a9b25441a4a36096cedfafb4c83ba0e">6266a4a</a></p>
 <style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -223,7 +223,6 @@
 <span id="218">218</span>
 <span id="219">219</span>
 <span id="220">220</span>
-<span id="221">221</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Different clients you can use with this crate to call the auth server.</span>
 <span class="doccomment">//!</span>
@@ -313,10 +312,10 @@
 <span class="comment">//     }</span>
 <span class="comment">// }</span>
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;reqwest_client&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;reqwest&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>))]</span>
 <span class="kw">use</span> <span class="ident">reqwest</span>::<span class="ident">Client</span> <span class="kw">as</span> <span class="ident">ReqwestClient</span>;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;reqwest_client&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;reqwest&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;reqwest_client&quot;</span>)))]</span> <span class="comment">// FIXME: This doc_cfg does nothing</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReqwestClient</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">reqwest</span>::<span class="ident">Error</span>;
@@ -348,8 +347,7 @@
 }
 
 <span class="doccomment">/// Possible errors from [Client::req()] when using [surf::Client]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf_client&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf&quot;</span>))]</span>
-<span class="comment">// #[cfg_attr(nightly, doc(cfg(feature=&quot;surf_client&quot;)))]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">displaydoc</span>::<span class="ident">Display</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SurfError</span> {
     <span class="doccomment">/// surf failed to do the request: {0}</span>
@@ -361,10 +359,10 @@
     <span class="doccomment">/// uri could not be translated into an url.</span>
     <span class="ident">UrlError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">url</span>::<span class="ident">ParseError</span>),
 }
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf_client&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>))]</span>
 <span class="kw">use</span> <span class="ident">surf</span>::<span class="ident">Client</span> <span class="kw">as</span> <span class="ident">SurfClient</span>;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf_client&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf_client&quot;</span>)))]</span> <span class="comment">// FIXME: This doc_cfg does nothing</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SurfClient</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">SurfError</span>;

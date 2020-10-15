@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/helix/tags.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tags.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/b356d7da778f3fb8a3b496218f4929c22d12c013">b356d7d</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/6266a4ae6a9b25441a4a36096cedfafb4c83ba0e">6266a4a</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -125,27 +125,98 @@
 <span id="120">120</span>
 <span id="121">121</span>
 <span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Endpoints regarding tags</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Examples</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust,no_run</span>
-<span class="doccomment">//! # use twitch_api2::helix::{HelixClient, tags::GetAllStreamTagsRequest};</span>
-<span class="doccomment">//! # #[tokio::main]</span>
-<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-<span class="doccomment">//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-<span class="doccomment">//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;</span>
-<span class="doccomment">//! let client = HelixClient::new();</span>
-<span class="doccomment">//! # let _: &amp;HelixClient&lt;twitch_api2::DummyHttpClient&gt; = &amp;client;</span>
-<span class="doccomment">//! let req = GetAllStreamTagsRequest::builder()</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! println!(&quot;{:?}&quot;, &amp;client.req_get(req, &amp;token).await?.data.get(0));</span>
-<span class="doccomment">//! # Ok(())</span>
-<span class="doccomment">//! # }</span>
-<span class="doccomment">//! ```</span>
+<span class="doccomment">//! Endpoints regarding tags</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Examples</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```rust,no_run</span>
+<span class="doccomment">//! # use twitch_api2::helix::{HelixClient, tags::GetAllStreamTagsRequest};</span>
+<span class="doccomment">//! # #[tokio::main]</span>
+<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
+<span class="doccomment">//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
+<span class="doccomment">//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;</span>
+<span class="doccomment">//! let client = HelixClient::new();</span>
+<span class="doccomment">//! # let _: &amp;HelixClient&lt;twitch_api2::DummyHttpClient&gt; = &amp;client;</span>
+<span class="doccomment">//! let req = GetAllStreamTagsRequest::builder()</span>
+<span class="doccomment">//!     .build();</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! println!(&quot;{:?}&quot;, &amp;client.req_get(req, &amp;token).await?.data.get(0));</span>
+<span class="doccomment">//! # Ok(())</span>
+<span class="doccomment">//! # }</span>
+<span class="doccomment">//! ```</span>
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_all_stream_tags</span>::{<span class="ident">GetAllStreamTagsRequest</span>, <span class="ident">Tag</span>};
@@ -153,24 +224,23 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helix</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">BTreeMap</span>;
-<span class="kw">use</span> <span class="ident">typed_builder</span>::<span class="ident">TypedBuilder</span>;
 
-<span class="doccomment">/// Language code, formatted as 2 letter language by ISO 639-1, a dash (`-`) and 2 letter region by ISO 3166-1</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// i.e</span>
-<span class="doccomment">/// `en-us`</span>
-<span class="doccomment">/// `bg-bg`</span>
-<span class="doccomment">/// etc etc</span>
+<span class="doccomment">/// Language code, formatted as 2 letter language by ISO 639-1, a dash (`-`) and 2 letter region by ISO 3166-1</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// i.e</span>
+<span class="doccomment">/// `en-us`</span>
+<span class="doccomment">/// `bg-bg`</span>
+<span class="doccomment">/// etc etc</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Language</span> <span class="op">=</span> <span class="ident">String</span>;
 
-<span class="doccomment">/// Tag is auto-generated or not.</span>
+<span class="doccomment">/// Tag is auto-generated or not.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialOrd</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">from</span> <span class="op">=</span> <span class="string">&quot;bool&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">into</span> <span class="op">=</span> <span class="string">&quot;bool&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AutoGenerated</span> {
-    <span class="doccomment">/// Was auto-generated</span>
+    <span class="doccomment">/// Was auto-generated</span>
     <span class="ident">True</span>,
-    <span class="doccomment">/// Was not auto-generated</span>
+    <span class="doccomment">/// Was not auto-generated</span>
     <span class="ident">False</span>,
 }
 
@@ -191,61 +261,133 @@
         }
     }
 }
-<span class="doccomment">/// A stream tag as defined by Twitch.</span>
+<span class="doccomment">/// A stream tag as defined by Twitch.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TwitchTag</span> {
-    <span class="doccomment">/// ID of the tag.</span>
+    <span class="doccomment">/// ID of the tag.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;tag_id&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// true if the tag is auto-generated; otherwise, false . An auto-generated tag is one automatically applied by Twitch (e.g., a language tag based on the broadcaster’s settings); these cannot be added or removed by the user.</span>
+    <span class="doccomment">/// true if the tag is auto-generated; otherwise, false . An auto-generated tag is one automatically applied by Twitch (e.g., a language tag based on the broadcaster’s settings); these cannot be added or removed by the user.</span>
     <span class="kw">pub</span> <span class="ident">is_auto</span>: <span class="ident">AutoGenerated</span>,
-    <span class="doccomment">/// All localized names of the tag.</span>
+    <span class="doccomment">/// All localized names of the tag.</span>
     <span class="kw">pub</span> <span class="ident">localization_names</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">Language</span>, <span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// All localized descriptions of the tag.</span>
+    <span class="doccomment">/// All localized descriptions of the tag.</span>
     <span class="kw">pub</span> <span class="ident">localization_descriptions</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">Language</span>, <span class="ident">String</span><span class="op">&gt;</span>,
 }
 
-<span class="doccomment">/// Gets the list of all stream tags defined by Twitch, optionally filtered by tag ID(s).</span>
-<span class="doccomment">/// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)</span>
+<span class="doccomment">/// Gets the list of all stream tags defined by Twitch, optionally filtered by tag ID(s).</span>
+<span class="doccomment">/// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_all_stream_tags</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-    <span class="doccomment">/// Query Parameters for [Get All Stream Tags](super::get_all_stream_tags)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)</span>
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">TypedBuilder</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+    <span class="doccomment">/// Query Parameters for [Get All Stream Tags](super::get_all_stream_tags)</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">typed_builder</span>::<span class="ident">TypedBuilder</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
     <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetAllStreamTagsRequest</span> {
-        <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.</span>
+        <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">after</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Cursor</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.</span>
-        <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
+        <span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.</span>
+        <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">first</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// ID of a tag. Multiple IDs can be specified. If provided, only the specified tag(s) is(are) returned. Maximum of 100.</span>
+        <span class="doccomment">/// ID of a tag. Multiple IDs can be specified. If provided, only the specified tag(s) is(are) returned. Maximum of 100.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Vec::is_empty&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">tag_id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     }
 
-    <span class="doccomment">/// Return Values for [Get All Stream Tags](super::get_all_stream_tags)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)</span>
+    <span class="doccomment">/// Return Values for [Get All Stream Tags](super::get_all_stream_tags)</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)</span>
     <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Tag</span> <span class="op">=</span> <span class="ident">helix</span>::<span class="ident">tags</span>::<span class="ident">TwitchTag</span>;
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">GetAllStreamTagsRequest</span> {
-        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Tag</span>;
+        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Tag</span><span class="op">&gt;</span>;
 
         <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;tags/streams&quot;</span>;
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
         <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[];
     }
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">RequestGet</span> <span class="kw">for</span> <span class="ident">GetAllStreamTagsRequest</span> {}
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Paginated</span> <span class="kw">for</span> <span class="ident">GetAllStreamTagsRequest</span> {
-        <span class="kw">fn</span> <span class="ident">set_pagination</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cursor</span>: <span class="ident">helix</span>::<span class="ident">Cursor</span>) { <span class="self">self</span>.<span class="ident">after</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">cursor</span>); }
+        <span class="kw">fn</span> <span class="ident">set_pagination</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cursor</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Cursor</span><span class="op">&gt;</span>) { <span class="self">self</span>.<span class="ident">after</span> <span class="op">=</span> <span class="ident">cursor</span> }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+        <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetAllStreamTagsRequest</span>::<span class="ident">builder</span>().<span class="ident">first</span>(<span class="number">3</span>).<span class="ident">build</span>();
+
+        <span class="comment">// From twitch docs.</span>
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;\
+{\n\
+    \&quot;data\&quot;: [\n\
+        {\n\
+            \&quot;tag_id\&quot;: \&quot;621fb5bf-5498-4d8f-b4ac-db4d40d401bf\&quot;,\n\
+            \&quot;is_auto\&quot;: false,\n\
+            \&quot;localization_names\&quot;: {\n\
+                \&quot;bg-bg\&quot;: \&quot;Завършване без продължаване\&quot;,\n\
+                \&quot;cs-cz\&quot;: \&quot;Na jeden z&amp;aacute;tah\&quot;,\n\
+                \&quot;da-dk\&quot;: \&quot;1 Continue klaret\&quot;,\n\
+                \&quot;de-de\&quot;: \&quot;Mit nur 1 Leben\&quot;,\n\
+                \&quot;el-gr\&quot;: \&quot;1 χωρίς συνέχεια\&quot;,\n\
+                \&quot;en-us\&quot;: \&quot;1 Credit Clear\&quot;\n\
+            },\n\
+            \&quot;localization_descriptions\&quot;: {\n\
+                \&quot;bg-bg\&quot;: \&quot;За потоци с акцент върху завършване на аркадна игра с монети, в която не се използва продължаване\&quot;,\n\
+                \&quot;cs-cz\&quot;: \&quot;Pro vys&amp;iacute;l&amp;aacute;n&amp;iacute; s důrazem na plněn&amp;iacute; mincov&amp;yacute;ch ark&amp;aacute;dov&amp;yacute;ch her bez použit&amp;iacute; pokračov&amp;aacute;n&amp;iacute;.\&quot;,\n\
+                \&quot;da-dk\&quot;: \&quot;Til streams med v&amp;aelig;gt p&amp;aring; at gennemf&amp;oslash;re et arkadespil uden at bruge continues\&quot;,\n\
+                \&quot;de-de\&quot;: \&quot;F&amp;uuml;r Streams mit dem Ziel, ein Coin-op-Arcade-Game mit nur einem Leben abzuschlie&amp;szlig;en.\&quot;,\n\
+                \&quot;el-gr\&quot;: \&quot;Για μεταδόσεις με έμφαση στην ολοκλήρωση παλαιού τύπου ηλεκτρονικών παιχνιδιών που λειτουργούν με κέρμα, χωρίς να χρησιμοποιούν συνέχειες\&quot;,\n\
+                \&quot;en-us\&quot;: \&quot;For streams with an emphasis on completing a coin-op arcade game without using any continues\&quot;\n\
+            }\n\
+        },\n\
+        {\n\
+            \&quot;tag_id\&quot;: \&quot;7b49f69a-5d95-4c94-b7e3-66e2c0c6f6c6\&quot;,\n\
+            \&quot;is_auto\&quot;: false,\n\
+            \&quot;localization_names\&quot;: {\n\
+                \&quot;bg-bg\&quot;: \&quot;Дизайн\&quot;,\n\
+                \&quot;cs-cz\&quot;: \&quot;Design\&quot;,\n\
+                \&quot;da-dk\&quot;: \&quot;Design\&quot;,\n\
+                \&quot;de-de\&quot;: \&quot;Design\&quot;,\n\
+                \&quot;el-gr\&quot;: \&quot;Σχέδιο\&quot;,\n\
+                \&quot;en-us\&quot;: \&quot;Design\&quot;\n\
+            },\n\
+            \&quot;localization_descriptions\&quot;: {\n\
+                \&quot;en-us\&quot;: \&quot;For streams with an emphasis on the creative process of designing an object or system\&quot;\n\
+            }\n\
+        },\n\
+        {\n\
+            \&quot;tag_id\&quot;: \&quot;1c628b75-b1c3-4a2f-9d1d-056c1f555f0e\&quot;,\n\
+            \&quot;is_auto\&quot;: true,\n\
+            \&quot;localization_names\&quot;: {\n\
+                \&quot;bg-bg\&quot;: \&quot;Ð¨Ð°Ð¼Ð¿Ð¸Ð¾Ð½: Lux\&quot;,\n\
+                \&quot;cs-cz\&quot;: \&quot;Å ampion: Lux\&quot;,\n\
+                \&quot;da-dk\&quot;: \&quot;Champion: Lux\&quot;\n\
+            },\n\
+            \&quot;localization_descriptions\&quot;: {\n\
+                \&quot;en-us\&quot;: \&quot;For streams featuring the champion Lux in League of Legends\&quot;\n\
+            }\n\
+        }\n\
+    ],\n\
+    \&quot;pagination\&quot;: {\n\
+        \&quot;cursor\&quot;: \&quot;eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6ImV5SnBaQ0k2ZXlKQ0lqcHVkV3hzTENKQ1QwOU1JanB1ZFd4c0xDS kNVeUk2Ym5Wc2JDd2lUQ0k2Ym5Wc2JDd2lUU0k2Ym5Wc2JDd2lUaUk2Ym5Wc2JDd2lUbE1pT201MWJHd3NJazV WVEV3aU9tNTFiR3dzSWxNaU9pSXhZell5T0dJM05TMWlNV016TFRSaE1tWXRPV1F4WkMwd05UWmpNV1kxTlRWb U1HVWlMQ0pUVXlJNmJuVnNiSDE5In19\&quot;\n\
+    }\n\
+}\n\
+&quot;</span>
+        .<span class="ident">as_bytes</span>().<span class="ident">to_vec</span>();
+
+        <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+
+        <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }
 }
 </pre></div>
