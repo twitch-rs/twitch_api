@@ -58,7 +58,7 @@ pub mod get_games {
     impl helix::RequestGet for GetGamesRequest {}
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetGamesRequest::builder()
             .id(vec!["493057".to_string()])
@@ -89,6 +89,7 @@ pub mod get_games {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/games?id=493057");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -140,7 +141,7 @@ pub mod get_top_games {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetTopGamesRequest::builder().build();
 
@@ -167,6 +168,7 @@ pub mod get_top_games {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/games/top?");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

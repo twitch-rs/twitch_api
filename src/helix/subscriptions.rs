@@ -88,7 +88,7 @@ pub mod get_broadcaster_subscriptions {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetBroadcasterSubscriptionsRequest::builder()
             .broadcaster_id("123".to_string())
@@ -118,6 +118,7 @@ pub mod get_broadcaster_subscriptions {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/subscriptions?broadcaster_id=123");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

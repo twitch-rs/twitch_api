@@ -121,7 +121,7 @@ pub mod get_all_stream_tags {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetAllStreamTagsRequest::builder().first(3).build();
 
@@ -187,6 +187,7 @@ pub mod get_all_stream_tags {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/tags/streams?first=3");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

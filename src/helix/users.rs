@@ -95,7 +95,7 @@ pub mod get_users {
     impl helix::RequestGet for GetUsersRequest {}
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetUsersRequest::builder()
             .id(vec!["44322889".to_string()])
@@ -123,6 +123,7 @@ pub mod get_users {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/users?id=44322889");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -198,7 +199,7 @@ pub mod get_users_follows {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetUsersFollowsRequest::builder()
             .to_id("23161357".to_string())
@@ -235,6 +236,7 @@ pub mod get_users_follows {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/users/follows?to_id=23161357");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -303,7 +305,7 @@ pub mod delete_user_follows {
     impl helix::RequestDelete for DeleteUserFollowsRequest {}
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = DeleteUserFollowsRequest::builder()
             .to_id("41245072".to_string())
@@ -316,6 +318,7 @@ pub mod delete_user_follows {
         // FIXME: I have not tested this in production
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/users/follows?to_id=41245072");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -444,7 +447,7 @@ pub mod create_user_follows {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = CreateUserFollowsRequest::builder().build();
 
@@ -455,6 +458,7 @@ pub mod create_user_follows {
         // This is marked as 204 in twitch docs, but in reality it's 200
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/users/follows?");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

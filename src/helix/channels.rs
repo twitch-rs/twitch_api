@@ -79,7 +79,7 @@ pub mod get_channel_information {
     impl helix::RequestGet for GetChannelInformationRequest {}
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetChannelInformationRequest::builder()
             .broadcaster_id("44445592".to_string())
@@ -105,6 +105,7 @@ pub mod get_channel_information {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/channels?broadcaster_id=44445592");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -182,7 +183,7 @@ pub mod modify_channel_information {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = ModifyChannelInformationRequest::builder()
             .broadcaster_id(String::from("0"))
@@ -194,6 +195,7 @@ pub mod modify_channel_information {
         let http_response = http::Response::builder().status(200).body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/channels?broadcaster_id=0");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -309,7 +311,7 @@ pub mod start_commercial {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = StartCommercialRequest {};
 
@@ -328,6 +330,7 @@ pub mod start_commercial {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/channels/commercial?");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

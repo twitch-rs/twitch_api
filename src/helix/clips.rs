@@ -122,7 +122,7 @@ pub mod get_clips {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetClipsRequest::builder()
             .id(vec![String::from("AwkwardHelplessSalamanderSwiftRage")])
@@ -156,6 +156,7 @@ pub mod get_clips {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/clips?id=AwkwardHelplessSalamanderSwiftRage");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

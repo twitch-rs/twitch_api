@@ -70,7 +70,7 @@ pub mod get_moderators {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetModeratorsRequest::builder()
             .broadcaster_id("198704263".to_string())
@@ -99,6 +99,7 @@ pub mod get_moderators {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/moderation/moderators?broadcaster_id=198704263");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -166,7 +167,7 @@ pub mod get_moderator_events {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetModeratorEventsRequest::builder()
             .broadcaster_id("198704263".to_string())
@@ -223,6 +224,7 @@ pub mod get_moderator_events {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/moderation/moderators/events?broadcaster_id=198704263");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -283,7 +285,7 @@ pub mod get_banned_users {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetBannedUsersRequest::builder()
             .broadcaster_id("198704263".to_string())
@@ -314,6 +316,7 @@ pub mod get_banned_users {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/moderation/banned?broadcaster_id=198704263");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -384,7 +387,7 @@ pub mod get_banned_events {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetBannedEventsRequest::builder()
             .broadcaster_id("198704263".to_string())
@@ -444,6 +447,7 @@ pub mod get_banned_events {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/moderation/banned/events?broadcaster_id=198704263");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -517,7 +521,7 @@ pub mod check_automod_status {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = CheckAutoModStatusRequest::builder()
             .broadcaster_id("198704263".to_string())
@@ -543,6 +547,7 @@ pub mod check_automod_status {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/moderation/enforcements/status?broadcaster_id=198704263");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

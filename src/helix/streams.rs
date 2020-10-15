@@ -142,7 +142,7 @@ pub mod get_streams {
     }
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetStreamsRequest::builder().build();
 
@@ -191,6 +191,7 @@ pub mod get_streams {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/streams?");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -229,7 +230,7 @@ pub mod get_stream_tags {
     impl helix::RequestGet for GetStreamTagsRequest {}
 
     #[test]
-    fn parse_response() {
+    fn test_request() {
         use helix::*;
         let req = GetStreamTagsRequest::builder()
             .broadcaster_id("198704263".to_string())
@@ -274,6 +275,7 @@ pub mod get_stream_tags {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
+        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/streams/tags?broadcaster_id=198704263");
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
