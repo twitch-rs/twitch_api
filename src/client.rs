@@ -86,10 +86,16 @@ pub trait Client<'a>: Send + 'a {
 //     }
 // }
 
-#[cfg(feature = "reqwest_client")]
+#[cfg(any(
+    all(feature = "reqwest", feature = "client"),
+    feature = "reqwest_client"
+))]
 use reqwest::Client as ReqwestClient;
 
-#[cfg(feature = "reqwest_client")]
+#[cfg(any(
+    all(feature = "reqwest", feature = "client"),
+    feature = "reqwest_client"
+))]
 #[cfg_attr(nightly, doc(cfg(feature = "reqwest_client")))] // FIXME: This doc_cfg does nothing
 impl<'a> Client<'a> for ReqwestClient {
     type Error = reqwest::Error;
@@ -121,7 +127,7 @@ impl<'a> Client<'a> for ReqwestClient {
 }
 
 /// Possible errors from [Client::req()] when using [surf::Client]
-#[cfg(any(feature = "surf_client", feature = "surf"))]
+#[cfg(any(feature = "surf_client", all(feature = "surf", feature = "client")))]
 // #[cfg_attr(nightly, doc(cfg(feature="surf_client")))]
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
 pub enum SurfError {
@@ -134,10 +140,10 @@ pub enum SurfError {
     /// uri could not be translated into an url.
     UrlError(#[from] url::ParseError),
 }
-#[cfg(any(feature = "surf_client", feature = "surf"))]
+#[cfg(any(feature = "surf_client", all(feature = "surf", feature = "client")))]
 use surf::Client as SurfClient;
 
-#[cfg(any(feature = "surf_client", feature = "surf"))]
+#[cfg(any(feature = "surf_client", all(feature = "surf", feature = "client")))]
 #[cfg_attr(nightly, doc(cfg(feature = "surf_client")))] // FIXME: This doc_cfg does nothing
 impl<'a> Client<'a> for SurfClient {
     type Error = SurfError;
