@@ -20,7 +20,7 @@
 //!
 //! // then parse the response
 //! let uri = request.get_uri()?;
-//! let user: helix::Response<_, User> = request.parse_response(&uri,response)?;
+//! let user: helix::Response<_, Vec<User>> = request.parse_response(&uri,response)?;
 //! println!("{:#?}", user);
 //! # Ok(())
 //! # }
