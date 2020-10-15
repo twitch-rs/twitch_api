@@ -25,7 +25,6 @@ pub use get_all_stream_tags::{GetAllStreamTagsRequest, Tag};
 use crate::helix;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
-use typed_builder::TypedBuilder;
 
 /// Language code, formatted as 2 letter language by ISO 639-1, a dash (`-`) and 2 letter region by ISO 3166-1
 ///
@@ -85,7 +84,7 @@ pub mod get_all_stream_tags {
     /// Query Parameters for [Get All Stream Tags](super::get_all_stream_tags)
     ///
     /// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetAllStreamTagsRequest {
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.

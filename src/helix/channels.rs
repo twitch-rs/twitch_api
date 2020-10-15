@@ -33,7 +33,6 @@ pub use start_commercial::{
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
-use typed_builder::TypedBuilder;
 
 /// Gets channel information for users.
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
@@ -42,7 +41,7 @@ pub mod get_channel_information {
     /// Query Parameters for [Get Channel Information](super::get_channel_information)
     ///
     /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetChannelInformationRequest {
         /// ID of the channel
@@ -118,7 +117,7 @@ pub mod modify_channel_information {
     /// Query Parameters for [Modify Channel Information](super::modify_channel_information)
     ///
     /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct ModifyChannelInformationRequest {
         /// ID of the channel
@@ -130,7 +129,7 @@ pub mod modify_channel_information {
     /// Body Parameters for [Modify Channel Information](super::modify_channel_information)
     ///
     /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct ModifyChannelInformationBody {
         /// Current game ID being played on the channel
@@ -272,7 +271,7 @@ pub mod start_commercial {
     /// Body Parameters for [Start Commercial](super::start_commercial)
     ///
     /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct StartCommercialBody {
         /// ID of the channel requesting a commercial

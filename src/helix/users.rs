@@ -32,7 +32,6 @@ pub use create_user_follows::{CreateUserFollows, CreateUserFollowsBody, CreateUs
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
-use typed_builder::TypedBuilder;
 
 /// Gets information about one or more specified Twitch users.
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
@@ -41,7 +40,7 @@ pub mod get_users {
     /// Query Parameters for [Get Users](super::get_users)
     ///
     /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetUsersRequest {
         /// User ID. Multiple user IDs can be specified. Limit: 100.
@@ -136,7 +135,7 @@ pub mod get_users_follows {
     /// Query Parameters for [Get Users Follows](super::get_users_follows)
     ///
     /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetUsersFollowsRequest {
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
@@ -251,7 +250,7 @@ pub mod delete_user_follows {
     /// Query Parameters for [Delete Users Follows](super::delete_user_follows)
     ///
     /// [`delete-user-follows`](https://dev.twitch.tv/docs/api/reference#delete-user-follows)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct DeleteUserFollowsRequest {
         /// User ID of the follower
@@ -330,14 +329,18 @@ pub mod create_user_follows {
     /// Query Parameters for [Create User Follows](super::create_user_follows)
     ///
     /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+    #[derive(
+        PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+    )]
     #[non_exhaustive]
     pub struct CreateUserFollowsRequest {}
 
     /// Body Parameters for [Create User Follows](super::create_user_follows)
     ///
     /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+    #[derive(
+        PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+    )]
     #[non_exhaustive]
     pub struct CreateUserFollowsBody {
         /// User ID of the follower
