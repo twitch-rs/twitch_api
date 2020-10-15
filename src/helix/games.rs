@@ -52,7 +52,7 @@ pub mod get_games {
         type Response = Game;
 
         const PATH: &'static str = "games";
-        #[cfg(feature = "client")]
+        #[cfg(feature = "twitch_oauth2")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     }
 
@@ -130,7 +130,7 @@ pub mod get_top_games {
         type Response = Game;
 
         const PATH: &'static str = "games/top";
-        #[cfg(feature = "client")]
+        #[cfg(feature = "twitch_oauth2")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     }
 

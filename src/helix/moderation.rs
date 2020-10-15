@@ -60,7 +60,7 @@ pub mod get_moderators {
         type Response = Moderators;
 
         const PATH: &'static str = "moderation/moderators";
-        #[cfg(feature = "client")]
+        #[cfg(feature = "twitch_oauth2")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
     }
 
@@ -156,7 +156,7 @@ pub mod get_moderator_events {
         type Response = ModeratorEvents;
 
         const PATH: &'static str = "moderation/moderators/events";
-        #[cfg(feature = "client")]
+        #[cfg(feature = "twitch_oauth2")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
     }
 
@@ -273,7 +273,7 @@ pub mod get_banned_users {
         type Response = BannedUsers;
 
         const PATH: &'static str = "moderation/banned";
-        #[cfg(feature = "client")]
+        #[cfg(feature = "twitch_oauth2")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
     }
 
@@ -374,7 +374,7 @@ pub mod get_banned_events {
         type Response = BannedEvents;
 
         const PATH: &'static str = "moderation/banned/events";
-        #[cfg(feature = "client")]
+        #[cfg(feature = "twitch_oauth2")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
     }
 
@@ -498,7 +498,7 @@ pub mod check_automod_status {
         type Response = CheckAutoModStatus;
 
         const PATH: &'static str = "moderation/enforcements/status";
-        #[cfg(feature = "client")]
+        #[cfg(feature = "twitch_oauth2")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
     }
 
