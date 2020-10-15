@@ -27,7 +27,7 @@
 //! # fn send_http_request(_: http::Request<Vec<u8>>) -> Result<http::Response<Vec<u8>>,&'static str> {todo!()}
 //! ```
 //!
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::{convert::TryInto, str::FromStr};
 #[cfg(feature = "twitch_oauth2")]
 use twitch_oauth2::TwitchToken;
@@ -706,21 +706,4 @@ pub enum HelixRequestDeleteError {
     },
     /// could not parse body as utf8: {1}
     Utf8Error(Vec<u8>, std::str::Utf8Error),
-}
-
-/// Repeat url query items with name
-///
-/// ```rust
-/// let users = &["emilgardis", "jtv", "tmi"].iter().map(<_>::to_string).collect::<Vec<_>>();
-///  assert_eq!(&twitch_api2::helix::repeat_query("user", users), "user=emilgardis&user=jtv&user=tmi")
-/// ```
-pub fn repeat_query(name: &str, items: &[String]) -> String {
-    let mut s = String::new();
-    for (idx, item) in items.iter().enumerate() {
-        s.push_str(&format!("{}={}", name, item));
-        if idx + 1 != items.len() {
-            s.push('&')
-        }
-    }
-    s
 }
