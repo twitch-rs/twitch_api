@@ -30,7 +30,7 @@ pub use delete_user_follows::{DeleteUserFollows, DeleteUserFollowsRequest};
 #[doc(inline)]
 pub use create_user_follows::{CreateUserFollows, CreateUserFollowsBody, CreateUserFollowsRequest};
 
-use crate::helix;
+use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
 /// Gets information about one or more specified Twitch users.
@@ -46,11 +46,11 @@ pub mod get_users {
         /// User ID. Multiple user IDs can be specified. Limit: 100.
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        pub id: Vec<String>,
+        pub id: Vec<types::UserId>,
         /// User login name. Multiple login names can be specified. Limit: 100.
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        pub login: Vec<String>,
+        pub login: Vec<types::UserName>,
     }
 
     /// Return Values for [Get Users](super::get_users)
@@ -64,13 +64,13 @@ pub mod get_users {
         /// User’s channel description.
         pub description: Option<String>,
         /// User’s display name.
-        pub display_name: String,
+        pub display_name: types::DisplayName,
         /// User’s email address. Returned if the request includes the [user:read:email scope](twitch_oauth2::Scope::UserReadEmail).
         pub email: Option<String>,
         /// User’s ID.
-        pub id: String,
+        pub id: types::UserId,
         /// User’s login name.
-        pub login: String,
+        pub login: types::UserName,
         /// URL of the user’s offline image.
         pub offline_image_url: Option<String>,
         /// URL of the user’s profile image.

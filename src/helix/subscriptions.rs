@@ -24,7 +24,7 @@ pub use get_broadcaster_subscriptions::{
     BroadcasterSubscriptions, GetBroadcasterSubscriptionsRequest,
 };
 
-use crate::helix;
+use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
 /// Get all of a broadcaster’s subscriptions.
@@ -39,7 +39,7 @@ pub mod get_broadcaster_subscriptions {
     pub struct GetBroadcasterSubscriptionsRequest {
         /// User ID of the broadcaster. Must match the User ID in the Bearer token.
         #[builder(setter(into))]
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
         /// Unique identifier of account to get subscription status of. Accepts up to 100 values.
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
@@ -57,9 +57,9 @@ pub mod get_broadcaster_subscriptions {
     #[non_exhaustive]
     pub struct BroadcasterSubscriptions {
         /// User ID of the broadcaster.
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
         /// Display name of the broadcaster.
-        pub broadcaster_name: String,
+        pub broadcaster_name: types::DisplayName,
         /// Determines if the subscription is a gift subscription.
         pub is_gift: bool,
         /// Type of subscription (Tier 1, Tier 2, Tier 3). 1000 = Tier 1, 2000 = Tier 2, 3000 = Tier 3 subscriptions.
@@ -67,9 +67,9 @@ pub mod get_broadcaster_subscriptions {
         /// Name of the subscription.
         pub plan_name: String,
         /// ID of the subscribed user.
-        pub user_id: String,
+        pub user_id: types::UserId,
         /// Display name of the subscribed user.
-        pub user_name: String,
+        pub user_name: types::DisplayName,
     }
 
     impl helix::Request for GetBroadcasterSubscriptionsRequest {

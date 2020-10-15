@@ -1,6 +1,6 @@
 //! TMI Endpoint, twitch's unsupported api for better chatters retrieval
+use crate::types;
 use serde::{Deserialize, Serialize};
-
 /// Client for the twitch TMI endpoint, almost entirely undocumented and certainly not supported.
 ///
 /// # Examples
@@ -144,19 +144,19 @@ pub struct GetChatters {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Chatters {
     /// Broadcaster, can (probably) only be one
-    pub broadcaster: Vec<Nickname>,
+    pub broadcaster: Vec<types::Nickname>,
     /// VIPS in the chat, have the VIP badge and are set with `/vip username`
-    pub vips: Vec<Nickname>,
+    pub vips: Vec<types::Nickname>,
     /// Moderators in the chat, have a moderator badge and are set with `/mod username`
-    pub moderators: Vec<Nickname>,
+    pub moderators: Vec<types::Nickname>,
     /// Twitch Staff in the chat, have a staff badge.
-    pub staff: Vec<Nickname>,
+    pub staff: Vec<types::Nickname>,
     /// Twitch Admins in the chat, have an admin badge, akin to [Chatters::global_mods].
-    pub admins: Vec<Nickname>,
+    pub admins: Vec<types::Nickname>,
     /// Twitch Global Moderators in the chat, have an admin badge, akin to [Chatters::global_mods].
-    pub global_mods: Vec<Nickname>,
+    pub global_mods: Vec<types::Nickname>,
     /// Regular viewer in the chat, includes followers and subscribers.
-    pub viewers: Vec<Nickname>,
+    pub viewers: Vec<types::Nickname>,
 }
 
 /// Possible options for a [TMIClient::get_hosts] request.
@@ -189,17 +189,14 @@ pub struct Host {
     /// User ID of the hosted channel. Will be missing if the given channel is not hosting anyone.
     pub target_id: Option<UserId>,
     /// Login of the hosting channel, if requested with `include_logins = true`
-    pub host_login: Option<Nickname>,
+    pub host_login: Option<types::Nickname>,
     /// Login of the hosted channel, if requested with `include_logins = true`
-    pub target_login: Option<Nickname>,
+    pub target_login: Option<types::Nickname>,
     /// Display name of the hosting channel, if requested with `include_logins = true`
-    pub host_display_name: Option<Nickname>,
+    pub host_display_name: Option<types::Nickname>,
     /// Display name of the hosted channel, if requested with `include_logins = true`
-    pub target_display_name: Option<Nickname>,
+    pub target_display_name: Option<types::Nickname>,
 }
-
-/// Nickname
-pub type Nickname = String;
 
 /// User ID
 pub type UserId = u64; // TMI user ID's appear to still be ints, even though Helix uses strings.

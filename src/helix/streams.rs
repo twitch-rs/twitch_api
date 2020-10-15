@@ -25,7 +25,7 @@ pub use get_streams::{GetStreamsRequest, Stream};
 #[doc(inline)]
 pub use get_stream_tags::{GetStreamTagsRequest, Tag};
 
-use crate::helix;
+use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
 /// Gotten from [Stream.type_](get_streams::Stream#structfield.type_)
@@ -81,7 +81,7 @@ pub mod get_streams {
         /// Returns streams broadcasting a specified game ID. You can specify up to 10 IDs.
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        pub game_id: Vec<String>,
+        pub game_id: Vec<types::GameId>,
         /// Stream language. You can specify up to 100 languages.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -89,11 +89,11 @@ pub mod get_streams {
         /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
         #[builder(default, setter(into))]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        pub user_id: Vec<String>,
+        pub user_id: Vec<types::UserId>,
         /// Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        pub user_login: Vec<String>,
+        pub user_login: Vec<types::UserName>,
     }
 
     /// Return Values for [Get Streams](super::get_streams)
@@ -103,15 +103,15 @@ pub mod get_streams {
     #[non_exhaustive]
     pub struct Stream {
         /// ID of the game being played on the stream.
-        pub game_id: String,
+        pub game_id: types::GameId,
         /// Stream ID.
         pub id: String,
         /// Stream language.
         pub language: String,
         /// UTC timestamp.
-        pub started_at: String,
+        pub started_at: types::Timestamp,
         /// Shows tag IDs that apply to the stream.
-        pub tag_ids: Vec<String>,
+        pub tag_ids: Vec<types::TagId>,
         /// Thumbnail URL of the stream. All image URLs have variable width and height. You can replace {width} and {height} with any values to get that size image
         pub thumbnail_url: String,
         /// Stream title.
@@ -120,9 +120,9 @@ pub mod get_streams {
         #[serde(rename = "type")]
         pub type_: StreamType,
         /// ID of the user who is streaming.
-        pub user_id: String,
+        pub user_id: types::UserId,
         /// Display name corresponding to user_id.
-        pub user_name: String,
+        pub user_name: types::UserName,
         /// Number of viewers watching the stream at the time of the query.
         pub viewer_count: usize,
     }
@@ -210,7 +210,7 @@ pub mod get_stream_tags {
         // FIXME: twitch docs sucks
         /// ID of the stream whose tags are going to be fetched
         #[builder(setter(into))]
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
     }
 
     /// Return Values for [Get Stream Tags](super::get_stream_tags)

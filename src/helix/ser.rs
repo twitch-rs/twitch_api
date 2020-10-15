@@ -920,10 +920,11 @@ fn serialize_query() {
         filter: String,
         maybe: Option<String>,
         possibly: Option<(String,)>,
-        ids: Vec<Option<String>>,
+        ids: Vec<Option<crate::types::UserId>>,
         ids2: Vec<u64>,
         stuff: (u8, f32, &'static str),
         extras: std::collections::BTreeMap<i32, &'static str>,
+        username: crate::types::UserName,
     }
 
     let req = Request {
@@ -934,9 +935,10 @@ fn serialize_query() {
         ids2: vec![4],
         stuff: (32, -35f32, "ha"),
         extras: [(1i32, "one"), (2, "two")].iter().copied().collect(),
+        username: crate::types::UserName::from("justintv")
     };
     assert_eq!(
         to_string(req).unwrap(),
-        "filter=1&possibly=sure+thing&ids=2&ids=3&ids2=4&stuff=32&stuff=-35&stuff=ha&1=one&2=two"
+        "filter=1&possibly=sure+thing&ids=2&ids=3&ids2=4&stuff=32&stuff=-35&stuff=ha&1=one&2=two&username=justintv"
     )
 }

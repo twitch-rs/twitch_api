@@ -31,7 +31,7 @@ pub use start_commercial::{
     CommercialLength, StartCommercial, StartCommercialBody, StartCommercialRequest,
 };
 
-use crate::helix;
+use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
 /// Gets channel information for users.
@@ -46,7 +46,7 @@ pub mod get_channel_information {
     pub struct GetChannelInformationRequest {
         /// ID of the channel
         #[builder(setter(into))]
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
     }
 
     /// Return Values for [Get Channel Information](super::get_channel_information)
@@ -56,9 +56,9 @@ pub mod get_channel_information {
     #[non_exhaustive]
     pub struct ChannelInformation {
         /// Twitch User ID of this channel owner
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
         /// Current game ID being played on the channel
-        pub game_id: String,
+        pub game_id: types::GameId,
         /// Language of the channel
         pub broadcaster_language: String,
         /// Title of the stream
@@ -122,7 +122,7 @@ pub mod modify_channel_information {
     pub struct ModifyChannelInformationRequest {
         /// ID of the channel
         #[builder(setter(into))]
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
     }
 
     // FIXME: Twitch docs sucks...
@@ -134,7 +134,7 @@ pub mod modify_channel_information {
     pub struct ModifyChannelInformationBody {
         /// Current game ID being played on the channel
         #[builder(default, setter(into, strip_option))]
-        pub game_id: Option<String>,
+        pub game_id: Option<types::GameId>,
         /// Language of the channel
         #[builder(default, setter(into))]
         pub broadcaster_language: Option<String>,
@@ -275,7 +275,7 @@ pub mod start_commercial {
     #[non_exhaustive]
     pub struct StartCommercialBody {
         /// ID of the channel requesting a commercial
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
         /// Desired length of the commercial in seconds. Valid options are 30, 60, 90, 120, 150, 180.
         #[builder(setter(into))]
         pub length: CommercialLength,

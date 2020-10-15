@@ -1,6 +1,6 @@
 //! Endpoints regarding moderation
 
-use crate::helix;
+use crate::{helix, types};
 #[doc(inline)]
 pub use check_automod_status::{
     CheckAutoModStatus, CheckAutoModStatusBody, CheckAutoModStatusRequest,
@@ -32,7 +32,7 @@ pub mod get_moderators {
     pub struct GetModeratorsRequest {
         /// Must match the User ID in the Bearer token.
         #[builder(setter(into))]
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -48,11 +48,11 @@ pub mod get_moderators {
         /// User ID of moderator
         ///
         /// Twitch says: `User ID of a user who has been banned.` but this seems wrong.
-        user_id: String,
+        user_id: types::UserId,
         /// Display name of moderator
         ///
         /// Twitch says: `Display name of a user who has been banned.` but this seems wrong.
-        user_name: String,
+        user_name: types::DisplayName,
     }
 
     impl helix::Request for GetModeratorsRequest {
@@ -118,14 +118,14 @@ pub mod get_moderator_events {
     pub struct GetModeratorEventsRequest {
         /// Must match the User ID in the Bearer token.
         #[builder(setter(into))]
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
         // FIXME: Twitch docs sucks...
         /// Filters the results and only returns a status object for users who are moderators in this channel and have a matching user_id.
         /// Format: Repeated Query Parameter, eg. /moderation/moderators?broadcaster_id=1&user_id=2&user_id=3
         /// Maximum: 100
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        pub user_id: Vec<String>,
+        pub user_id: Vec<types::UserId>,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -144,7 +144,7 @@ pub mod get_moderator_events {
         /// Displays `moderation.moderator.add` or `moderation.moderator.remove`
         pub event_type: String,
         /// RFC3339 formatted timestamp for events.
-        pub event_timestamp: String,
+        pub event_timestamp: types::Timestamp,
         /// Returns the version of the endpoint.
         pub version: String,
         /// Returns `broadcaster_id`, `broadcaster_name`, `user_id`, `user_name`, and `expires_at`.
@@ -241,13 +241,13 @@ pub mod get_banned_users {
     pub struct GetBannedUsersRequest {
         /// Must match the User ID in the Bearer token.
         #[builder(setter(into))]
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
         /// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.
         /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
         /// Maximum: 100
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        pub user_id: Vec<String>,
+        pub user_id: Vec<types::UserId>,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -261,11 +261,11 @@ pub mod get_banned_users {
     #[non_exhaustive]
     pub struct BannedUsers {
         /// User ID of a user who has been banned.
-        pub user_id: String,
+        pub user_id: types::UserId,
         /// Display name of a user who has been banned.
-        pub user_name: String,
+        pub user_name: types::DisplayName,
         /// RFC3339 formatted timestamp for timeouts; empty string for bans.
-        pub expires_at: Option<String>,
+        pub expires_at: Option<types::Timestamp>,
     }
 
     impl helix::Request for GetBannedUsersRequest {
@@ -333,13 +333,13 @@ pub mod get_banned_events {
     pub struct GetBannedEventsRequest {
         /// Must match the User ID in the Bearer token.
         #[builder(setter(into))]
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
         /// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.
         /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
         /// Maximum: 100
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        pub user_id: Vec<String>,
+        pub user_id: Vec<types::UserId>,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -461,7 +461,7 @@ pub mod check_automod_status {
     pub struct CheckAutoModStatusRequest {
         /// Must match the User ID in the Bearer token.
         #[builder(setter(into))]
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
     }
 
     /// Body Parameters for [Check AutoMod Status](super::check_automod_status)

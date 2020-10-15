@@ -6,7 +6,7 @@ pub use get_games::GetGamesRequest;
 #[doc(inline)]
 pub use get_top_games::GetTopGamesRequest;
 
-use crate::helix;
+use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
 /// A game as defined by Twitch
@@ -16,7 +16,7 @@ pub struct TwitchGame {
     ///Template URL for the game’s box art.
     box_art_url: String,
     ///Game ID.
-    id: String,
+    id: types::GameId,
     ///Game name.
     name: String,
 }
@@ -35,7 +35,7 @@ pub mod get_games {
         /// Game ID. At most 100 id values can be specified.
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
-        id: Vec<String>,
+        id: Vec<types::GameId>,
         /// Game name. The name must be an exact match. For instance, “Pokemon” will not return a list of Pokemon games; instead, query the specific Pokemon game(s) in which you are interested. At most 100 name values can be specified.
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]

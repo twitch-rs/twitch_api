@@ -42,6 +42,8 @@
 //! ```
 //!
 
+pub mod types;
+
 #[cfg(feature = "helix")]
 pub mod helix;
 #[cfg(feature = "tmi")]

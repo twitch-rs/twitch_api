@@ -23,7 +23,7 @@
 #[doc(inline)]
 pub use get_clips::{Clip, GetClipsRequest};
 
-use crate::helix;
+use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
 /// Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).
@@ -39,11 +39,11 @@ pub mod get_clips {
         /// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
         #[builder(default)]
         #[serde(skip_serializing_if = "Option::is_none")]
-        pub broadcaster_id: Option<String>,
+        pub broadcaster_id: Option<types::UserId>,
         /// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
         #[builder(default, setter(into))]
         #[serde(skip_serializing_if = "Option::is_none")]
-        pub game_id: Option<String>,
+        pub game_id: Option<types::GameId>,
         /// ID of the clip being queried. Limit: 100.
         #[builder(default)]
         #[serde(skip_serializing_if = "Vec::is_empty")]
@@ -78,19 +78,19 @@ pub mod get_clips {
     #[non_exhaustive]
     pub struct Clip {
         /// User ID of the stream from which the clip was created.
-        pub broadcaster_id: String,
+        pub broadcaster_id: types::UserId,
         /// Display name corresponding to broadcaster_id.
-        pub broadcaster_name: String,
+        pub broadcaster_name: types::DisplayName,
         /// Date when the clip was created.
-        pub created_at: String,
+        pub created_at: types::Timestamp,
         /// ID of the user who created the clip.
-        pub creator_id: String,
+        pub creator_id: types::UserId,
         /// Display name corresponding to creator_id.
-        pub creator_name: String,
+        pub creator_name: types::DisplayName,
         /// URL to embed the clip.
         pub embed_url: String,
         /// ID of the game assigned to the stream when the clip was created.
-        pub game_id: String,
+        pub game_id: types::GameId,
         /// ID of the clip being queried.
         pub id: String,
         /// Language of the stream from which the clip was created.
