@@ -73,7 +73,7 @@ pub mod get_broadcaster_subscriptions {
     }
 
     impl helix::Request for GetBroadcasterSubscriptionsRequest {
-        type Response = BroadcasterSubscriptions;
+        type Response = Vec<BroadcasterSubscriptions>;
 
         const PATH: &'static str = "subscriptions";
         #[cfg(feature = "twitch_oauth2")]

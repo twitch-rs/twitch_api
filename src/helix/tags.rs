@@ -107,7 +107,7 @@ pub mod get_all_stream_tags {
     pub type Tag = helix::tags::TwitchTag;
 
     impl helix::Request for GetAllStreamTagsRequest {
-        type Response = Tag;
+        type Response = Vec<Tag>;
 
         const PATH: &'static str = "tags/streams";
         #[cfg(feature = "twitch_oauth2")]

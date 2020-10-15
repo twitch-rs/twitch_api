@@ -69,7 +69,7 @@ pub mod get_channel_information {
     }
 
     impl helix::Request for GetChannelInformationRequest {
-        type Response = ChannelInformation;
+        type Response = Vec<ChannelInformation>;
 
         const PATH: &'static str = "channels";
         #[cfg(feature = "twitch_oauth2")]
@@ -296,7 +296,7 @@ pub mod start_commercial {
     }
 
     impl helix::Request for StartCommercialRequest {
-        type Response = StartCommercial;
+        type Response = Vec<StartCommercial>;
 
         const PATH: &'static str = "channels/commercial";
         #[cfg(feature = "twitch_oauth2")]

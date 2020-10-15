@@ -56,7 +56,7 @@ pub mod get_moderators {
     }
 
     impl helix::Request for GetModeratorsRequest {
-        type Response = Moderators;
+        type Response = Vec<Moderators>;
 
         const PATH: &'static str = "moderation/moderators";
         #[cfg(feature = "twitch_oauth2")]
@@ -152,7 +152,7 @@ pub mod get_moderator_events {
     }
 
     impl helix::Request for GetModeratorEventsRequest {
-        type Response = ModeratorEvents;
+        type Response = Vec<ModeratorEvents>;
 
         const PATH: &'static str = "moderation/moderators/events";
         #[cfg(feature = "twitch_oauth2")]
@@ -269,7 +269,7 @@ pub mod get_banned_users {
     }
 
     impl helix::Request for GetBannedUsersRequest {
-        type Response = BannedUsers;
+        type Response = Vec<BannedUsers>;
 
         const PATH: &'static str = "moderation/banned";
         #[cfg(feature = "twitch_oauth2")]
@@ -370,7 +370,7 @@ pub mod get_banned_events {
     }
 
     impl helix::Request for GetBannedEventsRequest {
-        type Response = BannedEvents;
+        type Response = Vec<BannedEvents>;
 
         const PATH: &'static str = "moderation/banned/events";
         #[cfg(feature = "twitch_oauth2")]
@@ -496,7 +496,7 @@ pub mod check_automod_status {
     }
 
     impl helix::Request for CheckAutoModStatusRequest {
-        type Response = CheckAutoModStatus;
+        type Response = Vec<CheckAutoModStatus>;
 
         const PATH: &'static str = "moderation/enforcements/status";
         #[cfg(feature = "twitch_oauth2")]

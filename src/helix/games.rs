@@ -48,7 +48,7 @@ pub mod get_games {
     pub type Game = helix::games::TwitchGame;
 
     impl helix::Request for GetGamesRequest {
-        type Response = Game;
+        type Response = Vec<Game>;
 
         const PATH: &'static str = "games";
         #[cfg(feature = "twitch_oauth2")]
@@ -126,7 +126,7 @@ pub mod get_top_games {
     pub type Game = helix::games::TwitchGame;
 
     impl helix::Request for GetTopGamesRequest {
-        type Response = Game;
+        type Response = Vec<Game>;
 
         const PATH: &'static str = "games/top";
         #[cfg(feature = "twitch_oauth2")]
