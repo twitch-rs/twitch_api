@@ -108,7 +108,7 @@ pub mod get_clips {
     }
 
     impl helix::Request for GetClipsRequest {
-        type Response = Clip;
+        type Response = Vec<Clip>;
 
         const PATH: &'static str = "clips";
         #[cfg(feature = "twitch_oauth2")]

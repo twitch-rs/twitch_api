@@ -83,7 +83,7 @@ pub mod get_users {
     }
 
     impl helix::Request for GetUsersRequest {
-        type Response = User;
+        type Response = Vec<User>;
 
         #[cfg(feature = "twitch_oauth2")]
         const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
@@ -182,7 +182,7 @@ pub mod get_users_follows {
     }
 
     impl helix::Request for GetUsersFollowsRequest {
-        type Response = UsersFollows;
+        type Response = Vec<UsersFollows>;
 
         #[cfg(feature = "twitch_oauth2")]
         const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
@@ -435,7 +435,7 @@ pub mod create_user_follows {
                 }
             })?;
             Ok(helix::Response {
-                data: vec![response], // FIXME: This should be a bit better...
+                data: response, // FIXME: This should be a bit better...
                 pagination: <_>::default(),
                 request: self,
             })

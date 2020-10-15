@@ -128,7 +128,7 @@ pub mod get_streams {
     }
 
     impl helix::Request for GetStreamsRequest {
-        type Response = Stream;
+        type Response = Vec<Stream>;
 
         const PATH: &'static str = "streams";
         #[cfg(feature = "twitch_oauth2")]
@@ -219,7 +219,7 @@ pub mod get_stream_tags {
     pub type Tag = helix::tags::TwitchTag;
 
     impl helix::Request for GetStreamTagsRequest {
-        type Response = Tag;
+        type Response = Vec<Tag>;
 
         const PATH: &'static str = "streams/tags";
         #[cfg(feature = "twitch_oauth2")]
