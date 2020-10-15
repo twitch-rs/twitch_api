@@ -84,7 +84,7 @@ pub mod get_broadcaster_subscriptions {
     impl helix::RequestGet for GetBroadcasterSubscriptionsRequest {}
 
     impl helix::Paginated for GetBroadcasterSubscriptionsRequest {
-        fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
+        fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
     }
 
     #[test]

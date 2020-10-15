@@ -66,7 +66,7 @@ pub mod get_moderators {
     impl helix::RequestGet for GetModeratorsRequest {}
 
     impl helix::Paginated for GetModeratorsRequest {
-        fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
+        fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
     }
 
     #[test]
@@ -162,7 +162,7 @@ pub mod get_moderator_events {
     impl helix::RequestGet for GetModeratorEventsRequest {}
 
     impl helix::Paginated for GetModeratorEventsRequest {
-        fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
+        fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
     }
 
     #[test]
@@ -279,7 +279,7 @@ pub mod get_banned_users {
     impl helix::RequestGet for GetBannedUsersRequest {}
 
     impl helix::Paginated for GetBannedUsersRequest {
-        fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
+        fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
     }
 
     #[test]
@@ -380,7 +380,7 @@ pub mod get_banned_events {
     impl helix::RequestGet for GetBannedEventsRequest {}
 
     impl helix::Paginated for GetBannedEventsRequest {
-        fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
+        fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
     }
 
     #[test]

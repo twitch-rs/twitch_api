@@ -138,7 +138,7 @@ pub mod get_streams {
     impl helix::RequestGet for GetStreamsRequest {}
 
     impl helix::Paginated for GetStreamsRequest {
-        fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor) }
+        fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
     }
 
     #[test]

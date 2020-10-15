@@ -192,8 +192,9 @@ pub mod get_users_follows {
     }
 
     impl helix::RequestGet for GetUsersFollowsRequest {}
+    
     impl helix::Paginated for GetUsersFollowsRequest {
-        fn set_pagination(&mut self, cursor: helix::Cursor) { self.after = Some(cursor); }
+        fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
     }
 
     #[test]
