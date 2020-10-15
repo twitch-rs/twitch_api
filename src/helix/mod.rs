@@ -542,8 +542,8 @@ where
     ) -> Result<Option<Response<R, D>>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     {
         let mut req = self.request.clone();
-        if let Some(ref cursor) = self.pagination.cursor {
-            req.set_pagination(cursor.clone());
+        if self.pagination.cursor.is_some() {
+            req.set_pagination(self.pagination.cursor);
             client.req_get(req, token).await.map(Some)
         } else {
             Ok(None)
@@ -558,7 +558,7 @@ pub trait Paginated: Request {
     /// # Notes
     ///
     /// Pass [Option::None] if no cursor is found.
-    fn set_pagination(&mut self, cursor: Cursor);
+    fn set_pagination(&mut self, cursor: Option<Cursor>);
 }
 
 /// A cursor for pagination. This is needed because of how pagination is represented in the [New Twitch API](https://dev.twitch.tv/docs/api)
