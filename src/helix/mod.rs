@@ -42,7 +42,7 @@ pub mod tags;
 pub mod users;
 
 pub(crate) mod ser;
-pub use ser::Error;
+pub use ser::Error as SerializeError;
 
 #[doc(no_inline)]
 #[cfg(feature = "twitch_oauth2")]
@@ -264,7 +264,7 @@ pub trait RequestPost: Request {
         serde_json::to_string(body)
     }
 
-    /// Get Request to use in your client
+    /// Create a [http::Request] from this [Request] in your client
     fn create_request(
         &self,
         body: Self::Body,
@@ -338,7 +338,7 @@ where <Self as Request>::Response:
         serde_json::to_string(body)
     }
 
-    /// Get Request to use in your client
+    /// Create a [http::Request] from this [Request] in your client
     fn create_request(
         &self,
         body: Self::Body,
@@ -389,7 +389,7 @@ where <Self as Request>::Response:
 
 /// Helix endpoint DELETEs information
 pub trait RequestDelete: Request {
-    /// Get Request to use in your client
+    /// Create a [http::Request] from this [Request] in your client
     fn create_request(
         &self,
         token: &str,
@@ -456,7 +456,7 @@ pub trait RequestDelete: Request {
 
 /// Helix endpoint GETs information
 pub trait RequestGet: Request {
-    /// Get Request to use in your client
+    /// Create a [http::Request] from this [Request] in your client
     fn create_request(
         &self,
         token: &str,
