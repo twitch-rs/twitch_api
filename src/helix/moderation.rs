@@ -14,7 +14,6 @@ pub use get_moderator_events::{GetModeratorEventsRequest, ModeratorEvents};
 #[doc(inline)]
 pub use get_moderators::{GetModeratorsRequest, Moderators};
 use serde::{Deserialize, Serialize};
-use typed_builder::TypedBuilder;
 
 /// Returns all moderators in a channel.
 /// [`get-moderators`](https://dev.twitch.tv/docs/api/reference#get-moderators)
@@ -28,7 +27,7 @@ pub mod get_moderators {
     /// Query Parameters for [Get Moderators](super::get_moderators)
     ///
     /// [`get-moderators`](https://dev.twitch.tv/docs/api/reference#get-moderators)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetModeratorsRequest {
         /// Must match the User ID in the Bearer token.
@@ -114,7 +113,7 @@ pub mod get_moderator_events {
     /// Query Parameters for [Get Moderators Events](super::get_moderator_events)
     ///
     /// [`get-moderator-events`](https://dev.twitch.tv/docs/api/reference#get-moderator-events)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetModeratorEventsRequest {
         /// Must match the User ID in the Bearer token.
@@ -237,7 +236,7 @@ pub mod get_banned_users {
     /// Query Parameters for [Get Banned Users](super::get_banned_users)
     ///
     /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetBannedUsersRequest {
         /// Must match the User ID in the Bearer token.
@@ -329,7 +328,7 @@ pub mod get_banned_events {
     /// Query Parameters for [Get Banned Events](super::get_banned_events)
     ///
     /// [`get-banned-events`](https://dev.twitch.tv/docs/api/reference#get-banned-events)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetBannedEventsRequest {
         /// Must match the User ID in the Bearer token.
@@ -457,7 +456,7 @@ pub mod check_automod_status {
     /// Query Parameters for [Check AutoMod Status](super::check_automod_status)
     ///
     /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct CheckAutoModStatusRequest {
         /// Must match the User ID in the Bearer token.
@@ -468,7 +467,9 @@ pub mod check_automod_status {
     /// Body Parameters for [Check AutoMod Status](super::check_automod_status)
     ///
     /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+    #[derive(
+        PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+    )]
     #[non_exhaustive]
     pub struct CheckAutoModStatusBody {
         /// Developer-generated identifier for mapping messages to results.

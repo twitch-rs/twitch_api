@@ -1,7 +1,7 @@
 use serde::Deserialize;
-use typed_builder::TypedBuilder;
 
-#[derive(PartialEq, TypedBuilder, Deserialize)]
+
+#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize)]
 pub struct GetStreamsReq {
     #[builder(default)]
     after: String,

@@ -25,7 +25,6 @@ pub use get_clips::{Clip, GetClipsRequest};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
-use typed_builder::TypedBuilder;
 
 /// Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).
 /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
@@ -34,7 +33,7 @@ pub mod get_clips {
     /// Query Parameters for [Get Clips](super::get_clips)
     ///
     /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetClipsRequest {
         /// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.

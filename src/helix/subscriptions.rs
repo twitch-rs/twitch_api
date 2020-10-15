@@ -26,7 +26,6 @@ pub use get_broadcaster_subscriptions::{
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
-use typed_builder::TypedBuilder;
 
 /// Get all of a broadcaster’s subscriptions.
 /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
@@ -35,7 +34,7 @@ pub mod get_broadcaster_subscriptions {
     /// Query Parameters for [Get Broadcaster Subscriptions](super::get_broadcaster_subscriptions)
     ///
     /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetBroadcasterSubscriptionsRequest {
         /// User ID of the broadcaster. Must match the User ID in the Bearer token.

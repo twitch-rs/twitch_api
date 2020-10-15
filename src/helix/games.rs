@@ -8,7 +8,6 @@ pub use get_top_games::GetTopGamesRequest;
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
-use typed_builder::TypedBuilder;
 
 /// A game as defined by Twitch
 #[derive(PartialEq, Deserialize, Debug, Clone)]
@@ -30,7 +29,7 @@ pub mod get_games {
     /// Query Parameters for [Get Games](super::get_games)
     ///
     /// [`get-games`](https://dev.twitch.tv/docs/api/reference#get-games)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetGamesRequest {
         /// Game ID. At most 100 id values can be specified.
@@ -103,7 +102,7 @@ pub mod get_top_games {
     /// Query Parameters for [Get Games](super::get_games)
     ///
     /// [`get-top-games`](https://dev.twitch.tv/docs/api/reference#get-top-games)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetTopGamesRequest {
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.

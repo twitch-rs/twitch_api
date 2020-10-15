@@ -27,7 +27,6 @@ pub use get_stream_tags::{GetStreamTagsRequest, Tag};
 
 use crate::helix;
 use serde::{Deserialize, Serialize};
-use typed_builder::TypedBuilder;
 
 /// Gotten from [Stream.type_](get_streams::Stream#structfield.type_)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
@@ -63,7 +62,7 @@ pub mod get_streams {
     /// Query Parameters for [Get Streams](super::get_streams)
     ///
     /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetStreamsRequest {
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
@@ -205,7 +204,7 @@ pub mod get_stream_tags {
     /// Query Parameters for [Get Stream Tags](super::get_stream_tags)
     ///
     /// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
-    #[derive(PartialEq, TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetStreamTagsRequest {
         // FIXME: twitch docs sucks
