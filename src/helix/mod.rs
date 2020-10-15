@@ -320,7 +320,7 @@ pub trait RequestPost: Request {
         let response: InnerResponse<<Self as Request>::Response> = serde_json::from_str(&text)?;
         Ok(Response {
             data: response.data,
-            pagination: response.pagination,
+            pagination: response.pagination.cursor,
             request: self,
         })
     }
@@ -508,7 +508,7 @@ pub trait RequestGet: Request {
         let response: InnerResponse<_> = serde_json::from_str(&text)?;
         Ok(Response {
             data: response.data,
-            pagination: response.pagination,
+            pagination: response.pagination.cursor,
             request: self,
         })
     }
@@ -523,7 +523,7 @@ where
     ///  Twitch's response field for `data`.
     pub data: D,
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
-    pub pagination: Pagination,
+    pub pagination: Option<Cursor>,
     /// The request that was sent, used for [Paginated]
     pub request: R,
 }
@@ -542,8 +542,8 @@ where
     ) -> Result<Option<Response<R, D>>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     {
         let mut req = self.request.clone();
-        if self.pagination.cursor.is_some() {
-            req.set_pagination(self.pagination.cursor);
+        if self.pagination.is_some() {
+            req.set_pagination(self.pagination);
             client.req_get(req, token).await.map(Some)
         } else {
             Ok(None)
@@ -562,8 +562,8 @@ pub trait Paginated: Request {
 }
 
 /// A cursor for pagination. This is needed because of how pagination is represented in the [New Twitch API](https://dev.twitch.tv/docs/api)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone, Default)]
-pub struct Pagination {
+#[derive(PartialEq, Deserialize, Debug, Clone, Default)]
+struct Pagination {
     #[serde(default)]
     cursor: Option<Cursor>,
 }
