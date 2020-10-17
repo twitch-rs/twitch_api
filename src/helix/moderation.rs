@@ -35,7 +35,6 @@ pub mod get_moderators {
         pub broadcaster_id: types::UserId,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
     }
 
@@ -99,7 +98,10 @@ pub mod get_moderators {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/moderation/moderators?broadcaster_id=198704263");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/moderation/moderators?broadcaster_id=198704263"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -125,11 +127,9 @@ pub mod get_moderator_events {
         /// Format: Repeated Query Parameter, eg. /moderation/moderators?broadcaster_id=1&user_id=2&user_id=3
         /// Maximum: 100
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         pub user_id: Vec<types::UserId>,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
     }
 
@@ -224,7 +224,10 @@ pub mod get_moderator_events {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/moderation/moderators/events?broadcaster_id=198704263");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/moderation/moderators/events?broadcaster_id=198704263"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -248,11 +251,9 @@ pub mod get_banned_users {
         /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
         /// Maximum: 100
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         pub user_id: Vec<types::UserId>,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
     }
 
@@ -316,7 +317,10 @@ pub mod get_banned_users {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/moderation/banned?broadcaster_id=198704263");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/moderation/banned?broadcaster_id=198704263"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -341,15 +345,12 @@ pub mod get_banned_events {
         /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
         /// Maximum: 100
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         pub user_id: Vec<types::UserId>,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
         /// Maximum number of objects to return. Maximum: 100. Default: 20.
         #[builder(default, setter(into))]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub first: Option<usize>,
     }
 
@@ -447,7 +448,10 @@ pub mod get_banned_events {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/moderation/banned/events?broadcaster_id=198704263");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/moderation/banned/events?broadcaster_id=198704263"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -547,7 +551,10 @@ pub mod check_automod_status {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/moderation/enforcements/status?broadcaster_id=198704263");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/moderation/enforcements/status?broadcaster_id=198704263"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

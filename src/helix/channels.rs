@@ -105,7 +105,10 @@ pub mod get_channel_information {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/channels?broadcaster_id=44445592");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/channels?broadcaster_id=44445592"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -195,7 +198,10 @@ pub mod modify_channel_information {
         let http_response = http::Response::builder().status(200).body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/channels?broadcaster_id=0");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/channels?broadcaster_id=0"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -330,7 +336,10 @@ pub mod start_commercial {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/channels/commercial?");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/channels/commercial?"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

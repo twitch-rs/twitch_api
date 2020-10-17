@@ -67,32 +67,25 @@ pub mod get_streams {
     pub struct GetStreamsRequest {
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
         /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub before: Option<String>,
         /// Maximum number of objects to return. Maximum: 100. Default: 20.
         #[builder(default)]
         #[builder(setter(strip_option))]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub first: Option<usize>,
         /// Returns streams broadcasting a specified game ID. You can specify up to 10 IDs.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         pub game_id: Vec<types::GameId>,
         /// Stream language. You can specify up to 100 languages.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub language: Option<String>,
         /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
         #[builder(default, setter(into))]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         pub user_id: Vec<types::UserId>,
         /// Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         pub user_login: Vec<types::UserName>,
     }
 
@@ -275,7 +268,10 @@ pub mod get_stream_tags {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/streams/tags?broadcaster_id=198704263");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/streams/tags?broadcaster_id=198704263"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

@@ -34,11 +34,9 @@ pub mod get_games {
     pub struct GetGamesRequest {
         /// Game ID. At most 100 id values can be specified.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         id: Vec<types::GameId>,
         /// Game name. The name must be an exact match. For instance, “Pokemon” will not return a list of Pokemon games; instead, query the specific Pokemon game(s) in which you are interested. At most 100 name values can be specified.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         name: Vec<String>,
     }
 
@@ -89,7 +87,10 @@ pub mod get_games {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/games?id=493057");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/games?id=493057"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -108,16 +109,13 @@ pub mod get_top_games {
     pub struct GetTopGamesRequest {
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
         /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub before: Option<String>,
         /// Maximum number of objects to return. Maximum: 100. Default: 20.
         #[builder(default)]
         #[builder(setter(strip_option))]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub first: Option<usize>,
     }
 

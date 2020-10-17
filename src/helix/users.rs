@@ -45,11 +45,9 @@ pub mod get_users {
     pub struct GetUsersRequest {
         /// User ID. Multiple user IDs can be specified. Limit: 100.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         pub id: Vec<types::UserId>,
         /// User login name. Multiple login names can be specified. Limit: 100.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         pub login: Vec<types::UserName>,
     }
 
@@ -123,7 +121,10 @@ pub mod get_users {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/users?id=44322889");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/users?id=44322889"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -141,19 +142,15 @@ pub mod get_users_follows {
     pub struct GetUsersFollowsRequest {
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
         /// Maximum number of objects to return. Maximum: 100. Default: 20.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub first: Option<usize>,
         /// User ID. The request returns information about users who are being followed by the from_id user.
         #[builder(default, setter(into))]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub from_id: Option<String>,
         /// User ID. The request returns information about users who are following the to_id user.
         #[builder(default, setter(into))]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub to_id: Option<String>,
     }
 
@@ -236,7 +233,10 @@ pub mod get_users_follows {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/users/follows?to_id=23161357");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/users/follows?to_id=23161357"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -258,11 +258,9 @@ pub mod delete_user_follows {
     pub struct DeleteUserFollowsRequest {
         /// User ID of the follower
         #[builder(default, setter(into))]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub from_id: Option<String>,
         /// Channel to be unfollowed by the user
         #[builder(default, setter(into))]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub to_id: Option<String>,
     }
     /// Return Values for [[Delete Users Follows](super::delete_user_follows)
@@ -318,7 +316,10 @@ pub mod delete_user_follows {
         // FIXME: I have not tested this in production
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/users/follows?to_id=41245072");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/users/follows?to_id=41245072"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
@@ -349,11 +350,9 @@ pub mod create_user_follows {
     pub struct CreateUserFollowsBody {
         /// User ID of the follower
         #[builder(default, setter(into))]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub from_id: Option<String>,
         /// ID of the channel to be followed by the user
         #[builder(default, setter(into))]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub to_id: Option<String>,
     }
 
@@ -458,7 +457,10 @@ pub mod create_user_follows {
         // This is marked as 204 in twitch docs, but in reality it's 200
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/users/follows?");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/users/follows?"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

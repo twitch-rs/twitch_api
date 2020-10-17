@@ -89,15 +89,12 @@ pub mod get_all_stream_tags {
     pub struct GetAllStreamTagsRequest {
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
         /// Maximum number of objects to return. Maximum: 100. Default: 20.
         #[builder(default, setter(into))]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub first: Option<usize>,
         /// ID of a tag. Multiple IDs can be specified. If provided, only the specified tag(s) is(are) returned. Maximum of 100.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         pub tag_id: Vec<types::TagId>,
     }
 
@@ -187,7 +184,10 @@ pub mod get_all_stream_tags {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/tags/streams?first=3");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/tags/streams?first=3"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }

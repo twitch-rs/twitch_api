@@ -935,7 +935,7 @@ fn serialize_query() {
         ids2: vec![4],
         stuff: (32, -35f32, "ha"),
         extras: [(1i32, "one"), (2, "two")].iter().copied().collect(),
-        username: crate::types::UserName::from("justintv")
+        username: crate::types::UserName::from("justintv"),
     };
     assert_eq!(
         to_string(req).unwrap(),

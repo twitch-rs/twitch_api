@@ -42,11 +42,9 @@ pub mod get_broadcaster_subscriptions {
         pub broadcaster_id: types::UserId,
         /// Unique identifier of account to get subscription status of. Accepts up to 100 values.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Vec::is_empty")]
         pub user_id: Vec<String>,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
         pub after: Option<helix::Cursor>,
     }
 
@@ -118,7 +116,10 @@ pub mod get_broadcaster_subscriptions {
         let http_response = http::Response::builder().body(data).unwrap();
 
         let uri = req.get_uri().unwrap();
-        assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/subscriptions?broadcaster_id=123");
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/subscriptions?broadcaster_id=123"
+        );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
     }
