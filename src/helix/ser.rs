@@ -444,7 +444,6 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
         Err(Error::field_not_supported())
     }
 
-
     fn serialize_newtype_struct<T: ?Sized>(
         self,
         _name: &'static str,
@@ -646,8 +645,7 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         variant: &'static str,
     ) -> Result<Self::Ok, Self::Error>
     {
-        self.urlencoder
-            .append_pair(self.key, &variant);
+        self.urlencoder.append_pair(self.key, &variant);
         Ok(self.urlencoder)
     }
 

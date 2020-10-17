@@ -27,8 +27,6 @@ pub use get_broadcaster_subscriptions::{
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
-
-
 /// Get all of a broadcaster’s subscriptions.
 /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
 pub mod get_broadcaster_subscriptions {
