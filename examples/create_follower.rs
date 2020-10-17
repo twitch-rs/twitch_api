@@ -1,7 +1,3 @@
-//! This should delete followers, but it doesn't... Please use irc `/block` instead!!!
-//!
-//! !!!!!!!!!!!!!!!!!
-//! !!!!!!!!!!!!!!!!!
 use twitch_api2::HelixClient;
 use twitch_oauth2::{AccessToken, TwitchToken, UserToken};
 
@@ -19,7 +15,7 @@ fn main() {
 
 #[tokio::main]
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    dotenv::dotenv().unwrap();
+    let _ = dotenv::dotenv();
     let mut args = std::env::args().skip(1);
     let token = UserToken::from_existing(
         twitch_oauth2::client::surf_http_client,

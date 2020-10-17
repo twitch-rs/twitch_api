@@ -21,7 +21,7 @@ fn main() {
 
 #[tokio::main]
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    dotenv::dotenv().unwrap();
+    let _ = dotenv::dotenv();
     let mut args = std::env::args().skip(1);
     let token = UserToken::from_existing(
         twitch_oauth2::client::surf_http_client,

@@ -13,11 +13,59 @@ You can see current unpublished docs here: [![local-docs]](https://emilgardis.gi
 
 See [examples](./examples) for examples.
 
+[local-docs]: https://img.shields.io/github/workflow/status/Emilgardis/twitch_api2/github%20pages/master?label=docs&style=flat-square&event=push
+
+```rust ,no_run
+use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
+use twitch_oauth2::{AccessToken, Scope, TwitchToken, tokens::errors::TokenError, UserToken};
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
+    let token = UserToken::from_existing(
+        twitch_oauth2::client::surf_http_client,
+        AccessToken::new("mytoken".to_string()),
+        None,
+    )
+    .await?;
+    let client: TwitchClient<surf::Client> =  TwitchClient::default();
+    let req = GetChannelInformationRequest::builder()
+        .broadcaster_id("12826")
+        .build();
+    println!("{:?}", &client.helix.req_get(req, &token).await?.data[0].title);
+    Ok(())
+}
+```
+
+## Goals
+
+This crate aims to target
+
+* [Helix](https://dev.twitch.tv/docs/api/reference)
+  Partially implemented, see [implemented endpoints](#helix)
+* TMI
+  Implemented, see [implemented endpoints](#tmi)
+* [Webhooks](https://dev.twitch.tv/docs/api/webhooks-reference)
+* [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
+  see [pubsub branch](Emilgardis/twitch_api2/tree/pubsub)
+* [Extensions](https://dev.twitch.tv/docs/extensions/reference)
+
+This crate should also be able to be used for
+
+* some [v5 Kraken services](https://dev.twitch.tv/docs/v5)
+* [GraphQL](https://github.com/mauricew/twitch-graphql-api)
+* Useful undocumented Helix endpoints, i.e endpoints mobile Twitch app uses. Including [working "hidden" endpoints](https://thomassen.sh/twitch-api-endpoints/)
+
+There are no current plans to support
+
+* [Drops](https://dev.twitch.tv/docs/drops) (except what is in Helix)
+* [Twitch IRC Chat](https://dev.twitch.tv/docs/irc), use [museun/twitchchat](https://github.com/museun/twitchchat)
+* [Authentication](https://dev.twitch.tv/docs/authentication), use [Emilgardis/twitch_oauth2](https://github.com/Emilgardis/twitch_oauth2)
+
+
+
 ## Implemented endpoints
 
 ### Helix
-
-<details><summary>Click to expand</summary><p>
 
 #### Moderation
 
@@ -89,10 +137,10 @@ See [examples](./examples) for examples.
 
 #### Search
 
-| Endpoint            |                                                     |                                                                                                                                                                             |
-| :------------------ | :-------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ✔ Search Categories | `GET https://api.twitch.tv/helix/search/categories` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_categories) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-categories)    |
-| 🔨 Search Channels   | `GET https://api.twitch.tv/helix/search/channels`   | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_channels)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-channels) |
+| Endpoint            |                                                     |                                                                                                                                                                          |
+| :------------------ | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ✔ Search Categories | `GET https://api.twitch.tv/helix/search/categories` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_categories) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-categories) |
+| ✔ Search Channels   | `GET https://api.twitch.tv/helix/search/channels`   | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_channels) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-channels)     |
 
 
 #### Streams
@@ -154,18 +202,15 @@ See [examples](./examples) for examples.
 | :---------------------- | :------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 🔨 Get Hype Train Events | `GET https://api.twitch.tv/helix/hypetrain/events` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/hypetrain/get_hype_train_events)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)) |
 
-</p></details>
+
 
 ### TMI
-
-<details><summary>Click to expand</summary><p>
 
 | Endpoint       |                                                           |
 | :------------- | :-------------------------------------------------------- |
 | ✔ Get Chatters | `https://tmi.twitch.tv/group/user/{broadcaster}/chatters` |
 | ✔ Get Hosts    | `https://tmi.twitch.tv/hosts`                             |
 
-</p></details>
 
 <h5> License </h5>
 
@@ -182,6 +227,5 @@ for inclusion in this crate by you, as defined in the Apache-2.0 license, shall
 be dual licensed as above, without any additional terms or conditions.
 </sub>
 
-[local-docs]: https://img.shields.io/github/workflow/status/Emilgardis/twitch_api2/github%20pages/master?label=docs&style=flat-square&event=push
 [docs-rs]: https://img.shields.io/badge/docs-66c2a5?style=flat-square&labelColor=555555&logoColor=white&logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxwYXRoIGZpbGw9IiNmNWY1ZjUiIGQ9Ik00ODguNiAyNTAuMkwzOTIgMjE0VjEwNS41YzAtMTUtOS4zLTI4LjQtMjMuNC0zMy43bC0xMDAtMzcuNWMtOC4xLTMuMS0xNy4xLTMuMS0yNS4zIDBsLTEwMCAzNy41Yy0xNC4xIDUuMy0yMy40IDE4LjctMjMuNCAzMy43VjIxNGwtOTYuNiAzNi4yQzkuMyAyNTUuNSAwIDI2OC45IDAgMjgzLjlWMzk0YzAgMTMuNiA3LjcgMjYuMSAxOS45IDMyLjJsMTAwIDUwYzEwLjEgNS4xIDIyLjEgNS4xIDMyLjIgMGwxMDMuOS01MiAxMDMuOSA1MmMxMC4xIDUuMSAyMi4xIDUuMSAzMi4yIDBsMTAwLTUwYzEyLjItNi4xIDE5LjktMTguNiAxOS45LTMyLjJWMjgzLjljMC0xNS05LjMtMjguNC0yMy40LTMzLjd6TTM1OCAyMTQuOGwtODUgMzEuOXYtNjguMmw4NS0zN3Y3My4zek0xNTQgMTA0LjFsMTAyLTM4LjIgMTAyIDM4LjJ2LjZsLTEwMiA0MS40LTEwMi00MS40di0uNnptODQgMjkxLjFsLTg1IDQyLjV2LTc5LjFsODUtMzguOHY3NS40em0wLTExMmwtMTAyIDQxLjQtMTAyLTQxLjR2LS42bDEwMi0zOC4yIDEwMiAzOC4ydi42em0yNDAgMTEybC04NSA0Mi41di03OS4xbDg1LTM4Ljh2NzUuNHptMC0xMTJsLTEwMiA0MS40LTEwMi00MS40di0uNmwxMDItMzguMiAxMDIgMzguMnYuNnoiPjwvcGF0aD48L3N2Zz4K
 [twitch-reference]: https://img.shields.io/badge/api-blue?style=flat-square&logoColor=white&logo=twitch

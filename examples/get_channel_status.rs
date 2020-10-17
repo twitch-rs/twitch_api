@@ -15,7 +15,7 @@ fn main() {
 
 #[tokio::main]
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    dotenv::dotenv().unwrap();
+    let _ = dotenv::dotenv();
     let mut args = std::env::args().skip(1);
     let token = UserToken::from_existing(
         twitch_oauth2::client::reqwest_http_client,
@@ -37,7 +37,6 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     let response = client.req_get(req, &token).await.unwrap();
 
-    // Note: This will fetch chatters in the current most viewed stream, might spam your console a bit.
     println!("Stream information:\n\t{:?}", response.data);
     Ok(())
 }

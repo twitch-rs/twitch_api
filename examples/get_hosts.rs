@@ -3,7 +3,7 @@ use twitch_api2::TMIClient;
 
 #[tokio::main]
 async fn main() {
-    dotenv::dotenv().ok();
+    let _ = dotenv::dotenv();
 
     let mut args = std::env::args().skip(1);
     let channel_id = if let Some(Ok(id)) = args.next().map(|s| s.parse::<u64>()) {

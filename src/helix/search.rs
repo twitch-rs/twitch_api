@@ -19,7 +19,9 @@
 //! # }
 //! ```
 #[doc(inline)]
-pub use search_categories::{Search, SearchCategoriesRequest};
+pub use search_categories::{Categories, SearchCategoriesRequest};
+#[doc(inline)]
+pub use search_channels::{Channels, SearchChannelsRequest};
 
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
@@ -30,7 +32,7 @@ pub mod search_categories {
     use super::*;
 
     // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
-    /// Query Parameters for [Search Category](super::search_categories)
+    /// Query Parameters for [Search Categories](super::search_categories)
     ///
     /// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
     #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
@@ -47,13 +49,13 @@ pub mod search_categories {
         pub before: Option<helix::Cursor>,
     }
 
-    /// Return Values for [Search Category](super::search_categories)
+    /// Return Values for [Search Categories](super::search_categories)
     ///
     /// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
-    pub type Search = types::TwitchCategory;
+    pub type Categories = types::TwitchCategory;
 
     impl helix::Request for SearchCategoriesRequest {
-        type Response = Vec<Search>;
+        type Response = Vec<Categories>;
 
         const PATH: &'static str = "search/categories";
         #[cfg(feature = "twitch_oauth2")]
@@ -69,9 +71,7 @@ pub mod search_categories {
     #[test]
     fn test_request() {
         use helix::*;
-        let req = SearchCategoriesRequest::builder()
-            .query("fort")
-            .build();
+        let req = SearchCategoriesRequest::builder().query("fort").build();
 
         // From twitch docs
         let data = br#"
@@ -91,6 +91,112 @@ pub mod search_categories {
     "pagination": {
         "cursor": "eyJiIjpudWxsLCJhIjp7IkN"
     }
+}
+"#
+        .to_vec();
+
+        let http_response = http::Response::builder().body(data).unwrap();
+
+        let uri = req.get_uri().unwrap();
+        assert_eq!(
+            uri.to_string(),
+            "https://api.twitch.tv/helix/search/categories?query=fort"
+        );
+
+        dbg!(req.parse_response(&uri, http_response).unwrap());
+    }
+}
+
+/// Returns a list of channels (users who have streamed within the past 6 months) that match the query via channel name or description either entirely or partially.
+/// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
+pub mod search_channels {
+    use super::*;
+
+    /// Query Parameters for [Search Channels](super::search_channels)
+    ///
+    /// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
+    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+    #[non_exhaustive]
+    pub struct SearchChannelsRequest {
+        /// URL encoded search query
+        #[builder(setter(into))]
+        pub query: String,
+        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
+        #[builder(default)]
+        pub after: Option<helix::Cursor>,
+        /// Maximum number of objects to return. Maximum: 100 Default: 20
+        #[builder(default)] // FIXME: No setter because int
+        pub first: Option<usize>,
+        /// Filter results for live streams only. Default: false
+        #[builder(default, setter(into))]
+        pub live_only: Option<bool>,
+    }
+
+    /// Return Values for [Search Channels](super::search_channels)
+    ///
+    /// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
+    #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[non_exhaustive]
+    pub struct Channels {
+        /// ID of the game being played on the stream
+        game_id: types::CategoryId,
+        /// Channel ID
+        id: types::UserId,
+        /// Display name corresponding to user_id
+        display_name: types::DisplayName,
+        /// Channel language (Broadcaster Language field from the [Channels service][crate::helix::channels])
+        broadcaster_language: String,
+        /// channel title
+        title: String,
+        /// Thumbnail URL of the stream. All image URLs have variable width and height. You can replace {width} and {height} with any values to get that size image.
+        thumbnail_url: String,
+        /// Live status
+        is_live: bool,
+        /// UTC timestamp. (live only)
+        started_at: types::Timestamp,
+        // FIXME: Twitch doc say tag_ids
+        /// Shows tag IDs that apply to the stream (live only).See https://www.twitch.tv/directory/all/tags for tag types
+        tags_ids: Vec<types::TagId>,
+    }
+
+    impl helix::Request for SearchChannelsRequest {
+        type Response = Vec<Channels>;
+
+        const PATH: &'static str = "search/categories";
+        #[cfg(feature = "twitch_oauth2")]
+        const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    }
+
+    impl helix::RequestGet for SearchChannelsRequest {}
+
+    impl helix::Paginated for SearchChannelsRequest {
+        fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+    }
+
+    #[test]
+    fn test_request() {
+        use helix::*;
+        let req = SearchChannelsRequest::builder().query("fort").build();
+
+        // From twitch docs
+        let data = br#"
+{
+    "data": [
+        {
+            "broadcaster_language": "en",
+            "display_name": "a_seagull",
+            "game_id": "506442",
+            "id": "19070311",
+            "is_live": true,
+            "tags_ids": [
+                "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
+            ],
+            "thumbnail_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/a_seagull-profile_image-4d2d235688c7dc66-300x300.png",
+            "title": "a_seagull",
+            "started_at": "2020-03-18T17:56:00Z"
+        }
+    ],
+    "pagination": {}
 }
 "#
         .to_vec();

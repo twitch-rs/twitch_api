@@ -100,7 +100,7 @@ pub mod get_videos {
         pub after: Option<helix::Cursor>,
         /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
-        pub before: Option<String>,
+        pub before: Option<helix::Cursor>,
         /// Number of values to be returned when getting videos by user or game ID. Limit: 100. Default: 20.
         #[builder(default)]
         #[builder(setter(strip_option))]
