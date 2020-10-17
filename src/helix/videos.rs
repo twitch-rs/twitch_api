@@ -94,7 +94,7 @@ pub mod get_videos {
         pub user_id: Option<types::UserId>,
         /// ID of the game the video is of.
         #[builder(default, setter(into))]
-        pub game_id: Option<types::GameId>,
+        pub game_id: Option<types::CategoryId>,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         pub after: Option<helix::Cursor>,

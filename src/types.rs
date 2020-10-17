@@ -16,8 +16,8 @@ pub type Nickname = String;
 /// RFC3339 timestamp
 pub type Timestamp = String;
 
-/// A game ID
-pub type GameId = String;
+/// A game or category ID
+pub type CategoryId = String;
 
 /// A tag ID
 pub type TagId = String;
@@ -25,6 +25,17 @@ pub type TagId = String;
 /// A Video ID
 pub type VideoId = String;
 
+/// A game or category as defined by Twitch
+#[derive(PartialEq, serde::Deserialize, Debug, Clone)]
+#[non_exhaustive]
+pub struct TwitchCategory {
+    ///Template URL for the game’s box art.
+    box_art_url: String,
+    /// Game or category ID.
+    id: CategoryId,
+    ///Game name.
+    name: String,
+}
 
 /// Subscription tiers
 #[derive(PartialEq, serde::Deserialize, Clone, Debug)]
@@ -45,13 +56,12 @@ pub enum SubscriptionTier {
 
 impl serde::Serialize for SubscriptionTier {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer {
+    where S: serde::Serializer {
         serializer.serialize_str(match self {
             SubscriptionTier::Tier1 => "1000",
             SubscriptionTier::Tier2 => "2000",
             SubscriptionTier::Tier3 => "3000",
-            SubscriptionTier::Other(o) => o, 
+            SubscriptionTier::Other(o) => o,
         })
     }
 }
@@ -72,8 +82,7 @@ pub enum BroadcasterType {
 
 impl serde::Serialize for BroadcasterType {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer {
+    where S: serde::Serializer {
         serializer.serialize_str(match self {
             BroadcasterType::Partner => "partner",
             BroadcasterType::Affiliated => "affiliated",
@@ -81,7 +90,6 @@ impl serde::Serialize for BroadcasterType {
         })
     }
 }
-
 
 /// User types: "staff", "admin", "global_mod", or "".
 #[derive(PartialEq, serde::Deserialize, Clone, Debug)]
@@ -102,8 +110,7 @@ pub enum UserType {
 
 impl serde::Serialize for UserType {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer {
+    where S: serde::Serializer {
         serializer.serialize_str(match self {
             UserType::Staff => "staff",
             UserType::Admin => "admin",

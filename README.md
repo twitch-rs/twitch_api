@@ -89,10 +89,10 @@ See [examples](./examples) for examples.
 
 #### Search
 
-| Endpoint            |                                                     |                                                                                                                                                                                 |
-| :------------------ | :-------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 🔨 Search Categories | `GET https://api.twitch.tv/helix/search/categories` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_categories)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-categories) |
-| 🔨 Search Channels   | `GET helix/search/channels`                         | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_channels)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-channels)     |
+| Endpoint            |                                                     |                                                                                                                                                                             |
+| :------------------ | :-------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ✔ Search Categories | `GET https://api.twitch.tv/helix/search/categories` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_categories) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-categories)    |
+| 🔨 Search Channels   | `GET https://api.twitch.tv/helix/search/channels`   | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_channels)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-channels) |
 
 
 #### Streams
@@ -137,8 +137,8 @@ See [examples](./examples) for examples.
 
 #### Videos
 
-| Endpoint     |                                          |                                                                                                                                                                   |
-| :----------- | :--------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Endpoint     |                                          |                                                                                                                                                            |
+| :----------- | :--------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ✔ Get Videos | `GET https://api.twitch.tv/helix/videos` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/videos/get_videos) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-videos) |
 
 

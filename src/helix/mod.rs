@@ -36,6 +36,7 @@ pub mod channels;
 pub mod clips;
 pub mod games;
 pub mod moderation;
+pub mod search;
 pub mod streams;
 pub mod subscriptions;
 pub mod tags;

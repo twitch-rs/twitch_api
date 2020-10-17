@@ -9,18 +9,6 @@ pub use get_top_games::GetTopGamesRequest;
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
-/// A game as defined by Twitch
-#[derive(PartialEq, Deserialize, Debug, Clone)]
-#[non_exhaustive]
-pub struct TwitchGame {
-    ///Template URL for the game’s box art.
-    box_art_url: String,
-    ///Game ID.
-    id: types::GameId,
-    ///Game name.
-    name: String,
-}
-
 /// Gets game information by game ID or name.
 /// [`get-games`](https://dev.twitch.tv/docs/api/reference#get-games)
 pub mod get_games {
@@ -34,7 +22,7 @@ pub mod get_games {
     pub struct GetGamesRequest {
         /// Game ID. At most 100 id values can be specified.
         #[builder(default)]
-        id: Vec<types::GameId>,
+        id: Vec<types::CategoryId>,
         /// Game name. The name must be an exact match. For instance, “Pokemon” will not return a list of Pokemon games; instead, query the specific Pokemon game(s) in which you are interested. At most 100 name values can be specified.
         #[builder(default)]
         name: Vec<String>,
@@ -43,7 +31,7 @@ pub mod get_games {
     /// Return Values for [Get Games](super::get_games)
     ///
     /// [`get-games`](https://dev.twitch.tv/docs/api/reference#get-games)
-    pub type Game = helix::games::TwitchGame;
+    pub type Game = types::TwitchCategory;
 
     impl helix::Request for GetGamesRequest {
         type Response = Vec<Game>;
@@ -122,7 +110,7 @@ pub mod get_top_games {
     /// Return Values for [Get Games](super::get_games)
     ///
     /// [`get-top-games`](https://dev.twitch.tv/docs/api/reference#get-top-games)
-    pub type Game = helix::games::TwitchGame;
+    pub type Game = types::TwitchCategory;
 
     impl helix::Request for GetTopGamesRequest {
         type Response = Vec<Game>;
