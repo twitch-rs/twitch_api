@@ -365,7 +365,7 @@ pub mod get_banned_events {
         /// Displays `moderation.user.ban` or `moderation.user.unban`
         pub event_type: String,
         /// RFC3339 formatted timestamp for events.
-        pub event_timestamp: String,
+        pub event_timestamp: types::Timestamp,
         /// Returns the version of the endpoint.
         pub version: String,
         // FIXME: Should be a struct, maybe
