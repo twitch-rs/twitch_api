@@ -104,5 +104,11 @@ name = "create_follower"
 path = "examples/create_follower.rs"
 required-features = ["twitch_oauth2/surf_client"]
 
+[[example]]
+name = "channel_information"
+path = "examples/channel_information.rs"
+required-features = ["twitch_oauth2/reqwest_client", "reqwest_client"]
+
+
 [package.metadata.docs.rs]
 features = ["tmi", "helix", "surf_client", "reqwest_client", "client"]

@@ -18,20 +18,23 @@ See [examples](./examples) for examples.
 ```rust ,no_run
 use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
 use twitch_oauth2::{AccessToken, Scope, TwitchToken, tokens::errors::TokenError, UserToken};
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
     let token = UserToken::from_existing(
-        twitch_oauth2::client::surf_http_client,
+        twitch_oauth2::client::reqwest_http_client,
         AccessToken::new("mytoken".to_string()),
         None,
     )
     .await?;
-    let client: TwitchClient<surf::Client> =  TwitchClient::default();
+    let client: TwitchClient<reqwest::Client> =  TwitchClient::default();
     let req = GetChannelInformationRequest::builder()
         .broadcaster_id("12826")
         .build();
-    println!("{:?}", &client.helix.req_get(req, &token).await?.data[0].title);
+
+    println!("{:?}", &client.helix.req_get(req, &token).await?.data.unwrap().title);
+
     Ok(())
 }
 ```
@@ -41,12 +44,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>
 This crate aims to target
 
 * [Helix](https://dev.twitch.tv/docs/api/reference)
-  Partially implemented, see [implemented endpoints](#helix)
+  * Partially implemented, see [implemented endpoints](#helix)
 * TMI
-  Implemented, see [implemented endpoints](#tmi)
+  * Implemented, see [implemented endpoints](#tmi)
 * [Webhooks](https://dev.twitch.tv/docs/api/webhooks-reference)
 * [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
-  see [pubsub branch](Emilgardis/twitch_api2/tree/pubsub)
+  * see [pubsub branch](Emilgardis/twitch_api2/tree/pubsub)
 * [Extensions](https://dev.twitch.tv/docs/extensions/reference)
 
 This crate should also be able to be used for

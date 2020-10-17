@@ -37,16 +37,15 @@
 //!     .broadcaster_id("27620241")
 //!     .build();
 //!
-//! println!("{:?}", &client.helix.req_get(req, &token).await?.data[0].title);
+//! println!("{:?}", &client.helix.req_get(req, &token).await?.data.unwrap().title);
 //! # Ok(())
 //! # }
 //! ```
 //!
 
-#[doc(include="../README.md")]
+#[doc(include = "../README.md")]
 #[cfg(all(doctest, feature = "all"))]
 pub struct ReadmeDoctests;
-
 
 pub mod types;
 

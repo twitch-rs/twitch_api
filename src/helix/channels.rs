@@ -15,7 +15,7 @@
 //!     .build();
 //!
 //! // Get Channel Request only returns one entry.
-//! println!("{:?}", &client.req_get(req, &token).await?.data.get(0));
+//! println!("{:?}", &client.req_get(req, &token).await?.data);
 //! # Ok(())
 //! # }
 //! ```
@@ -37,6 +37,8 @@ use serde::{Deserialize, Serialize};
 /// Gets channel information for users.
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
 pub mod get_channel_information {
+    use std::convert::TryInto;
+
     use super::*;
     /// Query Parameters for [Get Channel Information](super::get_channel_information)
     ///
@@ -69,14 +71,46 @@ pub mod get_channel_information {
     }
 
     impl helix::Request for GetChannelInformationRequest {
-        type Response = Vec<ChannelInformation>;
+        type Response = Option<ChannelInformation>;
 
         const PATH: &'static str = "channels";
         #[cfg(feature = "twitch_oauth2")]
         const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     }
 
-    impl helix::RequestGet for GetChannelInformationRequest {}
+    impl helix::RequestGet for GetChannelInformationRequest {
+        fn parse_response(
+            self,
+            uri: &http::Uri,
+            response: http::Response<Vec<u8>>,
+        ) -> Result<helix::Response<Self, Option<ChannelInformation>>, helix::HelixRequestGetError>
+        where
+            Self: Sized,
+        {
+            let text = std::str::from_utf8(&response.body())
+                .map_err(|e| helix::HelixRequestGetError::Utf8Error(response.body().clone(), e))?;
+            //eprintln!("\n\nmessage is ------------ {} ------------", text);
+            if let Ok(helix::HelixRequestError {
+                error,
+                status,
+                message,
+            }) = serde_json::from_str::<helix::HelixRequestError>(&text)
+            {
+                return Err(helix::HelixRequestGetError::Error {
+                    error,
+                    status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                    message,
+                    uri: uri.clone(),
+                });
+            }
+            let response: helix::InnerResponse<Vec<_>> = serde_json::from_str(&text)?;
+            Ok(helix::Response {
+                data: response.data.into_iter().next(),
+                pagination: response.pagination.cursor,
+                request: self,
+            })
+        }
+    }
 
     #[test]
     fn test_request() {
