@@ -92,7 +92,7 @@ See [examples](./examples) for examples.
 | Endpoint            |                                                     |                                                                                                                                                                             |
 | :------------------ | :-------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ✔ Search Categories | `GET https://api.twitch.tv/helix/search/categories` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_categories) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-categories)    |
-| 🔨 Search Channels   | `GET https://api.twitch.tv/helix/search/channels`   | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_channels)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-channels) |
+| ✔ Search Channels   | `GET https://api.twitch.tv/helix/search/channels`   | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/search/search_channels) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#search-channels) |
 
 
 #### Streams
