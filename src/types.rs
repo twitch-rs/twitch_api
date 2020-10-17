@@ -22,7 +22,7 @@ pub type CategoryId = String;
 /// A tag ID
 pub type TagId = String;
 
-/// A Video ID
+/// A video ID
 pub type VideoId = String;
 
 /// A game or category as defined by Twitch
