@@ -127,12 +127,22 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --no-default-features -- -D warnings 
+          args: --all-targets --no-default-features -- -D warnings
+      - name: Run clippy --all-targets --no-default-features --features "helix" -- -D warnings
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-targets --no-default-features --features "helix" -- -D warnings
+      - name: Run clippy --all-targets --no-default-features --features "tmi" -- -D warnings
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-targets --no-default-features --features "tmi" -- -D warnings
       - name: Run clippy --all-targets --all-features -- -D warnings
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --all-features -- -D warnings 
+          args: --all-targets --all-features -- -D warnings
   docs:
     name: Docs
     runs-on: ubuntu-latest
