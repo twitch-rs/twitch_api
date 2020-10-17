@@ -1,7 +1,3 @@
-//! This should delete followers, but it doesn't... Please use irc `/block` instead!!!
-//!
-//! !!!!!!!!!!!!!!!!!
-//! !!!!!!!!!!!!!!!!!
 use twitch_api2::HelixClient;
 use twitch_oauth2::{AccessToken, TwitchToken, UserToken};
 
