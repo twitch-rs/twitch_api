@@ -168,7 +168,6 @@ impl<'a> Client<'a> for SurfClient {
         // assembly the request, now we can send that to our `surf::Client`
         req.body_bytes(&request.body());
 
-        // We need to "call" the send outside the async closure to not capture self.
         let client = self.clone();
         Box::pin(async move {
             // Send the request and translate the response into a `http::Response`

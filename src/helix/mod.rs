@@ -522,7 +522,7 @@ pub struct Response<R, D>
 where
     R: Request<Response = D>,
     D: serde::de::DeserializeOwned, {
-    ///  Twitch's response field for `data`.
+    /// Twitch's response field for `data`.
     pub data: D,
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
     pub pagination: Option<Cursor>,

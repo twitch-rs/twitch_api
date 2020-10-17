@@ -14,7 +14,7 @@
 //!     .broadcaster_id("1234")
 //!     .build();
 //!
-//! // Get Channel Request only returns one entry.
+//! // Get Channel Information Request only returns one entry.
 //! println!("{:?}", &client.req_get(req, &token).await?.data);
 //! # Ok(())
 //! # }
