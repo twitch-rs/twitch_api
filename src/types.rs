@@ -21,3 +21,6 @@ pub type GameId = String;
 
 /// A tag ID
 pub type TagId = String;
+
+/// A Video ID
+pub type VideoId = String;
