@@ -2,6 +2,7 @@
 #![deny(missing_docs, broken_intra_doc_links)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![doc(html_root_url = "https://docs.rs/twitch_api2/0.4.1")]
+#![cfg_attr(all(nightly, doctest), feature(external_doc))]
 //! [![github]](https://github.com/emilgardis/twitch_api2)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api2/0.4.1/twitch_api2)
 //!
 //! [github]: https://img.shields.io/badge/github-emilgardis/twitch__api2-8da0cb?style=for-the-badge&labelColor=555555&logo=github"
@@ -41,6 +42,11 @@
 //! # }
 //! ```
 //!
+
+#[doc(include="../README.md")]
+#[cfg(all(doctest, feature = "all"))]
+pub struct ReadmeDoctests;
+
 
 pub mod types;
 
