@@ -139,7 +139,7 @@ See [examples](./examples) for examples.
 
 | Endpoint     |                                          |                                                                                                                                                                   |
 | :----------- | :--------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🔨 Get Videos | `GET https://api.twitch.tv/helix/videos` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/videos/get_videos)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-videos) |
+| ✔ Get Videos | `GET https://api.twitch.tv/helix/videos` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/videos/get_videos) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-videos) |
 
 
 #### Webhooks

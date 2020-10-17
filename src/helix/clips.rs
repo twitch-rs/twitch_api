@@ -54,13 +54,13 @@ pub mod get_clips {
         pub before: Option<helix::Cursor>,
         /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, started_at also must be specified; otherwise, the time period is ignored.
         #[builder(default)]
-        pub ended_at: Option<String>,
+        pub ended_at: Option<types::Timestamp>,
         /// Maximum number of objects to return. Maximum: 100. Default: 20.
         #[builder(default, setter(into))]
         pub first: Option<usize>,
         /// Starting date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.
         #[builder(default)]
-        pub started_at: Option<String>,
+        pub started_at: Option<types::Timestamp>,
     }
 
     /// Return Values for [Get Clips](super::get_clips)
@@ -94,9 +94,9 @@ pub mod get_clips {
         /// URL where the clip can be viewed.
         pub url: String,
         /// ID of the video from which the clip was created.
-        pub video_id: String,
+        pub video_id: types::VideoId,
         /// Number of times the clip has been viewed.
-        pub view_count: usize,
+        pub view_count: i64,
     }
 
     impl helix::Request for GetClipsRequest {

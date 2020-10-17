@@ -169,10 +169,10 @@ impl<'a> Client<'a> for SurfClient {
         req.body_bytes(&request.body());
 
         // We need to "call" the send outside the async closure to not capture self.
-        let fut = self.send(req);
+        let client = self.clone();
         Box::pin(async move {
             // Send the request and translate the response into a `http::Response`
-            let mut response = fut.await.map_err(SurfError::Surf)?;
+            let mut response = client.send(req).await.map_err(SurfError::Surf)?;
             let mut result = http::Response::builder();
 
             let mut response_headers: http::header::HeaderMap = response

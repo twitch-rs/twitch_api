@@ -372,6 +372,20 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
 
     fn serialize_tuple(self, _len: usize) -> Result<Self::SerializeTuple, Self::Error> { Ok(self) }
 
+    fn serialize_unit_variant(
+        self,
+        _name: &'static str,
+        _variant_index: u32,
+        variant: &'static str,
+    ) -> Result<Self::Ok, Self::Error>
+    {
+        variant.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
     fn serialize_bool(self, _v: bool) -> Result<Self::Ok, Self::Error> {
         Err(Error::field_not_supported())
     }
@@ -430,15 +444,6 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
         Err(Error::field_not_supported())
     }
 
-    fn serialize_unit_variant(
-        self,
-        _name: &'static str,
-        _variant_index: u32,
-        _variant: &'static str,
-    ) -> Result<Self::Ok, Self::Error>
-    {
-        Err(Error::field_not_supported())
-    }
 
     fn serialize_newtype_struct<T: ?Sized>(
         self,
@@ -634,6 +639,18 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         Ok(self.urlencoder)
     }
 
+    fn serialize_unit_variant(
+        self,
+        _name: &'static str,
+        _variant_index: u32,
+        variant: &'static str,
+    ) -> Result<Self::Ok, Self::Error>
+    {
+        self.urlencoder
+            .append_pair(self.key, &variant);
+        Ok(self.urlencoder)
+    }
+
     fn serialize_char(self, _v: char) -> Result<Self::Ok, Self::Error> {
         Err(Error::pair_not_supported())
     }
@@ -645,16 +662,6 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
     fn serialize_unit(self) -> Result<Self::Ok, Self::Error> { Err(Error::pair_not_supported()) }
 
     fn serialize_unit_struct(self, _name: &'static str) -> Result<Self::Ok, Self::Error> {
-        Err(Error::pair_not_supported())
-    }
-
-    fn serialize_unit_variant(
-        self,
-        _name: &'static str,
-        _variant_index: u32,
-        _variant: &'static str,
-    ) -> Result<Self::Ok, Self::Error>
-    {
         Err(Error::pair_not_supported())
     }
 
@@ -916,6 +923,12 @@ impl ser::Serializer for ValueSerializer {
 #[test]
 fn serialize_query() {
     #[derive(serde::Serialize)]
+    #[serde(rename_all = "lowercase")]
+    pub enum Variant {
+        Hello,
+        World,
+    }
+    #[derive(serde::Serialize)]
     struct Request {
         filter: String,
         maybe: Option<String>,
@@ -925,6 +938,8 @@ fn serialize_query() {
         stuff: (u8, f32, &'static str),
         extras: std::collections::BTreeMap<i32, &'static str>,
         username: crate::types::UserName,
+        variant: Variant,
+        variant2: Option<Variant>,
     }
 
     let req = Request {
@@ -936,9 +951,11 @@ fn serialize_query() {
         stuff: (32, -35f32, "ha"),
         extras: [(1i32, "one"), (2, "two")].iter().copied().collect(),
         username: crate::types::UserName::from("justintv"),
+        variant: Variant::Hello,
+        variant2: Some(Variant::World),
     };
     assert_eq!(
         to_string(req).unwrap(),
-        "filter=1&possibly=sure+thing&ids=2&ids=3&ids2=4&stuff=32&stuff=-35&stuff=ha&1=one&2=two&username=justintv"
+        "filter=1&possibly=sure+thing&ids=2&ids=3&ids2=4&stuff=32&stuff=-35&stuff=ha&1=one&2=two&username=justintv&variant=hello&variant2=world"
     )
 }

@@ -58,7 +58,7 @@ pub mod get_users {
     #[non_exhaustive]
     pub struct User {
         /// User’s broadcaster type: "partner", "affiliate", or "".
-        pub broadcaster_type: Option<String>,
+        pub broadcaster_type: Option<types::BroadcasterType>,
         /// User’s channel description.
         pub description: Option<String>,
         /// User’s display name.
@@ -75,7 +75,7 @@ pub mod get_users {
         pub profile_image_url: Option<String>,
         /// User’s type: "staff", "admin", "global_mod", or "".
         #[serde(rename = "type")]
-        pub type_: Option<String>,
+        pub type_: Option<types::UserType>,
         /// Total number of views of the user’s channel.
         pub view_count: usize,
     }
@@ -161,15 +161,15 @@ pub mod get_users_follows {
     #[non_exhaustive]
     pub struct UsersFollows {
         ///Date and time when the from_id user followed the to_id user.
-        pub followed_at: String,
+        pub followed_at: types::Timestamp,
         ///ID of the user following the to_id user.
-        pub from_id: String,
+        pub from_id: types::UserId,
         ///Display name corresponding to from_id.
-        pub from_name: String,
+        pub from_name: types::DisplayName,
         ///ID of the user being followed by the from_id user.
-        pub to_id: String,
+        pub to_id: types::UserId,
         ///Display name corresponding to to_id.
-        pub to_name: String,
+        pub to_name: types::DisplayName,
         // FIXME: This never seems to be returned.
         /// Total number of items returned.
         ///
@@ -258,10 +258,10 @@ pub mod delete_user_follows {
     pub struct DeleteUserFollowsRequest {
         /// User ID of the follower
         #[builder(default, setter(into))]
-        pub from_id: Option<String>,
+        pub from_id: Option<types::UserId>,
         /// Channel to be unfollowed by the user
         #[builder(default, setter(into))]
-        pub to_id: Option<String>,
+        pub to_id: Option<types::UserId>,
     }
     /// Return Values for [[Delete Users Follows](super::delete_user_follows)
     ///
@@ -350,10 +350,10 @@ pub mod create_user_follows {
     pub struct CreateUserFollowsBody {
         /// User ID of the follower
         #[builder(default, setter(into))]
-        pub from_id: Option<String>,
+        pub from_id: Option<types::UserId>,
         /// ID of the channel to be followed by the user
         #[builder(default, setter(into))]
-        pub to_id: Option<String>,
+        pub to_id: Option<types::UserId>,
     }
 
     /// Return Values for [Create User Follows](super::create_user_follows)
