@@ -27,6 +27,8 @@ pub use get_broadcaster_subscriptions::{
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
+
+
 /// Get all of a broadcaster’s subscriptions.
 /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
 pub mod get_broadcaster_subscriptions {
@@ -42,7 +44,7 @@ pub mod get_broadcaster_subscriptions {
         pub broadcaster_id: types::UserId,
         /// Unique identifier of account to get subscription status of. Accepts up to 100 values.
         #[builder(default)]
-        pub user_id: Vec<String>,
+        pub user_id: Vec<types::UserId>,
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
         pub after: Option<helix::Cursor>,
@@ -61,7 +63,7 @@ pub mod get_broadcaster_subscriptions {
         /// Determines if the subscription is a gift subscription.
         pub is_gift: bool,
         /// Type of subscription (Tier 1, Tier 2, Tier 3). 1000 = Tier 1, 2000 = Tier 2, 3000 = Tier 3 subscriptions.
-        pub tier: String,
+        pub tier: types::SubscriptionTier,
         /// Name of the subscription.
         pub plan_name: String,
         /// ID of the subscribed user.

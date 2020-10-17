@@ -29,7 +29,7 @@ use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
 /// Gotten from [Stream.type_](get_streams::Stream#structfield.type_)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum StreamType {
     /// Stream is live.
@@ -92,7 +92,7 @@ pub mod get_streams {
     /// Return Values for [Get Streams](super::get_streams)
     ///
     /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
-    #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
     #[non_exhaustive]
     pub struct Stream {
         /// ID of the game being played on the stream.
