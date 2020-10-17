@@ -41,7 +41,7 @@ pub mod get_clips {
         pub broadcaster_id: Option<types::UserId>,
         /// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
         #[builder(default, setter(into))]
-        pub game_id: Option<types::GameId>,
+        pub game_id: Option<types::CategoryId>,
         /// ID of the clip being queried. Limit: 100.
         #[builder(default)]
         pub id: Vec<String>,
@@ -82,7 +82,7 @@ pub mod get_clips {
         /// URL to embed the clip.
         pub embed_url: String,
         /// ID of the game assigned to the stream when the clip was created.
-        pub game_id: types::GameId,
+        pub game_id: types::CategoryId,
         /// ID of the clip being queried.
         pub id: String,
         /// Language of the stream from which the clip was created.

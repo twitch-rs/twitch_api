@@ -77,7 +77,7 @@ pub mod get_streams {
         pub first: Option<usize>,
         /// Returns streams broadcasting a specified game ID. You can specify up to 10 IDs.
         #[builder(default)]
-        pub game_id: Vec<types::GameId>,
+        pub game_id: Vec<types::CategoryId>,
         /// Stream language. You can specify up to 100 languages.
         #[builder(default)]
         pub language: Option<String>,
@@ -96,7 +96,7 @@ pub mod get_streams {
     #[non_exhaustive]
     pub struct Stream {
         /// ID of the game being played on the stream.
-        pub game_id: types::GameId,
+        pub game_id: types::CategoryId,
         /// Stream ID.
         pub id: String,
         /// Stream language.

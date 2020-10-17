@@ -58,7 +58,7 @@ pub mod get_channel_information {
         /// Twitch User ID of this channel owner
         pub broadcaster_id: types::UserId,
         /// Current game ID being played on the channel
-        pub game_id: types::GameId,
+        pub game_id: types::CategoryId,
         /// Language of the channel
         pub broadcaster_language: String,
         /// Title of the stream
@@ -138,7 +138,7 @@ pub mod modify_channel_information {
     pub struct ModifyChannelInformationBody {
         /// Current game ID being played on the channel
         #[builder(default, setter(into, strip_option))]
-        pub game_id: Option<types::GameId>,
+        pub game_id: Option<types::CategoryId>,
         /// Language of the channel
         #[builder(default, setter(into))]
         pub broadcaster_language: Option<String>,
