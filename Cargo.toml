@@ -18,8 +18,8 @@ http = "0.2.1"
 typed-builder = { version = "0.7.0", optional = true }
 url = { version = "2.1.1", optional = true }
 twitch_oauth2 = { version = "0.5.0-alpha.1", optional = true, path = "twitch_oauth2/" }
-serde = { version = "1.0.117", features = ["derive"], optional = true }
-serde_derive = { version = "1.0.117", optional = true }
+serde = { version = "1.0.117", features = ["derive"] }
+serde_derive = "1.0.117"
 async-trait = { version = "0.1.41", optional = true }
 serde_json = { version = "1.0.59", optional = true }
 serde_repr = { version = "0.1.6", optional = true }
@@ -34,15 +34,13 @@ client = ["twitch_oauth2"]
 
 helix = [
     "url",
-    "serde",
-    "serde_derive",
     "async-trait",
     "serde_json",
     "serde_repr",
     "typed-builder",
 ]
 
-tmi = ["serde", "serde_json"]
+tmi = ["serde_json"]
 
 surf_client = [
     "surf",
