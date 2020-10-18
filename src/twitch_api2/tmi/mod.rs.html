@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/tmi/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/8c968b9109dba32f5a77862b9e1ff8e51d22c186">8c968b9</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/6266a4ae6a9b25441a4a36096cedfafb4c83ba0e">6266a4a</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -218,10 +218,13 @@
 <span id="213">213</span>
 <span id="214">214</span>
 <span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! TMI Endpoint, twitch&#39;s unsupported api for better chatters retrieval</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+
 <span class="doccomment">/// Client for the twitch TMI endpoint, almost entirely undocumented and certainly not supported.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
@@ -365,19 +368,19 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Chatters</span> {
     <span class="doccomment">/// Broadcaster, can (probably) only be one</span>
-    <span class="kw">pub</span> <span class="ident">broadcaster</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">broadcaster</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
     <span class="doccomment">/// VIPS in the chat, have the VIP badge and are set with `/vip username`</span>
-    <span class="kw">pub</span> <span class="ident">vips</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">vips</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Moderators in the chat, have a moderator badge and are set with `/mod username`</span>
-    <span class="kw">pub</span> <span class="ident">moderators</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">moderators</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Twitch Staff in the chat, have a staff badge.</span>
-    <span class="kw">pub</span> <span class="ident">staff</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">staff</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Twitch Admins in the chat, have an admin badge, akin to [Chatters::global_mods].</span>
-    <span class="kw">pub</span> <span class="ident">admins</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">admins</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Twitch Global Moderators in the chat, have an admin badge, akin to [Chatters::global_mods].</span>
-    <span class="kw">pub</span> <span class="ident">global_mods</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">global_mods</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Regular viewer in the chat, includes followers and subscribers.</span>
-    <span class="kw">pub</span> <span class="ident">viewers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">viewers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Possible options for a [TMIClient::get_hosts] request.</span>
@@ -410,14 +413,17 @@
     <span class="doccomment">/// User ID of the hosted channel. Will be missing if the given channel is not hosting anyone.</span>
     <span class="kw">pub</span> <span class="ident">target_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">UserId</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Login of the hosting channel, if requested with `include_logins = true`</span>
-    <span class="kw">pub</span> <span class="ident">host_login</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">host_login</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Login of the hosted channel, if requested with `include_logins = true`</span>
-    <span class="kw">pub</span> <span class="ident">target_login</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">target_login</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Display name of the hosting channel, if requested with `include_logins = true`</span>
-    <span class="kw">pub</span> <span class="ident">host_display_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">host_display_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Display name of the hosted channel, if requested with `include_logins = true`</span>
-    <span class="kw">pub</span> <span class="ident">target_display_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Nickname</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">target_display_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Nickname</span><span class="op">&gt;</span>,
 }
+
+<span class="doccomment">/// Nickname</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Nickname</span> <span class="op">=</span> <span class="ident">String</span>;
 
 <span class="doccomment">/// User ID</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">UserId</span> <span class="op">=</span> <span class="ident">u64</span>; <span class="comment">// TMI user ID&#39;s appear to still be ints, even though Helix uses strings.</span>

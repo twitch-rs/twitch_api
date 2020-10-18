@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["GetVideosRequest","Query Parameters for Get Videos"],["Video","Return Values for Get Videos"]]});
