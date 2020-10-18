@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/helix/games.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>games.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/6266a4ae6a9b25441a4a36096cedfafb4c83ba0e">6266a4a</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/37e831376dc6731b1a9d4cac35b2ff2672d3c672">37e8313</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -164,18 +164,6 @@
 <span id="159">159</span>
 <span id="160">160</span>
 <span id="161">161</span>
-<span id="162">162</span>
-<span id="163">163</span>
-<span id="164">164</span>
-<span id="165">165</span>
-<span id="166">166</span>
-<span id="167">167</span>
-<span id="168">168</span>
-<span id="169">169</span>
-<span id="170">170</span>
-<span id="171">171</span>
-<span id="172">172</span>
-<span id="173">173</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Endpoints regarding games</span>
 
@@ -185,20 +173,8 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_top_games</span>::<span class="ident">GetTopGamesRequest</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helix</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">helix</span>, <span class="ident">types</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-
-<span class="doccomment">/// A game as defined by Twitch</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TwitchGame</span> {
-    <span class="doccomment">///Template URL for the game’s box art.</span>
-    <span class="ident">box_art_url</span>: <span class="ident">String</span>,
-    <span class="doccomment">///Game ID.</span>
-    <span class="ident">id</span>: <span class="ident">String</span>,
-    <span class="doccomment">///Game name.</span>
-    <span class="ident">name</span>: <span class="ident">String</span>,
-}
 
 <span class="doccomment">/// Gets game information by game ID or name.</span>
 <span class="doccomment">/// [`get-games`](https://dev.twitch.tv/docs/api/reference#get-games)</span>
@@ -213,18 +189,16 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetGamesRequest</span> {
         <span class="doccomment">/// Game ID. At most 100 id values can be specified.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Vec::is_empty&quot;</span>)]</span>
-        <span class="ident">id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="ident">id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">CategoryId</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Game name. The name must be an exact match. For instance, “Pokemon” will not return a list of Pokemon games; instead, query the specific Pokemon game(s) in which you are interested. At most 100 name values can be specified.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Vec::is_empty&quot;</span>)]</span>
         <span class="ident">name</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     }
 
     <span class="doccomment">/// Return Values for [Get Games](super::get_games)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`get-games`](https://dev.twitch.tv/docs/api/reference#get-games)</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Game</span> <span class="op">=</span> <span class="ident">helix</span>::<span class="ident">games</span>::<span class="ident">TwitchGame</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Game</span> <span class="op">=</span> <span class="ident">types</span>::<span class="ident">TwitchCategory</span>;
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">GetGamesRequest</span> {
         <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Game</span><span class="op">&gt;</span>;
@@ -237,7 +211,7 @@
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">RequestGet</span> <span class="kw">for</span> <span class="ident">GetGamesRequest</span> {}
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetGamesRequest</span>::<span class="ident">builder</span>()
             .<span class="ident">id</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;493057&quot;</span>.<span class="ident">to_string</span>()])
@@ -268,6 +242,10 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;https://api.twitch.tv/helix/games?id=493057&quot;</span>
+        );
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }
@@ -286,23 +264,20 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetTopGamesRequest</span> {
         <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">after</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Cursor</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Cursor</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">strip_option</span>))]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">first</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     }
 
     <span class="doccomment">/// Return Values for [Get Games](super::get_games)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`get-top-games`](https://dev.twitch.tv/docs/api/reference#get-top-games)</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Game</span> <span class="op">=</span> <span class="ident">helix</span>::<span class="ident">games</span>::<span class="ident">TwitchGame</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Game</span> <span class="op">=</span> <span class="ident">types</span>::<span class="ident">TwitchCategory</span>;
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">GetTopGamesRequest</span> {
         <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Game</span><span class="op">&gt;</span>;
@@ -319,7 +294,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetTopGamesRequest</span>::<span class="ident">builder</span>().<span class="ident">build</span>();
 
@@ -346,6 +321,7 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">uri</span>.<span class="ident">to_string</span>(), <span class="string">&quot;https://api.twitch.tv/helix/games/top?&quot;</span>);
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }
