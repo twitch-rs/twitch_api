@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/helix/channels.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>channels.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/6266a4ae6a9b25441a4a36096cedfafb4c83ba0e">6266a4a</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/8c968b9109dba32f5a77862b9e1ff8e51d22c186">8c968b9</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -337,6 +337,52 @@
 <span id="332">332</span>
 <span id="333">333</span>
 <span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Endpoints regarding channels</span>
 <span class="doccomment">//!</span>
@@ -354,8 +400,8 @@
 <span class="doccomment">//!     .broadcaster_id(&quot;1234&quot;)</span>
 <span class="doccomment">//!     .build();</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! // Get Channel Request only returns one entry.</span>
-<span class="doccomment">//! println!(&quot;{:?}&quot;, &amp;client.req_get(req, &amp;token).await?.data.get(0));</span>
+<span class="doccomment">//! // Get Channel Information Request only returns one entry.</span>
+<span class="doccomment">//! println!(&quot;{:?}&quot;, &amp;client.req_get(req, &amp;token).await?.data);</span>
 <span class="doccomment">//! # Ok(())</span>
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
@@ -371,12 +417,14 @@
     <span class="ident">CommercialLength</span>, <span class="ident">StartCommercial</span>, <span class="ident">StartCommercialBody</span>, <span class="ident">StartCommercialRequest</span>,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helix</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">helix</span>, <span class="ident">types</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="doccomment">/// Gets channel information for users.</span>
 <span class="doccomment">/// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_channel_information</span> {
+    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryInto</span>;
+
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="doccomment">/// Query Parameters for [Get Channel Information](super::get_channel_information)</span>
     <span class="doccomment">///</span>
@@ -386,7 +434,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetChannelInformationRequest</span> {
         <span class="doccomment">/// ID of the channel</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
     }
 
     <span class="doccomment">/// Return Values for [Get Channel Information](super::get_channel_information)</span>
@@ -396,9 +444,9 @@
     <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelInformation</span> {
         <span class="doccomment">/// Twitch User ID of this channel owner</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Current game ID being played on the channel</span>
-        <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="ident">types</span>::<span class="ident">CategoryId</span>,
         <span class="doccomment">/// Language of the channel</span>
         <span class="kw">pub</span> <span class="ident">broadcaster_language</span>: <span class="ident">String</span>,
         <span class="doccomment">/// Title of the stream</span>
@@ -409,17 +457,49 @@
     }
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">GetChannelInformationRequest</span> {
-        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ChannelInformation</span><span class="op">&gt;</span>;
+        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChannelInformation</span><span class="op">&gt;</span>;
 
         <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;channels&quot;</span>;
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
         <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[];
     }
 
-    <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">RequestGet</span> <span class="kw">for</span> <span class="ident">GetChannelInformationRequest</span> {}
+    <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">RequestGet</span> <span class="kw">for</span> <span class="ident">GetChannelInformationRequest</span> {
+        <span class="kw">fn</span> <span class="ident">parse_response</span>(
+            <span class="self">self</span>,
+            <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http</span>::<span class="ident">Uri</span>,
+            <span class="ident">response</span>: <span class="ident">http</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChannelInformation</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">helix</span>::<span class="ident">HelixRequestGetError</span><span class="op">&gt;</span>
+        <span class="kw">where</span>
+            <span class="self">Self</span>: <span class="ident">Sized</span>,
+        {
+            <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">response</span>.<span class="ident">body</span>())
+                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">helix</span>::<span class="ident">HelixRequestGetError</span>::<span class="ident">Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>))<span class="question-mark">?</span>;
+            <span class="comment">//eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);</span>
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">helix</span>::<span class="ident">HelixRequestError</span> {
+                <span class="ident">error</span>,
+                <span class="ident">status</span>,
+                <span class="ident">message</span>,
+            }) <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>::<span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>)
+            {
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">helix</span>::<span class="ident">HelixRequestGetError</span>::<span class="ident">Error</span> {
+                    <span class="ident">error</span>,
+                    <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>),
+                    <span class="ident">message</span>,
+                    <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
+                });
+            }
+            <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">helix</span>::<span class="ident">InnerResponse</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>)<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">helix</span>::<span class="ident">Response</span> {
+                <span class="ident">data</span>: <span class="ident">response</span>.<span class="ident">data</span>.<span class="ident">into_iter</span>().<span class="ident">next</span>(),
+                <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span>,
+                <span class="ident">request</span>: <span class="self">self</span>,
+            })
+        }
+    }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetChannelInformationRequest</span>::<span class="ident">builder</span>()
             .<span class="ident">broadcaster_id</span>(<span class="string">&quot;44445592&quot;</span>.<span class="ident">to_string</span>())
@@ -445,6 +525,10 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;https://api.twitch.tv/helix/channels?broadcaster_id=44445592&quot;</span>
+        );
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }
@@ -462,7 +546,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ModifyChannelInformationRequest</span> {
         <span class="doccomment">/// ID of the channel</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
     }
 
     <span class="comment">// FIXME: Twitch docs sucks...</span>
@@ -474,7 +558,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ModifyChannelInformationBody</span> {
         <span class="doccomment">/// Current game ID being played on the channel</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>, <span class="ident">strip_option</span>))]</span>
-        <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">CategoryId</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Language of the channel</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
         <span class="kw">pub</span> <span class="ident">broadcaster_language</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
@@ -522,7 +606,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">ModifyChannelInformationRequest</span>::<span class="ident">builder</span>()
             .<span class="ident">broadcaster_id</span>(<span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;0&quot;</span>))
@@ -534,6 +618,10 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">status</span>(<span class="number">200</span>).<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;https://api.twitch.tv/helix/channels?broadcaster_id=0&quot;</span>
+        );
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }
@@ -615,7 +703,7 @@
     <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StartCommercialBody</span> {
         <span class="doccomment">/// ID of the channel requesting a commercial</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Desired length of the commercial in seconds. Valid options are 30, 60, 90, 120, 150, 180.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
         <span class="kw">pub</span> <span class="ident">length</span>: <span class="ident">CommercialLength</span>,
@@ -649,7 +737,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">StartCommercialRequest</span> {};
 
@@ -668,6 +756,10 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;https://api.twitch.tv/helix/channels/commercial?&quot;</span>
+        );
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }

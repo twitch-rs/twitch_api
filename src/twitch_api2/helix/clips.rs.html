@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/helix/clips.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>clips.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/6266a4ae6a9b25441a4a36096cedfafb4c83ba0e">6266a4a</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/8c968b9109dba32f5a77862b9e1ff8e51d22c186">8c968b9</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -161,10 +161,6 @@
 <span id="156">156</span>
 <span id="157">157</span>
 <span id="158">158</span>
-<span id="159">159</span>
-<span id="160">160</span>
-<span id="161">161</span>
-<span id="162">162</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Endpoints regarding clips</span>
 <span class="doccomment">//!</span>
@@ -191,7 +187,7 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_clips</span>::{<span class="ident">Clip</span>, <span class="ident">GetClipsRequest</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helix</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">helix</span>, <span class="ident">types</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="doccomment">/// Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).</span>
@@ -206,37 +202,29 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetClipsRequest</span> {
         <span class="doccomment">/// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
         <span class="doccomment">/// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">CategoryId</span><span class="op">&gt;</span>,
         <span class="doccomment">/// ID of the clip being queried. Limit: 100.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Vec::is_empty&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
         <span class="comment">// one of above is needed.</span>
         <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">after</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Cursor</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">before</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Cursor</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, started_at also must be specified; otherwise, the time period is ignored.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">ended_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">ended_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Timestamp</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">first</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Starting date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">started_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">started_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Timestamp</span><span class="op">&gt;</span>,
     }
 
     <span class="doccomment">/// Return Values for [Get Clips](super::get_clips)</span>
@@ -246,19 +234,19 @@
     <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Clip</span> {
         <span class="doccomment">/// User ID of the stream from which the clip was created.</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Display name corresponding to broadcaster_id.</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_name</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
         <span class="doccomment">/// Date when the clip was created.</span>
-        <span class="kw">pub</span> <span class="ident">created_at</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">created_at</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
         <span class="doccomment">/// ID of the user who created the clip.</span>
-        <span class="kw">pub</span> <span class="ident">creator_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">creator_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Display name corresponding to creator_id.</span>
-        <span class="kw">pub</span> <span class="ident">creator_name</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">creator_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
         <span class="doccomment">/// URL to embed the clip.</span>
         <span class="kw">pub</span> <span class="ident">embed_url</span>: <span class="ident">String</span>,
         <span class="doccomment">/// ID of the game assigned to the stream when the clip was created.</span>
-        <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="ident">types</span>::<span class="ident">CategoryId</span>,
         <span class="doccomment">/// ID of the clip being queried.</span>
         <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
         <span class="doccomment">/// Language of the stream from which the clip was created.</span>
@@ -270,9 +258,9 @@
         <span class="doccomment">/// URL where the clip can be viewed.</span>
         <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">String</span>,
         <span class="doccomment">/// ID of the video from which the clip was created.</span>
-        <span class="kw">pub</span> <span class="ident">video_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">video_id</span>: <span class="ident">types</span>::<span class="ident">VideoId</span>,
         <span class="doccomment">/// Number of times the clip has been viewed.</span>
-        <span class="kw">pub</span> <span class="ident">view_count</span>: <span class="ident">usize</span>,
+        <span class="kw">pub</span> <span class="ident">view_count</span>: <span class="ident">i64</span>,
     }
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">GetClipsRequest</span> {
@@ -290,7 +278,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetClipsRequest</span>::<span class="ident">builder</span>()
             .<span class="ident">id</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;AwkwardHelplessSalamanderSwiftRage&quot;</span>)])
@@ -324,6 +312,10 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;https://api.twitch.tv/helix/clips?id=AwkwardHelplessSalamanderSwiftRage&quot;</span>
+        );
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }

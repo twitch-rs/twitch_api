@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/helix/moderation.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>moderation.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/6266a4ae6a9b25441a4a36096cedfafb4c83ba0e">6266a4a</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/8c968b9109dba32f5a77862b9e1ff8e51d22c186">8c968b9</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -552,10 +552,22 @@
 <span id="547">547</span>
 <span id="548">548</span>
 <span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Endpoints regarding moderation</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helix</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">helix</span>, <span class="ident">types</span>};
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">check_automod_status</span>::{
     <span class="ident">CheckAutoModStatus</span>, <span class="ident">CheckAutoModStatusBody</span>, <span class="ident">CheckAutoModStatusRequest</span>,
@@ -587,10 +599,9 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetModeratorsRequest</span> {
         <span class="doccomment">/// Must match the User ID in the Bearer token.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">after</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Cursor</span><span class="op">&gt;</span>,
     }
 
@@ -603,11 +614,11 @@
         <span class="doccomment">/// User ID of moderator</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Twitch says: `User ID of a user who has been banned.` but this seems wrong.</span>
-        <span class="ident">user_id</span>: <span class="ident">String</span>,
+        <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Display name of moderator</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Twitch says: `Display name of a user who has been banned.` but this seems wrong.</span>
-        <span class="ident">user_name</span>: <span class="ident">String</span>,
+        <span class="ident">user_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
     }
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">GetModeratorsRequest</span> {
@@ -625,7 +636,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetModeratorsRequest</span>::<span class="ident">builder</span>()
             .<span class="ident">broadcaster_id</span>(<span class="string">&quot;198704263&quot;</span>.<span class="ident">to_string</span>())
@@ -654,6 +665,10 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;https://api.twitch.tv/helix/moderation/moderators?broadcaster_id=198704263&quot;</span>
+        );
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }
@@ -673,17 +688,15 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetModeratorEventsRequest</span> {
         <span class="doccomment">/// Must match the User ID in the Bearer token.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="comment">// FIXME: Twitch docs sucks...</span>
         <span class="doccomment">/// Filters the results and only returns a status object for users who are moderators in this channel and have a matching user_id.</span>
         <span class="doccomment">/// Format: Repeated Query Parameter, eg. /moderation/moderators?broadcaster_id=1&amp;user_id=2&amp;user_id=3</span>
         <span class="doccomment">/// Maximum: 100</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Vec::is_empty&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">after</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Cursor</span><span class="op">&gt;</span>,
     }
 
@@ -699,7 +712,7 @@
         <span class="doccomment">/// Displays `moderation.moderator.add` or `moderation.moderator.remove`</span>
         <span class="kw">pub</span> <span class="ident">event_type</span>: <span class="ident">String</span>,
         <span class="doccomment">/// RFC3339 formatted timestamp for events.</span>
-        <span class="kw">pub</span> <span class="ident">event_timestamp</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">event_timestamp</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
         <span class="doccomment">/// Returns the version of the endpoint.</span>
         <span class="kw">pub</span> <span class="ident">version</span>: <span class="ident">String</span>,
         <span class="doccomment">/// Returns `broadcaster_id`, `broadcaster_name`, `user_id`, `user_name`, and `expires_at`.</span>
@@ -721,7 +734,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetModeratorEventsRequest</span>::<span class="ident">builder</span>()
             .<span class="ident">broadcaster_id</span>(<span class="string">&quot;198704263&quot;</span>.<span class="ident">to_string</span>())
@@ -778,6 +791,10 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;https://api.twitch.tv/helix/moderation/moderators/events?broadcaster_id=198704263&quot;</span>
+        );
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }
@@ -796,16 +813,14 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetBannedUsersRequest</span> {
         <span class="doccomment">/// Must match the User ID in the Bearer token.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.</span>
         <span class="doccomment">/// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&amp;user_id=2&amp;user_id=3</span>
         <span class="doccomment">/// Maximum: 100</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Vec::is_empty&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">after</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Cursor</span><span class="op">&gt;</span>,
     }
 
@@ -816,11 +831,11 @@
     <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BannedUsers</span> {
         <span class="doccomment">/// User ID of a user who has been banned.</span>
-        <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Display name of a user who has been banned.</span>
-        <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
         <span class="doccomment">/// RFC3339 formatted timestamp for timeouts; empty string for bans.</span>
-        <span class="kw">pub</span> <span class="ident">expires_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">expires_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">Timestamp</span><span class="op">&gt;</span>,
     }
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">GetBannedUsersRequest</span> {
@@ -838,7 +853,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetBannedUsersRequest</span>::<span class="ident">builder</span>()
             .<span class="ident">broadcaster_id</span>(<span class="string">&quot;198704263&quot;</span>.<span class="ident">to_string</span>())
@@ -869,6 +884,10 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;https://api.twitch.tv/helix/moderation/banned?broadcaster_id=198704263&quot;</span>
+        );
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }
@@ -888,20 +907,17 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetBannedEventsRequest</span> {
         <span class="doccomment">/// Must match the User ID in the Bearer token.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.</span>
         <span class="doccomment">/// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&amp;user_id=2&amp;user_id=3</span>
         <span class="doccomment">/// Maximum: 100</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Vec::is_empty&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">after</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix</span>::<span class="ident">Cursor</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">first</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     }
 
@@ -916,7 +932,7 @@
         <span class="doccomment">/// Displays `moderation.user.ban` or `moderation.user.unban`</span>
         <span class="kw">pub</span> <span class="ident">event_type</span>: <span class="ident">String</span>,
         <span class="doccomment">/// RFC3339 formatted timestamp for events.</span>
-        <span class="kw">pub</span> <span class="ident">event_timestamp</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">event_timestamp</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
         <span class="doccomment">/// Returns the version of the endpoint.</span>
         <span class="kw">pub</span> <span class="ident">version</span>: <span class="ident">String</span>,
         <span class="comment">// FIXME: Should be a struct, maybe</span>
@@ -939,7 +955,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetBannedEventsRequest</span>::<span class="ident">builder</span>()
             .<span class="ident">broadcaster_id</span>(<span class="string">&quot;198704263&quot;</span>.<span class="ident">to_string</span>())
@@ -999,6 +1015,10 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;https://api.twitch.tv/helix/moderation/banned/events?broadcaster_id=198704263&quot;</span>
+        );
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }
@@ -1016,7 +1036,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CheckAutoModStatusRequest</span> {
         <span class="doccomment">/// Must match the User ID in the Bearer token.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
     }
 
     <span class="doccomment">/// Body Parameters for [Check AutoMod Status](super::check_automod_status)</span>
@@ -1072,7 +1092,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span>() {
+    <span class="kw">fn</span> <span class="ident">test_request</span>() {
         <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">CheckAutoModStatusRequest</span>::<span class="ident">builder</span>()
             .<span class="ident">broadcaster_id</span>(<span class="string">&quot;198704263&quot;</span>.<span class="ident">to_string</span>())
@@ -1098,6 +1118,10 @@
         <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Response</span>::<span class="ident">builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
+            <span class="string">&quot;https://api.twitch.tv/helix/moderation/enforcements/status?broadcaster_id=198704263&quot;</span>
+        );
 
         <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">req</span>.<span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
     }
