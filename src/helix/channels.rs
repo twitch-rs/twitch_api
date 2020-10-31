@@ -53,12 +53,17 @@ pub mod get_channel_information {
     ///
     /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct ChannelInformation {
         /// Twitch User ID of this channel owner
         pub broadcaster_id: types::UserId,
+        /// User name of this channel owner
+        pub broadcaster_name: types::UserName,
         /// Current game ID being played on the channel
         pub game_id: types::CategoryId,
+        /// Name of current game being played on the channel
+        pub game_name: types::CategoryId,
         /// Language of the channel
         pub broadcaster_language: String,
         /// Title of the stream
@@ -277,6 +282,7 @@ pub mod start_commercial {
     ///
     /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct StartCommercial {
         /// Length of the triggered commercial

@@ -114,6 +114,7 @@ pub mod get_videos {
     ///
     /// [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct Video {
         /// Date when the video was created.

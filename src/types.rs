@@ -27,6 +27,7 @@ pub type VideoId = String;
 
 /// A game or category as defined by Twitch
 #[derive(PartialEq, serde::Deserialize, Debug, Clone)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TwitchCategory {
     ///Template URL for the game’s box art.

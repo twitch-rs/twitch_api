@@ -67,6 +67,7 @@ pub mod get_clips {
     ///
     /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
     #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct Clip {
         /// User ID of the stream from which the clip was created.
