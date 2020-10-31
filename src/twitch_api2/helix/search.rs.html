@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/search.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>search.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/704722a2849da30ca0025973ebf34a4e73986a02">704722a</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/a08149a08d8cbe1d0185b07c7406137810fc80a4">a08149a</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -359,24 +359,24 @@
     <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Channels</span> {
         <span class="doccomment">/// ID of the game being played on the stream</span>
-        <span class="ident">game_id</span>: <span class="ident">types</span>::<span class="ident">CategoryId</span>,
+        <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="ident">types</span>::<span class="ident">CategoryId</span>,
         <span class="doccomment">/// Channel ID</span>
-        <span class="ident">id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+        <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Display name corresponding to user_id</span>
-        <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+        <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
         <span class="doccomment">/// Channel language (Broadcaster Language field from the [Channels service][crate::helix::channels])</span>
-        <span class="ident">broadcaster_language</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">broadcaster_language</span>: <span class="ident">String</span>,
         <span class="doccomment">/// channel title</span>
-        <span class="ident">title</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
         <span class="doccomment">/// Thumbnail URL of the stream. All image URLs have variable width and height. You can replace {width} and {height} with any values to get that size image.</span>
-        <span class="ident">thumbnail_url</span>: <span class="ident">String</span>,
+        <span class="kw">pub</span> <span class="ident">thumbnail_url</span>: <span class="ident">String</span>,
         <span class="doccomment">/// Live status</span>
-        <span class="ident">is_live</span>: <span class="ident">bool</span>,
+        <span class="kw">pub</span> <span class="ident">is_live</span>: <span class="ident">bool</span>,
         <span class="doccomment">/// UTC timestamp. (live only)</span>
-        <span class="ident">started_at</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
+        <span class="kw">pub</span> <span class="ident">started_at</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
         <span class="comment">// FIXME: Twitch doc say tag_ids</span>
         <span class="doccomment">/// Shows tag IDs that apply to the stream (live only).See https://www.twitch.tv/directory/all/tags for tag types</span>
-        <span class="ident">tags_ids</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">TagId</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">tags_ids</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">TagId</span><span class="op">&gt;</span>,
     }
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">SearchChannelsRequest</span> {
