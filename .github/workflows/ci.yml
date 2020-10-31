@@ -3,7 +3,6 @@ env:
   CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all unsupported"
 on:
   pull_request:
-    branches: [master]
     types: [opened, reopened, synchronize]
   push:
     branches: [master]
@@ -17,49 +16,13 @@ jobs:
         run: exit 0
   test:
     name: Tests
-    if: github.event_name == 'pull_request' || startsWith(github.ref, 'master/')
+    # Run tests if this is a pr, or if it's a push to master
+    if: github.event_name == 'pull_request' || (github.ref == 'refs/heads/master' && github.event_name == 'push')
     strategy:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
         rust: [1.47.0, nightly]
-        target:
-          # - i686-pc-windows-msvc
-          - x86_64-pc-windows-msvc
-          # - i686-pc-windows-gnu
-          # - x86_64-pc-windows-gnu
-          # - i686-unknown-linux-gnu
-          - x86_64-unknown-linux-gnu
-          - x86_64-apple-darwin
-        exclude:
-          - os: windows-latest
-            target: x86_64-apple-darwin
-          # - os: windows-latest
-          #   target: i686-unknown-linux-gnu
-          - os: windows-latest
-            target: x86_64-unknown-linux-gnu
-          # - os: macos-latest
-          #   target: i686-pc-windows-msvc
-          - os: macos-latest
-            target: x86_64-pc-windows-msvc
-          # - os: macos-latest
-          #   target: i686-pc-windows-gnu
-          # - os: macos-latest
-          #   target: x86_64-pc-windows-gnu
-          # - os: macos-latest
-          #   target: i686-unknown-linux-gnu
-          - os: macos-latest
-            target: x86_64-unknown-linux-gnu
-          # - os: ubuntu-latest
-          #   target: i686-pc-windows-msvc
-          - os: ubuntu-latest
-            target: x86_64-pc-windows-msvc
-          # - os: ubuntu-latest
-          #   target: i686-pc-windows-gnu
-          # - os: ubuntu-latest
-          #   target: x86_64-pc-windows-gnu
-          - os: ubuntu-latest
-            target: x86_64-apple-darwin
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -69,7 +32,6 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ matrix.rust }}
-          target: ${{ matrix.target }}
           override: true
       - name: Ready cache
         if: matrix.os == 'ubuntu-latest'
@@ -84,7 +46,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --target ${{ matrix.target }} --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest

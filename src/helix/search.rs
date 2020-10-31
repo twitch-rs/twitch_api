@@ -139,24 +139,24 @@ pub mod search_channels {
     #[non_exhaustive]
     pub struct Channels {
         /// ID of the game being played on the stream
-        game_id: types::CategoryId,
+        pub game_id: types::CategoryId,
         /// Channel ID
-        id: types::UserId,
+        pub id: types::UserId,
         /// Display name corresponding to user_id
-        display_name: types::DisplayName,
+        pub display_name: types::DisplayName,
         /// Channel language (Broadcaster Language field from the [Channels service][crate::helix::channels])
-        broadcaster_language: String,
+        pub broadcaster_language: String,
         /// channel title
-        title: String,
+        pub title: String,
         /// Thumbnail URL of the stream. All image URLs have variable width and height. You can replace {width} and {height} with any values to get that size image.
-        thumbnail_url: String,
+        pub thumbnail_url: String,
         /// Live status
-        is_live: bool,
+        pub is_live: bool,
         /// UTC timestamp. (live only)
-        started_at: types::Timestamp,
+        pub started_at: types::Timestamp,
         // FIXME: Twitch doc say tag_ids
         /// Shows tag IDs that apply to the stream (live only).See https://www.twitch.tv/directory/all/tags for tag types
-        tags_ids: Vec<types::TagId>,
+        pub tags_ids: Vec<types::TagId>,
     }
 
     impl helix::Request for SearchChannelsRequest {

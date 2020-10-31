@@ -29,7 +29,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// See [HttpClient][crate::HttpClient] for implemented http clients, you can also define your own if needed.
 #[cfg(all(feature = "tmi", feature = "client"))]
-#[cfg_attr(nightly, doc(all(feature = "tmi", feature = "client")))] // FIXME: This doc_cfg does nothing
+#[cfg_attr(nightly, doc(cfg(all(feature = "tmi", feature = "client"))))] // FIXME: This doc_cfg does nothing
 #[derive(Default, Clone)]
 pub struct TMIClient<'a, C: crate::HttpClient<'a>> {
     client: C,
