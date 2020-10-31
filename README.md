@@ -201,9 +201,9 @@ There are no current plans to support
         
 #### Hypetrain
 
-| Endpoint                |                                                    |                                                                                                                                                                                             |
-| :---------------------- | :------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 🔨 Get Hype Train Events | `GET https://api.twitch.tv/helix/hypetrain/events` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/hypetrain/get_hype_train_events)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)) |
+| Endpoint                |                                                    |                                                                                                                                                                                            |
+| :---------------------- | :------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🔨 Get Hype Train Events | `GET https://api.twitch.tv/helix/hypetrain/events` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/hypetrain/get_hype_train_events)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-hype-train-events) |
 
 
 
@@ -226,7 +226,7 @@ There are no current plans to support
 | ✔ Channel Subscriptions                 | `channel-subscribe-events-v1.<channel ID>`      | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_subscriptions) |
 | ✔ Chat Moderator Actions                | `chat_moderator_actions.<channel ID>`           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/moderation)            |
 | ✔ Chat Moderator Actions (undocumented) | `chat_moderator_actions.<channel ID>.<user_id>` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/moderation)            |
-| 🔨 Whispers                              | `whispers.<user ID>`                            | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/whispers)              |
+| 🔨 Whispers                              | `whispers.<user ID>`                            | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/whispers)-->       |
 | ✔ Channel Cheer Events                  | `channel-cheer-events-public-v1.<user ID>`      | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_cheer)         |
 | ✔ Channel Sub Gifts V1                  | `channel-sub-gifts-v1.<user ID>`                | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_sub_gifts)     |
 | ✔ Following                             | `following.<user ID>`                           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/following)             |
