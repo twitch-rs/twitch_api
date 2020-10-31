@@ -22,10 +22,10 @@ pub mod get_games {
     pub struct GetGamesRequest {
         /// Game ID. At most 100 id values can be specified.
         #[builder(default)]
-        id: Vec<types::CategoryId>,
+        pub id: Vec<types::CategoryId>,
         /// Game name. The name must be an exact match. For instance, “Pokemon” will not return a list of Pokemon games; instead, query the specific Pokemon game(s) in which you are interested. At most 100 name values can be specified.
         #[builder(default)]
-        name: Vec<String>,
+        pub name: Vec<String>,
     }
 
     /// Return Values for [Get Games](super::get_games)

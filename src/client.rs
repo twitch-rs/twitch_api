@@ -1,9 +1,9 @@
-//! Different clients you can use with this crate to call the auth server.
+//! Different clients you can use with this crate to call endpoints.
 //!
-//! This is enables you to use your own http implementation.
+//! This enables you to use your own http client/implementation.
 //! For example, say you have a http client that has a "client" named `foo::Client`.
 //!
-//! Our client has a function `call` which looks something like this
+//! That client has a function `call` which looks something like this
 //! ```rust,no_run
 //! # struct Client;type ClientError = std::io::Error; impl Client {
 //! fn call(&self, req: http::Request<Vec<u8>>) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>> {

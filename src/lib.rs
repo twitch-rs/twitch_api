@@ -11,9 +11,11 @@
 //!
 //! <br>
 //!
-//! <h5>Rust library for talking with the new Twitch API aka. "Helix" and TMI. Use Twitch endpoints fearlessly!</h5>
+//! <h5>Rust library for talking with the new Twitch API aka. "Helix", TMI and more! Use Twitch endpoints fearlessly!</h5>
 //!
 //! # Examples
+//!
+//! Get information about a channel with the [GetChannelInformationRequest](crate::helix::channels::GetChannelInformationRequest) helix endpoint.
 //!
 //! ```rust,no_run
 //! use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
@@ -42,6 +44,22 @@
 //! # }
 //! ```
 //!
+//! # Features
+//!
+//! This crate provides almost no functionality by default, only exposing [types]. To enable more features, refer to below table.
+//!
+//! | Feature |         |
+//! | -------: | :------- |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>twitch_oauth2</code></span> | Gives [scopes](twitch_oauth2::Scope) for endpoints and topics that are needed to call them. |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>client</code></span> | Gives a [client abstraction](HttpClient) for endpoints. See for example [TMIClient] and [HelixClient] |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>helix</code></span> | Enables [helix](helix) endpoints |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>tmi</code></span> | Enables deserializable structs for [TMI](tmi) |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>surf_client</code></span> | Enables surf for [HttpClient] |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>reqwest_client</code></span> | Enables reqwest for [HttpClient] |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>all</code></span> | Enables all above features. Including reqwest and surf. Do not use this in production, it's better if you specify exactly what you need |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>unsupported</code></span> | Enables undocumented or experimental endpoints or topics. Breakage may occur |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>allow_unknown_fields</code></span> | Removes `#[serde(deny_unknown_fields)]` on all applicable structs/enums |
+//!
 
 #[doc(include = "../README.md")]
 #[cfg(all(doctest, feature = "all"))]
@@ -67,7 +85,7 @@ pub use crate::helix::HelixClient;
 #[doc(inline)]
 pub use crate::tmi::TMIClient;
 
-#[cfg(all(feature = "helix", feature = "client"))]
+#[cfg(any(feature = "twitch_oauth2", all(feature = "helix", feature = "client")))]
 #[doc(no_inline)]
 pub use twitch_oauth2;
 

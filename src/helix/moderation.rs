@@ -47,11 +47,11 @@ pub mod get_moderators {
         /// User ID of moderator
         ///
         /// Twitch says: `User ID of a user who has been banned.` but this seems wrong.
-        user_id: types::UserId,
+        pub user_id: types::UserId,
         /// Display name of moderator
         ///
         /// Twitch says: `Display name of a user who has been banned.` but this seems wrong.
-        user_name: types::DisplayName,
+        pub user_name: types::DisplayName,
     }
 
     impl helix::Request for GetModeratorsRequest {

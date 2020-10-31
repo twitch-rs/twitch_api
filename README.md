@@ -1,4 +1,4 @@
-Twitch API2 | Rust library for talking with the new Twitch API aka. "Helix", the TMI and more!
+Twitch API2 | Rust library for talking with the new Twitch API aka. "Helix", TMI and more!
 ============================================
 
 [![github]](https://github.com/emilgardis/twitch_api2)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api2/0.4.1/twitch_api2)

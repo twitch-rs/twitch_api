@@ -30,11 +30,11 @@ pub type VideoId = String;
 #[non_exhaustive]
 pub struct TwitchCategory {
     ///Template URL for the game’s box art.
-    box_art_url: String,
+    pub box_art_url: String,
     /// Game or category ID.
-    id: CategoryId,
+    pub id: CategoryId,
     ///Game name.
-    name: String,
+    pub name: String,
 }
 
 /// Subscription tiers

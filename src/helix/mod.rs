@@ -68,7 +68,7 @@ pub use twitch_oauth2::Scope;
 ///
 /// See [HttpClient][crate::HttpClient] for implemented http clients, you can also define your own if needed.
 #[cfg(all(feature = "client"))]
-#[cfg_attr(nightly, doc(all(feature = "helix", feature = "client")))]
+#[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "helix"))))]
 #[derive(Clone)]
 pub struct HelixClient<'a, C>
 where C: crate::HttpClient<'a> {
