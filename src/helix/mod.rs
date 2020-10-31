@@ -137,7 +137,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestGet,
-        D: serde::de::DeserializeOwned,
+        D: serde::de::DeserializeOwned + PartialEq,
         T: TwitchToken + ?Sized,
     {
         let req = request.create_request(token.token().secret(), token.client_id().as_str())?;
@@ -160,7 +160,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     where
         R: Request<Response = D> + Request + RequestPost<Body = B>,
         B: serde::Serialize,
-        D: serde::de::DeserializeOwned,
+        D: serde::de::DeserializeOwned + PartialEq,
         T: TwitchToken + ?Sized,
     {
         let req =
@@ -185,7 +185,8 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         R: Request<Response = D> + Request + RequestPatch<Body = B>,
         B: serde::Serialize,
         D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
-            + serde::de::DeserializeOwned,
+            + serde::de::DeserializeOwned
+            + PartialEq,
         T: TwitchToken + ?Sized,
     {
         let req =
@@ -208,7 +209,8 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     where
         R: Request<Response = D> + Request + RequestDelete,
         D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
-            + serde::de::DeserializeOwned,
+            + serde::de::DeserializeOwned
+            + PartialEq,
         T: TwitchToken + ?Sized,
     {
         let req = request.create_request(token.token().secret(), token.client_id().as_str())?;
@@ -242,7 +244,7 @@ pub trait Request: serde::Serialize {
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     /// Response type. twitch's response will  deserialize to this.
-    type Response: serde::de::DeserializeOwned;
+    type Response: serde::de::DeserializeOwned + PartialEq;
     /// Defines layout of the url parameters.
     fn query(&self) -> Result<String, ser::Error> { ser::to_string(&self) }
     /// Returns full URI for the request, including query parameters.
@@ -526,7 +528,7 @@ pub trait RequestGet: Request {
 pub struct Response<R, D>
 where
     R: Request<Response = D>,
-    D: serde::de::DeserializeOwned, {
+    D: serde::de::DeserializeOwned + PartialEq, {
     /// Twitch's response field for `data`.
     pub data: D,
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
@@ -538,8 +540,8 @@ where
 #[cfg(feature = "client")]
 impl<R, D> Response<R, D>
 where
-    R: Request<Response = D> + Clone + Paginated + RequestGet,
-    D: serde::de::DeserializeOwned,
+    R: Request<Response = D> + Clone + Paginated + RequestGet + std::fmt::Debug,
+    D: serde::de::DeserializeOwned + std::fmt::Debug + PartialEq,
 {
     /// Get the next page in the responses.
     pub async fn get_next<'a, C: crate::HttpClient<'a>>(
@@ -551,7 +553,16 @@ where
         let mut req = self.request.clone();
         if self.pagination.is_some() {
             req.set_pagination(self.pagination);
-            client.req_get(req, token).await.map(Some)
+            let res = client.req_get(req, token).await.map(Some);
+            if let Ok(Some(r)) = res {
+                if r.data == self.data {
+                    Ok(None)
+                } else {
+                    Ok(Some(r))
+                }
+            } else {
+                res
+            }
         } else {
             Ok(None)
         }

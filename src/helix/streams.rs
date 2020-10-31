@@ -93,6 +93,7 @@ pub mod get_streams {
     ///
     /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
     #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct Stream {
         /// ID of the game being played on the stream.

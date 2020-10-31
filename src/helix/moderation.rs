@@ -42,6 +42,7 @@ pub mod get_moderators {
     ///
     /// [`get-moderators`](https://dev.twitch.tv/docs/api/reference#get-moderators)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct Moderators {
         /// User ID of moderator
@@ -137,6 +138,7 @@ pub mod get_moderator_events {
     ///
     /// [`get-moderator-events`](https://dev.twitch.tv/docs/api/reference#get-moderator-events)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct ModeratorEvents {
         /// Event ID
@@ -261,6 +263,7 @@ pub mod get_banned_users {
     ///
     /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct BannedUsers {
         /// User ID of a user who has been banned.
@@ -358,6 +361,7 @@ pub mod get_banned_events {
     ///
     /// [`get-banned-events`](https://dev.twitch.tv/docs/api/reference#get-banned-events)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct BannedEvents {
         /// Event ID
@@ -495,6 +499,7 @@ pub mod check_automod_status {
     ///
     /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct CheckAutoModStatus {
         /// The msg_id passed in the body of the POST message. Maps each message to its status.

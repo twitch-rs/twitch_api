@@ -55,6 +55,7 @@ pub mod get_users {
     ///
     /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct User {
         /// User’s broadcaster type: "partner", "affiliate", or "".
@@ -158,6 +159,7 @@ pub mod get_users_follows {
     ///
     /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
+    #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
     pub struct UsersFollows {
         ///Date and time when the from_id user followed the to_id user.
