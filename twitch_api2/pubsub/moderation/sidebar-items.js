@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ChatModeratorActionsReply","Reply from [ChatModeratorActions]"],["ModerationActionCommand","A command"],["ModerationType","Moderation type"]],"struct":[["ChatModeratorActions","A moderator performs an action in the channel."]]});

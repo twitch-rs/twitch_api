@@ -1,7 +1,7 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/helix/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/09e1b3f17a4044ad7c11c26c3a8f61d4c7a3c3c7">09e1b3f</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/2085ec6548cf3af0935c8f73d8c698a0330a7a5d">2085ec6</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -714,6 +714,11 @@
 <span id="709">709</span>
 <span id="710">710</span>
 <span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
+<span id="716">716</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)</span>
 <span class="doccomment">//!</span>
@@ -948,6 +953,7 @@
 
 <span class="doccomment">/// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference</span>
 <span class="attribute">#[<span class="ident">async_trait</span>::<span class="ident">async_trait</span>]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">spotlight</span>))]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Request</span>: <span class="ident">serde</span>::<span class="ident">Serialize</span> {
     <span class="doccomment">/// The path to the endpoint relative to the helix root. eg. `channels` for [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information)</span>
     <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
@@ -974,6 +980,7 @@
 }
 
 <span class="doccomment">/// Helix endpoint POSTs information</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">spotlight</span>))]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestPost</span>: <span class="ident">Request</span> {
     <span class="doccomment">/// Body parameters</span>
     <span class="kw">type</span> <span class="ident">Body</span>: <span class="ident">serde</span>::<span class="ident">Serialize</span>;
@@ -1046,6 +1053,7 @@
 }
 
 <span class="doccomment">/// Helix endpoint PATCHs information</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">spotlight</span>))]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestPatch</span>: <span class="ident">Request</span>
 <span class="kw">where</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span>::<span class="ident">Response</span>:
         <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">http</span>::<span class="ident">StatusCode</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> {
@@ -1107,6 +1115,7 @@
 }
 
 <span class="doccomment">/// Helix endpoint DELETEs information</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">spotlight</span>))]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestDelete</span>: <span class="ident">Request</span> {
     <span class="doccomment">/// Create a [http::Request] from this [Request] in your client</span>
     <span class="kw">fn</span> <span class="ident">create_request</span>(
@@ -1174,6 +1183,7 @@
 }
 
 <span class="doccomment">/// Helix endpoint GETs information</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">spotlight</span>))]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestGet</span>: <span class="ident">Request</span> {
     <span class="doccomment">/// Create a [http::Request] from this [Request] in your client</span>
     <span class="kw">fn</span> <span class="ident">create_request</span>(

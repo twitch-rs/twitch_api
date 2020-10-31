@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ChannelSubscribeEventsV1Reply","Reply from [ChannelSubscribeEventsV1]"]],"struct":[["ChannelSubscribeEventsV1","A subscription event happens in channel"],["Emote","Described where in a message a emote is"],["SubMessage","Message sent with subscription"]]});
