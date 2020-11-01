@@ -32,6 +32,7 @@ use std::{convert::TryInto, str::FromStr};
 #[cfg(feature = "twitch_oauth2")]
 use twitch_oauth2::TwitchToken;
 
+pub mod bits;
 pub mod channels;
 pub mod clips;
 pub mod games;
