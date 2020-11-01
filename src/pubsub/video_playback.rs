@@ -47,6 +47,9 @@ pub enum VideoPlaybackReply {
         length: i64,
         /// Epoch Server time when commercial started
         server_time: f64,
+        /// Commercial is scheduled or not.
+        #[doc(hidden)]
+        scheduled: Option<bool>,
     },
     /// Current viewcount on playback
     #[serde(rename = "viewcount")]
@@ -259,6 +262,27 @@ mod tests {
     "data": {
         "topic": "video-playback-by-id.1234",
         "message": "{\"type\":\"commercial\",\"server_time\":1604022504.517951,\"length\":175}"
+    }
+}"#;
+        if let Response::Message { data } = dbg!(Response::parse(source).unwrap()) {
+            if let TopicData::VideoPlaybackById { reply, .. } = data {
+                assert!(matches!(*reply, VideoPlaybackReply::Commercial { .. } ))
+            } else {
+                panic!("not a videoplayback")
+            }
+        } else {
+            panic!("not a message")
+        }
+    }
+
+    #[test]
+    fn commercial_scheduled() {
+        let source = r#"
+{
+    "type": "MESSAGE",
+    "data": {
+        "topic": "video-playback-by-id.1234",
+        "message": "{\"type\":\"commercial\",\"server_time\":1604087214.932556,\"length\":180,\"scheduled\":false}"
     }
 }"#;
         if let Response::Message { data } = dbg!(Response::parse(source).unwrap()) {
