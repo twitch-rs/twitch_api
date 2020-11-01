@@ -5,7 +5,7 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
   push:
-    branches: [master]
+    branches: [master, staging, trying]
 jobs:
   ci:
     name: CI
@@ -16,8 +16,6 @@ jobs:
         run: exit 0
   test:
     name: Tests
-    # Run tests if this is a pr, or if it's a push to master
-    if: github.event_name == 'pull_request' || (github.ref == 'refs/heads/master' && github.event_name == 'push')
     strategy:
       fail-fast: false
       matrix:
