@@ -35,7 +35,7 @@ pub mod get_cheermotes {
     #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
     #[non_exhaustive]
     pub struct GetCheermotesRequest {
-        /// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
+        /// ID for the broadcaster who might own specialized Cheermotes.
         #[builder(default, setter(into))]
         pub broadcaster_id: Option<types::UserId>,
     }
@@ -57,7 +57,7 @@ pub mod get_cheermotes {
         pub prefix: String,
         /// An array of Cheermotes with their metadata.
         pub tiers: Vec<Tiers>,
-        /// Shows whether the emote is global_first_party,  global_third_party, channel_custom, display_only, or sponsored.
+        /// Shows whether the emote is `global_first_party`,  `global_third_party`, `channel_custom`, `display_only`, or `sponsored`.
         #[serde(rename = "type")]
         pub type_: CheermoteType,
     }
@@ -460,9 +460,9 @@ pub mod get_bits_leaderboard {
     #[non_exhaustive]
     pub struct DateRange {
         /// Start of the date range for the returned data.
-        started_at: types::Timestamp,
+        pub started_at: types::Timestamp,
         /// End of the date range for the returned data.
-        ended_at: types::Timestamp,
+        pub ended_at: types::Timestamp,
     }
 
     /// Information about user in leaderboard
