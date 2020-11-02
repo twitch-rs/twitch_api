@@ -72,6 +72,7 @@ macro_rules! impl_de_ser {
 
 use serde::{Deserialize, Deserializer, Serialize};
 pub mod channel_bits;
+pub mod channel_bits_badge;
 #[cfg(feature = "unsupported")]
 #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod channel_cheer;
@@ -216,6 +217,14 @@ pub enum TopicData {
         #[serde(rename = "message")]
         reply: Box<channel_bits::ChannelBitsEventsV2Reply>,
     },
+    /// Response from the [channel_bits_badge::ChannelBitsBadgeUnlocks] topic.
+    ChannelBitsBadgeUnlocks {
+        /// Topic message
+        topic: channel_bits_badge::ChannelBitsBadgeUnlocks,
+        /// Message reply from topic subscription
+        #[serde(rename = "message")]
+        reply: Box<channel_bits_badge::ChannelBitsBadgeUnlocksReply>,
+    },
     /// Response from the [moderation::ChatModeratorActions] topic.
     ChatModeratorActions {
         /// Topic message
@@ -344,6 +353,7 @@ impl<'de> Deserialize<'de> for TopicData {
             #[cfg(feature = "unsupported")]
             CommunityPointsChannelV1(community_points::CommunityPointsChannelV1),
             ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2),
+            ChannelBitsBadgeUnlocks(channel_bits_badge::ChannelBitsBadgeUnlocks),
             #[cfg(feature = "unsupported")]
             ChannelCheerEventsPublicV1(channel_cheer::ChannelCheerEventsPublicV1),
             #[cfg(feature = "unsupported")]
@@ -380,6 +390,10 @@ impl<'de> Deserialize<'de> for TopicData {
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
             ITopicMessage::ChannelBitsEventsV2(topic) => TopicData::ChannelBitsEventsV2 {
+                topic,
+                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+            },
+            ITopicMessage::ChannelBitsBadgeUnlocks(topic) => TopicData::ChannelBitsBadgeUnlocks {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
