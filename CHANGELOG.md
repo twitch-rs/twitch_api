@@ -7,7 +7,7 @@
 ### Added
 
 * Made crate runtime agnostic with custom clients using feature `client`.
-* Added pubsub topics. [#34]
+* Added pubsub topics. [#34] and others
 * BREAKING: Removed `helix` and `tmi` features from default-features.
 * Added `unsupported` feature to enable experimental/undocumented APIs/endpoints/topics.
 * Added `all` feature to enable all feature sans `unsupported`

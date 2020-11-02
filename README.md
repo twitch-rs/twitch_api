@@ -221,7 +221,7 @@ There are no current plans to support
 | :-------------------------------------- | :---------------------------------------------- | :----------------------------------------------------------------------------------- |
 | 🔨 Bits V1                               | `channel-bits-events-v1.<channel ID>`           | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)-->   |
 | ✔ Bits V2                               | `channel-bits-events-v2.<channel ID>`           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)          |
-| 🔨 Bits Badge Notificaton                | `channel-bits-badge-unlocks.<channel_id>`       | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)-->   |
+| ✔ Bits Badge Notificaton                | `channel-bits-badge-unlocks.<channel_id>`       | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)   |
 | ✔ Channel Points                        | `channel-points-channel-v1.<channel_id>`        | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_points)        |
 | ✔ Channel Subscriptions                 | `channel-subscribe-events-v1.<channel ID>`      | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_subscriptions) |
 | ✔ Chat Moderator Actions                | `chat_moderator_actions.<channel ID>`           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/moderation)            |
