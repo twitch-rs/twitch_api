@@ -181,6 +181,12 @@ pub enum ModerationActionCommand {
     Unhost,
 }
 
+impl std::fmt::Display for ModerationActionCommand {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.serialize(f)
+    }
+}
+
 /// Moderation type
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
