@@ -134,6 +134,8 @@ pub enum ModerationActionCommand {
     AddBlockedTerm,
     /// Automod blocked term removed
     DeleteBlockedTerm,
+    /// Automod message approved
+    ApproveAutomodMessage,
     /// Automod message denied
     DeniedAutomodMessage,
     /// Raid
