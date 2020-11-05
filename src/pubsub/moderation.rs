@@ -182,9 +182,7 @@ pub enum ModerationActionCommand {
 }
 
 impl std::fmt::Display for ModerationActionCommand {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.serialize(f)
-    }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
 }
 
 /// Moderation type

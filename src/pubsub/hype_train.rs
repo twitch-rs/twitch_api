@@ -131,6 +131,9 @@ pub enum HypeTrainEventsV1Reply {
         user_login: types::UserName,
         /// Display name of user
         user_display_name: types::DisplayName,
+        // FIXME: 2020-11-05 I suspect this will always be returned
+        /// Profile picture of user
+        user_profile_image_url: Option<String>,
     },
     /// Hype train leveled up
     #[serde(rename = "hype-train-level-up")]
@@ -1365,7 +1368,7 @@ mod tests {
     }
 
     #[test]
-    fn hype_train_progression() {
+    fn hype_train_progression1() {
         let message = r##"
 {
     "type": "hype-train-progression",
@@ -1428,6 +1431,97 @@ mod tests {
             "goal": 2500,
             "total": 4101,
             "remaining_seconds": 252
+        }
+    }
+}
+"##;
+
+        let source = format!(
+            r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.27620241", "message": {:?} }}}}"#,
+            message
+        );
+        let actual = dbg!(Response::parse(&source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message{
+                data: TopicData::HypeTrainEventsV1 { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn hype_train_progression2() {
+        let message = r##"
+{
+    "type": "hype-train-progression",
+    "data": {
+        "user_id": "1234",
+        "user_login": "tmi",
+        "user_display_name": "TMI",
+        "user_profile_image_url": "https://static-cdn.jtvnw.net/user-default-pictures-uv/deadbeaf-profile_image-50x50.png",
+        "sequence_id": 6500,
+        "action": "TIER_1_SUB",
+        "source": "SUBS",
+        "quantity": 1,
+        "progress": {
+            "level": {
+                "value": 2,
+                "goal": 12500,
+                "rewards": [
+                    {
+                        "type": "EMOTE",
+                        "id": "301739479",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeSideeye"
+                    },
+                    {
+                        "type": "EMOTE",
+                        "id": "301739472",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeBrain"
+                    },
+                    {
+                        "type": "EMOTE",
+                        "id": "301739475",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeZap"
+                    },
+                    {
+                        "type": "EMOTE",
+                        "id": "301739476",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeShip"
+                    },
+                    {
+                        "type": "EMOTE",
+                        "id": "301739478",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeSign"
+                    },
+                    {
+                        "type": "EMOTE",
+                        "id": "301739471",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeBug"
+                    }
+                ]
+            },
+            "value": 1500,
+            "goal": 7500,
+            "total": 6500,
+            "remaining_seconds": 237
         }
     }
 }
