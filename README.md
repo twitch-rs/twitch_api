@@ -100,10 +100,10 @@ There are no current plans to support
 
 #### Bits
 
-| Endpoint               |                                                    |                                                                                                                                                                                     |
-| :--------------------- | :------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🔨 Get Cheermotes       | `GET https://api.twitch.tv/helix/bits/cheermotes`  | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/bits/get_cheermotes)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-cheermotes)             |
-| 🔨 Get Bits Leaderboard | `GET https://api.twitch.tv/helix/bits/leaderboard` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/bits/get_bits_leaderboard)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard) |
+| Endpoint               |                                                    |                                                                                                                                                                              |
+| :--------------------- | :------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ✔ Get Cheermotes       | `GET https://api.twitch.tv/helix/bits/cheermotes`  | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/bits/get_cheermotes) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-cheermotes)             |
+| ✔ Get Bits Leaderboard | `GET https://api.twitch.tv/helix/bits/leaderboard` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/bits/get_bits_leaderboard) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard) |
 
 
 #### Extensions
@@ -221,7 +221,7 @@ There are no current plans to support
 | :-------------------------------------- | :---------------------------------------------- | :----------------------------------------------------------------------------------- |
 | 🔨 Bits V1                               | `channel-bits-events-v1.<channel ID>`           | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)-->   |
 | ✔ Bits V2                               | `channel-bits-events-v2.<channel ID>`           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)          |
-| ✔ Bits Badge Notificaton                | `channel-bits-badge-unlocks.<channel_id>`       | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)   |
+| ✔ Bits Badge Notificaton                | `channel-bits-badge-unlocks.<channel_id>`       | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)          |
 | ✔ Channel Points                        | `channel-points-channel-v1.<channel_id>`        | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_points)        |
 | ✔ Channel Subscriptions                 | `channel-subscribe-events-v1.<channel ID>`      | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_subscriptions) |
 | ✔ Chat Moderator Actions                | `chat_moderator_actions.<channel ID>`           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/moderation)            |

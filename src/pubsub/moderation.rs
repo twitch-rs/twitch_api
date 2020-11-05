@@ -134,6 +134,8 @@ pub enum ModerationActionCommand {
     AddBlockedTerm,
     /// Automod blocked term removed
     DeleteBlockedTerm,
+    /// Automod message approved
+    ApproveAutomodMessage,
     /// Automod message denied
     DeniedAutomodMessage,
     /// Raid
@@ -177,6 +179,10 @@ pub enum ModerationActionCommand {
     Host,
     /// Channel host removed
     Unhost,
+}
+
+impl std::fmt::Display for ModerationActionCommand {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
 }
 
 /// Moderation type
