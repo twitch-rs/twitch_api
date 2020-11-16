@@ -156,7 +156,7 @@ pub mod search_channels {
         /// UTC timestamp. (live only)
         pub started_at: types::Timestamp,
         // FIXME: Twitch doc say tag_ids
-        /// Shows tag IDs that apply to the stream (live only).See https://www.twitch.tv/directory/all/tags for tag types
+        /// Shows tag IDs that apply to the stream (live only).See <https://www.twitch.tv/directory/all/tags> for tag types
         pub tags_ids: Vec<types::TagId>,
     }
 

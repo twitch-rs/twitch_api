@@ -179,7 +179,7 @@ pub struct GetHosts {
     pub hosts: Vec<Host>,
 }
 
-/// A host record returned by TMI at https://tmi.twitch.tv/hosts
+/// A host record returned by TMI at `https://tmi.twitch.tv/hosts`
 ///
 /// See [TMIClient::get_hosts]
 #[derive(Debug, Serialize, Deserialize)]
