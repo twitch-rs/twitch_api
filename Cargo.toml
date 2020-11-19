@@ -12,7 +12,7 @@ readme = "README.md"
 build = "build.rs"
 
 [dependencies]
-thiserror = "1.0.21"
+thiserror = "1.0.22"
 displaydoc = "0.1.7"
 http = "0.2.1"
 typed-builder = { version = "0.7.0", optional = true }
@@ -58,9 +58,9 @@ pubsub = ["serde_json"]
 all = ["tmi", "helix", "surf_client", "reqwest_client", "client", "pubsub"]
 
 [dev-dependencies]
-tokio = { version = "0.2.22", features = ["rt-threaded", "macros"] }
+tokio = { version = "0.2.23", features = ["rt-threaded", "macros"] }
 dotenv = "0.15.0"
-futures = "0.3.7"
+futures = "0.3.8"
 
 [build-dependencies]
 version_check = "0.9.2"
