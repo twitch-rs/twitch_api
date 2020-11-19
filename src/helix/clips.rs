@@ -28,6 +28,42 @@ use serde::{Deserialize, Serialize};
 
 /// Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).
 /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetClipsRequest]
+///
+/// To use this endpoint, construct a [`GetClipsRequest`] with the [`GetClipsRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::clips::get_clips;
+/// let request = get_clips::GetClipsRequest::builder()
+///     .broadcaster_id("1234".to_string())
+///     .build();
+/// ```
+///
+/// ## Response: [Clip]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, clips::get_clips};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_clips::GetClipsRequest::builder()
+///     .broadcaster_id("1234".to_string())
+///     .build();
+/// let response: Vec<get_clips::Clip> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_clips {
     use super::*;
     /// Query Parameters for [Get Clips](super::get_clips)
@@ -37,7 +73,7 @@ pub mod get_clips {
     #[non_exhaustive]
     pub struct GetClipsRequest {
         /// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
-        #[builder(default)]
+        #[builder(default, setter(into))]
         pub broadcaster_id: Option<types::UserId>,
         /// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
         #[builder(default, setter(into))]

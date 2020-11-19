@@ -56,6 +56,42 @@ impl StreamType {
 }
 /// Gets information about active streams.
 /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetStreamsRequest]
+///
+/// To use this endpoint, construct a [`GetStreamsRequest`] with the [`GetStreamsRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::streams::get_streams;
+/// let request = get_streams::GetStreamsRequest::builder()
+///     .user_login(vec!["justintvfan".to_string()])
+///     .build();
+/// ```
+///
+/// ## Response: [Stream]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, streams::get_streams};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_streams::GetStreamsRequest::builder()
+///     .user_login(vec!["justintvfan".to_string()])
+///     .build();
+/// let response: Vec<get_streams::Stream> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_streams {
     use super::*;
 
@@ -191,8 +227,44 @@ pub mod get_streams {
     }
 }
 
-/// Gets information about active streams.
+/// Gets the list of tags for a specified stream (channel).
 /// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetStreamTagsRequest]
+///
+/// To use this endpoint, construct a [`GetStreamTagsRequest`] with the [`GetStreamTagsRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::streams::get_stream_tags;
+/// let request = get_stream_tags::GetStreamTagsRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// ```
+///
+/// ## Response: [Tag](helix::tags::TwitchTag)
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, streams::get_stream_tags};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_stream_tags::GetStreamTagsRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// let response: Vec<get_stream_tags::Tag> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_stream_tags {
     use super::*;
 

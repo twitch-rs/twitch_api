@@ -34,6 +34,44 @@ use serde::{Deserialize, Serialize};
 
 /// Gets channel information for users.
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetChannelInformationRequest]
+///
+/// To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::channels::get_channel_information;
+/// let request = get_channel_information::GetChannelInformationRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// ```
+///
+/// ## Response: [ChannelInformation]
+///
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, channels::get_channel_information};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_channel_information::GetChannelInformationRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// let response: Option<get_channel_information::ChannelInformation> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_channel_information {
     use std::convert::TryInto;
 
@@ -153,6 +191,58 @@ pub mod get_channel_information {
 
 /// Modify channel information for users.
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [ModifyChannelInformationRequest]
+///
+/// To use this endpoint, construct a [`ModifyChannelInformationRequest`] with the [`ModifyChannelInformationRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::channels::modify_channel_information;
+/// let request = modify_channel_information::ModifyChannelInformationRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// ```
+///
+/// ## Body: [ModifyChannelInformationBody]
+///
+/// We also need to provide a body to the request containing what we want to change.
+///
+/// ```
+/// # use twitch_api2::helix::channels::modify_channel_information;
+/// let body = modify_channel_information::ModifyChannelInformationBody::builder()
+///     .title("Hello World!".to_string())
+///     .build();
+/// ```
+///
+/// ## Response: [ModifyChannelInformation]
+///
+///
+/// Send the request to receive the response with [`HelixClient::req_patch()`](helix::HelixClient::req_patch).
+///
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, channels::modify_channel_information};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = modify_channel_information::ModifyChannelInformationRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// let body = modify_channel_information::ModifyChannelInformationBody::builder()
+///     .title("Hello World!".to_string())
+///     .build();
+/// let response: modify_channel_information::ModifyChannelInformation = client.req_patch(request, body, &token).await?;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(body, &token, &client_id)`](helix::RequestPatch::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPatch::parse_response())
 pub mod modify_channel_information {
     use super::*;
     /// Query Parameters for [Modify Channel Information](super::modify_channel_information)
@@ -246,6 +336,54 @@ pub mod modify_channel_information {
 
 /// Starts a commercial on a specified channel.
 /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [StartCommercialRequest]
+///
+/// To use this endpoint, construct a [`StartCommercialRequest`] with the [`StartCommercialRequest::new()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::channels::start_commercial;
+/// let request = start_commercial::StartCommercialRequest::new();
+/// ```
+///
+/// ## Body: [StartCommercialBody]
+///
+/// We also need to provide a body to the request specifying length of commercial and where to start it.
+///
+/// ```
+/// # use twitch_api2::helix::channels::start_commercial;
+/// let body = start_commercial::StartCommercialBody::builder()
+///     .broadcaster_id("1234".to_string())
+///     .length(twitch_api2::types::CommercialLength::Length90)
+///     .build();
+/// ```
+///
+/// ## Response: [StartCommercialRequest]
+///
+/// Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, channels::start_commercial};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = start_commercial::StartCommercialRequest::new();
+/// let body = start_commercial::StartCommercialBody::builder()
+///     .broadcaster_id("1234".to_string())
+///     .length(twitch_api2::types::CommercialLength::Length90)
+///     .build();
+/// let response: Vec<start_commercial::StartCommercial> = client.req_post(request, body, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(body, &token, &client_id)`](helix::RequestPost::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPost::parse_response())
 pub mod start_commercial {
     use super::*;
 
@@ -294,6 +432,7 @@ pub mod start_commercial {
     }
 
     impl helix::Request for StartCommercialRequest {
+        /// FIXME: Make non-vec
         type Response = Vec<StartCommercial>;
 
         const PATH: &'static str = "channels/commercial";
