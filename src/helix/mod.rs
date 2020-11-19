@@ -1,7 +1,7 @@
 //! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
 //!
 //!
-//! Aside from using [HelixClient] as described on [the crate documentation](crate),
+//! Aside from using [`HelixClient`] as described on [the crate documentation](crate),
 //! you can decide to use this library without any specific client implementation.
 //!
 //! ```rust,no_run
@@ -15,7 +15,7 @@
 //!     .build();
 //!
 //! // Send it however you want
-//! // Create a [http::Response<Vec<u8>>] with RequestGet::create_request, which takes an access token and a client_id
+//! // Create a [`http::Response<Vec<u8>>`] with RequestGet::create_request, which takes an access token and a client_id
 //! let response = send_http_request(request.create_request("accesstoken", "client_id")?)?;
 //!
 //! // then parse the response
@@ -53,7 +53,7 @@ pub use twitch_oauth2::Scope;
 
 /// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
 ///
-/// Provides [HelixClient::req_get] for requesting endpoints which uses [GET method][RequestGet].
+/// Provides [`HelixClient::req_get`] for requesting endpoints which uses [GET method][RequestGet].
 ///
 ///
 /// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
@@ -67,7 +67,7 @@ pub use twitch_oauth2::Scope;
 /// // etc
 /// ```
 ///
-/// See [HttpClient][crate::HttpClient] for implemented http clients, you can also define your own if needed.
+/// See [`HttpClient`][crate::HttpClient] for implemented http clients, you can also define your own if needed.
 #[cfg(all(feature = "client"))]
 #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "helix"))))]
 #[derive(Clone)]
@@ -101,20 +101,20 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         }
     }
 
-    /// Create a new [HelixClient] with a default [HttpClient][crate::HttpClient]
+    /// Create a new [`HelixClient`] with a default [`HttpClient`][crate::HttpClient]
     pub fn new() -> HelixClient<'a, C>
     where C: Default {
         let client = C::default();
         HelixClient::with_client(client)
     }
 
-    /// Retrieve a clone of the [HttpClient][crate::HttpClient] inside this [HelixClient]
+    /// Retrieve a clone of the [`HttpClient`][crate::HttpClient] inside this [`HelixClient`]
     pub fn clone_client(&self) -> C
     where C: Clone {
         self.client.clone()
     }
 
-    /// Request on a valid [RequestGet] endpoint
+    /// Request on a valid [`RequestGet`] endpoint
     ///
     /// ```rust,no_run
     /// # #[tokio::main]
@@ -151,7 +151,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request.parse_response(&uri, response).map_err(Into::into)
     }
 
-    /// Request on a valid [RequestPost] endpoint
+    /// Request on a valid [`RequestPost`] endpoint
     pub async fn req_post<R, B, D, T>(
         &'a self,
         request: R,
@@ -175,7 +175,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request.parse_response(&uri, response).map_err(Into::into)
     }
 
-    /// Request on a valid [RequestPatch] endpoint
+    /// Request on a valid [`RequestPatch`] endpoint
     pub async fn req_patch<R, B, D, T>(
         &'a self,
         request: R,
@@ -201,7 +201,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request.parse_response(&uri, response).map_err(Into::into)
     }
 
-    /// Request on a valid [RequestDelete] endpoint
+    /// Request on a valid [`RequestDelete`] endpoint
     pub async fn req_delete<R, D, T>(
         &'a self,
         request: R,
@@ -266,12 +266,12 @@ pub trait RequestPost: Request {
     /// Body parameters
     type Body: serde::Serialize;
 
-    /// Create body text from [RequestPost::Body]
+    /// Create body text from [`RequestPost::Body`]
     fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
         serde_json::to_string(body)
     }
 
-    /// Create a [http::Request] from this [Request] in your client
+    /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
         &self,
         body: Self::Body,
@@ -341,12 +341,12 @@ where <Self as Request>::Response:
     /// Body parameters
     type Body: serde::Serialize;
 
-    /// Create body text from [RequestPost::Body]
+    /// Create body text from [`RequestPost::Body`]
     fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
         serde_json::to_string(body)
     }
 
-    /// Create a [http::Request] from this [Request] in your client
+    /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
         &self,
         body: Self::Body,
@@ -398,7 +398,7 @@ where <Self as Request>::Response:
 /// Helix endpoint DELETEs information
 #[cfg_attr(nightly, doc(spotlight))]
 pub trait RequestDelete: Request {
-    /// Create a [http::Request] from this [Request] in your client
+    /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
         &self,
         token: &str,
@@ -466,7 +466,7 @@ pub trait RequestDelete: Request {
 /// Helix endpoint GETs information
 #[cfg_attr(nightly, doc(spotlight))]
 pub trait RequestGet: Request {
-    /// Create a [http::Request] from this [Request] in your client
+    /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
         &self,
         token: &str,
@@ -524,7 +524,7 @@ pub trait RequestGet: Request {
     }
 }
 
-/// Response retrieved from endpoint. Data is the type in [Request::Response]
+/// Response retrieved from endpoint. Data is the type in [`Request::Response`]
 #[derive(PartialEq, Debug)]
 pub struct Response<R, D>
 where
@@ -534,7 +534,7 @@ where
     pub data: D,
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
     pub pagination: Option<Cursor>,
-    /// The request that was sent, used for [Paginated]
+    /// The request that was sent, used for [pagination](Paginated)
     pub request: R,
 }
 
@@ -576,7 +576,7 @@ pub trait Paginated: Request {
     ///
     /// # Notes
     ///
-    /// Pass [Option::None] if no cursor is found.
+    /// Pass [`Option::None`] if no cursor is found.
     fn set_pagination(&mut self, cursor: Option<Cursor>);
 }
 
@@ -590,7 +590,7 @@ struct Pagination {
 /// A cursor is a pointer to the current "page" in the twitch api pagination
 pub type Cursor = String;
 
-/// Errors for [HelixClient::req_get] and similar functions.
+/// Errors for [`HelixClient::req_get`] and similar functions.
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum ClientRequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// request failed from reqwests side
@@ -630,7 +630,7 @@ pub enum CreateRequestError {
     Custom(std::borrow::Cow<'static, str>),
 }
 
-/// Errors that can happen when creating [http::Uri] for [Request]
+/// Errors that can happen when creating [`http::Uri`] for [`Request`]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum InvalidUri {
     /// URI could not be parsed

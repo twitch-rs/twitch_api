@@ -15,7 +15,7 @@
 //!
 //! # Examples
 //!
-//! Get information about a channel with the [GetChannelInformationRequest](crate::helix::channels::GetChannelInformationRequest) helix endpoint.
+//! Get information about a channel with the [`GetChannelInformationRequest`](crate::helix::channels::GetChannelInformationRequest) helix endpoint.
 //!
 //! ```rust,no_run
 //! use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
@@ -46,16 +46,16 @@
 //!
 //! # Features
 //!
-//! This crate provides almost no functionality by default, only exposing [types]. To enable more features, refer to below table.
+//! This crate provides almost no functionality by default, only exposing [`types`]. To enable more features, refer to below table.
 //!
 //! | Feature |         |
 //! | -------: | :------- |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>twitch_oauth2</code></span> | Gives [scopes](twitch_oauth2::Scope) for endpoints and topics that are needed to call them. |
-//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>client</code></span> | Gives a [client abstraction](HttpClient) for endpoints. See for example [TMIClient] and [HelixClient] |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>client</code></span> | Gives a [client abstraction](HttpClient) for endpoints. See for example [`TMIClient`] and [`HelixClient`] |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>helix</code></span> | Enables [helix](helix) endpoints |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>tmi</code></span> | Enables deserializable structs for [TMI](tmi) |
-//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>surf_client</code></span> | Enables surf for [HttpClient] |
-//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>reqwest_client</code></span> | Enables reqwest for [HttpClient] |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>surf_client</code></span> | Enables surf for [`HttpClient`] |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>reqwest_client</code></span> | Enables reqwest for [`HttpClient`] |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>all</code></span> | Enables all above features. Including reqwest and surf. Do not use this in production, it's better if you specify exactly what you need |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>unsupported</code></span> | Enables undocumented or experimental endpoints or topics. Breakage may occur |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>allow_unknown_fields</code></span> | Removes `#[serde(deny_unknown_fields)]` on all applicable structs/enums |
@@ -126,7 +126,7 @@ pub static TWITCH_PUBSUB_URL: &str = "wss://pubsub-edge.twitch.tv";
 /// // etc
 /// ```
 ///
-/// See [client] for implemented clients, you can also define your own if needed.
+/// See [`client`] for implemented clients, you can also define your own if needed.
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
 #[cfg_attr(
     nightly,
@@ -136,17 +136,17 @@ pub static TWITCH_PUBSUB_URL: &str = "wss://pubsub-edge.twitch.tv";
 #[non_exhaustive]
 pub struct TwitchClient<'a, C>
 where C: HttpClient<'a> {
-    /// Helix endpoint. See [helix]
+    /// Helix endpoint. See [`helix`]
     #[cfg(feature = "helix")]
     pub helix: HelixClient<'a, C>,
-    /// TMI endpoint. See [tmi]
+    /// TMI endpoint. See [`tmi`]
     #[cfg(feature = "tmi")]
     pub tmi: TMIClient<'a, C>,
 }
 
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
 impl<C: HttpClient<'static>> TwitchClient<'static, C> {
-    /// Create a new [TwitchClient]
+    /// Create a new [`TwitchClient`]
     #[cfg(all(feature = "helix", feature = "tmi"))]
     pub fn new() -> TwitchClient<'static, C>
     where C: Clone + Default {
@@ -160,7 +160,7 @@ impl<C: HttpClient<'static>> TwitchClient<'static, C> {
 
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
 impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
-    /// Create a new [TwitchClient] with an existing [HttpClient]
+    /// Create a new [`TwitchClient`] with an existing [`HttpClient`]
     #[cfg_attr(
         nightly,
         doc(cfg(all(feature = "client", any(feature = "helix", feature = "tmi"))))

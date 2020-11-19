@@ -28,7 +28,7 @@ pub use get_stream_tags::{GetStreamTagsRequest, Tag};
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
-/// Gotten from [Stream.type_](get_streams::Stream#structfield.type_)
+/// Gotten from [`Stream.type_`](get_streams::Stream#structfield.type_)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum StreamType {
@@ -44,7 +44,7 @@ pub enum StreamType {
     ///
     /// # Notes
     /// This is never returned from twitch endpoints. To get this
-    /// Just do a [GetStreamsRequest] and if there is no response for your user_id/user_login, you can be
+    /// Just do a [`GetStreamsRequest`] and if there is no response for your user_id/user_login, you can be
     /// sure that the channel is not live
     #[serde(other)]
     NotLive,

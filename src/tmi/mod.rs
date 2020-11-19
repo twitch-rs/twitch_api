@@ -27,7 +27,7 @@ use serde::{Deserialize, Serialize};
 /// // etc
 /// ```
 ///
-/// See [HttpClient][crate::HttpClient] for implemented http clients, you can also define your own if needed.
+/// See [`HttpClient`][crate::HttpClient] for implemented http clients, you can also define your own if needed.
 #[cfg(all(feature = "client", feature = "tmi"))]
 #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "tmi"))))] // FIXME: This doc_cfg does nothing
 #[derive(Default, Clone)]
@@ -44,7 +44,7 @@ impl<'a, C: crate::HttpClient<'a>> TMIClient<'a, C> {
         TMIClient::with_client(C::default())
     }
 
-    /// Create a new [TMIClient] with an existing [HttpClient][crate::HttpClient]
+    /// Create a new [`TMIClient`] with an existing [`HttpClient`][crate::HttpClient]
     pub fn with_client(client: C) -> TMIClient<'a, C> {
         TMIClient {
             client,
@@ -52,7 +52,7 @@ impl<'a, C: crate::HttpClient<'a>> TMIClient<'a, C> {
         }
     }
 
-    /// Retrieve a clone of the [HttpClient][crate::HttpClient] inside this [TMIClient]
+    /// Retrieve a clone of the [`HttpClient`][crate::HttpClient] inside this [`TMIClient`]
     pub fn clone_client(&self) -> C
     where C: Clone {
         self.client.clone()
@@ -94,7 +94,7 @@ impl<'a, C: crate::HttpClient<'a>> TMIClient<'a, C> {
     /// # Notes
     /// This endpoint requires `host={id}` XOR `target={id}` in the query
     /// (providing both will result in an error, therefore this function takes
-    /// a [HostsRequestId] enum).
+    /// a [`HostsRequestId`] enum).
     pub async fn get_hosts(
         &'a self,
         include_logins: bool,
@@ -131,7 +131,7 @@ impl<'a, C: crate::HttpClient<'a>> TMIClient<'a, C> {
 
 /// Returned by TMI at `https://tmi.twitch.tv/group/user/{broadcaster}/chatters`
 ///
-/// See [TMIClient::get_chatters]
+/// See [`TMIClient::get_chatters`]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GetChatters {
     /// Amount of connected users
@@ -159,7 +159,7 @@ pub struct Chatters {
     pub viewers: Vec<types::Nickname>,
 }
 
-/// Possible options for a [TMIClient::get_hosts] request.
+/// Possible options for a [`TMIClient::get_hosts`] request.
 #[derive(Debug)]
 pub enum HostsRequestId {
     /// Request the broadcaster that a given channel is hosting.
@@ -170,7 +170,7 @@ pub enum HostsRequestId {
 
 /// Returned by TMI at `https://tmi.twitch.tv/hosts`
 ///
-/// See [TMIClient::get_hosts]
+/// See [`TMIClient::get_hosts`]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GetHosts {
     /// List of host records. `len()` will be 1 if successfully requested for a
@@ -181,7 +181,7 @@ pub struct GetHosts {
 
 /// A host record returned by TMI at `https://tmi.twitch.tv/hosts`
 ///
-/// See [TMIClient::get_hosts]
+/// See [`TMIClient::get_hosts`]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Host {
     /// User ID of the hosting channel
@@ -201,7 +201,7 @@ pub struct Host {
 /// User ID
 pub type UserId = u64; // TMI user ID's appear to still be ints, even though Helix uses strings.
 
-/// Errors for [TMIClient] requests
+/// Errors for [`TMIClient`] requests
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// http crate returned an error

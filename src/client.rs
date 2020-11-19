@@ -49,9 +49,9 @@
 //!
 //! If your client is from a remote crate, you can use [the newtype pattern](https://github.com/rust-unofficial/patterns/blob/607fcb00c4ecb9c6317e4e101e16dc15717758bd/patterns/newtype.md)
 //!
-//! Of course, sometimes the clients use different types for their responses and requests. but simply translate them into [http] types and it will work.
+//! Of course, sometimes the clients use different types for their responses and requests. but simply translate them into [`http`] types and it will work.
 //!
-//! See the source of this module for the implementation of [Client] for [surf](https://crates.io/crates/surf) and [reqwest](https://crates.io/crates/reqwest) if you need inspiration.
+//! See the source of this module for the implementation of [`Client`] for [surf](https://crates.io/crates/surf) and [reqwest](https://crates.io/crates/reqwest) if you need inspiration.
 //!
 
 use std::error::Error;
@@ -120,7 +120,7 @@ impl<'a> Client<'a> for ReqwestClient {
     }
 }
 
-/// Possible errors from [Client::req()] when using [surf::Client]
+/// Possible errors from [`Client::req()`] when using the [surf](https://crates.io/crates/surf) client
 #[cfg(all(feature = "surf", feature = "client"))]
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
 pub enum SurfError {
@@ -133,6 +133,7 @@ pub enum SurfError {
     /// uri could not be translated into an url.
     UrlError(#[from] url::ParseError),
 }
+
 #[cfg(all(feature = "surf", feature = "client"))]
 use surf::Client as SurfClient;
 

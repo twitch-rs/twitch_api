@@ -388,7 +388,7 @@ pub mod start_commercial {
     use super::*;
 
     impl StartCommercialRequest {
-        /// Create a new [StartCommercialRequest]
+        /// Create a new [`StartCommercialRequest`]
         pub fn new() -> Self { StartCommercialRequest {} }
     }
     // Not implementing builder since it's not really needed...

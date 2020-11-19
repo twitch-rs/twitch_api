@@ -83,7 +83,7 @@ pub struct Reward {
     pub global_cooldown: GlobalCooldown,
     /// ID of reward.
     pub id: String,
-    /// Set image of reward in rewards & challenges screen on client. If none, see [Reward::default_image]
+    /// Set image of reward in rewards & challenges screen on client. If none, see [`Reward::default_image`]
     pub image: Option<Image>,
     /// Reward is enabled or not.
     pub is_enabled: bool,

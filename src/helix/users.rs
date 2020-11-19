@@ -100,7 +100,7 @@ pub mod get_users {
         pub description: Option<String>,
         /// User’s display name.
         pub display_name: types::DisplayName,
-        /// User’s email address. Returned if the request includes the [user:read:email scope](twitch_oauth2::Scope::UserReadEmail).
+        /// User’s email address. Returned if the request includes the [`user:read:email` scope](twitch_oauth2::Scope::UserReadEmail).
         pub email: Option<String>,
         /// User’s ID.
         pub id: types::UserId,

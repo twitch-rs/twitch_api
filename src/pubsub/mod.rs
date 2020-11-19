@@ -1,6 +1,6 @@
 //! Holds serializable pubsub stuff
 //!
-//! Use [TopicSubscribe::to_message] to send subscription listen and parse the responses with [Response::parse]
+//! Use [`TopicSubscribe::to_message`] to send subscription listen and parse the responses with [`Response::parse`]
 //! # Notes
 //!
 //! If you find that a pubsub topic reply has a field that has not yet been added to this crate, and you don't need that field, you can enable the
@@ -185,7 +185,7 @@ impl Serialize for TopicSubscribe {
 }
 
 impl TopicSubscribe {
-    /// Convert this [TopicSubscribe] to a string which you can send with your client
+    /// Convert this [`TopicSubscribe`] to a string which you can send with your client
     pub fn to_message(&self) -> Result<String, serde_json::Error> { serde_json::to_string(&self) }
 }
 /// Response from twitch PubSub
