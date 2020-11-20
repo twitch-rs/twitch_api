@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/following.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>following.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/e6d6d499433ab8e3a2d706cbe0976936e82b7a2b">e6d6d49</a></p>
-<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/57ff00c9786475f46e8ddd1efa60b5d960b88614">57ff00c</a></p>
+<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
@@ -86,22 +86,22 @@
 <span id="81">81</span>
 <span id="82">82</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! PubSub messages for follows</span>
+<span class="doccomment">//! PubSub messages for follows</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">pubsub</span>, <span class="ident">types</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
-<span class="doccomment">/// A user follows the channel</span>
+<span class="doccomment">/// A user follows the channel</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">into</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>, <span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Following</span> {
-    <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint</span>
+    <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint</span>
     <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">u32</span>,
 }
 
 <span class="macro">impl_de_ser</span><span class="macro">!</span>(
     <span class="ident">Following</span>,
     <span class="string">&quot;following&quot;</span>,
-    <span class="ident">channel_id</span> <span class="comment">// FIXME: add trailing comma</span>
+    <span class="ident">channel_id</span> <span class="comment">// FIXME: add trailing comma</span>
 );
 
 <span class="kw">impl</span> <span class="ident">pubsub</span>::<span class="ident">Topic</span> <span class="kw">for</span> <span class="ident">Following</span> {
@@ -109,17 +109,17 @@
     <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[];
 }
 
-<span class="doccomment">/// Reply from [Following]</span>
+<span class="doccomment">/// Reply from [Following]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FollowingReply</span> {
-    <span class="doccomment">/// Display name of user that followed</span>
+    <span class="doccomment">/// Display name of user that followed</span>
     <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-    <span class="doccomment">/// ID of the user that followed</span>
+    <span class="doccomment">/// ID of the user that followed</span>
     <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-    <span class="doccomment">/// Name of the user that followed</span>
+    <span class="doccomment">/// Name of the user that followed</span>
     <span class="kw">pub</span> <span class="ident">username</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
 }
 

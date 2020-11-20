@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/search.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>search.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/e6d6d499433ab8e3a2d706cbe0976936e82b7a2b">e6d6d49</a></p>
-<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/57ff00c9786475f46e8ddd1efa60b5d960b88614">57ff00c</a></p>
+<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -218,6 +218,80 @@
 <span id="213">213</span>
 <span id="214">214</span>
 <span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Endpoints regarding search</span>
 <span class="doccomment">//!</span>
@@ -240,15 +314,53 @@
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">search_categories</span>::{<span class="ident">Categories</span>, <span class="ident">SearchCategoriesRequest</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">search_categories</span>::<span class="ident">SearchCategoriesRequest</span>;
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">search_channels</span>::{<span class="ident">Channels</span>, <span class="ident">SearchChannelsRequest</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">search_channels</span>::{<span class="ident">Channel</span>, <span class="ident">SearchChannelsRequest</span>};
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">types</span>::<span class="ident">TwitchCategory</span> <span class="kw">as</span> <span class="ident">Category</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">helix</span>, <span class="ident">types</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="doccomment">/// Returns a list of games or categories that match the query via name either entirely or partially.</span>
 <span class="doccomment">/// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Accessing the endpoint</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Request: [SearchCategoriesRequest]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// To use this endpoint, construct a [`SearchCategoriesRequest`] with the [`SearchCategoriesRequest::builder()`] method.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::search::search_categories;</span>
+<span class="doccomment">/// let request = search_categories::SearchCategoriesRequest::builder()</span>
+<span class="doccomment">///     .query(&quot;hello&quot;)</span>
+<span class="doccomment">///     .build();</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Response: [Category](types::TwitchCategory)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::{self, search::search_categories};</span>
+<span class="doccomment">/// # use twitch_api2::client;</span>
+<span class="doccomment">/// # #[tokio::main]</span>
+<span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
+<span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
+<span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
+<span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;</span>
+<span class="doccomment">/// let request = search_categories::SearchCategoriesRequest::builder()</span>
+<span class="doccomment">///     .query(&quot;hello&quot;)</span>
+<span class="doccomment">///     .build();</span>
+<span class="doccomment">/// let response: Vec&lt;search_categories::Category&gt; = client.req_get(request, &amp;token).await?.data;</span>
+<span class="doccomment">/// # Ok(())</span>
+<span class="doccomment">/// # }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)</span>
+<span class="doccomment">/// and parse the [`http::Response`] with [`request.parse_response(&amp;request.get_uri()?)`](helix::RequestGet::parse_response())</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">search_categories</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
@@ -273,10 +385,10 @@
     <span class="doccomment">/// Return Values for [Search Categories](super::search_categories)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Categories</span> <span class="op">=</span> <span class="ident">types</span>::<span class="ident">TwitchCategory</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Category</span> <span class="op">=</span> <span class="ident">types</span>::<span class="ident">TwitchCategory</span>;
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">SearchCategoriesRequest</span> {
-        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Categories</span><span class="op">&gt;</span>;
+        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Category</span><span class="op">&gt;</span>;
 
         <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;search/categories&quot;</span>;
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
@@ -330,6 +442,42 @@
 
 <span class="doccomment">/// Returns a list of channels (users who have streamed within the past 6 months) that match the query via channel name or description either entirely or partially.</span>
 <span class="doccomment">/// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Accessing the endpoint</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Request: [SearchChannelsRequest]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// To use this endpoint, construct a [`SearchChannelsRequest`] with the [`SearchChannelsRequest::builder()`] method.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::search::search_channels;</span>
+<span class="doccomment">/// let request = search_channels::SearchChannelsRequest::builder()</span>
+<span class="doccomment">///     .query(&quot;hello&quot;)</span>
+<span class="doccomment">///     .build();</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Response: [Channel]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::{self, search::search_channels};</span>
+<span class="doccomment">/// # use twitch_api2::client;</span>
+<span class="doccomment">/// # #[tokio::main]</span>
+<span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
+<span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
+<span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
+<span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;</span>
+<span class="doccomment">/// let request = search_channels::SearchChannelsRequest::builder()</span>
+<span class="doccomment">///     .query(&quot;hello&quot;)</span>
+<span class="doccomment">///     .build();</span>
+<span class="doccomment">/// let response: Vec&lt;search_channels::Channel&gt; = client.req_get(request, &amp;token).await?.data;</span>
+<span class="doccomment">/// # Ok(())</span>
+<span class="doccomment">/// # }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)</span>
+<span class="doccomment">/// and parse the [`http::Response`] with [`request.parse_response(&amp;request.get_uri()?)`](helix::RequestGet::parse_response())</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">search_channels</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
@@ -359,7 +507,7 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
     <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Channels</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Channel</span> {
         <span class="doccomment">/// ID of the game being played on the stream</span>
         <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="ident">types</span>::<span class="ident">CategoryId</span>,
         <span class="doccomment">/// Channel ID</span>
@@ -377,12 +525,12 @@
         <span class="doccomment">/// UTC timestamp. (live only)</span>
         <span class="kw">pub</span> <span class="ident">started_at</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
         <span class="comment">// FIXME: Twitch doc say tag_ids</span>
-        <span class="doccomment">/// Shows tag IDs that apply to the stream (live only).See https://www.twitch.tv/directory/all/tags for tag types</span>
+        <span class="doccomment">/// Shows tag IDs that apply to the stream (live only).See &lt;https://www.twitch.tv/directory/all/tags&gt; for tag types</span>
         <span class="kw">pub</span> <span class="ident">tags_ids</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">TagId</span><span class="op">&gt;</span>,
     }
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">SearchChannelsRequest</span> {
-        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Channels</span><span class="op">&gt;</span>;
+        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Channel</span><span class="op">&gt;</span>;
 
         <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;search/categories&quot;</span>;
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>

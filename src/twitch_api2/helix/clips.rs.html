@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/clips.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>clips.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/e6d6d499433ab8e3a2d706cbe0976936e82b7a2b">e6d6d49</a></p>
-<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/57ff00c9786475f46e8ddd1efa60b5d960b88614">57ff00c</a></p>
+<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -162,6 +162,42 @@
 <span id="157">157</span>
 <span id="158">158</span>
 <span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Endpoints regarding clips</span>
 <span class="doccomment">//!</span>
@@ -193,6 +229,42 @@
 
 <span class="doccomment">/// Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).</span>
 <span class="doccomment">/// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Accessing the endpoint</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Request: [GetClipsRequest]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// To use this endpoint, construct a [`GetClipsRequest`] with the [`GetClipsRequest::builder()`] method.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::clips::get_clips;</span>
+<span class="doccomment">/// let request = get_clips::GetClipsRequest::builder()</span>
+<span class="doccomment">///     .broadcaster_id(&quot;1234&quot;.to_string())</span>
+<span class="doccomment">///     .build();</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Response: [Clip]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::{self, clips::get_clips};</span>
+<span class="doccomment">/// # use twitch_api2::client;</span>
+<span class="doccomment">/// # #[tokio::main]</span>
+<span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
+<span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
+<span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
+<span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;</span>
+<span class="doccomment">/// let request = get_clips::GetClipsRequest::builder()</span>
+<span class="doccomment">///     .broadcaster_id(&quot;1234&quot;.to_string())</span>
+<span class="doccomment">///     .build();</span>
+<span class="doccomment">/// let response: Vec&lt;get_clips::Clip&gt; = client.req_get(request, &amp;token).await?.data;</span>
+<span class="doccomment">/// # Ok(())</span>
+<span class="doccomment">/// # }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)</span>
+<span class="doccomment">/// and parse the [`http::Response`] with [`request.parse_response(&amp;request.get_uri()?)`](helix::RequestGet::parse_response())</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_clips</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="doccomment">/// Query Parameters for [Get Clips](super::get_clips)</span>
@@ -202,7 +274,7 @@
     <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetClipsRequest</span> {
         <span class="doccomment">/// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.</span>
-        <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
+        <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
         <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
         <span class="doccomment">/// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>

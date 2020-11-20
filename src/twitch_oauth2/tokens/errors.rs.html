@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/tokens/errors.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>errors.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/e6d6d499433ab8e3a2d706cbe0976936e82b7a2b">e6d6d49</a></p>
-<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_oauth2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/57ff00c9786475f46e8ddd1efa60b5d960b88614">57ff00c</a></p>
+<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_oauth2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
@@ -57,57 +57,57 @@
 <span id="52">52</span>
 <span id="53">53</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Errors</span>
+<span class="doccomment">//! Errors</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">id</span>::<span class="ident">TwitchTokenErrorResponse</span>;
 <span class="kw">use</span> <span class="ident">oauth2</span>::<span class="ident">HttpResponse</span> <span class="kw">as</span> <span class="ident">OAuth2HttpResponse</span>;
 <span class="kw">use</span> <span class="ident">oauth2</span>::<span class="ident">RequestTokenError</span>;
-<span class="doccomment">/// General errors for talking with twitch, currently only used in [AppAccessToken::get_app_access_token][crate::tokens::AppAccessToken::get_app_access_token]</span>
+<span class="doccomment">/// General errors for talking with twitch, currently only used in [AppAccessToken::get_app_access_token][crate::tokens::AppAccessToken::get_app_access_token]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror</span>::<span class="ident">Error</span>, <span class="ident">Debug</span>, <span class="ident">displaydoc</span>::<span class="ident">Display</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TokenError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// request for token failed. {0}</span>
+    <span class="doccomment">/// request for token failed. {0}</span>
     <span class="ident">Request</span>(<span class="ident">RequestTokenError</span><span class="op">&lt;</span><span class="ident">RE</span>, <span class="ident">TwitchTokenErrorResponse</span><span class="op">&gt;</span>),
-    <span class="doccomment">/// could not parse url</span>
+    <span class="doccomment">/// could not parse url</span>
     <span class="ident">ParseError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">oauth2</span>::<span class="ident">url</span>::<span class="ident">ParseError</span>),
-    <span class="doccomment">/// could not get validation for token</span>
+    <span class="doccomment">/// could not get validation for token</span>
     <span class="ident">ValidationError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">ValidationError</span><span class="op">&lt;</span><span class="ident">RE</span><span class="op">&gt;</span>),
 }
 
-<span class="doccomment">/// Errors for [validate_token][crate::validate_token]</span>
+<span class="doccomment">/// Errors for [validate_token][crate::validate_token]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror</span>::<span class="ident">Error</span>, <span class="ident">Debug</span>, <span class="ident">displaydoc</span>::<span class="ident">Display</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ValidationError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// deserializations failed</span>
+    <span class="doccomment">/// deserializations failed</span>
     <span class="ident">DeserializeError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">serde_json</span>::<span class="ident">Error</span>),
-    <span class="doccomment">/// token is not authorized for use</span>
+    <span class="doccomment">/// token is not authorized for use</span>
     <span class="ident">NotAuthorized</span>,
-    <span class="doccomment">/// twitch returned an unexpected status: {0}</span>
+    <span class="doccomment">/// twitch returned an unexpected status: {0}</span>
     <span class="ident">TwitchError</span>(<span class="ident">TwitchTokenErrorResponse</span>),
-    <span class="doccomment">/// failed to request validation: {0}</span>
+    <span class="doccomment">/// failed to request validation: {0}</span>
     <span class="ident">Request</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">RE</span>),
 }
 
-<span class="doccomment">/// Errors for [revoke_token][crate::revoke_token]</span>
+<span class="doccomment">/// Errors for [revoke_token][crate::revoke_token]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror</span>::<span class="ident">Error</span>, <span class="ident">Debug</span>, <span class="ident">displaydoc</span>::<span class="ident">Display</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RevokeTokenError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// 400 Bad Request: {0}</span>
+    <span class="doccomment">/// 400 Bad Request: {0}</span>
     <span class="ident">BadRequest</span>(<span class="ident">String</span>),
-    <span class="doccomment">/// failed to do revokation: {0}</span>
+    <span class="doccomment">/// failed to do revokation: {0}</span>
     <span class="ident">RequestError</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">RE</span>),
-    <span class="doccomment">/// got unexpected return: {0:?}</span>
+    <span class="doccomment">/// got unexpected return: {0:?}</span>
     <span class="ident">Other</span>(<span class="ident">OAuth2HttpResponse</span>),
 }
 
-<span class="doccomment">/// Errors for [TwitchToken::refresh_token][crate::TwitchToken::refresh_token]</span>
+<span class="doccomment">/// Errors for [TwitchToken::refresh_token][crate::TwitchToken::refresh_token]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror</span>::<span class="ident">Error</span>, <span class="ident">Debug</span>, <span class="ident">displaydoc</span>::<span class="ident">Display</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// request for token failed. {0}</span>
+    <span class="doccomment">/// request for token failed. {0}</span>
     <span class="ident">RequestError</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">RequestTokenError</span><span class="op">&lt;</span><span class="ident">RE</span>, <span class="ident">TwitchTokenErrorResponse</span><span class="op">&gt;</span>),
-    <span class="doccomment">/// could not parse url</span>
+    <span class="doccomment">/// could not parse url</span>
     <span class="ident">ParseError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">oauth2</span>::<span class="ident">url</span>::<span class="ident">ParseError</span>),
-    <span class="doccomment">/// no refresh token found</span>
+    <span class="doccomment">/// no refresh token found</span>
     <span class="ident">NoRefreshToken</span>,
 }
 </pre></div>

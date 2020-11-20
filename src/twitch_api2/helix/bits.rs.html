@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/bits.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>bits.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/e6d6d499433ab8e3a2d706cbe0976936e82b7a2b">e6d6d49</a></p>
-<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/57ff00c9786475f46e8ddd1efa60b5d960b88614">57ff00c</a></p>
+<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -578,6 +578,87 @@
 <span id="573">573</span>
 <span id="574">574</span>
 <span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Endpoints regarding bits</span>
 <span class="doccomment">//!</span>
@@ -600,6 +681,8 @@
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_bits_leaderboard</span>::{<span class="ident">BitsLeaderboard</span>, <span class="ident">GetBitsLeaderboardRequest</span>};
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_cheermotes</span>::{<span class="ident">Cheermote</span>, <span class="ident">GetCheermotesRequest</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">helix</span>, <span class="ident">types</span>};
@@ -607,6 +690,43 @@
 
 <span class="doccomment">/// Retrieves the list of available Cheermotes, animated emotes to which viewers can assign Bits, to cheer in chat.</span>
 <span class="doccomment">/// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Accessing the endpoint</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Request: [GetCheermotesRequest]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// To use this endpoint, construct a [`GetCheermotesRequest`] with the [`GetCheermotesRequest::builder()`] method.</span>
+<span class="doccomment">/// If you do not provide an ID, the request will only include global cheermotes as defined by twitch.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::bits::get_cheermotes;</span>
+<span class="doccomment">/// let request = get_cheermotes::GetCheermotesRequest::builder()</span>
+<span class="doccomment">///     .broadcaster_id(Some(&quot;1234&quot;.to_string()))</span>
+<span class="doccomment">///     .build();</span>
+<span class="doccomment">/// // Without broadcaster ID</span>
+<span class="doccomment">/// let request = get_cheermotes::GetCheermotesRequest::builder().build();</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Response: [Cheermote]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::{self, bits::get_cheermotes};</span>
+<span class="doccomment">/// # use twitch_api2::client;</span>
+<span class="doccomment">/// # #[tokio::main]</span>
+<span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
+<span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
+<span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
+<span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;</span>
+<span class="doccomment">/// let request = get_cheermotes::GetCheermotesRequest::builder().build();</span>
+<span class="doccomment">/// let response: Vec&lt;get_cheermotes::Cheermote&gt; = client.req_get(request, &amp;token).await?.data;</span>
+<span class="doccomment">/// # Ok(())</span>
+<span class="doccomment">/// # }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)</span>
+<span class="doccomment">/// and parse the [`http::Response`] with [`request.parse_response(&amp;request.get_uri()?)`](helix::RequestGet::parse_response())</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_cheermotes</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
@@ -989,6 +1109,47 @@
 
 <span class="doccomment">/// Gets a ranked list of Bits leaderboard information for an authorized broadcaster.</span>
 <span class="doccomment">/// [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Accessing the endpoint</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Request: [GetBitsLeaderboardRequest]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// To use this endpoint, construct a [`GetBitsLeaderboardRequest`] with the [`GetBitsLeaderboardRequest::builder()`] method.</span>
+<span class="doccomment">/// Provide [`started_at`](GetBitsLeaderboardRequest::started_at) and [`period`](GetBitsLeaderboardRequest::period) to get a different leaderboard than default</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::bits::get_bits_leaderboard;</span>
+<span class="doccomment">/// let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder()</span>
+<span class="doccomment">///     .started_at(&quot;2020-01-01T07:00:00Z&quot;.to_string())</span>
+<span class="doccomment">///     .period(&quot;day&quot;.to_string())</span>
+<span class="doccomment">///     .build();</span>
+<span class="doccomment">/// // Get leaderbord for the lifetime of the channel</span>
+<span class="doccomment">/// let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder().build();</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Response: [BitsLeaderboard]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::{self, bits::get_bits_leaderboard};</span>
+<span class="doccomment">/// # use twitch_api2::client;</span>
+<span class="doccomment">/// # #[tokio::main]</span>
+<span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
+<span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
+<span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
+<span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;</span>
+<span class="doccomment">/// let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder().build();</span>
+<span class="doccomment">/// let response: get_bits_leaderboard::BitsLeaderboard = client.req_get(request, &amp;token).await?.data;</span>
+<span class="doccomment">/// # Ok(())</span>
+<span class="doccomment">/// # }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)</span>
+<span class="doccomment">/// and parse the [`http::Response`] with [`request.parse_response(&amp;request.get_uri()?)`](helix::RequestGet::parse_response())</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_bits_leaderboard</span> {
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryInto</span>;
 
@@ -1003,6 +1164,7 @@
         <span class="doccomment">/// Number of results to be returned. Maximum: 100. Default: 10.</span>
         <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
         <span class="kw">pub</span> <span class="ident">count</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
+        <span class="comment">// TODO: Enum</span>
         <span class="doccomment">/// Time period over which data is aggregated (PST time zone). This parameter interacts with started_at. Valid values follow. Default: &quot;all&quot;.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// * &quot;day&quot; – 00:00:00 on the day specified in started_at, through 00:00:00 on the following day.</span>

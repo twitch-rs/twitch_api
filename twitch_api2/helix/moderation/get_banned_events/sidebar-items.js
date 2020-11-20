@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BannedEvents","Return Values for Get Banned Events"],["GetBannedEventsRequest","Query Parameters for Get Banned Events"]]});
+initSidebarItems({"struct":[["BannedEvent","Return Values for Get Banned Events"],["GetBannedEventsRequest","Query Parameters for Get Banned Events"]]});

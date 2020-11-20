@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/subscriptions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>subscriptions.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/e6d6d499433ab8e3a2d706cbe0976936e82b7a2b">e6d6d49</a></p>
-<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/57ff00c9786475f46e8ddd1efa60b5d960b88614">57ff00c</a></p>
+<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -130,6 +130,42 @@
 <span id="125">125</span>
 <span id="126">126</span>
 <span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Endpoints regarding subscriptions</span>
 <span class="doccomment">//!</span>
@@ -154,7 +190,7 @@
 <span class="doccomment">//! ```</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_broadcaster_subscriptions</span>::{
-    <span class="ident">BroadcasterSubscriptions</span>, <span class="ident">GetBroadcasterSubscriptionsRequest</span>,
+    <span class="ident">BroadcasterSubscription</span>, <span class="ident">GetBroadcasterSubscriptionsRequest</span>,
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">helix</span>, <span class="ident">types</span>};
@@ -162,6 +198,42 @@
 
 <span class="doccomment">/// Get all of a broadcaster’s subscriptions.</span>
 <span class="doccomment">/// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Accessing the endpoint</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Request: [GetBroadcasterSubscriptionsRequest]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// To use this endpoint, construct a [`GetBroadcasterSubscriptionsRequest`] with the [`GetBroadcasterSubscriptionsRequest::builder()`] method.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::subscriptions::get_broadcaster_subscriptions;</span>
+<span class="doccomment">/// let request = get_broadcaster_subscriptions::GetBroadcasterSubscriptionsRequest::builder()</span>
+<span class="doccomment">///     .broadcaster_id(&quot;1234&quot;)</span>
+<span class="doccomment">///     .build();</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Response: [BroadcasterSubscription]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust, no_run</span>
+<span class="doccomment">/// use twitch_api2::helix::{self, subscriptions::get_broadcaster_subscriptions};</span>
+<span class="doccomment">/// # use twitch_api2::client;</span>
+<span class="doccomment">/// # #[tokio::main]</span>
+<span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
+<span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
+<span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
+<span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;</span>
+<span class="doccomment">/// let request = get_broadcaster_subscriptions::GetBroadcasterSubscriptionsRequest::builder()</span>
+<span class="doccomment">///     .broadcaster_id(&quot;1234&quot;)</span>
+<span class="doccomment">///     .build();</span>
+<span class="doccomment">/// let response: Vec&lt;get_broadcaster_subscriptions::BroadcasterSubscription&gt; = client.req_get(request, &amp;token).await?.data;</span>
+<span class="doccomment">/// # Ok(())</span>
+<span class="doccomment">/// # }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)</span>
+<span class="doccomment">/// and parse the [`http::Response`] with [`request.parse_response(&amp;request.get_uri()?)`](helix::RequestGet::parse_response())</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_broadcaster_subscriptions</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="doccomment">/// Query Parameters for [Get Broadcaster Subscriptions](super::get_broadcaster_subscriptions)</span>
@@ -187,7 +259,7 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
     <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BroadcasterSubscriptions</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BroadcasterSubscription</span> {
         <span class="doccomment">/// User ID of the broadcaster.</span>
         <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
         <span class="doccomment">/// Display name of the broadcaster.</span>
@@ -205,7 +277,7 @@
     }
 
     <span class="kw">impl</span> <span class="ident">helix</span>::<span class="ident">Request</span> <span class="kw">for</span> <span class="ident">GetBroadcasterSubscriptionsRequest</span> {
-        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BroadcasterSubscriptions</span><span class="op">&gt;</span>;
+        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BroadcasterSubscription</span><span class="op">&gt;</span>;
 
         <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;subscriptions&quot;</span>;
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>

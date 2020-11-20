@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/e6d6d499433ab8e3a2d706cbe0976936e82b7a2b">e6d6d49</a></p>
-<style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/57ff00c9786475f46e8ddd1efa60b5d960b88614">57ff00c</a></p>
+<style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -200,7 +200,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Examples</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Get information about a channel with the [GetChannelInformationRequest](crate::helix::channels::GetChannelInformationRequest) helix endpoint.</span>
+<span class="doccomment">//! Get information about a channel with the [`GetChannelInformationRequest`](crate::helix::channels::GetChannelInformationRequest) helix endpoint.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust,no_run</span>
 <span class="doccomment">//! use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};</span>
@@ -231,16 +231,16 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Features</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This crate provides almost no functionality by default, only exposing [types]. To enable more features, refer to below table.</span>
+<span class="doccomment">//! This crate provides almost no functionality by default, only exposing [`types`]. To enable more features, refer to below table.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! | Feature |         |</span>
 <span class="doccomment">//! | -------: | :------- |</span>
 <span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;twitch_oauth2&lt;/code&gt;&lt;/span&gt; | Gives [scopes](twitch_oauth2::Scope) for endpoints and topics that are needed to call them. |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;client&lt;/code&gt;&lt;/span&gt; | Gives a [client abstraction](HttpClient) for endpoints. See for example [TMIClient] and [HelixClient] |</span>
+<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;client&lt;/code&gt;&lt;/span&gt; | Gives a [client abstraction](HttpClient) for endpoints. See for example [`TMIClient`] and [`HelixClient`] |</span>
 <span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;helix&lt;/code&gt;&lt;/span&gt; | Enables [helix](helix) endpoints |</span>
 <span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;tmi&lt;/code&gt;&lt;/span&gt; | Enables deserializable structs for [TMI](tmi) |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;surf_client&lt;/code&gt;&lt;/span&gt; | Enables surf for [HttpClient] |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;reqwest_client&lt;/code&gt;&lt;/span&gt; | Enables reqwest for [HttpClient] |</span>
+<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;surf_client&lt;/code&gt;&lt;/span&gt; | Enables surf for [`HttpClient`] |</span>
+<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;reqwest_client&lt;/code&gt;&lt;/span&gt; | Enables reqwest for [`HttpClient`] |</span>
 <span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;all&lt;/code&gt;&lt;/span&gt; | Enables all above features. Including reqwest and surf. Do not use this in production, it&#39;s better if you specify exactly what you need |</span>
 <span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt; | Enables undocumented or experimental endpoints or topics. Breakage may occur |</span>
 <span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;allow_unknown_fields&lt;/code&gt;&lt;/span&gt; | Removes `#[serde(deny_unknown_fields)]` on all applicable structs/enums |</span>
@@ -311,7 +311,7 @@
 <span class="doccomment">/// // etc</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See [client] for implemented clients, you can also define your own if needed.</span>
+<span class="doccomment">/// See [`client`] for implemented clients, you can also define your own if needed.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">nightly</span>,
@@ -321,17 +321,17 @@
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>
 <span class="kw">where</span> <span class="ident">C</span>: <span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Helix endpoint. See [helix]</span>
+    <span class="doccomment">/// Helix endpoint. See [`helix`]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">helix</span>: <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// TMI endpoint. See [tmi]</span>
+    <span class="doccomment">/// TMI endpoint. See [`tmi`]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">tmi</span>: <span class="ident">TMIClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>,
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">C</span>: <span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new [TwitchClient]</span>
+    <span class="doccomment">/// Create a new [`TwitchClient`]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>))]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">C</span><span class="op">&gt;</span>
     <span class="kw">where</span> <span class="ident">C</span>: <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">Default</span> {
@@ -345,7 +345,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new [TwitchClient] with an existing [HttpClient]</span>
+    <span class="doccomment">/// Create a new [`TwitchClient`] with an existing [`HttpClient`]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(
         <span class="ident">nightly</span>,
         <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>))))

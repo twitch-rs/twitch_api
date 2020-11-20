@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SearchCategoriesRequest","Query Parameters for Search Categories"]],"type":[["Categories","Return Values for Search Categories"]]});
+initSidebarItems({"struct":[["SearchCategoriesRequest","Query Parameters for Search Categories"]],"type":[["Category","Return Values for Search Categories"]]});

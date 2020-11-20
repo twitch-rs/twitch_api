@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BroadcasterSubscriptions","Return Values for Get Broadcaster Subscriptions"],["GetBroadcasterSubscriptionsRequest","Query Parameters for Get Broadcaster Subscriptions"]]});
+initSidebarItems({"struct":[["BroadcasterSubscription","Return Values for Get Broadcaster Subscriptions"],["GetBroadcasterSubscriptionsRequest","Query Parameters for Get Broadcaster Subscriptions"]]});
