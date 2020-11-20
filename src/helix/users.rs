@@ -22,10 +22,10 @@
 pub use get_users::{GetUsersRequest, User};
 
 #[doc(inline)]
-pub use get_users_follows::{GetUsersFollowsRequest, UsersFollows};
+pub use get_users_follows::{GetUsersFollowsRequest, UsersFollow};
 
 #[doc(inline)]
-pub use delete_user_follows::{DeleteUserFollows, DeleteUserFollowsRequest};
+pub use delete_user_follows::{DeleteUserFollow, DeleteUserFollowsRequest};
 
 #[doc(inline)]
 pub use create_user_follows::{CreateUserFollows, CreateUserFollowsBody, CreateUserFollowsRequest};
@@ -35,6 +35,42 @@ use serde::{Deserialize, Serialize};
 
 /// Gets information about one or more specified Twitch users.
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
+///
+/// ## Request: [GetUsersRequest]
+///
+/// To use this endpoint, construct a [`GetUsersRequest`] with the [`GetUsersRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::users::get_users;
+/// let request = get_users::GetUsersRequest::builder()
+///     .id(vec!["1234".to_string()])
+///     .login(vec!["justintvfan".to_string()])
+///     .build();
+/// ```
+///
+/// ## Response: [User]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, users::get_users};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_users::GetUsersRequest::builder()
+///     .id(vec!["1234".to_string()])
+///     .login(vec!["justintvfan".to_string()])
+///     .build();
+/// let response: Vec<get_users::User> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_users {
     use super::*;
     /// Query Parameters for [Get Users](super::get_users)
@@ -64,7 +100,7 @@ pub mod get_users {
         pub description: Option<String>,
         /// User’s display name.
         pub display_name: types::DisplayName,
-        /// User’s email address. Returned if the request includes the [user:read:email scope](twitch_oauth2::Scope::UserReadEmail).
+        /// User’s email address. Returned if the request includes the [`user:read:email` scope](twitch_oauth2::Scope::UserReadEmail).
         pub email: Option<String>,
         /// User’s ID.
         pub id: types::UserId,
@@ -133,6 +169,40 @@ pub mod get_users {
 
 /// Gets information on follow relationships between two Twitch users.
 /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)
+///
+/// ## Request: [GetUsersFollowsRequest]
+///
+/// To use this endpoint, construct a [`GetUsersFollowsRequest`] with the [`GetUsersFollowsRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::users::get_users_follows;
+/// let request = get_users_follows::GetUsersFollowsRequest::builder()
+///     .to_id("1234".to_string())
+///     .build();
+/// ```
+///
+/// ## Response: [UsersFollow]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, users::get_users_follows};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_users_follows::GetUsersFollowsRequest::builder()
+///     .to_id("1234".to_string())
+///     .build();
+/// let response: Vec<get_users_follows::UsersFollow> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_users_follows {
     use super::*;
     /// Query Parameters for [Get Users Follows](super::get_users_follows)
@@ -161,7 +231,7 @@ pub mod get_users_follows {
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
-    pub struct UsersFollows {
+    pub struct UsersFollow {
         ///Date and time when the from_id user followed the to_id user.
         pub followed_at: types::Timestamp,
         ///ID of the user following the to_id user.
@@ -182,7 +252,7 @@ pub mod get_users_follows {
     }
 
     impl helix::Request for GetUsersFollowsRequest {
-        type Response = Vec<UsersFollows>;
+        type Response = Vec<UsersFollow>;
 
         #[cfg(feature = "twitch_oauth2")]
         const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
@@ -249,7 +319,43 @@ pub mod get_users_follows {
 ///
 /// # Notes
 ///
-/// This doesn't seem to work for removing people who follow owner of token. Use irc `/block <user_login>` for that
+/// This doesn't seem to work for removing people who follow owner of token. Use twitch web chat `/block <user_login>` for that
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [DeleteUserFollowsRequest]
+///
+/// To use this endpoint, construct a [`DeleteUserFollowsRequest`] with the [`DeleteUserFollowsRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::users::delete_user_follows;
+/// let request = delete_user_follows::DeleteUserFollowsRequest::builder()
+///     .from_id("1234").to_id("4321")
+///     .build();
+/// ```
+///
+/// ## Response: [DeleteUserFollow]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, users::delete_user_follows};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = delete_user_follows::DeleteUserFollowsRequest::builder()
+///     .from_id("1234").to_id("4321")
+///     .build();
+/// let response: delete_user_follows::DeleteUserFollow = client.req_delete(request, &token).await?;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestDelete::parse_response())
 pub mod delete_user_follows {
     use super::*;
     /// Query Parameters for [Delete Users Follows](super::delete_user_follows)
@@ -260,17 +366,17 @@ pub mod delete_user_follows {
     pub struct DeleteUserFollowsRequest {
         /// User ID of the follower
         #[builder(default, setter(into))]
-        pub from_id: Option<types::UserId>,
+        pub from_id: types::UserId,
         /// Channel to be unfollowed by the user
         #[builder(default, setter(into))]
-        pub to_id: Option<types::UserId>,
+        pub to_id: types::UserId,
     }
     /// Return Values for [[Delete Users Follows](super::delete_user_follows)
     ///
     /// [`delete-user-follows`](https://dev.twitch.tv/docs/api/reference#delete-user-follows)
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[non_exhaustive]
-    pub enum DeleteUserFollows {
+    pub enum DeleteUserFollow {
         /// 204 - User successfully deleted from list of channel followers
         Success,
         /// 400 - Missing Query Parameter
@@ -279,21 +385,21 @@ pub mod delete_user_follows {
         ProcessingError,
     }
 
-    impl std::convert::TryFrom<http::StatusCode> for DeleteUserFollows {
+    impl std::convert::TryFrom<http::StatusCode> for DeleteUserFollow {
         type Error = std::borrow::Cow<'static, str>;
 
         fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
             match s {
-                http::StatusCode::NO_CONTENT => Ok(DeleteUserFollows::Success),
-                http::StatusCode::BAD_REQUEST => Ok(DeleteUserFollows::MissingQuery),
-                http::StatusCode::UNPROCESSABLE_ENTITY => Ok(DeleteUserFollows::Success),
+                http::StatusCode::NO_CONTENT => Ok(DeleteUserFollow::Success),
+                http::StatusCode::BAD_REQUEST => Ok(DeleteUserFollow::MissingQuery),
+                http::StatusCode::UNPROCESSABLE_ENTITY => Ok(DeleteUserFollow::Success),
                 other => Err(other.canonical_reason().unwrap_or("").into()),
             }
         }
     }
 
     impl helix::Request for DeleteUserFollowsRequest {
-        type Response = DeleteUserFollows;
+        type Response = DeleteUserFollow;
 
         #[cfg(feature = "twitch_oauth2")]
         const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
@@ -309,6 +415,7 @@ pub mod delete_user_follows {
         use helix::*;
         let req = DeleteUserFollowsRequest::builder()
             .to_id("41245072".to_string())
+            .from_id("41245071".to_string())
             .build();
 
         // From twitch docs
@@ -320,7 +427,7 @@ pub mod delete_user_follows {
         let uri = req.get_uri().unwrap();
         assert_eq!(
             uri.to_string(),
-            "https://api.twitch.tv/helix/users/follows?to_id=41245072"
+            "https://api.twitch.tv/helix/users/follows?from_id=41245071&to_id=41245072"
         );
 
         dbg!(req.parse_response(&uri, http_response).unwrap());
@@ -329,6 +436,54 @@ pub mod delete_user_follows {
 
 /// Adds a specified user to the followers of a specified channel.
 /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [CreateUserFollowsRequest]
+///
+/// To use this endpoint, construct a [`CreateUserFollowsRequest`] with the [`CreateUserFollowsRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::users::create_user_follows;
+/// let request = create_user_follows::CreateUserFollowsRequest::builder()
+///     .build();
+/// ```
+///
+/// ## Body: [CreateUserFollowsBody]
+///
+/// We also need to provide a body to the request containing what we want to change.
+///
+/// ```
+/// # use twitch_api2::helix::users::create_user_follows;
+/// let body = create_user_follows::CreateUserFollowsBody::builder()
+///     .build();
+/// ```
+///
+/// ## Response: [CreateUserFollows]
+///
+///
+/// Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
+///
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, users::create_user_follows};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = create_user_follows::CreateUserFollowsRequest::builder()
+///     .build();
+/// let body = create_user_follows::CreateUserFollowsBody::builder()
+///     .build();
+/// let response: create_user_follows::CreateUserFollows = client.req_post(request, body, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPost::parse_response())
 pub mod create_user_follows {
     use std::convert::TryInto;
 

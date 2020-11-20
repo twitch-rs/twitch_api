@@ -19,6 +19,8 @@
 //! # }
 //! ```
 #[doc(inline)]
+pub use get_bits_leaderboard::{BitsLeaderboard, GetBitsLeaderboardRequest};
+#[doc(inline)]
 pub use get_cheermotes::{Cheermote, GetCheermotesRequest};
 
 use crate::{helix, types};
@@ -26,6 +28,43 @@ use serde::{Deserialize, Serialize};
 
 /// Retrieves the list of available Cheermotes, animated emotes to which viewers can assign Bits, to cheer in chat.
 /// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetCheermotesRequest]
+///
+/// To use this endpoint, construct a [`GetCheermotesRequest`] with the [`GetCheermotesRequest::builder()`] method.
+/// If you do not provide an ID, the request will only include global cheermotes as defined by twitch.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::bits::get_cheermotes;
+/// let request = get_cheermotes::GetCheermotesRequest::builder()
+///     .broadcaster_id(Some("1234".to_string()))
+///     .build();
+/// // Without broadcaster ID
+/// let request = get_cheermotes::GetCheermotesRequest::builder().build();
+/// ```
+///
+/// ## Response: [Cheermote]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, bits::get_cheermotes};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_cheermotes::GetCheermotesRequest::builder().build();
+/// let response: Vec<get_cheermotes::Cheermote> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_cheermotes {
     use super::*;
 
@@ -408,6 +447,47 @@ pub mod get_cheermotes {
 
 /// Gets a ranked list of Bits leaderboard information for an authorized broadcaster.
 /// [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetBitsLeaderboardRequest]
+///
+/// To use this endpoint, construct a [`GetBitsLeaderboardRequest`] with the [`GetBitsLeaderboardRequest::builder()`] method.
+/// Provide [`started_at`](GetBitsLeaderboardRequest::started_at) and [`period`](GetBitsLeaderboardRequest::period) to get a different leaderboard than default
+///
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::bits::get_bits_leaderboard;
+/// let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder()
+///     .started_at("2020-01-01T07:00:00Z".to_string())
+///     .period("day".to_string())
+///     .build();
+/// // Get leaderbord for the lifetime of the channel
+/// let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder().build();
+/// ```
+///
+/// ## Response: [BitsLeaderboard]
+///
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, bits::get_bits_leaderboard};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder().build();
+/// let response: get_bits_leaderboard::BitsLeaderboard = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_bits_leaderboard {
     use std::convert::TryInto;
 
@@ -422,6 +502,7 @@ pub mod get_bits_leaderboard {
         /// Number of results to be returned. Maximum: 100. Default: 10.
         #[builder(default, setter(into))]
         pub count: Option<i32>,
+        // TODO: Enum
         /// Time period over which data is aggregated (PST time zone). This parameter interacts with started_at. Valid values follow. Default: "all".
         ///
         /// * "day" – 00:00:00 on the day specified in started_at, through 00:00:00 on the following day.

@@ -211,7 +211,7 @@ impl std::convert::TryFrom<u64> for CommercialLength {
     }
 }
 
-/// Error for the `TryFrom` on [CommercialLength]
+/// Error for the `TryFrom` on [`CommercialLength`]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum CommercialLengthParseError {
     /// invalid length of {0}

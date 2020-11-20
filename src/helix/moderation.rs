@@ -6,17 +6,53 @@ pub use check_automod_status::{
     CheckAutoModStatus, CheckAutoModStatusBody, CheckAutoModStatusRequest,
 };
 #[doc(inline)]
-pub use get_banned_events::{BannedEvents, GetBannedEventsRequest};
+pub use get_banned_events::{BannedEvent, GetBannedEventsRequest};
 #[doc(inline)]
-pub use get_banned_users::{BannedUsers, GetBannedUsersRequest};
+pub use get_banned_users::{BannedUser, GetBannedUsersRequest};
 #[doc(inline)]
-pub use get_moderator_events::{GetModeratorEventsRequest, ModeratorEvents};
+pub use get_moderator_events::{GetModeratorEventsRequest, ModeratorEvent};
 #[doc(inline)]
-pub use get_moderators::{GetModeratorsRequest, Moderators};
+pub use get_moderators::{GetModeratorsRequest, Moderator};
 use serde::{Deserialize, Serialize};
 
 /// Returns all moderators in a channel.
 /// [`get-moderators`](https://dev.twitch.tv/docs/api/reference#get-moderators)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetModeratorsRequest]
+///
+/// To use this endpoint, construct a [`GetModeratorsRequest`] with the [`GetModeratorsRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::moderation::get_moderators;
+/// let request = get_moderators::GetModeratorsRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// ```
+///
+/// ## Response: [Moderator]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, moderation::get_moderators};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_moderators::GetModeratorsRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// let response: Vec<get_moderators::Moderator> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_moderators {
     use super::*;
 
@@ -44,7 +80,7 @@ pub mod get_moderators {
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
-    pub struct Moderators {
+    pub struct Moderator {
         /// User ID of moderator
         ///
         /// Twitch says: `User ID of a user who has been banned.` but this seems wrong.
@@ -56,7 +92,7 @@ pub mod get_moderators {
     }
 
     impl helix::Request for GetModeratorsRequest {
-        type Response = Vec<Moderators>;
+        type Response = Vec<Moderator>;
 
         const PATH: &'static str = "moderation/moderators";
         #[cfg(feature = "twitch_oauth2")]
@@ -110,6 +146,42 @@ pub mod get_moderators {
 
 /// Returns a list of moderators or users added and removed as moderators from a channel.
 /// [`get-moderator-events`](https://dev.twitch.tv/docs/api/reference#get-moderator-events)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetModeratorEventsRequest]
+///
+/// To use this endpoint, construct a [`GetModeratorEventsRequest`] with the [`GetModeratorEventsRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::moderation::get_moderator_events;
+/// let request = get_moderator_events::GetModeratorEventsRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// ```
+///
+/// ## Response: [ModeratorEvent]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, moderation::get_moderator_events};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_moderator_events::GetModeratorEventsRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// let response: Vec<get_moderator_events::ModeratorEvent> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_moderator_events {
     use super::*;
     use std::collections::HashMap;
@@ -140,7 +212,7 @@ pub mod get_moderator_events {
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
-    pub struct ModeratorEvents {
+    pub struct ModeratorEvent {
         /// Event ID
         pub id: String,
         // FIXME: Twitch docs sucks...
@@ -155,7 +227,7 @@ pub mod get_moderator_events {
     }
 
     impl helix::Request for GetModeratorEventsRequest {
-        type Response = Vec<ModeratorEvents>;
+        type Response = Vec<ModeratorEvent>;
 
         const PATH: &'static str = "moderation/moderators/events";
         #[cfg(feature = "twitch_oauth2")]
@@ -237,6 +309,42 @@ pub mod get_moderator_events {
 
 /// Returns all banned and timed-out users in a channel.
 /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetBannedUsersRequest]
+///
+/// To use this endpoint, construct a [`GetBannedUsersRequest`] with the [`GetBannedUsersRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::moderation::get_banned_users;
+/// let request = get_banned_users::GetBannedUsersRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// ```
+///
+/// ## Response: [BannedUser]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, moderation::get_banned_users};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_banned_users::GetBannedUsersRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// let response: Vec<get_banned_users::BannedUser> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_banned_users {
     use super::*;
 
@@ -265,7 +373,7 @@ pub mod get_banned_users {
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
-    pub struct BannedUsers {
+    pub struct BannedUser {
         /// User ID of a user who has been banned.
         pub user_id: types::UserId,
         /// Display name of a user who has been banned.
@@ -275,7 +383,7 @@ pub mod get_banned_users {
     }
 
     impl helix::Request for GetBannedUsersRequest {
-        type Response = Vec<BannedUsers>;
+        type Response = Vec<BannedUser>;
 
         const PATH: &'static str = "moderation/banned";
         #[cfg(feature = "twitch_oauth2")]
@@ -331,6 +439,42 @@ pub mod get_banned_users {
 
 /// Returns all banned and timed-out users in a channel.
 /// [`get-banned-events`](https://dev.twitch.tv/docs/api/reference#get-banned-events)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetBannedEventsRequest]
+///
+/// To use this endpoint, construct a [`GetBannedEventsRequest`] with the [`GetBannedEventsRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::moderation::get_banned_events;
+/// let request = get_banned_events::GetBannedEventsRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// ```
+///
+/// ## Response: [BannedEvent]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, moderation::get_banned_events};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_banned_events::GetBannedEventsRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// let response: Vec<get_banned_events::BannedEvent> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_banned_events {
     use super::*;
     use std::collections::HashMap;
@@ -363,7 +507,7 @@ pub mod get_banned_events {
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
-    pub struct BannedEvents {
+    pub struct BannedEvent {
         /// Event ID
         pub id: String,
         /// Displays `moderation.user.ban` or `moderation.user.unban`
@@ -378,7 +522,7 @@ pub mod get_banned_events {
     }
 
     impl helix::Request for GetBannedEventsRequest {
-        type Response = Vec<BannedEvents>;
+        type Response = Vec<BannedEvent>;
 
         const PATH: &'static str = "moderation/banned/events";
         #[cfg(feature = "twitch_oauth2")]
@@ -463,6 +607,62 @@ pub mod get_banned_events {
 
 /// Determines whether a string message meets the channel’s AutoMod requirements.
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [CheckAutoModStatusRequest]
+///
+/// To use this endpoint, construct a [`CheckAutoModStatusRequest`] with the [`CheckAutoModStatusRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::moderation::check_automod_status;
+/// let request = check_automod_status::CheckAutoModStatusRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// ```
+///
+/// ## Body: [CheckAutoModStatusBody]
+///
+/// We also need to provide a body to the request containing what we want to change.
+///
+/// ```
+/// # use twitch_api2::helix::moderation::check_automod_status;
+/// let body = check_automod_status::CheckAutoModStatusBody::builder()
+///     .msg_id("test1")
+///     .msg_text("automod please approve this!")
+///     .user_id("1234")
+///     .build();
+/// ```
+///
+/// ## Response: [CheckAutoModStatus]
+///
+///
+/// Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
+///
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, moderation::check_automod_status};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = check_automod_status::CheckAutoModStatusRequest::builder()
+///     .broadcaster_id("1234")
+///     .build();
+/// let body = vec![check_automod_status::CheckAutoModStatusBody::builder()
+///     .msg_id("test1")
+///     .msg_text("automod please approve this!")
+///     .user_id("1234")
+///     .build()];
+/// let response: Vec<check_automod_status::CheckAutoModStatus> = client.req_post(request, body, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPost::parse_response())
 pub mod check_automod_status {
     use super::*;
     /// Query Parameters for [Check AutoMod Status](super::check_automod_status)

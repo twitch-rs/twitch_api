@@ -68,7 +68,7 @@ pub struct BitsEventData {
     pub user_name: types::UserName,
 }
 
-/// [ChannelBitsEventsV2Reply::BitsEvent] event unlocked new badge for user.
+/// [`ChannelBitsEventsV2Reply::BitsEvent`] event unlocked new badge for user.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]

@@ -19,15 +19,53 @@
 //! # }
 //! ```
 #[doc(inline)]
-pub use search_categories::{Categories, SearchCategoriesRequest};
+pub use search_categories::SearchCategoriesRequest;
 #[doc(inline)]
-pub use search_channels::{Channels, SearchChannelsRequest};
+pub use search_channels::{Channel, SearchChannelsRequest};
+#[doc(inline)]
+pub use types::TwitchCategory as Category;
 
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
 /// Returns a list of games or categories that match the query via name either entirely or partially.
 /// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [SearchCategoriesRequest]
+///
+/// To use this endpoint, construct a [`SearchCategoriesRequest`] with the [`SearchCategoriesRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::search::search_categories;
+/// let request = search_categories::SearchCategoriesRequest::builder()
+///     .query("hello")
+///     .build();
+/// ```
+///
+/// ## Response: [Category](types::TwitchCategory)
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, search::search_categories};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = search_categories::SearchCategoriesRequest::builder()
+///     .query("hello")
+///     .build();
+/// let response: Vec<search_categories::Category> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod search_categories {
     use super::*;
 
@@ -52,10 +90,10 @@ pub mod search_categories {
     /// Return Values for [Search Categories](super::search_categories)
     ///
     /// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
-    pub type Categories = types::TwitchCategory;
+    pub type Category = types::TwitchCategory;
 
     impl helix::Request for SearchCategoriesRequest {
-        type Response = Vec<Categories>;
+        type Response = Vec<Category>;
 
         const PATH: &'static str = "search/categories";
         #[cfg(feature = "twitch_oauth2")]
@@ -109,6 +147,42 @@ pub mod search_categories {
 
 /// Returns a list of channels (users who have streamed within the past 6 months) that match the query via channel name or description either entirely or partially.
 /// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [SearchChannelsRequest]
+///
+/// To use this endpoint, construct a [`SearchChannelsRequest`] with the [`SearchChannelsRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::search::search_channels;
+/// let request = search_channels::SearchChannelsRequest::builder()
+///     .query("hello")
+///     .build();
+/// ```
+///
+/// ## Response: [Channel]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, search::search_channels};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = search_channels::SearchChannelsRequest::builder()
+///     .query("hello")
+///     .build();
+/// let response: Vec<search_channels::Channel> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod search_channels {
     use super::*;
 
@@ -138,7 +212,7 @@ pub mod search_channels {
     #[derive(PartialEq, Deserialize, Debug, Clone)]
     #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
     #[non_exhaustive]
-    pub struct Channels {
+    pub struct Channel {
         /// ID of the game being played on the stream
         pub game_id: types::CategoryId,
         /// Channel ID
@@ -156,12 +230,12 @@ pub mod search_channels {
         /// UTC timestamp. (live only)
         pub started_at: types::Timestamp,
         // FIXME: Twitch doc say tag_ids
-        /// Shows tag IDs that apply to the stream (live only).See https://www.twitch.tv/directory/all/tags for tag types
+        /// Shows tag IDs that apply to the stream (live only).See <https://www.twitch.tv/directory/all/tags> for tag types
         pub tags_ids: Vec<types::TagId>,
     }
 
     impl helix::Request for SearchChannelsRequest {
-        type Response = Vec<Channels>;
+        type Response = Vec<Channel>;
 
         const PATH: &'static str = "search/categories";
         #[cfg(feature = "twitch_oauth2")]

@@ -66,6 +66,42 @@ pub enum VideoTypeFilter {
 
 /// Gets video information by video ID (one or more), user ID (one only), or game ID (one only).
 /// [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
+///
+/// # Accessing the endpoint
+///
+/// ## Request: [GetVideosRequest]
+///
+/// To use this endpoint, construct a [`GetVideosRequest`] with the [`GetVideosRequest::builder()`] method.
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::videos::get_videos;
+/// let request = get_videos::GetVideosRequest::builder()
+///     .user_id("1234".to_string())
+///     .build();
+/// ```
+///
+/// ## Response: [Video]
+///
+/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+///
+/// ```rust, no_run
+/// use twitch_api2::helix::{self, videos::get_videos};
+/// # use twitch_api2::client;
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// let request = get_videos::GetVideosRequest::builder()
+///     .user_id("1234".to_string())
+///     .build();
+/// let response: Vec<get_videos::Video> = client.req_get(request, &token).await?.data;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
 pub mod get_videos {
     use super::*;
 

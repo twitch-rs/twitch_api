@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 /// A user redeems an reward using channel points.
 ///
-/// Reply is [pubsub::channel_points::ChannelPointsChannelV1Reply]
+/// Reply is [`pubsub::channel_points::ChannelPointsChannelV1Reply`]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(into = "String", try_from = "String")]
 pub struct CommunityPointsChannelV1 {
