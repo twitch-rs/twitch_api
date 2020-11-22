@@ -188,6 +188,9 @@ pub struct Config {
     pub theme_color: Option<String>,
     /// Primary color of hex
     pub primary_hex_color: Option<String>,
+    // FIXME: 2020-11-22 I suspect this will always be returned
+    /// Uses perzonalized settings
+    pub use_personalized_settings: Option<bool>,
     /// Use theme color or not
     pub use_theme_color: Option<bool>,
     /// Use creator color or not
@@ -1681,6 +1684,222 @@ mod tests {
                 "reward_level": 4
             }
         ]
+    }
+}
+"##;
+
+        let source = format!(
+            r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.rewards.27620241", "message": {:?} }}}}"#,
+            message
+        );
+        let actual = dbg!(Response::parse(&source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message{
+                data: TopicData::HypeTrainEventsV1Rewards { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn hype_train_redeemed_settings() {
+        let message = r##"
+{
+    "type": "hype-train-start",
+    "data": {
+        "channel_id": "233300375",
+        "id": "39042897-10cd-4944-a056-e6c7fc6f54d2",
+        "started_at": 1605378998000,
+        "expires_at": 1605379298000,
+        "updated_at": 1605378998000,
+        "ended_at": null,
+        "ending_reason": null,
+        "config": {
+            "channel_id": "233300375",
+            "is_enabled": true,
+            "is_whitelisted": true,
+            "kickoff": {
+                "num_of_events": 6,
+                "min_points": 100,
+                "duration": 300000000000
+            },
+            "cooldown_duration": 7200000000000,
+            "level_duration": 300000000000,
+            "difficulty": "SUPER HARD",
+            "reward_end_date": null,
+            "participation_conversion_rates": {
+                "BITS.CHEER": 1,
+                "BITS.EXTENSION": 1,
+                "BITS.POLL": 1,
+                "SUBS.TIER_1_GIFTED_SUB": 500,
+                "SUBS.TIER_1_SUB": 500,
+                "SUBS.TIER_2_GIFTED_SUB": 1000,
+                "SUBS.TIER_2_SUB": 1000,
+                "SUBS.TIER_3_GIFTED_SUB": 2500,
+                "SUBS.TIER_3_SUB": 2500
+            },
+            "notification_thresholds": {
+                "BITS.CHEER": 1000,
+                "BITS.EXTENSION": 1000,
+                "BITS.POLL": 1000,
+                "SUBS.TIER_1_GIFTED_SUB": 5,
+                "SUBS.TIER_1_SUB": 5,
+                "SUBS.TIER_2_GIFTED_SUB": 5,
+                "SUBS.TIER_2_SUB": 5,
+                "SUBS.TIER_3_GIFTED_SUB": 5,
+                "SUBS.TIER_3_SUB": 5
+            },
+            "difficulty_settings": {
+                "SUPER HARD": [
+                    {
+                        "value": 1,
+                        "goal": 5000,
+                        "rewards": [
+                            {
+                                "type": "EMOTE",
+                                "id": "301739462",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeChimp"
+                            }
+                        ]
+                    },
+                    {
+                        "value": 2,
+                        "goal": 12500,
+                        "rewards": [
+                            {
+                                "type": "EMOTE",
+                                "id": "301739479",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeSideeye"
+                            }
+                        ]
+                    },
+                    {
+                        "value": 3,
+                        "goal": 23100,
+                        "rewards": [
+                            {
+                                "type": "EMOTE",
+                                "id": "301739481",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeYikes"
+                            }
+                        ]
+                    },
+                    {
+                        "value": 4,
+                        "goal": 37700,
+                        "rewards": [
+                            {
+                                "type": "EMOTE",
+                                "id": "301739489",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeBlock"
+                            }
+                        ]
+                    },
+                    {
+                        "value": 5,
+                        "goal": 60000,
+                        "rewards": [
+                            {
+                                "type": "EMOTE",
+                                "id": "301739495",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeLove"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "conductor_rewards": {
+                "BITS": {
+                    "CURRENT": [
+                        {
+                            "type": "BADGE",
+                            "id": "1",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsxOzIzMzMwMDM3NQ==",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2"
+                        }
+                    ],
+                    "FORMER": [
+                        {
+                            "type": "BADGE",
+                            "id": "2",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsyOzIzMzMwMDM3NQ==",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2"
+                        }
+                    ]
+                },
+                "SUBS": {
+                    "CURRENT": [
+                        {
+                            "type": "BADGE",
+                            "id": "1",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsxOzIzMzMwMDM3NQ==",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2"
+                        }
+                    ],
+                    "FORMER": [
+                        {
+                            "type": "BADGE",
+                            "id": "2",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsyOzIzMzMwMDM3NQ==",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2"
+                        }
+                    ]
+                }
+            },
+            "callout_emote_id": "88",
+            "callout_emote_token": "PogChamp",
+            "use_creator_color": true,
+            "primary_hex_color": "",
+            "use_personalized_settings": false,
+            "has_conductor_badges": true
+        },
+        "participations": {
+            "SUBS.TIER_1_SUB": 6
+        },
+        "conductors": {},
+        "progress": {
+            "level": {
+                "value": 1,
+                "goal": 5000,
+                "rewards": [
+                    {
+                        "type": "EMOTE",
+                        "id": "301739462",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeChimp"
+                    }
+                ]
+            },
+            "value": 3000,
+            "goal": 5000,
+            "total": 3000,
+            "remaining_seconds": 299
+        }
     }
 }
 "##;
