@@ -102,6 +102,10 @@ pub enum ModerationActionCommand {
     ///
     /// Given when a user is timed-out with `/timeout <user> <time> <reason>`
     Timeout,
+    /// Untimeout
+    ///
+    /// Given when a user is unbanned while under a timeout `/untimeout <user>` or `/unban <user>`
+    Untimeout,
     /// Mod
     ///
     /// Given when a user is added as a moderator. `/mod <user>`.
