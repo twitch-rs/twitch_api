@@ -189,7 +189,7 @@ pub struct Config {
     /// Primary color of hex
     pub primary_hex_color: Option<String>,
     // FIXME: 2020-11-22 I suspect this will always be returned
-    /// Uses perzonalized settings
+    /// Uses personalized settings
     pub use_personalized_settings: Option<bool>,
     /// Use theme color or not
     pub use_theme_color: Option<bool>,
