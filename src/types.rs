@@ -4,6 +4,12 @@
 /// A user ID.
 pub type UserId = String;
 
+/// A reward ID.
+pub type RewardId = String;
+
+/// A reward redemption ID.
+pub type RedemptionId = String;
+
 /// A username, also specified as login. Should not be capitalized.
 pub type UserName = Nickname;
 
@@ -216,6 +222,20 @@ impl std::convert::TryFrom<u64> for CommercialLength {
 pub enum CommercialLengthParseError {
     /// invalid length of {0}
     InvalidLength(u64),
+}
+
+/// Custom reward redemption statuses: UNFULFILLED, FULFILLED or CANCELED
+#[derive(PartialEq, serde::Serialize, serde::Deserialize, Clone, Debug)]
+pub enum CustomRewardRedemptionStatus {
+    /// Unfulfilled reward - the user has claimed it but it is still pending.
+    #[serde(rename = "UNFULFILLED")]
+    Unfulfilled,
+    /// Fulfilled reward - the user has claimed it and the reward has been granted.
+    #[serde(rename = "FULFILLED")]
+    Fulfilled,
+    /// Cancelled reward - the reward has been cancelled before fulfillment, and any spent points have been refunded.
+    #[serde(rename = "CANCELED")]
+    Cancelled,
 }
 
 /// A user according to many endpoints
