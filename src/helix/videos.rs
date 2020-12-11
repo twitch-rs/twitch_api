@@ -7,7 +7,7 @@
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let client = HelixClient::new();
 //! # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
 //! let req = GetVideosRequest::builder()
@@ -91,7 +91,7 @@ pub enum VideoTypeFilter {
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = get_videos::GetVideosRequest::builder()
 ///     .user_id("1234".to_string())
 ///     .build();

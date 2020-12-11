@@ -42,7 +42,7 @@ use serde::{Deserialize, Serialize};
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = get_moderators::GetModeratorsRequest::builder()
 ///     .broadcaster_id("1234")
 ///     .build();
@@ -171,7 +171,7 @@ pub mod get_moderators {
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = get_moderator_events::GetModeratorEventsRequest::builder()
 ///     .broadcaster_id("1234")
 ///     .build();
@@ -334,7 +334,7 @@ pub mod get_moderator_events {
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = get_banned_users::GetBannedUsersRequest::builder()
 ///     .broadcaster_id("1234")
 ///     .build();
@@ -464,7 +464,7 @@ pub mod get_banned_users {
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = get_banned_events::GetBannedEventsRequest::builder()
 ///     .broadcaster_id("1234")
 ///     .build();
@@ -647,7 +647,7 @@ pub mod get_banned_events {
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = check_automod_status::CheckAutoModStatusRequest::builder()
 ///     .broadcaster_id("1234")
 ///     .build();

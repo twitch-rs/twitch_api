@@ -14,6 +14,7 @@ async fn main() {
             .map(AccessToken::new)
             .expect("Please set env: TWITCH_TOKEN or pass token as first argument"),
         None,
+        None,
     )
     .await
     .unwrap();

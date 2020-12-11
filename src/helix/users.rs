@@ -7,7 +7,7 @@
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let client = HelixClient::new();
 //! # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
 //! let req = GetUsersRequest::builder()
@@ -59,7 +59,7 @@ use serde::{Deserialize, Serialize};
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = get_users::GetUsersRequest::builder()
 ///     .id(vec!["1234".to_string()])
 ///     .login(vec!["justintvfan".to_string()])
@@ -192,7 +192,7 @@ pub mod get_users {
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = get_users_follows::GetUsersFollowsRequest::builder()
 ///     .to_id("1234".to_string())
 ///     .build();
@@ -345,7 +345,7 @@ pub mod get_users_follows {
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = delete_user_follows::DeleteUserFollowsRequest::builder()
 ///     .from_id("1234").to_id("4321")
 ///     .build();
@@ -472,7 +472,7 @@ pub mod delete_user_follows {
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = create_user_follows::CreateUserFollowsRequest::builder()
 ///     .build();
 /// let body = create_user_follows::CreateUserFollowsBody::builder()
