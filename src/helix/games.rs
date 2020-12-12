@@ -39,7 +39,7 @@ use serde::{Deserialize, Serialize};
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = get_games::GetGamesRequest::builder()
 ///     .id(vec!["4321".to_string()])
 ///     .build();
@@ -150,7 +150,7 @@ pub mod get_games {
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None).await?;
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 /// let request = get_top_games::GetTopGamesRequest::builder()
 ///     .build();
 /// let response: Vec<get_top_games::Game> = client.req_get(request, &token).await?.data;
