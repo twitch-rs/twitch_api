@@ -25,7 +25,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>
     let token = UserToken::from_existing(
         reqwest_http_client,
         AccessToken::new("mytoken".to_string()),
-        None,
+        None, // Client ID
+        None, // Client Secret
     )
     .await?;
     let client: TwitchClient<reqwest::Client> =  TwitchClient::default();
