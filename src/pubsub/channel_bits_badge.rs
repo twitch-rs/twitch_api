@@ -60,7 +60,7 @@ mod tests {
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::ChannelBitsBadgeUnlocks { .. },
             }
         ));
@@ -81,7 +81,7 @@ mod tests {
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::ChannelBitsBadgeUnlocks { .. },
             }
         ));

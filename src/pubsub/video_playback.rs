@@ -145,7 +145,7 @@ mod tests {
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::VideoPlayback { .. },
             }
         ));
@@ -164,7 +164,7 @@ mod tests {
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::VideoPlaybackById { .. },
             }
         ));
@@ -182,7 +182,7 @@ mod tests {
 }"#;
         if let Response::Message { data } = dbg!(Response::parse(source).unwrap()) {
             if let TopicData::VideoPlayback { reply, .. } = data {
-                assert!(matches!(*reply, VideoPlaybackReply::StreamUp {..} ))
+                assert!(matches!(*reply, VideoPlaybackReply::StreamUp { .. }))
             } else {
                 panic!("not a videoplayback")
             }
@@ -203,7 +203,7 @@ mod tests {
 }"#;
         if let Response::Message { data } = dbg!(Response::parse(source).unwrap()) {
             if let TopicData::VideoPlayback { reply, .. } = data {
-                assert!(matches!(*reply, VideoPlaybackReply::StreamDown {..} ))
+                assert!(matches!(*reply, VideoPlaybackReply::StreamDown { .. }))
             } else {
                 panic!("not a videoplayback")
             }
@@ -224,7 +224,10 @@ mod tests {
 }"#;
         if let Response::Message { data } = dbg!(Response::parse(source).unwrap()) {
             if let TopicData::VideoPlaybackById { reply, .. } = data {
-                assert!(matches!(*reply, VideoPlaybackReply::WatchPartyVod { vod: Vod {..}} ))
+                assert!(matches!(
+                    *reply,
+                    VideoPlaybackReply::WatchPartyVod { vod: Vod { .. } }
+                ))
             } else {
                 panic!("not a videoplayback")
             }
@@ -245,7 +248,7 @@ mod tests {
 }"#;
         if let Response::Message { data } = dbg!(Response::parse(source).unwrap()) {
             if let TopicData::VideoPlaybackById { reply, .. } = data {
-                assert!(matches!(*reply, VideoPlaybackReply::Commercial { .. } ))
+                assert!(matches!(*reply, VideoPlaybackReply::Commercial { .. }))
             } else {
                 panic!("not a videoplayback")
             }
@@ -266,7 +269,7 @@ mod tests {
 }"#;
         if let Response::Message { data } = dbg!(Response::parse(source).unwrap()) {
             if let TopicData::VideoPlaybackById { reply, .. } = data {
-                assert!(matches!(*reply, VideoPlaybackReply::Commercial { .. } ))
+                assert!(matches!(*reply, VideoPlaybackReply::Commercial { .. }))
             } else {
                 panic!("not a videoplayback")
             }
@@ -287,7 +290,7 @@ mod tests {
 }"#;
         if let Response::Message { data } = dbg!(Response::parse(source).unwrap()) {
             if let TopicData::VideoPlaybackById { reply, .. } = data {
-                assert!(matches!(*reply, VideoPlaybackReply::Commercial { .. } ))
+                assert!(matches!(*reply, VideoPlaybackReply::Commercial { .. }))
             } else {
                 panic!("not a videoplayback")
             }

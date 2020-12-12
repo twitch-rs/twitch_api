@@ -105,7 +105,7 @@ mod tests {
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::ChannelBitsEventsV2 { .. },
             }
         ));
@@ -126,7 +126,7 @@ mod tests {
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::ChannelBitsEventsV2 { .. },
             }
         ));

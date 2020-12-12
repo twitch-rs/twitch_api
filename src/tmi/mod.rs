@@ -66,8 +66,7 @@ impl<'a, C: crate::HttpClient<'a>> TMIClient<'a, C> {
     pub async fn get_chatters(
         &'a self,
         broadcaster: &str,
-    ) -> Result<GetChatters, RequestError<<C as crate::HttpClient<'a>>::Error>>
-    {
+    ) -> Result<GetChatters, RequestError<<C as crate::HttpClient<'a>>::Error>> {
         let url = format!(
             "{}{}{}{}",
             crate::TWITCH_TMI_URL,
@@ -99,8 +98,7 @@ impl<'a, C: crate::HttpClient<'a>> TMIClient<'a, C> {
         &'a self,
         include_logins: bool,
         channel_id: HostsRequestId,
-    ) -> Result<GetHosts, RequestError<<C as crate::HttpClient<'a>>::Error>>
-    {
+    ) -> Result<GetHosts, RequestError<<C as crate::HttpClient<'a>>::Error>> {
         let url = format!(
             "{}{}{}{}",
             crate::TWITCH_TMI_URL,

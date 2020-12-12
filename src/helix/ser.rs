@@ -100,8 +100,7 @@ impl<'input, 'output> ser::Serializer for Serializer<'input, 'output> {
         self,
         _name: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeStruct, Self::Error>
-    {
+    ) -> Result<Self::SerializeStruct, Self::Error> {
         Ok(StructSerializer {
             urlencoder: self.urlencoder,
         })
@@ -119,8 +118,7 @@ impl<'input, 'output> ser::Serializer for Serializer<'input, 'output> {
         _variant_index: u32,
         _variant: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeTupleVariant, Self::Error>
-    {
+    ) -> Result<Self::SerializeTupleVariant, Self::Error> {
         Err(Error::top_level_not_supported())
     }
 
@@ -202,8 +200,7 @@ impl<'input, 'output> ser::Serializer for Serializer<'input, 'output> {
         _name: &'static str,
         _variant_index: u32,
         _variant: &'static str,
-    ) -> Result<Self::Ok, Self::Error>
-    {
+    ) -> Result<Self::Ok, Self::Error> {
         Err(Error::top_level_not_supported())
     }
 
@@ -243,8 +240,7 @@ impl<'input, 'output> ser::Serializer for Serializer<'input, 'output> {
         self,
         _name: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeTupleStruct, Self::Error>
-    {
+    ) -> Result<Self::SerializeTupleStruct, Self::Error> {
         Err(Error::top_level_not_supported())
     }
 
@@ -254,8 +250,7 @@ impl<'input, 'output> ser::Serializer for Serializer<'input, 'output> {
         _variant_index: u32,
         _variant: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeStructVariant, Self::Error>
-    {
+    ) -> Result<Self::SerializeStructVariant, Self::Error> {
         Err(Error::top_level_not_supported())
     }
 }
@@ -377,8 +372,7 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
         _name: &'static str,
         _variant_index: u32,
         variant: &'static str,
-    ) -> Result<Self::Ok, Self::Error>
-    {
+    ) -> Result<Self::Ok, Self::Error> {
         variant.serialize(PairSerializer {
             key: self.key,
             urlencoder: self.urlencoder,
@@ -472,8 +466,7 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
         self,
         _name: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeTupleStruct, Self::Error>
-    {
+    ) -> Result<Self::SerializeTupleStruct, Self::Error> {
         Err(Error::field_not_supported())
     }
 
@@ -483,8 +476,7 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
         _variant_index: u32,
         _variant: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeTupleVariant, Self::Error>
-    {
+    ) -> Result<Self::SerializeTupleVariant, Self::Error> {
         Err(Error::field_not_supported())
     }
 
@@ -492,8 +484,7 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
         self,
         _name: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeStruct, Self::Error>
-    {
+    ) -> Result<Self::SerializeStruct, Self::Error> {
         Err(Error::field_not_supported())
     }
 
@@ -503,8 +494,7 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
         _variant_index: u32,
         _variant: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeStructVariant, Self::Error>
-    {
+    ) -> Result<Self::SerializeStructVariant, Self::Error> {
         Err(Error::field_not_supported())
     }
 }
@@ -643,8 +633,7 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         _name: &'static str,
         _variant_index: u32,
         variant: &'static str,
-    ) -> Result<Self::Ok, Self::Error>
-    {
+    ) -> Result<Self::Ok, Self::Error> {
         self.urlencoder.append_pair(self.key, &variant);
         Ok(self.urlencoder)
     }
@@ -697,8 +686,7 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         self,
         _name: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeTupleStruct, Self::Error>
-    {
+    ) -> Result<Self::SerializeTupleStruct, Self::Error> {
         Err(Error::pair_not_supported())
     }
 
@@ -708,8 +696,7 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         _variant_index: u32,
         _variant: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeTupleVariant, Self::Error>
-    {
+    ) -> Result<Self::SerializeTupleVariant, Self::Error> {
         Err(Error::pair_not_supported())
     }
 
@@ -721,8 +708,7 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         self,
         _name: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeStruct, Self::Error>
-    {
+    ) -> Result<Self::SerializeStruct, Self::Error> {
         Err(Error::pair_not_supported())
     }
 
@@ -732,8 +718,7 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         _variant_index: u32,
         _variant: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeStructVariant, Self::Error>
-    {
+    ) -> Result<Self::SerializeStructVariant, Self::Error> {
         Err(Error::pair_not_supported())
     }
 }
@@ -836,8 +821,7 @@ impl ser::Serializer for ValueSerializer {
         _name: &'static str,
         _variant_index: u32,
         _variant: &'static str,
-    ) -> Result<Self::Ok, Self::Error>
-    {
+    ) -> Result<Self::Ok, Self::Error> {
         Err(Error::value_not_supported())
     }
 
@@ -877,8 +861,7 @@ impl ser::Serializer for ValueSerializer {
         self,
         _name: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeTupleStruct, Self::Error>
-    {
+    ) -> Result<Self::SerializeTupleStruct, Self::Error> {
         Err(Error::value_not_supported())
     }
 
@@ -888,8 +871,7 @@ impl ser::Serializer for ValueSerializer {
         _variant_index: u32,
         _variant: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeTupleVariant, Self::Error>
-    {
+    ) -> Result<Self::SerializeTupleVariant, Self::Error> {
         Err(Error::value_not_supported())
     }
 
@@ -901,8 +883,7 @@ impl ser::Serializer for ValueSerializer {
         self,
         _name: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeStruct, Self::Error>
-    {
+    ) -> Result<Self::SerializeStruct, Self::Error> {
         Err(Error::value_not_supported())
     }
 
@@ -912,8 +893,7 @@ impl ser::Serializer for ValueSerializer {
         _variant_index: u32,
         _variant: &'static str,
         _len: usize,
-    ) -> Result<Self::SerializeStructVariant, Self::Error>
-    {
+    ) -> Result<Self::SerializeStructVariant, Self::Error> {
         Err(Error::value_not_supported())
     }
 }

@@ -277,8 +277,7 @@ pub trait RequestPost: Request {
         body: Self::Body,
         token: &str,
         client_id: &str,
-    ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
-    {
+    ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
         let uri = self.get_uri()?;
 
         let body = self.body(&body)?;
@@ -352,8 +351,7 @@ where <Self as Request>::Response:
         body: Self::Body,
         token: &str,
         client_id: &str,
-    ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
-    {
+    ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
         let uri = self.get_uri()?;
 
         let body = self.body(&body)?;
@@ -403,8 +401,7 @@ pub trait RequestDelete: Request {
         &self,
         token: &str,
         client_id: &str,
-    ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
-    {
+    ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
         let uri = self.get_uri()?;
 
         let mut bearer =
@@ -471,8 +468,7 @@ pub trait RequestGet: Request {
         &self,
         token: &str,
         client_id: &str,
-    ) -> Result<http::Request<Vec<u8>>, CreateRequestError>
-    {
+    ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
         let uri = self.get_uri()?;
 
         let mut bearer =
