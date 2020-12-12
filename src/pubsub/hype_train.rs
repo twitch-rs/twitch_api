@@ -929,7 +929,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1 { .. },
             }
         ));
@@ -1331,7 +1331,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1 { .. },
             }
         ));
@@ -1364,7 +1364,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1 { .. },
             }
         ));
@@ -1446,7 +1446,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1 { .. },
             }
         ));
@@ -1537,7 +1537,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1 { .. },
             }
         ));
@@ -1612,7 +1612,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1 { .. },
             }
         ));
@@ -1637,7 +1637,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1 { .. },
             }
         ));
@@ -1662,7 +1662,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1 { .. },
             }
         ));
@@ -1695,7 +1695,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1Rewards { .. },
             }
         ));
@@ -1911,7 +1911,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1Rewards { .. },
             }
         ));
@@ -1923,7 +1923,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::HypeTrainEventsV1 { .. },
             }
         ));

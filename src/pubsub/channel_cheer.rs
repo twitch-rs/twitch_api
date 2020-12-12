@@ -97,7 +97,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::ChannelCheerEventsPublicV1 { .. },
             }
         ));
@@ -128,7 +128,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::ChannelCheerEventsPublicV1 { .. },
             }
         ));
@@ -159,7 +159,7 @@ mod tests {
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
-            Response::Message{
+            Response::Message {
                 data: TopicData::ChannelCheerEventsPublicV1 { .. },
             }
         ));
