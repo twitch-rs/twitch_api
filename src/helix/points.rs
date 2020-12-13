@@ -1,4 +1,4 @@
-//! Endpoints regarding points
+//! Endpoints regarding channel points/redeems
 //!
 //! # Examples
 //!
@@ -24,6 +24,14 @@
 //! ```
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
+
+#[doc(inline)]
+pub use get_custom_reward_redemption::{CustomRewardRedemption, GetCustomRewardRedemptionRequest};
+
+#[doc(inline)]
+pub use update_redemption_status::{
+    UpdateRedemptionStatusBody, UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,
+};
 
 /// Returns Custom Reward Redemption objects for a Custom Reward on a channel that was created by the same client_id.
 ///
@@ -250,7 +258,7 @@ pub mod get_custom_reward_redemption {
 ///     .build();
 /// ```
 ///
-/// ## Response: [CustomRewardRedemption]
+/// ## Response: [UpdateRedemptionStatusInformation]
 ///
 /// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 ///
