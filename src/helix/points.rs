@@ -14,7 +14,7 @@
 //! let request = GetCustomRewardRedemptionRequest::builder()
 //!     .broadcaster_id("274637212".to_string())
 //!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-//!     .status(CustomRewardRedemptionStatus::Cancelled)
+//!     .status(CustomRewardRedemptionStatus::Canceled)
 //!     .build();
 //!
 //!
@@ -44,7 +44,7 @@ pub enum CustomRewardRedemptionStatus {
     Fulfilled,
     /// Cancelled reward - the reward has been cancelled before fulfillment, and any spent points have been refunded.
     #[serde(rename = "CANCELED")]
-    Cancelled,
+    Canceled,
 }
 
 /// Returns Custom Reward Redemption objects for a Custom Reward on a channel that was created by the same client_id.
@@ -63,7 +63,7 @@ pub enum CustomRewardRedemptionStatus {
 /// let request = GetCustomRewardRedemptionRequest::builder()
 ///     .broadcaster_id("274637212".to_string())
 ///     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-///     .status(CustomRewardRedemptionStatus::Cancelled)
+///     .status(CustomRewardRedemptionStatus::Canceled)
 ///     .build();
 /// ```
 ///
@@ -83,7 +83,7 @@ pub enum CustomRewardRedemptionStatus {
 /// let request = GetCustomRewardRedemptionRequest::builder()
 ///     .broadcaster_id("274637212".to_string())
 ///     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-///     .status(CustomRewardRedemptionStatus::Cancelled)
+///     .status(CustomRewardRedemptionStatus::Canceled)
 ///     .build();
 /// let response: Vec<CustomRewardRedemption> = client.req_get(request, &token).await?.data;
 /// # Ok(())
@@ -196,7 +196,7 @@ pub mod get_custom_reward_redemption {
         let req = GetCustomRewardRedemptionRequest::builder()
             .broadcaster_id("274637212".to_string())
             .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-            .status(types::CustomRewardRedemptionStatus::Cancelled)
+            .status(CustomRewardRedemptionStatus::Canceled)
             .build();
 
         // From twitch docs
@@ -266,7 +266,7 @@ pub mod get_custom_reward_redemption {
 /// ```
 /// use twitch_api2::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};
 /// let body = UpdateRedemptionStatusBody::builder()
-///     .status(CustomRewardRedemptionStatus::Cancelled)
+///     .status(CustomRewardRedemptionStatus::Canceled)
 ///     .build();
 /// ```
 ///
@@ -289,7 +289,7 @@ pub mod get_custom_reward_redemption {
 ///     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63".to_string())
 ///     .build();
 /// let body = UpdateRedemptionStatusBody::builder()
-///     .status(CustomRewardRedemptionStatus::Cancelled)
+///     .status(CustomRewardRedemptionStatus::Canceled)
 ///     .build();
 /// let response: UpdateRedemptionStatusInformation = client.req_patch(request, body, &token).await?;
 /// # Ok(())
