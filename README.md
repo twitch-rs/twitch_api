@@ -114,6 +114,18 @@ There are no current plans to support
 | 🔨 Get Extension Transactions | `GET https://api.twitch.tv/helix/extensions/transactions` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/extensions/get_extension_transactions)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-extension-transactions) |
 
 
+#### Channel Points
+
+| Endpoint      |                                          |                                                                                                                                                                    |
+| :------------ | :--------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🔨 Create Custom Rewards | `POST https://api.twitch.tv/helix/channel_points/custom_rewards` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/points/create_custom_rewards)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#create-custom-rewards) |
+| 🔨 Delete Custom Rewards | `DELETE https://api.twitch.tv/helix/channel_points/custom_rewards` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/points/delete_custom_rewards)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#delete-custom-reward) |
+| 🔨 Get Custom Reward | `GET https://api.twitch.tv/helix/channel_points/custom_rewards` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/points/get_custom_reward)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-custom-reward) |
+| ✔ Get Custom Reward Redemption | `GET https://api.twitch.tv/helix/channel_points/custom_rewards/redemptions` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/points/get_custom_reward_redemption) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption) |
+| 🔨 Update Custom Reward | `PATCH https://api.twitch.tv/helix/channel_points/custom_rewards` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/points/update_custom_reward)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#update-custom-reward) |
+| ✔ Update Redemption Status | `PATCH https://api.twitch.tv/helix/channel_points/custom_rewards/redemptions` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/points/update_redemption_status) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#update-redemption-status) |
+
+
 #### Clips
 
 | Endpoint      |                                          |                                                                                                                                                                    |

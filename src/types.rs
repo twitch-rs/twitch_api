@@ -4,6 +4,12 @@
 /// A user ID.
 pub type UserId = String;
 
+/// A reward ID.
+pub type RewardId = String;
+
+/// A reward redemption ID.
+pub type RedemptionId = String;
+
 /// A username, also specified as login. Should not be capitalized.
 pub type UserName = Nickname;
 
