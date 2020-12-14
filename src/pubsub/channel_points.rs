@@ -29,7 +29,7 @@ pub struct Redemption {
     /// ID of channel where the redemption was triggered
     pub channel_id: types::UserId,
     /// ID of the redemption. Also returned in twitch IRC
-    pub id: String,
+    pub id: types::RedemptionId,
     /// Timestamp in which a reward was redeemed
     pub redeemed_at: types::Timestamp,
     /// Data about the reward that was redeemed
@@ -82,7 +82,7 @@ pub struct Reward {
     /// Information about global cooldown
     pub global_cooldown: GlobalCooldown,
     /// ID of reward.
-    pub id: String,
+    pub id: types::RewardId,
     /// Set image of reward in rewards & challenges screen on client. If none, see [`Reward::default_image`]
     pub image: Option<Image>,
     /// Reward is enabled or not.
