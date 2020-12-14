@@ -3,15 +3,15 @@
 //! # Examples
 //!
 //! ```rust,no_run
-//! # use twitch_api2::helix::{HelixClient, points::get_custom_reward_redemption};
-//! # use twitch_api2::types::CustomRewardRedemptionStatus;
+//! # use twitch_api2::helix::{HelixClient};
+//! # use twitch_api2::helix::points::{GetCustomRewardRedemptionRequest, CustomRewardRedemptionStatus};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let client = HelixClient::new();
 //! # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
-//! let request = get_custom_reward_redemption::GetCustomRewardRedemptionRequest::builder()
+//! let request = GetCustomRewardRedemptionRequest::builder()
 //!     .broadcaster_id("274637212".to_string())
 //!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
 //!     .status(CustomRewardRedemptionStatus::Cancelled)
@@ -33,6 +33,20 @@ pub use update_redemption_status::{
     UpdateRedemptionStatusBody, UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,
 };
 
+/// Custom reward redemption statuses: UNFULFILLED, FULFILLED or CANCELED
+#[derive(PartialEq, serde::Serialize, serde::Deserialize, Clone, Debug)]
+pub enum CustomRewardRedemptionStatus {
+    /// Unfulfilled reward - the user has claimed it but it is still pending.
+    #[serde(rename = "UNFULFILLED")]
+    Unfulfilled,
+    /// Fulfilled reward - the user has claimed it and the reward has been granted.
+    #[serde(rename = "FULFILLED")]
+    Fulfilled,
+    /// Cancelled reward - the reward has been cancelled before fulfillment, and any spent points have been refunded.
+    #[serde(rename = "CANCELED")]
+    Cancelled,
+}
+
 /// Returns Custom Reward Redemption objects for a Custom Reward on a channel that was created by the same client_id.
 ///
 /// Developers only have access to get and update redemptions for the rewards they created.
@@ -45,9 +59,8 @@ pub use update_redemption_status::{
 /// To use this endpoint, construct a [`GetCustomRewardRedemptionRequest`] with the [`GetCustomRewardRedemptionRequest::builder()`] method.
 ///
 /// ```rust, no_run
-/// use twitch_api2::helix::points::get_custom_reward_redemption;
-/// use twitch_api2::types::CustomRewardRedemptionStatus;
-/// let request = get_custom_reward_redemption::GetCustomRewardRedemptionRequest::builder()
+/// use twitch_api2::helix::points::{CustomRewardRedemptionStatus, GetCustomRewardRedemptionRequest};
+/// let request = GetCustomRewardRedemptionRequest::builder()
 ///     .broadcaster_id("274637212".to_string())
 ///     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
 ///     .status(CustomRewardRedemptionStatus::Cancelled)
@@ -59,20 +72,20 @@ pub use update_redemption_status::{
 /// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 ///
 /// ```rust, no_run
-/// use twitch_api2::helix::{self, points::get_custom_reward_redemption};
-/// use twitch_api2::types::CustomRewardRedemptionStatus;
+/// use twitch_api2::helix;
+/// use twitch_api2::helix::points::{CustomRewardRedemptionStatus, CustomRewardRedemption, GetCustomRewardRedemptionRequest};
 /// # use twitch_api2::client;
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 /// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
-/// let request = get_custom_reward_redemption::GetCustomRewardRedemptionRequest::builder()
+/// let request = GetCustomRewardRedemptionRequest::builder()
 ///     .broadcaster_id("274637212".to_string())
 ///     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
 ///     .status(CustomRewardRedemptionStatus::Cancelled)
 ///     .build();
-/// let response: Vec<get_custom_reward_redemption::CustomRewardRedemption> = client.req_get(request, &token).await?.data;
+/// let response: Vec<CustomRewardRedemption> = client.req_get(request, &token).await?.data;
 /// # Ok(())
 /// # }
 /// ```
@@ -98,7 +111,7 @@ pub mod get_custom_reward_redemption {
 
         /// When id is not provided, this param is required and filters the paginated Custom Reward Redemption objects for redemptions with the matching status. Can be one of UNFULFILLED, FULFILLED or CANCELED
         #[builder(default, setter(into))]
-        pub status: Option<types::CustomRewardRedemptionStatus>,
+        pub status: Option<CustomRewardRedemptionStatus>,
 
         /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries without ID. If an ID is specified, it supersedes any cursor/offset combinations. The cursor value specified here is from the pagination response field of a prior query.
         #[builder(default)]
@@ -138,7 +151,7 @@ pub mod get_custom_reward_redemption {
         pub user_input: String,
 
         /// One of UNFULFILLED, FULFILLED or CANCELED
-        pub status: types::CustomRewardRedemptionStatus,
+        pub status: CustomRewardRedemptionStatus,
 
         /// RFC3339 timestamp of when the reward was redeemed.
         pub redeemed_at: types::Timestamp,
@@ -238,8 +251,8 @@ pub mod get_custom_reward_redemption {
 /// To use this endpoint, construct a [`UpdateRedemptionStatusRequest`] with the [`UpdateRedemptionStatusRequest::builder()`] method.
 ///
 /// ```rust, no_run
-/// use twitch_api2::helix::points::update_redemption_status;
-/// let request = update_redemption_status::UpdateRedemptionStatusRequest::builder()
+/// use twitch_api2::helix::points::UpdateRedemptionStatusRequest;
+/// let request = UpdateRedemptionStatusRequest::builder()
 ///     .broadcaster_id("274637212".to_string())
 ///     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
 ///     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63".to_string())
@@ -251,9 +264,8 @@ pub mod get_custom_reward_redemption {
 /// We also need to provide a body to the request containing what we want to change.
 ///
 /// ```
-/// use twitch_api2::helix::points::update_redemption_status;
-/// use twitch_api2::types::CustomRewardRedemptionStatus;
-/// let body = update_redemption_status::UpdateRedemptionStatusBody::builder()
+/// use twitch_api2::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};
+/// let body = UpdateRedemptionStatusBody::builder()
 ///     .status(CustomRewardRedemptionStatus::Cancelled)
 ///     .build();
 /// ```
@@ -263,23 +275,23 @@ pub mod get_custom_reward_redemption {
 /// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 ///
 /// ```rust, no_run
-/// use twitch_api2::helix::{self, points::update_redemption_status};
-/// use twitch_api2::types::CustomRewardRedemptionStatus;
+/// use twitch_api2::helix;
+/// use twitch_api2::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusRequest, UpdateRedemptionStatusBody, UpdateRedemptionStatusInformation};
 /// # use twitch_api2::client;
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 /// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
-/// let request = update_redemption_status::UpdateRedemptionStatusRequest::builder()
+/// let request = UpdateRedemptionStatusRequest::builder()
 ///     .broadcaster_id("274637212".to_string())
 ///     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
 ///     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63".to_string())
 ///     .build();
-/// let body = update_redemption_status::UpdateRedemptionStatusBody::builder()
+/// let body = UpdateRedemptionStatusBody::builder()
 ///     .status(CustomRewardRedemptionStatus::Cancelled)
 ///     .build();
-/// let response: update_redemption_status::UpdateRedemptionStatusInformation = client.req_patch(request, body, &token).await?;
+/// let response: UpdateRedemptionStatusInformation = client.req_patch(request, body, &token).await?;
 /// # Ok(())
 /// # }
 /// ```
@@ -316,7 +328,7 @@ pub mod update_redemption_status {
     pub struct UpdateRedemptionStatusBody {
         /// The new status to set redemptions to. Can be either FULFILLED or CANCELED. Updating to CANCELED will refund the user their points.
         #[builder(setter(into))]
-        pub status: types::CustomRewardRedemptionStatus,
+        pub status: CustomRewardRedemptionStatus,
     }
 
     /// Return Values for [Update Redemption Status](super::update_redemption_status)

@@ -224,20 +224,6 @@ pub enum CommercialLengthParseError {
     InvalidLength(u64),
 }
 
-/// Custom reward redemption statuses: UNFULFILLED, FULFILLED or CANCELED
-#[derive(PartialEq, serde::Serialize, serde::Deserialize, Clone, Debug)]
-pub enum CustomRewardRedemptionStatus {
-    /// Unfulfilled reward - the user has claimed it but it is still pending.
-    #[serde(rename = "UNFULFILLED")]
-    Unfulfilled,
-    /// Fulfilled reward - the user has claimed it and the reward has been granted.
-    #[serde(rename = "FULFILLED")]
-    Fulfilled,
-    /// Cancelled reward - the reward has been cancelled before fulfillment, and any spent points have been refunded.
-    #[serde(rename = "CANCELED")]
-    Cancelled,
-}
-
 /// A user according to many endpoints
 #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct User {
