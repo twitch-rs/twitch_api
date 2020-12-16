@@ -139,9 +139,53 @@ pub enum ChannelSubscribeEventsV1Reply {
         /// Display name of user that purchased gifted subscription
         display_name: types::DisplayName,
     },
+    /// Gifted resubscription with optional message
+    #[serde(rename = "resubgift")]
+    ResubGift {
+        // missing in documented example
+        // FIXME: Could be for month that subscription ends
+        /// Unknown
+        benefit_end_month: Option<i64>,
+        /// ID of the channel that has been subscribed or subgifted
+        channel_id: types::UserId,
+        /// Name of the channel that has been subscribed or subgifted
+        channel_name: types::UserName,
+        /// Cumulative months that user has been subscribed
+        cumulative_months: i64,
+        #[doc(hidden)]
+        is_gift: bool,
+        /// Months
+        months: i64,
+        // FIXME: should be a enum
+        // FIXME: Seems to always be zero on resubgift
+        /// Duration of subscription, e.g 1, 3 or 6
+        multi_month_duration: Option<i64>,
+        /// Display name of user that received gifted subscription
+        recipient_display_name: types::DisplayName,
+        /// Username of user that received gifted subscription
+        recipient_user_name: types::UserName,
+        // FIXME: Is this ever shared in a resubgift?
+        /// Months the recipient has been subscribed for in a row.
+        streak_months: Option<i64>,
+        /// Message sent with this subscription
+        #[doc(hidden)]
+        sub_message: SubMessage,
+        /// Subscription plan
+        sub_plan: types::SubscriptionTier,
+        /// Name of subscription plan
+        sub_plan_name: String,
+        /// Time when pubsub message was sent
+        time: types::Timestamp,
+        /// ID of user that purchased gifted subscription
+        user_id: types::UserId,
+        /// Username of user that purchased gifted subscription
+        user_name: types::UserName,
+        /// Display name of user that purchased gifted subscription
+        display_name: types::DisplayName,
+    },
 }
 
-/// Described where in a message a emote is
+/// Described where in a message an emote is
 #[derive(Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize)]
 #[non_exhaustive]
 pub struct Emote {
@@ -359,6 +403,52 @@ mod tests {
     "streak_months": 12,
     "context": "resub",
     "is_gift": false,
+    "multi_month_duration": 0
+}
+"##;
+
+        let source = format!(
+            r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-subscribe-events-v1.27620241", "message": {:?} }}}}"#,
+            message
+        );
+        let actual = dbg!(Response::parse(&source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChannelSubscribeEventsV1 { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn resub_gift() {
+        let message = r##"
+{
+    "benefit_end_month": 0,
+    "user_name": "emilgardis",
+    "display_name": "emilgardis",
+    "channel_name": "sessis",
+    "user_id": "158640756",
+    "channel_id": "80525799",
+    "recipient_user_name": "champi70",
+    "recipient_display_name": "Champi70",
+    "time": "2020-12-06T18:54:52.804481633Z",
+    "sub_message": {
+        "message": "¡Gracias, @emilgardis, por regalarme una suscripción! thank you so mych sessis for the streams you brighten my day each time you are in stream you are awesome sessHug",
+        "emotes": [
+            {
+                "start": 161,
+                "end": 167,
+                "id": "300741652"
+            }
+        ]
+    },
+    "sub_plan": "1000",
+    "sub_plan_name": "Channel Subscription (sessis)",
+    "months": 0,
+    "cumulative_months": 24,
+    "context": "resubgift",
+    "is_gift": true,
     "multi_month_duration": 0
 }
 "##;
