@@ -19,12 +19,14 @@
 //! # }
 //! ```
 
-#[doc(inline)]
-pub use get_all_stream_tags::{GetAllStreamTagsRequest, Tag};
-
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+
+pub mod get_all_stream_tags;
+
+#[doc(inline)]
+pub use get_all_stream_tags::{GetAllStreamTagsRequest, Tag};
 
 /// Language code, formatted as 2 letter language by ISO 639-1, a dash (`-`) and 2 letter region by ISO 3166-1
 ///
@@ -74,156 +76,4 @@ pub struct TwitchTag {
     pub localization_names: BTreeMap<TagLanguage, String>,
     /// All localized descriptions of the tag.
     pub localization_descriptions: BTreeMap<TagLanguage, String>,
-}
-
-/// Gets the list of all stream tags defined by Twitch, optionally filtered by tag ID(s).
-/// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
-///
-/// # Accessing the endpoint
-///
-/// ## Request: [GetAllStreamTagsRequest]
-///
-/// To use this endpoint, construct a [`GetAllStreamTagsRequest`] with the [`GetAllStreamTagsRequest::builder()`] method.
-///
-/// ```rust, no_run
-/// use twitch_api2::helix::tags::get_all_stream_tags;
-/// let request = get_all_stream_tags::GetAllStreamTagsRequest::builder()
-///     .first(100)
-///     .build();
-/// ```
-///
-/// ## Response: [Tag](helix::tags::TwitchTag)
-///
-/// Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
-///
-/// ```rust, no_run
-/// use twitch_api2::helix::{self, tags::get_all_stream_tags};
-/// # use twitch_api2::client;
-/// # #[tokio::main]
-/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-/// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
-/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
-/// let request = get_all_stream_tags::GetAllStreamTagsRequest::builder()
-///     .build();
-/// let response: Vec<get_all_stream_tags::Tag> = client.req_get(request, &token).await?.data;
-/// # Ok(())
-/// # }
-/// ```
-///
-/// You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-/// and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
-pub mod get_all_stream_tags {
-    use super::*;
-
-    /// Query Parameters for [Get All Stream Tags](super::get_all_stream_tags)
-    ///
-    /// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
-    #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
-    #[non_exhaustive]
-    pub struct GetAllStreamTagsRequest {
-        /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-        #[builder(default)]
-        pub after: Option<helix::Cursor>,
-        /// Maximum number of objects to return. Maximum: 100. Default: 20.
-        #[builder(default, setter(into))]
-        pub first: Option<usize>,
-        /// ID of a tag. Multiple IDs can be specified. If provided, only the specified tag(s) is(are) returned. Maximum of 100.
-        #[builder(default)]
-        pub tag_id: Vec<types::TagId>,
-    }
-
-    /// Return Values for [Get All Stream Tags](super::get_all_stream_tags)
-    ///
-    /// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
-    pub type Tag = helix::tags::TwitchTag;
-
-    impl helix::Request for GetAllStreamTagsRequest {
-        type Response = Vec<Tag>;
-
-        const PATH: &'static str = "tags/streams";
-        #[cfg(feature = "twitch_oauth2")]
-        const SCOPE: &'static [twitch_oauth2::Scope] = &[];
-    }
-
-    impl helix::RequestGet for GetAllStreamTagsRequest {}
-
-    impl helix::Paginated for GetAllStreamTagsRequest {
-        fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
-    }
-
-    #[test]
-    fn test_request() {
-        use helix::*;
-        let req = GetAllStreamTagsRequest::builder().first(3).build();
-
-        // From twitch docs.
-        let data = "\
-{\n\
-    \"data\": [\n\
-        {\n\
-            \"tag_id\": \"621fb5bf-5498-4d8f-b4ac-db4d40d401bf\",\n\
-            \"is_auto\": false,\n\
-            \"localization_names\": {\n\
-                \"bg-bg\": \"Завършване без продължаване\",\n\
-                \"cs-cz\": \"Na jeden z&aacute;tah\",\n\
-                \"da-dk\": \"1 Continue klaret\",\n\
-                \"de-de\": \"Mit nur 1 Leben\",\n\
-                \"el-gr\": \"1 χωρίς συνέχεια\",\n\
-                \"en-us\": \"1 Credit Clear\"\n\
-            },\n\
-            \"localization_descriptions\": {\n\
-                \"bg-bg\": \"За потоци с акцент върху завършване на аркадна игра с монети, в която не се използва продължаване\",\n\
-                \"cs-cz\": \"Pro vys&iacute;l&aacute;n&iacute; s důrazem na plněn&iacute; mincov&yacute;ch ark&aacute;dov&yacute;ch her bez použit&iacute; pokračov&aacute;n&iacute;.\",\n\
-                \"da-dk\": \"Til streams med v&aelig;gt p&aring; at gennemf&oslash;re et arkadespil uden at bruge continues\",\n\
-                \"de-de\": \"F&uuml;r Streams mit dem Ziel, ein Coin-op-Arcade-Game mit nur einem Leben abzuschlie&szlig;en.\",\n\
-                \"el-gr\": \"Για μεταδόσεις με έμφαση στην ολοκλήρωση παλαιού τύπου ηλεκτρονικών παιχνιδιών που λειτουργούν με κέρμα, χωρίς να χρησιμοποιούν συνέχειες\",\n\
-                \"en-us\": \"For streams with an emphasis on completing a coin-op arcade game without using any continues\"\n\
-            }\n\
-        },\n\
-        {\n\
-            \"tag_id\": \"7b49f69a-5d95-4c94-b7e3-66e2c0c6f6c6\",\n\
-            \"is_auto\": false,\n\
-            \"localization_names\": {\n\
-                \"bg-bg\": \"Дизайн\",\n\
-                \"cs-cz\": \"Design\",\n\
-                \"da-dk\": \"Design\",\n\
-                \"de-de\": \"Design\",\n\
-                \"el-gr\": \"Σχέδιο\",\n\
-                \"en-us\": \"Design\"\n\
-            },\n\
-            \"localization_descriptions\": {\n\
-                \"en-us\": \"For streams with an emphasis on the creative process of designing an object or system\"\n\
-            }\n\
-        },\n\
-        {\n\
-            \"tag_id\": \"1c628b75-b1c3-4a2f-9d1d-056c1f555f0e\",\n\
-            \"is_auto\": true,\n\
-            \"localization_names\": {\n\
-                \"bg-bg\": \"Ð¨Ð°Ð¼Ð¿Ð¸Ð¾Ð½: Lux\",\n\
-                \"cs-cz\": \"Å ampion: Lux\",\n\
-                \"da-dk\": \"Champion: Lux\"\n\
-            },\n\
-            \"localization_descriptions\": {\n\
-                \"en-us\": \"For streams featuring the champion Lux in League of Legends\"\n\
-            }\n\
-        }\n\
-    ],\n\
-    \"pagination\": {\n\
-        \"cursor\": \"eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6ImV5SnBaQ0k2ZXlKQ0lqcHVkV3hzTENKQ1QwOU1JanB1ZFd4c0xDS kNVeUk2Ym5Wc2JDd2lUQ0k2Ym5Wc2JDd2lUU0k2Ym5Wc2JDd2lUaUk2Ym5Wc2JDd2lUbE1pT201MWJHd3NJazV WVEV3aU9tNTFiR3dzSWxNaU9pSXhZell5T0dJM05TMWlNV016TFRSaE1tWXRPV1F4WkMwd05UWmpNV1kxTlRWb U1HVWlMQ0pUVXlJNmJuVnNiSDE5In19\"\n\
-    }\n\
-}\n\
-"
-        .as_bytes().to_vec();
-
-        let http_response = http::Response::builder().body(data).unwrap();
-
-        let uri = req.get_uri().unwrap();
-        assert_eq!(
-            uri.to_string(),
-            "https://api.twitch.tv/helix/tags/streams?first=3"
-        );
-
-        dbg!(req.parse_response(&uri, http_response).unwrap());
-    }
 }
