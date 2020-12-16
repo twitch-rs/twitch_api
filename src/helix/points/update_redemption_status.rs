@@ -55,8 +55,8 @@
 //! # }
 //! ```
 //!
-//! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! You can also get the [`http::Request`] with [`request.create_request(body, &token, &client_id)`](helix::RequestPatch::create_request)
+//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPatch::parse_response())
 
 use super::*;
 
