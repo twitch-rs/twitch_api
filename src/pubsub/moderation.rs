@@ -34,6 +34,59 @@ impl pubsub::Topic for ChatModeratorActions {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelModerate];
 }
 
+/// A moderation action. `moderation_action`
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct ModerationAction {
+    /// Arguments for moderation_action
+    #[serde(deserialize_with = "pubsub::deserialize_default_from_null")]
+    pub args: Vec<String>,
+    // FIXME: Should be option::none if empty
+    /// User that did moderation action
+    pub created_by: types::UserName,
+    // FIXME: Should be option::none if empty
+    /// ID of user that did moderation action
+    pub created_by_user_id: types::UserId,
+    /// Moderation action is triggered from automod
+    pub from_automod: bool,
+    /// Type of action
+    pub moderation_action: ModerationActionCommand,
+    /// ID of message associated with moderation action
+    pub msg_id: Option<String>,
+    /// Target of moderation action
+    pub target_user_id: types::UserId,
+    /// Type of moderation
+    #[serde(rename = "type")]
+    pub type_: ModerationType,
+    // Never filled
+    #[doc(hidden)]
+    pub target_user_login: Option<String>,
+}
+
+/// A moderator was added. `moderator_added`
+///
+/// # Notes
+///
+/// There is no `moderator_removed` message
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct ModeratorAdded {
+    /// ID of channel where moderator was added
+    pub channel_id: types::UserId,
+    /// ID of added moderator
+    pub target_user_id: types::UserId,
+    /// Moderation actiom. Should be [`mod`](ModerationActionCommand::Mod)
+    pub moderation_action: ModerationActionCommand,
+    /// Username of added moderator
+    pub target_user_login: types::UserName,
+    /// ID of user that added moderator
+    pub created_by_user_id: types::UserId,
+    /// Username of user that added moderator
+    pub created_by: types::UserName,
+}
+
 /// Reply from [ChatModeratorActions]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
@@ -42,51 +95,10 @@ impl pubsub::Topic for ChatModeratorActions {
 pub enum ChatModeratorActionsReply {
     /// A moderation action. `moderation_action`
     #[serde(rename = "moderation_action")]
-    ModerationAction {
-        /// Arguments for moderation_action
-        #[serde(deserialize_with = "pubsub::deserialize_default_from_null")]
-        args: Vec<String>,
-        // FIXME: Should be option::none if empty
-        /// User that did moderation action
-        created_by: types::UserName,
-        // FIXME: Should be option::none if empty
-        /// ID of user that did moderation action
-        created_by_user_id: types::UserId,
-        /// Moderation action is triggered from automod
-        from_automod: bool,
-        /// Type of action
-        moderation_action: ModerationActionCommand,
-        /// ID of message associated with moderation action
-        msg_id: Option<String>,
-        /// Target of moderation action
-        target_user_id: types::UserId,
-        /// Type of moderation
-        #[serde(rename = "type")]
-        type_: ModerationType,
-        // Never filled
-        #[doc(hidden)]
-        target_user_login: Option<String>,
-    },
+    ModerationAction(ModerationAction),
     /// A moderator was added. `moderator_added`
-    ///
-    /// # Notes
-    ///
-    /// There is no `moderator_removed` message
     #[serde(rename = "moderator_added")]
-    ModeratorAdded {
-        /// ID of channel where moderator was added
-        channel_id: types::UserId,
-        /// ID of added moderator
-        target_user_id: types::UserId,
-        /// Moderation actiom. Should be [`mod`](ModerationActionCommand::Mod)
-        moderation_action: ModerationActionCommand,
-        /// Username of added moderator
-        target_user_login: types::UserName,
-        /// ID of user that added moderator
-        created_by_user_id: types::UserId,
-        /// Username of user that added moderator
-        created_by: types::UserName,
-    },
+    ModeratorAdded(ModeratorAdded),
 }
 
 /// A command

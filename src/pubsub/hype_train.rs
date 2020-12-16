@@ -42,6 +42,116 @@ impl pubsub::Topic for HypeTrainEventsV1Rewards {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
+/// Hype train rewards
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct HypeTrainRewards {
+    // FIXME: Channel ID is sometimes missing, might be depending on your token
+    /// ID of channel where hype-train was initiated
+    pub channel_id: Option<types::UserId>,
+    /// Level of hype-train that was initiated
+    pub completed_level: i64,
+    /// Rewards
+    pub rewards: Vec<Reward>,
+}
+
+/// Hype train started in channel
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct HypeTrainStart {
+    // FIXME: Channel ID is sometimes missing, might be depending on your token
+    /// ID of channel where hype-train was initiated
+    pub channel_id: Option<types::UserId>,
+    /// Current conductors of this hype-train
+    #[doc(hidden)]
+    pub conductors: Conductors,
+    /// Config of this hype-train
+    pub config: Box<Config>,
+    #[doc(hidden)]
+    #[serde(default)]
+    pub ended_at: (),
+    #[doc(hidden)]
+    #[serde(default)]
+    pub ending_reason: (),
+    /// Server time epoch in milliseconds when hype train ends
+    pub expires_at: Option<i64>,
+    /// ID of hype train
+    pub id: Option<String>,
+    /// Participations in hype train
+    pub participations: Participations,
+    //#[serde(default)]
+    /// Progress of hype train
+    pub progress: Box<HypeTrainProgress>,
+    /// Server time epoch in milliseconds when hype train started
+    pub started_at: Option<i64>,
+    /// Server time epoch in milliseconds when hype train was updated
+    pub updated_at: Option<i64>,
+}
+
+/// Hype train ended
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct HypeTrainEnd {
+    /// Server time epoch in milliseconds when hype train ended
+    pub ended_at: i64,
+    /// Reason why hype train ended
+    pub ending_reason: EndingReason,
+}
+
+/// Hype train conductor updated
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct HypeTrainConductorUpdate {
+    /// Conductor source
+    pub source: SourceType,
+    /// User information of conductor
+    pub user: types::User,
+    /// Participations in hype train
+    pub participations: Participations,
+}
+
+/// Hype train progression. Akin to [Participations]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct HypeTrainProgression {
+    /// Unknown
+    pub sequence_id: i64,
+    /// Source type of progression
+    pub source: SourceType,
+    /// Action done to progress
+    pub action: ActionType,
+    /// Amount of actions done. i.e 500 (five-hundred) bits or 1 (one) tier 3 gift sub
+    pub quantity: i64,
+    /// Progress of hype train
+    pub progress: HypeTrainProgress,
+    // FIXME: Should use flatten here on types::User, but https://github.com/serde-rs/serde/issues/1504
+    /// Id of the user
+    pub user_id: types::UserId,
+    /// Login name of the user, not capitalized
+    pub user_login: types::UserName,
+    /// Display name of user
+    pub user_display_name: types::DisplayName,
+    // FIXME: 2020-11-05 I suspect this will always be returned
+    /// Profile picture of user
+    pub user_profile_image_url: Option<String>,
+}
+
+/// Hype train leveled up
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct HypeTrainLevelUp {
+    /// Server time epoch in milliseconds when hype train expires
+    pub time_to_expire: i64,
+    /// Progress of hype train
+    pub progress: HypeTrainProgress,
+}
+
 /// Reply from [HypeTrainEventsV1] or [HypeTrainEventsV1Rewards]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
@@ -50,99 +160,25 @@ impl pubsub::Topic for HypeTrainEventsV1Rewards {
 pub enum HypeTrainEventsV1Reply {
     /// Hype train rewards
     #[serde(rename = "hype-train-rewards")]
-    HypeTrainRewards {
-        // FIXME: Channel ID is sometimes missing, might be depending on your token
-        /// ID of channel where hype-train was initiated
-        channel_id: Option<types::UserId>,
-        /// Level of hype-train that was initiated
-        completed_level: i64,
-        /// Rewards
-        rewards: Vec<Reward>,
-    },
+    HypeTrainRewards(HypeTrainRewards),
     /// Hype train started in channel
     #[serde(rename = "hype-train-start")]
-    HypeTrainStart {
-        // FIXME: Channel ID is sometimes missing, might be depending on your token
-        /// ID of channel where hype-train was initiated
-        channel_id: Option<types::UserId>,
-        /// Current conductors of this hype-train
-        #[doc(hidden)]
-        conductors: Conductors,
-        /// Config of this hype-train
-        config: Box<Config>,
-        #[doc(hidden)]
-        #[serde(default)]
-        ended_at: (),
-        #[doc(hidden)]
-        #[serde(default)]
-        ending_reason: (),
-        /// Server time epoch in milliseconds when hype train ends
-        expires_at: Option<i64>,
-        /// ID of hype train
-        id: Option<String>,
-        /// Participations in hype train
-        participations: Participations,
-        //#[serde(default)]
-        /// Progress of hype train
-        progress: Box<HypeTrainProgress>,
-        /// Server time epoch in milliseconds when hype train started
-        started_at: Option<i64>,
-        /// Server time epoch in milliseconds when hype train was updated
-        updated_at: Option<i64>,
-    },
+    HypeTrainStart(HypeTrainStart),
     /// Hype train ended
     #[serde(rename = "hype-train-end")]
-    HypeTrainEnd {
-        /// Server time epoch in milliseconds when hype train ended
-        ended_at: i64,
-        /// Reason why hype train ended
-        ending_reason: EndingReason,
-    },
+    HypeTrainEnd(HypeTrainEnd),
     /// Hype train cooldown expired
     #[serde(rename = "hype-train-cooldown-expiration")]
     HypeTrainCooldownExpiration(#[doc(hidden)] Option<()>),
     /// Hype train conductor updated
     #[serde(rename = "hype-train-conductor-update")]
-    HypeTrainConductorUpdate {
-        /// Conductor source
-        source: SourceType,
-        /// User information of conductor
-        user: types::User,
-        /// Participations in hype train
-        participations: Participations,
-    },
+    HypeTrainConductorUpdate(HypeTrainConductorUpdate),
     /// Hype train progression. Akin to [Participations]
     #[serde(rename = "hype-train-progression")]
-    HypeTrainProgression {
-        /// Unknown
-        sequence_id: i64,
-        /// Source type of progression
-        source: SourceType,
-        /// Action done to progress
-        action: ActionType,
-        /// Amount of actions done. i.e 500 (five-hundred) bits or 1 (one) tier 3 gift sub
-        quantity: i64,
-        /// Progress of hype train
-        progress: HypeTrainProgress,
-        // FIXME: Should use flatten here on types::User, but https://github.com/serde-rs/serde/issues/1504
-        /// Id of the user
-        user_id: types::UserId,
-        /// Login name of the user, not capitalized
-        user_login: types::UserName,
-        /// Display name of user
-        user_display_name: types::DisplayName,
-        // FIXME: 2020-11-05 I suspect this will always be returned
-        /// Profile picture of user
-        user_profile_image_url: Option<String>,
-    },
+    HypeTrainProgression(HypeTrainProgression),
     /// Hype train leveled up
     #[serde(rename = "hype-train-level-up")]
-    HypeTrainLevelUp {
-        /// Server time epoch in milliseconds when hype train expires
-        time_to_expire: i64,
-        /// Progress of hype train
-        progress: HypeTrainProgress,
-    },
+    HypeTrainLevelUp(HypeTrainLevelUp),
 }
 
 /// Configuration of hype train

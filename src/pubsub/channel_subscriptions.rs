@@ -21,6 +21,171 @@ impl pubsub::Topic for ChannelSubscribeEventsV1 {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelSubscriptions];
 }
 
+/// A subscription
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct Sub {
+    // FIXME: Could be for month that subscription ends
+    /// Unknown
+    pub benefit_end_month: i64,
+    /// ID of the channel that has been subscribed or subgifted
+    pub channel_id: types::UserId,
+    /// Name of the channel that has been subscribed or subgifted
+    pub channel_name: types::UserName,
+    /// Cumulative months that user has been subscribed
+    pub cumulative_months: i64,
+    /// Resubscription is a gift
+    pub is_gift: bool,
+    #[doc(hidden)]
+    pub months: i64,
+    // FIXME: should be a enum
+    /// Duration of subscription, e.g 1, 3 or 6
+    pub multi_month_duration: i64,
+    /// Message sent with this subscription
+    pub sub_message: SubMessage,
+    /// Subscription plan
+    pub sub_plan: types::SubscriptionTier,
+    /// Name of subscription plan
+    pub sub_plan_name: String,
+    /// Time when pubsub message was sent
+    pub time: types::Timestamp,
+    /// ID of user that subscribed
+    pub user_id: types::UserId,
+    /// Username of user that subscribed
+    pub user_name: types::UserName,
+    /// Display name of user that subscribed
+    pub display_name: types::DisplayName,
+}
+
+/// A resubscription
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct ReSub {
+    // missing in documented example
+    // FIXME: Could be for month that subscription ends
+    /// Unknown
+    pub benefit_end_month: Option<i64>,
+    /// ID of the channel that has been subscribed or subgifted
+    pub channel_id: types::UserId,
+    /// Name of the channel that has been subscribed or subgifted
+    pub channel_name: types::UserName,
+    /// Cumulative months that user has been subscribed
+    pub cumulative_months: i64,
+    /// Resubscription is a gift
+    pub is_gift: bool,
+    /// Months the user has been subscribed for in a row.
+    pub streak_months: Option<i64>,
+    #[doc(hidden)]
+    pub months: i64,
+    /// Duration of subscription, e.g 1, 3 or 6
+    pub multi_month_duration: Option<i64>,
+    /// Message sent with this subscription
+    pub sub_message: SubMessage,
+    /// Subscription plan
+    pub sub_plan: types::SubscriptionTier,
+    /// Name of subscription plan
+    pub sub_plan_name: String,
+    /// Time when pubsub message was sent
+    pub time: types::Timestamp,
+    /// ID of user that subscribed
+    pub user_id: types::UserId,
+    /// Username of user that subscribed
+    pub user_name: types::UserName,
+    /// Display name of user that subscribed
+    pub display_name: types::DisplayName,
+}
+
+/// A gifted subscription happened
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct SubGift {
+    // missing in documented example
+    // FIXME: Could be for month that subscription ends
+    /// Unknown
+    pub benefit_end_month: Option<i64>,
+    /// ID of the channel that has been subscribed or subgifted
+    pub channel_id: types::UserId,
+    /// Name of the channel that has been subscribed or subgifted
+    pub channel_name: types::UserName,
+    #[doc(hidden)]
+    pub is_gift: bool,
+    /// Months
+    pub months: i64,
+    // FIXME: should be a enum
+    /// Duration of subscription, e.g 1, 3 or 6
+    pub multi_month_duration: Option<i64>,
+    /// Display name of user that received gifted subscription
+    pub recipient_display_name: types::DisplayName,
+    /// Username of user that received gifted subscription
+    pub recipient_id: types::UserId,
+    /// Username of user that received gifted subscription
+    pub recipient_user_name: types::UserName,
+    /// Message sent with this subscription
+    #[doc(hidden)]
+    pub sub_message: SubMessage,
+    /// Subscription plan
+    pub sub_plan: types::SubscriptionTier,
+    /// Name of subscription plan
+    pub sub_plan_name: String,
+    /// Time when pubsub message was sent
+    pub time: types::Timestamp,
+    /// ID of user that purchased gifted subscription
+    pub user_id: types::UserId,
+    /// Username of user that purchased gifted subscription
+    pub user_name: types::UserName,
+    /// Display name of user that purchased gifted subscription
+    pub display_name: types::DisplayName,
+}
+
+/// Gifted resubscription with optional message
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct ResubGift {
+    // missing in documented example
+    // FIXME: Could be for month that subscription ends
+    /// Unknown
+    pub benefit_end_month: Option<i64>,
+    /// ID of the channel that has been subscribed or subgifted
+    pub channel_id: types::UserId,
+    /// Name of the channel that has been subscribed or subgifted
+    pub channel_name: types::UserName,
+    /// Cumulative months that user has been subscribed
+    pub cumulative_months: i64,
+    #[doc(hidden)]
+    pub is_gift: bool,
+    /// Months
+    pub months: i64,
+    // FIXME: should be a enum
+    // FIXME: Seems to always be zero on resubgift
+    /// Duration of subscription, e.g 1, 3 or 6
+    pub multi_month_duration: Option<i64>,
+    /// Display name of user that received gifted subscription
+    pub recipient_display_name: types::DisplayName,
+    /// Username of user that received gifted subscription
+    pub recipient_user_name: types::UserName,
+    // FIXME: Is this ever shared in a resubgift?
+    /// Months the recipient has been subscribed for in a row.
+    pub streak_months: Option<i64>,
+    /// Message sent with this subscription
+    pub sub_message: SubMessage,
+    /// Subscription plan
+    pub sub_plan: types::SubscriptionTier,
+    /// Name of subscription plan
+    pub sub_plan_name: String,
+    /// Time when pubsub message was sent
+    pub time: types::Timestamp,
+    /// ID of user that purchased gifted subscription
+    pub user_id: types::UserId,
+    /// Username of user that purchased gifted subscription
+    pub user_name: types::UserName,
+    /// Display name of user that purchased gifted subscription
+    pub display_name: types::DisplayName,
+}
+
 // FIXME: Missing anonsubgift and anonresubgift
 // Should probably share fields.
 /// Reply from [ChannelSubscribeEventsV1]
@@ -31,158 +196,16 @@ impl pubsub::Topic for ChannelSubscribeEventsV1 {
 pub enum ChannelSubscribeEventsV1Reply {
     /// A subscription
     #[serde(rename = "sub")]
-    Sub {
-        // FIXME: Could be for month that subscription ends
-        /// Unknown
-        benefit_end_month: i64,
-        /// ID of the channel that has been subscribed or subgifted
-        channel_id: types::UserId,
-        /// Name of the channel that has been subscribed or subgifted
-        channel_name: types::UserName,
-        /// Cumulative months that user has been subscribed
-        cumulative_months: i64,
-        /// Resubscription is a gift
-        is_gift: bool,
-        #[doc(hidden)]
-        months: i64,
-        // FIXME: should be a enum
-        /// Duration of subscription, e.g 1, 3 or 6
-        multi_month_duration: i64,
-        /// Message sent with this subscription
-        sub_message: SubMessage,
-        /// Subscription plan
-        sub_plan: types::SubscriptionTier,
-        /// Name of subscription plan
-        sub_plan_name: String,
-        /// Time when pubsub message was sent
-        time: types::Timestamp,
-        /// ID of user that subscribed
-        user_id: types::UserId,
-        /// Username of user that subscribed
-        user_name: types::UserName,
-        /// Display name of user that subscribed
-        display_name: types::DisplayName,
-    },
+    Sub(Sub),
     /// A resubscription
     #[serde(rename = "resub")]
-    ReSub {
-        // missing in documented example
-        // FIXME: Could be for month that subscription ends
-        /// Unknown
-        benefit_end_month: Option<i64>,
-        /// ID of the channel that has been subscribed or subgifted
-        channel_id: types::UserId,
-        /// Name of the channel that has been subscribed or subgifted
-        channel_name: types::UserName,
-        /// Cumulative months that user has been subscribed
-        cumulative_months: i64,
-        /// Resubscription is a gift
-        is_gift: bool,
-        /// Months the user has been subscribed for in a row.
-        streak_months: Option<i64>,
-        #[doc(hidden)]
-        months: i64,
-        /// Duration of subscription, e.g 1, 3 or 6
-        multi_month_duration: Option<i64>,
-        /// Message sent with this subscription
-        sub_message: SubMessage,
-        /// Subscription plan
-        sub_plan: types::SubscriptionTier,
-        /// Name of subscription plan
-        sub_plan_name: String,
-        /// Time when pubsub message was sent
-        time: types::Timestamp,
-        /// ID of user that subscribed
-        user_id: types::UserId,
-        /// Username of user that subscribed
-        user_name: types::UserName,
-        /// Display name of user that subscribed
-        display_name: types::DisplayName,
-    },
+    ReSub(ReSub),
     /// A gifted subscription happened
     #[serde(rename = "subgift")]
-    SubGift {
-        // missing in documented example
-        // FIXME: Could be for month that subscription ends
-        /// Unknown
-        benefit_end_month: Option<i64>,
-        /// ID of the channel that has been subscribed or subgifted
-        channel_id: types::UserId,
-        /// Name of the channel that has been subscribed or subgifted
-        channel_name: types::UserName,
-        #[doc(hidden)]
-        is_gift: bool,
-        /// Months
-        months: i64,
-        // FIXME: should be a enum
-        /// Duration of subscription, e.g 1, 3 or 6
-        multi_month_duration: Option<i64>,
-        /// Display name of user that received gifted subscription
-        recipient_display_name: types::DisplayName,
-        /// Username of user that received gifted subscription
-        recipient_id: types::UserId,
-        /// Username of user that received gifted subscription
-        recipient_user_name: types::UserName,
-        /// Message sent with this subscription
-        #[doc(hidden)]
-        sub_message: SubMessage,
-        /// Subscription plan
-        sub_plan: types::SubscriptionTier,
-        /// Name of subscription plan
-        sub_plan_name: String,
-        /// Time when pubsub message was sent
-        time: types::Timestamp,
-        /// ID of user that purchased gifted subscription
-        user_id: types::UserId,
-        /// Username of user that purchased gifted subscription
-        user_name: types::UserName,
-        /// Display name of user that purchased gifted subscription
-        display_name: types::DisplayName,
-    },
+    SubGift(SubGift),
     /// Gifted resubscription with optional message
     #[serde(rename = "resubgift")]
-    ResubGift {
-        // missing in documented example
-        // FIXME: Could be for month that subscription ends
-        /// Unknown
-        benefit_end_month: Option<i64>,
-        /// ID of the channel that has been subscribed or subgifted
-        channel_id: types::UserId,
-        /// Name of the channel that has been subscribed or subgifted
-        channel_name: types::UserName,
-        /// Cumulative months that user has been subscribed
-        cumulative_months: i64,
-        #[doc(hidden)]
-        is_gift: bool,
-        /// Months
-        months: i64,
-        // FIXME: should be a enum
-        // FIXME: Seems to always be zero on resubgift
-        /// Duration of subscription, e.g 1, 3 or 6
-        multi_month_duration: Option<i64>,
-        /// Display name of user that received gifted subscription
-        recipient_display_name: types::DisplayName,
-        /// Username of user that received gifted subscription
-        recipient_user_name: types::UserName,
-        // FIXME: Is this ever shared in a resubgift?
-        /// Months the recipient has been subscribed for in a row.
-        streak_months: Option<i64>,
-        /// Message sent with this subscription
-        #[doc(hidden)]
-        sub_message: SubMessage,
-        /// Subscription plan
-        sub_plan: types::SubscriptionTier,
-        /// Name of subscription plan
-        sub_plan_name: String,
-        /// Time when pubsub message was sent
-        time: types::Timestamp,
-        /// ID of user that purchased gifted subscription
-        user_id: types::UserId,
-        /// Username of user that purchased gifted subscription
-        user_name: types::UserName,
-        /// Display name of user that purchased gifted subscription
-        display_name: types::DisplayName,
-    },
+    ResubGift(ResubGift),
 }
 
 /// Described where in a message an emote is
