@@ -61,11 +61,11 @@ pub struct GetChannelInformationRequest {
 pub struct ChannelInformation {
     /// Twitch User ID of this channel owner
     pub broadcaster_id: types::UserId,
-    /// User name of this channel owner
+    /// Twitch user display name of this channel owner
     pub broadcaster_name: types::UserName,
     /// Current game ID being played on the channel
     pub game_id: types::CategoryId,
-    /// Name of current game being played on the channel
+    /// Name of the game being played on the channel
     pub game_name: types::CategoryId,
     /// Language of the channel
     pub broadcaster_language: String,
