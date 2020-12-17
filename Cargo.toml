@@ -55,7 +55,9 @@ reqwest_client = ["reqwest", "client"]
 
 pubsub = ["serde_json"]
 
-all = ["tmi", "helix", "surf_client", "reqwest_client", "client", "pubsub"]
+eventsub = ["serde_json"]
+
+all = ["tmi", "helix", "surf_client", "reqwest_client", "client", "pubsub", "eventsub"]
 
 [dev-dependencies]
 tokio = { version = "0.2.23", features = ["rt-threaded", "macros"] }

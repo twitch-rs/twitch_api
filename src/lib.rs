@@ -78,6 +78,10 @@ pub mod tmi;
 #[cfg_attr(nightly, doc(cfg(feature = "pubsub")))]
 pub mod pubsub;
 
+#[cfg(feature = "eventsub")]
+#[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
+pub mod eventsub;
+
 #[cfg(all(feature = "helix", feature = "client"))]
 #[doc(inline)]
 pub use crate::helix::HelixClient;
