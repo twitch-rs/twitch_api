@@ -48,6 +48,8 @@ This crate aims to target
   * Partially implemented, see [implemented endpoints](#helix)
 * TMI
   * Implemented, see [implemented endpoints](#tmi)
+* [EventSub](https://dev.twitch.tv/docs/eventsub/eventsub-reference)
+  * Not implemented, see issue #55
 * [Webhooks](https://dev.twitch.tv/docs/api/webhooks-reference)
 * [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
   * Partially implemented, see [implemented topics](#pubsub)
