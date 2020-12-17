@@ -125,8 +125,9 @@ impl helix::RequestPost for CreateUserFollowsRequest {
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body())
-            .map_err(|e| helix::HelixRequestPostError::Utf8Error(response.body().clone(), e))?;
+        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+            helix::HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
+        })?;
         if let Ok(helix::HelixRequestError {
             error,
             status,
