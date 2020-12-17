@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/channels/get_channel_information.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_channel_information.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/ea8cc19e5ae2cdf48faf9b1ba97ca367d364ed01">ea8cc19</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/5e8343e50e185116624637741a92d25475e5535b">5e8343e</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -157,6 +157,9 @@
 <span id="152">152</span>
 <span id="153">153</span>
 <span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Gets channel information for users.</span>
 <span class="doccomment">//! [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)</span>
@@ -221,11 +224,11 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelInformation</span> {
     <span class="doccomment">/// Twitch User ID of this channel owner</span>
     <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-    <span class="doccomment">/// User name of this channel owner</span>
+    <span class="doccomment">/// Twitch user display name of this channel owner</span>
     <span class="kw">pub</span> <span class="ident">broadcaster_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
     <span class="doccomment">/// Current game ID being played on the channel</span>
     <span class="kw">pub</span> <span class="ident">game_id</span>: <span class="ident">types</span>::<span class="ident">CategoryId</span>,
-    <span class="doccomment">/// Name of current game being played on the channel</span>
+    <span class="doccomment">/// Name of the game being played on the channel</span>
     <span class="kw">pub</span> <span class="ident">game_name</span>: <span class="ident">types</span>::<span class="ident">CategoryId</span>,
     <span class="doccomment">/// Language of the channel</span>
     <span class="kw">pub</span> <span class="ident">broadcaster_language</span>: <span class="ident">String</span>,
@@ -253,8 +256,9 @@
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
-        <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">response</span>.<span class="ident">body</span>())
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">helix</span>::<span class="ident">HelixRequestGetError</span>::<span class="ident">Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>))<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">response</span>.<span class="ident">body</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+            <span class="ident">helix</span>::<span class="ident">HelixRequestGetError</span>::<span class="ident">Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+        })<span class="question-mark">?</span>;
         <span class="comment">//eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);</span>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">helix</span>::<span class="ident">HelixRequestError</span> {
             <span class="ident">error</span>,
@@ -269,7 +273,9 @@
                 <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
             });
         }
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">helix</span>::<span class="ident">InnerResponse</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">helix</span>::<span class="ident">InnerResponse</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+            <span class="ident">helix</span>::<span class="ident">HelixRequestGetError</span>::<span class="ident">DeserializeError</span>(<span class="ident">text</span>.<span class="ident">to_string</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+        })<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">helix</span>::<span class="ident">Response</span> {
             <span class="ident">data</span>: <span class="ident">response</span>.<span class="ident">data</span>.<span class="ident">into_iter</span>().<span class="ident">next</span>(),
             <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span>,

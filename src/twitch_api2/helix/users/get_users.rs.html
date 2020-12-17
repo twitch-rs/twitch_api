@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/users/get_users.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_users.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/ea8cc19e5ae2cdf48faf9b1ba97ca367d364ed01">ea8cc19</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/5e8343e50e185116624637741a92d25475e5535b">5e8343e</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -135,6 +135,10 @@
 <span id="130">130</span>
 <span id="131">131</span>
 <span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Gets information about one or more specified Twitch users.</span>
 <span class="doccomment">//! [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)</span>
@@ -199,6 +203,8 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">User</span> {
     <span class="doccomment">/// User’s broadcaster type: &quot;partner&quot;, &quot;affiliate&quot;, or &quot;&quot;.</span>
     <span class="kw">pub</span> <span class="ident">broadcaster_type</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">BroadcasterType</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Account creation time</span>
+    <span class="kw">pub</span> <span class="ident">created_at</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
     <span class="doccomment">/// User’s channel description.</span>
     <span class="kw">pub</span> <span class="ident">description</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// User’s display name.</span>
@@ -240,6 +246,7 @@
         .<span class="ident">build</span>();
 
     <span class="comment">// From twitch docs</span>
+    <span class="comment">// FIXME: This is not valid anymore. Twitch....</span>
     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">br#&quot;
 {
     &quot;data&quot;: [{
@@ -252,7 +259,8 @@
         &quot;profile_image_url&quot;: &quot;https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-profile_image-1a2c906ee2c35f12-300x300.png&quot;,
         &quot;offline_image_url&quot;: &quot;https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-channel_offline_image-1a2c906ee2c35f12-1920x1080.png&quot;,
         &quot;view_count&quot;: 191836881,
-        &quot;email&quot;: &quot;login@provider.com&quot;
+        &quot;email&quot;: &quot;login@provider.com&quot;,
+        &quot;created_at&quot;: &quot;2013-06-03T19:12:02.580593Z&quot;
     }]
 }
 &quot;#</span>
