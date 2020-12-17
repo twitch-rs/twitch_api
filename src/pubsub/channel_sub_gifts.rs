@@ -23,6 +23,23 @@ impl pubsub::Topic for ChannelSubGiftsV1 {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
+/// Mystery gift
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct MysteryGiftPurchase {
+    /// Channel where mystery gifts were distributed
+    pub channel_id: types::UserId,
+    /// Amount of mystery gifts
+    pub count: i64,
+    /// Tier of mystery gifts
+    pub tier: types::SubscriptionTier,
+    /// User ID of user that purchased mystery gifts
+    pub user_id: types::UserId,
+    /// Unknown
+    pub uuid: String,
+}
+
 /// Reply from [ChannelSubGiftsV1]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
@@ -31,18 +48,7 @@ impl pubsub::Topic for ChannelSubGiftsV1 {
 pub enum ChannelSubGiftsV1Reply {
     /// Mystery gift
     #[serde(rename = "mystery-gift-purchase")]
-    MysteryGiftPurchase {
-        /// Channel where mystery gifts were distributed
-        channel_id: types::UserId,
-        /// Amount of mystery gifts
-        count: i64,
-        /// Tier of mystery gifts
-        tier: types::SubscriptionTier,
-        /// User ID of user that purchased mystery gifts
-        user_id: types::UserId,
-        /// Unknown
-        uuid: String,
-    },
+    MysteryGiftPurchase(MysteryGiftPurchase),
 }
 
 #[cfg(test)]

@@ -17,6 +17,87 @@ impl pubsub::Topic for Raid {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
+/// Raid go
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct RaidGoV2 {
+    /// ID of user would be raided
+    pub creator_id: types::UserId,
+    /// Raid will be force started in this many seconds
+    pub force_raid_now_seconds: i64,
+    /// ID of raid
+    pub id: String,
+    /// ID of broadcaster doing raid
+    pub source_id: types::UserId,
+    /// Display name of targeted broadcaster/user
+    pub target_display_name: types::DisplayName,
+    /// ID of targeted broadcaster/user
+    pub target_id: types::UserId,
+    /// Username of targeted broadcaster/user
+    pub target_login: types::UserName,
+    /// Profile picture of targeted broadcaster/user
+    pub target_profile_image: String,
+    /// Jitter amount
+    pub transition_jitter_seconds: i64,
+    /// Amount of viewers that will join raid
+    pub viewer_count: i64,
+}
+
+/// Raid update
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct RaidUpdateV2 {
+    /// ID of user would be raided
+    pub creator_id: types::UserId,
+    /// Raid will be force started in this many seconds
+    pub force_raid_now_seconds: i64,
+    /// ID of raid
+    pub id: String,
+    /// ID of broadcaster doing raid
+    pub source_id: types::UserId,
+    /// Display name of targeted broadcaster/user
+    pub target_display_name: types::DisplayName,
+    /// ID of targeted broadcaster/user
+    pub target_id: types::UserId,
+    /// Username of targeted broadcaster/user
+    pub target_login: types::UserName,
+    /// Profile picture of targeted broadcaster/user
+    pub target_profile_image: String,
+    /// Jitter amount
+    pub transition_jitter_seconds: i64,
+    /// Amount of viewers that will join raid
+    pub viewer_count: i64,
+}
+
+/// Raid canceled
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct RaidCancelV2 {
+    /// ID of user would be raided
+    pub creator_id: types::UserId,
+    /// Raid would have be force started in this many seconds
+    pub force_raid_now_seconds: i64,
+    /// ID of raid
+    pub id: String,
+    /// ID of broadcaster doing raid
+    pub source_id: types::UserId,
+    /// Display name of targeted broadcaster/user
+    pub target_display_name: types::DisplayName,
+    /// ID of targeted broadcaster/user
+    pub target_id: types::UserId,
+    /// Username of targeted broadcaster/user
+    pub target_login: types::UserName,
+    /// Profile picture of targeted broadcaster/user
+    pub target_profile_image: String,
+    /// Jitter amount
+    pub transition_jitter_seconds: i64,
+    /// Amount of viewers that would join raid
+    pub viewer_count: i64,
+}
+
 /// Reply from [Raid]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", content = "raid")]
@@ -25,76 +106,13 @@ impl pubsub::Topic for Raid {
 pub enum RaidReply {
     /// Raid go
     #[serde(rename = "raid_go_v2")]
-    RaidGoV2 {
-        /// ID of user would be raided
-        creator_id: types::UserId,
-        /// Raid will be force started in this many seconds
-        force_raid_now_seconds: i64,
-        /// ID of raid
-        id: String,
-        /// ID of broadcaster doing raid
-        source_id: types::UserId,
-        /// Display name of targeted broadcaster/user
-        target_display_name: types::DisplayName,
-        /// ID of targeted broadcaster/user
-        target_id: types::UserId,
-        /// Username of targeted broadcaster/user
-        target_login: types::UserName,
-        /// Profile picture of targeted broadcaster/user
-        target_profile_image: String,
-        /// Jitter amount
-        transition_jitter_seconds: i64,
-        /// Amount of viewers that will join raid
-        viewer_count: i64,
-    },
+    RaidGoV2(RaidGoV2),
     /// Raid update
     #[serde(rename = "raid_update_v2")]
-    RaidUpdateV2 {
-        /// ID of user would be raided
-        creator_id: types::UserId,
-        /// Raid will be force started in this many seconds
-        force_raid_now_seconds: i64,
-        /// ID of raid
-        id: String,
-        /// ID of broadcaster doing raid
-        source_id: types::UserId,
-        /// Display name of targeted broadcaster/user
-        target_display_name: types::DisplayName,
-        /// ID of targeted broadcaster/user
-        target_id: types::UserId,
-        /// Username of targeted broadcaster/user
-        target_login: types::UserName,
-        /// Profile picture of targeted broadcaster/user
-        target_profile_image: String,
-        /// Jitter amount
-        transition_jitter_seconds: i64,
-        /// Amount of viewers that will join raid
-        viewer_count: i64,
-    },
+    RaidUpdateV2(RaidUpdateV2),
     /// Raid canceled
     #[serde(rename = "raid_cancel_v2")]
-    RaidCancelV2 {
-        /// ID of user would be raided
-        creator_id: types::UserId,
-        /// Raid would have be force started in this many seconds
-        force_raid_now_seconds: i64,
-        /// ID of raid
-        id: String,
-        /// ID of broadcaster doing raid
-        source_id: types::UserId,
-        /// Display name of targeted broadcaster/user
-        target_display_name: types::DisplayName,
-        /// ID of targeted broadcaster/user
-        target_id: types::UserId,
-        /// Username of targeted broadcaster/user
-        target_login: types::UserName,
-        /// Profile picture of targeted broadcaster/user
-        target_profile_image: String,
-        /// Jitter amount
-        transition_jitter_seconds: i64,
-        /// Amount of viewers that would join raid
-        viewer_count: i64,
-    },
+    RaidCancelV2(RaidCancelV2),
 }
 
 #[cfg(test)]
