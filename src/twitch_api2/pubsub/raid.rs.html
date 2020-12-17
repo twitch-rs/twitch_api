@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/raid.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>raid.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/5e8343e50e185116624637741a92d25475e5535b">5e8343e</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/655025c6a461104d98122918f54cf3b71bbfd9dc">655025c</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -220,6 +220,24 @@
 <span id="215">215</span>
 <span id="216">216</span>
 <span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! PubSub messages for raids</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">pubsub</span>, <span class="ident">types</span>};
@@ -240,6 +258,87 @@
     <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[];
 }
 
+<span class="doccomment">/// Raid go</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RaidGoV2</span> {
+    <span class="doccomment">/// ID of user would be raided</span>
+    <span class="kw">pub</span> <span class="ident">creator_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Raid will be force started in this many seconds</span>
+    <span class="kw">pub</span> <span class="ident">force_raid_now_seconds</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// ID of raid</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// ID of broadcaster doing raid</span>
+    <span class="kw">pub</span> <span class="ident">source_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Display name of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+    <span class="doccomment">/// ID of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Username of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_login</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Profile picture of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_profile_image</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Jitter amount</span>
+    <span class="kw">pub</span> <span class="ident">transition_jitter_seconds</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Amount of viewers that will join raid</span>
+    <span class="kw">pub</span> <span class="ident">viewer_count</span>: <span class="ident">i64</span>,
+}
+
+<span class="doccomment">/// Raid update</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RaidUpdateV2</span> {
+    <span class="doccomment">/// ID of user would be raided</span>
+    <span class="kw">pub</span> <span class="ident">creator_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Raid will be force started in this many seconds</span>
+    <span class="kw">pub</span> <span class="ident">force_raid_now_seconds</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// ID of raid</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// ID of broadcaster doing raid</span>
+    <span class="kw">pub</span> <span class="ident">source_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Display name of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+    <span class="doccomment">/// ID of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Username of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_login</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Profile picture of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_profile_image</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Jitter amount</span>
+    <span class="kw">pub</span> <span class="ident">transition_jitter_seconds</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Amount of viewers that will join raid</span>
+    <span class="kw">pub</span> <span class="ident">viewer_count</span>: <span class="ident">i64</span>,
+}
+
+<span class="doccomment">/// Raid canceled</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RaidCancelV2</span> {
+    <span class="doccomment">/// ID of user would be raided</span>
+    <span class="kw">pub</span> <span class="ident">creator_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Raid would have be force started in this many seconds</span>
+    <span class="kw">pub</span> <span class="ident">force_raid_now_seconds</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// ID of raid</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// ID of broadcaster doing raid</span>
+    <span class="kw">pub</span> <span class="ident">source_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Display name of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+    <span class="doccomment">/// ID of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Username of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_login</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Profile picture of targeted broadcaster/user</span>
+    <span class="kw">pub</span> <span class="ident">target_profile_image</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Jitter amount</span>
+    <span class="kw">pub</span> <span class="ident">transition_jitter_seconds</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Amount of viewers that would join raid</span>
+    <span class="kw">pub</span> <span class="ident">viewer_count</span>: <span class="ident">i64</span>,
+}
+
 <span class="doccomment">/// Reply from [Raid]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>, <span class="ident">content</span> <span class="op">=</span> <span class="string">&quot;raid&quot;</span>)]</span>
@@ -248,76 +347,13 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RaidReply</span> {
     <span class="doccomment">/// Raid go</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;raid_go_v2&quot;</span>)]</span>
-    <span class="ident">RaidGoV2</span> {
-        <span class="doccomment">/// ID of user would be raided</span>
-        <span class="ident">creator_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Raid will be force started in this many seconds</span>
-        <span class="ident">force_raid_now_seconds</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// ID of raid</span>
-        <span class="ident">id</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// ID of broadcaster doing raid</span>
-        <span class="ident">source_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Display name of targeted broadcaster/user</span>
-        <span class="ident">target_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-        <span class="doccomment">/// ID of targeted broadcaster/user</span>
-        <span class="ident">target_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Username of targeted broadcaster/user</span>
-        <span class="ident">target_login</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Profile picture of targeted broadcaster/user</span>
-        <span class="ident">target_profile_image</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// Jitter amount</span>
-        <span class="ident">transition_jitter_seconds</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Amount of viewers that will join raid</span>
-        <span class="ident">viewer_count</span>: <span class="ident">i64</span>,
-    },
+    <span class="ident">RaidGoV2</span>(<span class="ident">RaidGoV2</span>),
     <span class="doccomment">/// Raid update</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;raid_update_v2&quot;</span>)]</span>
-    <span class="ident">RaidUpdateV2</span> {
-        <span class="doccomment">/// ID of user would be raided</span>
-        <span class="ident">creator_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Raid will be force started in this many seconds</span>
-        <span class="ident">force_raid_now_seconds</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// ID of raid</span>
-        <span class="ident">id</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// ID of broadcaster doing raid</span>
-        <span class="ident">source_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Display name of targeted broadcaster/user</span>
-        <span class="ident">target_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-        <span class="doccomment">/// ID of targeted broadcaster/user</span>
-        <span class="ident">target_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Username of targeted broadcaster/user</span>
-        <span class="ident">target_login</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Profile picture of targeted broadcaster/user</span>
-        <span class="ident">target_profile_image</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// Jitter amount</span>
-        <span class="ident">transition_jitter_seconds</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Amount of viewers that will join raid</span>
-        <span class="ident">viewer_count</span>: <span class="ident">i64</span>,
-    },
+    <span class="ident">RaidUpdateV2</span>(<span class="ident">RaidUpdateV2</span>),
     <span class="doccomment">/// Raid canceled</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;raid_cancel_v2&quot;</span>)]</span>
-    <span class="ident">RaidCancelV2</span> {
-        <span class="doccomment">/// ID of user would be raided</span>
-        <span class="ident">creator_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Raid would have be force started in this many seconds</span>
-        <span class="ident">force_raid_now_seconds</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// ID of raid</span>
-        <span class="ident">id</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// ID of broadcaster doing raid</span>
-        <span class="ident">source_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Display name of targeted broadcaster/user</span>
-        <span class="ident">target_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-        <span class="doccomment">/// ID of targeted broadcaster/user</span>
-        <span class="ident">target_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Username of targeted broadcaster/user</span>
-        <span class="ident">target_login</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Profile picture of targeted broadcaster/user</span>
-        <span class="ident">target_profile_image</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// Jitter amount</span>
-        <span class="ident">transition_jitter_seconds</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Amount of viewers that would join raid</span>
-        <span class="ident">viewer_count</span>: <span class="ident">i64</span>,
-    },
+    <span class="ident">RaidCancelV2</span>(<span class="ident">RaidCancelV2</span>),
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>

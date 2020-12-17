@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_subscriptions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>channel_subscriptions.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/5e8343e50e185116624637741a92d25475e5535b">5e8343e</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/655025c6a461104d98122918f54cf3b71bbfd9dc">655025c</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -488,6 +488,29 @@
 <span id="483">483</span>
 <span id="484">484</span>
 <span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! PubSub messages for subscriptions</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">pubsub</span>, <span class="ident">types</span>};
@@ -512,6 +535,171 @@
     <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>::<span class="ident">ChannelSubscriptions</span>];
 }
 
+<span class="doccomment">/// A subscription</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Sub</span> {
+    <span class="comment">// FIXME: Could be for month that subscription ends</span>
+    <span class="doccomment">/// Unknown</span>
+    <span class="kw">pub</span> <span class="ident">benefit_end_month</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
+    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
+    <span class="kw">pub</span> <span class="ident">channel_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Cumulative months that user has been subscribed</span>
+    <span class="kw">pub</span> <span class="ident">cumulative_months</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Resubscription is a gift</span>
+    <span class="kw">pub</span> <span class="ident">is_gift</span>: <span class="ident">bool</span>,
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">months</span>: <span class="ident">i64</span>,
+    <span class="comment">// FIXME: should be a enum</span>
+    <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
+    <span class="kw">pub</span> <span class="ident">multi_month_duration</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Message sent with this subscription</span>
+    <span class="kw">pub</span> <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
+    <span class="doccomment">/// Subscription plan</span>
+    <span class="kw">pub</span> <span class="ident">sub_plan</span>: <span class="ident">types</span>::<span class="ident">SubscriptionTier</span>,
+    <span class="doccomment">/// Name of subscription plan</span>
+    <span class="kw">pub</span> <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Time when pubsub message was sent</span>
+    <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
+    <span class="doccomment">/// ID of user that subscribed</span>
+    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Username of user that subscribed</span>
+    <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Display name of user that subscribed</span>
+    <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+}
+
+<span class="doccomment">/// A resubscription</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReSub</span> {
+    <span class="comment">// missing in documented example</span>
+    <span class="comment">// FIXME: Could be for month that subscription ends</span>
+    <span class="doccomment">/// Unknown</span>
+    <span class="kw">pub</span> <span class="ident">benefit_end_month</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
+    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
+    <span class="kw">pub</span> <span class="ident">channel_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Cumulative months that user has been subscribed</span>
+    <span class="kw">pub</span> <span class="ident">cumulative_months</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Resubscription is a gift</span>
+    <span class="kw">pub</span> <span class="ident">is_gift</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Months the user has been subscribed for in a row.</span>
+    <span class="kw">pub</span> <span class="ident">streak_months</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">months</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
+    <span class="kw">pub</span> <span class="ident">multi_month_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Message sent with this subscription</span>
+    <span class="kw">pub</span> <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
+    <span class="doccomment">/// Subscription plan</span>
+    <span class="kw">pub</span> <span class="ident">sub_plan</span>: <span class="ident">types</span>::<span class="ident">SubscriptionTier</span>,
+    <span class="doccomment">/// Name of subscription plan</span>
+    <span class="kw">pub</span> <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Time when pubsub message was sent</span>
+    <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
+    <span class="doccomment">/// ID of user that subscribed</span>
+    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Username of user that subscribed</span>
+    <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Display name of user that subscribed</span>
+    <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+}
+
+<span class="doccomment">/// A gifted subscription happened</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SubGift</span> {
+    <span class="comment">// missing in documented example</span>
+    <span class="comment">// FIXME: Could be for month that subscription ends</span>
+    <span class="doccomment">/// Unknown</span>
+    <span class="kw">pub</span> <span class="ident">benefit_end_month</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
+    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
+    <span class="kw">pub</span> <span class="ident">channel_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">is_gift</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Months</span>
+    <span class="kw">pub</span> <span class="ident">months</span>: <span class="ident">i64</span>,
+    <span class="comment">// FIXME: should be a enum</span>
+    <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
+    <span class="kw">pub</span> <span class="ident">multi_month_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Display name of user that received gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">recipient_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+    <span class="doccomment">/// Username of user that received gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">recipient_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Username of user that received gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">recipient_user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Message sent with this subscription</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
+    <span class="doccomment">/// Subscription plan</span>
+    <span class="kw">pub</span> <span class="ident">sub_plan</span>: <span class="ident">types</span>::<span class="ident">SubscriptionTier</span>,
+    <span class="doccomment">/// Name of subscription plan</span>
+    <span class="kw">pub</span> <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Time when pubsub message was sent</span>
+    <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
+    <span class="doccomment">/// ID of user that purchased gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Username of user that purchased gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Display name of user that purchased gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+}
+
+<span class="doccomment">/// Gifted resubscription with optional message</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResubGift</span> {
+    <span class="comment">// missing in documented example</span>
+    <span class="comment">// FIXME: Could be for month that subscription ends</span>
+    <span class="doccomment">/// Unknown</span>
+    <span class="kw">pub</span> <span class="ident">benefit_end_month</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
+    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
+    <span class="kw">pub</span> <span class="ident">channel_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Cumulative months that user has been subscribed</span>
+    <span class="kw">pub</span> <span class="ident">cumulative_months</span>: <span class="ident">i64</span>,
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">is_gift</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Months</span>
+    <span class="kw">pub</span> <span class="ident">months</span>: <span class="ident">i64</span>,
+    <span class="comment">// FIXME: should be a enum</span>
+    <span class="comment">// FIXME: Seems to always be zero on resubgift</span>
+    <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
+    <span class="kw">pub</span> <span class="ident">multi_month_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Display name of user that received gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">recipient_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+    <span class="doccomment">/// Username of user that received gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">recipient_user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="comment">// FIXME: Is this ever shared in a resubgift?</span>
+    <span class="doccomment">/// Months the recipient has been subscribed for in a row.</span>
+    <span class="kw">pub</span> <span class="ident">streak_months</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Message sent with this subscription</span>
+    <span class="kw">pub</span> <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
+    <span class="doccomment">/// Subscription plan</span>
+    <span class="kw">pub</span> <span class="ident">sub_plan</span>: <span class="ident">types</span>::<span class="ident">SubscriptionTier</span>,
+    <span class="doccomment">/// Name of subscription plan</span>
+    <span class="kw">pub</span> <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Time when pubsub message was sent</span>
+    <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
+    <span class="doccomment">/// ID of user that purchased gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Username of user that purchased gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Display name of user that purchased gifted subscription</span>
+    <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+}
+
 <span class="comment">// FIXME: Missing anonsubgift and anonresubgift</span>
 <span class="comment">// Should probably share fields.</span>
 <span class="doccomment">/// Reply from [ChannelSubscribeEventsV1]</span>
@@ -522,158 +710,16 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ChannelSubscribeEventsV1Reply</span> {
     <span class="doccomment">/// A subscription</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;sub&quot;</span>)]</span>
-    <span class="ident">Sub</span> {
-        <span class="comment">// FIXME: Could be for month that subscription ends</span>
-        <span class="doccomment">/// Unknown</span>
-        <span class="ident">benefit_end_month</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
-        <span class="ident">channel_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
-        <span class="ident">channel_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Cumulative months that user has been subscribed</span>
-        <span class="ident">cumulative_months</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Resubscription is a gift</span>
-        <span class="ident">is_gift</span>: <span class="ident">bool</span>,
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="ident">months</span>: <span class="ident">i64</span>,
-        <span class="comment">// FIXME: should be a enum</span>
-        <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
-        <span class="ident">multi_month_duration</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Message sent with this subscription</span>
-        <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
-        <span class="doccomment">/// Subscription plan</span>
-        <span class="ident">sub_plan</span>: <span class="ident">types</span>::<span class="ident">SubscriptionTier</span>,
-        <span class="doccomment">/// Name of subscription plan</span>
-        <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// Time when pubsub message was sent</span>
-        <span class="ident">time</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
-        <span class="doccomment">/// ID of user that subscribed</span>
-        <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Username of user that subscribed</span>
-        <span class="ident">user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Display name of user that subscribed</span>
-        <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-    },
+    <span class="ident">Sub</span>(<span class="ident">Sub</span>),
     <span class="doccomment">/// A resubscription</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;resub&quot;</span>)]</span>
-    <span class="ident">ReSub</span> {
-        <span class="comment">// missing in documented example</span>
-        <span class="comment">// FIXME: Could be for month that subscription ends</span>
-        <span class="doccomment">/// Unknown</span>
-        <span class="ident">benefit_end_month</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
-        <span class="ident">channel_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
-        <span class="ident">channel_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Cumulative months that user has been subscribed</span>
-        <span class="ident">cumulative_months</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Resubscription is a gift</span>
-        <span class="ident">is_gift</span>: <span class="ident">bool</span>,
-        <span class="doccomment">/// Months the user has been subscribed for in a row.</span>
-        <span class="ident">streak_months</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="ident">months</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
-        <span class="ident">multi_month_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Message sent with this subscription</span>
-        <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
-        <span class="doccomment">/// Subscription plan</span>
-        <span class="ident">sub_plan</span>: <span class="ident">types</span>::<span class="ident">SubscriptionTier</span>,
-        <span class="doccomment">/// Name of subscription plan</span>
-        <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// Time when pubsub message was sent</span>
-        <span class="ident">time</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
-        <span class="doccomment">/// ID of user that subscribed</span>
-        <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Username of user that subscribed</span>
-        <span class="ident">user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Display name of user that subscribed</span>
-        <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-    },
+    <span class="ident">ReSub</span>(<span class="ident">ReSub</span>),
     <span class="doccomment">/// A gifted subscription happened</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;subgift&quot;</span>)]</span>
-    <span class="ident">SubGift</span> {
-        <span class="comment">// missing in documented example</span>
-        <span class="comment">// FIXME: Could be for month that subscription ends</span>
-        <span class="doccomment">/// Unknown</span>
-        <span class="ident">benefit_end_month</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
-        <span class="ident">channel_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
-        <span class="ident">channel_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="ident">is_gift</span>: <span class="ident">bool</span>,
-        <span class="doccomment">/// Months</span>
-        <span class="ident">months</span>: <span class="ident">i64</span>,
-        <span class="comment">// FIXME: should be a enum</span>
-        <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
-        <span class="ident">multi_month_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Display name of user that received gifted subscription</span>
-        <span class="ident">recipient_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-        <span class="doccomment">/// Username of user that received gifted subscription</span>
-        <span class="ident">recipient_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Username of user that received gifted subscription</span>
-        <span class="ident">recipient_user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Message sent with this subscription</span>
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
-        <span class="doccomment">/// Subscription plan</span>
-        <span class="ident">sub_plan</span>: <span class="ident">types</span>::<span class="ident">SubscriptionTier</span>,
-        <span class="doccomment">/// Name of subscription plan</span>
-        <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// Time when pubsub message was sent</span>
-        <span class="ident">time</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
-        <span class="doccomment">/// ID of user that purchased gifted subscription</span>
-        <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Username of user that purchased gifted subscription</span>
-        <span class="ident">user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Display name of user that purchased gifted subscription</span>
-        <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-    },
+    <span class="ident">SubGift</span>(<span class="ident">SubGift</span>),
     <span class="doccomment">/// Gifted resubscription with optional message</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;resubgift&quot;</span>)]</span>
-    <span class="ident">ResubGift</span> {
-        <span class="comment">// missing in documented example</span>
-        <span class="comment">// FIXME: Could be for month that subscription ends</span>
-        <span class="doccomment">/// Unknown</span>
-        <span class="ident">benefit_end_month</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
-        <span class="ident">channel_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
-        <span class="ident">channel_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Cumulative months that user has been subscribed</span>
-        <span class="ident">cumulative_months</span>: <span class="ident">i64</span>,
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="ident">is_gift</span>: <span class="ident">bool</span>,
-        <span class="doccomment">/// Months</span>
-        <span class="ident">months</span>: <span class="ident">i64</span>,
-        <span class="comment">// FIXME: should be a enum</span>
-        <span class="comment">// FIXME: Seems to always be zero on resubgift</span>
-        <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
-        <span class="ident">multi_month_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Display name of user that received gifted subscription</span>
-        <span class="ident">recipient_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-        <span class="doccomment">/// Username of user that received gifted subscription</span>
-        <span class="ident">recipient_user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="comment">// FIXME: Is this ever shared in a resubgift?</span>
-        <span class="doccomment">/// Months the recipient has been subscribed for in a row.</span>
-        <span class="ident">streak_months</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Message sent with this subscription</span>
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
-        <span class="doccomment">/// Subscription plan</span>
-        <span class="ident">sub_plan</span>: <span class="ident">types</span>::<span class="ident">SubscriptionTier</span>,
-        <span class="doccomment">/// Name of subscription plan</span>
-        <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// Time when pubsub message was sent</span>
-        <span class="ident">time</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
-        <span class="doccomment">/// ID of user that purchased gifted subscription</span>
-        <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Username of user that purchased gifted subscription</span>
-        <span class="ident">user_name</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Display name of user that purchased gifted subscription</span>
-        <span class="ident">display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-    },
+    <span class="ident">ResubGift</span>(<span class="ident">ResubGift</span>),
 }
 
 <span class="doccomment">/// Described where in a message an emote is</span>

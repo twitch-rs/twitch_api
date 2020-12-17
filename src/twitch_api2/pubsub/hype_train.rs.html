@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/hype_train.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>hype_train.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/5e8343e50e185116624637741a92d25475e5535b">5e8343e</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/655025c6a461104d98122918f54cf3b71bbfd9dc">655025c</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
@@ -1959,6 +1959,42 @@
 <span id="1954">1954</span>
 <span id="1955">1955</span>
 <span id="1956">1956</span>
+<span id="1957">1957</span>
+<span id="1958">1958</span>
+<span id="1959">1959</span>
+<span id="1960">1960</span>
+<span id="1961">1961</span>
+<span id="1962">1962</span>
+<span id="1963">1963</span>
+<span id="1964">1964</span>
+<span id="1965">1965</span>
+<span id="1966">1966</span>
+<span id="1967">1967</span>
+<span id="1968">1968</span>
+<span id="1969">1969</span>
+<span id="1970">1970</span>
+<span id="1971">1971</span>
+<span id="1972">1972</span>
+<span id="1973">1973</span>
+<span id="1974">1974</span>
+<span id="1975">1975</span>
+<span id="1976">1976</span>
+<span id="1977">1977</span>
+<span id="1978">1978</span>
+<span id="1979">1979</span>
+<span id="1980">1980</span>
+<span id="1981">1981</span>
+<span id="1982">1982</span>
+<span id="1983">1983</span>
+<span id="1984">1984</span>
+<span id="1985">1985</span>
+<span id="1986">1986</span>
+<span id="1987">1987</span>
+<span id="1988">1988</span>
+<span id="1989">1989</span>
+<span id="1990">1990</span>
+<span id="1991">1991</span>
+<span id="1992">1992</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! PubSub messages for hype-trains</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">pubsub</span>, <span class="ident">types</span>};
@@ -2004,6 +2040,116 @@
     <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[];
 }
 
+<span class="doccomment">/// Hype train rewards</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainRewards</span> {
+    <span class="comment">// FIXME: Channel ID is sometimes missing, might be depending on your token</span>
+    <span class="doccomment">/// ID of channel where hype-train was initiated</span>
+    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Level of hype-train that was initiated</span>
+    <span class="kw">pub</span> <span class="ident">completed_level</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Rewards</span>
+    <span class="kw">pub</span> <span class="ident">rewards</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Reward</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// Hype train started in channel</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainStart</span> {
+    <span class="comment">// FIXME: Channel ID is sometimes missing, might be depending on your token</span>
+    <span class="doccomment">/// ID of channel where hype-train was initiated</span>
+    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Current conductors of this hype-train</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">conductors</span>: <span class="ident">Conductors</span>,
+    <span class="doccomment">/// Config of this hype-train</span>
+    <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Config</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">ended_at</span>: (),
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">ending_reason</span>: (),
+    <span class="doccomment">/// Server time epoch in milliseconds when hype train ends</span>
+    <span class="kw">pub</span> <span class="ident">expires_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// ID of hype train</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Participations in hype train</span>
+    <span class="kw">pub</span> <span class="ident">participations</span>: <span class="ident">Participations</span>,
+    <span class="comment">//#[serde(default)]</span>
+    <span class="doccomment">/// Progress of hype train</span>
+    <span class="kw">pub</span> <span class="ident">progress</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">HypeTrainProgress</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Server time epoch in milliseconds when hype train started</span>
+    <span class="kw">pub</span> <span class="ident">started_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Server time epoch in milliseconds when hype train was updated</span>
+    <span class="kw">pub</span> <span class="ident">updated_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// Hype train ended</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainEnd</span> {
+    <span class="doccomment">/// Server time epoch in milliseconds when hype train ended</span>
+    <span class="kw">pub</span> <span class="ident">ended_at</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Reason why hype train ended</span>
+    <span class="kw">pub</span> <span class="ident">ending_reason</span>: <span class="ident">EndingReason</span>,
+}
+
+<span class="doccomment">/// Hype train conductor updated</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainConductorUpdate</span> {
+    <span class="doccomment">/// Conductor source</span>
+    <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">SourceType</span>,
+    <span class="doccomment">/// User information of conductor</span>
+    <span class="kw">pub</span> <span class="ident">user</span>: <span class="ident">types</span>::<span class="ident">User</span>,
+    <span class="doccomment">/// Participations in hype train</span>
+    <span class="kw">pub</span> <span class="ident">participations</span>: <span class="ident">Participations</span>,
+}
+
+<span class="doccomment">/// Hype train progression. Akin to [Participations]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainProgression</span> {
+    <span class="doccomment">/// Unknown</span>
+    <span class="kw">pub</span> <span class="ident">sequence_id</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Source type of progression</span>
+    <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">SourceType</span>,
+    <span class="doccomment">/// Action done to progress</span>
+    <span class="kw">pub</span> <span class="ident">action</span>: <span class="ident">ActionType</span>,
+    <span class="doccomment">/// Amount of actions done. i.e 500 (five-hundred) bits or 1 (one) tier 3 gift sub</span>
+    <span class="kw">pub</span> <span class="ident">quantity</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Progress of hype train</span>
+    <span class="kw">pub</span> <span class="ident">progress</span>: <span class="ident">HypeTrainProgress</span>,
+    <span class="comment">// FIXME: Should use flatten here on types::User, but https://github.com/serde-rs/serde/issues/1504</span>
+    <span class="doccomment">/// Id of the user</span>
+    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// Login name of the user, not capitalized</span>
+    <span class="kw">pub</span> <span class="ident">user_login</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
+    <span class="doccomment">/// Display name of user</span>
+    <span class="kw">pub</span> <span class="ident">user_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
+    <span class="comment">// FIXME: 2020-11-05 I suspect this will always be returned</span>
+    <span class="doccomment">/// Profile picture of user</span>
+    <span class="kw">pub</span> <span class="ident">user_profile_image_url</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// Hype train leveled up</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainLevelUp</span> {
+    <span class="doccomment">/// Server time epoch in milliseconds when hype train expires</span>
+    <span class="kw">pub</span> <span class="ident">time_to_expire</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Progress of hype train</span>
+    <span class="kw">pub</span> <span class="ident">progress</span>: <span class="ident">HypeTrainProgress</span>,
+}
+
 <span class="doccomment">/// Reply from [HypeTrainEventsV1] or [HypeTrainEventsV1Rewards]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
@@ -2012,99 +2158,25 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">HypeTrainEventsV1Reply</span> {
     <span class="doccomment">/// Hype train rewards</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;hype-train-rewards&quot;</span>)]</span>
-    <span class="ident">HypeTrainRewards</span> {
-        <span class="comment">// FIXME: Channel ID is sometimes missing, might be depending on your token</span>
-        <span class="doccomment">/// ID of channel where hype-train was initiated</span>
-        <span class="ident">channel_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Level of hype-train that was initiated</span>
-        <span class="ident">completed_level</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Rewards</span>
-        <span class="ident">rewards</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Reward</span><span class="op">&gt;</span>,
-    },
+    <span class="ident">HypeTrainRewards</span>(<span class="ident">HypeTrainRewards</span>),
     <span class="doccomment">/// Hype train started in channel</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;hype-train-start&quot;</span>)]</span>
-    <span class="ident">HypeTrainStart</span> {
-        <span class="comment">// FIXME: Channel ID is sometimes missing, might be depending on your token</span>
-        <span class="doccomment">/// ID of channel where hype-train was initiated</span>
-        <span class="ident">channel_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Current conductors of this hype-train</span>
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="ident">conductors</span>: <span class="ident">Conductors</span>,
-        <span class="doccomment">/// Config of this hype-train</span>
-        <span class="ident">config</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Config</span><span class="op">&gt;</span>,
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-        <span class="ident">ended_at</span>: (),
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-        <span class="ident">ending_reason</span>: (),
-        <span class="doccomment">/// Server time epoch in milliseconds when hype train ends</span>
-        <span class="ident">expires_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// ID of hype train</span>
-        <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Participations in hype train</span>
-        <span class="ident">participations</span>: <span class="ident">Participations</span>,
-        <span class="comment">//#[serde(default)]</span>
-        <span class="doccomment">/// Progress of hype train</span>
-        <span class="ident">progress</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">HypeTrainProgress</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Server time epoch in milliseconds when hype train started</span>
-        <span class="ident">started_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Server time epoch in milliseconds when hype train was updated</span>
-        <span class="ident">updated_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    },
+    <span class="ident">HypeTrainStart</span>(<span class="ident">HypeTrainStart</span>),
     <span class="doccomment">/// Hype train ended</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;hype-train-end&quot;</span>)]</span>
-    <span class="ident">HypeTrainEnd</span> {
-        <span class="doccomment">/// Server time epoch in milliseconds when hype train ended</span>
-        <span class="ident">ended_at</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Reason why hype train ended</span>
-        <span class="ident">ending_reason</span>: <span class="ident">EndingReason</span>,
-    },
+    <span class="ident">HypeTrainEnd</span>(<span class="ident">HypeTrainEnd</span>),
     <span class="doccomment">/// Hype train cooldown expired</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;hype-train-cooldown-expiration&quot;</span>)]</span>
     <span class="ident">HypeTrainCooldownExpiration</span>(<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span>),
     <span class="doccomment">/// Hype train conductor updated</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;hype-train-conductor-update&quot;</span>)]</span>
-    <span class="ident">HypeTrainConductorUpdate</span> {
-        <span class="doccomment">/// Conductor source</span>
-        <span class="ident">source</span>: <span class="ident">SourceType</span>,
-        <span class="doccomment">/// User information of conductor</span>
-        <span class="ident">user</span>: <span class="ident">types</span>::<span class="ident">User</span>,
-        <span class="doccomment">/// Participations in hype train</span>
-        <span class="ident">participations</span>: <span class="ident">Participations</span>,
-    },
+    <span class="ident">HypeTrainConductorUpdate</span>(<span class="ident">HypeTrainConductorUpdate</span>),
     <span class="doccomment">/// Hype train progression. Akin to [Participations]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;hype-train-progression&quot;</span>)]</span>
-    <span class="ident">HypeTrainProgression</span> {
-        <span class="doccomment">/// Unknown</span>
-        <span class="ident">sequence_id</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Source type of progression</span>
-        <span class="ident">source</span>: <span class="ident">SourceType</span>,
-        <span class="doccomment">/// Action done to progress</span>
-        <span class="ident">action</span>: <span class="ident">ActionType</span>,
-        <span class="doccomment">/// Amount of actions done. i.e 500 (five-hundred) bits or 1 (one) tier 3 gift sub</span>
-        <span class="ident">quantity</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Progress of hype train</span>
-        <span class="ident">progress</span>: <span class="ident">HypeTrainProgress</span>,
-        <span class="comment">// FIXME: Should use flatten here on types::User, but https://github.com/serde-rs/serde/issues/1504</span>
-        <span class="doccomment">/// Id of the user</span>
-        <span class="ident">user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
-        <span class="doccomment">/// Login name of the user, not capitalized</span>
-        <span class="ident">user_login</span>: <span class="ident">types</span>::<span class="ident">UserName</span>,
-        <span class="doccomment">/// Display name of user</span>
-        <span class="ident">user_display_name</span>: <span class="ident">types</span>::<span class="ident">DisplayName</span>,
-        <span class="comment">// FIXME: 2020-11-05 I suspect this will always be returned</span>
-        <span class="doccomment">/// Profile picture of user</span>
-        <span class="ident">user_profile_image_url</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    },
+    <span class="ident">HypeTrainProgression</span>(<span class="ident">HypeTrainProgression</span>),
     <span class="doccomment">/// Hype train leveled up</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;hype-train-level-up&quot;</span>)]</span>
-    <span class="ident">HypeTrainLevelUp</span> {
-        <span class="doccomment">/// Server time epoch in milliseconds when hype train expires</span>
-        <span class="ident">time_to_expire</span>: <span class="ident">i64</span>,
-        <span class="doccomment">/// Progress of hype train</span>
-        <span class="ident">progress</span>: <span class="ident">HypeTrainProgress</span>,
-    },
+    <span class="ident">HypeTrainLevelUp</span>(<span class="ident">HypeTrainLevelUp</span>),
 }
 
 <span class="doccomment">/// Configuration of hype train</span>
