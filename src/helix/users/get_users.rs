@@ -104,6 +104,7 @@ fn test_request() {
         .build();
 
     // From twitch docs
+    // FIXME: This is not valid anymore. Twitch....
     let data = br#"
 {
     "data": [{
@@ -116,7 +117,8 @@ fn test_request() {
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-profile_image-1a2c906ee2c35f12-300x300.png",
         "offline_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-channel_offline_image-1a2c906ee2c35f12-1920x1080.png",
         "view_count": 191836881,
-        "email": "login@provider.com"
+        "email": "login@provider.com",
+        "created_at": "2013-06-03T19:12:02.580593Z"
     }]
 }
 "#
