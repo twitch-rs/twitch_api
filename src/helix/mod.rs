@@ -658,7 +658,7 @@ pub enum HelixRequestGetError {
         /// URI to the endpoint
         uri: http::Uri,
     },
-    /// could not parse response as utf8 when calling `GET {2}`: {1}
+    /// could not parse response as utf8 when calling `GET {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `GET {2}` with response: {0:?}
     DeserializeError(String, #[source] serde_json::Error, http::Uri),
@@ -695,7 +695,7 @@ pub enum HelixRequestPostError {
         /// Body sent with POST
         body: Vec<u8>,
     },
-    /// could not parse response as utf8 when calling `POST {2}`: {1}
+    /// could not parse response as utf8 when calling `POST {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `POST {2}` with response: {0:?}
     DeserializeError(String, #[source] serde_json::Error, http::Uri),
@@ -728,6 +728,6 @@ pub enum HelixRequestDeleteError {
         /// URI to the endpoint
         uri: http::Uri,
     },
-    /// could not parse response as utf8 when calling `DELETE {2}`: {1}
+    /// could not parse response as utf8 when calling `DELETE {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
 }
