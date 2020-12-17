@@ -141,8 +141,9 @@ impl helix::RequestGet for GetBitsLeaderboardRequest {
             total: i64,
         }
 
-        let text = std::str::from_utf8(&response.body())
-            .map_err(|e| helix::HelixRequestGetError::Utf8Error(response.body().clone(), e))?;
+        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+            helix::HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
+        })?;
         //eprintln!("\n\nmessage is ------------ {} ------------", text);
         if let Ok(helix::HelixRequestError {
             error,
@@ -157,7 +158,9 @@ impl helix::RequestGet for GetBitsLeaderboardRequest {
                 uri: uri.clone(),
             });
         }
-        let response: InnerResponse = serde_json::from_str(&text)?;
+        let response: InnerResponse = serde_json::from_str(&text).map_err(|e| {
+            helix::HelixRequestGetError::DeserializeError(text.to_string(), e, uri.clone())
+        })?;
         Ok(helix::Response {
             data: BitsLeaderboard {
                 leaderboard: response.data,

@@ -61,11 +61,11 @@ pub struct GetChannelInformationRequest {
 pub struct ChannelInformation {
     /// Twitch User ID of this channel owner
     pub broadcaster_id: types::UserId,
-    /// User name of this channel owner
+    /// Twitch user display name of this channel owner
     pub broadcaster_name: types::UserName,
     /// Current game ID being played on the channel
     pub game_id: types::CategoryId,
-    /// Name of current game being played on the channel
+    /// Name of the game being played on the channel
     pub game_name: types::CategoryId,
     /// Language of the channel
     pub broadcaster_language: String,
@@ -93,8 +93,9 @@ impl helix::RequestGet for GetChannelInformationRequest {
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body())
-            .map_err(|e| helix::HelixRequestGetError::Utf8Error(response.body().clone(), e))?;
+        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+            helix::HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
+        })?;
         //eprintln!("\n\nmessage is ------------ {} ------------", text);
         if let Ok(helix::HelixRequestError {
             error,
@@ -109,7 +110,9 @@ impl helix::RequestGet for GetChannelInformationRequest {
                 uri: uri.clone(),
             });
         }
-        let response: helix::InnerResponse<Vec<_>> = serde_json::from_str(&text)?;
+        let response: helix::InnerResponse<Vec<_>> = serde_json::from_str(&text).map_err(|e| {
+            helix::HelixRequestGetError::DeserializeError(text.to_string(), e, uri.clone())
+        })?;
         Ok(helix::Response {
             data: response.data.into_iter().next(),
             pagination: response.pagination.cursor,

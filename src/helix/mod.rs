@@ -308,8 +308,9 @@ pub trait RequestPost: Request {
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body())
-            .map_err(|e| HelixRequestPostError::Utf8Error(response.body().clone(), e))?;
+        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+            HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
+        })?;
         if let Ok(HelixRequestError {
             error,
             status,
@@ -324,7 +325,10 @@ pub trait RequestPost: Request {
                 body: response.body().clone(),
             });
         }
-        let response: InnerResponse<<Self as Request>::Response> = serde_json::from_str(&text)?;
+        let response: InnerResponse<<Self as Request>::Response> = serde_json::from_str(&text)
+            .map_err(|e| {
+                HelixRequestPostError::DeserializeError(text.to_string(), e, uri.clone())
+            })?;
         Ok(Response {
             data: response.data,
             pagination: response.pagination.cursor,
@@ -431,8 +435,9 @@ pub trait RequestDelete: Request {
             std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body())
-            .map_err(|e| HelixRequestDeleteError::Utf8Error(response.body().clone(), e))?;
+        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+            HelixRequestDeleteError::Utf8Error(response.body().clone(), e, uri.clone())
+        })?;
         // eprintln!("\n\nmessage is ------------ {} ------------", text);
 
         if let Ok(HelixRequestError {
@@ -496,8 +501,9 @@ pub trait RequestGet: Request {
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body())
-            .map_err(|e| HelixRequestGetError::Utf8Error(response.body().clone(), e))?;
+        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+            HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
+        })?;
         //eprintln!("\n\nmessage is ------------ {} ------------", text);
         if let Ok(HelixRequestError {
             error,
@@ -512,7 +518,9 @@ pub trait RequestGet: Request {
                 uri: uri.clone(),
             });
         }
-        let response: InnerResponse<_> = serde_json::from_str(&text)?;
+        let response: InnerResponse<_> = serde_json::from_str(&text).map_err(|e| {
+            HelixRequestGetError::DeserializeError(text.to_string(), e, uri.clone())
+        })?;
         Ok(Response {
             data: response.data,
             pagination: response.pagination.cursor,
@@ -594,22 +602,22 @@ pub enum ClientRequestError<RE: std::error::Error + Send + Sync + 'static> {
     RequestError(RE),
     /// no pagination found
     NoPage,
-    /// Could not create request
+    /// could not create request
     CreateRequestError(#[from] CreateRequestError),
-    /// Could not parse GET response
-    #[error(transparent)]
+    /// could not parse GET response
+    // #[error(transparent)] // FIXME: https://github.com/yaahc/displaydoc/issues/15
     HelixRequestGetError(#[from] HelixRequestGetError),
-    //#[error(transparent)]
-    /// Could not parse PUT response
+    /// could not parse PUT response
+    // #[error(transparent)] // FIXME: https://github.com/yaahc/displaydoc/issues/15
     HelixRequestPutError(#[from] HelixRequestPutError),
-    /// Could not parse POST response
-    #[error(transparent)]
+    /// could not parse POST response
+    // #[error(transparent)] // FIXME: https://github.com/yaahc/displaydoc/issues/15
     HelixRequestPostError(#[from] HelixRequestPostError),
-    //#[error(transparent)]
-    /// Could not parse PATCH response
+    /// could not parse PATCH response
+    // #[error(transparent)] // FIXME: https://github.com/yaahc/displaydoc/issues/15
     HelixRequestPatchError(#[from] HelixRequestPatchError),
-    /// Could not parse DELETE response
-    #[error(transparent)]
+    /// could not parse DELETE response
+    // #[error(transparent)] // FIXME: https://github.com/yaahc/displaydoc/issues/15
     HelixRequestDeleteError(#[from] HelixRequestDeleteError),
     /// {0}
     Custom(std::borrow::Cow<'static, str>),
@@ -621,7 +629,7 @@ pub enum CreateRequestError {
     HttpError(#[from] http::Error),
     /// serialization of body failed
     SerializeError(#[from] serde_json::Error),
-    /// Could not assemble URI for request
+    /// could not assemble URI for request
     InvalidUri(#[from] InvalidUri),
     /// {0}
     Custom(std::borrow::Cow<'static, str>),
@@ -632,7 +640,7 @@ pub enum CreateRequestError {
 pub enum InvalidUri {
     /// URI could not be parsed
     UriParseError(#[from] http::uri::InvalidUri),
-    /// Could not serialize request to query
+    /// could not serialize request to query
     QuerySerializeError(#[from] ser::Error),
 }
 
@@ -650,10 +658,10 @@ pub enum HelixRequestGetError {
         /// URI to the endpoint
         uri: http::Uri,
     },
-    /// could not parse body as utf8: {1}
-    Utf8Error(Vec<u8>, std::str::Utf8Error),
-    /// deserialization failed when processing request result
-    DeserializeError(#[from] serde_json::Error),
+    /// could not parse response as utf8 when calling `GET {2}`
+    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+    /// deserialization failed when processing request response calling `GET {2}` with response: {0:?}
+    DeserializeError(String, #[source] serde_json::Error, http::Uri),
 }
 
 /// helix returned error {status:?} - {error}: {message:?} when calling `PUT {uri}` with a body
@@ -687,10 +695,10 @@ pub enum HelixRequestPostError {
         /// Body sent with POST
         body: Vec<u8>,
     },
-    /// could not parse body as utf8: {1}
-    Utf8Error(Vec<u8>, std::str::Utf8Error),
-    /// deserialization failed when processing request result
-    DeserializeError(#[from] serde_json::Error),
+    /// could not parse response as utf8 when calling `POST {2}`
+    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+    /// deserialization failed when processing request response calling `POST {2}` with response: {0:?}
+    DeserializeError(String, #[source] serde_json::Error, http::Uri),
 }
 
 /// helix returned error {status:?}: {message:?} when calling `PATCH {uri}` with a body
@@ -720,6 +728,6 @@ pub enum HelixRequestDeleteError {
         /// URI to the endpoint
         uri: http::Uri,
     },
-    /// could not parse body as utf8: {1}
-    Utf8Error(Vec<u8>, std::str::Utf8Error),
+    /// could not parse response as utf8 when calling `DELETE {2}`
+    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
 }

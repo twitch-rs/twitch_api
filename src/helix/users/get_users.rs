@@ -61,6 +61,8 @@ pub struct GetUsersRequest {
 pub struct User {
     /// User’s broadcaster type: "partner", "affiliate", or "".
     pub broadcaster_type: Option<types::BroadcasterType>,
+    /// Account creation time
+    pub created_at: types::Timestamp,
     /// User’s channel description.
     pub description: Option<String>,
     /// User’s display name.
@@ -102,6 +104,7 @@ fn test_request() {
         .build();
 
     // From twitch docs
+    // FIXME: This is not valid anymore. Twitch....
     let data = br#"
 {
     "data": [{
@@ -114,7 +117,8 @@ fn test_request() {
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-profile_image-1a2c906ee2c35f12-300x300.png",
         "offline_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-channel_offline_image-1a2c906ee2c35f12-1920x1080.png",
         "view_count": 191836881,
-        "email": "login@provider.com"
+        "email": "login@provider.com",
+        "created_at": "2013-06-03T19:12:02.580593Z"
     }]
 }
 "#
