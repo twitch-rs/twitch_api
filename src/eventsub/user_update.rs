@@ -12,11 +12,14 @@ impl EventSubscription for UserUpdateV1 {
     type Payload = UserUpdateV1Payload;
 
     const EVENT_TYPE: EventType = EventType::UserUpdate;
+    #[cfg(feature = "twitch_oauth2")]
+    const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
+    #[cfg(feature = "twitch_oauth2")]
+    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
     const VERSION: &'static str = "1";
 }
 
 /// Response payload for [`user.update` version `1`](UserUpdateV1) subscription.
-///
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct UserUpdateV1Payload {
     /// The user’s description.

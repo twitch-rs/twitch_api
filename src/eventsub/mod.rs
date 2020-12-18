@@ -4,6 +4,12 @@
 use crate::types;
 use serde::{de::DeserializeOwned, Deserialize, Deserializer, Serialize};
 
+pub mod channel_ban;
+pub mod channel_cheer;
+pub mod channel_follow;
+pub mod channel_subscribe;
+pub mod channel_unban;
+pub mod channel_update;
 pub mod user_update;
 
 /// An EventSub subscription.
@@ -11,6 +17,12 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
     /// Payload for given subscription
     type Payload: PartialEq + std::fmt::Debug + DeserializeOwned + Serialize;
 
+    /// Scopes needed by this subscription
+    #[cfg(feature = "twitch_oauth2")]
+    const SCOPE: &'static [twitch_oauth2::Scope];
+    /// Optional scopes needed by this subscription
+    #[cfg(feature = "twitch_oauth2")]
+    const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     /// Subscription type version
     const VERSION: &'static str;
     /// Subscription type name.
@@ -29,6 +41,18 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
 pub enum Payload {
     /// User Update V1 Event
     UserUpdateV1(NotificationPayload<user_update::UserUpdateV1>),
+    /// Channel Update V1 Event
+    ChannelUpdateV1(NotificationPayload<channel_update::ChannelUpdateV1>),
+    /// Channel Follow V1 Event
+    ChannelFollowV1(NotificationPayload<channel_follow::ChannelFollowV1>),
+    /// Channel Subscribe V1 Event
+    ChannelSubscribeV1(NotificationPayload<channel_subscribe::ChannelSubscribeV1>),
+    /// Channel Cheer V1 Event
+    ChannelCheerV1(NotificationPayload<channel_cheer::ChannelCheerV1>),
+    /// Channel Ban V1 Event
+    ChannelBanV1(NotificationPayload<channel_ban::ChannelBanV1>),
+    /// Channel Unban V1 Event
+    ChannelUnbanV1(NotificationPayload<channel_unban::ChannelUnbanV1>),
 }
 
 impl Payload {
@@ -43,6 +67,7 @@ impl<'de> Deserialize<'de> for Payload {
         use std::convert::TryInto;
         macro_rules! match_event {
             ($response:expr; $($module:ident::$event:ident);* $(;)?) => {
+                #[deny(unreachable_patterns)]
                 match (&*$response.s.version, &$response.s.type_) {
                     $(  (<$module::$event as EventSubscription>::VERSION, &<$module::$event as EventSubscription>::EVENT_TYPE) => {
                         Payload::$event(NotificationPayload {
@@ -94,6 +119,12 @@ impl<'de> Deserialize<'de> for Payload {
             serde::de::Error::custom(format!("could not deserialize response: {}", e))
         })?;
         Ok(match_event! { response;
+            channel_update::ChannelUpdateV1;
+            channel_follow::ChannelFollowV1;
+            channel_subscribe::ChannelSubscribeV1;
+            channel_cheer::ChannelCheerV1;
+            channel_ban::ChannelBanV1;
+            channel_unban::ChannelUnbanV1;
             user_update::UserUpdateV1;
         })
     }
@@ -156,6 +187,21 @@ pub enum EventType {
     /// The `channel.update` subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
     #[serde(rename = "channel.update")]
     ChannelUpdate,
+    /// The `channel.follow` subscription type sends a notification when a specified channel receives a follow.
+    #[serde(rename = "channel.follow")]
+    ChannelFollow,
+    /// The `channel.subscribe` subscription type sends a notification when a specified channel receives a subscriber. This does not include resubscribes.
+    #[serde(rename = "channel.subscribe")]
+    ChannelSubscribe,
+    /// The `channel.cheer` subscription type sends a notification when a user cheers on the specified channel.
+    #[serde(rename = "channel.cheer")]
+    ChannelCheer,
+    /// The `channel.ban` subscription type sends a notification when a viewer is banned from the specified channel.
+    #[serde(rename = "channel.ban")]
+    ChannelBan,
+    /// The `channel.unban` subscription type sends a notification when a viewer is unbanned from the specified channel.
+    #[serde(rename = "channel.unban")]
+    ChannelUnban,
     /// The `user.update` subscription type sends a notification when user updates their account.
     #[serde(rename = "user.update")]
     UserUpdate,
