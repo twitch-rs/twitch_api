@@ -1,10 +1,11 @@
-#![allow(missing_docs, dead_code)]
+//! Creates an EventSub subscription.
+
 use std::convert::TryInto;
 
 use super::*;
 use crate::eventsub::*;
 
-/// Query Parameters for [Create Eventsub Subscription](super::create_eventsub_subscription)
+/// Query Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
 /// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#create-eventsub-subscription)
 #[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug, Default)]
@@ -25,20 +26,26 @@ impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditFollows];
 }
 
-/// Body Parameters for [Create Eventsub Subscription](super::create_eventsub_subscription)
+/// Body Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
 /// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#create-eventsub-subscription)
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+///
+/// # Notes
+/// This body is quite different from the official body. If you want the true representation in text, see [`helix::RequestPost::body`] on [`CreateEventSubSubscriptionRequest<E: EventSubscription>`](CreateEventSubSubscriptionRequest)
+#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreateEventSubSubscriptionBody<E: EventSubscription> {
+    /// Subscription that will be created
     #[serde(bound(deserialize = "E: EventSubscription"))]
     pub subscription: E,
+    /// The notification delivery specific information
     pub transport: Transport,
 }
 
 // FIXME: Builder?
 impl<E: EventSubscription> CreateEventSubSubscriptionBody<E> {
-    fn new(subscription: E, transport: Transport) -> CreateEventSubSubscriptionBody<E> {
+    /// Create a new [`CreateEventSubSubscriptionBody`]
+    pub fn new(subscription: E, transport: Transport) -> CreateEventSubSubscriptionBody<E> {
         CreateEventSubSubscriptionBody {
             subscription,
             transport,
@@ -46,7 +53,7 @@ impl<E: EventSubscription> CreateEventSubSubscriptionBody<E> {
     }
 }
 
-/// Return Values for [Create Eventsub Subscription](super::create_eventsub_subscription)
+/// Return Values for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
 /// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#create-eventsub-subscription)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
@@ -61,8 +68,8 @@ pub struct CreateEventSubSubscription<E: EventSubscription> {
     pub _type: EventType,
     /// The version of the subscription type that was created.
     pub version: String,
-    #[serde(bound(deserialize = "E: EventSubscription"))]
     /// JSON object specifying custom parameters for the subscription.
+    #[serde(bound(deserialize = "E: EventSubscription"))]
     pub condition: E,
     /// RFC3339 timestamp indicating when the subscription was created.
     pub created_at: types::Timestamp,

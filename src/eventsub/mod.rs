@@ -13,7 +13,9 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
     const VERSION: &'static str;
     const EVENT_TYPE: EventType;
 
-    fn condition(&self) -> Result<serde_json::Value, serde_json::Error>;
+    fn condition(&self) -> Result<serde_json::Value, serde_json::Error> {
+        serde_json::to_value(self)
+    }
 }
 
 pub trait NotificationPayload: Serialize + DeserializeOwned {}

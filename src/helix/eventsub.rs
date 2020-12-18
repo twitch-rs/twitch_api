@@ -1,4 +1,5 @@
-#![allow(missing_docs, dead_code)]
+//! Endpoints regarding EventSub
+
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 

@@ -1,30 +1,32 @@
+use super::*;
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelUpdate {
     pub broadcaster_user_id: types::UserId,
 }
 
 impl EventSubscription for ChannelUpdate {
-    const TYPE: EventType = EventType::ChannelUpdate;
-    const VERSION: &'static str = "1";
+    type Payload = ChannelUpdatePayload;
 
-    fn condition(&self) -> Result<serde_json::Value, ()> { todo!() }
+    const EVENT_TYPE: EventType = EventType::ChannelUpdate;
+    const VERSION: &'static str = "1";
 }
 
+#[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelUpdatePayload {
     /// The broadcaster’s user ID.
-    broadcaster_user_id: types::UserId,
+    pub broadcaster_user_id: types::UserId,
     /// The broadcaster’s user name.
-    broadcaster_user_name: types::UserName,
+    pub broadcaster_user_name: types::UserName,
     /// The channel’s stream title.
-    title: String,
+    pub title: String,
     /// The channel’s broadcast language.
-    language: String,
+    pub language: String,
     /// The channel’s category ID.
-    category_id: types::CategoryId,
+    pub category_id: types::CategoryId,
     /// The category name.
-    category_name: String,
+    pub category_name: String,
     /// A boolean identifying whether the channel is flagged as mature. Valid values are true and false.
-    is_mature: bool,
+    pub is_mature: bool,
 }
 
 impl NotificationPayload for ChannelUpdatePayload {}

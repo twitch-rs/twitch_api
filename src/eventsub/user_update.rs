@@ -9,8 +9,6 @@ impl EventSubscription for UserUpdate {
 
     const EVENT_TYPE: EventType = EventType::UserUpdate;
     const VERSION: &'static str = "1";
-
-    fn condition(&self) -> Result<serde_json::Value, serde_json::Error> { todo!() }
 }
 
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
