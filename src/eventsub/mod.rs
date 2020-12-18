@@ -46,9 +46,7 @@ impl<'de> Deserialize<'de> for Response {
                 }
             }
         }
-        // match_event!{ &*r.s.version
-        //     user_update::UserUpdateV1, EventType::UserUpdate;
-        // }
+
         #[derive(Deserialize, Clone)]
         struct IEventSubscripionInformation {
             condition: serde_json::Value,
