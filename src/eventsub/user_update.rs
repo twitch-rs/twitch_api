@@ -1,24 +1,32 @@
+//! Subscription that sends a notification when user updates their account.
 use super::*;
 /// The `user.update` subscription type sends a notification when user updates their account.
 /// [`userupdate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userupdate)
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct UserUpdateV1 {
+    /// The user ID for the user you want update notifications for.
     pub user_id: types::UserId,
 }
 
 impl EventSubscription for UserUpdateV1 {
-    type Payload = UserUpdatePayload;
+    type Payload = UserUpdateV1Payload;
 
     const EVENT_TYPE: EventType = EventType::UserUpdate;
     const VERSION: &'static str = "1";
 }
 
+/// Response payload for [`user.update` version `1`](UserUpdateV1) subscription.
+///
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
-pub struct UserUpdatePayload {
+pub struct UserUpdateV1Payload {
+    /// The user’s description.
     pub description: String,
-    pub email: String,
-    pub user_id: String,
-    pub user_name: String,
+    /// The user’s email. Only included if you have the [`user:read:email`](twitch_oauth2::Scope::UserReadEmail) scope for the user.
+    pub email: Option<String>,
+    /// The user’s user id.
+    pub user_id: types::UserId,
+    /// The user’s user name.
+    pub user_name: types::UserName,
 }
 
 #[test]
@@ -47,5 +55,5 @@ fn parse_payload() {
 }
     "#;
 
-    dbg!(crate::eventsub::Response::parse(payload).unwrap());
+    dbg!(crate::eventsub::Payload::parse(payload).unwrap());
 }
