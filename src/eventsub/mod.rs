@@ -34,9 +34,9 @@ impl<'de> Deserialize<'de> for Response {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         use std::convert::TryInto;
         macro_rules! match_event {
-            ($response:expr; $($module:ident::$event:ident, $event_type:path);* $(;)?) => {
+            ($response:expr; $($module:ident::$event:ident);* $(;)?) => {
                 match (&*$response.s.version, &$response.s.type_) {
-                    $(  (<$module::$event as EventSubscription>::VERSION, $event_type) => {
+                    $(  (<$module::$event as EventSubscription>::VERSION, &<$module::$event as EventSubscription>::EVENT_TYPE) => {
                         Response::$event(NotificationPayload {
                             subscription: $response.s.try_into().map_err(serde::de::Error::custom)?,
                             event: serde_json::from_value($response.e).map_err(serde::de::Error::custom)?,
@@ -88,7 +88,7 @@ impl<'de> Deserialize<'de> for Response {
             serde::de::Error::custom(format!("could not deserialize response: {}", e))
         })?;
         Ok(match_event! { response;
-            user_update::UserUpdateV1, EventType::UserUpdate;
+            user_update::UserUpdateV1;
         })
     }
 }
