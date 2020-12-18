@@ -65,7 +65,7 @@ pub struct CreateEventSubSubscription<E: EventSubscription> {
     pub status: Status,
     /// The category of the subscription that was created.
     #[serde(rename = "type")]
-    pub _type: EventType,
+    pub type_: EventType,
     /// The version of the subscription type that was created.
     pub version: String,
     /// JSON object specifying custom parameters for the subscription.
@@ -118,7 +118,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
             id: String,
             status: Status,
             #[serde(rename = "type")]
-            _type: EventType,
+            type_: EventType,
             version: String,
             #[serde(bound(deserialize = "E: EventSubscription"))]
             condition: E,
@@ -167,7 +167,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
                 total: response.total,
                 id: data.id,
                 status: data.status,
-                _type: data._type,
+                type_: data.type_,
                 version: data.version,
                 condition: data.condition,
                 created_at: data.created_at,
@@ -181,9 +181,9 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
 
 #[test]
 fn test_request() {
-    use crate::eventsub::user_update::UserUpdate;
+    use crate::eventsub::user_update::UserUpdateV1;
     use helix::*;
-    let req: CreateEventSubSubscriptionRequest<UserUpdate> =
+    let req: CreateEventSubSubscriptionRequest<UserUpdateV1> =
         CreateEventSubSubscriptionRequest::builder().build();
 
     // From twitch docs, FIXME: docs say `users.update` in example for Create EventSub Subscription
