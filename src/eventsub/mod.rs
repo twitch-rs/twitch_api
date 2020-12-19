@@ -7,6 +7,7 @@ use serde::{de::DeserializeOwned, Deserialize, Deserializer, Serialize};
 pub mod channel_ban;
 pub mod channel_cheer;
 pub mod channel_follow;
+pub mod channel_points_custom_reward;
 pub mod channel_subscribe;
 pub mod channel_unban;
 pub mod channel_update;
@@ -38,6 +39,7 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
 /// Use [Payload::parse] to construct
 #[derive(PartialEq, Debug, Serialize, Deserialize)] // FIXME: Clone?
 #[serde(remote = "Self")]
+#[allow(clippy::large_enum_variant)]
 pub enum Payload {
     /// User Update V1 Event
     UserUpdateV1(NotificationPayload<user_update::UserUpdateV1>),
@@ -53,6 +55,10 @@ pub enum Payload {
     ChannelBanV1(NotificationPayload<channel_ban::ChannelBanV1>),
     /// Channel Unban V1 Event
     ChannelUnbanV1(NotificationPayload<channel_unban::ChannelUnbanV1>),
+    /// Channel Points Custom Reward Add V1 Event
+    ChannelPointsCustomRewardAddV1(
+        NotificationPayload<channel_points_custom_reward::ChannelPointsCustomRewardAddV1>,
+    ),
 }
 
 impl Payload {
@@ -125,6 +131,7 @@ impl<'de> Deserialize<'de> for Payload {
             channel_cheer::ChannelCheerV1;
             channel_ban::ChannelBanV1;
             channel_unban::ChannelUnbanV1;
+            channel_points_custom_reward::ChannelPointsCustomRewardAddV1;
             user_update::UserUpdateV1;
         })
     }
@@ -202,6 +209,9 @@ pub enum EventType {
     /// The `channel.unban` subscription type sends a notification when a viewer is unbanned from the specified channel.
     #[serde(rename = "channel.unban")]
     ChannelUnban,
+    /// The `channel.channel_points_custom_reward.add` subscription type sends a notification when a custom channel points reward has been created for the specified channel.
+    #[serde(rename = "channel.channel_points_custom_reward.add")]
+    ChannelPointsCustomRewardAdd,
     /// The `user.update` subscription type sends a notification when user updates their account.
     #[serde(rename = "user.update")]
     UserUpdate,

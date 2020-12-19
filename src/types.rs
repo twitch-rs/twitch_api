@@ -1,6 +1,8 @@
 //! Twitch types
 //!
 
+use serde::{Deserialize, Serialize};
+
 /// A user ID.
 pub type UserId = String;
 
@@ -32,7 +34,7 @@ pub type TagId = String;
 pub type VideoId = String;
 
 /// A game or category as defined by Twitch
-#[derive(PartialEq, serde::Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Debug, Clone)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TwitchCategory {
@@ -45,7 +47,7 @@ pub struct TwitchCategory {
 }
 
 /// Subscription tiers
-#[derive(PartialEq, Eq, serde::Deserialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Clone, Debug)]
 #[serde(field_identifier)]
 pub enum SubscriptionTier {
     /// Tier 1. $4.99
@@ -63,7 +65,7 @@ pub enum SubscriptionTier {
     Other(String),
 }
 
-impl serde::Serialize for SubscriptionTier {
+impl Serialize for SubscriptionTier {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where S: serde::Serializer {
         serializer.serialize_str(match self {
@@ -77,7 +79,7 @@ impl serde::Serialize for SubscriptionTier {
 }
 
 /// Broadcaster types: "partner", "affiliated", or "".
-#[derive(PartialEq, serde::Deserialize, Clone, Debug)]
+#[derive(PartialEq, Deserialize, Clone, Debug)]
 pub enum BroadcasterType {
     /// Partner
     #[serde(rename = "partner")]
@@ -90,7 +92,7 @@ pub enum BroadcasterType {
     None,
 }
 
-impl serde::Serialize for BroadcasterType {
+impl Serialize for BroadcasterType {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where S: serde::Serializer {
         serializer.serialize_str(match self {
@@ -102,7 +104,7 @@ impl serde::Serialize for BroadcasterType {
 }
 
 /// User types: "staff", "admin", "global_mod", or "".
-#[derive(PartialEq, serde::Deserialize, Clone, Debug)]
+#[derive(PartialEq, Deserialize, Clone, Debug)]
 pub enum UserType {
     /// Staff
     #[serde(rename = "staff")]
@@ -118,7 +120,7 @@ pub enum UserType {
     None,
 }
 
-impl serde::Serialize for UserType {
+impl Serialize for UserType {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where S: serde::Serializer {
         serializer.serialize_str(match self {
@@ -131,7 +133,7 @@ impl serde::Serialize for UserType {
 }
 
 /// Period during which the video was created
-#[derive(PartialEq, serde::Deserialize, serde::Serialize, Clone, Debug)]
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum VideoPeriod {
     /// Filter by all. Effectively a no-op
@@ -145,7 +147,7 @@ pub enum VideoPeriod {
 }
 
 /// Type of video
-#[derive(PartialEq, serde::Deserialize, serde::Serialize, Clone, Debug)]
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum VideoType {
     /// A uploaded video
@@ -165,7 +167,7 @@ pub enum VideoType {
 }
 
 /// Type of video
-#[derive(PartialEq, Eq, serde::Deserialize, serde::Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum VideoPrivacy {
     /// Video is public
@@ -225,7 +227,7 @@ pub enum CommercialLengthParseError {
 }
 
 /// A user according to many endpoints
-#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct User {
     /// ID of the user
     #[serde(alias = "user_id")]
@@ -236,4 +238,53 @@ pub struct User {
     /// Display name of user
     #[serde(alias = "user_display_name")]
     pub display_name: DisplayName,
+}
+
+/// Links to the same image of different sizes
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct Image {
+    /// URL to png of size 28x28
+    pub url_1x: String,
+    /// URL to png of size 56x56
+    pub url_2x: String,
+    /// URL to png of size 112x112
+    pub url_4x: String,
+}
+
+/// Information about global cooldown
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct GlobalCooldown {
+    /// Cooldown enabled
+    pub is_enabled: bool,
+    /// Cooldown amount
+    #[serde(alias = "seconds")]
+    pub global_cooldown_seconds: u32,
+}
+
+/// Reward redemption max
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[serde(untagged)]
+#[non_exhaustive]
+pub enum Max {
+    /// Max per stream
+    MaxPerStream {
+        /// Max per stream is enabled
+        is_enabled: bool,
+        /// Max amount of redemptions per stream
+        #[serde(alias = "value")]
+        max_per_stream: u32,
+    },
+    /// Max per user per stream
+    MaxPerUserPerStream {
+        /// Max per user per stream is enabled
+        is_enabled: bool,
+        /// Max amount of redemptions per user per stream
+        #[serde(alias = "value")]
+        max_per_user_per_stream: u32,
+    },
 }
