@@ -103,6 +103,8 @@ pub mod video_playback;
 /// also known as event
 #[cfg_attr(nightly, doc(spotlight))]
 pub trait Topic: Serialize {
+    /// Topic response
+    type Reply: serde::de::DeserializeOwned;
     /// Scopes needed by this topic
     ///
     /// This constant
@@ -345,34 +347,34 @@ pub enum TopicData {
 // This impl is here because otherwise we hide the errors from deser
 impl<'de> Deserialize<'de> for TopicData {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        // FIXME: make into macro or actually upstream into serde..., untagged_force = "field"
+        macro_rules! match_topic {
+            (@item $i:item) => {$i};
+            (@guard ?$topic:tt) => {
 
-        #[derive(Deserialize, PartialEq, Eq, Debug)]
-        #[serde(untagged)]
-        enum ITopicMessage {
-            #[cfg(feature = "unsupported")]
-            CommunityPointsChannelV1(community_points::CommunityPointsChannelV1),
-            ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2),
-            ChannelBitsBadgeUnlocks(channel_bits_badge::ChannelBitsBadgeUnlocks),
-            #[cfg(feature = "unsupported")]
-            ChannelCheerEventsPublicV1(channel_cheer::ChannelCheerEventsPublicV1),
-            #[cfg(feature = "unsupported")]
-            ChannelSubGiftsV1(channel_sub_gifts::ChannelSubGiftsV1),
-            ChatModeratorActions(moderation::ChatModeratorActions),
-            ChannelPointsChannelV1(channel_points::ChannelPointsChannelV1),
-            ChannelSubscribeEventsV1(channel_subscriptions::ChannelSubscribeEventsV1),
-            #[cfg(feature = "unsupported")]
-            VideoPlayback(video_playback::VideoPlayback),
-            #[cfg(feature = "unsupported")]
-            VideoPlaybackById(video_playback::VideoPlaybackById),
-            #[cfg(feature = "unsupported")]
-            HypeTrainEventsV1(hype_train::HypeTrainEventsV1),
-            #[cfg(feature = "unsupported")]
-            HypeTrainEventsV1Rewards(hype_train::HypeTrainEventsV1Rewards),
-            #[cfg(feature = "unsupported")]
-            Following(following::Following),
-            #[cfg(feature = "unsupported")]
-            Raid(raid::Raid),
+                #[cfg(feature = "unsupported")] ITopicMessage::$topic(topic)
+            };
+            (@guard $topic:tt) => {ITopicMessage::$topic(topic)};
+            (@value $reply:expr, ?$o:tt) => {match_topic!(@value $o)};
+            (@value $reply:expr, $topic:ident) => {TopicData::$topic {
+                topic,
+                reply: serde_json::from_str(&$reply.message).map_err(serde::de::Error::custom)?,
+            }};
+            (@variant ?$topic:ident) => {#[cfg(feature = "unsupported")] $topic(topic)};
+            (@variant $topic:ident) => {$topic($topic)};
+            ($reply:expr; $($stuff:tt);* $(;)?) => {{
+
+                match_topic!(@item
+                enum ITopicMessage {
+                    $( match_topic!(@variant $stuff) )*
+                });
+                #[deny(unreachable_patterns)]
+                Ok(match $reply.topic {
+                    $(
+                        match_topic!(@guard $stuff ) => match_topic!(@value $reply, $stuff),
+
+                    )*
+                })
+            }};
         }
 
         #[derive(Deserialize, Debug)]
@@ -383,76 +385,25 @@ impl<'de> Deserialize<'de> for TopicData {
         let reply = ITopicData::deserialize(deserializer).map_err(|e| {
             serde::de::Error::custom(format!("could not deserialize topic reply: {}", e))
         })?;
-        Ok(match reply.topic {
-            #[cfg(feature = "unsupported")]
-            ITopicMessage::CommunityPointsChannelV1(topic) => TopicData::CommunityPointsChannelV1 {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            ITopicMessage::ChannelBitsEventsV2(topic) => TopicData::ChannelBitsEventsV2 {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            ITopicMessage::ChannelBitsBadgeUnlocks(topic) => TopicData::ChannelBitsBadgeUnlocks {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            #[cfg(feature = "unsupported")]
-            ITopicMessage::ChannelSubGiftsV1(topic) => TopicData::ChannelSubGiftsV1 {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            #[cfg(feature = "unsupported")]
-            ITopicMessage::ChannelCheerEventsPublicV1(topic) => {
-                TopicData::ChannelCheerEventsPublicV1 {
-                    topic,
-                    reply: serde_json::from_str(&reply.message)
-                        .map_err(serde::de::Error::custom)?,
-                }
-            }
-            ITopicMessage::ChatModeratorActions(topic) => TopicData::ChatModeratorActions {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            ITopicMessage::ChannelPointsChannelV1(topic) => TopicData::ChannelPointsChannelV1 {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            ITopicMessage::ChannelSubscribeEventsV1(topic) => TopicData::ChannelSubscribeEventsV1 {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            #[cfg(feature = "unsupported")]
-            ITopicMessage::VideoPlayback(topic) => TopicData::VideoPlayback {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            #[cfg(feature = "unsupported")]
-            ITopicMessage::VideoPlaybackById(topic) => TopicData::VideoPlaybackById {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            #[cfg(feature = "unsupported")]
-            ITopicMessage::HypeTrainEventsV1(topic) => TopicData::HypeTrainEventsV1 {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            #[cfg(feature = "unsupported")]
-            ITopicMessage::HypeTrainEventsV1Rewards(topic) => TopicData::HypeTrainEventsV1Rewards {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            #[cfg(feature = "unsupported")]
-            ITopicMessage::Following(topic) => TopicData::Following {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            #[cfg(feature = "unsupported")]
-            ITopicMessage::Raid(topic) => TopicData::Raid {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-        })
+        #[derive(Deserialize, PartialEq, Eq, Debug)]
+        #[serde(untagged)]
+        match_topic! { reply;
+            ChannelBitsEventsV2;
+            // ?CommunityPointsChannelV1;
+            // ChannelBitsEventsV2;
+            // ChannelBitsBadgeUnlocks;
+            // ?ChannelSubGiftsV1;
+            // ?ChannelCheerEventsPublicV1;
+            // ChatModeratorActions;
+            // ChannelPointsChannelV1;
+            // ChannelSubscribeEventsV1;
+            // ?VideoPlayback;
+            // ?VideoPlaybackById;
+            // ?HypeTrainEventsV1;
+            // ?HypeTrainEventsV1Rewards;
+            // ?Following;
+            // ?Raid;
+        }
     }
 }
 
