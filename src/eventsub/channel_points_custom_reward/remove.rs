@@ -1,27 +1,29 @@
-//! Subscriptions that sends a notification when a custom channel points reward has been created for the specified channel.
+//! Subscriptions that sends a notification when a custom channel points reward has been removed from the specified channel.
 
 use super::*;
-/// The `channel.channel_points_custom_reward.add` subscription type sends a notification when a custom channel points reward has been created for the specified channel.
-/// [`channel_points_custom_reward.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardadd)
+/// The `channel.channel_points_custom_reward.update` subscription type sends a notification when a custom channel points reward has been removed from the specified channel.
+/// [`channel_points_custom_reward.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardupdate)
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
-pub struct ChannelPointsCustomRewardAddV1 {
-    /// The broadcaster user ID for the channel you want to receive channel points custom reward add notifications for.
+pub struct ChannelPointsCustomRewardRemoveV1 {
+    /// The broadcaster user ID for the channel you want to receive channel points custom reward remove notifications for.
     pub broadcaster_user_id: types::UserId,
+    /// Optional. Specify a reward id to only receive notifications for a specific reward.
+    pub reward_id: Option<types::RewardId>,
 }
 
-impl EventSubscription for ChannelPointsCustomRewardAddV1 {
-    type Payload = ChannelPointsCustomRewardAddV1Payload;
+impl EventSubscription for ChannelPointsCustomRewardRemoveV1 {
+    type Payload = ChannelPointsCustomRewardRemoveV1Payload;
 
-    const EVENT_TYPE: EventType = EventType::ChannelPointsCustomRewardAdd;
+    const EVENT_TYPE: EventType = EventType::ChannelPointsCustomRewardRemove;
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadRedemptions];
     const VERSION: &'static str = "1";
 }
 
 // FIXME: Same as update
-/// Response payload for [`channel.channel_points_custom_reward.add` version `1`](ChannelPointsCustomRewardAddV1) subscription.
+/// Response payload for [`channel.channel_points_custom_reward.update` version `1`](ChannelPointsCustomRewardRemoveV1) subscription.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
-pub struct ChannelPointsCustomRewardAddV1Payload {
+pub struct ChannelPointsCustomRewardRemoveV1Payload {
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #FA1ED2.
     pub background_color: String,
     /// The requested broadcaster ID.
@@ -64,14 +66,16 @@ pub struct ChannelPointsCustomRewardAddV1Payload {
 
 #[test]
 fn parse_payload() {
+    // FIXME: Twitch reee. The condition `reward_id` is documented as a string, but in example is int
     let payload = r##"
     {
         "subscription": {
             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
-            "type": "channel.channel_points_custom_reward.add",
+            "type": "channel.channel_points_custom_reward.remove",
             "version": "1",
             "condition": {
-                "broadcaster_user_id": "1337"
+                "broadcaster_user_id": "1337",
+                "reward_id": "12345"
             },
              "transport": {
                 "method": "webhook",
@@ -91,8 +95,8 @@ fn parse_payload() {
             "prompt": "reward prompt",
             "is_user_input_required": true,
             "should_redemptions_skip_request_queue": false,
-            "cooldown_expires_at": null,
-            "redemptions_redeemed_current_stream": null,
+            "cooldown_expires_at": "2019-11-16T10:11:12.123Z",
+            "redemptions_redeemed_current_stream": 123,
             "max_per_stream": {
                 "is_enabled": true,
                 "value": 1000

@@ -8,6 +8,7 @@ pub mod channel_ban;
 pub mod channel_cheer;
 pub mod channel_follow;
 pub mod channel_points_custom_reward;
+pub mod channel_points_custom_reward_redemption;
 pub mod channel_subscribe;
 pub mod channel_unban;
 pub mod channel_update;
@@ -58,6 +59,26 @@ pub enum Payload {
     /// Channel Points Custom Reward Add V1 Event
     ChannelPointsCustomRewardAddV1(
         NotificationPayload<channel_points_custom_reward::ChannelPointsCustomRewardAddV1>,
+    ),
+    /// Channel Points Custom Reward Update V1 Event
+    ChannelPointsCustomRewardUpdateV1(
+        NotificationPayload<channel_points_custom_reward::ChannelPointsCustomRewardUpdateV1>,
+    ),
+    /// Channel Points Custom Reward Remove V1 Event
+    ChannelPointsCustomRewardRemoveV1(
+        NotificationPayload<channel_points_custom_reward::ChannelPointsCustomRewardRemoveV1>,
+    ),
+    /// Channel Points Custom Reward Redemption Add V1 Event
+    ChannelPointsCustomRewardRedemptionAddV1(
+        NotificationPayload<
+            channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionAddV1,
+        >,
+    ),
+    /// Channel Points Custom Reward Redemption Update V1 Event
+    ChannelPointsCustomRewardRedemptionUpdateV1(
+        NotificationPayload<
+            channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionUpdateV1,
+        >,
     ),
 }
 
@@ -132,6 +153,10 @@ impl<'de> Deserialize<'de> for Payload {
             channel_ban::ChannelBanV1;
             channel_unban::ChannelUnbanV1;
             channel_points_custom_reward::ChannelPointsCustomRewardAddV1;
+            channel_points_custom_reward::ChannelPointsCustomRewardUpdateV1;
+            channel_points_custom_reward::ChannelPointsCustomRewardRemoveV1;
+            channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionAddV1;
+            channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionUpdateV1;
             user_update::UserUpdateV1;
         })
     }
@@ -212,6 +237,18 @@ pub enum EventType {
     /// The `channel.channel_points_custom_reward.add` subscription type sends a notification when a custom channel points reward has been created for the specified channel.
     #[serde(rename = "channel.channel_points_custom_reward.add")]
     ChannelPointsCustomRewardAdd,
+    /// The `channel.channel_points_custom_reward.update` subscription type sends a notification when a custom channel points reward has been updated for the specified channel.
+    #[serde(rename = "channel.channel_points_custom_reward.update")]
+    ChannelPointsCustomRewardUpdate,
+    /// The `channel.channel_points_custom_reward.remove` subscription type sends a notification when a custom channel points reward has been removed from the specified channel.
+    #[serde(rename = "channel.channel_points_custom_reward.remove")]
+    ChannelPointsCustomRewardRemove,
+    /// The `channel.channel_points_custom_reward_redemption.add` subscription type sends a notification when a viewer has redeemed a custom channel points reward on the specified channel.
+    #[serde(rename = "channel.channel_points_custom_reward_redemption.add")]
+    ChannelPointsCustomRewardRedemptionAdd,
+    /// The `channel.channel_points_custom_reward_redemption.update` subscription type sends a notification when a redemption of a channel points custom reward has been updated for the specified channel.
+    #[serde(rename = "channel.channel_points_custom_reward_redemption.update")]
+    ChannelPointsCustomRewardRedemptionUpdate,
     /// The `user.update` subscription type sends a notification when user updates their account.
     #[serde(rename = "user.update")]
     UserUpdate,
