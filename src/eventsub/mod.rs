@@ -7,6 +7,7 @@ use serde::{de::DeserializeOwned, Deserialize, Deserializer, Serialize};
 pub mod channel_ban;
 pub mod channel_cheer;
 pub mod channel_follow;
+pub mod channel_hype_train;
 pub mod channel_points_custom_reward;
 pub mod channel_points_custom_reward_redemption;
 pub mod channel_subscribe;
@@ -80,6 +81,12 @@ pub enum Payload {
             channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionUpdateV1,
         >,
     ),
+    /// Channel Hype Train Begin V1 Event
+    ChannelHypeTrainBeginV1(NotificationPayload<channel_hype_train::ChannelHypeTrainBeginV1>),
+    /// Channel Hype Train Progress V1 Event
+    ChannelHypeTrainProgressV1(NotificationPayload<channel_hype_train::ChannelHypeTrainProgressV1>),
+    /// Channel Hype Train End V1 Event
+    ChannelHypeTrainEndV1(NotificationPayload<channel_hype_train::ChannelHypeTrainEndV1>),
 }
 
 impl Payload {
@@ -157,6 +164,9 @@ impl<'de> Deserialize<'de> for Payload {
             channel_points_custom_reward::ChannelPointsCustomRewardRemoveV1;
             channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionAddV1;
             channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionUpdateV1;
+            channel_hype_train::ChannelHypeTrainBeginV1;
+            channel_hype_train::ChannelHypeTrainProgressV1;
+            channel_hype_train::ChannelHypeTrainEndV1;
             user_update::UserUpdateV1;
         })
     }
@@ -249,6 +259,15 @@ pub enum EventType {
     /// The `channel.channel_points_custom_reward_redemption.update` subscription type sends a notification when a redemption of a channel points custom reward has been updated for the specified channel.
     #[serde(rename = "channel.channel_points_custom_reward_redemption.update")]
     ChannelPointsCustomRewardRedemptionUpdate,
+    /// The `channel.hype_train.begin` subscription type sends a notification when a hype train begins on the specified channel.
+    #[serde(rename = "channel.hype_train.begin")]
+    ChannelHypeTrainBegin,
+    /// The `channel.hype_train.progress` subscription type sends a notification when a hype train makes progress on the specified channel.
+    #[serde(rename = "channel.hype_train.progress")]
+    ChannelHypeTrainProgress,
+    /// The `channel.hype_train.end` subscription type  sends a notification when a hype train ends on the specified channel.
+    #[serde(rename = "channel.hype_train.end")]
+    ChannelHypeTrainEnd,
     /// The `user.update` subscription type sends a notification when user updates their account.
     #[serde(rename = "user.update")]
     UserUpdate,
