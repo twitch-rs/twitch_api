@@ -1,7 +1,6 @@
-//! Subscription that sends a notification when a user has revoked authorization for your client id.
+//! A user has revoked authorization for your client id.
 use super::*;
-/// The `user.authorization.revoke` subscription type sends a notification when a user has revoked authorization for your client id.  Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.
-/// [`user-authorization-revoke-condition`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#user-authorization-revoke-condition)
+/// [`user.authorization.revoke`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationrevoke): a user has revoked authorization for your client id.  Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct UserAuthorizationRevokeV1 {
     /// Your application’s client id. The provided client_id must match the client id in the application access token
@@ -17,7 +16,7 @@ impl EventSubscription for UserAuthorizationRevokeV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`user.authorization.revoke` version `1`](UserAuthorizationRevokeV1) subscription.
+/// [`user.authorization.revoke`](UserAuthorizationRevokeV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct UserAuthorizationRevokeV1Payload {
     /// The client_id of the application with revoked user access.

@@ -1,8 +1,7 @@
-//! Subscriptions that sends a notification when a hype train ends on the specified channel.
+//! A hype train ends on the specified channel.
 
 use super::*;
-/// The `channel.hype_train.end` subscription type sends a notification when a hype train ends on the specified channel.
-/// [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress)
+/// [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainend): a hype train ends on the specified channel.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelHypeTrainEndV1 {
     // FIXME: Twitch docs say "want to hype train"
@@ -19,7 +18,7 @@ impl EventSubscription for ChannelHypeTrainEndV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.hype_train.end` version `1`](ChannelHypeTrainEndV1) subscription.
+/// [`channel.hype_train.end`](ChannelHypeTrainEndV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelHypeTrainEndV1Payload {
     /// The requested broadcaster ID.

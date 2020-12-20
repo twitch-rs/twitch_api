@@ -1,8 +1,7 @@
-//! Subscriptions that sends a notification when a custom channel points reward has been removed from the specified channel.
+//! A custom channel points reward has been removed from the specified channel.
 
 use super::*;
-/// The `channel.channel_points_custom_reward.update` subscription type sends a notification when a custom channel points reward has been removed from the specified channel.
-/// [`channel_points_custom_reward.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardupdate)
+/// [`channel.channel_points_custom_reward.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardupdate): a custom channel points reward has been removed from the specified channel.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelPointsCustomRewardRemoveV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward remove notifications for.
@@ -21,7 +20,7 @@ impl EventSubscription for ChannelPointsCustomRewardRemoveV1 {
 }
 
 // FIXME: Same as update
-/// Response payload for [`channel.channel_points_custom_reward.update` version `1`](ChannelPointsCustomRewardRemoveV1) subscription.
+/// [`channel.channel_points_custom_reward.update`](ChannelPointsCustomRewardRemoveV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelPointsCustomRewardRemoveV1Payload {
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #FA1ED2.

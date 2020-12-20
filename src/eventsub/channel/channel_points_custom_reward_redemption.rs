@@ -1,4 +1,4 @@
-//! Subscriptions that sends a notification when a viewer has redeemed a custom channel points reward or when a redemption of a channel points custom reward has been updated for the specified channel.
+//! A viewer has redeemed a custom channel points reward or a redemption of a channel points custom reward has been updated for the specified channel.
 use super::{EventSubscription, EventType};
 use crate::types;
 use serde::{Deserialize, Serialize};

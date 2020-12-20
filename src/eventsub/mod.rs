@@ -1,5 +1,48 @@
-//! Holds serializable eventsub stuff
+//! Holds serializable EventSub stuff
 //!
+//! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscription) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).
+//! Parse the response payload text with [`Payload::parse`] or the .
+//!
+//! # Example
+//!
+//! You've used [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscription) to create a subscription for [`user.authorization.revoke`](EventType::UserAuthorizationRevoke), after verifying your callback accordingly you will then get events sent to the callback
+//!
+//! To parse these, use [`Payload::parse`]
+//!
+//! ```rust
+//! use twitch_api2::eventsub::Payload;
+//! let payload = r#"{
+//!     "subscription": {
+//!         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+//!         "type": "user.authorization.revoke",
+//!         "version": "1",
+//!         "condition": {
+//!             "client_id": "crq72vsaoijkc83xx42hz6i37"
+//!         },
+//!          "transport": {
+//!             "method": "webhook",
+//!             "callback": "https://example.com/webhooks/callback"
+//!         },
+//!         "created_at": "2019-11-16T10:11:12.123Z"
+//!     },
+//!     "event": {
+//!         "client_id": "crq72vsaoijkc83xx42hz6i37",
+//!         "user_id": "1337",
+//!         "user_name": "cool_user"
+//!     }
+//! }"#;
+//!
+//! let payload = Payload::parse(payload).unwrap();
+//! match payload {
+//!     Payload::UserAuthorizationRevokeV1(p) => {
+//!         println!("User with id `{}` has revoked access to client `{}`",
+//!             p.event.user_id,
+//!             p.event.client_id
+//!         )
+//!     }
+//!     _ => { panic!() }
+//! }
+//! ```
 
 use crate::types;
 use serde::{de::DeserializeOwned, Deserialize, Deserializer, Serialize};
@@ -31,7 +74,7 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
 }
 /// Subscription payload. Received on events. Enumerates all possible [`NotificationPayload`s](NotificationPayload)
 ///
-/// Use [Payload::parse] to construct
+/// Use [`Payload::parse`] to construct
 #[derive(PartialEq, Debug, Serialize, Deserialize)] // FIXME: Clone?
 #[serde(remote = "Self")]
 #[allow(clippy::large_enum_variant)]
@@ -84,9 +127,23 @@ pub enum Payload {
 
 impl Payload {
     /// Parse string slice as a [Payload]
-    pub fn parse(source: &str) -> Result<Payload, serde_json::Error> {
-        serde_json::from_str(source)
+    pub fn parse(source: &str) -> Result<Payload, PayloadParseError> {
+        serde_json::from_str(source).map_err(Into::into)
     }
+
+    /// Parse string slice as a [Payload]
+    pub fn parse_response(source: &http::Response<Vec<u8>>) -> Result<Payload, PayloadParseError> {
+        Payload::parse(std::str::from_utf8(source.body())?)
+    }
+}
+
+/// Errors that can happen when parsing payload
+#[derive(thiserror::Error, displaydoc::Display, Debug)]
+pub enum PayloadParseError {
+    /// could not parse [`http::Request::body()`] as UTF8
+    Utf8Error(#[from] std::str::Utf8Error),
+    /// could not parse [`http::Request::body()`] as a [`Payload`]
+    DeserializeError(#[from] serde_json::Error),
 }
 
 impl<'de> Deserialize<'de> for Payload {
@@ -173,10 +230,10 @@ impl<'de> Deserialize<'de> for Payload {
 pub struct NotificationPayload<E: EventSubscription> {
     /// Subscription information.
     #[serde(bound = "E: EventSubscription")]
-    subscription: EventSubscriptionInformation<E>,
+    pub subscription: EventSubscriptionInformation<E>,
     /// Event information.
     #[serde(bound = "E: EventSubscription")]
-    event: <E as EventSubscription>::Payload,
+    pub event: <E as EventSubscription>::Payload,
 }
 
 /// Metadata about the subscription.
@@ -222,58 +279,58 @@ pub enum TransportMethod {
 /// Event name
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 pub enum EventType {
-    /// The `channel.update` subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
+    /// `channel.update` subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
     #[serde(rename = "channel.update")]
     ChannelUpdate,
-    /// The `channel.follow` subscription type sends a notification when a specified channel receives a follow.
+    /// `channel.follow`: a specified channel receives a follow.
     #[serde(rename = "channel.follow")]
     ChannelFollow,
-    /// The `channel.subscribe` subscription type sends a notification when a specified channel receives a subscriber. This does not include resubscribes.
+    /// `channel.subscribe`: a specified channel receives a subscriber. This does not include resubscribes.
     #[serde(rename = "channel.subscribe")]
     ChannelSubscribe,
-    /// The `channel.cheer` subscription type sends a notification when a user cheers on the specified channel.
+    /// `channel.cheer`: a user cheers on the specified channel.
     #[serde(rename = "channel.cheer")]
     ChannelCheer,
-    /// The `channel.ban` subscription type sends a notification when a viewer is banned from the specified channel.
+    /// `channel.ban`: a viewer is banned from the specified channel.
     #[serde(rename = "channel.ban")]
     ChannelBan,
-    /// The `channel.unban` subscription type sends a notification when a viewer is unbanned from the specified channel.
+    /// `channel.unban`: a viewer is unbanned from the specified channel.
     #[serde(rename = "channel.unban")]
     ChannelUnban,
-    /// The `channel.channel_points_custom_reward.add` subscription type sends a notification when a custom channel points reward has been created for the specified channel.
+    /// `channel.channel_points_custom_reward.add`: a custom channel points reward has been created for the specified channel.
     #[serde(rename = "channel.channel_points_custom_reward.add")]
     ChannelPointsCustomRewardAdd,
-    /// The `channel.channel_points_custom_reward.update` subscription type sends a notification when a custom channel points reward has been updated for the specified channel.
+    /// `channel.channel_points_custom_reward.update`: a custom channel points reward has been updated for the specified channel.
     #[serde(rename = "channel.channel_points_custom_reward.update")]
     ChannelPointsCustomRewardUpdate,
-    /// The `channel.channel_points_custom_reward.remove` subscription type sends a notification when a custom channel points reward has been removed from the specified channel.
+    /// `channel.channel_points_custom_reward.remove`: a custom channel points reward has been removed from the specified channel.
     #[serde(rename = "channel.channel_points_custom_reward.remove")]
     ChannelPointsCustomRewardRemove,
-    /// The `channel.channel_points_custom_reward_redemption.add` subscription type sends a notification when a viewer has redeemed a custom channel points reward on the specified channel.
+    /// `channel.channel_points_custom_reward_redemption.add`: a viewer has redeemed a custom channel points reward on the specified channel.
     #[serde(rename = "channel.channel_points_custom_reward_redemption.add")]
     ChannelPointsCustomRewardRedemptionAdd,
-    /// The `channel.channel_points_custom_reward_redemption.update` subscription type sends a notification when a redemption of a channel points custom reward has been updated for the specified channel.
+    /// `channel.channel_points_custom_reward_redemption.update`: a redemption of a channel points custom reward has been updated for the specified channel.
     #[serde(rename = "channel.channel_points_custom_reward_redemption.update")]
     ChannelPointsCustomRewardRedemptionUpdate,
-    /// The `channel.hype_train.begin` subscription type sends a notification when a hype train begins on the specified channel.
+    /// `channel.hype_train.begin`: a hype train begins on the specified channel.
     #[serde(rename = "channel.hype_train.begin")]
     ChannelHypeTrainBegin,
-    /// The `channel.hype_train.progress` subscription type sends a notification when a hype train makes progress on the specified channel.
+    /// `channel.hype_train.progress`: a hype train makes progress on the specified channel.
     #[serde(rename = "channel.hype_train.progress")]
     ChannelHypeTrainProgress,
-    /// The `channel.hype_train.end` subscription type sends a notification when a hype train ends on the specified channel.
+    /// `channel.hype_train.end`: a hype train ends on the specified channel.
     #[serde(rename = "channel.hype_train.end")]
     ChannelHypeTrainEnd,
-    /// The `stream.online` subscription type sends a notification when the specified broadcaster starts a stream.
+    /// `stream.online`: the specified broadcaster starts a stream.
     #[serde(rename = "stream.online")]
     StreamOnline,
-    /// The `stream.online` subscription type sends a notification when the specified broadcaster stops a stream.
+    /// `stream.online`: the specified broadcaster stops a stream.
     #[serde(rename = "stream.offline")]
     StreamOffline,
-    /// The `user.update` subscription type sends a notification when user updates their account.
+    /// `user.update`: user updates their account.
     #[serde(rename = "user.update")]
     UserUpdate,
-    /// The `user.authorization.revoke` subscription type sends a notification when a user has revoked authorization for your client id. Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.
+    /// `user.authorization.revoke`: a user has revoked authorization for your client id. Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.
     #[serde(rename = "user.authorization.revoke")]
     UserAuthorizationRevoke,
 }

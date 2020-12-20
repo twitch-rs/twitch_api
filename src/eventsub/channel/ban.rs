@@ -1,8 +1,7 @@
-//! Subscription that sends a notification when a viewer is banned from the specified channel.
+//! A viewer is banned from the specified channel.
 use super::*;
 
-/// The `channel.ban` subscription type sends a notification when a viewer is banned from the specified channel.
-/// [`channelban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelban)
+/// [`channel.ban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelban): a viewer is banned from the specified channel.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelBanV1 {
     /// The broadcaster user ID for the channel you want to get ban notifications for.
@@ -18,7 +17,7 @@ impl EventSubscription for ChannelBanV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.ban` version `1`](ChannelBanV1) subscription.
+/// [`channel.ban`](ChannelBanV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelBanV1Payload {
     /// The requested broadcaster ID.

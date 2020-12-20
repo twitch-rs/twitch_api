@@ -1,7 +1,6 @@
-//! Subscription that sends a notification when user updates their account.
+//! Specified user updates their account.
 use super::*;
-/// The `user.update` subscription type sends a notification when user updates their account.
-/// [`userupdate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userupdate)
+/// [`user.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userupdate): user updates their account.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct UserUpdateV1 {
     /// The user ID for the user you want update notifications for.
@@ -19,7 +18,7 @@ impl EventSubscription for UserUpdateV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`user.update` version `1`](UserUpdateV1) subscription.
+/// [`user.update`](UserUpdateV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct UserUpdateV1Payload {
     /// The user’s description.

@@ -1,4 +1,4 @@
-//! Subscriptions that sends a notification related to hype trains
+//! A hype train has started, progressed or ended.
 use super::{EventSubscription, EventType};
 use crate::types;
 use serde::{Deserialize, Serialize};

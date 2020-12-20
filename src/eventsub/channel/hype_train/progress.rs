@@ -1,8 +1,7 @@
-//! Subscriptions that sends a notification when a hype train makes progress on the specified channel.
+//! A hype train makes progress on the specified channel.
 
 use super::*;
-/// The `channel.hype_train.progress` subscription type sends a notification when a hype train makes progress on the specified channel.
-/// [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress)
+/// [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress): a hype train makes progress on the specified channel.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelHypeTrainProgressV1 {
     // FIXME: Twitch docs say "want to hype train"
@@ -19,7 +18,7 @@ impl EventSubscription for ChannelHypeTrainProgressV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.hype_train.progress` version `1`](ChannelHypeTrainProgressV1) subscription.
+/// [`channel.hype_train.progress`](ChannelHypeTrainProgressV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelHypeTrainProgressV1Payload {
     /// The requested broadcaster ID.

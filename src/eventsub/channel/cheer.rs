@@ -1,8 +1,7 @@
-//! Subscription that sends a notification when a user cheers on the specified channel.
+//! A user cheers on the specified channel.
 use super::*;
 
-/// The `channel.cheer` subscription type sends a notification when a user cheers on the specified channel.
-/// [`channelcheer`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcheer)
+/// [`channel.cheer`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcheer): a user cheers on the specified channel.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelCheerV1 {
     /// The broadcaster user ID for the channel you want to get cheer notifications for.
@@ -18,7 +17,7 @@ impl EventSubscription for ChannelCheerV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.cheer` version `1`](ChannelCheerV1) subscription.
+/// [`channel.cheer`](ChannelCheerV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelCheerV1Payload {
     /// The number of bits cheered.

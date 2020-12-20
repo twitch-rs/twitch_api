@@ -1,8 +1,7 @@
-//! Subscriptions that sends a notification when a redemption of a channel points custom reward has been updated for the specified channel.
+//! A redemption of a channel points custom reward has been updated for the specified channel.
 
 use super::*;
-/// The `channel.channel_points_custom_reward_redemption.update` subscription type sends a notification when a redemption of a channel points custom reward has been updated for the specified channel.
-/// [`channel_points_custom_reward_redemption.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionupdate)
+/// [`channel.channel_points_custom_reward_redemption.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionupdate): a redemption of a channel points custom reward has been updated for the specified channel.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelPointsCustomRewardRedemptionUpdateV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward update notifications for.
@@ -20,7 +19,7 @@ impl EventSubscription for ChannelPointsCustomRewardRedemptionUpdateV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.channel_points_custom_reward_redemption.update` version `1`](ChannelPointsCustomRewardRedemptionUpdateV1) subscription.
+/// [`channel.channel_points_custom_reward_redemption.update`](ChannelPointsCustomRewardRedemptionUpdateV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelPointsCustomRewardRedemptionUpdateV1Payload {
     /// The requested broadcaster ID.

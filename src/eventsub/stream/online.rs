@@ -1,8 +1,7 @@
-//! Subscription that sends a notification when the specified broadcaster starts a stream
+//! The specified broadcaster starts a stream
 use super::*;
 
-/// The `stream.online` subscription type sends a notification when the specified broadcaster starts a stream
-/// [`streamonline`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamonline)
+/// [`stream.online`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamonline): the specified broadcaster starts a stream
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct StreamOnlineV1 {
     /// The broadcaster user ID you want to get stream online notifications for.
@@ -18,7 +17,7 @@ impl EventSubscription for StreamOnlineV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`stream.online` version `1`](StreamOnlineV1) subscription.
+/// [`stream.online`](StreamOnlineV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct StreamOnlineV1Payload {
     /// The broadcaster’s user id.

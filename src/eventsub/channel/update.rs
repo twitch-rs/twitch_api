@@ -1,8 +1,7 @@
-//! Subscription that sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
+//! Channel has updated the category, title, mature flag, or broadcast language.
 use super::*;
 
-/// The `channel.update` subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
-/// [`channelupdate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelupdate)
+/// [`channel.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelupdate) subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelUpdateV1 {
     /// The broadcaster user ID for the channel you want to get updates for.
@@ -18,7 +17,7 @@ impl EventSubscription for ChannelUpdateV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.update` version `1`](ChannelUpdateV1) subscription.
+/// [`channel.update`](ChannelUpdateV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelUpdateV1Payload {
     /// The broadcaster’s user ID.

@@ -1,8 +1,7 @@
-//! Subscription that sends a notification when a viewer is unbanned from the specified channel.
+//! A viewer is unbanned from the specified channel.
 use super::*;
 
-/// The `channel.unban` subscription type sends a notification when a viewer is unbanned from the specified channel.
-/// [`channelunban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban)
+/// [`channel.unban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban): a viewer is unbanned from the specified channel.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelUnbanV1 {
     /// The broadcaster user ID for the channel you want to get unban notifications for.
@@ -18,7 +17,7 @@ impl EventSubscription for ChannelUnbanV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.unban` version `1`](ChannelUnbanV1) subscription.
+/// [`channel.unban`](ChannelUnbanV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelUnbanV1Payload {
     /// The requested broadcaster ID.

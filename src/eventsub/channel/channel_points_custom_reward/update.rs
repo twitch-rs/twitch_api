@@ -1,8 +1,7 @@
-//! Subscriptions that sends a notification when a custom channel points reward has been updated for the specified channel.
+//! A custom channel points reward has been updated for the specified channel.
 
 use super::*;
-/// The `channel.channel_points_custom_reward.update` subscription type sends a notification when a custom channel points reward has been updated for the specified channel.
-/// [`channel_points_custom_reward.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardupdate)
+/// [`channel.channel_points_custom_reward.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardupdate): a custom channel points reward has been updated for the specified channel.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelPointsCustomRewardUpdateV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward update notifications for.
@@ -20,7 +19,7 @@ impl EventSubscription for ChannelPointsCustomRewardUpdateV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.channel_points_custom_reward.update` version `1`](ChannelPointsCustomRewardUpdateV1) subscription.
+/// [`channel.channel_points_custom_reward.update`](ChannelPointsCustomRewardUpdateV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelPointsCustomRewardUpdateV1Payload {
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #FA1ED2.

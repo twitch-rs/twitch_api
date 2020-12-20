@@ -1,8 +1,7 @@
-//! Subscription that sends a notification when the specified broadcaster stops a stream.
+//! The specified broadcaster stops a stream.
 use super::*;
 
-/// The `stream.offline` subscription type sends a notification when the specified broadcaster stops a stream.
-/// [`streamoffline`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamoffline)
+/// [`stream.offline`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamoffline): the specified broadcaster stops a stream.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct StreamOfflineV1 {
     /// The broadcaster user ID you want to get stream offline notifications for.
@@ -18,7 +17,7 @@ impl EventSubscription for StreamOfflineV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`stream.offline` version `1`](StreamOfflineV1) subscription.
+/// [`stream.offline`](StreamOfflineV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct StreamOfflineV1Payload {
     /// The broadcaster’s user id.

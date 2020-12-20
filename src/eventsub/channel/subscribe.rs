@@ -1,8 +1,7 @@
-//! Subscription that sends a notification when a specified channel receives a subscriber. This does not include resubscribes.
+//! A specified channel receives a subscriber. This does not include resubscribes.
 use super::*;
 
-/// The `channel.update` subscription type sends a notification when a specified channel receives a subscriber. This does not include resubscribes.
-/// [`channelsubscribe`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscribe)
+/// [`channel.subscribe`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscribe): a specified channel receives a subscriber. This does not include resubscribes.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelSubscribeV1 {
     /// The broadcaster user ID for the channel you want to get subscribe notifications for.
@@ -19,7 +18,7 @@ impl EventSubscription for ChannelSubscribeV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.update` version `1`](ChannelSubscribeV1) subscription.
+/// [`channel.update`](ChannelSubscribeV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelSubscribeV1Payload {
     /// The requested broadcaster ID.

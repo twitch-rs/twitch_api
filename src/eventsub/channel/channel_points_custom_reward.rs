@@ -1,4 +1,4 @@
-//! Subscriptions that sends a notification on changes to custom channel points rewards on specific channel.
+//! Custom channel points rewards on specific channel has been changed, removed or updated.
 use super::{EventSubscription, EventType};
 use crate::types;
 use serde::{Deserialize, Serialize};

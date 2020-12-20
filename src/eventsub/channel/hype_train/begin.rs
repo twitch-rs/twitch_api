@@ -1,8 +1,7 @@
-//! Subscriptions that sends a notification when a hype train begins on the specified channel.
+//! A hype train begins on the specified channel.
 
 use super::*;
-/// The `channel.hype_train.begin` subscription type sends a notification when a hype train begins on the specified channel.
-/// [`channel.hype_train.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainbegin)
+/// [`channel.hype_train.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainbegin): a hype train begins on the specified channel.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelHypeTrainBeginV1 {
     // FIXME: Twitch docs say "want to hype train"
@@ -19,7 +18,7 @@ impl EventSubscription for ChannelHypeTrainBeginV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.hype_train.begin` version `1`](ChannelHypeTrainBeginV1) subscription.
+/// [`channel.hype_train.begin`](ChannelHypeTrainBeginV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelHypeTrainBeginV1Payload {
     /// The requested broadcaster ID.

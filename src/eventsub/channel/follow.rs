@@ -1,8 +1,7 @@
-//! Subscription that sends a notification when a specified channel receives a follow.
+//! A specified channel receives a follow.
 use super::*;
 
-/// The `channel.follow` subscription type sends a notification when a specified channel receives a follow.
-/// [`channelfollow`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelfollow)
+/// [`channel.follow`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelfollow): a specified channel receives a follow.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelFollowV1 {
     /// The broadcaster user ID for the channel you want to get follow notifications for.
@@ -18,7 +17,7 @@ impl EventSubscription for ChannelFollowV1 {
     const VERSION: &'static str = "1";
 }
 
-/// Response payload for [`channel.follow` version `1`](ChannelFollowV1) subscription.
+/// [`channel.follow`](ChannelFollowV1) response payload.
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelFollowV1Payload {
     /// The requested broadcaster ID.
