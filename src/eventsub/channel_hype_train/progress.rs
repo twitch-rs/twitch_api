@@ -5,7 +5,8 @@ use super::*;
 /// [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress)
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelHypeTrainProgressV1 {
-    /// The broadcaster user ID for the channel you want to hype train progress notifications for.
+    // FIXME: Twitch docs say "want to hype train"
+    /// The broadcaster user ID for the channel you want hype train progress notifications for.
     pub broadcaster_user_id: types::UserId,
 }
 

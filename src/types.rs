@@ -150,6 +150,11 @@ pub enum VideoPeriod {
 #[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum VideoType {
+    /// A live video
+    Live,
+    // FIXME: What is this?
+    /// A playlist video
+    Playlist,
     /// A uploaded video
     Upload,
     /// An archived video
@@ -160,6 +165,8 @@ pub enum VideoType {
     Premiere,
     /// A rerun
     Rerun,
+    /// A watch party
+    WatchParty,
     /// A watchparty premiere,
     WatchPartyPremiere,
     /// A watchparty rerun

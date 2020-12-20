@@ -5,7 +5,8 @@ use super::*;
 /// [`channel.hype_train.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainbegin)
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelHypeTrainBeginV1 {
-    /// The broadcaster user ID for the channel you want to hype train begin notifications for.
+    // FIXME: Twitch docs say "want to hype train"
+    /// The broadcaster user ID for the channel you want hype train begin notifications for.
     pub broadcaster_user_id: types::UserId,
 }
 

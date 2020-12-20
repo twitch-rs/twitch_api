@@ -5,7 +5,8 @@ use super::*;
 /// [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress)
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 pub struct ChannelHypeTrainEndV1 {
-    /// The broadcaster user ID for the channel you want to hype train end notifications for.
+    // FIXME: Twitch docs say "want to hype train"
+    /// The broadcaster user ID for the channel you want hype train end notifications for.
     pub broadcaster_user_id: types::UserId,
 }
 

@@ -13,6 +13,8 @@ pub mod channel_points_custom_reward_redemption;
 pub mod channel_subscribe;
 pub mod channel_unban;
 pub mod channel_update;
+pub mod stream_offline;
+pub mod stream_online;
 pub mod user_update;
 
 /// An EventSub subscription.
@@ -87,6 +89,10 @@ pub enum Payload {
     ChannelHypeTrainProgressV1(NotificationPayload<channel_hype_train::ChannelHypeTrainProgressV1>),
     /// Channel Hype Train End V1 Event
     ChannelHypeTrainEndV1(NotificationPayload<channel_hype_train::ChannelHypeTrainEndV1>),
+    /// StreamOnline V1 Event
+    StreamOnlineV1(NotificationPayload<stream_online::StreamOnlineV1>),
+    /// StreamOffline V1 Event
+    StreamOfflineV1(NotificationPayload<stream_offline::StreamOfflineV1>),
 }
 
 impl Payload {
@@ -167,6 +173,8 @@ impl<'de> Deserialize<'de> for Payload {
             channel_hype_train::ChannelHypeTrainBeginV1;
             channel_hype_train::ChannelHypeTrainProgressV1;
             channel_hype_train::ChannelHypeTrainEndV1;
+            stream_online::StreamOnlineV1;
+            stream_offline::StreamOfflineV1;
             user_update::UserUpdateV1;
         })
     }
@@ -265,9 +273,15 @@ pub enum EventType {
     /// The `channel.hype_train.progress` subscription type sends a notification when a hype train makes progress on the specified channel.
     #[serde(rename = "channel.hype_train.progress")]
     ChannelHypeTrainProgress,
-    /// The `channel.hype_train.end` subscription type  sends a notification when a hype train ends on the specified channel.
+    /// The `channel.hype_train.end` subscription type sends a notification when a hype train ends on the specified channel.
     #[serde(rename = "channel.hype_train.end")]
     ChannelHypeTrainEnd,
+    /// The `stream.online` subscription type sends a notification when the specified broadcaster starts a stream.
+    #[serde(rename = "stream.online")]
+    StreamOnline,
+    /// The `stream.online` subscription type sends a notification when the specified broadcaster stops a stream.
+    #[serde(rename = "stream.offline")]
+    StreamOffline,
     /// The `user.update` subscription type sends a notification when user updates their account.
     #[serde(rename = "user.update")]
     UserUpdate,

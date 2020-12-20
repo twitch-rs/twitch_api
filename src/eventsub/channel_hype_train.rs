@@ -1,4 +1,3 @@
-#![allow(missing_docs)]
 //! Subscriptions that sends a notification related to hype trains
 use super::*;
 
@@ -13,10 +12,13 @@ pub use end::{ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload};
 #[doc(inline)]
 pub use progress::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload};
 
+/// Type of contribution
 #[derive(PartialEq, Deserialize, Serialize, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum ContributionType {
+    /// Bits
     Bits,
+    /// Channel Subscriptions. Either gifted or not.
     Subscription,
 }
 
