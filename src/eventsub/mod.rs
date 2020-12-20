@@ -4,18 +4,9 @@
 use crate::types;
 use serde::{de::DeserializeOwned, Deserialize, Deserializer, Serialize};
 
-pub mod channel_ban;
-pub mod channel_cheer;
-pub mod channel_follow;
-pub mod channel_hype_train;
-pub mod channel_points_custom_reward;
-pub mod channel_points_custom_reward_redemption;
-pub mod channel_subscribe;
-pub mod channel_unban;
-pub mod channel_update;
-pub mod stream_offline;
-pub mod stream_online;
-pub mod user_update;
+pub mod channel;
+pub mod stream;
+pub mod user;
 
 /// An EventSub subscription.
 pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
@@ -46,53 +37,47 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
 #[allow(clippy::large_enum_variant)]
 pub enum Payload {
     /// User Update V1 Event
-    UserUpdateV1(NotificationPayload<user_update::UserUpdateV1>),
+    UserUpdateV1(NotificationPayload<user::UserUpdateV1>),
     /// Channel Update V1 Event
-    ChannelUpdateV1(NotificationPayload<channel_update::ChannelUpdateV1>),
+    ChannelUpdateV1(NotificationPayload<channel::ChannelUpdateV1>),
     /// Channel Follow V1 Event
-    ChannelFollowV1(NotificationPayload<channel_follow::ChannelFollowV1>),
+    ChannelFollowV1(NotificationPayload<channel::ChannelFollowV1>),
     /// Channel Subscribe V1 Event
-    ChannelSubscribeV1(NotificationPayload<channel_subscribe::ChannelSubscribeV1>),
+    ChannelSubscribeV1(NotificationPayload<channel::ChannelSubscribeV1>),
     /// Channel Cheer V1 Event
-    ChannelCheerV1(NotificationPayload<channel_cheer::ChannelCheerV1>),
+    ChannelCheerV1(NotificationPayload<channel::ChannelCheerV1>),
     /// Channel Ban V1 Event
-    ChannelBanV1(NotificationPayload<channel_ban::ChannelBanV1>),
+    ChannelBanV1(NotificationPayload<channel::ChannelBanV1>),
     /// Channel Unban V1 Event
-    ChannelUnbanV1(NotificationPayload<channel_unban::ChannelUnbanV1>),
+    ChannelUnbanV1(NotificationPayload<channel::ChannelUnbanV1>),
     /// Channel Points Custom Reward Add V1 Event
-    ChannelPointsCustomRewardAddV1(
-        NotificationPayload<channel_points_custom_reward::ChannelPointsCustomRewardAddV1>,
-    ),
+    ChannelPointsCustomRewardAddV1(NotificationPayload<channel::ChannelPointsCustomRewardAddV1>),
     /// Channel Points Custom Reward Update V1 Event
     ChannelPointsCustomRewardUpdateV1(
-        NotificationPayload<channel_points_custom_reward::ChannelPointsCustomRewardUpdateV1>,
+        NotificationPayload<channel::ChannelPointsCustomRewardUpdateV1>,
     ),
     /// Channel Points Custom Reward Remove V1 Event
     ChannelPointsCustomRewardRemoveV1(
-        NotificationPayload<channel_points_custom_reward::ChannelPointsCustomRewardRemoveV1>,
+        NotificationPayload<channel::ChannelPointsCustomRewardRemoveV1>,
     ),
     /// Channel Points Custom Reward Redemption Add V1 Event
     ChannelPointsCustomRewardRedemptionAddV1(
-        NotificationPayload<
-            channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionAddV1,
-        >,
+        NotificationPayload<channel::ChannelPointsCustomRewardRedemptionAddV1>,
     ),
     /// Channel Points Custom Reward Redemption Update V1 Event
     ChannelPointsCustomRewardRedemptionUpdateV1(
-        NotificationPayload<
-            channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionUpdateV1,
-        >,
+        NotificationPayload<channel::ChannelPointsCustomRewardRedemptionUpdateV1>,
     ),
     /// Channel Hype Train Begin V1 Event
-    ChannelHypeTrainBeginV1(NotificationPayload<channel_hype_train::ChannelHypeTrainBeginV1>),
+    ChannelHypeTrainBeginV1(NotificationPayload<channel::ChannelHypeTrainBeginV1>),
     /// Channel Hype Train Progress V1 Event
-    ChannelHypeTrainProgressV1(NotificationPayload<channel_hype_train::ChannelHypeTrainProgressV1>),
+    ChannelHypeTrainProgressV1(NotificationPayload<channel::ChannelHypeTrainProgressV1>),
     /// Channel Hype Train End V1 Event
-    ChannelHypeTrainEndV1(NotificationPayload<channel_hype_train::ChannelHypeTrainEndV1>),
+    ChannelHypeTrainEndV1(NotificationPayload<channel::ChannelHypeTrainEndV1>),
     /// StreamOnline V1 Event
-    StreamOnlineV1(NotificationPayload<stream_online::StreamOnlineV1>),
+    StreamOnlineV1(NotificationPayload<stream::StreamOnlineV1>),
     /// StreamOffline V1 Event
-    StreamOfflineV1(NotificationPayload<stream_offline::StreamOfflineV1>),
+    StreamOfflineV1(NotificationPayload<stream::StreamOfflineV1>),
 }
 
 impl Payload {
@@ -159,23 +144,23 @@ impl<'de> Deserialize<'de> for Payload {
             serde::de::Error::custom(format!("could not deserialize response: {}", e))
         })?;
         Ok(match_event! { response;
-            channel_update::ChannelUpdateV1;
-            channel_follow::ChannelFollowV1;
-            channel_subscribe::ChannelSubscribeV1;
-            channel_cheer::ChannelCheerV1;
-            channel_ban::ChannelBanV1;
-            channel_unban::ChannelUnbanV1;
-            channel_points_custom_reward::ChannelPointsCustomRewardAddV1;
-            channel_points_custom_reward::ChannelPointsCustomRewardUpdateV1;
-            channel_points_custom_reward::ChannelPointsCustomRewardRemoveV1;
-            channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionAddV1;
-            channel_points_custom_reward_redemption::ChannelPointsCustomRewardRedemptionUpdateV1;
-            channel_hype_train::ChannelHypeTrainBeginV1;
-            channel_hype_train::ChannelHypeTrainProgressV1;
-            channel_hype_train::ChannelHypeTrainEndV1;
-            stream_online::StreamOnlineV1;
-            stream_offline::StreamOfflineV1;
-            user_update::UserUpdateV1;
+            channel::ChannelUpdateV1;
+            channel::ChannelFollowV1;
+            channel::ChannelSubscribeV1;
+            channel::ChannelCheerV1;
+            channel::ChannelBanV1;
+            channel::ChannelUnbanV1;
+            channel::ChannelPointsCustomRewardAddV1;
+            channel::ChannelPointsCustomRewardUpdateV1;
+            channel::ChannelPointsCustomRewardRemoveV1;
+            channel::ChannelPointsCustomRewardRedemptionAddV1;
+            channel::ChannelPointsCustomRewardRedemptionUpdateV1;
+            channel::ChannelHypeTrainBeginV1;
+            channel::ChannelHypeTrainProgressV1;
+            channel::ChannelHypeTrainEndV1;
+            stream::StreamOnlineV1;
+            stream::StreamOfflineV1;
+            user::UserUpdateV1;
         })
     }
 }

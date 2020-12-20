@@ -181,7 +181,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
 
 #[test]
 fn test_request() {
-    use crate::eventsub::user_update::UserUpdateV1;
+    use crate::eventsub::user::UserUpdateV1;
     use helix::*;
     let req: CreateEventSubSubscriptionRequest<UserUpdateV1> =
         CreateEventSubSubscriptionRequest::builder().build();

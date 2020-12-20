@@ -1,5 +1,7 @@
 //! Subscriptions that sends a notification related to hype trains
-use super::*;
+use super::{EventSubscription, EventType};
+use crate::types;
+use serde::{Deserialize, Serialize};
 
 pub mod begin;
 pub mod end;
