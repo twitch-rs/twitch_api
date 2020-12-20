@@ -36,8 +36,6 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
 #[serde(remote = "Self")]
 #[allow(clippy::large_enum_variant)]
 pub enum Payload {
-    /// User Update V1 Event
-    UserUpdateV1(NotificationPayload<user::UserUpdateV1>),
     /// Channel Update V1 Event
     ChannelUpdateV1(NotificationPayload<channel::ChannelUpdateV1>),
     /// Channel Follow V1 Event
@@ -78,6 +76,10 @@ pub enum Payload {
     StreamOnlineV1(NotificationPayload<stream::StreamOnlineV1>),
     /// StreamOffline V1 Event
     StreamOfflineV1(NotificationPayload<stream::StreamOfflineV1>),
+    /// User Update V1 Event
+    UserUpdateV1(NotificationPayload<user::UserUpdateV1>),
+    /// User Authorization Revoke V1 Event
+    UserAuthorizationRevokeV1(NotificationPayload<user::UserAuthorizationRevokeV1>),
 }
 
 impl Payload {
@@ -161,6 +163,7 @@ impl<'de> Deserialize<'de> for Payload {
             stream::StreamOnlineV1;
             stream::StreamOfflineV1;
             user::UserUpdateV1;
+            user::UserAuthorizationRevokeV1;
         })
     }
 }
@@ -270,6 +273,9 @@ pub enum EventType {
     /// The `user.update` subscription type sends a notification when user updates their account.
     #[serde(rename = "user.update")]
     UserUpdate,
+    /// The `user.authorization.revoke` subscription type sends a notification when a user has revoked authorization for your client id. Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.
+    #[serde(rename = "user.authorization.revoke")]
+    UserAuthorizationRevoke,
 }
 
 impl std::fmt::Display for EventType {
