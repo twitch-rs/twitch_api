@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_points.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>channel_points.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/655025c6a461104d98122918f54cf3b71bbfd9dc">655025c</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/dc0ade445335b99110d4ffc20b5898385fdabe6b">dc0ade4</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -418,6 +418,71 @@
 <span id="413">413</span>
 <span id="414">414</span>
 <span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! PubSub messages for channel points</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">pubsub</span>, <span class="ident">types</span>};
@@ -455,7 +520,7 @@
     <span class="kw">pub</span> <span class="ident">redeemed_at</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
     <span class="doccomment">/// Data about the reward that was redeemed</span>
     <span class="kw">pub</span> <span class="ident">reward</span>: <span class="ident">Reward</span>,
-    <span class="doccomment">/// reward redemption status, will be FULFULLED if a user skips the reward queue, UNFULFILLED otherwise. ACTION_TAKEN is for `redemption-status-update`</span>
+    <span class="doccomment">/// reward redemption status, will be FULFILLED if a user skips the reward queue, UNFULFILLED otherwise. ACTION_TAKEN is for `redemption-status-update`</span>
     <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">RedemptionStatus</span>,
     <span class="doccomment">/// User that triggered the reward</span>
     <span class="kw">pub</span> <span class="ident">user</span>: <span class="ident">types</span>::<span class="ident">User</span>,
@@ -476,7 +541,7 @@
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RedemptionStatus</span> {
     <span class="doccomment">/// Redemption was fullfilled, e.g it skipped reward queue</span>
-    <span class="ident">Fulfulled</span>,
+    <span class="ident">Fulfilled</span>,
     <span class="doccomment">/// Redemption is not fullfilled, e.g is in reward queue.</span>
     <span class="ident">Unfulfilled</span>,
     <span class="comment">// FIXME: https://github.com/twitchdev/issues/issues/111</span>
@@ -581,6 +646,29 @@
     },
 }
 
+<span class="doccomment">/// `update-redemption-statuses-finished``progress</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Progress</span> {
+    <span class="doccomment">/// ID of channel user</span>
+    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
+    <span class="doccomment">/// BASE64 representation of reward</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Method by which redemptions were set to new status</span>
+    <span class="comment">// FIXME: BY_REWARD etc, need to enumify</span>
+    <span class="kw">pub</span> <span class="ident">method</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// New status of redemptions</span>
+    <span class="kw">pub</span> <span class="ident">new_status</span>: <span class="ident">RedemptionStatus</span>,
+    <span class="doccomment">/// Total amount of redemptions changed</span>
+    <span class="kw">pub</span> <span class="ident">processed</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// ID of reward</span>
+    <span class="kw">pub</span> <span class="ident">reward_id</span>: <span class="ident">types</span>::<span class="ident">RewardId</span>,
+    <span class="doccomment">/// Total redemptions</span>
+    <span class="comment">// FIXME: What is this?</span>
+    <span class="kw">pub</span> <span class="ident">total</span>: <span class="ident">i64</span>,
+}
+
 <span class="doccomment">/// Reply from [ChannelPointsChannelV1]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>, <span class="ident">content</span> <span class="op">=</span> <span class="string">&quot;data&quot;</span>)]</span>
@@ -609,6 +697,15 @@
         <span class="ident">timestamp</span>: <span class="ident">String</span>,
         <span class="doccomment">/// Data about the reward that had status updated</span>
         <span class="ident">redemption</span>: <span class="ident">Redemption</span>,
+    },
+    <span class="doccomment">/// Status of multiple redemptions were changed</span>
+    <span class="comment">// TODO: This seems to only be on complete all / reject all</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;update-redemption-statuses-finished&quot;</span>)]</span>
+    <span class="ident">UpdateRedemptionStatusesFinished</span> {
+        <span class="doccomment">/// Time the pubsub message was sent</span>
+        <span class="ident">timestamp</span>: <span class="ident">String</span>,
+        <span class="doccomment">/// Data about the reward that had status updated</span>
+        <span class="ident">progress</span>: <span class="ident">Progress</span>,
     },
 }
 
@@ -799,6 +896,39 @@
             &quot;user_input&quot;: &quot;a&quot;,
             &quot;status&quot;: &quot;ACTION_TAKEN&quot;,
             &quot;cursor&quot;: &quot;ODQ0ZmZmMGMtNjE4NS00NGM3LThjMzAtM2Q2OGE1NjVmZTFiX18yMDIwLTEwLTE5VDE1OjAxOjE4LjQ1MzMzNDIzM1o=&quot;
+        }
+    }
+}
+        &quot;##</span>;
+
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;,&quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-points-channel-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
+            <span class="ident">message</span>
+        );
+        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg</span><span class="macro">!</span>(<span class="ident">Response</span>::<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="macro">matches</span><span class="macro">!</span>(
+            <span class="ident">actual</span>,
+            <span class="ident">Response</span>::<span class="ident">Message</span> {
+                <span class="ident">data</span>: <span class="ident">TopicData</span>::<span class="ident">ChannelPointsChannelV1</span> { .. },
+            }
+        ));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">update_redemption_statuses_finished</span>() {
+        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="string">r##&quot;
+{
+    &quot;type&quot;: &quot;update-redemption-statuses-finished&quot;,
+    &quot;data&quot;: {
+        &quot;timestamp&quot;: &quot;2020-12-21T02:25:21.717263168Z&quot;,
+        &quot;progress&quot;: {
+            &quot;id&quot;: &quot;Y29wb0J1bGtFZGl0UmVkZW1wdGlvblN0YXR1c1Byb2dyZXNzOjEzMzc6QlVMS19FRElUX1JFREVNUFRJT05fU1RBVFVTX01FVEhPRF9CWV9SRVdBUkQ6ZGVhZGJlZWY=&quot;,
+            &quot;channel_id&quot;: &quot;1337&quot;,
+            &quot;reward_id&quot;: &quot;deadbeef&quot;,
+            &quot;method&quot;: &quot;BY_REWARD&quot;,
+            &quot;new_status&quot;: &quot;FULFILLED&quot;,
+            &quot;processed&quot;: 5,
+            &quot;total&quot;: 5
         }
     }
 }
