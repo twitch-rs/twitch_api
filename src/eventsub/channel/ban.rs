@@ -2,7 +2,9 @@
 use super::*;
 
 /// [`channel.ban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelban): a viewer is banned from the specified channel.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct ChannelBanV1 {
     /// The broadcaster user ID for the channel you want to get ban notifications for.
     pub broadcaster_user_id: types::UserId,
@@ -18,7 +20,9 @@ impl EventSubscription for ChannelBanV1 {
 }
 
 /// [`channel.ban`](ChannelBanV1) response payload.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct ChannelBanV1Payload {
     /// The requested broadcaster ID.
     pub broadcaster_user_id: types::UserId,

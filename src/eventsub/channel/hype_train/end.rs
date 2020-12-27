@@ -2,7 +2,9 @@
 
 use super::*;
 /// [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainend): a hype train ends on the specified channel.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct ChannelHypeTrainEndV1 {
     // FIXME: Twitch docs say "want to hype train"
     /// The broadcaster user ID for the channel you want hype train end notifications for.
@@ -19,7 +21,9 @@ impl EventSubscription for ChannelHypeTrainEndV1 {
 }
 
 /// [`channel.hype_train.end`](ChannelHypeTrainEndV1) response payload.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct ChannelHypeTrainEndV1Payload {
     /// The requested broadcaster ID.
     pub broadcaster_user_id: types::UserId,

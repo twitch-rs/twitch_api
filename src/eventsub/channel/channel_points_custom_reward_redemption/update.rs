@@ -2,7 +2,9 @@
 
 use super::*;
 /// [`channel.channel_points_custom_reward_redemption.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionupdate): a redemption of a channel points custom reward has been updated for the specified channel.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct ChannelPointsCustomRewardRedemptionUpdateV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward update notifications for.
     pub broadcaster_user_id: types::UserId,
@@ -20,7 +22,9 @@ impl EventSubscription for ChannelPointsCustomRewardRedemptionUpdateV1 {
 }
 
 /// [`channel.channel_points_custom_reward_redemption.update`](ChannelPointsCustomRewardRedemptionUpdateV1) response payload.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct ChannelPointsCustomRewardRedemptionUpdateV1Payload {
     /// The requested broadcaster ID.
     pub broadcaster_user_id: String,

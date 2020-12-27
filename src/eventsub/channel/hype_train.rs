@@ -15,7 +15,9 @@ pub use end::{ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload};
 pub use progress::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload};
 
 /// Type of contribution
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 #[serde(rename_all = "lowercase")]
 pub enum ContributionType {
     /// Bits
@@ -25,7 +27,9 @@ pub enum ContributionType {
 }
 
 /// A contribution to hype train
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct Contribution {
     /// The total contributed.
     pub total: i64,

@@ -1,7 +1,9 @@
 //! Specified user updates their account.
 use super::*;
 /// [`user.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userupdate): user updates their account.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct UserUpdateV1 {
     /// The user ID for the user you want update notifications for.
     pub user_id: types::UserId,
@@ -19,7 +21,9 @@ impl EventSubscription for UserUpdateV1 {
 }
 
 /// [`user.update`](UserUpdateV1) response payload.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct UserUpdateV1Payload {
     /// The user’s description.
     pub description: String,

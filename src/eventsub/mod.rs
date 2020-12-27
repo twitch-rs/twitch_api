@@ -165,6 +165,7 @@ impl<'de> Deserialize<'de> for Payload {
         }
 
         #[derive(Deserialize, Clone)]
+        #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
         struct IEventSubscripionInformation {
             condition: serde_json::Value,
             created_at: types::Timestamp,
@@ -175,6 +176,7 @@ impl<'de> Deserialize<'de> for Payload {
             version: String,
         }
         #[derive(Deserialize)]
+        #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
         struct IResponse {
             #[serde(rename = "subscription")]
             s: IEventSubscripionInformation,
@@ -226,7 +228,9 @@ impl<'de> Deserialize<'de> for Payload {
 }
 
 /// Notification received
-#[derive(PartialEq, Deserialize, Serialize, Debug)] // FIXME: Clone?
+#[derive(Debug, PartialEq, Serialize, Deserialize)] // FIXME: Clone ?
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct NotificationPayload<E: EventSubscription> {
     /// Subscription information.
     #[serde(bound = "E: EventSubscription")]
@@ -237,39 +241,53 @@ pub struct NotificationPayload<E: EventSubscription> {
 }
 
 /// Metadata about the subscription.
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct EventSubscriptionInformation<E: EventSubscription> {
     /// Your client ID.
-    id: String,
+    pub id: String,
     /// Subscription-specific parameters.
     #[serde(bound = "E: EventSubscription")]
-    condition: E,
+    pub condition: E,
     /// The time the notification was created.
-    created_at: types::Timestamp,
-    transport: TransportResponse,
+    pub created_at: types::Timestamp,
+    /// Transport method
+    pub transport: TransportResponse,
 }
 
 /// Transport setting for event notification
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct Transport {
-    method: TransportMethod,
-    callback: String,
-    secret: String,
+    /// Method for transport
+    pub method: TransportMethod,
+    /// Callback
+    pub callback: String,
+    /// Secret attached to the subscription
+    pub secret: String,
 }
 
 /// Transport response on event notification
 ///
 /// Does not include secret.
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct TransportResponse {
-    method: TransportMethod,
-    callback: String,
+    /// Method for transport
+    pub method: TransportMethod,
+    /// Callback
+    pub callback: String,
 }
 
 /// Transport method
 ///
 /// Currently, only webhooks are supported
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 #[serde(rename_all = "lowercase")]
 pub enum TransportMethod {
     /// Webhook
@@ -277,7 +295,9 @@ pub enum TransportMethod {
 }
 
 /// Event name
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub enum EventType {
     /// `channel.update` subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
     #[serde(rename = "channel.update")]
@@ -340,7 +360,9 @@ impl std::fmt::Display for EventType {
 }
 
 ///  Subscription request status
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 #[serde(rename_all = "kebab-case")]
 pub enum Status {
     /// Designates that the subscription is in an operable state and is valid.

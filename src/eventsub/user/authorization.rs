@@ -1,7 +1,9 @@
 //! A user has revoked authorization for your client id.
 use super::*;
 /// [`user.authorization.revoke`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationrevoke): a user has revoked authorization for your client id.  Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct UserAuthorizationRevokeV1 {
     /// Your application’s client id. The provided client_id must match the client id in the application access token
     pub client_id: types::UserId,
@@ -17,7 +19,9 @@ impl EventSubscription for UserAuthorizationRevokeV1 {
 }
 
 /// [`user.authorization.revoke`](UserAuthorizationRevokeV1) response payload.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct UserAuthorizationRevokeV1Payload {
     /// The client_id of the application with revoked user access.
     pub client_id: String,

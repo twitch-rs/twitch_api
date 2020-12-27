@@ -147,7 +147,7 @@ pub enum VideoPeriod {
 }
 
 /// Type of video
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum VideoType {
     /// A live video

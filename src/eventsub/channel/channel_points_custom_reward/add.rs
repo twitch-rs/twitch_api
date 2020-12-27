@@ -2,7 +2,9 @@
 
 use super::*;
 /// [`channel.channel_points_custom_reward.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardadd): a custom channel points reward has been created for the specified channel.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct ChannelPointsCustomRewardAddV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward add notifications for.
     pub broadcaster_user_id: types::UserId,
@@ -19,7 +21,9 @@ impl EventSubscription for ChannelPointsCustomRewardAddV1 {
 
 // FIXME: Same as update
 /// [`channel.channel_points_custom_reward.add`](ChannelPointsCustomRewardAddV1) response payload.
-#[derive(PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct ChannelPointsCustomRewardAddV1Payload {
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #FA1ED2.
     pub background_color: String,
