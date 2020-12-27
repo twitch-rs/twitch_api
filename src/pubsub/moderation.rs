@@ -99,6 +99,31 @@ pub enum ChatModeratorActionsReply {
     /// A moderator was added. `moderator_added`
     #[serde(rename = "moderator_added")]
     ModeratorAdded(ModeratorAdded),
+    /// Unban request denied
+    #[serde(rename = "deny_unban_request")]
+    DenyUnbanRequest(UnbanRequest),
+    /// Unban request approved
+    #[serde(rename = "approve_unban_request")]
+    ApproveUnbanRequest(UnbanRequest),
+}
+
+/// Unban request
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct UnbanRequest {
+    /// Unban response created by user with id
+    pub created_by_id: types::UserId,
+    /// Unban response created by user with login
+    pub created_by_login: types::UserName,
+    /// Action taken, should be [ModerationActionCommand::ApproveUnbanRequest] or [ModerationActionCommand::DenyUnbanRequest]
+    pub moderation_action: ModerationActionCommand,
+    /// Message attached to unban request response
+    pub moderator_message: String,
+    /// Target user ID of unban request, e.g the user that was banned
+    pub target_user_id: types::UserId,
+    /// Target login of unban request, e.g the user that was banned
+    pub target_user_login: types::UserName,
 }
 
 /// A command
@@ -195,6 +220,12 @@ pub enum ModerationActionCommand {
     Host,
     /// Channel host removed
     Unhost,
+    /// Unban Request Approved
+    #[serde(rename = "APPROVE_UNBAN_REQUEST")]
+    ApproveUnbanRequest,
+    /// Unban Request Denied
+    #[serde(rename = "DENY_UNBAN_REQUEST")]
+    DenyUnbanRequest,
 }
 
 impl std::fmt::Display for ModerationActionCommand {
@@ -403,6 +434,44 @@ mod tests {
     "data": {
         "topic": "chat_moderator_actions.27620241",
         "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"slow\",\"unknownfield\": 1,\"args\":[\"5\"],\"created_by\":\"tmo\",\"created_by_user_id\":\"1234\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
+    }
+}"#;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn deny_unban_request() {
+        let source = r#"
+{
+    "type": "MESSAGE",
+    "data": {
+        "topic": "chat_moderator_actions.80525799.80525799",
+        "message": "{\"type\":\"deny_unban_request\",\"data\":{\"moderation_action\":\"DENY_UNBAN_REQUEST\",\"created_by_id\":\"27620241\",\"created_by_login\":\"emilgardis\",\"moderator_message\":\"ok\",\"target_user_id\":\"465894629\",\"target_user_login\":\"emil_the_impostor\"}}"
+    }
+}"#;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn approve_unban_request() {
+        let source = r#"
+{
+    "type": "MESSAGE",
+    "data": {
+        "topic": "chat_moderator_actions.80525799.80525799",
+        "message": "{\"type\":\"approve_unban_request\",\"data\":{\"moderation_action\":\"APPROVE_UNBAN_REQUEST\",\"created_by_id\":\"27620241\",\"created_by_login\":\"emilgardis\",\"moderator_message\":\"ok\",\"target_user_id\":\"465894629\",\"target_user_login\":\"emil_the_impostor\"}}"
     }
 }"#;
         let actual = dbg!(Response::parse(source).unwrap());

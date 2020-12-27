@@ -34,7 +34,7 @@ pub struct Redemption {
     pub redeemed_at: types::Timestamp,
     /// Data about the reward that was redeemed
     pub reward: Reward,
-    /// reward redemption status, will be FULFULLED if a user skips the reward queue, UNFULFILLED otherwise. ACTION_TAKEN is for `redemption-status-update`
+    /// reward redemption status, will be FULFILLED if a user skips the reward queue, UNFULFILLED otherwise. ACTION_TAKEN is for `redemption-status-update`
     pub status: RedemptionStatus,
     /// User that triggered the reward
     pub user: types::User,
@@ -55,7 +55,7 @@ pub struct Redemption {
 #[non_exhaustive]
 pub enum RedemptionStatus {
     /// Redemption was fullfilled, e.g it skipped reward queue
-    Fulfulled,
+    Fulfilled,
     /// Redemption is not fullfilled, e.g is in reward queue.
     Unfulfilled,
     // FIXME: https://github.com/twitchdev/issues/issues/111
@@ -160,6 +160,29 @@ pub enum Max {
     },
 }
 
+/// `update-redemption-statuses-finished``progress
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct Progress {
+    /// ID of channel user
+    pub channel_id: types::UserId,
+    /// BASE64 representation of reward
+    pub id: String,
+    /// Method by which redemptions were set to new status
+    // FIXME: BY_REWARD etc, need to enumify
+    pub method: String,
+    /// New status of redemptions
+    pub new_status: RedemptionStatus,
+    /// Total amount of redemptions changed
+    pub processed: i64,
+    /// ID of reward
+    pub reward_id: types::RewardId,
+    /// Total redemptions
+    // FIXME: What is this?
+    pub total: i64,
+}
+
 /// Reply from [ChannelPointsChannelV1]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", content = "data")]
@@ -188,6 +211,15 @@ pub enum ChannelPointsChannelV1Reply {
         timestamp: String,
         /// Data about the reward that had status updated
         redemption: Redemption,
+    },
+    /// Status of multiple redemptions were changed
+    // TODO: This seems to only be on complete all / reject all
+    #[serde(rename = "update-redemption-statuses-finished")]
+    UpdateRedemptionStatusesFinished {
+        /// Time the pubsub message was sent
+        timestamp: String,
+        /// Data about the reward that had status updated
+        progress: Progress,
     },
 }
 
@@ -378,6 +410,39 @@ mod tests {
             "user_input": "a",
             "status": "ACTION_TAKEN",
             "cursor": "ODQ0ZmZmMGMtNjE4NS00NGM3LThjMzAtM2Q2OGE1NjVmZTFiX18yMDIwLTEwLTE5VDE1OjAxOjE4LjQ1MzMzNDIzM1o="
+        }
+    }
+}
+        "##;
+
+        let source = format!(
+            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {:?} }}}}"#,
+            message
+        );
+        let actual = dbg!(Response::parse(&source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChannelPointsChannelV1 { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn update_redemption_statuses_finished() {
+        let message = r##"
+{
+    "type": "update-redemption-statuses-finished",
+    "data": {
+        "timestamp": "2020-12-21T02:25:21.717263168Z",
+        "progress": {
+            "id": "Y29wb0J1bGtFZGl0UmVkZW1wdGlvblN0YXR1c1Byb2dyZXNzOjEzMzc6QlVMS19FRElUX1JFREVNUFRJT05fU1RBVFVTX01FVEhPRF9CWV9SRVdBUkQ6ZGVhZGJlZWY=",
+            "channel_id": "1337",
+            "reward_id": "deadbeef",
+            "method": "BY_REWARD",
+            "new_status": "FULFILLED",
+            "processed": 5,
+            "total": 5
         }
     }
 }
