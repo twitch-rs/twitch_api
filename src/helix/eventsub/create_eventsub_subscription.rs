@@ -3,7 +3,7 @@
 use std::convert::TryInto;
 
 use super::*;
-use crate::eventsub::*;
+use crate::eventsub::{EventSubscription, EventType, Status, Transport, TransportResponse};
 
 /// Query Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
@@ -19,11 +19,9 @@ pub struct CreateEventSubSubscriptionRequest<E: EventSubscription> {
 impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<E> {
     type Response = CreateEventSubSubscription<E>;
 
-    #[cfg(feature = "twitch_oauth2")]
-    const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     const PATH: &'static str = "eventsub/subscriptions";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditFollows];
+    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
 /// Body Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
@@ -60,7 +58,7 @@ impl<E: EventSubscription> CreateEventSubSubscriptionBody<E> {
 #[non_exhaustive]
 pub struct CreateEventSubSubscription<E: EventSubscription> {
     /// ID of the subscription created.
-    pub id: String,
+    pub id: types::EventSubId,
     /// Status of the subscription.
     pub status: Status,
     /// The category of the subscription that was created.
@@ -186,13 +184,13 @@ fn test_request() {
     let req: CreateEventSubSubscriptionRequest<UserUpdateV1> =
         CreateEventSubSubscriptionRequest::builder().build();
 
-    // From twitch docs, FIXME: docs say `users.update` in example for Create EventSub Subscription
+    // From twitch docs, FIXME: docs say `users.update` in example for Create EventSub Subscription, they also use kebab-case for status
     // "{"type":"users.update","version":"1","condition":{"user_id":"1234"},"transport":{"method":"webhook","callback":"https://this-is-a-callback.com","secret":"s3cre7"}}"
     let data = br#"{
     "data": [
         {
             "id": "26b1c993-bfcf-44d9-b876-379dacafe75a",
-            "status": "webhook-callback-verification-pending",
+            "status": "webhook_callback_verification_pending",
             "type": "user.update",
             "version": "1",
             "condition": {
@@ -210,7 +208,7 @@ fn test_request() {
 }
     "#
     .to_vec();
-    let http_response = http::Response::builder().status(200).body(data).unwrap();
+    let http_response = http::Response::builder().status(202).body(data).unwrap();
 
     let uri = req.get_uri().unwrap();
     assert_eq!(

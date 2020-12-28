@@ -33,6 +33,9 @@ pub type TagId = String;
 /// A video ID
 pub type VideoId = String;
 
+/// An EventSub Subscription ID
+pub type EventSubId = String;
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Debug, Clone)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]

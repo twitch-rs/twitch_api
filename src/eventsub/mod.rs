@@ -265,7 +265,11 @@ pub struct Transport {
     pub method: TransportMethod,
     /// Callback
     pub callback: String,
-    /// Secret attached to the subscription
+    /// Secret attached to the subscription.
+    ///
+    /// # Notes
+    ///
+    /// Secret must be between 10 and 100 characters
     pub secret: String,
 }
 
@@ -363,7 +367,7 @@ impl std::fmt::Display for EventType {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
-#[serde(rename_all = "kebab-case")]
+#[serde(rename_all = "snake_case")] // FIXME: Most of examples use kebab-case... but reality seems to be snake_case
 pub enum Status {
     /// Designates that the subscription is in an operable state and is valid.
     Enabled,
