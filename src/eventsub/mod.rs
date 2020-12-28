@@ -290,7 +290,6 @@ pub struct TransportResponse {
 ///
 /// Currently, only webhooks are supported
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
 #[serde(rename_all = "lowercase")]
 pub enum TransportMethod {
@@ -365,7 +364,6 @@ impl std::fmt::Display for EventType {
 
 ///  Subscription request status
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
 #[serde(rename_all = "snake_case")] // FIXME: Most of examples use kebab-case... but reality seems to be snake_case
 pub enum Status {
