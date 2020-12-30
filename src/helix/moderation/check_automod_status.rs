@@ -110,13 +110,13 @@ impl helix::Request for CheckAutoModStatusRequest {
 impl helix::RequestPost for CheckAutoModStatusRequest {
     type Body = Vec<CheckAutoModStatusBody>;
 
-    fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
+    fn body(&self, body: &Self::Body) -> Result<String, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
             data: &'a Vec<CheckAutoModStatusBody>,
         }
 
-        serde_json::to_string(&InnerBody { data: &body })
+        serde_json::to_string(&InnerBody { data: &body }).map_err(Into::into)
     }
 }
 

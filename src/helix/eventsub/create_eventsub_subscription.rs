@@ -82,7 +82,7 @@ pub struct CreateEventSubSubscription<E: EventSubscription> {
 impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequest<E> {
     type Body = CreateEventSubSubscriptionBody<E>;
 
-    fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
+    fn body(&self, body: &Self::Body) -> Result<String, helix::BodyError> {
         #[derive(PartialEq, Serialize, Debug)]
         struct IEventSubRequestBody<'a> {
             r#type: EventType,
@@ -97,7 +97,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
             condition: body.subscription.condition()?,
             transport: &body.transport,
         };
-        serde_json::to_string(&b)
+        serde_json::to_string(&b).map_err(Into::into)
     }
 
     fn parse_response(

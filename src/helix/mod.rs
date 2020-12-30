@@ -47,6 +47,7 @@ pub mod subscriptions;
 pub mod tags;
 pub mod users;
 pub mod videos;
+pub mod webhooks;
 
 pub(crate) mod ser;
 pub use ser::Error as SerializeError;
@@ -271,8 +272,8 @@ pub trait RequestPost: Request {
     type Body: serde::Serialize;
 
     /// Create body text from [`RequestPost::Body`]
-    fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
-        serde_json::to_string(body)
+    fn body(&self, body: &Self::Body) -> Result<String, BodyError> {
+        serde_json::to_string(body).map_err(Into::into)
     }
 
     /// Create a [`http::Request`] from this [`Request`] in your client
@@ -285,7 +286,7 @@ pub trait RequestPost: Request {
         let uri = self.get_uri()?;
 
         let body = self.body(&body)?;
-        // eprintln!("\n\nbody is ------------ {} ------------", body);
+        eprintln!("\n\nbody is ------------ {} ------------", body);
 
         let mut bearer =
             http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
@@ -348,9 +349,9 @@ where <Self as Request>::Response:
     /// Body parameters
     type Body: serde::Serialize;
 
-    /// Create body text from [`RequestPost::Body`]
-    fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
-        serde_json::to_string(body)
+    /// Create body text from [`RequestPatch::Body`]
+    fn body(&self, body: &Self::Body) -> Result<String, BodyError> {
+        serde_json::to_string(body).map_err(Into::into)
     }
 
     /// Create a [`http::Request`] from this [`Request`] in your client
@@ -631,7 +632,7 @@ pub enum CreateRequestError {
     /// http crate returned an error
     HttpError(#[from] http::Error),
     /// serialization of body failed
-    SerializeError(#[from] serde_json::Error),
+    SerializeError(#[from] BodyError),
     /// could not assemble URI for request
     InvalidUri(#[from] InvalidUri),
     /// {0}
@@ -733,4 +734,15 @@ pub enum HelixRequestDeleteError {
     },
     /// could not parse response as utf8 when calling `DELETE {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+}
+
+/// Errors that can happen when creating a body for [`RequestPost`](RequestPost::Body), [`RequestPatch`](RequestPatch::Body) or [`RequestPut`](RequestPut::Body)
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
+pub enum BodyError {
+    /// could not serialize as json
+    JsonError(#[from] serde_json::Error),
+    /// could not serialize to query
+    QuerySerializeError(#[from] ser::Error),
+    /// uri is invalid
+    InvalidUri(#[from] InvalidUri),
 }
