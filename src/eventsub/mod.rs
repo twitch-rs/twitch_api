@@ -397,7 +397,7 @@ impl std::fmt::Display for EventType {
 ///  Subscription request status
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
-#[serde(rename_all = "snake_case")] // FIXME: Most of examples use kebab-case... but reality seems to be snake_case
+#[serde(rename_all = "snake_case")] // FIXME: Most examples use kebab-case... but reality seems to be snake_case
 pub enum Status {
     /// Designates that the subscription is in an operable state and is valid.
     Enabled,

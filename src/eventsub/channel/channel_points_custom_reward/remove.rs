@@ -1,7 +1,7 @@
 //! A custom channel points reward has been removed from the specified channel.
 
 use super::*;
-/// [`channel.channel_points_custom_reward.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardupdate): a custom channel points reward has been removed from the specified channel.
+/// [`channel.channel_points_custom_reward.remove`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardremove): a custom channel points reward has been removed from the specified channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]

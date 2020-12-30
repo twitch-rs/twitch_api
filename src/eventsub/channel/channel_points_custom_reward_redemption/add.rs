@@ -28,9 +28,9 @@ impl EventSubscription for ChannelPointsCustomRewardRedemptionAddV1 {
 #[non_exhaustive]
 pub struct ChannelPointsCustomRewardRedemptionAddV1Payload {
     /// The requested broadcaster ID.
-    pub broadcaster_user_id: String,
+    pub broadcaster_user_id: types::UserId,
     /// The requested broadcaster name.
-    pub broadcaster_user_name: String,
+    pub broadcaster_user_name: types::UserName,
     /// The redemption identifier.
     pub id: types::RewardId,
     /// RFC3339 timestamp of when the reward was redeemed.
@@ -38,13 +38,13 @@ pub struct ChannelPointsCustomRewardRedemptionAddV1Payload {
     /// Basic information about the reward that was redeemed, at the time it was redeemed.
     pub reward: Reward,
     /// Defaults to unfulfilled. Possible values are unknown, unfulfilled, fulfilled, and canceled.
-    pub status: String,
+    pub status: RedemptionStatus,
     /// User ID of the user that redeemed the reward.
-    pub user_id: String,
+    pub user_id: types::UserId,
     /// The user input provided. Empty string if not provided.
     pub user_input: String,
     /// Display name of the user that redeemed the reward.
-    pub user_name: String,
+    pub user_name: types::UserName,
 }
 
 #[test]

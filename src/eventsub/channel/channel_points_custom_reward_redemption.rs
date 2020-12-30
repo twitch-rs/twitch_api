@@ -29,3 +29,19 @@ pub struct Reward {
     /// The reward name.
     pub title: String,
 }
+
+/// Custom reward redemption statuses: UNFULFILLED, FULFILLED or CANCELED
+///
+/// See also [`CustomRewardRedemptionStatus`](crate::helix::points::CustomRewardRedemptionStatus)
+#[derive(PartialEq, Eq, Serialize, Deserialize, Clone, Debug)]
+#[serde(rename_all = "lowercase")]
+pub enum RedemptionStatus {
+    /// Unfulfilled reward - the user has claimed it but it is still pending.
+    Unfulfilled,
+    /// Fulfilled reward - the user has claimed it and the reward has been granted.
+    Fulfilled,
+    /// Cancelled reward - the reward has been cancelled before fulfillment, and any spent points have been refunded.
+    Canceled,
+    /// Unknown reward status
+    Unknown,
+}
