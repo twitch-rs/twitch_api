@@ -35,6 +35,9 @@ use twitch_oauth2::TwitchToken;
 pub mod bits;
 pub mod channels;
 pub mod clips;
+#[cfg(feature = "eventsub")]
+#[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
+pub mod eventsub;
 pub mod games;
 pub mod moderation;
 pub mod points;

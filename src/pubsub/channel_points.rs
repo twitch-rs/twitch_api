@@ -78,13 +78,13 @@ pub struct Reward {
     /// Cost of reward.
     pub cost: u32,
     /// Default image of reward in rewards & challenges screen on client
-    pub default_image: Option<Image>,
+    pub default_image: Option<types::Image>,
     /// Information about global cooldown
-    pub global_cooldown: GlobalCooldown,
+    pub global_cooldown: types::GlobalCooldown,
     /// ID of reward.
     pub id: types::RewardId,
     /// Set image of reward in rewards & challenges screen on client. If none, see [`Reward::default_image`]
-    pub image: Option<Image>,
+    pub image: Option<types::Image>,
     /// Reward is enabled or not.
     pub is_enabled: bool,
     /// Reward is in stock
@@ -96,9 +96,9 @@ pub struct Reward {
     /// Reward requires input from user on rewards & challenges screen on client
     pub is_user_input_required: bool,
     /// Maximum redemptions per stream
-    pub max_per_stream: Max,
+    pub max_per_stream: types::Max,
     /// Maximum redemptions per user per stream
-    pub max_per_user_per_stream: Max,
+    pub max_per_user_per_stream: types::Max,
     /// Prompt shown when clicking reward on rewards & challenges screen on client
     pub prompt: String,
     // TODO: Is this fullfilled redeemptions or is it x + 1 ? where 1 is this reward redemption
@@ -112,52 +112,6 @@ pub struct Reward {
     pub title: String,
     /// Unknown
     pub updated_for_indicator_at: Option<types::Timestamp>,
-}
-
-/// Links to the same image of different sizes
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub struct Image {
-    /// URL to png of size 28x28
-    pub url_1x: String,
-    /// URL to png of size 56x56
-    pub url_2x: String,
-    /// URL to png of size 112x112
-    pub url_4x: String,
-}
-
-/// Information about global cooldown
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub struct GlobalCooldown {
-    /// Cooldown enabled
-    pub is_enabled: bool,
-    /// Cooldown amount
-    pub global_cooldown_seconds: u32,
-}
-
-/// Reward redemption max
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
-#[serde(untagged)]
-#[non_exhaustive]
-pub enum Max {
-    /// Max per stream
-    MaxPerStream {
-        /// Max per stream is enabled
-        is_enabled: bool,
-        /// Max amount of redemptions per stream
-        max_per_stream: u32,
-    },
-    /// Max per user per stream
-    MaxPerUserPerStream {
-        /// Max per user per stream is enabled
-        is_enabled: bool,
-        /// Max amount of redemptions per user per stream
-        max_per_user_per_stream: u32,
-    },
 }
 
 /// `update-redemption-statuses-finished``progress
