@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ChannelPointsCustomRewardUpdateV1","`channel.channel_points_custom_reward.update`: a custom channel points reward has been updated for the specified channel."],["ChannelPointsCustomRewardUpdateV1Payload","`channel.channel_points_custom_reward.update` response payload."]]});

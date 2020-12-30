@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ChannelPointsCustomRewardRedemptionUpdateV1","`channel.channel_points_custom_reward_redemption.update`: a redemption of a channel points custom reward has been updated for the specified channel."],["ChannelPointsCustomRewardRedemptionUpdateV1Payload","`channel.channel_points_custom_reward_redemption.update` response payload."]]});
