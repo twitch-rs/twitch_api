@@ -63,15 +63,15 @@ pub struct GetUsersFollowsRequest {
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct UsersFollow {
-    ///Date and time when the from_id user followed the to_id user.
+    /// Date and time when the from_id user followed the to_id user.
     pub followed_at: types::Timestamp,
-    ///ID of the user following the to_id user.
+    /// ID of the user following the to_id user.
     pub from_id: types::UserId,
-    ///Display name corresponding to from_id.
+    /// Display name corresponding to from_id.
     pub from_name: types::DisplayName,
-    ///ID of the user being followed by the from_id user.
+    /// ID of the user being followed by the from_id user.
     pub to_id: types::UserId,
-    ///Display name corresponding to to_id.
+    /// Display name corresponding to to_id.
     pub to_name: types::DisplayName,
     // FIXME: This never seems to be returned.
     /// Total number of items returned.

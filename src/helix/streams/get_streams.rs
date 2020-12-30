@@ -96,7 +96,7 @@ pub struct Stream {
     /// ID of the user who is streaming.
     pub user_id: types::UserId,
     /// Display name corresponding to user_id.
-    pub user_name: types::UserName,
+    pub user_name: types::DisplayName,
     /// Number of viewers watching the stream at the time of the query.
     pub viewer_count: usize,
 }

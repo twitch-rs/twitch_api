@@ -110,7 +110,7 @@ pub struct LeaderboardUser {
     /// ID of the user (viewer) in the leaderboard entry.
     pub user_id: types::UserId,
     /// Display name corresponding to user_id.
-    pub user_name: types::UserName,
+    pub user_name: types::DisplayName,
 }
 
 impl helix::Request for GetBitsLeaderboardRequest {

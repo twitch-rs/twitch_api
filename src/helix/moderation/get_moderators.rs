@@ -68,8 +68,6 @@ pub struct Moderator {
     /// Twitch says: `User ID of a user who has been banned.` but this seems wrong.
     pub user_id: types::UserId,
     /// Display name of moderator
-    ///
-    /// Twitch says: `Display name of a user who has been banned.` but this seems wrong.
     pub user_name: types::DisplayName,
 }
 

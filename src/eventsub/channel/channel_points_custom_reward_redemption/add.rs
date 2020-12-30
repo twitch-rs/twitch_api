@@ -44,7 +44,7 @@ pub struct ChannelPointsCustomRewardRedemptionAddV1Payload {
     /// The user input provided. Empty string if not provided.
     pub user_input: String,
     /// Display name of the user that redeemed the reward.
-    pub user_name: types::UserName,
+    pub user_name: types::DisplayName,
 }
 
 #[test]

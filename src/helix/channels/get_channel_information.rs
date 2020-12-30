@@ -62,7 +62,7 @@ pub struct ChannelInformation {
     /// Twitch User ID of this channel owner
     pub broadcaster_id: types::UserId,
     /// Twitch user display name of this channel owner
-    pub broadcaster_name: types::UserName,
+    pub broadcaster_name: types::DisplayName,
     /// Current game ID being played on the channel
     pub game_id: types::CategoryId,
     /// Name of the game being played on the channel
