@@ -380,47 +380,87 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
         Ok(self.urlencoder)
     }
 
+    fn serialize_i8(self, value: i8) -> Result<Self::Ok, Self::Error> {
+        value.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
+    fn serialize_i16(self, value: i16) -> Result<Self::Ok, Self::Error> {
+        value.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
+    fn serialize_i32(self, value: i32) -> Result<Self::Ok, Self::Error> {
+        value.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
+    fn serialize_i64(self, value: i64) -> Result<Self::Ok, Self::Error> {
+        value.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
+    fn serialize_u8(self, value: u8) -> Result<Self::Ok, Self::Error> {
+        value.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
+    fn serialize_u16(self, value: u16) -> Result<Self::Ok, Self::Error> {
+        value.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
+    fn serialize_u32(self, value: u32) -> Result<Self::Ok, Self::Error> {
+        value.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
+    fn serialize_u64(self, value: u64) -> Result<Self::Ok, Self::Error> {
+        value.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
+    fn serialize_f32(self, value: f32) -> Result<Self::Ok, Self::Error> {
+        value.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
+    fn serialize_f64(self, value: f64) -> Result<Self::Ok, Self::Error> {
+        value.serialize(PairSerializer {
+            key: self.key,
+            urlencoder: self.urlencoder,
+        })?;
+        Ok(self.urlencoder)
+    }
+
     fn serialize_bool(self, _v: bool) -> Result<Self::Ok, Self::Error> {
-        Err(Error::field_not_supported())
-    }
-
-    fn serialize_i8(self, _v: i8) -> Result<Self::Ok, Self::Error> {
-        Err(Error::field_not_supported())
-    }
-
-    fn serialize_i16(self, _v: i16) -> Result<Self::Ok, Self::Error> {
-        Err(Error::field_not_supported())
-    }
-
-    fn serialize_i32(self, _v: i32) -> Result<Self::Ok, Self::Error> {
-        Err(Error::field_not_supported())
-    }
-
-    fn serialize_i64(self, _v: i64) -> Result<Self::Ok, Self::Error> {
-        Err(Error::field_not_supported())
-    }
-
-    fn serialize_u8(self, _v: u8) -> Result<Self::Ok, Self::Error> {
-        Err(Error::field_not_supported())
-    }
-
-    fn serialize_u16(self, _v: u16) -> Result<Self::Ok, Self::Error> {
-        Err(Error::field_not_supported())
-    }
-
-    fn serialize_u32(self, _v: u32) -> Result<Self::Ok, Self::Error> {
-        Err(Error::field_not_supported())
-    }
-
-    fn serialize_u64(self, _v: u64) -> Result<Self::Ok, Self::Error> {
-        Err(Error::field_not_supported())
-    }
-
-    fn serialize_f32(self, _v: f32) -> Result<Self::Ok, Self::Error> {
-        Err(Error::field_not_supported())
-    }
-
-    fn serialize_f64(self, _v: f64) -> Result<Self::Ok, Self::Error> {
         Err(Error::field_not_supported())
     }
 
@@ -918,6 +958,7 @@ fn serialize_query() {
         username: crate::types::UserName,
         variant: Variant,
         variant2: Option<Variant>,
+        num: u32,
     }
 
     let req = Request {
@@ -931,9 +972,10 @@ fn serialize_query() {
         username: crate::types::UserName::from("justintv"),
         variant: Variant::Hello,
         variant2: Some(Variant::World),
+        num: 123,
     };
     assert_eq!(
         to_string(req).unwrap(),
-        "filter=1&possibly=sure+thing&ids=2&ids=3&ids2=4&stuff=32&stuff=-35&stuff=ha&1=one&2=two&username=justintv&variant=hello&variant2=world"
+        "filter=1&possibly=sure+thing&ids=2&ids=3&ids2=4&stuff=32&stuff=-35&stuff=ha&1=one&2=two&username=justintv&variant=hello&variant2=world&num=123"
     )
 }
