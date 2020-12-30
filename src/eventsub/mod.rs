@@ -72,6 +72,23 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
         serde_json::to_value(self)
     }
 }
+/// Verification Request
+#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct VerificationRequest {
+    /// Challenge string.
+    ///
+    /// After verifying that the response is legit, send back this challenge.
+    pub challenge: String,
+    /// Information about subscription, including ID
+    pub subscription: types::EventSubSubscription,
+    // /// Signature of message
+    // pub signature: String,
+    // /// ID of subscription, also contained in [`subscription`](VerificationRequest::subscription)
+    // pub id: types::EventSubId,
+}
+
 /// Subscription payload. Received on events. Enumerates all possible [`NotificationPayload`s](NotificationPayload)
 ///
 /// Use [`Payload::parse`] to construct
@@ -79,6 +96,8 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
 #[serde(remote = "Self")]
 #[allow(clippy::large_enum_variant)]
 pub enum Payload {
+    /// Webhook Callback Verification
+    VerificationRequest(VerificationRequest),
     /// Channel Update V1 Event
     ChannelUpdateV1(NotificationPayload<channel::ChannelUpdateV1>),
     /// Channel Follow V1 Event
@@ -131,7 +150,8 @@ impl Payload {
         serde_json::from_str(source).map_err(Into::into)
     }
 
-    /// Parse string slice as a [Payload]
+    // FIXME: Should not throwaway headers etc
+    /// Parse http response as a [Payload].
     pub fn parse_response(source: &http::Response<Vec<u8>>) -> Result<Payload, PayloadParseError> {
         Payload::parse(std::str::from_utf8(source.body())?)
     }
@@ -180,7 +200,7 @@ impl<'de> Deserialize<'de> for Payload {
         struct IResponse {
             #[serde(rename = "subscription")]
             s: IEventSubscripionInformation,
-            #[serde(rename = "event")]
+            #[serde(rename = "event", alias = "challenge")]
             e: serde_json::Value,
         }
 
@@ -200,30 +220,42 @@ impl<'de> Deserialize<'de> for Payload {
                 })
             }
         }
+        #[derive(Deserialize)]
+        #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+        #[serde(untagged)]
+        enum IIResponse {
+            VerificationRequest(VerificationRequest),
+            IResponse(IResponse),
+        }
 
-        let response = IResponse::deserialize(deserializer).map_err(|e| {
+        let response = IIResponse::deserialize(deserializer).map_err(|e| {
             serde::de::Error::custom(format!("could not deserialize response: {}", e))
         })?;
-        Ok(match_event! { response;
-            channel::ChannelUpdateV1;
-            channel::ChannelFollowV1;
-            channel::ChannelSubscribeV1;
-            channel::ChannelCheerV1;
-            channel::ChannelBanV1;
-            channel::ChannelUnbanV1;
-            channel::ChannelPointsCustomRewardAddV1;
-            channel::ChannelPointsCustomRewardUpdateV1;
-            channel::ChannelPointsCustomRewardRemoveV1;
-            channel::ChannelPointsCustomRewardRedemptionAddV1;
-            channel::ChannelPointsCustomRewardRedemptionUpdateV1;
-            channel::ChannelHypeTrainBeginV1;
-            channel::ChannelHypeTrainProgressV1;
-            channel::ChannelHypeTrainEndV1;
-            stream::StreamOnlineV1;
-            stream::StreamOfflineV1;
-            user::UserUpdateV1;
-            user::UserAuthorizationRevokeV1;
-        })
+        match response {
+            IIResponse::VerificationRequest(verification) => {
+                Ok(Payload::VerificationRequest(verification))
+            }
+            IIResponse::IResponse(response) => Ok(match_event! { response;
+                channel::ChannelUpdateV1;
+                channel::ChannelFollowV1;
+                channel::ChannelSubscribeV1;
+                channel::ChannelCheerV1;
+                channel::ChannelBanV1;
+                channel::ChannelUnbanV1;
+                channel::ChannelPointsCustomRewardAddV1;
+                channel::ChannelPointsCustomRewardUpdateV1;
+                channel::ChannelPointsCustomRewardRemoveV1;
+                channel::ChannelPointsCustomRewardRedemptionAddV1;
+                channel::ChannelPointsCustomRewardRedemptionUpdateV1;
+                channel::ChannelHypeTrainBeginV1;
+                channel::ChannelHypeTrainProgressV1;
+                channel::ChannelHypeTrainEndV1;
+                stream::StreamOnlineV1;
+                stream::StreamOfflineV1;
+                user::UserUpdateV1;
+                user::UserAuthorizationRevokeV1;
+            }),
+        }
     }
 }
 
@@ -379,4 +411,49 @@ pub enum Status {
     AuthorizationRevoked,
     /// A user in the condition of the subscription was removed.
     UserRemoved,
+}
+
+#[test]
+fn test_verification_response() {
+    use http::header::{HeaderMap, HeaderName, HeaderValue};
+
+    #[rustfmt::skip]
+    let _headers: HeaderMap = vec![
+        ("Twitch-Eventsub-Message-Id","e76c6bd4-55c9-4987-8304-da1588d8988b"),
+        ("Twitch-Eventsub-Message-Retry", "0"),
+        ("Twitch-Eventsub-Message-Type", "webhook_callback_verification"),
+        ("Twitch-Eventsub-Message-Signature","sha256=f56bf6ce06a1adf46fa27831d7d15d"),
+        ("Twitch-Eventsub-Message-Timestamp","2019-11-16T10:11:12.123Z"),
+        ("Twitch-Eventsub-Subscription-Type", "channel.follow"),
+        ("Twitch-Eventsub-Subscription-Version", "1"),
+
+    ].into_iter()
+        .map(|(h, v)| {
+            (
+                h.parse::<HeaderName>().unwrap(),
+                v.parse::<HeaderValue>().unwrap(),
+            )
+        })
+        .collect();
+
+    let body = r#"
+    {
+        "challenge": "pogchamp-kappa-360noscope-vohiyo",
+        "subscription": {
+            "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+            "status": "webhook_callback_verification_pending",
+            "type": "channel.follow",
+            "version": "1",
+            "condition": {
+                    "broadcaster_user_id": "12826"
+            },
+            "transport": {
+                "method": "webhook",
+                "callback": "https://example.com/webhooks/callback"
+            },
+            "created_at": "2019-11-16T10:11:12.123Z"
+        }
+    }"#;
+
+    dbg!(crate::eventsub::Payload::parse(&body).unwrap());
 }

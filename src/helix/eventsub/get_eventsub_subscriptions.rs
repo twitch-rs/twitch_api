@@ -24,26 +24,7 @@ impl helix::Request for GetEventSubSubscriptionsRequest {
 /// Return Values for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
 /// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#get-eventsub-subscriptions)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-#[non_exhaustive]
-pub struct EventSubSubscription {
-    /// JSON object specifying custom parameters for the subscription.
-    // FIXME: Should be [eventsub::Condition]
-    pub condition: serde_json::Value,
-    /// RFC3339 timestamp indicating when the subscription was created.
-    pub created_at: types::Timestamp,
-    /// ID of the subscription.
-    pub id: types::EventSubId,
-    /// Status of the subscription.
-    pub status: eventsub::Status,
-    /// Notification delivery specific information. Includes the transport method and callback URL.
-    pub transport: eventsub::TransportResponse,
-    /// The category of the subscription.
-    #[serde(rename = "type")]
-    pub type_: String,
-    /// The version of the subscription.
-    pub version: String,
-}
+pub type EventSubSubscription = types::EventSubSubscription;
 
 impl helix::RequestGet for GetEventSubSubscriptionsRequest {}
 
