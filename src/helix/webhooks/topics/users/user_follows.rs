@@ -10,6 +10,7 @@ impl Topic for UserFollowsTopic {
     const PATH: &'static str = "users/follows";
 }
 
+/// Notifies when a follows event occurs. [Topic: User Follows](https://dev.twitch.tv/docs/api/webhooks-reference#topic-user-follows)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 pub struct UserFollowsTopic {
     /// Must be 1.

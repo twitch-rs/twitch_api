@@ -59,9 +59,12 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPost::parse_response())
 
+use crate::helix;
 use std::convert::TryInto;
 
-use super::*;
+use serde::{Deserialize, Serialize};
+
+use super::Topic;
 /// Query Parameters for [Subscribe to/Unsubscribe From Events](super::hub)
 ///
 /// [`subscribe-tounsubscribe-from-events`](https://dev.twitch.tv/docs/api/webhooks-reference#subscribe-tounsubscribe-from-events)
@@ -98,10 +101,13 @@ pub struct WebhookHubBody<T: Topic> {
     pub secret: Option<String>,
 }
 
+/// Subscription mode
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum WebhookSubscriptionMode {
+    /// Subscribe
     Subscribe,
+    /// Unsubscribe
     Unsubscribe,
 }
 
@@ -112,9 +118,8 @@ pub enum WebhookSubscriptionMode {
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum WebhookHub {
+    /// 202 - Success
     Success,
-    // FIXME: better description
-    Error,
 }
 impl std::convert::TryFrom<http::StatusCode> for WebhookHub {
     type Error = std::borrow::Cow<'static, str>;
@@ -124,7 +129,6 @@ impl std::convert::TryFrom<http::StatusCode> for WebhookHub {
     ) -> Result<Self, <Self as std::convert::TryFrom<http::StatusCode>>::Error> {
         match s {
             http::StatusCode::ACCEPTED | http::StatusCode::OK => Ok(WebhookHub::Success),
-            http::StatusCode::BAD_REQUEST => Ok(WebhookHub::Error),
             other => Err(other.canonical_reason().unwrap_or("").into()),
         }
     }
@@ -215,7 +219,9 @@ impl<T: Topic> helix::RequestPost for WebhookHubRequest<T> {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = WebhookHubRequest::<topics::users::user_follows::UserFollowsTopic>::builder().build();
+    let req =
+        WebhookHubRequest::<webhooks::topics::users::user_follows::UserFollowsTopic>::builder()
+            .build();
 
     // From twitch docs
     let data = br#""#.to_vec();
