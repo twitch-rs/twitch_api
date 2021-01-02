@@ -8,8 +8,8 @@
 //! To use this endpoint, construct a [`WebhookHubRequest`] with the [`WebhookHubRequest::builder()`] method.
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::moderation::webhooks;
-//! let request = webhooks::WebhookHubRequest::builder()
+//! use twitch_api2::helix::webhooks::hub;
+//! let request = hub::WebhookHubRequest::<twitch_api2::helix::webhooks::topics::users::UserFollowsTopic>::builder()
 //!     .build();
 //! ```
 //!
@@ -18,8 +18,13 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::moderation::webhooks;
-//! let body = webhooks::WebhookHubBody::builder()
+//! # use twitch_api2::helix::webhooks::hub;
+//! let body = hub::WebhookHubBody::builder()
+//!     .callback("https://example.com/this-is-a-callback")
+//!     .lease_seconds(864000)
+//!     .mode(hub::WebhookSubscriptionMode::Subscribe)
+//!     .secret("12233213890390".to_string())
+//!     .topic(twitch_api2::helix::webhooks::topics::users::UserFollowsTopic::builder().from_id(1336).build())
 //!     .build();
 //! ```
 //!
@@ -30,18 +35,23 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, moderation::webhooks};
+//! use twitch_api2::helix::{self, webhooks::hub};
 //! # use twitch_api2::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
-//! let request = webhooks::WebhookHubRequest::builder()
+//! let request = hub::WebhookHubRequest::builder()
 //!     .build();
-//! let body = vec![webhooks::WebhookHubBody::builder()
-//!     .build()];
-//! let response: Vec<webhooks::WebhookHub> = client.req_post(request, body, &token).await?.data;
+//! let body = hub::WebhookHubBody::builder()
+//!     .callback("https://example.com/this-is-a-callback")
+//!     .lease_seconds(864000)
+//!     .mode(hub::WebhookSubscriptionMode::Subscribe)
+//!     .secret("12233213890390".to_string())
+//!     .topic(twitch_api2::helix::webhooks::topics::users::UserFollowsTopic::builder().from_id(1336).build())
+//!     .build();
+//! let response: hub::WebhookHub = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -52,7 +62,7 @@
 use std::convert::TryInto;
 
 use super::*;
-/// Query Parameters for [Subscribe to/Unsubscribe From Events](super::webhooks)
+/// Query Parameters for [Subscribe to/Unsubscribe From Events](super::hub)
 ///
 /// [`subscribe-tounsubscribe-from-events`](https://dev.twitch.tv/docs/api/webhooks-reference#subscribe-tounsubscribe-from-events)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
@@ -63,7 +73,7 @@ pub struct WebhookHubRequest<T: Topic> {
     _phantom: std::marker::PhantomData<T>,
 }
 
-/// Body Parameters for [Subscribe to/Unsubscribe From Events](super::webhooks)
+/// Body Parameters for [Subscribe to/Unsubscribe From Events](super::hub)
 ///
 /// [`subscribe-tounsubscribe-from-events`](https://dev.twitch.tv/docs/api/webhooks-reference#subscribe-tounsubscribe-from-events)
 ///
@@ -95,7 +105,7 @@ pub enum WebhookSubscriptionMode {
     Unsubscribe,
 }
 
-/// Return Values for [Subscribe to/Unsubscribe From Events](super::webhooks)
+/// Return Values for [Subscribe to/Unsubscribe From Events](super::hub)
 ///
 /// [`subscribe-tounsubscribe-from-events`](https://dev.twitch.tv/docs/api/webhooks-reference#subscribe-tounsubscribe-from-events)
 #[derive(PartialEq, Deserialize, Debug, Clone)]

@@ -20,7 +20,7 @@
 //!
 //! // then parse the response
 //! let uri = request.get_uri()?;
-//! let user: helix::Response<_, Vec<User>> = request.parse_response(&uri,response)?;
+//! let user: helix::Response<_, Vec<User>> = GetUsersRequest::parse_response(Some(request), &uri,response)?;
 //! println!("{:#?}", user);
 //! # Ok(())
 //! # }
@@ -752,7 +752,7 @@ pub enum HelixRequestDeleteError {
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
 }
 
-/// Errors that can happen when creating a body for [`RequestPost`](RequestPost::Body), [`RequestPatch`](RequestPatch::Body) or [`RequestPut`](RequestPut::Body)
+/// Errors that can happen when creating a body for [`RequestPost`](RequestPost::Body) or [`RequestPatch`](RequestPatch::Body)
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum BodyError {
     /// could not serialize as json
