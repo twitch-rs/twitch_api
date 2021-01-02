@@ -1,5 +1,4 @@
 //! Notifies when a follows event occurs.
-use crate::helix::webhooks::hub::{WebhookHubRequest, WebhookSubscriptionMode};
 
 use super::*;
 

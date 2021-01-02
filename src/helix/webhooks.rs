@@ -21,10 +21,7 @@
 //! # }
 //! ```
 
-use crate::{
-    helix::{self, Request, RequestGet, Response},
-    types,
-};
+use crate::helix::{self, Request, RequestGet, Response};
 use helix::ser;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
