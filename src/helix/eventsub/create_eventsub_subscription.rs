@@ -101,7 +101,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
     }
 
     fn parse_response(
-        self,
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<
@@ -172,7 +172,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
                 transport: data.transport,
             },
             pagination: None,
-            request: self,
+            request,
         })
     }
 }
@@ -216,5 +216,8 @@ fn test_request() {
         "https://api.twitch.tv/helix/eventsub/subscriptions?"
     );
 
-    dbg!("{:#?}", req.parse_response(&uri, http_response).unwrap());
+    dbg!(
+        "{:#?}",
+        CreateEventSubSubscriptionRequest::parse_response(Some(req), &uri, http_response).unwrap()
+    );
 }

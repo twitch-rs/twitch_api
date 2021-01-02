@@ -78,5 +78,8 @@ fn test_request() {
         "https://api.twitch.tv/helix/eventsub/subscriptions?"
     );
 
-    dbg!("{:#?}", req.parse_response(&uri, http_response).unwrap());
+    dbg!(
+        "{:#?}",
+        GetEventSubSubscriptionsRequest::parse_response(Some(req), &uri, http_response).unwrap()
+    );
 }

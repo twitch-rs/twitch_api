@@ -153,7 +153,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request.parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [`RequestPost`] endpoint
@@ -177,7 +177,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request.parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [`RequestPatch`] endpoint
@@ -203,7 +203,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request.parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(&uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [`RequestDelete`] endpoint
@@ -226,7 +226,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request.parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(&uri, response).map_err(Into::into)
     }
 }
 
@@ -260,6 +260,15 @@ pub trait Request: serde::Serialize {
             crate::TWITCH_HELIX_URL,
             <Self as Request>::PATH,
             self.query()?
+        ))
+        .map_err(Into::into)
+    }
+    /// Returns bare URI for the request, NOT including query parameters.
+    fn get_bare_uri() -> Result<http::Uri, InvalidUri> {
+        http::Uri::from_str(&format!(
+            "{}{}?",
+            crate::TWITCH_HELIX_URL,
+            <Self as Request>::PATH,
         ))
         .map_err(Into::into)
     }
@@ -305,7 +314,7 @@ pub trait RequestPost: Request {
 
     /// Parse response. Override for different behavior
     fn parse_response(
-        self,
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPostError>
@@ -336,7 +345,7 @@ pub trait RequestPost: Request {
         Ok(Response {
             data: response.data,
             pagination: response.pagination.cursor,
-            request: self,
+            request,
         })
     }
 }
@@ -383,7 +392,6 @@ where <Self as Request>::Response:
 
     /// Parse response. Override for different behavior
     fn parse_response(
-        self,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<<Self as Request>::Response, HelixRequestPatchError>
@@ -430,7 +438,6 @@ pub trait RequestDelete: Request {
 
     /// Parse response. Override for different behavior
     fn parse_response(
-        self,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<<Self as Request>::Response, HelixRequestDeleteError>
@@ -498,7 +505,7 @@ pub trait RequestGet: Request {
 
     /// Parse response. Override for different behavior
     fn parse_response(
-        self,
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestGetError>
@@ -528,7 +535,7 @@ pub trait RequestGet: Request {
         Ok(Response {
             data: response.data,
             pagination: response.pagination.cursor,
-            request: self,
+            request,
         })
     }
 }
@@ -543,8 +550,8 @@ where
     pub data: D,
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
     pub pagination: Option<Cursor>,
-    /// The request that was sent, used for [pagination](Paginated)
-    pub request: R,
+    /// The request that was sent, used for [pagination](Paginated).
+    pub request: Option<R>,
 }
 
 #[cfg(feature = "client")]
@@ -560,21 +567,27 @@ where
         token: &impl TwitchToken,
     ) -> Result<Option<Response<R, D>>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     {
-        let mut req = self.request.clone();
-        if self.pagination.is_some() {
-            req.set_pagination(self.pagination);
-            let res = client.req_get(req, token).await.map(Some);
-            if let Ok(Some(r)) = res {
-                if r.data == self.data {
-                    Ok(None)
+        if let Some(mut req) = self.request.clone() {
+            if self.pagination.is_some() {
+                req.set_pagination(self.pagination);
+                let res = client.req_get(req, token).await.map(Some);
+                if let Ok(Some(r)) = res {
+                    if r.data == self.data {
+                        Ok(None)
+                    } else {
+                        Ok(Some(r))
+                    }
                 } else {
-                    Ok(Some(r))
+                    res
                 }
             } else {
-                res
+                Ok(None)
             }
         } else {
-            Ok(None)
+            // TODO: Make into proper error
+            Err(ClientRequestError::Custom(
+                "no source request attached".into(),
+            ))
         }
     }
 }
@@ -666,6 +679,9 @@ pub enum HelixRequestGetError {
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `GET {2}` with response: {0:?}
     DeserializeError(String, #[source] serde_json::Error, http::Uri),
+    // FIXME: Only used in webhooks parse_payload
+    /// Could not get URI for request
+    InvalidUri(#[from] InvalidUri),
 }
 
 /// helix returned error {status:?} - {error}: {message:?} when calling `PUT {uri}` with a body

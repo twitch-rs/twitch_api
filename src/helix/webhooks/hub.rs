@@ -49,6 +49,8 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPost::parse_response())
 
+use std::convert::TryInto;
+
 use super::*;
 /// Query Parameters for [Subscribe to/Unsubscribe From Events](super::webhooks)
 ///
@@ -99,10 +101,26 @@ pub enum WebhookSubscriptionMode {
 #[derive(PartialEq, Deserialize, Debug, Clone)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct WebhookHub {}
+pub enum WebhookHub {
+    Success,
+    // FIXME: better description
+    Error,
+}
+impl std::convert::TryFrom<http::StatusCode> for WebhookHub {
+    type Error = std::borrow::Cow<'static, str>;
 
+    fn try_from(
+        s: http::StatusCode,
+    ) -> Result<Self, <Self as std::convert::TryFrom<http::StatusCode>>::Error> {
+        match s {
+            http::StatusCode::ACCEPTED | http::StatusCode::OK => Ok(WebhookHub::Success),
+            http::StatusCode::BAD_REQUEST => Ok(WebhookHub::Error),
+            other => Err(other.canonical_reason().unwrap_or("").into()),
+        }
+    }
+}
 impl<T: Topic> helix::Request for WebhookHubRequest<T> {
-    type Response = Vec<WebhookHub>;
+    type Response = WebhookHub;
 
     const PATH: &'static str = "webhooks/hub";
     #[cfg(feature = "twitch_oauth2")]
@@ -136,38 +154,66 @@ impl<T: Topic> helix::RequestPost for WebhookHubRequest<T> {
         };
         serde_json::to_string(&b).map_err(Into::into)
     }
+
+    fn parse_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: http::Response<Vec<u8>>,
+    ) -> Result<
+        helix::Response<Self, <Self as helix::Request>::Response>,
+        helix::HelixRequestPostError,
+    >
+    where
+        Self: Sized,
+    {
+        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+            helix::HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
+        })?;
+        if let Ok(helix::HelixRequestError {
+            error,
+            status,
+            message,
+        }) = serde_json::from_str::<helix::HelixRequestError>(&text)
+        {
+            return Err(helix::HelixRequestPostError::Error {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                uri: uri.clone(),
+                body: response.body().clone(),
+            });
+        }
+
+        let response = response.status().try_into().map_err(|_| {
+            // This path should never be taken, but just to be sure we do this
+            helix::HelixRequestPostError::Error {
+                status: response.status(),
+                uri: uri.clone(),
+                body: response.body().clone(),
+                message: String::new(), // FIXME: None, but this branch should really never be hit
+                error: String::new(),
+            }
+        })?;
+        Ok(helix::Response {
+            data: response, // FIXME: This should be a bit better...
+            pagination: <_>::default(),
+            request,
+        })
+    }
 }
 
 #[test]
-#[cfg(ignore)]
 fn test_request() {
     use helix::*;
-    let req = WebhookHubRequest::builder().build();
+    let req = WebhookHubRequest::<topics::users::user_follows::UserFollowsTopic>::builder().build();
 
     // From twitch docs
-    let data = br#"
-{
-   "data": [
-     {
-       "msg_id": "123",
-       "is_permitted": true
-     },
-     {
-       "msg_id": "393",
-       "is_permitted": false
-     }
-   ]
-}
-"#
-    .to_vec();
+    let data = br#""#.to_vec();
 
-    let http_response = http::Response::builder().body(data).unwrap();
+    let http_response = http::Response::builder().status(202).body(data).unwrap();
 
     let uri = req.get_uri().unwrap();
-    assert_eq!(
-        uri.to_string(),
-        "https://api.twitch.tv/helix/moderation/enforcements/status?broadcaster_id=198704263"
-    );
+    assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/webhooks/hub?");
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(WebhookHubRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

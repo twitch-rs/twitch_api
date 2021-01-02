@@ -6,7 +6,7 @@ use super::*;
 use serde::{Deserialize, Serialize};
 
 impl Topic for UserFollowsTopic {
-    type Payload = crate::helix::users::UsersFollows;
+    type Helix = crate::helix::users::GetUsersFollowsRequest;
 
     const PATH: &'static str = "users/follows";
 }
@@ -63,4 +63,6 @@ fn test_topic() {
     .to_vec();
 
     let http_response = http::Response::builder().body(data).unwrap();
+
+    dbg!(UserFollowsTopic::parse_payload(http_response).unwrap());
 }

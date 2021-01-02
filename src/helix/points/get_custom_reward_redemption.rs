@@ -186,5 +186,5 @@ fn test_request() {
             "https://api.twitch.tv/helix/channel_points/custom_rewards/redemptions?broadcaster_id=274637212&reward_id=92af127c-7326-4483-a52b-b0da0be61c01&status=CANCELED"
         );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(GetCustomRewardRedemptionRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

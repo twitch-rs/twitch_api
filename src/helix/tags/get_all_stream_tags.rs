@@ -146,5 +146,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/tags/streams?first=3"
     );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(GetAllStreamTagsRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

@@ -115,7 +115,7 @@ impl helix::RequestPost for CreateUserFollowsRequest {
     type Body = CreateUserFollowsBody;
 
     fn parse_response(
-        self,
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<
@@ -156,7 +156,7 @@ impl helix::RequestPost for CreateUserFollowsRequest {
         Ok(helix::Response {
             data: response, // FIXME: This should be a bit better...
             pagination: <_>::default(),
-            request: self,
+            request,
         })
     }
 }
@@ -178,5 +178,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users/follows?"
     );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(CreateUserFollowsRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

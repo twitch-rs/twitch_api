@@ -114,5 +114,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users/follows?from_id=41245071&to_id=41245072"
     );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(DeleteUserFollowsRequest::parse_response(&uri, http_response).unwrap());
 }

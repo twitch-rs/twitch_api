@@ -132,5 +132,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/channels/commercial?"
     );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(StartCommercialRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

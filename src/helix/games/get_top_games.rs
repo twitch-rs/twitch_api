@@ -105,5 +105,5 @@ fn test_request() {
     let uri = req.get_uri().unwrap();
     assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/games/top?");
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(GetTopGamesRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }
