@@ -178,6 +178,7 @@ There are no current plans to support
 | Endpoint                        |                                                 |                                                                                                                                                                                                         |
 | :------------------------------ | :---------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | ✔ Get Broadcaster Subscriptions | `GET https://api.twitch.tv/helix/subscriptions` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/subscriptions/get_broadcaster_subscriptions) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions) |
+| ✔ Get Broadcaster Subscriptions Events | `GET https://api.twitch.tv/helix/subscriptions/events` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/subscriptions/get_broadcaster_subscriptions_events) [![twitch-reference]](https://twitch.uservoice.com/forums/310213-developers/suggestions/39847468-get-broadcaster-subscriptions-events)  |
 
 
 #### Tags

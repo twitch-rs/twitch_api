@@ -4,9 +4,10 @@ use crate::helix::{self, Request, RequestGet, Response};
 use helix::ser;
 use serde::{de::DeserializeOwned, Serialize};
 
-pub mod users;
-pub mod streams;
 pub mod moderation;
+pub mod streams;
+pub mod subscriptions;
+pub mod users;
 
 // FIXME: Missing Topic: Extension Transaction Created
 

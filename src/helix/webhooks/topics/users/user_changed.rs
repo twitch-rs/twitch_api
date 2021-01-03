@@ -20,7 +20,6 @@ pub struct UserChangedTopic {
     /// Specifies the user whose data is monitored.
     #[builder(setter(into), default)]
     pub id: types::UserId,
-
 }
 
 #[test]
@@ -34,11 +33,7 @@ fn test_topic() {
         .lease_seconds(864000)
         .mode(WebhookSubscriptionMode::Subscribe)
         .secret("12233213890390".to_string())
-        .topic(
-            UserChangedTopic::builder()
-                .id(1336.to_string())
-                .build(),
-        )
+        .topic(UserChangedTopic::builder().id(1336.to_string()).build())
         .build();
 
     // Create request

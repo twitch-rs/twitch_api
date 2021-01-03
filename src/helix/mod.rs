@@ -237,6 +237,20 @@ where C: crate::HttpClient<'a> + Default
     fn default() -> HelixClient<'a, C> { HelixClient::new() }
 }
 
+/// Deserialize 'null' as <T as Default>::Default
+fn deserialize_default_from_empty_string<'de, D, T>(
+    deserializer: D,
+) -> Result<Option<T>, D::Error>
+where
+    D: serde::de::Deserializer<'de>,
+    T: serde::de::DeserializeOwned + Default, {
+    let val = serde_json::Value::deserialize(deserializer)?;
+    match val {
+        serde_json::Value::String(string) if string.is_empty() => Ok(None),
+        other => Ok(serde_json::from_value(other).map_err(serde::de::Error::custom)?),
+    }
+}
+
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
 #[async_trait::async_trait]
 #[cfg_attr(nightly, doc(spotlight))]
