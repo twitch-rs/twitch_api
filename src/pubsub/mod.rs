@@ -89,7 +89,7 @@ pub mod community_points;
 pub mod following;
 #[cfg(feature = "unsupported")]
 #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
-pub mod hype_train;
+pub mod hypetrain;
 pub mod moderation;
 #[cfg(feature = "unsupported")]
 #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
@@ -300,25 +300,25 @@ pub enum TopicData {
         #[serde(rename = "message")]
         reply: Box<video_playback::VideoPlaybackReply>,
     },
-    /// Response from the [hype_train::HypeTrainEventsV1] topic.
+    /// Response from the [hypetrain::HypeTrainEventsV1] topic.
     #[cfg(feature = "unsupported")]
     #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     HypeTrainEventsV1 {
         /// Topic message
-        topic: hype_train::HypeTrainEventsV1,
+        topic: hypetrain::HypeTrainEventsV1,
         /// Message reply from topic subscription
         #[serde(rename = "message")]
-        reply: Box<hype_train::HypeTrainEventsV1Reply>, // FIXME: May not be correct
+        reply: Box<hypetrain::HypeTrainEventsV1Reply>, // FIXME: May not be correct
     },
-    /// Response from the [hype_train::HypeTrainEventsV1Rewards] topic.
+    /// Response from the [hypetrain::HypeTrainEventsV1Rewards] topic.
     #[cfg(feature = "unsupported")]
     #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     HypeTrainEventsV1Rewards {
         /// Topic message
-        topic: hype_train::HypeTrainEventsV1Rewards,
+        topic: hypetrain::HypeTrainEventsV1Rewards,
         /// Message reply from topic subscription
         #[serde(rename = "message")]
-        reply: Box<hype_train::HypeTrainEventsV1Reply>,
+        reply: Box<hypetrain::HypeTrainEventsV1Reply>,
     },
     /// Response from the [following::Following] topic.
     #[cfg(feature = "unsupported")]
@@ -366,9 +366,9 @@ impl<'de> Deserialize<'de> for TopicData {
             #[cfg(feature = "unsupported")]
             VideoPlaybackById(video_playback::VideoPlaybackById),
             #[cfg(feature = "unsupported")]
-            HypeTrainEventsV1(hype_train::HypeTrainEventsV1),
+            HypeTrainEventsV1(hypetrain::HypeTrainEventsV1),
             #[cfg(feature = "unsupported")]
-            HypeTrainEventsV1Rewards(hype_train::HypeTrainEventsV1Rewards),
+            HypeTrainEventsV1Rewards(hypetrain::HypeTrainEventsV1Rewards),
             #[cfg(feature = "unsupported")]
             Following(following::Following),
             #[cfg(feature = "unsupported")]
