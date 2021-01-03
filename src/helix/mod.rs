@@ -39,6 +39,7 @@ pub mod clips;
 #[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
 pub mod eventsub;
 pub mod games;
+pub mod hypetrain;
 pub mod moderation;
 pub mod points;
 pub mod search;

@@ -4,6 +4,7 @@ use crate::helix::{self, Request, RequestGet, Response};
 use helix::ser;
 use serde::{de::DeserializeOwned, Serialize};
 
+pub mod hypetrain;
 pub mod moderation;
 pub mod streams;
 pub mod subscriptions;

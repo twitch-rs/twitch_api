@@ -51,6 +51,7 @@ This crate aims to target
 * [EventSub](https://dev.twitch.tv/docs/eventsub/eventsub-reference)
   * Not implemented, see issue #55
 * [Webhooks](https://dev.twitch.tv/docs/api/webhooks-reference)
+  * Partially implemented, see [implemented webhooks](#webhooks)
 * [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
   * Partially implemented, see [implemented topics](#pubsub)
 * [Extensions](https://dev.twitch.tv/docs/extensions/reference)
@@ -219,7 +220,7 @@ There are no current plans to support
 
 | Endpoint                |                                                    |                                                                                                                                                                                            |
 | :---------------------- | :------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🔨 Get Hype Train Events | `GET https://api.twitch.tv/helix/hypetrain/events` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/hypetrain/get_hype_train_events)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-hype-train-events) |
+| ✔ Get Hype Train Events | `GET https://api.twitch.tv/helix/hypetrain/events` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/hypetrain/get_hype_train_events) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-hype-train-events) |
 
 
 
@@ -235,14 +236,14 @@ There are no current plans to support
 
 | Endpoint                                | Topic                                           |                                                                                      |
 | :-------------------------------------- | :---------------------------------------------- | :----------------------------------------------------------------------------------- |
-| 🔨 Bits V1                               | `channel-bits-events-v1.<channel ID>`           | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)-->   |
+| 🔨 Bits V1                              | `channel-bits-events-v1.<channel ID>`           | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)-->   |
 | ✔ Bits V2                               | `channel-bits-events-v2.<channel ID>`           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)          |
 | ✔ Bits Badge Notificaton                | `channel-bits-badge-unlocks.<channel_id>`       | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_bits)          |
 | ✔ Channel Points                        | `channel-points-channel-v1.<channel_id>`        | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_points)        |
 | ✔ Channel Subscriptions                 | `channel-subscribe-events-v1.<channel ID>`      | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_subscriptions) |
 | ✔ Chat Moderator Actions                | `chat_moderator_actions.<channel ID>`           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/moderation)            |
 | ✔ Chat Moderator Actions (undocumented) | `chat_moderator_actions.<channel ID>.<user_id>` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/moderation)            |
-| 🔨 Whispers                              | `whispers.<user ID>`                            | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/whispers)-->       |
+| 🔨 Whispers                             | `whispers.<user ID>`                            | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/whispers)-->       |
 | ✔ Channel Cheer Events                  | `channel-cheer-events-public-v1.<user ID>`      | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_cheer)         |
 | ✔ Channel Sub Gifts V1                  | `channel-sub-gifts-v1.<user ID>`                | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/channel_sub_gifts)     |
 | ✔ Following                             | `following.<user ID>`                           | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/following)             |
@@ -252,6 +253,18 @@ There are no current plans to support
 | ✔ Video Playback                        | `video-playback.<username>`                     | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/video_playback)        |
 | ✔ Video Playback By ID                  | `video-playback-by-id.<user ID>`                | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/pubsub/video_playback)        |
 
+### Webhooks
+
+| Endpoint                                | Topic                                                      |                                                                                                                    |
+| :-------------------------------------- | :--------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| ✔ Topic: User Follows                  | `https://api.twitch.tv/helix/users/follows`                | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/webhooks/topics/users/user_follows)                   |
+| ✔ Topic: Stream Changed                | `https://api.twitch.tv/helix/streams`                      | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/webhooks/topics/streams/stream_changed)               |
+| ✔ Topic: User Changed                  | `https://api.twitch.tv/helix/users`                        | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/webhooks/topics/users/user_changed)                   |
+| 🔨 Topic: Extension Transaction Created | `https://api.twitch.tv/helix/extensions/transactions`      | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/webhooks/topics/users/user_follows)-->            |
+| ✔ Topic: Moderator Change Events       | `https://api.twitch.tv/helix/moderation/moderators/events` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/webhooks/topics/moderation/moderator_change_events)   |
+| ✔ Topic: Channel Ban Change Events     | `https://api.twitch.tv/helix/moderation/banned/events`     | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/webhooks/topics/moderation/channel_ban_change_events) |
+| ✔ Topic: Subscription Events           | `https://api.twitch.tv/helix/subscriptions/events`         | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/webhooks/topics/subscriptions/subscription_events)    |
+| ✔ Topic: Hype Train Event              | `https://api.twitch.tv/helix/hypetrain/events`             | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/webhooks/topics/hypetrain/hypetrain_event)            |
 
 <h5> License </h5>
 
