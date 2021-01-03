@@ -24,7 +24,7 @@
 //!     .lease_seconds(864000)
 //!     .mode(hub::WebhookSubscriptionMode::Subscribe)
 //!     .secret("12233213890390".to_string())
-//!     .topic(twitch_api2::helix::webhooks::topics::users::UserFollowsTopic::builder().from_id(1336).build())
+//!     .topic(twitch_api2::helix::webhooks::topics::users::UserFollowsTopic::builder().from_id(1336.to_string()).build())
 //!     .build();
 //! ```
 //!
@@ -49,7 +49,7 @@
 //!     .lease_seconds(864000)
 //!     .mode(hub::WebhookSubscriptionMode::Subscribe)
 //!     .secret("12233213890390".to_string())
-//!     .topic(twitch_api2::helix::webhooks::topics::users::UserFollowsTopic::builder().from_id(1336).build())
+//!     .topic(twitch_api2::helix::webhooks::topics::users::UserFollowsTopic::builder().from_id(1336.to_string()).build())
 //!     .build();
 //! let response: hub::WebhookHub = client.req_post(request, body, &token).await?.data;
 //! # Ok(())

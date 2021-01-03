@@ -1,5 +1,7 @@
 //! Notifies when a follows event occurs.
 
+use crate::types;
+
 use super::*;
 
 use serde::{Deserialize, Serialize};
@@ -8,6 +10,8 @@ impl Topic for UserFollowsTopic {
     type Helix = crate::helix::users::GetUsersFollowsRequest;
 
     const PATH: &'static str = "users/follows";
+    #[cfg(feature = "twitch_oauth2")]
+    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
 /// Notifies when a follows event occurs. [Topic: User Follows](https://dev.twitch.tv/docs/api/webhooks-reference#topic-user-follows)
@@ -19,10 +23,10 @@ pub struct UserFollowsTopic {
     first: u32,
     /// Specifies the user who starts following someone.
     #[builder(setter(into), default)]
-    pub from_id: Option<u32>,
+    pub from_id: Option<types::UserId>,
     /// Specifies the user who has a new follower.
     #[builder(setter(into), default)]
-    pub to_id: Option<u32>,
+    pub to_id: Option<types::UserId>,
 }
 
 #[inline(always)]
@@ -39,7 +43,11 @@ fn test_topic() {
         .lease_seconds(864000)
         .mode(WebhookSubscriptionMode::Subscribe)
         .secret("12233213890390".to_string())
-        .topic(UserFollowsTopic::builder().from_id(1336).build())
+        .topic(
+            UserFollowsTopic::builder()
+                .from_id(1336.to_string())
+                .build(),
+        )
         .build();
     // UserFollows::builder().from_id(1336).build();
     // Create request

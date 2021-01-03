@@ -5,6 +5,10 @@ use helix::ser;
 use serde::{de::DeserializeOwned, Serialize};
 
 pub mod users;
+pub mod streams;
+pub mod moderation;
+
+// FIXME: Missing Topic: Extension Transaction Created
 
 /// A webhook topic.
 ///
@@ -14,6 +18,13 @@ pub trait Topic: DeserializeOwned + Serialize + PartialEq {
 
     /// URL of topic sans `https://api.twitch.tv/helix/`
     const PATH: &'static str;
+
+    /// Scopes needed by this endpoint
+    #[cfg(feature = "twitch_oauth2")]
+    const SCOPE: &'static [twitch_oauth2::Scope];
+    /// Optional scopes needed by this endpoint
+    #[cfg(feature = "twitch_oauth2")]
+    const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
 
     /// Defines layout of the url parameters.
     fn query(&self) -> Result<String, ser::Error> { ser::to_string(&self) }
