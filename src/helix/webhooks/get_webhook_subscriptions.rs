@@ -2,7 +2,7 @@
 
 use super::*;
 
-/// Query Parameters for [Get webhook Subscriptions](super::get_webhook_subscriptions)
+/// Query Parameters for [Get Webhook Subscriptions](super::get_webhook_subscriptions)
 ///
 /// [`get-webhook-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-webhook-subscriptions)
 #[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug, Default)]
@@ -24,7 +24,7 @@ impl helix::Request for GetWebhookSubscriptionsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-/// Return Values for [Get webhook Subscriptions](super::get_webhook_subscriptions)
+/// Return Values for [Get Webhook Subscriptions](super::get_webhook_subscriptions)
 ///
 /// [`get-webhook-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-webhook-subscriptions)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
