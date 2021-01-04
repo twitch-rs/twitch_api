@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ModeratorChangedTopic","Notifies when a broadcaster adds or removes moderators. Topic: Moderator Change Events"]]});

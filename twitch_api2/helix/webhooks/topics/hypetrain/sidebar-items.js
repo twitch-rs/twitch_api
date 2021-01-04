@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["hypetrain_event","Notifies when a follows event occurs."]],"struct":[["HypeTrainEventTopic","Notifies when a stream changes Topic: Stream Changed"]]});

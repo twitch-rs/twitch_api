@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["UserChangedTopic","Notifies when a follows event occurs. Topic: User Changed"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["HypeTrainEventTopic","Notifies when a stream changes Topic: Stream Changed"]]});
