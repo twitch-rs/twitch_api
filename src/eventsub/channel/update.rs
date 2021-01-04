@@ -25,9 +25,9 @@ impl EventSubscription for ChannelUpdateV1 {
 #[non_exhaustive]
 pub struct ChannelUpdateV1Payload {
     /// The broadcaster’s user ID.
-    pub user_id: types::UserId,
+    pub broadcaster_user_id: types::UserId,
     /// The broadcaster’s user name.
-    pub user_name: types::UserName,
+    pub broadcaster_user_name: types::UserName,
     /// The channel’s stream title.
     pub title: String,
     /// The channel’s broadcast language.
@@ -42,6 +42,7 @@ pub struct ChannelUpdateV1Payload {
 
 #[test]
 fn parse_payload() {
+    // FIXME: https://github.com/twitchdev/issues/issues/268
     let payload = r#"
     {
         "subscription": {
@@ -58,8 +59,8 @@ fn parse_payload() {
             "created_at": "2019-11-16T10:11:12.123Z"
         },
         "event": {
-            "user_id": "1337",
-            "user_name": "cool_user",
+            "broadcaster_user_id": "1337",
+            "broadcaster_user_name": "cool_user",
             "title": "Best Stream Ever",
             "language": "en",
             "category_id": "21779",
