@@ -21,7 +21,6 @@ impl EventSubscription for ChannelPointsCustomRewardRemoveV1 {
     const VERSION: &'static str = "1";
 }
 
-// FIXME: Same as update
 /// [`channel.channel_points_custom_reward.update`](ChannelPointsCustomRewardRemoveV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]

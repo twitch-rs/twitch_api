@@ -16,6 +16,10 @@ pub struct GetEventSubSubscriptionsRequest {
     /// Cursor for forward pagination
     #[builder(default, setter(into))]
     pub after: Option<helix::Cursor>,
+    // FIXME: https://github.com/twitchdev/issues/issues/271
+    /// Maximum number of objects to return. Maximum: 100. Default: 20.
+    #[builder(default, setter(into))]
+    pub first: Option<usize>,
 }
 
 impl helix::Request for GetEventSubSubscriptionsRequest {
