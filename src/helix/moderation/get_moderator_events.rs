@@ -49,8 +49,7 @@ pub struct GetModeratorEventsRequest {
     /// Must match the User ID in the Bearer token.
     #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
-    // FIXME: Twitch docs sucks...
-    /// Filters the results and only returns a status object for users who are moderators in this channel and have a matching user_id.
+    /// Filters the results and only returns a status object for users who have been added or removed as moderators in this channel and have a matching user_id.
     /// Format: Repeated Query Parameter, eg. /moderation/moderators?broadcaster_id=1&user_id=2&user_id=3
     /// Maximum: 100
     #[builder(default)]
@@ -58,6 +57,9 @@ pub struct GetModeratorEventsRequest {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[builder(default)]
     pub after: Option<helix::Cursor>,
+    /// Number of values to be returned per page. Limit: 100. Default: 20.
+    #[builder(setter(into), default)]
+    pub first: Option<String>,
 }
 
 /// Return Values for [Get Moderators Events](super::get_moderator_events)
