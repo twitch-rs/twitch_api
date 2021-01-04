@@ -20,7 +20,7 @@
 //!
 //! // then parse the response
 //! let uri = request.get_uri()?;
-//! let user: helix::Response<_, Vec<User>> = request.parse_response(&uri,response)?;
+//! let user: helix::Response<_, Vec<User>> = GetUsersRequest::parse_response(Some(request), &uri,response)?;
 //! println!("{:#?}", user);
 //! # Ok(())
 //! # }
@@ -39,6 +39,7 @@ pub mod clips;
 #[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
 pub mod eventsub;
 pub mod games;
+pub mod hypetrain;
 pub mod moderation;
 pub mod points;
 pub mod search;
@@ -47,6 +48,7 @@ pub mod subscriptions;
 pub mod tags;
 pub mod users;
 pub mod videos;
+pub mod webhooks;
 
 pub(crate) mod ser;
 pub use ser::Error as SerializeError;
@@ -152,7 +154,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request.parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [`RequestPost`] endpoint
@@ -176,7 +178,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request.parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [`RequestPatch`] endpoint
@@ -202,7 +204,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request.parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(&uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [`RequestDelete`] endpoint
@@ -225,7 +227,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        request.parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(&uri, response).map_err(Into::into)
     }
 }
 
@@ -234,6 +236,20 @@ impl<'a, C> Default for HelixClient<'a, C>
 where C: crate::HttpClient<'a> + Default
 {
     fn default() -> HelixClient<'a, C> { HelixClient::new() }
+}
+
+/// Deserialize 'null' as <T as Default>::Default
+fn deserialize_default_from_empty_string<'de, D, T>(
+    deserializer: D,
+) -> Result<Option<T>, D::Error>
+where
+    D: serde::de::Deserializer<'de>,
+    T: serde::de::DeserializeOwned + Default, {
+    let val = serde_json::Value::deserialize(deserializer)?;
+    match val {
+        serde_json::Value::String(string) if string.is_empty() => Ok(None),
+        other => Ok(serde_json::from_value(other).map_err(serde::de::Error::custom)?),
+    }
 }
 
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
@@ -262,6 +278,15 @@ pub trait Request: serde::Serialize {
         ))
         .map_err(Into::into)
     }
+    /// Returns bare URI for the request, NOT including query parameters.
+    fn get_bare_uri() -> Result<http::Uri, InvalidUri> {
+        http::Uri::from_str(&format!(
+            "{}{}?",
+            crate::TWITCH_HELIX_URL,
+            <Self as Request>::PATH,
+        ))
+        .map_err(Into::into)
+    }
 }
 
 /// Helix endpoint POSTs information
@@ -271,8 +296,8 @@ pub trait RequestPost: Request {
     type Body: serde::Serialize;
 
     /// Create body text from [`RequestPost::Body`]
-    fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
-        serde_json::to_string(body)
+    fn body(&self, body: &Self::Body) -> Result<String, BodyError> {
+        serde_json::to_string(body).map_err(Into::into)
     }
 
     /// Create a [`http::Request`] from this [`Request`] in your client
@@ -285,7 +310,7 @@ pub trait RequestPost: Request {
         let uri = self.get_uri()?;
 
         let body = self.body(&body)?;
-        // eprintln!("\n\nbody is ------------ {} ------------", body);
+        //eprintln!("\n\nbody is ------------ {} ------------", body);
 
         let mut bearer =
             http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
@@ -304,7 +329,7 @@ pub trait RequestPost: Request {
 
     /// Parse response. Override for different behavior
     fn parse_response(
-        self,
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPostError>
@@ -335,7 +360,7 @@ pub trait RequestPost: Request {
         Ok(Response {
             data: response.data,
             pagination: response.pagination.cursor,
-            request: self,
+            request,
         })
     }
 }
@@ -348,9 +373,9 @@ where <Self as Request>::Response:
     /// Body parameters
     type Body: serde::Serialize;
 
-    /// Create body text from [`RequestPost::Body`]
-    fn body(&self, body: &Self::Body) -> Result<String, serde_json::Error> {
-        serde_json::to_string(body)
+    /// Create body text from [`RequestPatch::Body`]
+    fn body(&self, body: &Self::Body) -> Result<String, BodyError> {
+        serde_json::to_string(body).map_err(Into::into)
     }
 
     /// Create a [`http::Request`] from this [`Request`] in your client
@@ -382,7 +407,6 @@ where <Self as Request>::Response:
 
     /// Parse response. Override for different behavior
     fn parse_response(
-        self,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<<Self as Request>::Response, HelixRequestPatchError>
@@ -429,7 +453,6 @@ pub trait RequestDelete: Request {
 
     /// Parse response. Override for different behavior
     fn parse_response(
-        self,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<<Self as Request>::Response, HelixRequestDeleteError>
@@ -497,7 +520,7 @@ pub trait RequestGet: Request {
 
     /// Parse response. Override for different behavior
     fn parse_response(
-        self,
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestGetError>
@@ -527,7 +550,7 @@ pub trait RequestGet: Request {
         Ok(Response {
             data: response.data,
             pagination: response.pagination.cursor,
-            request: self,
+            request,
         })
     }
 }
@@ -542,8 +565,8 @@ where
     pub data: D,
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
     pub pagination: Option<Cursor>,
-    /// The request that was sent, used for [pagination](Paginated)
-    pub request: R,
+    /// The request that was sent, used for [pagination](Paginated).
+    pub request: Option<R>,
 }
 
 #[cfg(feature = "client")]
@@ -559,21 +582,27 @@ where
         token: &impl TwitchToken,
     ) -> Result<Option<Response<R, D>>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     {
-        let mut req = self.request.clone();
-        if self.pagination.is_some() {
-            req.set_pagination(self.pagination);
-            let res = client.req_get(req, token).await.map(Some);
-            if let Ok(Some(r)) = res {
-                if r.data == self.data {
-                    Ok(None)
+        if let Some(mut req) = self.request.clone() {
+            if self.pagination.is_some() {
+                req.set_pagination(self.pagination);
+                let res = client.req_get(req, token).await.map(Some);
+                if let Ok(Some(r)) = res {
+                    if r.data == self.data {
+                        Ok(None)
+                    } else {
+                        Ok(Some(r))
+                    }
                 } else {
-                    Ok(Some(r))
+                    res
                 }
             } else {
-                res
+                Ok(None)
             }
         } else {
-            Ok(None)
+            // TODO: Make into proper error
+            Err(ClientRequestError::Custom(
+                "no source request attached".into(),
+            ))
         }
     }
 }
@@ -631,7 +660,7 @@ pub enum CreateRequestError {
     /// http crate returned an error
     HttpError(#[from] http::Error),
     /// serialization of body failed
-    SerializeError(#[from] serde_json::Error),
+    SerializeError(#[from] BodyError),
     /// could not assemble URI for request
     InvalidUri(#[from] InvalidUri),
     /// {0}
@@ -665,6 +694,9 @@ pub enum HelixRequestGetError {
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `GET {2}` with response: {0:?}
     DeserializeError(String, #[source] serde_json::Error, http::Uri),
+    // FIXME: Only used in webhooks parse_payload
+    /// Could not get URI for request
+    InvalidUri(#[from] InvalidUri),
 }
 
 /// helix returned error {status:?} - {error}: {message:?} when calling `PUT {uri}` with a body
@@ -733,4 +765,15 @@ pub enum HelixRequestDeleteError {
     },
     /// could not parse response as utf8 when calling `DELETE {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+}
+
+/// Errors that can happen when creating a body for [`RequestPost`](RequestPost::Body) or [`RequestPatch`](RequestPatch::Body)
+#[derive(thiserror::Error, Debug, displaydoc::Display)]
+pub enum BodyError {
+    /// could not serialize as json
+    JsonError(#[from] serde_json::Error),
+    /// could not serialize to query
+    QuerySerializeError(#[from] ser::Error),
+    /// uri is invalid
+    InvalidUri(#[from] InvalidUri),
 }

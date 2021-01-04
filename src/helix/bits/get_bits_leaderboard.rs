@@ -123,7 +123,7 @@ impl helix::Request for GetBitsLeaderboardRequest {
 
 impl helix::RequestGet for GetBitsLeaderboardRequest {
     fn parse_response(
-        self,
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<
@@ -168,7 +168,7 @@ impl helix::RequestGet for GetBitsLeaderboardRequest {
                 total: response.total,
             },
             pagination: None,
-            request: self,
+            request,
         })
     }
 }
@@ -206,5 +206,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/bits/leaderboard?"
     );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(GetBitsLeaderboardRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

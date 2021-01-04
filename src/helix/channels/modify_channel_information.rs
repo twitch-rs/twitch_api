@@ -138,5 +138,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/channels?broadcaster_id=0"
     );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(ModifyChannelInformationRequest::parse_response(&uri, http_response).unwrap());
 }

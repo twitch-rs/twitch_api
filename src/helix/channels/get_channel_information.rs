@@ -86,7 +86,7 @@ impl helix::Request for GetChannelInformationRequest {
 
 impl helix::RequestGet for GetChannelInformationRequest {
     fn parse_response(
-        self,
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
     ) -> Result<helix::Response<Self, Option<ChannelInformation>>, helix::HelixRequestGetError>
@@ -116,7 +116,7 @@ impl helix::RequestGet for GetChannelInformationRequest {
         Ok(helix::Response {
             data: response.data.into_iter().next(),
             pagination: response.pagination.cursor,
-            request: self,
+            request,
         })
     }
 }
@@ -153,5 +153,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/channels?broadcaster_id=44445592"
     );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(GetChannelInformationRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

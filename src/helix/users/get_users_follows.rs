@@ -59,7 +59,7 @@ pub struct GetUsersFollowsRequest {
 /// Return Values for [Get Users Follows](super::get_users_follows)
 ///
 /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct UsersFollow {
@@ -141,5 +141,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users/follows?to_id=23161357"
     );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(GetUsersFollowsRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

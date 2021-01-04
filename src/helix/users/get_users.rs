@@ -132,5 +132,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users?id=44322889"
     );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(GetUsersRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

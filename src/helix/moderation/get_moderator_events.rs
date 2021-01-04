@@ -157,5 +157,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/moderation/moderators/events?broadcaster_id=198704263"
     );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(GetModeratorEventsRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

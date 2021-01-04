@@ -177,5 +177,5 @@ fn test_request() {
             "https://api.twitch.tv/helix/channel_points/custom_rewards/redemptions?broadcaster_id=274637212&reward_id=92af127c-7326-4483-a52b-b0da0be61c01&id=17fa2df1-ad76-4804-bfa5-a40ef63efe63"
         );
 
-    dbg!(req.parse_response(&uri, http_response).unwrap());
+    dbg!(UpdateRedemptionStatusRequest::parse_response(&uri, http_response).unwrap());
 }

@@ -70,5 +70,8 @@ fn test_request() {
         "https://api.twitch.tv/helix/eventsub/subscriptions?id=deadbeef"
     );
 
-    dbg!("{:#?}", req.parse_response(&uri, http_response).unwrap());
+    dbg!(
+        "{:#?}",
+        DeleteEventSubSubscriptionRequest::parse_response(&uri, http_response).unwrap()
+    );
 }
