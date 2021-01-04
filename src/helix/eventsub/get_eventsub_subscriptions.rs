@@ -6,11 +6,16 @@ use crate::eventsub;
 /// Query Parameters for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
 /// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#get-eventsub-subscriptions)
-#[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug, Default)]
+#[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetEventSubSubscriptionsRequest {
+    /// Include this parameter to filter subscriptions by their status.
     #[builder(default, setter(into))]
-    status: Option<eventsub::Status>,
+    pub status: Option<eventsub::Status>,
+    // FIXME: https://github.com/twitchdev/issues/issues/272
+    /// Cursor for forward pagination
+    #[builder(default, setter(into))]
+    pub after: Option<helix::Cursor>,
 }
 
 impl helix::Request for GetEventSubSubscriptionsRequest {
@@ -27,6 +32,10 @@ impl helix::Request for GetEventSubSubscriptionsRequest {
 pub type EventSubSubscription = types::EventSubSubscription;
 
 impl helix::RequestGet for GetEventSubSubscriptionsRequest {}
+
+impl helix::Paginated for GetEventSubSubscriptionsRequest {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+}
 
 #[test]
 fn test_request() {
