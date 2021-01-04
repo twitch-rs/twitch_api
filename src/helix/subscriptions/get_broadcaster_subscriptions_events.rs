@@ -1,5 +1,5 @@
 //! Returns a list of subscription events.
-//! [`get-broadcaster-subscriptions-events`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions-events)
+//! [`get-broadcaster-subscriptions-events`](https://twitch.uservoice.com/forums/310213-developers/suggestions/39847468-get-broadcaster-subscriptions-events)
 //!
 //!
 //! # Notes
