@@ -1,3 +1,4 @@
+#![doc(alias = "channel.channel_points_custom_reward_redemption.add")]
 //! A viewer has redeemed a custom channel points reward on the specified channel.
 
 use super::*;

@@ -1,3 +1,4 @@
+#![doc(alias = "stream.offline")]
 //! The specified broadcaster stops a stream.
 use super::*;
 

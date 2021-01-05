@@ -1,3 +1,5 @@
+#![doc(alias = "cheer")]
+#![doc(alias = "channel-cheer-events-public-v1")]
 //! PubSub messages for cheer events
 use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};

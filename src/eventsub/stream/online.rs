@@ -1,3 +1,4 @@
+#![doc(alias = "stream.online")]
 //! The specified broadcaster starts a stream
 use super::*;
 

@@ -38,7 +38,7 @@
 
 use super::*;
 
-/// Query Parameters for [Get Games](super::get_games)
+/// Query Parameters for [Get Top Games](super::get_games)
 ///
 /// [`get-top-games`](https://dev.twitch.tv/docs/api/reference#get-top-games)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
@@ -56,7 +56,7 @@ pub struct GetTopGamesRequest {
     pub first: Option<usize>,
 }
 
-/// Return Values for [Get Games](super::get_games)
+/// Return Values for [Get Top Games](super::get_games)
 ///
 /// [`get-top-games`](https://dev.twitch.tv/docs/api/reference#get-top-games)
 pub type Game = types::TwitchCategory;

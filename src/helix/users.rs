@@ -1,3 +1,5 @@
+#![doc(alias = "user")]
+#![doc(alias = "users")]
 //! Endpoints regarding users
 //!
 //! # Examples

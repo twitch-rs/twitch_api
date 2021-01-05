@@ -1,3 +1,4 @@
+#![doc(alias = "streams")]
 //! Subscription types regarding streams
 
 use super::{EventSubscription, EventType};

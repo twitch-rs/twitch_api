@@ -1,3 +1,5 @@
+#![doc(alias = "channel")]
+#![doc(alias = "channels")]
 //! Endpoints regarding channels
 //!
 //! # Examples

@@ -1,4 +1,7 @@
-//! PubSub messages for community points
+#![doc(alias = "community-points-channel-v1")]
+//! PubSub messages for community points.
+//!
+//! See also [`pubsub::channel_points`]
 use crate::pubsub;
 use serde::{Deserialize, Serialize};
 

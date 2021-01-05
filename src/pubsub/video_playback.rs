@@ -1,3 +1,9 @@
+#![doc(alias = "vod")]
+#![doc(alias = "videos")]
+#![doc(alias = "live")]
+#![doc(alias = "stream")]
+#![doc(alias = "viewers")]
+#![doc(alias = "video-playback")]
 //! PubSub messages for (live) stream playback information
 use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};

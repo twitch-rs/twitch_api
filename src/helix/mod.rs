@@ -1,3 +1,4 @@
+#![doc(alias = "helix")]
 //! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
 //!
 //!
@@ -587,6 +588,7 @@ where
                 req.set_pagination(self.pagination);
                 let res = client.req_get(req, token).await.map(Some);
                 if let Ok(Some(r)) = res {
+                    // FIXME: Workaround for https://github.com/twitchdev/issues/issues/18
                     if r.data == self.data {
                         Ok(None)
                     } else {

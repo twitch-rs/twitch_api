@@ -1,3 +1,5 @@
+#![doc(alias = "streams")]
+#![doc(alias = "live")]
 //! Endpoints regarding streams
 //!
 //! # Examples

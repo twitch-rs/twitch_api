@@ -53,6 +53,9 @@ pub struct GetBroadcasterSubscriptionsRequest {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[builder(default)]
     pub after: Option<helix::Cursor>,
+    /// Number of values to be returned per page. Limit: 100. Default: 20.
+    #[builder(setter(into), default)]
+    pub first: Option<String>,
 }
 
 /// Return Values for [Get Broadcaster Subscriptions](super::get_broadcaster_subscriptions)

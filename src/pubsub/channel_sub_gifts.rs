@@ -1,3 +1,5 @@
+#![doc(alias = "gift")]
+#![doc(alias = "channel-sub-gifts-v1")]
 //! PubSub messages for sub gifts
 use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};

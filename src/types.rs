@@ -298,27 +298,3 @@ pub enum Max {
         max_per_user_per_stream: u32,
     },
 }
-
-/// General information about an EventSub subscription.
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-#[non_exhaustive]
-#[cfg(feature = "eventsub")]
-#[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
-pub struct EventSubSubscription {
-    /// JSON object specifying custom parameters for the subscription.
-    // FIXME: Should be [eventsub::Condition]
-    pub condition: serde_json::Value,
-    /// RFC3339 timestamp indicating when the subscription was created.
-    pub created_at: Timestamp,
-    /// ID of the subscription.
-    pub id: EventSubId,
-    /// Status of the subscription.
-    pub status: crate::eventsub::Status,
-    /// Notification delivery specific information. Includes the transport method and callback URL.
-    pub transport: crate::eventsub::TransportResponse,
-    /// The category of the subscription.
-    #[serde(rename = "type")]
-    pub type_: String,
-    /// The version of the subscription.
-    pub version: String,
-}

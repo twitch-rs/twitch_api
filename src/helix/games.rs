@@ -1,3 +1,4 @@
+#![doc(alias = "games")]
 //! Endpoints regarding games
 use crate::{helix, types};
 

@@ -1,3 +1,5 @@
+#![doc(alias = "bits")]
+#![doc(alias = "channel-bits-events-v2")]
 //! PubSub messages for bits
 use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};

@@ -1,3 +1,4 @@
+#![doc(alias = "search")]
 //! Endpoints regarding search
 //!
 //! # Examples

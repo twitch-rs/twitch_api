@@ -1,3 +1,6 @@
+#![doc(alias = "moderation")]
+#![doc(alias = "mod")]
+#![doc(alias = "chat_moderator_actions")]
 //! PubSub messages for moderator actions
 use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};
@@ -6,27 +9,17 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(into = "String", try_from = "String")]
 pub struct ChatModeratorActions {
-    /// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
+    /// The user_id to listen as. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
+    pub user_id: u32,
+    /// The channel_id to listen to. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
     pub channel_id: u32,
-    /// The user_id to watch. Should be the same as channel_id. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
-    #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
-    pub user_id: Option<u32>,
 }
 
-#[cfg(not(feature = "unsupported"))]
 impl_de_ser!(
     ChatModeratorActions,
     "chat_moderator_actions",
-    channel_id // FIXME: Fix trailing comma
-);
-
-#[cfg(feature = "unsupported")]
-impl_de_ser!(
-    ChatModeratorActions,
-    "chat_moderator_actions",
-    channel_id,
-    ?user_id
+    user_id,
+    channel_id
 );
 
 impl pubsub::Topic for ChatModeratorActions {
@@ -77,7 +70,7 @@ pub struct ModeratorAdded {
     pub channel_id: types::UserId,
     /// ID of added moderator
     pub target_user_id: types::UserId,
-    /// Moderation actiom. Should be [`mod`](ModerationActionCommand::Mod)
+    /// Moderation action. Should be [`mod`](ModerationActionCommand::Mod)
     pub moderation_action: ModerationActionCommand,
     /// Username of added moderator
     pub target_user_login: types::UserName,
@@ -250,7 +243,6 @@ mod tests {
     use super::*;
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_action_delete() {
         let source = r#"
 {
@@ -269,67 +261,30 @@ mod tests {
         ));
     }
     #[test]
-    #[cfg(feature = "unsupported")]
     fn check_deser() {
         use std::convert::TryInto as _;
-        let s = "chat_moderator_actions.1234.1234";
+        let s = "chat_moderator_actions.1337.1234";
         assert_eq!(
             ChatModeratorActions {
+                user_id: 1337,
                 channel_id: 1234,
-                user_id: Some(1234),
             },
             s.to_string().try_into().unwrap()
         );
-        let s = "chat_moderator_actions.1234";
-        assert_eq!(
-            ChatModeratorActions {
-                channel_id: 1234,
-                user_id: None
-            },
-            s.to_string().try_into().unwrap()
-        )
     }
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn check_ser() {
-        let s = "chat_moderator_actions.1234.1234";
+        let s = "chat_moderator_actions.1337.1234";
         let right: String = ChatModeratorActions {
+            user_id: 1337,
             channel_id: 1234,
-            user_id: Some(1234),
         }
         .into();
         assert_eq!(s.to_string(), right);
-        let s = "chat_moderator_actions.1234";
-        let right: String = ChatModeratorActions {
-            channel_id: 1234,
-            user_id: None,
-        }
-        .into();
-        assert_eq!(s.to_string(), right)
     }
 
     #[test]
-    #[cfg(not(feature = "unsupported"))]
-    fn check_deser() {
-        use std::convert::TryInto as _;
-        let s = "chat_moderator_actions.1234";
-        assert_eq!(
-            ChatModeratorActions { channel_id: 1234 },
-            s.to_string().try_into().unwrap()
-        )
-    }
-
-    #[test]
-    #[cfg(not(feature = "unsupported"))]
-    fn check_ser() {
-        let s = "chat_moderator_actions.1234";
-        let right: String = ChatModeratorActions { channel_id: 1234 }.into();
-        assert_eq!(s.to_string(), right)
-    }
-
-    #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_action_timeout() {
         let source = r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.27620241","message":"{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"timeout\",\"args\":[\"tmo\",\"1\",\"\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"msg_id\":\"\",\"target_user_id\":\"1234\",\"target_user_login\":\"\",\"from_automod\":false}}"}}"#;
         let actual = dbg!(Response::parse(source).unwrap());
@@ -341,7 +296,6 @@ mod tests {
         ));
     }
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_add_moderator() {
         let source = r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.27620241","message":"{\"type\":\"moderator_added\",  \"data\":{\"channel_id\":\"27620241\",\"target_user_id\":\"19264788\",\"moderation_action\":\"mod\",\"target_user_login\":\"nightbot\",\"created_by_user_id\":\"27620241\",\"created_by\":\"emilgardis\"}}"}}"#;
         let actual = dbg!(Response::parse(source).unwrap());
@@ -354,9 +308,8 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_add_moderator_no_user_id() {
-        let source = r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241","message":"{\"type\":\"moderator_added\",  \"data\":{\"channel_id\":\"27620241\",\"target_user_id\":\"19264788\",\"moderation_action\":\"mod\",\"target_user_login\":\"nightbot\",\"created_by_user_id\":\"27620241\",\"created_by\":\"emilgardis\"}}"}}"#;
+        let source = r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.27620241","message":"{\"type\":\"moderator_added\",  \"data\":{\"channel_id\":\"27620241\",\"target_user_id\":\"19264788\",\"moderation_action\":\"mod\",\"target_user_login\":\"nightbot\",\"created_by_user_id\":\"27620241\",\"created_by\":\"emilgardis\"}}"}}"#;
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
@@ -366,13 +319,12 @@ mod tests {
         ));
     }
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_automod() {
         let source = r#"
 {
     "type": "MESSAGE",
     "data": {
-        "topic": "chat_moderator_actions.27620241",
+        "topic": "chat_moderator_actions.27620241.27620241",
         "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"modified_automod_properties\",\"args\":null,\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
     }
 }"#;
@@ -386,13 +338,12 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_automod_delete_blocked_term() {
         let source = r#"
 {
     "type": "MESSAGE",
     "data": {
-        "topic": "chat_moderator_actions.27620241",
+        "topic": "chat_moderator_actions.27620241.27620241",
         "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"delete_blocked_term\",\"args\":[\"cunt dick pussy vagina\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
     }
 }"#;
@@ -406,13 +357,12 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_slowmode() {
         let source = r#"
 {
     "type": "MESSAGE",
     "data": {
-        "topic": "chat_moderator_actions.27620241",
+        "topic": "chat_moderator_actions.27620241.27620241",
         "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"slow\",\"args\":[\"5\"],\"created_by\":\"tmo\",\"created_by_user_id\":\"1234\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
     }
 }"#;
@@ -432,7 +382,7 @@ mod tests {
 {
     "type": "MESSAGE",
     "data": {
-        "topic": "chat_moderator_actions.27620241",
+        "topic": "chat_moderator_actions.27620241.27620241",
         "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"slow\",\"unknownfield\": 1,\"args\":[\"5\"],\"created_by\":\"tmo\",\"created_by_user_id\":\"1234\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
     }
 }"#;

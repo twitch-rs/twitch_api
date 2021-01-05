@@ -1,3 +1,4 @@
+#![doc(alias = "channel.channel_points_custom_reward.remove")]
 //! A custom channel points reward has been removed from the specified channel.
 
 use super::*;
@@ -21,8 +22,7 @@ impl EventSubscription for ChannelPointsCustomRewardRemoveV1 {
     const VERSION: &'static str = "1";
 }
 
-// FIXME: Same as update
-/// [`channel.channel_points_custom_reward.update`](ChannelPointsCustomRewardRemoveV1) response payload.
+/// [`channel.channel_points_custom_reward.remove`](ChannelPointsCustomRewardRemoveV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]

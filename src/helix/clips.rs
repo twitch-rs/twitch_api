@@ -1,3 +1,4 @@
+#![doc(alias = "clips")]
 //! Endpoints regarding clips
 //!
 //! # Examples

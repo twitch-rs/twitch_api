@@ -1,3 +1,5 @@
+#![doc(alias = "vod")]
+#![doc(alias = "videos")]
 //! Endpoints regarding videos
 //!
 //! # Examples
@@ -52,7 +54,7 @@ pub enum VideoPeriod {
     Month,
 }
 
-/// Type of video. See
+/// Type of video.
 #[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum VideoTypeFilter {

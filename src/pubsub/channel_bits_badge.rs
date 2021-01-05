@@ -1,3 +1,4 @@
+#![doc(alias = "channel-bits-badge-unlocks")]
 //! PubSub messages for bits
 use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};

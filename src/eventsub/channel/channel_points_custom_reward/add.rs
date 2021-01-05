@@ -1,3 +1,4 @@
+#![doc(alias = "channel.channel_points_custom_reward.add")]
 //! A custom channel points reward has been created for the specified channel.
 
 use super::*;
