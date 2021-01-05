@@ -243,7 +243,6 @@ mod tests {
     use super::*;
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_action_delete() {
         let source = r#"
 {
@@ -262,7 +261,6 @@ mod tests {
         ));
     }
     #[test]
-    #[cfg(feature = "unsupported")]
     fn check_deser() {
         use std::convert::TryInto as _;
         let s = "chat_moderator_actions.1337.1234";
@@ -276,7 +274,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn check_ser() {
         let s = "chat_moderator_actions.1337.1234";
         let right: String = ChatModeratorActions {
@@ -288,7 +285,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_action_timeout() {
         let source = r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.27620241","message":"{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"timeout\",\"args\":[\"tmo\",\"1\",\"\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"msg_id\":\"\",\"target_user_id\":\"1234\",\"target_user_login\":\"\",\"from_automod\":false}}"}}"#;
         let actual = dbg!(Response::parse(source).unwrap());
@@ -300,7 +296,6 @@ mod tests {
         ));
     }
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_add_moderator() {
         let source = r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.27620241","message":"{\"type\":\"moderator_added\",  \"data\":{\"channel_id\":\"27620241\",\"target_user_id\":\"19264788\",\"moderation_action\":\"mod\",\"target_user_login\":\"nightbot\",\"created_by_user_id\":\"27620241\",\"created_by\":\"emilgardis\"}}"}}"#;
         let actual = dbg!(Response::parse(source).unwrap());
@@ -313,7 +308,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_add_moderator_no_user_id() {
         let source = r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.27620241","message":"{\"type\":\"moderator_added\",  \"data\":{\"channel_id\":\"27620241\",\"target_user_id\":\"19264788\",\"moderation_action\":\"mod\",\"target_user_login\":\"nightbot\",\"created_by_user_id\":\"27620241\",\"created_by\":\"emilgardis\"}}"}}"#;
         let actual = dbg!(Response::parse(source).unwrap());
@@ -325,7 +319,6 @@ mod tests {
         ));
     }
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_automod() {
         let source = r#"
 {
@@ -345,7 +338,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_automod_delete_blocked_term() {
         let source = r#"
 {
@@ -365,7 +357,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "unsupported")]
     fn mod_slowmode() {
         let source = r#"
 {
