@@ -1,4 +1,4 @@
-//! Topics for users
+//! Webhook topics for users
 use crate::helix::webhooks::Topic;
 
 pub mod user_changed;

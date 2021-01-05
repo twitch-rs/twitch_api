@@ -1,4 +1,4 @@
-//! Topics for Hype Trains
+//! Webhook topics for Hype Trains
 use crate::helix::webhooks::Topic;
 
 pub mod hypetrain_event;

@@ -1,5 +1,5 @@
 #![doc(alias = "points")]
-//! Endpoints regarding channel points/redeems
+//! Helix endpoints regarding channel points/redeems
 //!
 //! # Examples
 //!

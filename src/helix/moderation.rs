@@ -1,6 +1,6 @@
 #![doc(alias = "moderation")]
 #![doc(alias = "mod")]
-//! Endpoints regarding moderation
+//! Helix endpoints regarding moderation
 
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};

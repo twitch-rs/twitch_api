@@ -1,4 +1,4 @@
-//! Topics for streams
+//! Webhook topics for moderation
 use crate::helix::webhooks::Topic;
 
 pub mod moderator_change_events;

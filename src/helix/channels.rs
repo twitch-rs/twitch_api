@@ -1,6 +1,6 @@
 #![doc(alias = "channel")]
 #![doc(alias = "channels")]
-//! Endpoints regarding channels
+//! Helix endpoints regarding channels
 //!
 //! # Examples
 //!
