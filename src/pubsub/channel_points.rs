@@ -104,7 +104,7 @@ pub struct Reward {
     pub max_per_user_per_stream: types::Max,
     /// Prompt shown when clicking reward on rewards & challenges screen on client
     pub prompt: String,
-    // TODO: Is this fullfilled redeemptions or is it x + 1 ? where 1 is this reward redemption
+    // TODO: Is this fullfilled redemptions or is it x + 1 ? where 1 is this reward redemption
     /// Amount of times this has been redeemed this stream.
     pub redemptions_redeemed_current_stream: Option<u32>,
     /// Does redemption skip queue?

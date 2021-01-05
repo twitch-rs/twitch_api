@@ -70,7 +70,7 @@ pub struct ModeratorAdded {
     pub channel_id: types::UserId,
     /// ID of added moderator
     pub target_user_id: types::UserId,
-    /// Moderation actiom. Should be [`mod`](ModerationActionCommand::Mod)
+    /// Moderation action. Should be [`mod`](ModerationActionCommand::Mod)
     pub moderation_action: ModerationActionCommand,
     /// Username of added moderator
     pub target_user_login: types::UserName,
