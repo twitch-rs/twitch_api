@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["UserFollowsTopic","Notifies when a follows event occurs. Topic: User Follows"]]});
+initSidebarItems({"struct":[["UserFollowsTopic","Notifies when a follows event occurs Topic: User Follows"]]});

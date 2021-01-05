@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["stream_changed","Notifies when a follows event occurs."]],"struct":[["StreamChangedTopic","Notifies when a stream changes Topic: Stream Changed"]]});
+initSidebarItems({"mod":[["stream_changed","Notifies when a stream changes."]],"struct":[["StreamChangedTopic","Notifies when a stream changes Topic: Stream Changed"]]});

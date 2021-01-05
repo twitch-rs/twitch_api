@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["hypetrain","Topics for Hype Trains"],["moderation","Topics for streams"],["streams","Topics for streams"],["subscriptions","Topics for subscriptions"],["users","Topics for users"]],"trait":[["Topic","A webhook topic."]]});
+initSidebarItems({"mod":[["hypetrain","Webhook topics for Hype Trains"],["moderation","Webhook topics for moderation"],["streams","Webhook topics for streams"],["subscriptions","Webhook topics for subscriptions"],["users","Webhook topics for users"]],"trait":[["Topic","A webhook topic."]]});
