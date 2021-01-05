@@ -1,4 +1,4 @@
-#![doc(alias = "hype train")]
+#![doc(alias = "hypetrain")]
 //! Endpoints regarding hype trains
 //!
 //! See also [PubSub hypetrain](crate::pubsub::hypetrain)

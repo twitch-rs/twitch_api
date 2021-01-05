@@ -1,5 +1,4 @@
-#![doc(alias = "channel points")]
-#![doc(alias = "channel redeems")]
+#![doc(alias = "points")]
 #![doc(alias = "channel.channel_points_custom_reward")]
 //! Custom channel points rewards on specific channel has been changed, removed or updated.
 use super::{EventSubscription, EventType};

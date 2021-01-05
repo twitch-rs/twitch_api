@@ -1,5 +1,4 @@
-#![doc(alias = "channel points")]
-#![doc(alias = "channel redeems")]
+#![doc(alias = "points")]
 #![doc(alias = "channel-points-channel-v1")]
 //! PubSub messages for channel points
 use crate::{pubsub, types};

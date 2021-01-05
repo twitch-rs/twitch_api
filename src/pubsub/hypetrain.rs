@@ -1,4 +1,4 @@
-#![doc(alias = "hype train")]
+#![doc(alias = "hypetrain")]
 #![doc(alias = "hype-train-events-v1")]
 //! PubSub messages for hype-trains
 use crate::{pubsub, types};

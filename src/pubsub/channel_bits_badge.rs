@@ -1,4 +1,3 @@
-#![doc(alias = "bits badge")]
 #![doc(alias = "channel-bits-badge-unlocks")]
 //! PubSub messages for bits
 use crate::{pubsub, types};

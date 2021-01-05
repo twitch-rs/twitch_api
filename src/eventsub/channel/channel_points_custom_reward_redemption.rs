@@ -1,5 +1,4 @@
-#![doc(alias = "channel points")]
-#![doc(alias = "channel redeems")]
+#![doc(alias = "points")]
 #![doc(alias = "channel.channel_points_custom_reward_redemption")]
 //! A viewer has redeemed a custom channel points reward or a redemption of a channel points custom reward has been updated for the specified channel.
 use super::{EventSubscription, EventType};
