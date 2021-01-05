@@ -33,7 +33,7 @@ impl helix::Request for GetEventSubSubscriptionsRequest {
 /// Return Values for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
 /// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#get-eventsub-subscriptions)
-pub type EventSubSubscription = types::EventSubSubscription;
+pub type EventSubSubscription = eventsub::EventSubSubscription;
 
 impl helix::RequestGet for GetEventSubSubscriptionsRequest {}
 

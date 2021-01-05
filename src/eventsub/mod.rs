@@ -83,7 +83,7 @@ pub struct VerificationRequest {
     /// After verifying that the response is legit, send back this challenge.
     pub challenge: String,
     /// Information about subscription, including ID
-    pub subscription: types::EventSubSubscription,
+    pub subscription: EventSubSubscription,
     // /// Signature of message
     // pub signature: String,
     // /// ID of subscription, also contained in [`subscription`](VerificationRequest::subscription)
@@ -412,6 +412,30 @@ pub enum Status {
     AuthorizationRevoked,
     /// A user in the condition of the subscription was removed.
     UserRemoved,
+}
+
+/// General information about an EventSub subscription.
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[non_exhaustive]
+#[cfg(feature = "eventsub")]
+#[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
+pub struct EventSubSubscription {
+    /// JSON object specifying custom parameters for the subscription.
+    // FIXME: Should be [eventsub::Condition]
+    pub condition: serde_json::Value,
+    /// RFC3339 timestamp indicating when the subscription was created.
+    pub created_at: types::Timestamp,
+    /// ID of the subscription.
+    pub id: types::EventSubId,
+    /// Status of the subscription.
+    pub status: Status,
+    /// Notification delivery specific information. Includes the transport method and callback URL.
+    pub transport: TransportResponse,
+    /// The category of the subscription.
+    #[serde(rename = "type")]
+    pub type_: String,
+    /// The version of the subscription.
+    pub version: String,
 }
 
 #[test]
