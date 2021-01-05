@@ -1,3 +1,4 @@
+#![doc(alias = "channel.channel_points_custom_reward.remove")]
 //! A custom channel points reward has been removed from the specified channel.
 
 use super::*;

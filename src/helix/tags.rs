@@ -1,3 +1,4 @@
+#![doc(alias = "tags")]
 //! Endpoints regarding tags
 //!
 //! # Examples

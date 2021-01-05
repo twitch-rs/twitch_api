@@ -1,3 +1,5 @@
+#![doc(alias = "subscription")]
+#![doc(alias = "subscriptions")]
 //! Endpoints regarding subscriptions
 //!
 //! # Examples

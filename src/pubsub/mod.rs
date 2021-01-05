@@ -1,3 +1,4 @@
+#![doc(alias = "pubsub")]
 //! Holds serializable pubsub stuff
 //!
 //! Use [`TopicSubscribe::to_message`] to send subscription listen and parse the responses with [`Response::parse`]

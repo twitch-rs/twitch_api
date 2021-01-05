@@ -1,3 +1,4 @@
+#![doc(alias = "channel.update")]
 //! Channel has updated the category, title, mature flag, or broadcast language.
 use super::*;
 

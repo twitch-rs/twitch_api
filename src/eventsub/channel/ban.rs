@@ -1,3 +1,4 @@
+#![doc(alias = "channel.ban")]
 //! A viewer is banned from the specified channel.
 use super::*;
 

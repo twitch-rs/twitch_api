@@ -1,3 +1,4 @@
+#![doc(alias = "user.update")]
 //! Specified user updates their account.
 use super::*;
 /// [`user.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userupdate): user updates their account.

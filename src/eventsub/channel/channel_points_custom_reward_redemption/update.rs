@@ -1,3 +1,4 @@
+#![doc(alias = "channel.channel_points_custom_reward_redemption.update")]
 //! A redemption of a channel points custom reward has been updated for the specified channel.
 
 use super::*;

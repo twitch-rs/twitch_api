@@ -1,3 +1,4 @@
+#![doc(alias = "user.authorization.revoke")]
 //! A user has revoked authorization for your client id.
 use super::*;
 /// [`user.authorization.revoke`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationrevoke): a user has revoked authorization for your client id.  Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.

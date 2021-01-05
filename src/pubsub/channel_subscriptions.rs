@@ -1,3 +1,6 @@
+#![doc(alias = "subscription")]
+#![doc(alias = "subscriptions")]
+#![doc(alias = "channel-subscribe-events-v1")]
 //! PubSub messages for subscriptions
 use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};

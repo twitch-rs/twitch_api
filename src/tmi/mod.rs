@@ -1,3 +1,4 @@
+#![doc(alias = "TMI")]
 //! TMI Endpoint, twitch's unsupported api for better chatters retrieval
 use crate::types;
 use serde::{Deserialize, Serialize};

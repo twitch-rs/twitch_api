@@ -1,3 +1,6 @@
+#![doc(alias = "follow")]
+#![doc(alias = "follows")]
+#![doc(alias = "following")]
 //! PubSub messages for follows
 use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};

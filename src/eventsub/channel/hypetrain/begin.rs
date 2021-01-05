@@ -1,3 +1,4 @@
+#![doc(alias = "channel.hype_train.begin")]
 //! A hype train begins on the specified channel.
 
 use super::*;

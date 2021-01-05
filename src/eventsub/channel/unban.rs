@@ -1,3 +1,4 @@
+#![doc(alias = "channel.unban")]
 //! A viewer is unbanned from the specified channel.
 use super::*;
 

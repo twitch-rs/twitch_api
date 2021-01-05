@@ -1,3 +1,7 @@
+#![doc(alias = "subscribe")]
+#![doc(alias = "subscription")]
+#![doc(alias = "subscriptions")]
+#![doc(alias = "channel.subscribe")]
 //! A specified channel receives a subscriber. This does not include resubscribes.
 use super::*;
 

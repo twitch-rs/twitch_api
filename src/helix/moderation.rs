@@ -1,3 +1,5 @@
+#![doc(alias = "moderation")]
+#![doc(alias = "mod")]
 //! Endpoints regarding moderation
 
 use crate::{helix, types};

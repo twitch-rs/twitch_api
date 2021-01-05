@@ -1,3 +1,4 @@
+#![doc(alias = "bits")]
 //! Endpoints regarding bits
 //!
 //! # Examples

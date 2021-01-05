@@ -1,3 +1,4 @@
+#![doc(alias = "channel.hype_train.end")]
 //! A hype train ends on the specified channel.
 
 use super::*;

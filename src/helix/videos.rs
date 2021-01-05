@@ -1,3 +1,5 @@
+#![doc(alias = "vod")]
+#![doc(alias = "videos")]
 //! Endpoints regarding videos
 //!
 //! # Examples

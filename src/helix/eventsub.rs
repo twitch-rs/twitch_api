@@ -1,3 +1,4 @@
+#![doc(alias = "eventsub")]
 //! Endpoints regarding EventSub
 
 use crate::{helix, types};

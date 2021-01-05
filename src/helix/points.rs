@@ -1,3 +1,5 @@
+#![doc(alias = "channel points")]
+#![doc(alias = "channel redeems")]
 //! Endpoints regarding channel points/redeems
 //!
 //! # Examples

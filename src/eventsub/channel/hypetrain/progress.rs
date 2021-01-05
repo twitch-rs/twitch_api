@@ -1,3 +1,4 @@
+#![doc(alias = "channel.hype_train.progress")]
 //! A hype train makes progress on the specified channel.
 
 use super::*;
