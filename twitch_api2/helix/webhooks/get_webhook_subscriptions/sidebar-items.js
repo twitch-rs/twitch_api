@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GetWebhookSubscriptionsRequest","Query Parameters for Get webhook Subscriptions"],["WebhookSubscription","Return Values for Get webhook Subscriptions"]]});
+initSidebarItems({"struct":[["GetWebhookSubscriptionsRequest","Query Parameters for Get Webhook Subscriptions"],["WebhookSubscription","Return Values for Get Webhook Subscriptions"]]});

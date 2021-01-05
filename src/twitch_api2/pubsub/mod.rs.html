@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/47d6f80f1f4ec11f112c85df9d413389c62ccbbf">47d6f80</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/7998364234c5ec657f91107e01d29149dac70aee">7998364</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -513,10 +513,73 @@
 <span id="508">508</span>
 <span id="509">509</span>
 <span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pubsub&quot;</span>)]</span>
 <span class="doccomment">//! Holds serializable pubsub stuff</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Use [`TopicSubscribe::to_message`] to send subscription listen and parse the responses with [`Response::parse`]</span>
+<span class="doccomment">//! Use [`TopicSubscribe::to_command`] to send subscription listen and parse the responses with [`Response::parse`]</span>
 <span class="doccomment">//! # Notes</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! If you find that a pubsub topic reply has a field that has not yet been added to this crate, and you don&#39;t need that field, you can enable the</span>
@@ -543,6 +606,9 @@
     (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>:<span class="ident">literal</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span> $(<span class="question-mark">?</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">String</span> {
             <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="macro">format</span><span class="macro">!</span>(<span class="macro">concat</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>, $(<span class="macro">impl_de_ser</span><span class="macro">!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),)<span class="op">+</span> $(<span class="macro">impl_de_ser</span><span class="macro">!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>),)<span class="kw-2">*</span>), $(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>$(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_default</span>(),)<span class="kw-2">*</span>).<span class="ident">trim_end_matches</span>(<span class="string">&quot;.&quot;</span>).<span class="ident">to_owned</span>() }
+        }
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">String</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="macro">format</span><span class="macro">!</span>(<span class="macro">concat</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>, $(<span class="macro">impl_de_ser</span><span class="macro">!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),)<span class="op">+</span> $(<span class="macro">impl_de_ser</span><span class="macro">!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>),)<span class="kw-2">*</span>), $(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>$(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_default</span>(),)<span class="kw-2">*</span>).<span class="ident">trim_end_matches</span>(<span class="string">&quot;.&quot;</span>).<span class="ident">to_owned</span>() }
         }
 
         <span class="kw">impl</span> ::<span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">type</span> {
@@ -618,7 +684,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// also known as event</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">spotlight</span>))]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Topic</span>: <span class="ident">Serialize</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Topic</span>: <span class="ident">Serialize</span> <span class="op">+</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Scopes needed by this topic</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This constant</span>
@@ -631,7 +697,7 @@
     <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>];
 }
 
-<span class="doccomment">/// Message that can be serialized to be sent to twitchs PubSub server to subscribe or unsubscribe to a [Topic]</span>
+<span class="doccomment">/// Command that can be serialized to be sent to twitchs PubSub server to subscribe or unsubscribe to a [Topic]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TopicSubscribe</span> {
     <span class="doccomment">/// Subscribe/Listen</span>
     <span class="ident">Listen</span> {
@@ -702,7 +768,65 @@
 
 <span class="kw">impl</span> <span class="ident">TopicSubscribe</span> {
     <span class="doccomment">/// Convert this [`TopicSubscribe`] to a string which you can send with your client</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json</span>::<span class="ident">Error</span><span class="op">&gt;</span> { <span class="ident">serde_json</span>::<span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json</span>::<span class="ident">Error</span><span class="op">&gt;</span> { <span class="ident">serde_json</span>::<span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) }
+
+    <span class="doccomment">/// Create a listen command.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Create a listen message for moderator actions</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// # use twitch_api2::pubsub;</span>
+    <span class="doccomment">/// // We want to subscribe to moderator actions on channel with id 1234</span>
+    <span class="doccomment">/// // as if we were a user with id 4321 that is moderator on the channel.</span>
+    <span class="doccomment">/// let topic = pubsub::moderation::ChatModeratorActions {</span>
+    <span class="doccomment">///     user_id: 4321,</span>
+    <span class="doccomment">///     channel_id: 1234,</span>
+    <span class="doccomment">/// };</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Create the topic command to send to twitch</span>
+    <span class="doccomment">/// let command = pubsub::TopicSubscribe::listen(</span>
+    <span class="doccomment">///     &amp;[topic],</span>
+    <span class="doccomment">///     &quot;authtoken&quot;.to_string(),</span>
+    <span class="doccomment">///     &quot;super se3re7 random string&quot;.to_string(),</span>
+    <span class="doccomment">/// )</span>
+    <span class="doccomment">/// .to_command().expect(&quot;serializing failed&quot;);</span>
+    <span class="doccomment">/// // Send the message with your favorite websocket client</span>
+    <span class="doccomment">/// send_command(command).unwrap();</span>
+    <span class="doccomment">/// // To parse the websocket messages, use pubsub::Response::parse</span>
+    <span class="doccomment">/// # fn send_command(command: String) -&gt; Result&lt;(),()&gt; {Ok(())}</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">listen</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Topic</span>, <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>],
+        <span class="ident">auth_token</span>: <span class="ident">String</span>,
+        <span class="ident">nonce</span>: <span class="ident">O</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TopicSubscribe</span>
+    <span class="kw">where</span>
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    {
+        <span class="ident">TopicSubscribe</span>::<span class="ident">Listen</span> {
+            <span class="ident">nonce</span>: <span class="ident">nonce</span>.<span class="ident">into</span>(),
+            <span class="ident">topics</span>: <span class="ident">topics</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">into</span>()).<span class="ident">collect</span>(),
+            <span class="ident">auth_token</span>,
+        }
+    }
+
+    <span class="doccomment">/// Create a unlisten command.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unlisten</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Topic</span>, <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>],
+        <span class="ident">auth_token</span>: <span class="ident">String</span>,
+        <span class="ident">nonce</span>: <span class="ident">O</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TopicSubscribe</span>
+    <span class="kw">where</span>
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    {
+        <span class="ident">TopicSubscribe</span>::<span class="ident">Unlisten</span> {
+            <span class="ident">nonce</span>: <span class="ident">nonce</span>.<span class="ident">into</span>(),
+            <span class="ident">topics</span>: <span class="ident">topics</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">into</span>()).<span class="ident">collect</span>(),
+            <span class="ident">auth_token</span>,
+        }
+    }
 }
 <span class="doccomment">/// Response from twitch PubSub</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>

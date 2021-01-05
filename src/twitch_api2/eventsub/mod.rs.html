@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/47d6f80f1f4ec11f112c85df9d413389c62ccbbf">47d6f80</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/7998364234c5ec657f91107e01d29149dac70aee">7998364</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -462,7 +462,33 @@
 <span id="457">457</span>
 <span id="458">458</span>
 <span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;eventsub&quot;</span>)]</span>
 <span class="doccomment">//! Holds serializable EventSub stuff</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscription) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).</span>
@@ -547,7 +573,7 @@
     <span class="doccomment">/// After verifying that the response is legit, send back this challenge.</span>
     <span class="kw">pub</span> <span class="ident">challenge</span>: <span class="ident">String</span>,
     <span class="doccomment">/// Information about subscription, including ID</span>
-    <span class="kw">pub</span> <span class="ident">subscription</span>: <span class="ident">types</span>::<span class="ident">EventSubSubscription</span>,
+    <span class="kw">pub</span> <span class="ident">subscription</span>: <span class="ident">EventSubSubscription</span>,
     <span class="comment">// /// Signature of message</span>
     <span class="comment">// pub signature: String,</span>
     <span class="comment">// /// ID of subscription, also contained in [`subscription`](VerificationRequest::subscription)</span>
@@ -876,6 +902,30 @@
     <span class="ident">AuthorizationRevoked</span>,
     <span class="doccomment">/// A user in the condition of the subscription was removed.</span>
     <span class="ident">UserRemoved</span>,
+}
+
+<span class="doccomment">/// General information about an EventSub subscription.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;eventsub&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;eventsub&quot;</span>)))]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EventSubSubscription</span> {
+    <span class="doccomment">/// JSON object specifying custom parameters for the subscription.</span>
+    <span class="comment">// FIXME: Should be [eventsub::Condition]</span>
+    <span class="kw">pub</span> <span class="ident">condition</span>: <span class="ident">serde_json</span>::<span class="ident">Value</span>,
+    <span class="doccomment">/// RFC3339 timestamp indicating when the subscription was created.</span>
+    <span class="kw">pub</span> <span class="ident">created_at</span>: <span class="ident">types</span>::<span class="ident">Timestamp</span>,
+    <span class="doccomment">/// ID of the subscription.</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">types</span>::<span class="ident">EventSubId</span>,
+    <span class="doccomment">/// Status of the subscription.</span>
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">Status</span>,
+    <span class="doccomment">/// Notification delivery specific information. Includes the transport method and callback URL.</span>
+    <span class="kw">pub</span> <span class="ident">transport</span>: <span class="ident">TransportResponse</span>,
+    <span class="doccomment">/// The category of the subscription.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">type_</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// The version of the subscription.</span>
+    <span class="kw">pub</span> <span class="ident">version</span>: <span class="ident">String</span>,
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
