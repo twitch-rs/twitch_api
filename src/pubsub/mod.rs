@@ -1,7 +1,7 @@
 #![doc(alias = "pubsub")]
 //! Holds serializable pubsub stuff
 //!
-//! Use [`TopicSubscribe::to_message`] to send subscription listen and parse the responses with [`Response::parse`]
+//! Use [`TopicSubscribe::to_command`] to send subscription listen and parse the responses with [`Response::parse`]
 //! # Notes
 //!
 //! If you find that a pubsub topic reply has a field that has not yet been added to this crate, and you don't need that field, you can enable the
@@ -28,6 +28,9 @@ macro_rules! impl_de_ser {
     ($type:ident, $fmt:literal, $($field:ident),* $(,)? $(?$opt_field:ident),* $(,)?) => {
         impl From<$type> for String {
             fn from(t: $type) -> Self { format!(concat!($fmt, $(impl_de_ser!(@field $field),)+ $(impl_de_ser!(@field $opt_field),)*), $(t.$field,)*$(t.$opt_field.map(|f| f.to_string()).unwrap_or_default(),)*).trim_end_matches(".").to_owned() }
+        }
+        impl<'a> From<&'a $type> for String {
+            fn from(t: &'a $type) -> Self { format!(concat!($fmt, $(impl_de_ser!(@field $field),)+ $(impl_de_ser!(@field $opt_field),)*), $(t.$field,)*$(t.$opt_field.map(|f| f.to_string()).unwrap_or_default(),)*).trim_end_matches(".").to_owned() }
         }
 
         impl ::std::convert::TryFrom<String> for $type {
@@ -103,7 +106,7 @@ pub mod video_playback;
 ///
 /// also known as event
 #[cfg_attr(nightly, doc(spotlight))]
-pub trait Topic: Serialize {
+pub trait Topic: Serialize + Into<String> {
     /// Scopes needed by this topic
     ///
     /// This constant
@@ -116,7 +119,7 @@ pub trait Topic: Serialize {
     const SCOPE: &'static [twitch_oauth2::Scope];
 }
 
-/// Message that can be serialized to be sent to twitchs PubSub server to subscribe or unsubscribe to a [Topic]
+/// Command that can be serialized to be sent to twitchs PubSub server to subscribe or unsubscribe to a [Topic]
 pub enum TopicSubscribe {
     /// Subscribe/Listen
     Listen {
@@ -187,7 +190,65 @@ impl Serialize for TopicSubscribe {
 
 impl TopicSubscribe {
     /// Convert this [`TopicSubscribe`] to a string which you can send with your client
-    pub fn to_message(&self) -> Result<String, serde_json::Error> { serde_json::to_string(&self) }
+    pub fn to_command(&self) -> Result<String, serde_json::Error> { serde_json::to_string(&self) }
+
+    /// Create a listen command.
+    ///
+    /// # Example
+    ///
+    /// Create a listen message for moderator actions
+    ///
+    /// ```rust
+    /// # use twitch_api2::pubsub;
+    /// // We want to subscribe to moderator actions on channel with id 1234
+    /// // as if we were a user with id 4321 that is moderator on the channel.
+    /// let topic = pubsub::moderation::ChatModeratorActions {
+    ///     user_id: 4321,
+    ///     channel_id: 1234,
+    /// };
+    ///
+    /// // Create the topic command to send to twitch
+    /// let command = pubsub::TopicSubscribe::listen(
+    ///     &[topic],
+    ///     "authtoken".to_string(),
+    ///     "super se3re7 random string".to_string(),
+    /// )
+    /// .to_command().expect("serializing failed");
+    /// // Send the message with your favorite websocket client
+    /// send_command(command).unwrap();
+    /// // To parse the websocket messages, use pubsub::Response::parse
+    /// # fn send_command(command: String) -> Result<(),()> {Ok(())}
+    /// ```
+    pub fn listen<'a, T: Topic, O: Into<Option<String>>>(
+        topics: &'a [T],
+        auth_token: String,
+        nonce: O,
+    ) -> TopicSubscribe
+    where
+        &'a T: Into<String>,
+    {
+        TopicSubscribe::Listen {
+            nonce: nonce.into(),
+            topics: topics.iter().map(|t| t.into()).collect(),
+            auth_token,
+        }
+    }
+
+    /// Create a unlisten command.
+    pub fn unlisten<'a, T: Topic, O: Into<Option<String>>>(
+        topics: &'a [T],
+        auth_token: String,
+        nonce: O,
+    ) -> TopicSubscribe
+    where
+        &'a T: Into<String>,
+    {
+        TopicSubscribe::Unlisten {
+            nonce: nonce.into(),
+            topics: topics.iter().map(|t| t.into()).collect(),
+            auth_token,
+        }
+    }
 }
 /// Response from twitch PubSub
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]

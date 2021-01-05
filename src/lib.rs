@@ -15,7 +15,7 @@
 //!
 //! # Examples
 //!
-//! Get information about a channel with the [`GetChannelInformationRequest`](crate::helix::channels::GetChannelInformationRequest) helix endpoint.
+//! Get information about a channel with the [`Get Channel Information`](crate::helix::channels::get_channel_information) helix endpoint.
 //!
 //! ```rust,no_run
 //! use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
