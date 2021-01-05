@@ -1,4 +1,5 @@
-//! Various topics
+#![doc(alias = "webhooks")]
+//! Various topics for webhooks
 
 use crate::helix::{self, Request, RequestGet, Response};
 use helix::ser;
@@ -13,7 +14,6 @@ pub mod users;
 // FIXME: Missing Topic: Extension Transaction Created
 
 /// A webhook topic.
-///
 pub trait Topic: DeserializeOwned + Serialize + PartialEq {
     /// Helix response
     type Helix: RequestGet + Request;

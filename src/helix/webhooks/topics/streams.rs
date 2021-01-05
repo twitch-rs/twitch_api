@@ -1,4 +1,4 @@
-//! Topics for streams
+//! Webhook topics for streams
 use crate::helix::webhooks::Topic;
 
 pub mod stream_changed;

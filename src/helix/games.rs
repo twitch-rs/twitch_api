@@ -1,5 +1,5 @@
 #![doc(alias = "games")]
-//! Endpoints regarding games
+//! Helix endpoints regarding games
 use crate::{helix, types};
 
 use serde::{Deserialize, Serialize};

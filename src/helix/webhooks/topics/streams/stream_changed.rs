@@ -1,4 +1,4 @@
-//! Notifies when a follows event occurs.
+//! Notifies when a stream changes.
 
 use crate::types;
 

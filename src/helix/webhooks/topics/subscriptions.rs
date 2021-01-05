@@ -1,4 +1,4 @@
-//! Topics for subscriptions
+//! Webhook topics for subscriptions
 use crate::helix::webhooks::Topic;
 
 pub mod subscription_events;

@@ -1,5 +1,5 @@
 #![doc(alias = "hypetrain")]
-//! Endpoints regarding hype trains
+//! Helix endpoints regarding hype trains
 //!
 //! See also [PubSub hypetrain](crate::pubsub::hypetrain)
 use crate::{helix, types};

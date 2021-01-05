@@ -1,5 +1,5 @@
 #![doc(alias = "tags")]
-//! Endpoints regarding tags
+//! Helix endpoints regarding tags
 //!
 //! # Examples
 //!

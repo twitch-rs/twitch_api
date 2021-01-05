@@ -1,5 +1,5 @@
 #![doc(alias = "bits")]
-//! Endpoints regarding bits
+//! Helix endpoints regarding bits
 //!
 //! # Examples
 //!

@@ -1,6 +1,6 @@
 #![doc(alias = "streams")]
 #![doc(alias = "live")]
-//! Endpoints regarding streams
+//! Helix endpoints regarding streams
 //!
 //! # Examples
 //!

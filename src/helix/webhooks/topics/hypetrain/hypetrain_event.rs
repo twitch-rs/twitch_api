@@ -1,4 +1,4 @@
-//! Notifies when a follows event occurs.
+//! Notifies when a hype train progression occurs.
 
 use crate::types;
 
@@ -14,12 +14,12 @@ impl Topic for HypeTrainEventTopic {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadHypeTrain];
 }
 
-/// Notifies when a stream changes [Topic: Stream Changed](https://dev.twitch.tv/docs/api/webhooks-reference#topic-stream-changed)
+/// Notifies when a hype train progression occurs [Topic: Hype Train Event](https://dev.twitch.tv/docs/api/webhooks-reference#topic-hype-train-event)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 pub struct HypeTrainEventTopic {
-    /// Specifies the user whose stream is monitored.
+    /// User ID of the broadcaster. Must match the User ID in the Bearer token.
     #[builder(setter(into))]
-    pub user_id: types::UserId,
+    pub broadcaster_id: types::UserId,
 }
 
 #[test]
@@ -35,7 +35,7 @@ fn test_topic() {
         .secret("12233213890390".to_string())
         .topic(
             HypeTrainEventTopic::builder()
-                .user_id(5678.to_string())
+                .broadcaster_id(5678.to_string())
                 .build(),
         )
         .build();

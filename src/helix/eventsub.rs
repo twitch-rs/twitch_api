@@ -1,5 +1,5 @@
 #![doc(alias = "eventsub")]
-//! Endpoints regarding EventSub
+//! Helix endpoints regarding EventSub
 
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};

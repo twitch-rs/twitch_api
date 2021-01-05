@@ -1,4 +1,4 @@
-//! Notifies when a follows event occurs.
+//! Notifies when a user changes information about their profile.
 
 use crate::types;
 
@@ -14,7 +14,7 @@ impl Topic for UserChangedTopic {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
 }
 
-/// Notifies when a follows event occurs. [Topic: User Changed](https://dev.twitch.tv/docs/api/webhooks-reference#topic-user-changed)
+/// Notifies when a user changes information about their profile [Topic: User Changed](https://dev.twitch.tv/docs/api/webhooks-reference#topic-user-changed)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 pub struct UserChangedTopic {
     /// Specifies the user whose data is monitored.
