@@ -4,7 +4,7 @@
 
 ## [Unreleased] - ReleaseDate
 
-[v0.4.1...v0.5.0](https://github.com/Emilgardis/twitch_api2/compare/v0.4.1...v0.5.0) for all changes/additions
+[Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.4.1...Unreleased)
 
 ### Added
 
@@ -81,6 +81,6 @@
 * Renamed some helix endpoint replies. [#18]
 * `twitch_oauth2` dependency is now gated behind its feature flag.
 
-## End of Changelog 
+## [End of Changelog] 
 
-Changelog starts on v0.5.0
+Changelog starts on Unreleased
