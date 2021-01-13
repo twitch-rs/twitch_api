@@ -1,5 +1,4 @@
 #![doc(alias = "subscription")]
-#![doc(alias = "subscriptions")]
 //! Helix endpoints regarding subscriptions
 //!
 //! # Examples

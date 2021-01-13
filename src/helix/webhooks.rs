@@ -1,4 +1,3 @@
-#![doc(alias = "webhooks")]
 //! Endpoints and topics for webhooks
 //!
 //! # Examples

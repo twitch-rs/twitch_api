@@ -1,4 +1,3 @@
-#![doc(alias = "moderation")]
 #![doc(alias = "mod")]
 #![doc(alias = "chat_moderator_actions")]
 //! PubSub messages for moderator actions

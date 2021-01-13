@@ -1,4 +1,3 @@
-#![doc(alias = "follow")]
 #![doc(alias = "channel.follow")]
 //! A specified channel receives a follow.
 use super::*;

@@ -1,4 +1,3 @@
-#![doc(alias = "streams")]
 #![doc(alias = "live")]
 //! Helix endpoints regarding streams
 //!

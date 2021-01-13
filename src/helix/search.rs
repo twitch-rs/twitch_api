@@ -1,4 +1,3 @@
-#![doc(alias = "search")]
 //! Helix endpoints regarding search
 //!
 //! # Examples

@@ -1,4 +1,3 @@
-#![doc(alias = "clips")]
 //! Helix endpoints regarding clips
 //!
 //! # Examples

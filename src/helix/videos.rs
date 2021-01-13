@@ -1,5 +1,4 @@
 #![doc(alias = "vod")]
-#![doc(alias = "videos")]
 //! Helix endpoints regarding videos
 //!
 //! # Examples

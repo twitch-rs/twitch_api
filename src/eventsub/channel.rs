@@ -1,5 +1,4 @@
 #![doc(alias = "channels")]
-#![doc(alias = "channel")]
 //! Subscription types regarding channels
 use super::{EventSubscription, EventType};
 use crate::types;

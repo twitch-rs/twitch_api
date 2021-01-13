@@ -1,4 +1,3 @@
-#![doc(alias = "hypetrain")]
 #![doc(alias = "channel.hype_train")]
 //! A hype train has started, progressed or ended.
 use super::{EventSubscription, EventType};
