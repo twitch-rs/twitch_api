@@ -1,4 +1,3 @@
-#![doc(alias = "moderation")]
 #![doc(alias = "mod")]
 //! Helix endpoints regarding moderation
 

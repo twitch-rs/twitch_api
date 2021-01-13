@@ -1,5 +1,4 @@
 #![doc(alias = "user")]
-#![doc(alias = "users")]
 //! Helix endpoints regarding users
 //!
 //! # Examples

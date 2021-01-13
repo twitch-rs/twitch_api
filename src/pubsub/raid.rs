@@ -1,4 +1,3 @@
-#![doc(alias = "raid")]
 #![doc(alias = "raids")]
 //! PubSub messages for raids
 use crate::{pubsub, types};

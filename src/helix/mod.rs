@@ -1,4 +1,3 @@
-#![doc(alias = "helix")]
 //! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
 //!
 //!

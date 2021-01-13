@@ -1,4 +1,3 @@
-#![doc(alias = "cheer")]
 #![doc(alias = "channel.cheer")]
 //! A user cheers on the specified channel.
 use super::*;

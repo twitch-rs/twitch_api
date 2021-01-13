@@ -1,4 +1,3 @@
-#![doc(alias = "tags")]
 //! Helix endpoints regarding tags
 //!
 //! # Examples

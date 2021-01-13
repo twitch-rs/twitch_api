@@ -1,4 +1,3 @@
-#![doc(alias = "subscribe")]
 #![doc(alias = "subscription")]
 #![doc(alias = "subscriptions")]
 #![doc(alias = "channel.subscribe")]

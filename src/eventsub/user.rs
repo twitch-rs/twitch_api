@@ -1,4 +1,3 @@
-#![doc(alias = "user")]
 //! Subscription types regarding users
 
 use super::{EventSubscription, EventType};
