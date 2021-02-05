@@ -54,7 +54,9 @@
     - User Changed
     - User Follows
     - Stream Changed
-* Added tmi endpoint `get_hosts` thanks to [@waridley](https://github.com/Waridley).
+    - Get Channel Editors
+
+* Added tmi endpoint `get_hosts` thanks to [waridley](https://github.com/Waridley).
 * Added Helix endpoints
     - Get User Follows
     - Get Stream Tags
@@ -67,11 +69,14 @@
     - Get Videos
     - Get Cheermote
     - Get Bits Leaderboard
-    - Get Custom Reward Redemption (thanks [@Dinnerbone](https://github.com/Dinnerbone))
-    - Update Redemption Status (thanks [@Dinnerbone](https://github.com/Dinnerbone))
+    - Get Custom Reward Redemption (thanks [Dinnerbone](https://github.com/Dinnerbone))
+    - Update Redemption Status (thanks [Dinnerbone](https://github.com/Dinnerbone))
     - Get Broadcaster Subscriptions Events
     - Get Hype Train Events
     - Get Webhook Subscriptions
+    - Get Channel Editors
+    - Delete Videos
+    - Get User Block List
 
 ### Changed
 

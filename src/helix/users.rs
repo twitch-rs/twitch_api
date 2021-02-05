@@ -24,6 +24,7 @@ use serde::{Deserialize, Serialize};
 
 pub mod create_user_follows;
 pub mod delete_user_follows;
+pub mod get_user_block_list;
 pub mod get_users;
 pub mod get_users_follows;
 
@@ -31,6 +32,8 @@ pub mod get_users_follows;
 pub use create_user_follows::{CreateUserFollows, CreateUserFollowsBody, CreateUserFollowsRequest};
 #[doc(inline)]
 pub use delete_user_follows::{DeleteUserFollow, DeleteUserFollowsRequest};
+#[doc(inline)]
+pub use get_user_block_list::{GetUserBlockListRequest, UserBlockList};
 #[doc(inline)]
 pub use get_users::{GetUsersRequest, User};
 #[doc(inline)]

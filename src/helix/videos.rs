@@ -22,6 +22,7 @@
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
+pub mod delete_videos;
 pub mod get_videos;
 
 #[doc(inline)]

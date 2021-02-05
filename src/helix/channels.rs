@@ -24,10 +24,13 @@
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
+pub mod get_channel_editors;
 pub mod get_channel_information;
 pub mod modify_channel_information;
 pub mod start_commercial;
 
+#[doc(inline)]
+pub use get_channel_editors::{Editor, GetChannelEditorsRequest};
 #[doc(inline)]
 pub use get_channel_information::{ChannelInformation, GetChannelInformationRequest};
 #[doc(inline)]
