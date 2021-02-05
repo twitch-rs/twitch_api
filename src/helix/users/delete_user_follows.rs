@@ -76,7 +76,7 @@ impl std::convert::TryFrom<http::StatusCode> for DeleteUserFollow {
         match s {
             http::StatusCode::NO_CONTENT => Ok(DeleteUserFollow::Success),
             http::StatusCode::BAD_REQUEST => Ok(DeleteUserFollow::MissingQuery),
-            http::StatusCode::UNPROCESSABLE_ENTITY => Ok(DeleteUserFollow::Success),
+            http::StatusCode::UNPROCESSABLE_ENTITY => Ok(DeleteUserFollow::ProcessingError),
             other => Err(other.canonical_reason().unwrap_or("").into()),
         }
     }
