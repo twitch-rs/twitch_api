@@ -75,6 +75,8 @@ pub struct BannedUser {
     pub user_id: types::UserId,
     /// Display name of a user who has been banned.
     pub user_name: types::DisplayName,
+    /// Login of a user who has been banned.
+    pub user_login: types::UserName,
     /// RFC3339 formatted timestamp for timeouts; empty string for bans.
     pub expires_at: Option<types::Timestamp>,
 }
@@ -103,21 +105,23 @@ fn test_request() {
     // From twitch docs
     let data = br#"
 {
-    "data": [
-        {
-        "user_id": "423374343",
-        "user_name": "glowillig",
-        "expires_at": "2019-03-15T02:00:28Z"
-        },
-        {
-        "user_id": "424596340",
-        "user_name": "quotrok",
-        "expires_at": "2018-08-07T02:07:55Z"
-        }
-    ],
-    "pagination": {
-        "cursor": "eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6IjEwMDQ3MzA2NDo4NjQwNjU3MToxSVZCVDFKMnY5M1BTOXh3d1E0dUdXMkJOMFcifX0"
+  "data": [
+    {
+      "user_id": "423374343",
+      "user_login": "glowillig",
+      "user_name": "glowillig",
+      "expires_at": "2019-03-15T02:00:28Z"
+    },
+    {
+      "user_id": "424596340",
+      "user_login": "quotrok",
+      "user_name": "quotrok",
+      "expires_at": "2018-08-07T02:07:55Z"
     }
+  ],
+  "pagination": {
+    "cursor": "eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6IjEwMDQ3MzA2NDo4NjQwNjU3MToxSVZCVDFKMnY5M1BTOXh3d1E0dUdXMkJOMFcifX0"
+  }
 }
 "#
         .to_vec();

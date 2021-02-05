@@ -27,12 +27,16 @@ impl EventSubscription for ChannelBanV1 {
 pub struct ChannelBanV1Payload {
     /// The requested broadcaster ID.
     pub broadcaster_user_id: types::UserId,
-    /// The requested broadcaster name.
-    pub broadcaster_user_name: types::UserName,
+    /// The requested broadcaster login.
+    pub broadcaster_user_login: types::UserName,
+    /// The requested broadcaster display name.
+    pub broadcaster_user_name: types::DisplayName,
     /// The user ID for the user who was banned on the specified channel.
     pub user_id: types::UserId,
-    /// The user name for the user who was banned on the specified channel.
-    pub user_name: types::UserName,
+    /// The user login for the user who was banned on the specified channel.
+    pub user_login: types::UserName,
+    /// The requested broadcaster display name.
+    pub user_name: types::DisplayName,
 }
 
 #[test]
@@ -54,9 +58,11 @@ fn parse_payload() {
         },
         "event": {
             "user_id": "1234",
-            "user_name": "cool_user",
+            "user_login": "cool_user",
+            "user_name": "Cool_User",
             "broadcaster_user_id": "1337",
-            "broadcaster_user_name": "cooler_user"
+            "broadcaster_user_login": "cooler_user",
+            "broadcaster_user_name": "Cooler_User"
         }
     }
     "#;

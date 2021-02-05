@@ -69,6 +69,8 @@ pub struct UsersFollow {
     pub from_id: types::UserId,
     ///Display name corresponding to from_id.
     pub from_name: types::DisplayName,
+    /// Login of the user following the to_id user.
+    pub from_login: types::UserName,
     ///ID of the user being followed by the from_id user.
     pub to_id: types::UserId,
     ///Display name corresponding to to_id.
@@ -113,6 +115,7 @@ fn test_request() {
     [
         {
             "from_id": "171003792",
+            "from_login": "iiisutha067iii",
             "from_name": "IIIsutha067III",
             "to_id": "23161357",
             "to_name": "LIRIK",
@@ -120,6 +123,7 @@ fn test_request() {
         },
         {
             "from_id": "113627897",
+            "from_login": "birdman616",
             "from_name": "Birdman616",
             "to_id": "23161357",
             "to_name": "LIRIK",

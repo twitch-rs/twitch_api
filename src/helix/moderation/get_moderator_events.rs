@@ -78,7 +78,7 @@ pub struct ModeratorEvent {
     pub event_timestamp: types::Timestamp,
     /// Returns the version of the endpoint.
     pub version: String,
-    /// Returns `broadcaster_id`, `broadcaster_name`, `user_id`, `user_name`, and `expires_at`.
+    /// Returns `broadcaster_id`, `broadcaster_name`, `broadcaster_login`, `user_id`, `user_name`, `user_login` and `expires_at`.
     pub event_data: HashMap<String, String>,
 }
 
@@ -114,8 +114,10 @@ fn test_request() {
         "version": "1.0",
         "event_data": {
             "broadcaster_id": "198704263",
+            "broadcaster_login": "aan22209",
             "broadcaster_name": "aan22209",
             "user_id": "423374343",
+            "user_login": "glowillig",
             "user_name": "glowillig"
         }
         },
@@ -126,8 +128,10 @@ fn test_request() {
         "version": "1.0",
         "event_data": {
             "broadcaster_id": "198704263",
+            "broadcaster_login": "aan22209",
             "broadcaster_name": "aan22209",
             "user_id": "423374343",
+            "user_login": "glowillig",
             "user_name": "glowillig"
         }
         },
@@ -138,8 +142,10 @@ fn test_request() {
         "version": "1.0",
         "event_data": {
             "broadcaster_id": "198704263",
+            "broadcaster_login": "aan22209",
             "broadcaster_name": "aan22209",
             "user_id": "424596340",
+            "user_login": "quotrok",
             "user_name": "quotrok"
         }
         }

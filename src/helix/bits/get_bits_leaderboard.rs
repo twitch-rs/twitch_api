@@ -110,7 +110,9 @@ pub struct LeaderboardUser {
     /// ID of the user (viewer) in the leaderboard entry.
     pub user_id: types::UserId,
     /// Display name corresponding to user_id.
-    pub user_name: types::UserName,
+    pub user_name: types::DisplayName,
+    /// User login name.
+    pub user_login: types::UserName,
 }
 
 impl helix::Request for GetBitsLeaderboardRequest {
@@ -183,17 +185,25 @@ fn test_request() {
 {
     "data": [
         {
-        "user_id": "1234",
-        "user_name": "tmi",
+        "user_id": "158010205",
+        "user_login": "tundracowboy",
+        "user_name": "TundraCowboy",
         "rank": 1,
-        "score": 1234567
+        "score": 12543
+        },
+        {
+        "user_id": "7168163",
+        "user_login": "topramens",
+        "user_name": "Topramens",
+        "rank": 2,
+        "score": 6900
         }
     ],
     "date_range": {
-        "started_at": "2020-01-01T07:00:00Z",
-        "ended_at": "2021-01-01T07:00:00Z"
+        "started_at": "2018-02-05T08:00:00Z",
+        "ended_at": "2018-02-12T08:00:00Z"
     },
-    "total": 10
+    "total": 2
     }
 "##
     .to_vec();

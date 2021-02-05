@@ -38,6 +38,8 @@ pub struct Contribution {
     pub type_: ContributionType,
     /// The ID of the user.
     pub user_id: types::UserId,
-    /// The name of the user.
-    pub user_name: types::UserName,
+    /// The login of the user.
+    pub user_login: types::UserName,
+    /// The display name of the user.
+    pub user_name: types::DisplayName,
 }

@@ -32,8 +32,10 @@ pub struct UserUpdateV1Payload {
     pub email: Option<String>,
     /// The user’s user id.
     pub user_id: types::UserId,
-    /// The user’s user name.
-    pub user_name: types::UserName,
+    /// The user’s user login.
+    pub user_login: types::UserName,
+    /// The user’s user display name.
+    pub user_name: types::DisplayName,
 }
 
 #[test]
@@ -45,9 +47,9 @@ fn parse_payload() {
         "type": "user.update",
         "version": "1",
         "condition": {
-           "user_id": "1337"
+            "user_id": "1337"
         },
-         "transport": {
+            "transport": {
             "method": "webhook",
             "callback": "https://example.com/webhooks/callback"
         },
@@ -55,7 +57,8 @@ fn parse_payload() {
     },
     "event": {
         "user_id": "1337",
-        "user_name": "cool_user",
+        "user_login": "cool_user",
+        "user_name": "Cool_User",
         "email": "user@email.com",
         "description": "cool description"
     }

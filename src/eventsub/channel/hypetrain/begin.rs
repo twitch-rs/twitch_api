@@ -28,8 +28,10 @@ impl EventSubscription for ChannelHypeTrainBeginV1 {
 pub struct ChannelHypeTrainBeginV1Payload {
     /// The requested broadcaster ID.
     pub broadcaster_user_id: types::UserId,
-    /// The requested broadcaster name.
-    pub broadcaster_user_name: types::UserName,
+    /// The requested broadcaster login.
+    pub broadcaster_user_login: types::UserName,
+    /// The requested broadcaster display name.
+    pub broadcaster_user_name: types::DisplayName,
     /// The time at which the hype train expires. The expiration is extended when the hype train reaches a new level.
     pub expires_at: types::Timestamp,
     /// The number of points required to reach the next level.
@@ -66,15 +68,16 @@ fn parse_payload() {
         },
         "event": {
             "broadcaster_user_id": "1337",
-            "broadcaster_user_name": "cool_user",
+            "broadcaster_user_login": "cool_user",
+            "broadcaster_user_name": "Cool_User",
             "total": 137,
             "progress": 137,
             "goal": 500,
             "top_contributions": [
-                { "user_id": "123", "user_name": "pogchamp", "type": "bits", "total": 50 },
-                { "user_id": "456", "user_name": "kappa", "type": "subscription", "total": 45 }
+                { "user_id": "123", "user_login": "pogchamp", "user_name": "PogChamp", "type": "bits", "total": 50 },
+                { "user_id": "456", "user_login": "kappa", "user_name": "Kappa", "type": "subscription", "total": 45 }
             ],
-            "last_contribution": { "user_id": "123", "user_name": "pogchamp", "type": "bits", "total": 50 },
+            "last_contribution": { "user_id": "123", "user_login": "pogchamp", "user_name": "PogChamp", "type": "bits", "total": 50 },
             "started_at": "2020-07-15T17:16:03.17106713Z",
             "expires_at": "2020-07-15T17:16:11.17106713Z"
         }

@@ -74,6 +74,8 @@ pub struct Channel {
     pub display_name: types::DisplayName,
     /// Channel language (Broadcaster Language field from the [Channels service][crate::helix::channels])
     pub broadcaster_language: String,
+    /// Login of the broadcaster.
+    pub broadcaster_login: types::UserName,
     /// channel title
     pub title: String,
     /// Thumbnail URL of the stream. All image URLs have variable width and height. You can replace {width} and {height} with any values to get that size image.
@@ -112,7 +114,8 @@ fn test_request() {
     "data": [
         {
             "broadcaster_language": "en",
-            "display_name": "a_seagull",
+            "broadcaster_login": "a_seagull",
+            "display_name": "A_Seagull",
             "game_id": "506442",
             "id": "19070311",
             "is_live": true,

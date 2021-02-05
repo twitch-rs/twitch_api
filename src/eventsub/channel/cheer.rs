@@ -29,16 +29,20 @@ pub struct ChannelCheerV1Payload {
     pub bits: i64,
     /// The requested broadcaster ID.
     pub broadcaster_user_id: types::UserId,
-    /// The requested broadcaster name.
-    pub broadcaster_user_name: types::UserName,
+    /// The requested broadcaster login.
+    pub broadcaster_user_login: types::UserName,
+    /// The requested broadcaster display name.
+    pub broadcaster_user_name: types::DisplayName,
     /// Whether the user cheered anonymously or not.
     pub is_anonymous: bool,
     /// The message sent with the cheer.
     pub message: String,
     /// The user ID for the user who cheered on the specified channel. This is null/empty if is_anonymous is true.
     pub user_id: Option<types::UserId>,
-    /// The user name for the user who cheered on the specified channel. This is null/empty if is_anonymous is true.
-    pub user_name: Option<types::UserId>,
+    /// The user login for the user who cheered on the specified channel. This is null/empty if is_anonymous is true.
+    pub user_login: Option<types::UserName>,
+    /// The user display name for the user who cheered on the specified channel. This is null/empty if is_anonymous is true.
+    pub user_name: Option<types::DisplayName>,
 }
 
 #[test]
@@ -61,9 +65,11 @@ fn parse_payload() {
         "event": {
             "is_anonymous": false,
             "user_id": "1234",
-            "user_name": "cool_user",
+            "user_login": "cool_user",
+            "user_name": "Cool_User",
             "broadcaster_user_id": "1337",
-            "broadcaster_user_name": "cooler_user",
+            "broadcaster_user_login": "cooler_user",
+            "broadcaster_user_name": "Cooler_User",
             "message": "pogchamp",
             "bits": 1000
         }

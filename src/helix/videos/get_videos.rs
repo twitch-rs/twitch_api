@@ -112,6 +112,8 @@ pub struct Video {
     pub user_id: types::UserId,
     /// Display name corresponding to user_id.
     pub user_name: types::DisplayName,
+    /// Login of the user who owns the video.
+    pub user_login: types::UserName,
     /// Number of times the video has been viewed.
     pub view_count: i64,
     /// Indicates whether the video is publicly viewable. Valid values: "public", "private".
@@ -145,6 +147,7 @@ fn test_request() {
     "data": [{
       "id": "234482848",
       "user_id": "67955580",
+      "user_login": "chewiemelodies",
       "user_name": "ChewieMelodies",
       "title": "-",
       "description": "",
