@@ -142,6 +142,8 @@ pub enum Payload {
     UserUpdateV1(NotificationPayload<user::UserUpdateV1>),
     /// User Authorization Revoke V1 Event
     UserAuthorizationRevokeV1(NotificationPayload<user::UserAuthorizationRevokeV1>),
+    /// Channel Raid Beta Event
+    ChannelRaidBeta(NotificationPayload<channel::ChannelRaidBeta>),
 }
 
 impl Payload {
@@ -247,6 +249,7 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelPointsCustomRewardRemoveV1;
                 channel::ChannelPointsCustomRewardRedemptionAddV1;
                 channel::ChannelPointsCustomRewardRedemptionUpdateV1;
+                channel::ChannelRaidBeta;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
                 channel::ChannelHypeTrainEndV1;
@@ -367,6 +370,9 @@ pub enum EventType {
     /// `channel.channel_points_custom_reward_redemption.update`: a redemption of a channel points custom reward has been updated for the specified channel.
     #[serde(rename = "channel.channel_points_custom_reward_redemption.update")]
     ChannelPointsCustomRewardRedemptionUpdate,
+    /// `channel.raid`: a broadcaster raids another broadcaster’s channel.
+    #[serde(rename = "channel.raid")]
+    ChannelRaid,
     /// `channel.hype_train.begin`: a hype train begins on the specified channel.
     #[serde(rename = "channel.hype_train.begin")]
     ChannelHypeTrainBegin,

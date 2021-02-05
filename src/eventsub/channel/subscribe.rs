@@ -23,7 +23,7 @@ impl EventSubscription for ChannelSubscribeV1 {
     const VERSION: &'static str = "1";
 }
 
-/// [`channel.update`](ChannelSubscribeV1) response payload.
+/// [`channel.subscribe`](ChannelSubscribeV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]

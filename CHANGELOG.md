@@ -46,6 +46,7 @@
     - StreamOffline V1 Event
     - User Update V1 Event
     - User Authorization Revoke V1 Event
+    - Channel Raid Beta Event
 * Added most Webhook topics.
     - Hype Train Event
     - Channel Ban Change Events
@@ -55,7 +56,6 @@
     - User Follows
     - Stream Changed
     - Get Channel Editors
-
 * Added tmi endpoint `get_hosts` thanks to [waridley](https://github.com/Waridley).
 * Added Helix endpoints
     - Get User Follows
