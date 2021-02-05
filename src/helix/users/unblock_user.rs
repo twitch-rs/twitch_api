@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`UnblockUserRequest`] with the [`UnblockUserRequest::builder()`] method.
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::users::unblock_user::{self, SourceContext, Reason};
+//! use twitch_api2::helix::users::unblock_user;
 //! let request = unblock_user::UnblockUserRequest::builder()
 //!     .target_user_id("1234")
 //!     .build();

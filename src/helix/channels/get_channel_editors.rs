@@ -38,8 +38,6 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
 //! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
-use std::convert::TryInto;
-
 use super::*;
 /// Query Parameters for [Get Channel Editors](super::get_channel_editors)
 ///

@@ -27,7 +27,7 @@
 //! let request = get_user_block_list::GetUserBlockListRequest::builder()
 //!     .broadcaster_id("1234".to_string())
 //!     .build();
-//! let response: get_user_block_list::UserBlockList = client.req_get(request, &token).await?.data;
+//! let response: Vec<get_user_block_list::UserBlock> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -59,7 +59,7 @@ pub struct GetUserBlockListRequest {
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct UserBlockList {
+pub struct UserBlock {
     /// User ID of the blocked user.
     pub user_id: String,
     /// Login of the blocked user.
@@ -69,7 +69,7 @@ pub struct UserBlockList {
 }
 
 impl helix::Request for GetUserBlockListRequest {
-    type Response = Vec<UserBlockList>;
+    type Response = Vec<UserBlock>;
 
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] =

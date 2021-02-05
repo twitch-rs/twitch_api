@@ -22,7 +22,7 @@
 //!
 //! ## Response: [BlockUser]
 //!
-//! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+//! Send the request to receive the response with [`HelixClient::req_put()`](helix::HelixClient::req_put).
 //!
 //! ```rust, no_run
 //! use twitch_api2::helix::{self, users::block_user};
@@ -35,13 +35,13 @@
 //! let request = block_user::BlockUserRequest::builder()
 //!     .target_user_id("1234")
 //!     .build();
-//! let response: block_user::BlockUser = client.req_delete(request, &token).await?;
+//! let response: block_user::BlockUser = client.req_put(request, &token).await?;
 //! # Ok(())
 //! # }
 //! ```
 //!
-//! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestDelete::parse_response())
+//! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPut::create_request)
+//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPut::parse_response())
 
 use super::*;
 /// Query Parameters for [Block User](super::block_user)

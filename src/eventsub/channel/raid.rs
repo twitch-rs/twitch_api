@@ -1,6 +1,4 @@
 //! A a broadcaster raids another broadcaster’s channel.
-use types::UserName;
-
 use super::*;
 
 /// [`channel.raid`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelraid-beta): a a broadcaster raids another broadcaster’s channel.

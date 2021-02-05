@@ -37,7 +37,7 @@ pub use create_user_follows::{CreateUserFollows, CreateUserFollowsBody, CreateUs
 #[doc(inline)]
 pub use delete_user_follows::{DeleteUserFollow, DeleteUserFollowsRequest};
 #[doc(inline)]
-pub use get_user_block_list::{GetUserBlockListRequest, UserBlockList};
+pub use get_user_block_list::{GetUserBlockListRequest, UserBlock};
 #[doc(inline)]
 pub use get_users::{GetUsersRequest, User};
 #[doc(inline)]
