@@ -12,7 +12,7 @@
 //!     .build();
 //! ```
 //!
-//! ## Response: [UserBlockList]
+//! ## Response: [UserBlock]
 //!
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!

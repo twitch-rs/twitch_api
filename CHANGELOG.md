@@ -84,6 +84,7 @@
 
 * MSRV = 1.48.0
 * BREAKING: Removed `helix` and `tmi` features from default-features.
+* BREAKING: Renamed `TMIClient` -> `TmiClient`
 * Improved documentation
 * Renamed some helix endpoint replies. [#18]
 * `twitch_oauth2` dependency is now gated behind its feature flag.

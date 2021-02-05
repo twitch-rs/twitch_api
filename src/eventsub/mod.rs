@@ -199,7 +199,7 @@ impl<'de> Deserialize<'de> for Payload {
         }
         #[derive(Deserialize)]
         #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
-        struct IResponse {
+        struct InternalPayloadResponse {
             #[serde(rename = "subscription")]
             s: IEventSubscripionInformation,
             #[serde(rename = "event", alias = "challenge")]
@@ -225,19 +225,19 @@ impl<'de> Deserialize<'de> for Payload {
         #[derive(Deserialize)]
         #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
         #[serde(untagged)]
-        enum IIResponse {
+        enum InternalResponse {
             VerificationRequest(VerificationRequest),
-            IResponse(IResponse),
+            InternalPayloadResponse(InternalPayloadResponse),
         }
 
-        let response = IIResponse::deserialize(deserializer).map_err(|e| {
+        let response = InternalResponse::deserialize(deserializer).map_err(|e| {
             serde::de::Error::custom(format!("could not deserialize response: {}", e))
         })?;
         match response {
-            IIResponse::VerificationRequest(verification) => {
+            InternalResponse::VerificationRequest(verification) => {
                 Ok(Payload::VerificationRequest(verification))
             }
-            IIResponse::IResponse(response) => Ok(match_event! { response;
+            InternalResponse::InternalPayloadResponse(response) => Ok(match_event! { response;
                 channel::ChannelUpdateV1;
                 channel::ChannelFollowV1;
                 channel::ChannelSubscribeV1;

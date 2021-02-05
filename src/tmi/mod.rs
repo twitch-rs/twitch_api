@@ -7,11 +7,11 @@ use serde::{Deserialize, Serialize};
 /// # Examples
 ///
 /// ```rust,no_run
-/// # use twitch_api2::tmi::TMIClient; use std::error::Error;
+/// # use twitch_api2::tmi::TmiClient; use std::error::Error;
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn Error>> {
-/// let client = TMIClient::new();
-/// # let _: &TMIClient<twitch_api2::DummyHttpClient> = &client;
+/// let client = TmiClient::new();
+/// # let _: &TmiClient<twitch_api2::DummyHttpClient> = &client;
 /// println!("{:?}", client.get_chatters("justinfan10").await?);
 /// # Ok(())
 /// # }
@@ -20,9 +20,9 @@ use serde::{Deserialize, Serialize};
 /// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
 ///
 /// ```rust,no_run
-/// # use twitch_api2::{TMIClient}; pub mod surf {pub type Client = twitch_api2::client::DummyHttpClient;}
+/// # use twitch_api2::{TmiClient}; pub mod surf {pub type Client = twitch_api2::client::DummyHttpClient;}
 /// pub struct MyStruct {
-///     twitch: TMIClient<'static, surf::Client>,
+///     twitch: TmiClient<'static, surf::Client>,
 ///     token: twitch_oauth2::AppAccessToken,
 /// }
 /// // etc
@@ -32,28 +32,28 @@ use serde::{Deserialize, Serialize};
 #[cfg(all(feature = "client", feature = "tmi"))]
 #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "tmi"))))] // FIXME: This doc_cfg does nothing
 #[derive(Default, Clone)]
-pub struct TMIClient<'a, C: crate::HttpClient<'a>> {
+pub struct TmiClient<'a, C: crate::HttpClient<'a>> {
     client: C,
     _pd: std::marker::PhantomData<&'a ()>,
 }
 
 #[cfg(all(feature = "tmi", feature = "client"))]
-impl<'a, C: crate::HttpClient<'a>> TMIClient<'a, C> {
+impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
     /// Create a new client with a default
-    pub fn new() -> TMIClient<'a, C>
+    pub fn new() -> TmiClient<'a, C>
     where C: Default {
-        TMIClient::with_client(C::default())
+        TmiClient::with_client(C::default())
     }
 
-    /// Create a new [`TMIClient`] with an existing [`HttpClient`][crate::HttpClient]
-    pub fn with_client(client: C) -> TMIClient<'a, C> {
-        TMIClient {
+    /// Create a new [`TmiClient`] with an existing [`HttpClient`][crate::HttpClient]
+    pub fn with_client(client: C) -> TmiClient<'a, C> {
+        TmiClient {
             client,
             _pd: std::marker::PhantomData::default(),
         }
     }
 
-    /// Retrieve a clone of the [`HttpClient`][crate::HttpClient] inside this [`TMIClient`]
+    /// Retrieve a clone of the [`HttpClient`][crate::HttpClient] inside this [`TmiClient`]
     pub fn clone_client(&self) -> C
     where C: Clone {
         self.client.clone()
@@ -130,7 +130,7 @@ impl<'a, C: crate::HttpClient<'a>> TMIClient<'a, C> {
 
 /// Returned by TMI at `https://tmi.twitch.tv/group/user/{broadcaster}/chatters`
 ///
-/// See [`TMIClient::get_chatters`]
+/// See [`TmiClient::get_chatters`]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GetChatters {
     /// Amount of connected users
@@ -158,7 +158,7 @@ pub struct Chatters {
     pub viewers: Vec<types::Nickname>,
 }
 
-/// Possible options for a [`TMIClient::get_hosts`] request.
+/// Possible options for a [`TmiClient::get_hosts`] request.
 #[derive(Debug)]
 pub enum HostsRequestId {
     /// Request the broadcaster that a given channel is hosting.
@@ -169,7 +169,7 @@ pub enum HostsRequestId {
 
 /// Returned by TMI at `https://tmi.twitch.tv/hosts`
 ///
-/// See [`TMIClient::get_hosts`]
+/// See [`TmiClient::get_hosts`]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GetHosts {
     /// List of host records. `len()` will be 1 if successfully requested for a
@@ -180,7 +180,7 @@ pub struct GetHosts {
 
 /// A host record returned by TMI at `https://tmi.twitch.tv/hosts`
 ///
-/// See [`TMIClient::get_hosts`]
+/// See [`TmiClient::get_hosts`]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Host {
     /// User ID of the hosting channel
@@ -200,7 +200,7 @@ pub struct Host {
 /// User ID
 pub type UserId = u64; // TMI user ID's appear to still be ints, even though Helix uses strings.
 
-/// Errors for [`TMIClient`] requests
+/// Errors for [`TmiClient`] requests
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// http crate returned an error
