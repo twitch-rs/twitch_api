@@ -77,6 +77,8 @@
     - Get Channel Editors
     - Delete Videos
     - Get User Block List
+    - Block User
+    - Unblock User
 
 ### Changed
 

@@ -3,7 +3,7 @@
 //!
 //! # Notes
 //!
-//! This doesn't seem to work for removing people who follow owner of token. Use twitch web chat `/block <user_login>` for that
+//! This doesn't seem to work for removing people who follow owner of token. Use [Block User](crate::helix::users::block_user) for that
 //!
 //! # Accessing the endpoint
 //!
@@ -20,7 +20,7 @@
 //!
 //! ## Response: [DeleteUserFollow]
 //!
-//! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+//! Send the request to receive the response with [`HelixClient::req_delete()`](helix::HelixClient::req_delete).
 //!
 //! ```rust, no_run
 //! use twitch_api2::helix::{self, users::delete_user_follows};
@@ -55,7 +55,7 @@ pub struct DeleteUserFollowsRequest {
     #[builder(default, setter(into))]
     pub to_id: types::UserId,
 }
-/// Return Values for [[Delete Users Follows](super::delete_user_follows)
+/// Return Values for [Delete Users Follows](super::delete_user_follows)
 ///
 /// [`delete-user-follows`](https://dev.twitch.tv/docs/api/reference#delete-user-follows)
 #[derive(PartialEq, Deserialize, Debug, Clone)]

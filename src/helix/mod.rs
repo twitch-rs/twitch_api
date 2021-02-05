@@ -229,6 +229,29 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .map_err(ClientRequestError::RequestError)?;
         <R>::parse_response(&uri, response).map_err(Into::into)
     }
+
+    /// Request on a valid [`RequestPut`] endpoint
+    pub async fn req_put<R, D, T>(
+        &'a self,
+        request: R,
+        token: &T,
+    ) -> Result<D, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    where
+        R: Request<Response = D> + Request + RequestPut,
+        D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
+            + serde::de::DeserializeOwned
+            + PartialEq,
+        T: TwitchToken + ?Sized,
+    {
+        let req = request.create_request(token.token().secret(), token.client_id().as_str())?;
+        let uri = req.uri().clone();
+        let response = self
+            .client
+            .req(req)
+            .await
+            .map_err(ClientRequestError::RequestError)?;
+        <R>::parse_response(&uri, response).map_err(Into::into)
+    }
 }
 
 #[cfg(feature = "client")]
@@ -492,6 +515,73 @@ pub trait RequestDelete: Request {
     }
 }
 
+/// Helix endpoint PUTs information
+#[cfg_attr(nightly, doc(spotlight))]
+pub trait RequestPut: Request {
+    /// Create a [`http::Request`] from this [`Request`] in your client
+    fn create_request(
+        &self,
+        token: &str,
+        client_id: &str,
+    ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
+        let uri = self.get_uri()?;
+
+        let mut bearer =
+            http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
+                CreateRequestError::Custom("Could not make token into headervalue".into())
+            })?;
+        bearer.set_sensitive(true);
+        http::Request::builder()
+            .method(http::Method::PUT)
+            .uri(uri)
+            .header("Client-ID", client_id)
+            .header("Content-Type", "application/json")
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(Vec::with_capacity(0))
+            .map_err(Into::into)
+    }
+
+    /// Parse response. Override for different behavior
+    fn parse_response(
+        uri: &http::Uri,
+        response: http::Response<Vec<u8>>,
+    ) -> Result<<Self as Request>::Response, HelixRequestPutError>
+    where
+        <Self as Request>::Response:
+            std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
+        Self: Sized,
+    {
+        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+            HelixRequestPutError::Utf8Error(response.body().clone(), e, uri.clone())
+        })?;
+        // eprintln!("\n\nmessage is ------------ {} ------------", text);
+
+        if let Ok(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = serde_json::from_str::<HelixRequestError>(&text)
+        {
+            return Err(HelixRequestPutError::Error {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                uri: uri.clone(),
+            });
+        }
+
+        match response.status().try_into() {
+            Ok(result) => Ok(result),
+            Err(err) => Err(HelixRequestPutError::Error {
+                error: String::new(),
+                status: response.status(),
+                message: err.to_string(),
+                uri: uri.clone(),
+            }),
+        }
+    }
+}
+
 /// Helix endpoint GETs information
 #[cfg_attr(nightly, doc(spotlight))]
 pub trait RequestGet: Request {
@@ -700,19 +790,24 @@ pub enum HelixRequestGetError {
     InvalidUri(#[from] InvalidUri),
 }
 
-/// helix returned error {status:?} - {error}: {message:?} when calling `PUT {uri}` with a body
+/// Could not parse PUT response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-pub struct HelixRequestPutError {
-    /// Error message related to status code
-    error: String,
-    /// Status code of error, usually 400-499
-    status: http::StatusCode,
-    /// Error message from Twitch
-    message: String,
-    /// URI to the endpoint
-    uri: http::Uri,
-    /// Body sent with PUT
-    body: Vec<u8>,
+pub enum HelixRequestPutError {
+    /// helix returned error {status:?} - {error}: {message:?} when calling `PUT {uri}`
+    Error {
+        /// Error message related to status code
+        error: String,
+        /// Status code of error, usually 400-499
+        status: http::StatusCode,
+        /// Error message from Twitch
+        message: String,
+        /// URI to the endpoint
+        uri: http::Uri,
+    },
+    /// could not parse response as utf8 when calling `PUT {2}`
+    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+    /// deserialization failed when processing request response calling `PUT {2}` with response: {0:?}
+    DeserializeError(String, #[source] serde_json::Error, http::Uri),
 }
 
 /// Could not parse POST response
