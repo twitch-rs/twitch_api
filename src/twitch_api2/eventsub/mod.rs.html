@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/2e31c1b71c9337163414f2a4bda024abb713a9e9">2e31c1b</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/9146648584dfdb2c2bb8fc4ef6640e9d031a5268">9146648</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -486,6 +486,12 @@
 <span id="481">481</span>
 <span id="482">482</span>
 <span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Holds serializable EventSub stuff</span>
 <span class="doccomment">//!</span>
@@ -631,6 +637,8 @@
     <span class="ident">UserUpdateV1</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">user</span>::<span class="ident">UserUpdateV1</span><span class="op">&gt;</span>),
     <span class="doccomment">/// User Authorization Revoke V1 Event</span>
     <span class="ident">UserAuthorizationRevokeV1</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">user</span>::<span class="ident">UserAuthorizationRevokeV1</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// Channel Raid Beta Event</span>
+    <span class="ident">ChannelRaidBeta</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">channel</span>::<span class="ident">ChannelRaidBeta</span><span class="op">&gt;</span>),
 }
 
 <span class="kw">impl</span> <span class="ident">Payload</span> {
@@ -686,7 +694,7 @@
         }
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
         <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-        <span class="kw">struct</span> <span class="ident">IResponse</span> {
+        <span class="kw">struct</span> <span class="ident">InternalPayloadResponse</span> {
             <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;subscription&quot;</span>)]</span>
             <span class="ident">s</span>: <span class="ident">IEventSubscripionInformation</span>,
             <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;event&quot;</span>, <span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;challenge&quot;</span>)]</span>
@@ -712,19 +720,19 @@
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
         <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">untagged</span>)]</span>
-        <span class="kw">enum</span> <span class="ident">IIResponse</span> {
+        <span class="kw">enum</span> <span class="ident">InternalResponse</span> {
             <span class="ident">VerificationRequest</span>(<span class="ident">VerificationRequest</span>),
-            <span class="ident">IResponse</span>(<span class="ident">IResponse</span>),
+            <span class="ident">InternalPayloadResponse</span>(<span class="ident">InternalPayloadResponse</span>),
         }
 
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">IIResponse</span>::<span class="ident">deserialize</span>(<span class="ident">deserializer</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">InternalResponse</span>::<span class="ident">deserialize</span>(<span class="ident">deserializer</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
             <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">custom</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;could not deserialize response: {}&quot;</span>, <span class="ident">e</span>))
         })<span class="question-mark">?</span>;
         <span class="kw">match</span> <span class="ident">response</span> {
-            <span class="ident">IIResponse</span>::<span class="ident">VerificationRequest</span>(<span class="ident">verification</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">InternalResponse</span>::<span class="ident">VerificationRequest</span>(<span class="ident">verification</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="prelude-val">Ok</span>(<span class="ident">Payload</span>::<span class="ident">VerificationRequest</span>(<span class="ident">verification</span>))
             }
-            <span class="ident">IIResponse</span>::<span class="ident">IResponse</span>(<span class="ident">response</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="macro">match_event</span><span class="macro">!</span> { <span class="ident">response</span>;
+            <span class="ident">InternalResponse</span>::<span class="ident">InternalPayloadResponse</span>(<span class="ident">response</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="macro">match_event</span><span class="macro">!</span> { <span class="ident">response</span>;
                 <span class="ident">channel</span>::<span class="ident">ChannelUpdateV1</span>;
                 <span class="ident">channel</span>::<span class="ident">ChannelFollowV1</span>;
                 <span class="ident">channel</span>::<span class="ident">ChannelSubscribeV1</span>;
@@ -736,6 +744,7 @@
                 <span class="ident">channel</span>::<span class="ident">ChannelPointsCustomRewardRemoveV1</span>;
                 <span class="ident">channel</span>::<span class="ident">ChannelPointsCustomRewardRedemptionAddV1</span>;
                 <span class="ident">channel</span>::<span class="ident">ChannelPointsCustomRewardRedemptionUpdateV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelRaidBeta</span>;
                 <span class="ident">channel</span>::<span class="ident">ChannelHypeTrainBeginV1</span>;
                 <span class="ident">channel</span>::<span class="ident">ChannelHypeTrainProgressV1</span>;
                 <span class="ident">channel</span>::<span class="ident">ChannelHypeTrainEndV1</span>;
@@ -856,6 +865,9 @@
     <span class="doccomment">/// `channel.channel_points_custom_reward_redemption.update`: a redemption of a channel points custom reward has been updated for the specified channel.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.channel_points_custom_reward_redemption.update&quot;</span>)]</span>
     <span class="ident">ChannelPointsCustomRewardRedemptionUpdate</span>,
+    <span class="doccomment">/// `channel.raid`: a broadcaster raids another broadcaster’s channel.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.raid&quot;</span>)]</span>
+    <span class="ident">ChannelRaid</span>,
     <span class="doccomment">/// `channel.hype_train.begin`: a hype train begins on the specified channel.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.hype_train.begin&quot;</span>)]</span>
     <span class="ident">ChannelHypeTrainBegin</span>,
@@ -971,4 +983,5 @@
     <span class="macro">dbg</span><span class="macro">!</span>(<span class="kw">crate</span>::<span class="ident">eventsub</span>::<span class="ident">Payload</span>::<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="ident">body</span>).<span class="ident">unwrap</span>());
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "twitch_api2";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api2"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

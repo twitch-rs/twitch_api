@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/scopes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>scopes.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/2e31c1b71c9337163414f2a4bda024abb713a9e9">2e31c1b</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/9146648584dfdb2c2bb8fc4ef6640e9d031a5268">9146648</a></p>
 <style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../twitch_oauth2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -128,6 +128,10 @@
 <span id="123">123</span>
 <span id="124">124</span>
 <span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Module for all possible scopes in twitch.</span>
 
@@ -193,28 +197,32 @@
 }
 
 <span class="macro">scope_impls</span><span class="macro">!</span>(
-    <span class="ident">AnalyticsReadExtensions</span>, <span class="string">&quot;analytics:read:extensions&quot;</span>, <span class="string">&quot;View analytics data for your extensions.&quot;</span>;
-    <span class="ident">AnalyticsReadGames</span>, <span class="string">&quot;analytics:read:games&quot;</span>, <span class="string">&quot;View analytics data for your games.&quot;</span>;
-    <span class="ident">BitsRead</span>, <span class="string">&quot;bits:read&quot;</span>, <span class="string">&quot;View bits information for your channel.&quot;</span>;
-    <span class="ident">ChannelSubscriptions</span>, <span class="string">&quot;channel_subscriptions&quot;</span>, <span class="string">&quot;\\[DEPRECATED\\] Read all subscribers to your channel.&quot;</span>;
-    <span class="ident">ChannelEditCommercial</span>, <span class="string">&quot;channel:edit:commercial&quot;</span>, <span class="string">&quot;Start a commercial on authorized channels&quot;</span>;
-    <span class="ident">ChannelManageBroadcast</span>, <span class="string">&quot;channel:manage:broadcast&quot;</span>, <span class="string">&quot;Manage your channel’s broadcast configuration, including updating channel configuration and managing stream markers and stream tags.&quot;</span>;
-    <span class="ident">ChannelManageExtension</span>, <span class="string">&quot;channel:manage:extension&quot;</span>, <span class="string">&quot;Manage your channel’s extension configuration, including activating extensions.&quot;</span>;
-    <span class="ident">ChannelModerate</span>, <span class="string">&quot;channel:moderate&quot;</span>, <span class="string">&quot;Perform moderation actions in a channel&quot;</span>;
-    <span class="ident">ChannelReadHypeTrain</span>, <span class="string">&quot;channel:read:hype_train&quot;</span>, <span class="string">&quot;Read hype trains&quot;</span>;
-    <span class="ident">ChannelReadRedemptions</span>, <span class="string">&quot;channel:read:redemptions&quot;</span>, <span class="string">&quot;View your channel points custom reward redemptions&quot;</span>;
+    <span class="ident">AnalyticsReadExtensions</span>, <span class="string">&quot;analytics:read:extensions&quot;</span>, <span class="string">&quot;View analytics data for the Twitch Extensions owned by the authenticated account.&quot;</span>;
+    <span class="ident">AnalyticsReadGames</span>, <span class="string">&quot;analytics:read:games&quot;</span>, <span class="string">&quot;View analytics data for the games owned by the authenticated account.&quot;</span>;
+    <span class="ident">BitsRead</span>, <span class="string">&quot;bits:read&quot;</span>, <span class="string">&quot;View Bits information for a channel.&quot;</span>;
+    <span class="ident">ChannelEditCommercial</span>, <span class="string">&quot;channel:edit:commercial&quot;</span>, <span class="string">&quot;Run commercials on a channel.&quot;</span>;
+    <span class="ident">ChannelManageBroadcast</span>, <span class="string">&quot;channel:manage:broadcast&quot;</span>, <span class="string">&quot;Manage a channel’s broadcast configuration, including updating channel configuration and managing stream markers and stream tags.&quot;</span>;
+    <span class="ident">ChannelManageExtensions</span>, <span class="string">&quot;channel:manage:extensions&quot;</span>, <span class="string">&quot;Manage a channel’s Extension configuration, including activating Extensions.&quot;</span>;
     <span class="ident">ChannelManageRedemptions</span>, <span class="string">&quot;channel:manage:redemptions&quot;</span>, <span class="string">&quot;Manage Channel Points custom rewards and their redemptions on a channel.&quot;</span>;
-    <span class="ident">ChannelReadSubscriptions</span>, <span class="string">&quot;channel:read:subscriptions&quot;</span>, <span class="string">&quot;Get a list of all subscribers to your channel and check if a user is subscribed to your channel&quot;</span>;
-    <span class="ident">ChatEdit</span>, <span class="string">&quot;chat:edit&quot;</span>, <span class="string">&quot;Send live Stream Chat and Rooms messages&quot;</span>;
-    <span class="ident">ChatRead</span>, <span class="string">&quot;chat:read&quot;</span>, <span class="string">&quot;View live Stream Chat and Rooms messages&quot;</span>;
-    <span class="ident">ClipsEdit</span>, <span class="string">&quot;clips:edit&quot;</span>, <span class="string">&quot;Create and edit clips as a specific user.&quot;</span>;
-    <span class="ident">ModerationRead</span>, <span class="string">&quot;moderation:read&quot;</span>, <span class="string">&quot;View your channel&#39;s moderation data including Moderators, Bans, Timeouts and Automod settings&quot;</span>;
+    <span class="ident">ChannelManageVideos</span>, <span class="string">&quot;channel:manage:videos&quot;</span>, <span class="string">&quot;Manage a channel’s videos, including deleting videos.&quot;</span>;
+    <span class="ident">ChannelModerate</span>, <span class="string">&quot;channel:moderate&quot;</span>, <span class="string">&quot;Perform moderation actions in a channel. The user requesting the scope must be a moderator in the channel.&quot;</span>;
+    <span class="ident">ChannelReadEditors</span>, <span class="string">&quot;channel:read:editors&quot;</span>, <span class="string">&quot;View a list of users with the editor role for a channel.&quot;</span>;
+    <span class="ident">ChannelReadHypeTrain</span>, <span class="string">&quot;channel:read:hype_train&quot;</span>, <span class="string">&quot;View Hype Train information for a channel.&quot;</span>;
+    <span class="ident">ChannelReadRedemptions</span>, <span class="string">&quot;channel:read:redemptions&quot;</span>, <span class="string">&quot;View Channel Points custom rewards and their redemptions on a channel.&quot;</span>;
+    <span class="ident">ChannelReadStreamKey</span>, <span class="string">&quot;channel:read:stream_key&quot;</span>, <span class="string">&quot;View an authorized user’s stream key.&quot;</span>;
+    <span class="ident">ChannelReadSubscriptions</span>, <span class="string">&quot;channel:read:subscriptions&quot;</span>, <span class="string">&quot;View a list of all subscribers to a channel and check if a user is subscribed to a channel.&quot;</span>;
+    <span class="ident">ChannelSubscriptions</span>, <span class="string">&quot;channel_subscriptions&quot;</span>, <span class="string">&quot;\\[DEPRECATED\\] Read all subscribers to your channel.&quot;</span>;
+    <span class="ident">ChatEdit</span>, <span class="string">&quot;chat:edit&quot;</span>, <span class="string">&quot;Send live stream chat and rooms messages.&quot;</span>;
+    <span class="ident">ChatRead</span>, <span class="string">&quot;chat:read&quot;</span>, <span class="string">&quot;View live stream chat and rooms messages.&quot;</span>;
+    <span class="ident">ClipsEdit</span>, <span class="string">&quot;clips:edit&quot;</span>, <span class="string">&quot;Manage Clips for a channel.&quot;</span>;
+    <span class="ident">ModerationRead</span>, <span class="string">&quot;moderation:read&quot;</span>, <span class="string">&quot;View a channel’s moderation data including Moderators, Bans, Timeouts, and Automod settings.&quot;</span>;
     <span class="ident">UserEdit</span>, <span class="string">&quot;user:edit&quot;</span>, <span class="string">&quot;Manage a user object.&quot;</span>;
     <span class="ident">UserEditBroadcast</span>, <span class="string">&quot;user:edit:broadcast&quot;</span>, <span class="string">&quot;Edit your channel&#39;s broadcast configuration, including extension configuration. (This scope implies user:read:broadcast capability.)&quot;</span>;
-    <span class="ident">UserEditFollows</span>, <span class="string">&quot;user:edit:follows&quot;</span>, <span class="string">&quot;Edit your follows.&quot;</span>;
-    <span class="ident">UserReadBroadcast</span>, <span class="string">&quot;user:read:broadcast&quot;</span>, <span class="string">&quot;View your broadcasting configuration, including extension configurations.&quot;</span>;
-    <span class="ident">UserReadEmail</span>, <span class="string">&quot;user:read:email&quot;</span>, <span class="string">&quot;Read authorized user&#39;s email address.&quot;</span>;
-    <span class="ident">UserReadStreamKey</span>, <span class="string">&quot;user:read:stream_key&quot;</span>, <span class="string">&quot;Read authorized user’s stream key.&quot;</span>;
+    <span class="ident">UserEditFollows</span>, <span class="string">&quot;user:edit:follows&quot;</span>, <span class="string">&quot;Edit a user’s follows.&quot;</span>;
+    <span class="ident">UserManageBlockedUsers</span>, <span class="string">&quot;user:manage:blocked_users&quot;</span>, <span class="string">&quot;Manage the block list of a user.&quot;</span>;
+    <span class="ident">UserReadBlockedUsers</span>, <span class="string">&quot;user:read:blocked_users&quot;</span>, <span class="string">&quot;View the block list of a user.&quot;</span>;
+    <span class="ident">UserReadBroadcast</span>, <span class="string">&quot;user:read:broadcast&quot;</span>, <span class="string">&quot;View a user’s broadcasting configuration, including Extension configurations.&quot;</span>;
+    <span class="ident">UserReadEmail</span>, <span class="string">&quot;user:read:email&quot;</span>, <span class="string">&quot;Read an authorized user’s email address.&quot;</span>;
     <span class="ident">WhispersEdit</span>, <span class="string">&quot;whispers:edit&quot;</span>, <span class="string">&quot;Send whisper messages.&quot;</span>;
     <span class="ident">WhispersRead</span>, <span class="string">&quot;whispers:read&quot;</span>, <span class="string">&quot;View your whisper messages.&quot;</span>;
 );
@@ -255,4 +263,5 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "twitch_oauth2";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

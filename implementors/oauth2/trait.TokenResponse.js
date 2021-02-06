@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["twitch_oauth2"] = [{"text":"impl&lt;EF, TT&gt; TokenResponse&lt;TT&gt; for TwitchTokenResponse&lt;EF, TT&gt; <span class=\"where fmt-newline\">where<br>&nbsp;&nbsp;&nbsp;&nbsp;TT: TokenType,<br>&nbsp;&nbsp;&nbsp;&nbsp;EF: ExtraTokenFields,&nbsp;</span>","synthetic":false,"types":[]}];
+implementors["twitch_oauth2"] = [{"text":"impl&lt;EF, TT&gt; TokenResponse&lt;TT&gt; for <a class=\"struct\" href=\"twitch_oauth2/id/struct.TwitchTokenResponse.html\" title=\"struct twitch_oauth2::id::TwitchTokenResponse\">TwitchTokenResponse</a>&lt;EF, TT&gt; <span class=\"where fmt-newline\">where<br>&nbsp;&nbsp;&nbsp;&nbsp;TT: TokenType,<br>&nbsp;&nbsp;&nbsp;&nbsp;EF: ExtraTokenFields,&nbsp;</span>","synthetic":false,"types":["twitch_oauth2::id::TwitchTokenResponse"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
