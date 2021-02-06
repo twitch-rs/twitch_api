@@ -90,6 +90,7 @@ pub struct UpdateRedemptionStatusBody {
     pub status: CustomRewardRedemptionStatus,
 }
 
+/// FIXME: Returns an object.
 /// Return Values for [Update Redemption Status](super::update_redemption_status)
 ///
 /// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)

@@ -84,7 +84,10 @@ pub struct CustomRewardRedemption {
     pub broadcaster_id: types::UserId,
 
     /// The display name of the broadcaster that the reward belongs to.
-    pub broadcaster_name: types::UserName,
+    pub broadcaster_name: types::DisplayName,
+
+    /// Broadcaster’s user login name.
+    pub broadcaster_login: types::UserName,
 
     /// The ID of the redemption.
     pub id: types::RedemptionId,
@@ -93,7 +96,10 @@ pub struct CustomRewardRedemption {
     pub user_id: types::UserId,
 
     /// The display name of the user that redeemed the reward.
-    pub user_name: types::UserName,
+    pub user_name: types::DisplayName,
+
+    ///The login of the user who redeemed the reward.
+    pub user_login: types::UserName,
 
     /// Basic information about the Custom Reward that was redeemed at the time it was redeemed. { “id”: string, “title”: string, “prompt”: string, “cost”: int, }
     pub reward: Reward,
@@ -156,8 +162,10 @@ fn test_request() {
     "data": [
           {
             "broadcaster_name": "torpedo09",
+            "broadcaster_login": "torpedo09",
             "broadcaster_id": "274637212",
             "id": "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
+            "user_login": "torpedo09",
             "user_id": "274637212",
             "user_name": "torpedo09",
             "user_input": "",

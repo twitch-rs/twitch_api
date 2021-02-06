@@ -78,7 +78,7 @@ pub struct BannedEvent {
     /// Returns the version of the endpoint.
     pub version: String,
     // FIXME: Should be a struct, maybe
-    /// Returns `broadcaster_id`, `broadcaster_name`, `user_id`, `user_name`, and `expires_at`.
+    /// Returns `broadcaster_id`, `broadcaster_name`, `broadcaster_login`, `user_id`, `user_name`, `user_login`, and `expires_at`.
     pub event_data: HashMap<String, String>,
 }
 
@@ -106,50 +106,56 @@ fn test_request() {
     // From twitch docs
     let data = br#"
 {
-    "data": [
+  "data": [
     {
-        "id": "1IPFqAb0p0JncbPSTEPhx8JF1Sa",
-        "event_type": "moderation.user.ban",
-        "event_timestamp": "2019-03-13T15:55:14Z",
-        "version": "1.0",
-        "event_data": {
+      "id": "1IPFqAb0p0JncbPSTEPhx8JF1Sa",
+      "event_type": "moderation.user.ban",
+      "event_timestamp": "2019-03-13T15:55:14Z",
+      "version": "1.0",
+      "event_data": {
         "broadcaster_id": "198704263",
-        "broadcaster_name": "aan22209",
+        "broadcaster_login": "racageneg",
+        "broadcaster_name": "racageneg",
         "user_id": "424596340",
+        "user_login": "quotrok",
         "user_name": "quotrok",
         "expires_at": ""
-        }
+      }
     },
     {
-        "id": "1IPFsDv5cs4mxfJ1s2O9Q5flf4Y",
-        "event_type": "moderation.user.unban",
-        "event_timestamp": "2019-03-13T15:55:30Z",
-        "version": "1.0",
-        "event_data": {
+      "id": "1IPFsDv5cs4mxfJ1s2O9Q5flf4Y",
+      "event_type": "moderation.user.unban",
+      "event_timestamp": "2019-03-13T15:55:30Z",
+      "version": "1.0",
+      "event_data": {
         "broadcaster_id": "198704263",
-        "broadcaster_name": "aan22209",
+        "broadcaster_login": "racageneg",
+        "broadcaster_name": "racageneg",
         "user_id": "424596340",
+        "user_login": "quotrok",
         "user_name": "quotrok",
         "expires_at": ""
-        }
+      }
     },
     {
-        "id": "1IPFqmlu9W2q4mXXjULyM8zX0rb",
-        "event_type": "moderation.user.ban",
-        "event_timestamp": "2019-03-13T15:55:19Z",
-        "version": "1.0",
-        "event_data": {
+      "id": "1IPFqmlu9W2q4mXXjULyM8zX0rb",
+      "event_type": "moderation.user.ban",
+      "event_timestamp": "2019-03-13T15:55:19Z",
+      "version": "1.0",
+      "event_data": {
         "broadcaster_id": "198704263",
-        "broadcaster_name": "aan22209",
+        "broadcaster_login": "racageneg",
+        "broadcaster_name": "racageneg",
         "user_id": "424596340",
+        "user_login": "quotrok",
         "user_name": "quotrok",
         "expires_at": ""
-        }
+      }
     }
-    ],
-    "pagination": {
+  ],
+  "pagination": {
     "cursor": "eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6IjE5OTYwNDI2MzoyMDIxMjA1MzE6MUlQRnFtbHU5VzJxNG1YWGpVTHlNOHpYMHJiIn19"
-    }
+  }
 }
 "#
         .to_vec();

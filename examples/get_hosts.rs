@@ -1,5 +1,5 @@
 use twitch_api2::tmi::{Host, HostsRequestId};
-use twitch_api2::TMIClient;
+use twitch_api2::TmiClient;
 
 #[tokio::main]
 async fn main() {
@@ -18,7 +18,7 @@ async fn main() {
         return;
     };
 
-    let client = TMIClient::<'_, surf::Client>::new();
+    let client = TmiClient::<'_, surf::Client>::new();
 
     let response = client
         .get_hosts(true, HostsRequestId::Host(channel_id))

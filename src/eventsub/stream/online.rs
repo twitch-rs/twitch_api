@@ -27,13 +27,17 @@ impl EventSubscription for StreamOnlineV1 {
 pub struct StreamOnlineV1Payload {
     /// The broadcaster’s user id.
     pub broadcaster_user_id: types::UserId,
-    /// The broadcaster’s user name.
-    pub broadcaster_user_name: types::UserName,
+    /// The broadcaster’s user login.
+    pub broadcaster_user_login: types::UserName,
+    /// The broadcaster’s user display name.
+    pub broadcaster_user_name: types::DisplayName,
     /// The event id.
     pub id: String,
     /// The stream type. Valid values are: live, playlist, watch_party, premiere, rerun.
     #[serde(rename = "type")]
     pub type_: types::VideoType,
+    /// The timestamp at which the stream went online at.
+    pub started_at: types::Timestamp,
 }
 
 #[test]
@@ -56,8 +60,10 @@ fn parse_payload() {
         "event": {
             "id": "9001",
             "broadcaster_user_id": "1337",
-            "broadcaster_user_name": "cool_user",
-            "type": "live"
+            "broadcaster_user_login": "cool_user",
+            "broadcaster_user_name": "Cool_User",
+            "type": "live",
+            "started_at": "2020-10-11T10:11:12.123Z"
         }
     }
     "#;

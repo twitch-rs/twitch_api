@@ -46,6 +46,7 @@
     - StreamOffline V1 Event
     - User Update V1 Event
     - User Authorization Revoke V1 Event
+    - Channel Raid Beta Event
 * Added most Webhook topics.
     - Hype Train Event
     - Channel Ban Change Events
@@ -54,7 +55,8 @@
     - User Changed
     - User Follows
     - Stream Changed
-* Added tmi endpoint `get_hosts` thanks to [@waridley](https://github.com/Waridley).
+    - Get Channel Editors
+* Added tmi endpoint `get_hosts` thanks to [waridley](https://github.com/Waridley).
 * Added Helix endpoints
     - Get User Follows
     - Get Stream Tags
@@ -67,16 +69,22 @@
     - Get Videos
     - Get Cheermote
     - Get Bits Leaderboard
-    - Get Custom Reward Redemption (thanks [@Dinnerbone](https://github.com/Dinnerbone))
-    - Update Redemption Status (thanks [@Dinnerbone](https://github.com/Dinnerbone))
+    - Get Custom Reward Redemption (thanks [Dinnerbone](https://github.com/Dinnerbone))
+    - Update Redemption Status (thanks [Dinnerbone](https://github.com/Dinnerbone))
     - Get Broadcaster Subscriptions Events
     - Get Hype Train Events
     - Get Webhook Subscriptions
+    - Get Channel Editors
+    - Delete Videos
+    - Get User Block List
+    - Block User
+    - Unblock User
 
 ### Changed
 
 * MSRV = 1.48.0
 * BREAKING: Removed `helix` and `tmi` features from default-features.
+* BREAKING: Renamed `TMIClient` -> `TmiClient`
 * Improved documentation
 * Renamed some helix endpoint replies. [#18]
 * `twitch_oauth2` dependency is now gated behind its feature flag.

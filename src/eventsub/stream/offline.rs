@@ -27,8 +27,10 @@ impl EventSubscription for StreamOfflineV1 {
 pub struct StreamOfflineV1Payload {
     /// The broadcaster’s user id.
     pub broadcaster_user_id: types::UserId,
-    /// The broadcaster’s user name.
-    pub broadcaster_user_name: types::UserName,
+    /// The broadcaster’s user login.
+    pub broadcaster_user_login: types::UserName,
+    /// The broadcaster’s user display name.
+    pub broadcaster_user_name: types::DisplayName,
 }
 
 #[test]
@@ -50,7 +52,8 @@ fn parse_payload() {
         },
         "event": {
             "broadcaster_user_id": "1337",
-            "broadcaster_user_name": "cool_user"
+            "broadcaster_user_login": "cool_user",
+            "broadcaster_user_name": "Cool_User"
         }
     }
     "#;

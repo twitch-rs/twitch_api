@@ -1,4 +1,4 @@
-use twitch_api2::TMIClient;
+use twitch_api2::TmiClient;
 use twitch_api2::{helix::streams::GetStreamsRequest, HelixClient};
 use twitch_oauth2::{AccessToken, UserToken};
 
@@ -20,7 +20,7 @@ async fn main() {
     .unwrap();
 
     let client = reqwest::Client::new();
-    let client_tmi = TMIClient::with_client(client.clone());
+    let client_tmi = TmiClient::with_client(client.clone());
     let client_helix = HelixClient::with_client(client);
 
     let streams: Vec<String> = args.collect();

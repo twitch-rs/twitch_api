@@ -142,6 +142,8 @@ pub enum Payload {
     UserUpdateV1(NotificationPayload<user::UserUpdateV1>),
     /// User Authorization Revoke V1 Event
     UserAuthorizationRevokeV1(NotificationPayload<user::UserAuthorizationRevokeV1>),
+    /// Channel Raid Beta Event
+    ChannelRaidBeta(NotificationPayload<channel::ChannelRaidBeta>),
 }
 
 impl Payload {
@@ -197,7 +199,7 @@ impl<'de> Deserialize<'de> for Payload {
         }
         #[derive(Deserialize)]
         #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
-        struct IResponse {
+        struct InternalPayloadResponse {
             #[serde(rename = "subscription")]
             s: IEventSubscripionInformation,
             #[serde(rename = "event", alias = "challenge")]
@@ -223,19 +225,19 @@ impl<'de> Deserialize<'de> for Payload {
         #[derive(Deserialize)]
         #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
         #[serde(untagged)]
-        enum IIResponse {
+        enum InternalResponse {
             VerificationRequest(VerificationRequest),
-            IResponse(IResponse),
+            InternalPayloadResponse(InternalPayloadResponse),
         }
 
-        let response = IIResponse::deserialize(deserializer).map_err(|e| {
+        let response = InternalResponse::deserialize(deserializer).map_err(|e| {
             serde::de::Error::custom(format!("could not deserialize response: {}", e))
         })?;
         match response {
-            IIResponse::VerificationRequest(verification) => {
+            InternalResponse::VerificationRequest(verification) => {
                 Ok(Payload::VerificationRequest(verification))
             }
-            IIResponse::IResponse(response) => Ok(match_event! { response;
+            InternalResponse::InternalPayloadResponse(response) => Ok(match_event! { response;
                 channel::ChannelUpdateV1;
                 channel::ChannelFollowV1;
                 channel::ChannelSubscribeV1;
@@ -247,6 +249,7 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelPointsCustomRewardRemoveV1;
                 channel::ChannelPointsCustomRewardRedemptionAddV1;
                 channel::ChannelPointsCustomRewardRedemptionUpdateV1;
+                channel::ChannelRaidBeta;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
                 channel::ChannelHypeTrainEndV1;
@@ -367,6 +370,9 @@ pub enum EventType {
     /// `channel.channel_points_custom_reward_redemption.update`: a redemption of a channel points custom reward has been updated for the specified channel.
     #[serde(rename = "channel.channel_points_custom_reward_redemption.update")]
     ChannelPointsCustomRewardRedemptionUpdate,
+    /// `channel.raid`: a broadcaster raids another broadcaster’s channel.
+    #[serde(rename = "channel.raid")]
+    ChannelRaid,
     /// `channel.hype_train.begin`: a hype train begins on the specified channel.
     #[serde(rename = "channel.hype_train.begin")]
     ChannelHypeTrainBegin,

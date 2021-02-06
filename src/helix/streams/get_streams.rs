@@ -96,7 +96,9 @@ pub struct Stream {
     /// ID of the user who is streaming.
     pub user_id: types::UserId,
     /// Display name corresponding to user_id.
-    pub user_name: types::UserName,
+    pub user_name: types::DisplayName,
+    /// Login of the user who is streaming.
+    pub user_login: types::UserName,
     /// Number of viewers watching the stream at the time of the query.
     pub viewer_count: usize,
 }
@@ -128,6 +130,7 @@ fn test_request() {
             "id": "26007494656",
             "user_id": "23161357",
             "user_name": "LIRIK",
+            "user_login": "lirik",
             "game_id": "417752",
             "type": "live",
             "title": "Hey Guys, It's Monday - Twitter: @Lirik",
@@ -143,6 +146,7 @@ fn test_request() {
             "id": "26007494656",
             "user_id": "23161357",
             "user_name": "LIRIK",
+            "user_login": "lirik",
             "game_id": "417752",
             "type": "live",
             "title": "Hey Guys, It's Monday - Twitter: @Lirik",

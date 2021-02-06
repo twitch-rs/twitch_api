@@ -28,8 +28,10 @@ pub struct UserAuthorizationRevokeV1Payload {
     pub client_id: String,
     /// The user id for the user who has revoked authorization for your client id.
     pub user_id: types::UserId,
+    /// The user login for the user who has revoked authorization for your client id. This is null if the user no longer exists.
+    pub user_login: Option<types::UserName>,
     /// The user name for the user who has revoked authorization for your client id. This is null if the user no longer exists.
-    pub user_name: Option<types::UserName>,
+    pub user_name: Option<types::DisplayName>,
 }
 
 #[test]

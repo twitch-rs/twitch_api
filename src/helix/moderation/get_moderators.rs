@@ -67,14 +67,12 @@ pub struct GetModeratorsRequest {
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Moderator {
-    /// User ID of moderator
-    ///
-    /// Twitch says: `User ID of a user who has been banned.` but this seems wrong.
+    /// User ID of a moderator in the channel.
     pub user_id: types::UserId,
-    /// Display name of moderator
-    ///
-    /// Twitch says: `Display name of a user who has been banned.` but this seems wrong.
+    /// Display name of a moderator in the channel.
     pub user_name: types::DisplayName,
+    /// Login of a moderator in the channel.
+    pub user_login: types::UserName,
 }
 
 impl helix::Request for GetModeratorsRequest {
@@ -104,10 +102,12 @@ fn test_request() {
     "data": [
         {
             "user_id": "424596340",
+            "user_login": "quotrok",
             "user_name": "quotrok"
         },
         {
             "user_id": "424596340",
+            "user_login": "quotrok",
             "user_name": "quotrok"
         }
     ],

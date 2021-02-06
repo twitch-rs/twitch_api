@@ -30,8 +30,10 @@ impl EventSubscription for ChannelPointsCustomRewardRedemptionAddV1 {
 pub struct ChannelPointsCustomRewardRedemptionAddV1Payload {
     /// The requested broadcaster ID.
     pub broadcaster_user_id: types::UserId,
-    /// The requested broadcaster name.
-    pub broadcaster_user_name: types::UserName,
+    /// The requested broadcaster login.
+    pub broadcaster_user_login: types::UserName,
+    /// The requested broadcaster display name.
+    pub broadcaster_user_name: types::DisplayName,
     /// The redemption identifier.
     pub id: types::RewardId,
     /// RFC3339 timestamp of when the reward was redeemed.
@@ -40,12 +42,14 @@ pub struct ChannelPointsCustomRewardRedemptionAddV1Payload {
     pub reward: Reward,
     /// Defaults to unfulfilled. Possible values are unknown, unfulfilled, fulfilled, and canceled.
     pub status: RedemptionStatus,
-    /// User ID of the user that redeemed the reward.
-    pub user_id: types::UserId,
     /// The user input provided. Empty string if not provided.
     pub user_input: String,
+    /// User ID of the user that redeemed the reward.
+    pub user_id: types::UserId,
+    /// Login of the user that redeemed the reward.
+    pub user_login: types::UserName,
     /// Display name of the user that redeemed the reward.
-    pub user_name: types::UserName,
+    pub user_name: types::DisplayName,
 }
 
 #[test]
@@ -68,9 +72,11 @@ fn parse_payload() {
         "event": {
             "id": "1234",
             "broadcaster_user_id": "1337",
-            "broadcaster_user_name": "cool_user",
+            "broadcaster_user_login": "cool_user",
+            "broadcaster_user_name": "Cool_User",
             "user_id": "9001",
-            "user_name": "cooler_user",
+            "user_login": "cooler_user",
+            "user_name": "Cooler_User",
             "user_input": "pogchamp",
             "status": "unfulfilled",
             "reward": {

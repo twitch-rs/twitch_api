@@ -62,6 +62,7 @@ fn test_topic() {
             "id": "0123456789",
             "user_id": "5678",
             "user_name": "wjdtkdqhs",
+            "user_login": "wjdtkdqhs",
             "game_id": "21779",
             "type": "live",
             "title": "Best Stream Ever",

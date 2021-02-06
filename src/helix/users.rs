@@ -22,16 +22,25 @@
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
+pub mod block_user;
 pub mod create_user_follows;
 pub mod delete_user_follows;
+pub mod get_user_block_list;
 pub mod get_users;
 pub mod get_users_follows;
+pub mod unblock_user;
 
+#[doc(inline)]
+pub use block_user::{BlockUser, BlockUserRequest};
 #[doc(inline)]
 pub use create_user_follows::{CreateUserFollows, CreateUserFollowsBody, CreateUserFollowsRequest};
 #[doc(inline)]
 pub use delete_user_follows::{DeleteUserFollow, DeleteUserFollowsRequest};
 #[doc(inline)]
+pub use get_user_block_list::{GetUserBlockListRequest, UserBlock};
+#[doc(inline)]
 pub use get_users::{GetUsersRequest, User};
 #[doc(inline)]
 pub use get_users_follows::{GetUsersFollowsRequest, UsersFollow};
+#[doc(inline)]
+pub use unblock_user::{UnblockUser, UnblockUserRequest};

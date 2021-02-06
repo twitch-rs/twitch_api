@@ -51,7 +51,7 @@
 //! | Feature |         |
 //! | -------: | :------- |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>twitch_oauth2</code></span> | Gives [scopes](twitch_oauth2::Scope) for endpoints and topics that are needed to call them. |
-//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>client</code></span> | Gives a [client abstraction](HttpClient) for endpoints. See for example [`TMIClient`] and [`HelixClient`] |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>client</code></span> | Gives a [client abstraction](HttpClient) for endpoints. See for example [`TmiClient`] and [`HelixClient`] |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>helix</code></span> | Enables [Helix](helix) endpoints |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>tmi</code></span> | Enables [TMI](tmi) endpoints |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>eventsub</code></span> | Enables deserializable structs for [EventSub](eventsub) |
@@ -89,7 +89,7 @@ pub mod eventsub;
 pub use crate::helix::HelixClient;
 #[cfg(all(feature = "tmi", feature = "client"))]
 #[doc(inline)]
-pub use crate::tmi::TMIClient;
+pub use crate::tmi::TmiClient;
 
 #[cfg(any(feature = "twitch_oauth2", all(feature = "helix", feature = "client")))]
 #[doc(no_inline)]
@@ -147,7 +147,7 @@ where C: HttpClient<'a> {
     pub helix: HelixClient<'a, C>,
     /// TMI endpoint. See [`tmi`]
     #[cfg(feature = "tmi")]
-    pub tmi: TMIClient<'a, C>,
+    pub tmi: TmiClient<'a, C>,
 }
 
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
@@ -158,7 +158,7 @@ impl<C: HttpClient<'static>> TwitchClient<'static, C> {
     where C: Clone + Default {
         let helix = HelixClient::new();
         TwitchClient {
-            tmi: TMIClient::with_client(helix.clone_client()),
+            tmi: TmiClient::with_client(helix.clone_client()),
             helix,
         }
     }
@@ -177,7 +177,7 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
         let helix = HelixClient::with_client(client);
         TwitchClient {
             #[cfg(feature = "tmi")]
-            tmi: TMIClient::with_client(helix.clone_client()),
+            tmi: TmiClient::with_client(helix.clone_client()),
             #[cfg(feature = "helix")]
             helix,
         }

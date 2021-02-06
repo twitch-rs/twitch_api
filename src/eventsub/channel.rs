@@ -10,6 +10,7 @@ pub mod channel_points_custom_reward_redemption;
 pub mod cheer;
 pub mod follow;
 pub mod hypetrain;
+pub mod raid;
 pub mod subscribe;
 pub mod unban;
 pub mod update;
@@ -46,6 +47,8 @@ pub use hypetrain::{ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload};
 pub use hypetrain::{ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload};
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload};
+#[doc(inline)]
+pub use raid::{ChannelRaidBeta, ChannelRaidBetaPayload};
 #[doc(inline)]
 pub use subscribe::{ChannelSubscribeV1, ChannelSubscribeV1Payload};
 #[doc(inline)]
