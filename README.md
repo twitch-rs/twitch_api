@@ -49,7 +49,7 @@ This crate aims to target
 * TMI
   * Implemented, see [implemented endpoints](#tmi)
 * [EventSub](https://dev.twitch.tv/docs/eventsub/eventsub-reference)
-  * Not implemented, see issue #55
+  * Implemented, see [eventsub Helix endpoints](#eventsub)
 * [Webhooks](https://dev.twitch.tv/docs/api/webhooks-reference)
   * Partially implemented, see [implemented webhooks](#webhooks)
 * [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
@@ -146,6 +146,15 @@ There are no current plans to support
 | 🔨 Redeem Code                          | `POST https://api.twitch.tv/helix/entitlements/code`   | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/redeem_code)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#redeem-code)                                                   |
 
 
+#### EventSub
+
+| Endpoint                               |                                                        |                                                                                                                                                                                                                |
+| :------------------------------------- | :----------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🔨 Create EventSub Subscription       | `POST https://api.twitch.tv/helix/eventsub/subscriptions` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/eventsub/create_eventsub_subscription) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription) |
+| 🔨 Delete EventSub Subscription       | `DELETE https://api.twitch.tv/helix/eventsub/subscriptions`   | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/eventsub/delete_eventsub_subscription) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription)                                           |
+| 🔨 Get EventSub Subscriptions         | `GET https://api.twitch.tv/helix/eventsub/subscriptions`   | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/eventsub/redeem_cget_eventsub_subscriptionsode) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions)                                                   |
+
+
 #### Games
 
 | Endpoint        |                                             |                                                                                                                                                                 |
@@ -214,7 +223,7 @@ There are no current plans to support
 
 | Endpoint                    |                                                          |                                                                                                                                                                                                   |
 | :-------------------------- | :------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 🔨 Get Webhook Subscriptions | `GET https://api.twitch.tv/helix/webhooks/subscriptions` | <!--[![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/webhooks/get_webhook_subscriptions)--> [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-webhook-subscriptions) |
+| ✔ Get Webhook Subscriptions | `GET https://api.twitch.tv/helix/webhooks/subscriptions` | [![docs-rs]](https://docs.rs/twitch_api2/*/twitch_api2/helix/webhooks/get_webhook_subscriptions) [![twitch-reference]](https://dev.twitch.tv/docs/api/reference#get-webhook-subscriptions) |
         
 #### Hypetrain
 

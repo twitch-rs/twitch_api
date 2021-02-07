@@ -7,7 +7,7 @@ use crate::eventsub::{EventSubscription, EventType, Status, Transport, Transport
 
 /// Query Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
-/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#create-eventsub-subscription)
+/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
 #[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug, Default)]
 #[non_exhaustive]
 pub struct CreateEventSubSubscriptionRequest<E: EventSubscription> {
@@ -26,9 +26,10 @@ impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<
 
 /// Body Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
-/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#create-eventsub-subscription)
+/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
 ///
 /// # Notes
+///
 /// This body is quite different from the official body. If you want the true representation in text, see [`helix::RequestPost::body`] on [`CreateEventSubSubscriptionRequest<E: EventSubscription>`](CreateEventSubSubscriptionRequest)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
@@ -53,7 +54,7 @@ impl<E: EventSubscription> CreateEventSubSubscriptionBody<E> {
 
 /// Return Values for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
-/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#create-eventsub-subscription)
+/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub struct CreateEventSubSubscription<E: EventSubscription> {
