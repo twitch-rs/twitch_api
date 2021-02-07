@@ -5,7 +5,7 @@ use crate::eventsub;
 
 /// Query Parameters for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
-/// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#get-eventsub-subscriptions)
+/// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions)
 #[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetEventSubSubscriptionsRequest {
@@ -32,7 +32,7 @@ impl helix::Request for GetEventSubSubscriptionsRequest {
 
 /// Return Values for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
-/// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#get-eventsub-subscriptions)
+/// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions)
 pub type EventSubSubscription = eventsub::EventSubSubscription;
 
 impl helix::RequestGet for GetEventSubSubscriptionsRequest {}

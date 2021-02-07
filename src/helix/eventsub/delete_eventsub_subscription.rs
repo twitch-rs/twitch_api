@@ -4,7 +4,7 @@ use super::*;
 
 /// Query Parameters for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
-/// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#get-eventsub-subscriptions)
+/// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription)
 #[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug, Default)]
 #[non_exhaustive]
 pub struct DeleteEventSubSubscriptionRequest {
@@ -23,7 +23,7 @@ impl helix::Request for DeleteEventSubSubscriptionRequest {
 
 /// Return Values for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
-/// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/eventsub/helix-endpoints#get-eventsub-subscriptions)
+/// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum DeleteEventSubSubscription {
