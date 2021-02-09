@@ -143,9 +143,9 @@ pub struct HypeTrainProgression {
 }
 
 /// Hype train leveled up
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct HypeTrainLevelUp {
     /// Server time epoch in milliseconds when hype train expires
     pub time_to_expire: i64,
