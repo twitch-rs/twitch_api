@@ -75,8 +75,8 @@ pub struct Reward {
     pub background_color: String,
     /// ID of channel where the redemption was triggered
     pub channel_id: types::UserId,
-    /// Cooldown will expire after this many seconds have passed from pubsub message
-    pub cooldown_expires_at: Option<u64>,
+    /// Cooldown will expire after this timestamp
+    pub cooldown_expires_at: Option<types::Timestamp>,
     /// Cost of reward.
     pub cost: u32,
     /// Default image of reward in rewards & challenges screen on client

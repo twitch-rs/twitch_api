@@ -531,6 +531,12 @@ pub enum Response {
         /// Data corresponding to [topic](Topic) message
         data: TopicData,
     },
+    /// Response from a ping
+    #[serde(rename = "PONG")]
+    Pong,
+    /// Request for the client to reconnect
+    #[serde(rename = "RECONNECT")]
+    Reconnect,
 }
 
 impl Response {
