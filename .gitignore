@@ -14,6 +14,7 @@ coverage_reports/
 /cargo-timing*.html
 **/.*
 !.github/
+!.cargo/
 !.vscode/
 !.vscode/settings.json
 !.cargo/
