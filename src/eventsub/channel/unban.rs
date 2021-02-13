@@ -37,6 +37,12 @@ pub struct ChannelUnbanV1Payload {
     pub user_login: types::UserName,
     /// The user display name for the user who was unbanned on the specified channel.
     pub user_name: types::DisplayName,
+    /// The user ID of the issuer of the unban.
+    pub moderator_user_id: types::UserId,
+    /// The user login of the issuer of the unban.
+    pub moderator_user_login: types::UserName,
+    /// The user name of the issuer of the unban.
+    pub moderator_user_name: types::DisplayName,
 }
 
 #[test]
@@ -62,7 +68,10 @@ fn parse_payload() {
             "user_name": "Cool_User",
             "broadcaster_user_id": "1337",
             "broadcaster_user_login": "cooler_user",
-            "broadcaster_user_name": "Cooler_User"
+            "broadcaster_user_name": "Cooler_User",
+            "moderator_user_id": "1339",
+            "moderator_user_login": "mod_user",
+            "moderator_user_name": "Mod_User"
         }
     }
     "#;

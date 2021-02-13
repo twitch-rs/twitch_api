@@ -25,18 +25,30 @@ impl EventSubscription for ChannelBanV1 {
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelBanV1Payload {
-    /// The requested broadcaster ID.
-    pub broadcaster_user_id: types::UserId,
-    /// The requested broadcaster login.
-    pub broadcaster_user_login: types::UserName,
-    /// The requested broadcaster display name.
-    pub broadcaster_user_name: types::DisplayName,
     /// The user ID for the user who was banned on the specified channel.
     pub user_id: types::UserId,
     /// The user login for the user who was banned on the specified channel.
     pub user_login: types::UserName,
     /// The requested broadcaster display name.
     pub user_name: types::DisplayName,
+    /// The requested broadcaster ID.
+    pub broadcaster_user_id: types::UserId,
+    /// The requested broadcaster login.
+    pub broadcaster_user_login: types::UserName,
+    /// The requested broadcaster display name.
+    pub broadcaster_user_name: types::DisplayName,
+    /// The user ID of the issuer of the ban.
+    pub moderator_user_id: types::UserId,
+    /// The user login of the issuer of the ban.
+    pub moderator_user_login: types::UserName,
+    /// The user name of the issuer of the ban.
+    pub moderator_user_name: types::DisplayName,
+    /// The reason behind the ban.
+    pub reason: String,
+    /// Will be null if permanent ban. If it is a timeout, this field shows when the timeout will end.
+    pub ends_at: Option<types::Timestamp>,
+    /// Indicates whether the ban is permanent (true) or a timeout (false). If true, ends_at will be null.
+    pub is_permanent: bool,
 }
 
 #[test]
@@ -62,7 +74,13 @@ fn parse_payload() {
             "user_name": "Cool_User",
             "broadcaster_user_id": "1337",
             "broadcaster_user_login": "cooler_user",
-            "broadcaster_user_name": "Cooler_User"
+            "broadcaster_user_name": "Cooler_User",
+            "moderator_user_id": "1339",
+            "moderator_user_login": "mod_user",
+            "moderator_user_name": "Mod_User",
+            "reason": "Offensive language",
+            "ends_at": "2020-07-15T18:16:11.17106713Z",
+            "is_permanent": false
         }
     }
     "#;
