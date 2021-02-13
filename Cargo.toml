@@ -157,3 +157,7 @@ required-features = ["reqwest_client", "helix"]
 [package.metadata.docs.rs]
 features = ["all", "unsupported"]
 rustc-args = ["--cfg", "nightly"]
+
+[workspace]
+members = [".","xtask"]
+default-members = ["."]
