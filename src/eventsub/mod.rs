@@ -153,8 +153,8 @@ impl Payload {
     }
 
     // FIXME: Should not throwaway headers etc
-    /// Parse http response as a [Payload].
-    pub fn parse_response(source: &http::Response<Vec<u8>>) -> Result<Payload, PayloadParseError> {
+    /// Parse http post request as a [Payload].
+    pub fn parse_http(source: &http::Request<Vec<u8>>) -> Result<Payload, PayloadParseError> {
         Payload::parse(std::str::from_utf8(source.body())?)
     }
 }
