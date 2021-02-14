@@ -92,8 +92,7 @@ pub struct VerificationRequest {
 /// Subscription payload. Received on events. Enumerates all possible [`NotificationPayload`s](NotificationPayload)
 ///
 /// Use [`Payload::parse`] to construct
-#[derive(PartialEq, Debug, Serialize, Deserialize)] // FIXME: Clone?
-#[serde(remote = "Self")]
+#[derive(PartialEq, Debug, Serialize)] // FIXME: Clone?
 #[allow(clippy::large_enum_variant)]
 pub enum Payload {
     /// Webhook Callback Verification
