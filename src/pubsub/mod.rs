@@ -267,8 +267,7 @@ impl TwitchResponse {
 /// Message response from twitch PubSub.
 ///
 /// See [TwitchResponse]
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[serde(remote = "Self")]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub enum TopicData {
     /// Response from the [channel_bits::ChannelBitsEventsV2] topic.
     ChannelBitsEventsV2 {
