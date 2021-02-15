@@ -183,3 +183,16 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
         }
     }
 }
+
+#[cfg(test)]
+pub mod tests {
+    #[track_caller]
+    pub fn roundtrip<T: serde::de::DeserializeOwned + serde::Serialize>(val: &T) {
+        serde_json::from_slice::<T>(&serde_json::to_vec(val).expect("could not make into json"))
+            .expect("could not convert back from json");
+        serde_cbor::from_slice::<T>(
+            &serde_cbor::to_vec(val).expect("could not make into cbor bytes"),
+        )
+        .expect("could not convert back from cbor");
+    }
+}
