@@ -184,6 +184,15 @@ impl<'de> Deserialize<'de> for Payload {
                 }
             }
         }
+        macro_rules! corrected {
+            ($($module:ident::$event:ident);* $(;)?) => {
+                #[derive(Deserialize)]
+                #[serde(remote = "Payload")]
+                pub enum Corrected {
+                    $($event(NotificationPayload<$module::$event>),)*
+                }
+        }
+    }
 
         #[derive(Deserialize, Clone)]
         #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
@@ -225,14 +234,39 @@ impl<'de> Deserialize<'de> for Payload {
         #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
         #[serde(untagged)]
         enum InternalResponse {
+            #[serde(with = "Corrected")]
+            Valid(Payload),
             VerificationRequest(VerificationRequest),
             InternalPayloadResponse(InternalPayloadResponse),
         }
+
+        corrected!(
+            channel::ChannelUpdateV1;
+                channel::ChannelFollowV1;
+                channel::ChannelSubscribeV1;
+                channel::ChannelCheerV1;
+                channel::ChannelBanV1;
+                channel::ChannelUnbanV1;
+                channel::ChannelPointsCustomRewardAddV1;
+                channel::ChannelPointsCustomRewardUpdateV1;
+                channel::ChannelPointsCustomRewardRemoveV1;
+                channel::ChannelPointsCustomRewardRedemptionAddV1;
+                channel::ChannelPointsCustomRewardRedemptionUpdateV1;
+                channel::ChannelRaidBeta;
+                channel::ChannelHypeTrainBeginV1;
+                channel::ChannelHypeTrainProgressV1;
+                channel::ChannelHypeTrainEndV1;
+                stream::StreamOnlineV1;
+                stream::StreamOfflineV1;
+                user::UserUpdateV1;
+                user::UserAuthorizationRevokeV1;
+        );
 
         let response = InternalResponse::deserialize(deserializer).map_err(|e| {
             serde::de::Error::custom(format!("could not deserialize response: {}", e))
         })?;
         match response {
+            InternalResponse::Valid(p) => Ok(p),
             InternalResponse::VerificationRequest(verification) => {
                 Ok(Payload::VerificationRequest(verification))
             }
