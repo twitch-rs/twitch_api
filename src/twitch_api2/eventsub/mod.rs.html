@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/855940ab344f828983d25fb11ea3dd777321dc67">855940a</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/8835442971d0f4c2059ab2853f3ae8e712cc6e3c">8835442</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -491,6 +491,40 @@
 <span id="486">486</span>
 <span id="487">487</span>
 <span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Holds serializable EventSub stuff</span>
 <span class="doccomment">//!</span>
@@ -678,6 +712,15 @@
                 }
             }
         }
+        <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">corrected</span> {
+            ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">module</span>:<span class="ident">ident</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">event</span>:<span class="ident">ident</span>);<span class="op">*</span> $(;)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
+                <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">remote</span> <span class="op">=</span> <span class="string">&quot;Payload&quot;</span>)]</span>
+                <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Corrected</span> {
+                    $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">event</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">module</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">event</span><span class="op">&gt;</span>),)<span class="op">*</span>
+                }
+        }
+    }
 
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
         <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
@@ -719,14 +762,39 @@
         <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">untagged</span>)]</span>
         <span class="kw">enum</span> <span class="ident">InternalResponse</span> {
+            <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;Corrected&quot;</span>)]</span>
+            <span class="ident">Valid</span>(<span class="ident">Payload</span>),
             <span class="ident">VerificationRequest</span>(<span class="ident">VerificationRequest</span>),
             <span class="ident">InternalPayloadResponse</span>(<span class="ident">InternalPayloadResponse</span>),
         }
+
+        <span class="macro">corrected</span><span class="macro">!</span>(
+            <span class="ident">channel</span>::<span class="ident">ChannelUpdateV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelFollowV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelSubscribeV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelCheerV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelBanV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelUnbanV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelPointsCustomRewardAddV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelPointsCustomRewardUpdateV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelPointsCustomRewardRemoveV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelPointsCustomRewardRedemptionAddV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelPointsCustomRewardRedemptionUpdateV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelRaidBeta</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelHypeTrainBeginV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelHypeTrainProgressV1</span>;
+                <span class="ident">channel</span>::<span class="ident">ChannelHypeTrainEndV1</span>;
+                <span class="ident">stream</span>::<span class="ident">StreamOnlineV1</span>;
+                <span class="ident">stream</span>::<span class="ident">StreamOfflineV1</span>;
+                <span class="ident">user</span>::<span class="ident">UserUpdateV1</span>;
+                <span class="ident">user</span>::<span class="ident">UserAuthorizationRevokeV1</span>;
+        );
 
         <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">InternalResponse</span>::<span class="ident">deserialize</span>(<span class="ident">deserializer</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
             <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">custom</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;could not deserialize response: {}&quot;</span>, <span class="ident">e</span>))
         })<span class="question-mark">?</span>;
         <span class="kw">match</span> <span class="ident">response</span> {
+            <span class="ident">InternalResponse</span>::<span class="ident">Valid</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">p</span>),
             <span class="ident">InternalResponse</span>::<span class="ident">VerificationRequest</span>(<span class="ident">verification</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="prelude-val">Ok</span>(<span class="ident">Payload</span>::<span class="ident">VerificationRequest</span>(<span class="ident">verification</span>))
             }
