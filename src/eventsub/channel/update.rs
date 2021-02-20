@@ -27,8 +27,10 @@ impl EventSubscription for ChannelUpdateV1 {
 pub struct ChannelUpdateV1Payload {
     /// The broadcaster’s user ID.
     pub broadcaster_user_id: types::UserId,
-    /// The broadcaster’s user name.
-    pub broadcaster_user_name: types::UserName,
+    /// The requested broadcaster login.
+    pub broadcaster_user_login: types::UserName,
+    /// The broadcaster’s user display name.
+    pub broadcaster_user_name: types::DisplayName,
     /// The channel’s stream title.
     pub title: String,
     /// The channel’s broadcast language.
@@ -50,6 +52,7 @@ fn parse_payload() {
             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
             "type": "channel.update",
             "version": "1",
+            "status": "enabled",
             "condition": {
                "broadcaster_user_id": "1337"
             },
@@ -61,7 +64,8 @@ fn parse_payload() {
         },
         "event": {
             "broadcaster_user_id": "1337",
-            "broadcaster_user_name": "cool_user",
+            "broadcaster_user_login": "cool_user",
+            "broadcaster_user_name": "Cool_User",
             "title": "Best Stream Ever",
             "language": "en",
             "category_id": "21779",

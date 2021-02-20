@@ -42,6 +42,7 @@ fn parse_payload() {
             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
             "type": "user.authorization.revoke",
             "version": "1",
+            "status": "enabled",
             "condition": {
                 "client_id": "crq72vsaoijkc83xx42hz6i37"
             },
@@ -54,7 +55,8 @@ fn parse_payload() {
         "event": {
             "client_id": "crq72vsaoijkc83xx42hz6i37",
             "user_id": "1337",
-            "user_name": "cool_user"
+            "user_login": "cool_user",
+            "user_name": "Cool_User"
         }
     }
     "#;
