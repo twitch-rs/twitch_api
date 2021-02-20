@@ -155,6 +155,66 @@ impl Payload {
     pub fn parse_http(request: &http::Request<Vec<u8>>) -> Result<Payload, PayloadParseError> {
         Payload::parse(std::str::from_utf8(request.body())?)
     }
+
+    /// Verify that this payload is authentic using `HMAC-SHA256`.
+    ///
+    /// HMAC key is `secret`, HMAC message is a concatenation of `Twitch-Eventsub-Message-Id` header, `Twitch-Eventsub-Message-Timestamp` header and the request body.
+    /// HMAC signature is `Twitch-Eventsub-Message-Signature` header
+    #[cfg(feature = "hmac")]
+    #[cfg_attr(nightly, doc(cfg(feature = "hmac")))]
+    pub fn verify_payload(request: &http::Request<Vec<u8>>, secret: &[u8]) -> bool {
+        use crypto_hmac::{Hmac, Mac, NewMac};
+
+        fn message_and_signature(request: &http::Request<Vec<u8>>) -> Option<(Vec<u8>, Vec<u8>)> {
+            static SHA_HEADER: &str = "sha256=";
+
+            let id = request
+                .headers()
+                .get("Twitch-Eventsub-Message-Id")?
+                .as_bytes();
+            let timestamp = request
+                .headers()
+                .get("Twitch-Eventsub-Message-Timestamp")?
+                .as_bytes();
+            let body = request.body();
+
+            let mut message = Vec::with_capacity(id.len() + timestamp.len() + body.len());
+            message.extend_from_slice(&id);
+            message.extend_from_slice(&timestamp);
+            message.extend_from_slice(&body);
+
+            let signature = request
+                .headers()
+                .get("Twitch-Eventsub-Message-Signature")?
+                .to_str()
+                .ok()?;
+            if !signature.starts_with(&SHA_HEADER) {
+                return None;
+            }
+            let signature = signature.split_at(SHA_HEADER.len()).1;
+            if signature.len() % 2 == 0 {
+                // Convert signature to [u8] from hex digits
+                // Hex decode inspired by https://stackoverflow.com/a/52992629
+                let signature = ((0..signature.len())
+                    .step_by(2)
+                    .map(|i| u8::from_str_radix(&signature[i..i + 2], 16))
+                    .collect::<Result<Vec<u8>, _>>())
+                .ok()?;
+
+                Some((message, signature))
+            } else {
+                None
+            }
+        }
+
+        if let Some((message, signature)) = message_and_signature(request) {
+            let mut mac = Hmac::<sha2::Sha256>::new_varkey(secret).expect("");
+            mac.update(&message);
+            mac.verify(&signature).is_ok()
+        } else {
+            false
+        }
+    }
 }
 
 /// Errors that can happen when parsing payload
@@ -517,5 +577,37 @@ fn test_verification_response() {
 
     let val = dbg!(crate::eventsub::Payload::parse(&body).unwrap());
     crate::tests::roundtrip(&val)
-    dbg!(crate::eventsub::Payload::parse(&body).unwrap());
+}
+
+#[test]
+fn verify_request() {
+    use http::header::{HeaderMap, HeaderName, HeaderValue};
+
+    let secret = b"secretabcd";
+    #[rustfmt::skip]
+    let headers: HeaderMap = vec![
+        ("Content-Length", "458"),
+        ("Content-Type", "application/json"),
+        ("Twitch-Eventsub-Message-Id", "ae2ff348-e102-16be-a3eb-6830c1bf38d2"),
+        ("Twitch-Eventsub-Message-Retry", "0"),
+        ("Twitch-Eventsub-Message-Signature", "sha256=d10f5bd9474b7ac7bd7105eb79c2d52768b4d0cd2a135982c3bf5a1d59a78823"),
+        ("Twitch-Eventsub-Message-Timestamp", "2021-02-19T23:47:00.8091512Z"),
+        ("Twitch-Eventsub-Message-Type", "notification"),
+        ("Twitch-Eventsub-Subscription-Type", "channel.follow"),
+        ("Twitch-Eventsub-Subscription-Version", "1"),
+    ].into_iter()
+        .map(|(h, v)| {
+            (
+                h.parse::<HeaderName>().unwrap(),
+                v.parse::<HeaderValue>().unwrap(),
+            )
+        })
+        .collect();
+
+    let body = r#"{"subscription":{"id":"ae2ff348-e102-16be-a3eb-6830c1bf38d2","status":"enabled","type":"channel.follow","version":"1","condition":{"broadcaster_user_id":"44429626"},"transport":{"method":"webhook","callback":"null"},"created_at":"2021-02-19T23:47:00.7621315Z"},"event":{"user_id":"28408015","user_login":"testFromUser","user_name":"testFromUser","broadcaster_user_id":"44429626","broadcaster_user_login":"44429626","broadcaster_user_name":"testBroadcaster"}}"#;
+    let mut request = http::Request::builder();
+    let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
+    let request = request.body(body.as_bytes().to_vec()).unwrap();
+    dbg!(&body);
+    assert!(crate::eventsub::Payload::verify_payload(&request, secret));
 }
