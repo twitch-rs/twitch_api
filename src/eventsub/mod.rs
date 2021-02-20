@@ -15,6 +15,7 @@
 //!     "subscription": {
 //!         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
 //!         "type": "user.authorization.revoke",
+//!         "status": "enabled",
 //!         "version": "1",
 //!         "condition": {
 //!             "client_id": "crq72vsaoijkc83xx42hz6i37"
