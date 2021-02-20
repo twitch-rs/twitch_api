@@ -44,6 +44,31 @@
 //! # }
 //! ```
 //!
+//! There is also a convenience function for accesssing channel information with a specified login name
+//!
+//! ```rust,no_run
+//! # use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
+//! # use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::TokenError};
+//!
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+//! # let surf_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests
+//! # let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
+//! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret".to_string());
+//! # let token =
+//! #   match AppAccessToken::get_app_access_token(surf_http_client, client_id, client_secret, Scope::all()).await {
+//! #       Ok(t) => t,
+//! #       Err(TokenError::Request(e)) => panic!("got error: {:?}", e),
+//! #       Err(e) => panic!(e),
+//! #   };
+//! let client = TwitchClient::new();
+//! # let _: &TwitchClient<twitch_api2::DummyHttpClient> = &client;
+//!
+//! println!("{:?}", &client.helix.get_channel_from_login("twitch".to_string(), &token).await?.unwrap().title);
+//! # Ok(())
+//! # }
+//! ```
+//!
 //! # Features
 //!
 //! This crate provides almost no functionality by default, only exposing [`types`]. To enable more features, refer to below table.

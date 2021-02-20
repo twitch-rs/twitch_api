@@ -31,6 +31,9 @@ use serde::Deserialize;
 use std::{convert::TryInto, str::FromStr};
 #[cfg(feature = "twitch_oauth2")]
 use twitch_oauth2::TwitchToken;
+#[cfg(all(feature = "client"))]
+#[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "helix"))))]
+pub mod client_ext;
 
 pub mod bits;
 pub mod channels;
@@ -74,6 +77,23 @@ pub use twitch_oauth2::Scope;
 /// ```
 ///
 /// See [`HttpClient`][crate::HttpClient] for implemented http clients, you can also define your own if needed.
+///
+/// # Examples
+///
+/// Get a [user](users::User) from their login name.
+///
+/// ```rust,no_run
+/// # #[tokio::main]
+/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+/// # pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+/// use twitch_api2::helix::{HelixClient, users::User};
+/// let helix: HelixClient<'static, reqwest::Client> = HelixClient::default();
+/// let user: Option<User> = helix
+///     .get_user_from_login("justintv".to_string(), &token).await.unwrap();
+/// # Ok(()) }
+/// ```
 #[cfg(all(feature = "client"))]
 #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "helix"))))]
 #[derive(Clone)]
@@ -657,6 +677,15 @@ where
     pub pagination: Option<Cursor>,
     /// The request that was sent, used for [pagination](Paginated).
     pub request: Option<R>,
+}
+
+impl<R, D, T> Response<R, D>
+where
+    R: Request<Response = D>,
+    D: IntoIterator<Item = T> + PartialEq + serde::de::DeserializeOwned,
+{
+    /// Get first result of this response.
+    pub fn first(self) -> Option<T> { self.data.into_iter().next() }
 }
 
 #[cfg(feature = "client")]
