@@ -48,6 +48,7 @@ fn parse_payload() {
             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
             "type": "stream.online",
             "version": "1",
+            "status": "enabled",
             "condition": {
                 "broadcaster_user_id": "1337"
             },

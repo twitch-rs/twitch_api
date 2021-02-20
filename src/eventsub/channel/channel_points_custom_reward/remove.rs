@@ -31,7 +31,9 @@ pub struct ChannelPointsCustomRewardRemoveV1Payload {
     pub background_color: String,
     /// The requested broadcaster ID.
     pub broadcaster_user_id: types::UserId,
-    /// The requested broadcaster name.
+    /// The requested broadcaster login.
+    pub broadcaster_user_login: types::UserName,
+    /// The requested broadcaster display name.
     pub broadcaster_user_name: types::UserName,
     /// Timestamp of the cooldown expiration. null if the reward isn’t on cooldown.
     pub cooldown_expires_at: Option<types::Timestamp>,
@@ -76,6 +78,7 @@ fn parse_payload() {
             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
             "type": "channel.channel_points_custom_reward.remove",
             "version": "1",
+            "status": "enabled",
             "condition": {
                 "broadcaster_user_id": "1337",
                 "reward_id": "12345"
@@ -89,7 +92,8 @@ fn parse_payload() {
         "event": {
             "id": "9001",
             "broadcaster_user_id": "1337",
-            "broadcaster_user_name": "cool_user",
+            "broadcaster_user_login": "cool_user",
+            "broadcaster_user_name": "Cool_User",
             "is_enabled": true,
             "is_paused": false,
             "is_in_stock": true,

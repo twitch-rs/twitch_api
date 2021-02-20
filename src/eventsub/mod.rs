@@ -15,6 +15,7 @@
 //!     "subscription": {
 //!         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
 //!         "type": "user.authorization.revoke",
+//!         "status": "enabled",
 //!         "version": "1",
 //!         "condition": {
 //!             "client_id": "crq72vsaoijkc83xx42hz6i37"
@@ -52,9 +53,9 @@ pub mod stream;
 pub mod user;
 
 /// An EventSub subscription.
-pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq {
+pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq + Clone {
     /// Payload for given subscription
-    type Payload: PartialEq + std::fmt::Debug + DeserializeOwned + Serialize;
+    type Payload: PartialEq + std::fmt::Debug + DeserializeOwned + Serialize + Clone;
 
     /// Scopes needed by this subscription
     #[cfg(feature = "twitch_oauth2")]
@@ -92,7 +93,7 @@ pub struct VerificationRequest {
 /// Subscription payload. Received on events. Enumerates all possible [`NotificationPayload`s](NotificationPayload)
 ///
 /// Use [`Payload::parse`] to construct
-#[derive(PartialEq, Debug, Serialize)] // FIXME: Clone?
+#[derive(PartialEq, Debug, Serialize, Clone)]
 #[allow(clippy::large_enum_variant)]
 pub enum Payload {
     /// Webhook Callback Verification
@@ -151,10 +152,69 @@ impl Payload {
         serde_json::from_str(source).map_err(Into::into)
     }
 
-    // FIXME: Should not throwaway headers etc
     /// Parse http post request as a [Payload].
-    pub fn parse_http(source: &http::Request<Vec<u8>>) -> Result<Payload, PayloadParseError> {
-        Payload::parse(std::str::from_utf8(source.body())?)
+    pub fn parse_http(request: &http::Request<Vec<u8>>) -> Result<Payload, PayloadParseError> {
+        Payload::parse(std::str::from_utf8(request.body())?)
+    }
+
+    /// Verify that this payload is authentic using `HMAC-SHA256`.
+    ///
+    /// HMAC key is `secret`, HMAC message is a concatenation of `Twitch-Eventsub-Message-Id` header, `Twitch-Eventsub-Message-Timestamp` header and the request body.
+    /// HMAC signature is `Twitch-Eventsub-Message-Signature` header
+    #[cfg(feature = "hmac")]
+    #[cfg_attr(nightly, doc(cfg(feature = "hmac")))]
+    pub fn verify_payload(request: &http::Request<Vec<u8>>, secret: &[u8]) -> bool {
+        use crypto_hmac::{Hmac, Mac, NewMac};
+
+        fn message_and_signature(request: &http::Request<Vec<u8>>) -> Option<(Vec<u8>, Vec<u8>)> {
+            static SHA_HEADER: &str = "sha256=";
+
+            let id = request
+                .headers()
+                .get("Twitch-Eventsub-Message-Id")?
+                .as_bytes();
+            let timestamp = request
+                .headers()
+                .get("Twitch-Eventsub-Message-Timestamp")?
+                .as_bytes();
+            let body = request.body();
+
+            let mut message = Vec::with_capacity(id.len() + timestamp.len() + body.len());
+            message.extend_from_slice(&id);
+            message.extend_from_slice(&timestamp);
+            message.extend_from_slice(&body);
+
+            let signature = request
+                .headers()
+                .get("Twitch-Eventsub-Message-Signature")?
+                .to_str()
+                .ok()?;
+            if !signature.starts_with(&SHA_HEADER) {
+                return None;
+            }
+            let signature = signature.split_at(SHA_HEADER.len()).1;
+            if signature.len() % 2 == 0 {
+                // Convert signature to [u8] from hex digits
+                // Hex decode inspired by https://stackoverflow.com/a/52992629
+                let signature = ((0..signature.len())
+                    .step_by(2)
+                    .map(|i| u8::from_str_radix(&signature[i..i + 2], 16))
+                    .collect::<Result<Vec<u8>, _>>())
+                .ok()?;
+
+                Some((message, signature))
+            } else {
+                None
+            }
+        }
+
+        if let Some((message, signature)) = message_and_signature(request) {
+            let mut mac = Hmac::<sha2::Sha256>::new_varkey(secret).expect("");
+            mac.update(&message);
+            mac.verify(&signature).is_ok()
+        } else {
+            false
+        }
     }
 }
 
@@ -170,26 +230,38 @@ pub enum PayloadParseError {
 impl<'de> Deserialize<'de> for Payload {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         use std::convert::TryInto;
+
+        /// Match on all defined eventsub types.
+        ///
+        /// If this is not done, we'd get a much worse error message.
         macro_rules! match_event {
-            ($response:expr; $($module:ident::$event:ident);* $(;)?) => {
+            ($response:expr; $($module:ident::$event:ident);* $(;)?) => {{
+                let sub: IEventSubscripionInformation = serde_json::from_value($response.s).map_err(serde::de::Error::custom)?;
                 #[deny(unreachable_patterns)]
-                match (&*$response.s.version, &$response.s.type_) {
+                match (&*sub.version, &sub.type_) {
                     $(  (<$module::$event as EventSubscription>::VERSION, &<$module::$event as EventSubscription>::EVENT_TYPE) => {
                         Payload::$event(NotificationPayload {
-                            subscription: $response.s.try_into().map_err(serde::de::Error::custom)?,
+                            subscription: sub.try_into().map_err(serde::de::Error::custom)?,
                             event: serde_json::from_value($response.e).map_err(serde::de::Error::custom)?,
                         })
                     }  )*
                     (v, e) => return Err(serde::de::Error::custom(format!("could not find a match for version `{}` on event type `{}`", v, e)))
                 }
-            }
+            }}
         }
+        /// macro to deserialize a "correct" payload. Used for roundtrip, eg. serializing a Payload and then deserializing it again.
+        ///
+        /// Without this, it would fail if the serializer did not undo what this deserializer does.
+        ///
+        /// Instead, we convert the response to our format, and then assume the input for deserializing is either from twitch or from this crate.
         macro_rules! corrected {
             ($($module:ident::$event:ident);* $(;)?) => {
+                // This struct simulates a unmodified payload deserialize implementation
                 #[derive(Deserialize)]
                 #[serde(remote = "Payload")]
                 pub enum Corrected {
                     $($event(NotificationPayload<$module::$event>),)*
+                    VerificationRequest(VerificationRequest)
                 }
         }
     }
@@ -199,18 +271,21 @@ impl<'de> Deserialize<'de> for Payload {
         struct IEventSubscripionInformation {
             condition: serde_json::Value,
             created_at: types::Timestamp,
+            status: Status,
             id: String,
             transport: TransportResponse,
             #[serde(rename = "type")]
             type_: EventType,
             version: String,
         }
+
         #[derive(Deserialize)]
         #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
         struct InternalPayloadResponse {
+            /// This will always be converted to a [`EventSubscriptionInformation`], but is a generic Value to allow for better error messages on missing fields
             #[serde(rename = "subscription")]
-            s: IEventSubscripionInformation,
-            #[serde(rename = "event", alias = "challenge")]
+            s: serde_json::Value,
+            #[serde(rename = "event")]
             e: serde_json::Value,
         }
 
@@ -226,6 +301,7 @@ impl<'de> Deserialize<'de> for Payload {
                     id: info.id,
                     condition: serde_json::from_value(info.condition)?,
                     created_at: info.created_at,
+                    status: info.status,
                     transport: info.transport,
                 })
             }
@@ -296,10 +372,10 @@ impl<'de> Deserialize<'de> for Payload {
 }
 
 /// Notification received
-#[derive(Debug, PartialEq, Serialize, Deserialize)] // FIXME: Clone ?
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct NotificationPayload<E: EventSubscription> {
+pub struct NotificationPayload<E: EventSubscription + Clone> {
     /// Subscription information.
     #[serde(bound = "E: EventSubscription")]
     pub subscription: EventSubscriptionInformation<E>,
@@ -315,6 +391,8 @@ pub struct NotificationPayload<E: EventSubscription> {
 pub struct EventSubscriptionInformation<E: EventSubscription> {
     /// Your client ID.
     pub id: String,
+    /// Status of EventSub subscription
+    pub status: Status,
     /// Subscription-specific parameters.
     #[serde(bound = "E: EventSubscription")]
     pub condition: E,
@@ -453,6 +531,8 @@ pub enum Status {
 }
 
 /// General information about an EventSub subscription.
+///
+/// See also [`EventSubscriptionInformation`]
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 #[cfg(feature = "eventsub")]
@@ -478,29 +558,7 @@ pub struct EventSubSubscription {
 
 #[test]
 fn test_verification_response() {
-    use http::header::{HeaderMap, HeaderName, HeaderValue};
-
-    #[rustfmt::skip]
-    let _headers: HeaderMap = vec![
-        ("Twitch-Eventsub-Message-Id","e76c6bd4-55c9-4987-8304-da1588d8988b"),
-        ("Twitch-Eventsub-Message-Retry", "0"),
-        ("Twitch-Eventsub-Message-Type", "webhook_callback_verification"),
-        ("Twitch-Eventsub-Message-Signature","sha256=f56bf6ce06a1adf46fa27831d7d15d"),
-        ("Twitch-Eventsub-Message-Timestamp","2019-11-16T10:11:12.123Z"),
-        ("Twitch-Eventsub-Subscription-Type", "channel.follow"),
-        ("Twitch-Eventsub-Subscription-Version", "1"),
-
-    ].into_iter()
-        .map(|(h, v)| {
-            (
-                h.parse::<HeaderName>().unwrap(),
-                v.parse::<HeaderValue>().unwrap(),
-            )
-        })
-        .collect();
-
-    let body = r#"
-    {
+    let body = r#"{
         "challenge": "pogchamp-kappa-360noscope-vohiyo",
         "subscription": {
             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
@@ -518,5 +576,39 @@ fn test_verification_response() {
         }
     }"#;
 
-    dbg!(crate::eventsub::Payload::parse(&body).unwrap());
+    let val = dbg!(crate::eventsub::Payload::parse(&body).unwrap());
+    crate::tests::roundtrip(&val)
+}
+
+#[test]
+fn verify_request() {
+    use http::header::{HeaderMap, HeaderName, HeaderValue};
+
+    let secret = b"secretabcd";
+    #[rustfmt::skip]
+    let headers: HeaderMap = vec![
+        ("Content-Length", "458"),
+        ("Content-Type", "application/json"),
+        ("Twitch-Eventsub-Message-Id", "ae2ff348-e102-16be-a3eb-6830c1bf38d2"),
+        ("Twitch-Eventsub-Message-Retry", "0"),
+        ("Twitch-Eventsub-Message-Signature", "sha256=d10f5bd9474b7ac7bd7105eb79c2d52768b4d0cd2a135982c3bf5a1d59a78823"),
+        ("Twitch-Eventsub-Message-Timestamp", "2021-02-19T23:47:00.8091512Z"),
+        ("Twitch-Eventsub-Message-Type", "notification"),
+        ("Twitch-Eventsub-Subscription-Type", "channel.follow"),
+        ("Twitch-Eventsub-Subscription-Version", "1"),
+    ].into_iter()
+        .map(|(h, v)| {
+            (
+                h.parse::<HeaderName>().unwrap(),
+                v.parse::<HeaderValue>().unwrap(),
+            )
+        })
+        .collect();
+
+    let body = r#"{"subscription":{"id":"ae2ff348-e102-16be-a3eb-6830c1bf38d2","status":"enabled","type":"channel.follow","version":"1","condition":{"broadcaster_user_id":"44429626"},"transport":{"method":"webhook","callback":"null"},"created_at":"2021-02-19T23:47:00.7621315Z"},"event":{"user_id":"28408015","user_login":"testFromUser","user_name":"testFromUser","broadcaster_user_id":"44429626","broadcaster_user_login":"44429626","broadcaster_user_name":"testBroadcaster"}}"#;
+    let mut request = http::Request::builder();
+    let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
+    let request = request.body(body.as_bytes().to_vec()).unwrap();
+    dbg!(&body);
+    assert!(crate::eventsub::Payload::verify_payload(&request, secret));
 }

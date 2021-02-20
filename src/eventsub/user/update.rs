@@ -41,28 +41,29 @@ pub struct UserUpdateV1Payload {
 #[test]
 fn parse_payload() {
     let payload = r#"
-{
-    "subscription": {
-        "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
-        "type": "user.update",
-        "version": "1",
-        "condition": {
-            "user_id": "1337"
+    {
+        "subscription": {
+            "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+            "type": "user.update",
+            "version": "1",
+            "status": "enabled",
+            "condition": {
+               "user_id": "1337"
+            },
+             "transport": {
+                "method": "webhook",
+                "callback": "https://example.com/webhooks/callback"
+            },
+            "created_at": "2019-11-16T10:11:12.123Z"
         },
-            "transport": {
-            "method": "webhook",
-            "callback": "https://example.com/webhooks/callback"
-        },
-        "created_at": "2019-11-16T10:11:12.123Z"
-    },
-    "event": {
-        "user_id": "1337",
-        "user_login": "cool_user",
-        "user_name": "Cool_User",
-        "email": "user@email.com",
-        "description": "cool description"
+        "event": {
+            "user_id": "1337",
+            "user_login": "cool_user",
+            "user_name": "Cool_User",
+            "email": "user@email.com",
+            "description": "cool description"
+        }
     }
-}
     "#;
 
     let val = dbg!(crate::eventsub::Payload::parse(payload).unwrap());
