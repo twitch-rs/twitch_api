@@ -155,7 +155,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodules: false
+          submodules: recursive
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
