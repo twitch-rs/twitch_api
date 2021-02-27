@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["TwitchTokenErrorResponse","Twitch's representation of the oauth flow for errors"],["TwitchTokenResponse","Twitch's representation of the oauth flow."]],"type":[["TwitchClient","Client for Twitch OAuth2"]]});
+initSidebarItems({"struct":[["TwitchTokenErrorResponse","Twitch’s representation of the oauth flow for errors"],["TwitchTokenResponse","Twitch’s representation of the oauth flow."]],"type":[["TwitchClient","Client for Twitch OAuth2"]]});
