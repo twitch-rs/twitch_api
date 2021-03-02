@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/hypetrain.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>hypetrain.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/e0a7fcba83b821e65444d6a3b277e589f2a14d00">e0a7fcb</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/d745b0589f04d945a93cd0b26affe2b760101c87">d745b05</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
@@ -2004,7 +2004,7 @@
 
 <span class="doccomment">/// A user redeems an reward using channel points.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">into</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>, <span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainEventsV1</span> {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint</span>
@@ -2024,7 +2024,7 @@
 
 <span class="doccomment">/// A user redeems an reward using channel points.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">into</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>, <span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainEventsV1Rewards</span> {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint</span>
@@ -2044,7 +2044,7 @@
 
 <span class="doccomment">/// Hype train rewards</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainRewards</span> {
     <span class="comment">// FIXME: Channel ID is sometimes missing, might be depending on your token</span>
@@ -2058,7 +2058,7 @@
 
 <span class="doccomment">/// Hype train started in channel</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainStart</span> {
     <span class="comment">// FIXME: Channel ID is sometimes missing, might be depending on your token</span>
@@ -2092,7 +2092,7 @@
 
 <span class="doccomment">/// Hype train ended</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainEnd</span> {
     <span class="doccomment">/// Server time epoch in milliseconds when hype train ended</span>
@@ -2103,7 +2103,7 @@
 
 <span class="doccomment">/// Hype train conductor updated</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainConductorUpdate</span> {
     <span class="doccomment">/// Conductor source</span>
@@ -2116,7 +2116,7 @@
 
 <span class="doccomment">/// Hype train progression. Akin to [Participations]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainProgression</span> {
     <span class="doccomment">/// Unknown</span>
@@ -2143,7 +2143,7 @@
 
 <span class="doccomment">/// Hype train leveled up</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainLevelUp</span> {
     <span class="doccomment">/// Server time epoch in milliseconds when hype train expires</span>
@@ -2154,7 +2154,7 @@
 
 <span class="doccomment">/// Reply from [HypeTrainEventsV1] or [HypeTrainEventsV1Rewards]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>, <span class="ident">content</span> <span class="op">=</span> <span class="string">&quot;data&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">HypeTrainEventsV1Reply</span> {
@@ -2183,7 +2183,7 @@
 
 <span class="doccomment">/// Configuration of hype train</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Config</span> {
     <span class="doccomment">/// Hype train public callout emote ID</span>
@@ -2256,7 +2256,7 @@
 
 <span class="doccomment">/// How many support events needed to start Hype Train</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Kickoff</span> {
     <span class="doccomment">/// Period in nanoseconds that events must occur</span>
@@ -2270,7 +2270,7 @@
 
 <span class="doccomment">/// Conversion table of event to participation points</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ParticipationConversionRates</span> {
     <span class="doccomment">/// Bits</span>
@@ -2312,7 +2312,7 @@
 
 <span class="doccomment">/// Thresholds for notifications</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NotificationThresholds</span> {
     <span class="doccomment">/// Bits</span>
@@ -2354,7 +2354,7 @@
 
 <span class="doccomment">/// Reward given to conductors</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ConductorRewards</span> {
     <span class="doccomment">/// Reward to conductor of bits</span>
@@ -2367,7 +2367,7 @@
 
 <span class="doccomment">/// Rewards</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BitsRewards</span> {
     <span class="doccomment">/// Rewards to bits conductor</span>
@@ -2380,7 +2380,7 @@
 
 <span class="doccomment">/// Rewards</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SubsRewards</span> {
     <span class="doccomment">/// Rewards to subscriptions conductor</span>
@@ -2393,7 +2393,7 @@
 
 <span class="doccomment">/// Participations in hype train</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Participations</span> {
     <span class="doccomment">/// Bits</span>
@@ -2435,13 +2435,13 @@
 
 <span class="doccomment">/// Unknown</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Conductors</span> {}
 
 <span class="doccomment">/// Progress of hype train</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HypeTrainProgress</span> {
     <span class="doccomment">/// Participation points needed in this level</span>
@@ -2459,7 +2459,7 @@
 
 <span class="doccomment">/// Description of a hype-train level</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Level</span> {
     <span class="doccomment">/// Participation points needed for this level</span>
@@ -2473,7 +2473,7 @@
 
 <span class="doccomment">/// A reward</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allow_unknown_fields&quot;</span>), <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Reward</span> {
