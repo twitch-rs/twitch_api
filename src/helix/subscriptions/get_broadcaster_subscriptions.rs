@@ -67,6 +67,8 @@ pub struct GetBroadcasterSubscriptionsRequest {
 pub struct BroadcasterSubscription {
     /// User ID of the broadcaster.
     pub broadcaster_id: types::UserId,
+    /// Login of the broadcaster.
+    pub broadcaster_login: types::UserName,
     /// Display name of the broadcaster.
     pub broadcaster_name: types::DisplayName,
     /// Determines if the subscription is a gift subscription.
@@ -77,6 +79,8 @@ pub struct BroadcasterSubscription {
     pub plan_name: String,
     /// ID of the subscribed user.
     pub user_id: types::UserId,
+    /// Login of the subscribed user.
+    pub user_login: types::UserName,
     /// Display name of the subscribed user.
     pub user_name: types::DisplayName,
 }
@@ -109,11 +113,13 @@ fn test_request() {
     "data": [
         {
         "broadcaster_id": "123",
+        "broadcaster_login": "test_user",
         "broadcaster_name": "test_user",
         "is_gift": true,
         "tier": "1000",
         "plan_name": "The Ninjas",
         "user_id": "123",
+        "user_login": "snoirf",
         "user_name": "snoirf"
         }
     ],
