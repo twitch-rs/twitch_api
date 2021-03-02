@@ -61,7 +61,7 @@ pub struct GetUsersRequest {
 pub struct User {
     /// User’s broadcaster type: "partner", "affiliate", or "".
     pub broadcaster_type: Option<types::BroadcasterType>,
-    /// Account creation time
+    /// Date when the user was created.
     pub created_at: types::Timestamp,
     /// User’s channel description.
     pub description: Option<String>,

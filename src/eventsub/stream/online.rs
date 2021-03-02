@@ -31,7 +31,7 @@ pub struct StreamOnlineV1Payload {
     pub broadcaster_user_login: types::UserName,
     /// The broadcaster’s user display name.
     pub broadcaster_user_name: types::DisplayName,
-    /// The event id.
+    /// The id of the stream.
     pub id: String,
     /// The stream type. Valid values are: live, playlist, watch_party, premiere, rerun.
     #[serde(rename = "type")]

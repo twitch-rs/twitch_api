@@ -71,13 +71,13 @@ pub struct ModifyChannelInformationRequest {
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct ModifyChannelInformationBody {
-    /// Current game ID being played on the channel
+    /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
     #[builder(default, setter(into, strip_option))]
     pub game_id: Option<types::CategoryId>,
     /// Language of the channel
     #[builder(default, setter(into))]
     pub broadcaster_language: Option<String>,
-    /// Title of the stream
+    /// Title of the stream. Value must not be an empty string.
     #[builder(default, setter(into, strip_option))]
     pub title: Option<String>,
 }
