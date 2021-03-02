@@ -40,7 +40,7 @@ impl pubsub::Topic for VideoPlaybackById {
 
 /// Reply from [VideoPlayback] and [VideoPlaybackById]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(tag = "type")]
 #[non_exhaustive]
 pub enum VideoPlaybackReply {
@@ -95,7 +95,7 @@ pub enum VideoPlaybackReply {
 
 /// Video on Demand
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Vod {
     /// Type of broadcast

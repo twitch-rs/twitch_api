@@ -26,7 +26,7 @@ impl pubsub::Topic for ChannelSubscribeEventsV1 {
 
 /// A subscription
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Sub {
     // FIXME: Could be for month that subscription ends
@@ -63,7 +63,7 @@ pub struct Sub {
 
 /// A resubscription
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ReSub {
     // missing in documented example
@@ -102,7 +102,7 @@ pub struct ReSub {
 
 /// A gifted subscription happened
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct SubGift {
     // missing in documented example
@@ -145,7 +145,7 @@ pub struct SubGift {
 
 /// Gifted resubscription with optional message
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ResubGift {
     // missing in documented example
@@ -194,7 +194,7 @@ pub struct ResubGift {
 /// Reply from [ChannelSubscribeEventsV1]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "context")]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum ChannelSubscribeEventsV1Reply {
     /// A subscription
@@ -226,7 +226,7 @@ pub struct Emote {
 
 /// Message sent with subscription
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct SubMessage {
     /// Emotes in subscription message

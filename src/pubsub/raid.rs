@@ -20,7 +20,7 @@ impl pubsub::Topic for Raid {
 
 /// Raid go
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct RaidGoV2 {
     /// ID of user would be raided
@@ -47,7 +47,7 @@ pub struct RaidGoV2 {
 
 /// Raid update
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct RaidUpdateV2 {
     /// ID of user would be raided
@@ -74,7 +74,7 @@ pub struct RaidUpdateV2 {
 
 /// Raid canceled
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct RaidCancelV2 {
     /// ID of user would be raided
@@ -102,7 +102,7 @@ pub struct RaidCancelV2 {
 /// Reply from [Raid]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", content = "raid")]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum RaidReply {
     /// Raid go

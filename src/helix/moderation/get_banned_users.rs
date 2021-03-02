@@ -68,7 +68,7 @@ pub struct GetBannedUsersRequest {
 ///
 /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BannedUser {
     /// User ID of a user who has been banned.

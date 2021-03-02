@@ -28,7 +28,7 @@ impl helix::Request for GetWebhookSubscriptionsRequest {
 ///
 /// [`get-webhook-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-webhook-subscriptions)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct WebhookSubscription {
     /// The callback provided for this subscription.

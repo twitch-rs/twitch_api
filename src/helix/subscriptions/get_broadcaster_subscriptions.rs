@@ -62,7 +62,7 @@ pub struct GetBroadcasterSubscriptionsRequest {
 ///
 /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BroadcasterSubscription {
     /// User ID of the broadcaster.

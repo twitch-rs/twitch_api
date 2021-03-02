@@ -60,7 +60,7 @@ pub struct GetUsersFollowsRequest {
 ///
 /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct UsersFollow {
     ///Date and time when the from_id user followed the to_id user.

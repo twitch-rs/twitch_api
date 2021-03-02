@@ -10,8 +10,8 @@
 
 * Made crate runtime agnostic with custom clients using feature `client`.
 * Added `unsupported` feature to enable experimental/undocumented APIs/endpoints/topics.
-* Made most fields deny unknown fields by default, specify feature `allow_unknown_fields` to ignore unknowns.
-* Added `all` feature to enable all feature sans `unsupported` and `allow_unknown_fields`.
+* Made most fields deny unknown fields by enabling feature `deny_unknown_fields`.
+* Added `all` feature to enable all feature sans `unsupported` and `deny_unknown_fields`.
 * Added most PubSub topics.
     - channel-bits-events-v2
     - channel-bits-badge-unlocks

@@ -1,6 +1,6 @@
 name: CI
 env:
-  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all unsupported"
+  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all unsupported deny_unknown_fields"
 on:
   pull_request:
     types: [opened, reopened, synchronize]

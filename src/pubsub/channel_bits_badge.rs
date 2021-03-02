@@ -24,7 +24,7 @@ impl pubsub::Topic for ChannelBitsBadgeUnlocks {
 
 /// Reply from [ChannelBitsBadgeUnlocks]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelBitsBadgeUnlocksReply {
     /// Value of Bits badge tier that was earned (1000, 10000, etc.)

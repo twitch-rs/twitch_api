@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 /// A user redeems an reward using channel points.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(into = "String", try_from = "String")]
 pub struct HypeTrainEventsV1 {
     /// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
@@ -25,7 +25,7 @@ impl pubsub::Topic for HypeTrainEventsV1 {
 
 /// A user redeems an reward using channel points.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(into = "String", try_from = "String")]
 pub struct HypeTrainEventsV1Rewards {
     /// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
@@ -45,7 +45,7 @@ impl pubsub::Topic for HypeTrainEventsV1Rewards {
 
 /// Hype train rewards
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct HypeTrainRewards {
     // FIXME: Channel ID is sometimes missing, might be depending on your token
@@ -59,7 +59,7 @@ pub struct HypeTrainRewards {
 
 /// Hype train started in channel
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct HypeTrainStart {
     // FIXME: Channel ID is sometimes missing, might be depending on your token
@@ -93,7 +93,7 @@ pub struct HypeTrainStart {
 
 /// Hype train ended
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct HypeTrainEnd {
     /// Server time epoch in milliseconds when hype train ended
@@ -104,7 +104,7 @@ pub struct HypeTrainEnd {
 
 /// Hype train conductor updated
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct HypeTrainConductorUpdate {
     /// Conductor source
@@ -117,7 +117,7 @@ pub struct HypeTrainConductorUpdate {
 
 /// Hype train progression. Akin to [Participations]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct HypeTrainProgression {
     /// Unknown
@@ -144,7 +144,7 @@ pub struct HypeTrainProgression {
 
 /// Hype train leveled up
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct HypeTrainLevelUp {
     /// Server time epoch in milliseconds when hype train expires
@@ -155,7 +155,7 @@ pub struct HypeTrainLevelUp {
 
 /// Reply from [HypeTrainEventsV1] or [HypeTrainEventsV1Rewards]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(tag = "type", content = "data")]
 #[non_exhaustive]
 pub enum HypeTrainEventsV1Reply {
@@ -184,7 +184,7 @@ pub enum HypeTrainEventsV1Reply {
 
 /// Configuration of hype train
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Config {
     /// Hype train public callout emote ID
@@ -257,7 +257,7 @@ pub enum HypeTrainDifficulty {
 
 /// How many support events needed to start Hype Train
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Kickoff {
     /// Period in nanoseconds that events must occur
@@ -271,7 +271,7 @@ pub struct Kickoff {
 
 /// Conversion table of event to participation points
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ParticipationConversionRates {
     /// Bits
@@ -313,7 +313,7 @@ pub struct ParticipationConversionRates {
 
 /// Thresholds for notifications
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct NotificationThresholds {
     /// Bits
@@ -355,7 +355,7 @@ pub struct NotificationThresholds {
 
 /// Reward given to conductors
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ConductorRewards {
     /// Reward to conductor of bits
@@ -368,7 +368,7 @@ pub struct ConductorRewards {
 
 /// Rewards
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BitsRewards {
     /// Rewards to bits conductor
@@ -381,7 +381,7 @@ pub struct BitsRewards {
 
 /// Rewards
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct SubsRewards {
     /// Rewards to subscriptions conductor
@@ -394,7 +394,7 @@ pub struct SubsRewards {
 
 /// Participations in hype train
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Participations {
     /// Bits
@@ -436,13 +436,13 @@ pub struct Participations {
 
 /// Unknown
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Conductors {}
 
 /// Progress of hype train
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct HypeTrainProgress {
     /// Participation points needed in this level
@@ -460,7 +460,7 @@ pub struct HypeTrainProgress {
 
 /// Description of a hype-train level
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Level {
     /// Participation points needed for this level
@@ -474,7 +474,7 @@ pub struct Level {
 
 /// A reward
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(tag = "type")]
 #[non_exhaustive]
 pub enum Reward {
