@@ -54,7 +54,7 @@ pub struct GetChannelEditorsRequest {
 ///
 /// [`get-channel-editors`](https://dev.twitch.tv/docs/api/reference#get-channel-editors)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Editor {
     /// User ID of the editor.

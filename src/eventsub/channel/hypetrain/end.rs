@@ -4,7 +4,7 @@
 use super::*;
 /// [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainend): a hype train ends on the specified channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelHypeTrainEndV1 {
     // FIXME: Twitch docs say "want to hype train"
@@ -23,7 +23,7 @@ impl EventSubscription for ChannelHypeTrainEndV1 {
 
 /// [`channel.hype_train.end`](ChannelHypeTrainEndV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelHypeTrainEndV1Payload {
     /// The requested broadcaster ID.

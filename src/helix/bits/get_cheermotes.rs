@@ -54,7 +54,7 @@ pub struct GetCheermotesRequest {
 ///
 /// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Cheermote {
     /// Indicates whether or not this emote provides a charity contribution match during charity campaigns.
@@ -74,7 +74,7 @@ pub struct Cheermote {
 
 /// Types of cheermotes
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(rename_all = "snake_case")]
 #[non_exhaustive]
 pub enum CheermoteType {
@@ -96,7 +96,7 @@ pub enum CheermoteType {
 
 /// Information about tier of emote
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Tiers {
     /// Indicates whether or not emote information is accessible to users.
@@ -115,7 +115,7 @@ pub struct Tiers {
 
 /// Images for different themes
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CheermoteImages {
     /// Dark mode
@@ -126,7 +126,7 @@ pub struct CheermoteImages {
 
 /// URLs to the same image, animated or static.
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CheermoteImage {
     /// Animated GIFs
@@ -137,7 +137,7 @@ pub struct CheermoteImage {
 }
 /// Images in sizes
 #[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CheermoteImageArray {
     /// URL to image in size 28 × 28

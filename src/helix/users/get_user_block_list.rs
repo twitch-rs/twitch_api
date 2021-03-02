@@ -57,7 +57,7 @@ pub struct GetUserBlockListRequest {
 ///
 /// [`get-user-block-list`](https://dev.twitch.tv/docs/api/reference#get-user-block-list)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct UserBlock {
     /// User ID of the blocked user.

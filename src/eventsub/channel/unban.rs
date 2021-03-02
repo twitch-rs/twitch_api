@@ -4,7 +4,7 @@ use super::*;
 
 /// [`channel.unban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban): a viewer is unbanned from the specified channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelUnbanV1 {
     /// The broadcaster user ID for the channel you want to get unban notifications for.
@@ -22,7 +22,7 @@ impl EventSubscription for ChannelUnbanV1 {
 
 /// [`channel.unban`](ChannelUnbanV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelUnbanV1Payload {
     /// The requested broadcaster ID.

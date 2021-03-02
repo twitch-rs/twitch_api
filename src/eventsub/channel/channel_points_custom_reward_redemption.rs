@@ -19,7 +19,7 @@ pub use update::{
 
 /// Basic information about the reward that was redeemed, at the time it was redeemed.
 #[derive(Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Reward {
     /// The reward cost.

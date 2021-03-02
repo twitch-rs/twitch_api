@@ -77,7 +77,7 @@ pub struct GetCustomRewardRedemptionRequest {
 ///
 /// [`get-custom-reward-redemption`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CustomRewardRedemption {
     /// The id of the broadcaster that the reward belongs to.
@@ -116,7 +116,7 @@ pub struct CustomRewardRedemption {
 
 /// Information about the reward involved
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Reward {
     /// The ID of the custom reward.

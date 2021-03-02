@@ -28,7 +28,7 @@ impl pubsub::Topic for ChatModeratorActions {
 
 /// A moderation action. `moderation_action`
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ModerationAction {
     /// Arguments for moderation_action
@@ -62,7 +62,7 @@ pub struct ModerationAction {
 ///
 /// There is no `moderator_removed` message
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ModeratorAdded {
     /// ID of channel where moderator was added
@@ -81,7 +81,7 @@ pub struct ModeratorAdded {
 
 /// Reply from [ChatModeratorActions]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(tag = "type", content = "data")]
 #[non_exhaustive]
 pub enum ChatModeratorActionsReply {
@@ -101,7 +101,7 @@ pub enum ChatModeratorActionsReply {
 
 /// Unban request
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct UnbanRequest {
     /// Unban response created by user with id
@@ -375,7 +375,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "allow_unknown_fields")]
+    #[cfg(not(feature = "deny_unknown_fields"))]
     fn allow_unknown() {
         let source = r#"
 {

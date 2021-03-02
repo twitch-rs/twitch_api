@@ -27,7 +27,7 @@ impl pubsub::Topic for ChannelSubGiftsV1 {
 
 /// Mystery gift
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct MysteryGiftPurchase {
     /// Channel where mystery gifts were distributed
@@ -44,7 +44,7 @@ pub struct MysteryGiftPurchase {
 
 /// Reply from [ChannelSubGiftsV1]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(tag = "type")]
 #[non_exhaustive]
 pub enum ChannelSubGiftsV1Reply {

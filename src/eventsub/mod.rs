@@ -75,7 +75,7 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq + Clone {
 }
 /// Verification Request
 #[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct VerificationRequest {
     /// Challenge string.
@@ -267,7 +267,7 @@ impl<'de> Deserialize<'de> for Payload {
     }
 
         #[derive(Deserialize, Clone)]
-        #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         struct IEventSubscripionInformation {
             condition: serde_json::Value,
             created_at: types::Timestamp,
@@ -280,7 +280,7 @@ impl<'de> Deserialize<'de> for Payload {
         }
 
         #[derive(Deserialize)]
-        #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         struct InternalPayloadResponse {
             /// This will always be converted to a [`EventSubscriptionInformation`], but is a generic Value to allow for better error messages on missing fields
             #[serde(rename = "subscription")]
@@ -307,7 +307,7 @@ impl<'de> Deserialize<'de> for Payload {
             }
         }
         #[derive(Deserialize)]
-        #[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         #[serde(untagged)]
         enum InternalResponse {
             #[serde(with = "Corrected")]
@@ -373,7 +373,7 @@ impl<'de> Deserialize<'de> for Payload {
 
 /// Notification received
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct NotificationPayload<E: EventSubscription + Clone> {
     /// Subscription information.
@@ -386,7 +386,7 @@ pub struct NotificationPayload<E: EventSubscription + Clone> {
 
 /// Metadata about the subscription.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct EventSubscriptionInformation<E: EventSubscription> {
     /// Your client ID.
@@ -404,7 +404,7 @@ pub struct EventSubscriptionInformation<E: EventSubscription> {
 
 /// Transport setting for event notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Transport {
     /// Method for transport
@@ -423,7 +423,7 @@ pub struct Transport {
 ///
 /// Does not include secret.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TransportResponse {
     /// Method for transport
@@ -445,7 +445,7 @@ pub enum TransportMethod {
 
 /// Event name
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum EventType {
     /// `channel.update` subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.

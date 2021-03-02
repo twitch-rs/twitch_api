@@ -1,14 +1,6 @@
 //! Holds serializable pubsub stuff
 //!
 //! Use [`TopicSubscribe::to_command`] to send subscription listen and parse the responses with [`Response::parse`]
-//! # Notes
-//!
-//! If you find that a pubsub topic reply has a field that has not yet been added to this crate, and you don't need that field, you can enable the
-//! <span
-//!   class="module-item stab portability"
-//!   style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"
-//! ><code>allow_unknown_fields</code></span>
-//! feature for this crate in your Cargo manifest to ignore it (and other) fields.
 //!
 //! # Undocumented features
 //!

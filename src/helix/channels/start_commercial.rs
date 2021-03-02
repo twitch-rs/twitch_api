@@ -83,7 +83,7 @@ pub struct StartCommercialBody {
 ///
 /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct StartCommercial {
     /// Length of the triggered commercial

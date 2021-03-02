@@ -38,7 +38,7 @@ pub type EventSubId = String;
 
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TwitchCategory {
     ///Template URL for the game’s box art.
@@ -252,7 +252,7 @@ pub struct User {
 
 /// Links to the same image of different sizes
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Image {
     /// URL to png of size 28x28
@@ -265,7 +265,7 @@ pub struct Image {
 
 /// Information about global cooldown
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct GlobalCooldown {
     /// Cooldown enabled
@@ -277,7 +277,7 @@ pub struct GlobalCooldown {
 
 /// Reward redemption max
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(untagged)]
 #[non_exhaustive]
 pub enum Max {

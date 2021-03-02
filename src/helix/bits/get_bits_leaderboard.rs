@@ -76,7 +76,7 @@ pub struct GetBitsLeaderboardRequest {
 ///
 /// [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BitsLeaderboard {
     /// Leaderboard
@@ -89,7 +89,7 @@ pub struct BitsLeaderboard {
 
 /// Period over which the returned data is aggregated.
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct DateRange {
     /// Start of the date range for the returned data.
@@ -100,7 +100,7 @@ pub struct DateRange {
 
 /// Information about user in leaderboard
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct LeaderboardUser {
     /// Leaderboard rank of the user.

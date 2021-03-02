@@ -4,7 +4,7 @@
 use super::*;
 /// [`channel.channel_points_custom_reward_redemption.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionadd): a viewer has redeemed a custom channel points reward on the specified channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPointsCustomRewardRedemptionAddV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward redemption add notifications for.
@@ -25,7 +25,7 @@ impl EventSubscription for ChannelPointsCustomRewardRedemptionAddV1 {
 // FIXME: Same as update
 /// [`channel.channel_points_custom_reward_redemption.add`](ChannelPointsCustomRewardRedemptionAddV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPointsCustomRewardRedemptionAddV1Payload {
     /// The requested broadcaster ID.

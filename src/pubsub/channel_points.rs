@@ -25,7 +25,7 @@ impl pubsub::Topic for ChannelPointsChannelV1 {
 
 /// A redemption users can "buy" with channel points to trigger rewards
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Redemption {
     /// ID of channel where the redemption was triggered
@@ -68,7 +68,7 @@ pub enum RedemptionStatus {
 
 /// Reward data
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Reward {
     /// Color of background in rewards & challenges screen on client
@@ -118,7 +118,7 @@ pub struct Reward {
 
 /// `update-redemption-statuses-finished``progress
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Progress {
     /// ID of channel user

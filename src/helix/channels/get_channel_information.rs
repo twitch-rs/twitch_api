@@ -56,7 +56,7 @@ pub struct GetChannelInformationRequest {
 ///
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelInformation {
     /// Twitch User ID of this channel owner

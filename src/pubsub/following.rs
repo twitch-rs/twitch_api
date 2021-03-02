@@ -25,7 +25,7 @@ impl pubsub::Topic for Following {
 
 /// Reply from [Following]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(tag = "type")]
 #[non_exhaustive]
 pub struct FollowingReply {

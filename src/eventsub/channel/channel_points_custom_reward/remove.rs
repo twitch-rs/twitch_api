@@ -4,7 +4,7 @@
 use super::*;
 /// [`channel.channel_points_custom_reward.remove`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardremove): a custom channel points reward has been removed from the specified channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPointsCustomRewardRemoveV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward remove notifications for.
@@ -24,7 +24,7 @@ impl EventSubscription for ChannelPointsCustomRewardRemoveV1 {
 
 /// [`channel.channel_points_custom_reward.remove`](ChannelPointsCustomRewardRemoveV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPointsCustomRewardRemoveV1Payload {
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #FA1ED2.

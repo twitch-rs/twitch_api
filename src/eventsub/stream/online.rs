@@ -4,7 +4,7 @@ use super::*;
 
 /// [`stream.online`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamonline): the specified broadcaster starts a stream
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct StreamOnlineV1 {
     /// The broadcaster user ID you want to get stream online notifications for.
@@ -22,7 +22,7 @@ impl EventSubscription for StreamOnlineV1 {
 
 /// [`stream.online`](StreamOnlineV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct StreamOnlineV1Payload {
     /// The broadcaster’s user id.

@@ -4,7 +4,7 @@
 use super::*;
 /// [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress): a hype train makes progress on the specified channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelHypeTrainProgressV1 {
     // FIXME: Twitch docs say "want to hype train"
@@ -23,7 +23,7 @@ impl EventSubscription for ChannelHypeTrainProgressV1 {
 
 /// [`channel.hype_train.progress`](ChannelHypeTrainProgressV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelHypeTrainProgressV1Payload {
     /// The requested broadcaster ID.

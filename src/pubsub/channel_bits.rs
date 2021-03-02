@@ -21,7 +21,7 @@ impl pubsub::Topic for ChannelBitsEventsV2 {
 
 /// Reply from [ChannelBitsEventsV2]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(tag = "message_type")]
 #[non_exhaustive]
 pub enum ChannelBitsEventsV2Reply {
@@ -42,7 +42,7 @@ pub enum ChannelBitsEventsV2Reply {
 
 /// Data for bits event
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BitsEventData {
     /// If set, describes new unlocked badge for user
@@ -72,7 +72,7 @@ pub struct BitsEventData {
 
 /// [`ChannelBitsEventsV2Reply::BitsEvent`] event unlocked new badge for user.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BadgeEntitlement {
     /// New version of badge

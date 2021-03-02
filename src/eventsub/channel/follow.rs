@@ -4,7 +4,7 @@ use super::*;
 
 /// [`channel.follow`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelfollow): a specified channel receives a follow.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelFollowV1 {
     /// The broadcaster user ID for the channel you want to get follow notifications for.
@@ -22,7 +22,7 @@ impl EventSubscription for ChannelFollowV1 {
 
 /// [`channel.follow`](ChannelFollowV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(not(feature = "allow_unknown_fields"), serde(deny_unknown_fields))]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelFollowV1Payload {
     /// The requested broadcaster ID.
