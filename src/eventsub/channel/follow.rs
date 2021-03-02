@@ -37,6 +37,8 @@ pub struct ChannelFollowV1Payload {
     pub user_name: types::DisplayName,
     /// The user login for the user now following the specified channel.
     pub user_login: types::UserName,
+    /// RFC3339 timestamp of when the follow occurred.
+    pub followed_at: types::Timestamp,
 }
 
 #[test]
@@ -63,7 +65,8 @@ fn parse_payload() {
             "user_name": "Cool_User",
             "broadcaster_user_id": "1337",
             "broadcaster_user_login": "cooler_user",
-            "broadcaster_user_name": "Cooler_User"
+            "broadcaster_user_name": "Cooler_User",
+            "followed_at": "2020-07-15T18:16:11.17106713Z"
         }
     }
     "#;
