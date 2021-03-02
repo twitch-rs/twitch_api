@@ -33,7 +33,7 @@ use std::{convert::TryInto, str::FromStr};
 use twitch_oauth2::TwitchToken;
 #[cfg(all(feature = "client"))]
 #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "helix"))))]
-pub mod client_ext;
+mod client_ext;
 
 pub mod bits;
 pub mod channels;
