@@ -148,7 +148,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     /// #   use twitch_api2::helix::{HelixClient, channels};
     /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
     /// #       twitch_oauth2::AccessToken::new("totallyvalidtoken".to_string()), None,
-    /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, None, None));
+    /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, None, None, None));
     ///     let req = channels::GetChannelInformationRequest::builder().broadcaster_id("123456").build();
     ///     let client = HelixClient::new();
     /// # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
