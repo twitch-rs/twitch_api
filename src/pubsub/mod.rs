@@ -106,7 +106,7 @@ pub trait Topic: Serialize + Into<String> {
     ///   style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"
     /// ><code>unsupported</code></span>
     #[cfg(feature = "twitch_oauth2")]
-    #[cfg_attr(nightly, doc(feature = "twitch_oauth2"))]
+    #[cfg_attr(nightly, doc(cfg(feature = "twitch_oauth2")))]
     const SCOPE: &'static [twitch_oauth2::Scope];
 }
 
