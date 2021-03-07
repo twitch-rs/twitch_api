@@ -36,6 +36,9 @@ pub type VideoId = String;
 /// An EventSub Subscription ID
 pub type EventSubId = String;
 
+/// A Team ID
+pub type TeamId = String;
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -246,7 +249,7 @@ pub struct User {
     #[serde(alias = "user_login")]
     pub login: UserName,
     /// Display name of user
-    #[serde(alias = "user_display_name")]
+    #[serde(alias = "user_display_name", alias = "user_name")]
     pub display_name: DisplayName,
 }
 
