@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GetTeamsRequest","Query Parameters for Get Teams"],["Team","Return Values for Get Teams"]]});

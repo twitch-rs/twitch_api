@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/teams.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>teams.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/2792c65955ac386ae28f7f86d8d8ee9a64f920a9">2792c65</a></p>
+<style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+</pre><div class="example-wrap"><pre class="rust ">
+<span class="doccomment">//! Helix endpoints regarding subscriptions</span>
+
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">helix</span>, <span class="ident">types</span>};
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_channel_teams</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_teams</span>;
+
+<span class="doccomment">/// Information about a team. Get team members with [`GetChannelTeamsRequest`](get_channel_teams::GetChannelTeamsRequest)</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TeamInformation</span> {
+    <span class="doccomment">/// URL of the Team background image.</span>
+    <span class="ident">background_image_url</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// URL for the Team banner.</span>
+    <span class="ident">banner</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Date and time the Team was created.</span>
+    <span class="ident">created_at</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Date and time the Team was last updated.</span>
+    <span class="ident">updated_at</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Team description.</span>
+    <span class="ident">info</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Image URL for the Team logo.</span>
+    <span class="ident">thumbnail_url</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Team name.</span>
+    <span class="ident">team_name</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Team display name.</span>
+    <span class="ident">team_display_name</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Team ID.</span>
+    <span class="ident">id</span>: <span class="ident">types</span>::<span class="ident">TeamId</span>,
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api2" data-search-js="../../../search-index.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

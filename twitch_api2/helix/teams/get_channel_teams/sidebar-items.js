@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BroadcasterTeam","Return Values for Get Channel Teams"],["GetChannelTeamsRequest","Query Parameters for Get Channel Teams"]]});
