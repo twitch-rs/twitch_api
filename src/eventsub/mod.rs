@@ -143,7 +143,7 @@ pub enum Payload {
     /// User Authorization Revoke V1 Event
     UserAuthorizationRevokeV1(NotificationPayload<user::UserAuthorizationRevokeV1>),
     /// Channel Raid Beta Event
-    ChannelRaidBeta(NotificationPayload<channel::ChannelRaidBeta>),
+    ChannelRaidV1(NotificationPayload<channel::ChannelRaidV1>),
 }
 
 impl Payload {
@@ -328,7 +328,7 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelPointsCustomRewardRemoveV1;
                 channel::ChannelPointsCustomRewardRedemptionAddV1;
                 channel::ChannelPointsCustomRewardRedemptionUpdateV1;
-                channel::ChannelRaidBeta;
+                channel::ChannelRaidV1;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
                 channel::ChannelHypeTrainEndV1;
@@ -358,7 +358,7 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelPointsCustomRewardRemoveV1;
                 channel::ChannelPointsCustomRewardRedemptionAddV1;
                 channel::ChannelPointsCustomRewardRedemptionUpdateV1;
-                channel::ChannelRaidBeta;
+                channel::ChannelRaidV1;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
                 channel::ChannelHypeTrainEndV1;
