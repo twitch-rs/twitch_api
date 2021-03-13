@@ -39,7 +39,7 @@
     - Channel Points Custom Reward Redemption Update V1 Event
     - Channel Points Custom Reward Remove V1 Event
     - Channel Points Custom Reward Update V1 Event
-    - Channel Raid Beta Event
+    - Channel Raid V1 Event
     - Channel Subscribe V1 Event
     - Channel Unban V1 Event
     - Channel Update V1 Event
