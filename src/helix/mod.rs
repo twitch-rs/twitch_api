@@ -820,9 +820,13 @@ pub enum HelixRequestGetError {
     InvalidUri(#[from] InvalidUri),
     /// invalid or unexpected response from twitch.
     InvalidResponse {
+        /// Reason for error
         reason: &'static str,
+        /// Response text
         response: String,
+        /// Status Code
         status: http::StatusCode,
+        /// Uri to endpoint
         uri: http::Uri,
     },
 }
