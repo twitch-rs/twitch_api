@@ -81,10 +81,8 @@ impl helix::Request for CheckUserSubscription {
     type Response = UserSubscription;
 
     const PATH: &'static str = "subscriptions/user";
-    // FIXME: Twitch say scope is "user:read:subscriptions"
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ChannelReadSubscriptions];
+    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadSubscriptions];
 }
 
 impl helix::RequestGet for CheckUserSubscription {

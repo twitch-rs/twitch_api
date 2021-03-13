@@ -64,7 +64,7 @@ hmac = ["crypto_hmac","sha2"]
 all = ["tmi", "helix", "surf_client", "reqwest_client", "client", "pubsub", "eventsub", "hmac"]
 
 [dev-dependencies]
-tokio = { version = "1.2.0", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.3.0", features = ["rt-multi-thread", "macros"] }
 dotenv = "0.15.0"
 futures = "0.3.13"
 serde_cbor = "0.11.1"
