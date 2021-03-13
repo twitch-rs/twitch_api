@@ -24,6 +24,7 @@
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
+pub mod check_user_subscription;
 pub mod get_broadcaster_subscriptions;
 pub mod get_broadcaster_subscriptions_events;
 

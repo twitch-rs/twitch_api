@@ -816,8 +816,15 @@ pub enum HelixRequestGetError {
     /// deserialization failed when processing request response calling `GET {2}` with response: {0:?}
     DeserializeError(String, #[source] serde_json::Error, http::Uri),
     // FIXME: Only used in webhooks parse_payload
-    /// Could not get URI for request
+    /// could not get URI for request
     InvalidUri(#[from] InvalidUri),
+    /// invalid or unexpected response from twitch.
+    InvalidResponse {
+        reason: &'static str,
+        response: String,
+        status: http::StatusCode,
+        uri: http::Uri,
+    },
 }
 
 /// Could not parse PUT response
