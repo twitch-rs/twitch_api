@@ -58,6 +58,7 @@ fn parse_payload() {
             "type": "channel.hype_train.begin",
             "version": "1",
             "status": "enabled",
+            "cost": 0,
             "condition": {
                 "broadcaster_user_id": "1337"
             },

@@ -47,6 +47,7 @@ fn parse_payload() {
             "type": "user.update",
             "version": "1",
             "status": "enabled",
+            "cost": 0,
             "condition": {
                "user_id": "1337"
             },

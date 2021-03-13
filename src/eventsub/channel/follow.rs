@@ -50,6 +50,7 @@ fn parse_payload() {
             "type": "channel.follow",
             "version": "1",
             "status": "enabled",
+            "cost": 0,
             "condition": {
                "broadcaster_user_id": "1337"
             },

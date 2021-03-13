@@ -79,6 +79,7 @@ fn parse_payload() {
             "type": "channel.channel_points_custom_reward.remove",
             "version": "1",
             "status": "enabled",
+            "cost": 0,
             "condition": {
                 "broadcaster_user_id": "1337",
                 "reward_id": "12345"

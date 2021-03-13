@@ -9,14 +9,15 @@
 //!
 //! To parse these, use [`Payload::parse`]
 //!
-//! ```rust
+//! ```rust,no_run
 //! use twitch_api2::eventsub::Payload;
 //! let payload = r#"{
 //!     "subscription": {
 //!         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
 //!         "type": "user.authorization.revoke",
-//!         "status": "enabled",
 //!         "version": "1",
+//!         "status": "enabled",
+//!         "cost": 0,
 //!         "condition": {
 //!             "client_id": "crq72vsaoijkc83xx42hz6i37"
 //!         },
@@ -29,7 +30,8 @@
 //!     "event": {
 //!         "client_id": "crq72vsaoijkc83xx42hz6i37",
 //!         "user_id": "1337",
-//!         "user_name": "cool_user"
+//!         "user_login": "cool_user",
+//!         "user_name": "Cool_User"
 //!     }
 //! }"#;
 //!
@@ -272,6 +274,7 @@ impl<'de> Deserialize<'de> for Payload {
             condition: serde_json::Value,
             created_at: types::Timestamp,
             status: Status,
+            cost: i64,
             id: String,
             transport: TransportResponse,
             #[serde(rename = "type")]
@@ -302,6 +305,7 @@ impl<'de> Deserialize<'de> for Payload {
                     condition: serde_json::from_value(info.condition)?,
                     created_at: info.created_at,
                     status: info.status,
+                    cost: info.cost,
                     transport: info.transport,
                 })
             }
@@ -393,6 +397,8 @@ pub struct EventSubscriptionInformation<E: EventSubscription> {
     pub id: String,
     /// Status of EventSub subscription
     pub status: Status,
+    /// How much the subscription counts against your limit.
+    pub cost: i64,
     /// Subscription-specific parameters.
     #[serde(bound = "E: EventSubscription")]
     pub condition: E,

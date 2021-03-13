@@ -43,6 +43,7 @@ fn parse_payload() {
             "type": "user.authorization.revoke",
             "version": "1",
             "status": "enabled",
+            "cost": 0,
             "condition": {
                 "client_id": "crq72vsaoijkc83xx42hz6i37"
             },
