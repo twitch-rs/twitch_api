@@ -48,7 +48,7 @@ pub use hypetrain::{ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload};
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload};
 #[doc(inline)]
-pub use raid::{ChannelRaidBeta, ChannelRaidBetaPayload};
+pub use raid::{ChannelRaidV1, ChannelRaidV1Payload};
 #[doc(inline)]
 pub use subscribe::{ChannelSubscribeV1, ChannelSubscribeV1Payload};
 #[doc(inline)]

@@ -5,28 +5,28 @@ use super::*;
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct ChannelRaidBeta {
+pub struct ChannelRaidV1 {
     /// The broadcaster user ID that created the channel raid you want to get notifications for. Use this parameter if you want to know when a specific broadcaster raids another broadcaster.
     pub from_broadcaster_user_id: Option<types::UserId>,
     /// The broadcaster user ID that received the channel raid you want to get notifications for. Use this parameter if you want to know when a specific broadcaster is raided by another broadcaster.
     pub to_broadcaster_user_id: Option<types::UserId>,
 }
 
-impl EventSubscription for ChannelRaidBeta {
-    type Payload = ChannelRaidBetaPayload;
+impl EventSubscription for ChannelRaidV1 {
+    type Payload = ChannelRaidV1Payload;
 
     const EVENT_TYPE: EventType = EventType::ChannelRaid;
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] =
         &[twitch_oauth2::Scope::ChannelReadSubscriptions];
-    const VERSION: &'static str = "beta";
+    const VERSION: &'static str = "1";
 }
 
-/// [`channel.raid`](ChannelRaidBeta) response payload.
+/// [`channel.raid`](ChannelRaidV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct ChannelRaidBetaPayload {
+pub struct ChannelRaidV1Payload {
     /// The broadcaster ID that created the raid.
     pub from_broadcaster_user_id: types::UserId,
     /// The broadcaster login that created the raid.
@@ -50,8 +50,9 @@ fn parse_payload() {
         "subscription": {
             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
             "type": "channel.raid",
-            "version": "beta",
+            "version": "1",
             "status": "enabled",
+            "cost": 0,
             "condition": {
                 "to_broadcaster_user_id": "1337"
             },

@@ -24,6 +24,7 @@
 use crate::{helix, types};
 use serde::{Deserialize, Serialize};
 
+pub mod check_user_subscription;
 pub mod get_broadcaster_subscriptions;
 pub mod get_broadcaster_subscriptions_events;
 
@@ -35,3 +36,6 @@ pub use get_broadcaster_subscriptions::{
 pub use get_broadcaster_subscriptions_events::{
     BroadcasterSubscriptionEvent, GetBroadcasterSubscriptionsEventsRequest,
 };
+
+#[doc(inline)]
+pub use check_user_subscription::{CheckUserSubscription, UserSubscription};

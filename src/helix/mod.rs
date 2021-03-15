@@ -149,7 +149,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     /// #   use twitch_api2::helix::{HelixClient, channels};
     /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
     /// #       twitch_oauth2::AccessToken::new("totallyvalidtoken".to_string()), None,
-    /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, "justintv".to_string(), None, None));
+    /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, "justintv".to_string(), "1337".to_string(), None, None));
     ///     let req = channels::GetChannelInformationRequest::builder().broadcaster_id("123456").build();
     ///     let client = HelixClient::new();
     /// # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
@@ -816,8 +816,19 @@ pub enum HelixRequestGetError {
     /// deserialization failed when processing request response calling `GET {2}` with response: {0:?}
     DeserializeError(String, #[source] serde_json::Error, http::Uri),
     // FIXME: Only used in webhooks parse_payload
-    /// Could not get URI for request
+    /// could not get URI for request
     InvalidUri(#[from] InvalidUri),
+    /// invalid or unexpected response from twitch.
+    InvalidResponse {
+        /// Reason for error
+        reason: &'static str,
+        /// Response text
+        response: String,
+        /// Status Code
+        status: http::StatusCode,
+        /// Uri to endpoint
+        uri: http::Uri,
+    },
 }
 
 /// Could not parse PUT response
