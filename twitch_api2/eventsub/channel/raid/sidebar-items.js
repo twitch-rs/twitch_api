@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ChannelRaidBeta","`channel.raid`: a a broadcaster raids another broadcaster’s channel."],["ChannelRaidBetaPayload","`channel.raid` response payload."]]});
+initSidebarItems({"struct":[["ChannelRaidV1","`channel.raid`: a a broadcaster raids another broadcaster’s channel."],["ChannelRaidV1Payload","`channel.raid` response payload."]]});

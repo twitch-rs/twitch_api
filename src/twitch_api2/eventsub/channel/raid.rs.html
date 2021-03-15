@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/channel/raid.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>raid.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/2792c65955ac386ae28f7f86d8d8ee9a64f920a9">2792c65</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/3c247ff256fbe5db274d29e20c0b33f8d27ef384">3c247ff</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
@@ -81,6 +81,7 @@
 <span id="76">76</span>
 <span id="77">77</span>
 <span id="78">78</span>
+<span id="79">79</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! A a broadcaster raids another broadcaster’s channel.</span>
 <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
@@ -89,28 +90,28 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelRaidBeta</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelRaidV1</span> {
     <span class="doccomment">/// The broadcaster user ID that created the channel raid you want to get notifications for. Use this parameter if you want to know when a specific broadcaster raids another broadcaster.</span>
     <span class="kw">pub</span> <span class="ident">from_broadcaster_user_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The broadcaster user ID that received the channel raid you want to get notifications for. Use this parameter if you want to know when a specific broadcaster is raided by another broadcaster.</span>
     <span class="kw">pub</span> <span class="ident">to_broadcaster_user_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types</span>::<span class="ident">UserId</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">EventSubscription</span> <span class="kw">for</span> <span class="ident">ChannelRaidBeta</span> {
-    <span class="kw">type</span> <span class="ident">Payload</span> <span class="op">=</span> <span class="ident">ChannelRaidBetaPayload</span>;
+<span class="kw">impl</span> <span class="ident">EventSubscription</span> <span class="kw">for</span> <span class="ident">ChannelRaidV1</span> {
+    <span class="kw">type</span> <span class="ident">Payload</span> <span class="op">=</span> <span class="ident">ChannelRaidV1Payload</span>;
 
     <span class="kw">const</span> <span class="ident">EVENT_TYPE</span>: <span class="ident">EventType</span> <span class="op">=</span> <span class="ident">EventType</span>::<span class="ident">ChannelRaid</span>;
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
     <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>] <span class="op">=</span>
         <span class="kw-2">&amp;</span>[<span class="ident">twitch_oauth2</span>::<span class="ident">Scope</span>::<span class="ident">ChannelReadSubscriptions</span>];
-    <span class="kw">const</span> <span class="ident">VERSION</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;beta&quot;</span>;
+    <span class="kw">const</span> <span class="ident">VERSION</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>;
 }
 
-<span class="doccomment">/// [`channel.raid`](ChannelRaidBeta) response payload.</span>
+<span class="doccomment">/// [`channel.raid`](ChannelRaidV1) response payload.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelRaidBetaPayload</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelRaidV1Payload</span> {
     <span class="doccomment">/// The broadcaster ID that created the raid.</span>
     <span class="kw">pub</span> <span class="ident">from_broadcaster_user_id</span>: <span class="ident">types</span>::<span class="ident">UserId</span>,
     <span class="doccomment">/// The broadcaster login that created the raid.</span>
@@ -134,8 +135,9 @@
         &quot;subscription&quot;: {
             &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
             &quot;type&quot;: &quot;channel.raid&quot;,
-            &quot;version&quot;: &quot;beta&quot;,
+            &quot;version&quot;: &quot;1&quot;,
             &quot;status&quot;: &quot;enabled&quot;,
+            &quot;cost&quot;: 0,
             &quot;condition&quot;: {
                 &quot;to_broadcaster_user_id&quot;: &quot;1337&quot;
             },
