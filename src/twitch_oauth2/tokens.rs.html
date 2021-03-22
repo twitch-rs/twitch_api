@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/tokens.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tokens.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/3c247ff256fbe5db274d29e20c0b33f8d27ef384">3c247ff</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/a8a50e14dcf752cbea2b839c422d3dcfe189dde3">a8a50e1</a></p>
 <style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../twitch_oauth2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -124,6 +124,22 @@
 <span id="119">119</span>
 <span id="120">120</span>
 <span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Twitch token types</span>
 
@@ -143,9 +159,23 @@
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Deserialize</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">future</span>::<span class="ident">Future</span>;
 
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="doccomment">/// Types of bearer tokens</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BearerTokenType</span> {
+    <span class="doccomment">/// Token for making requests in the context of an authenticated user.</span>
+    <span class="ident">UserToken</span>,
+    <span class="doccomment">/// Token for server-to-server requests.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// In some contexts (i.e [EventSub](https://dev.twitch.tv/docs/eventsub)) an App Access Token can be used in the context of users that have authenticated</span>
+    <span class="doccomment">/// the specific Client ID</span>
+    <span class="ident">AppAccessToken</span>,
+}
+
 <span class="doccomment">/// Trait for twitch tokens to get fields and generalize over [AppAccessToken] and [UserToken]</span>
 <span class="attribute">#[<span class="ident">async_trait</span>::<span class="ident">async_trait</span>(<span class="question-mark">?</span><span class="ident">Send</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TwitchToken</span> {
+    <span class="doccomment">/// Get the type of token.</span>
+    <span class="kw">fn</span> <span class="ident">token_type</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BearerTokenType</span>;
     <span class="doccomment">/// Client ID associated with the token. Twitch requires this in all helix API calls</span>
     <span class="kw">fn</span> <span class="ident">client_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ClientId</span>;
     <span class="doccomment">/// Get the [AccessToken] for authenticating</span>
@@ -200,6 +230,8 @@
 
 <span class="attribute">#[<span class="ident">async_trait</span>::<span class="ident">async_trait</span>(<span class="question-mark">?</span><span class="ident">Send</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">TwitchToken</span><span class="op">&gt;</span> <span class="ident">TwitchToken</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">token_type</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BearerTokenType</span> { <span class="ident">T</span>::<span class="ident">token_type</span>() }
+
     <span class="kw">fn</span> <span class="ident">client_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ClientId</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">client_id</span>() }
 
     <span class="kw">fn</span> <span class="ident">token</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">AccessToken</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">token</span>() }
