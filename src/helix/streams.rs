@@ -25,9 +25,11 @@ use serde::{Deserialize, Serialize};
 
 pub use get_stream_tags::{GetStreamTagsRequest, Tag};
 pub use get_streams::{GetStreamsRequest, Stream};
+pub use replace_stream_tags::{ReplaceStreamTags, ReplaceStreamTagsBody, ReplaceStreamTagsRequest};
 
 pub mod get_stream_tags;
 pub mod get_streams;
+pub mod replace_stream_tags;
 
 /// Gotten from [`Stream.type_`](get_streams::Stream#structfield.type_)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
