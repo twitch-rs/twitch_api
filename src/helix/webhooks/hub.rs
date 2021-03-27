@@ -82,7 +82,7 @@ pub struct WebhookHubRequest<T: Topic> {
 ///
 /// # Notes
 ///
-/// This body is quite different from the official body. If you want the true representation in text, see [`helix::RequestPost::body`] on [`WebhookHubRequest<T: Topic>`](WebhookHubRequest)
+/// This body is quite different from the official body. If you want the true representation in text, see [`helix::HelixRequestBody::try_to_body`] on [`WebhookHubRequest<T: Topic>`](WebhookHubRequest)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct WebhookHubBody<T: Topic> {

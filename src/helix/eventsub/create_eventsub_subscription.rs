@@ -30,7 +30,7 @@ impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<
 ///
 /// # Notes
 ///
-/// This body is quite different from the official body. If you want the true representation in text, see [`helix::RequestPost::body`] on [`CreateEventSubSubscriptionRequest<E: EventSubscription>`](CreateEventSubSubscriptionRequest)
+/// This body is quite different from the official body. If you want the true representation in text, see [`helix::HelixRequestBody::try_to_body`] on [`CreateEventSubSubscriptionRequest<E: EventSubscription>`](CreateEventSubSubscriptionRequest)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreateEventSubSubscriptionBody<E: EventSubscription> {
