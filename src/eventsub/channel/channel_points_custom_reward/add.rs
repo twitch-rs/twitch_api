@@ -3,11 +3,12 @@
 
 use super::*;
 /// [`channel.channel_points_custom_reward.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardadd): a custom channel points reward has been created for the specified channel.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPointsCustomRewardAddV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward add notifications for.
+    #[builder(setter(into))]
     pub broadcaster_user_id: types::UserId,
 }
 

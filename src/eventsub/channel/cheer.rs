@@ -3,11 +3,12 @@
 use super::*;
 
 /// [`channel.cheer`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcheer): a user cheers on the specified channel.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelCheerV1 {
     /// The broadcaster user ID for the channel you want to get cheer notifications for.
+    #[builder(setter(into))]
     pub broadcaster_user_id: types::UserId,
 }
 

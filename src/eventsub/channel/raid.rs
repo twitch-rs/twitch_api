@@ -2,13 +2,15 @@
 use super::*;
 
 /// [`channel.raid`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelraid-beta): a a broadcaster raids another broadcaster’s channel.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelRaidV1 {
     /// The broadcaster user ID that created the channel raid you want to get notifications for. Use this parameter if you want to know when a specific broadcaster raids another broadcaster.
+    #[builder(default, setter(into, strip_option))]
     pub from_broadcaster_user_id: Option<types::UserId>,
     /// The broadcaster user ID that received the channel raid you want to get notifications for. Use this parameter if you want to know when a specific broadcaster is raided by another broadcaster.
+    #[builder(default, setter(into, strip_option))]
     pub to_broadcaster_user_id: Option<types::UserId>,
 }
 
