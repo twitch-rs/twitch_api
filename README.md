@@ -45,15 +45,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>
 This crate aims to target
 
 * [Helix](https://dev.twitch.tv/docs/api/reference)
-  * See [implemented endpoints](https://github.com/Emilgardis/twitch_oauth2/wiki/Implemented-Features#helix)
+  * See [implemented endpoints](https://github.com/Emilgardis/twitch_api2/wiki/Implemented-Features#helix)
 * TMI
-  * See [implemented endpoints](https://github.com/Emilgardis/twitch_oauth2/wiki/Implemented-Features#tmi)
+  * See [implemented endpoints](https://github.com/Emilgardis/twitch_api2/wiki/Implemented-Features#tmi)
 * [EventSub](https://dev.twitch.tv/docs/eventsub/eventsub-reference)
-  * See [implemented eventsub Helix endpoints](https://github.com/Emilgardis/twitch_oauth2/wiki/Implemented-Features#eventsub)
+  * See [implemented eventsub Helix endpoints](https://github.com/Emilgardis/twitch_api2/wiki/Implemented-Features#eventsub)
 * [Webhooks](https://dev.twitch.tv/docs/api/webhooks-reference)
-  * See [implemented webhooks](https://github.com/Emilgardis/twitch_oauth2/wiki/Implemented-Features#webhooks)
+  * See [implemented webhooks](https://github.com/Emilgardis/twitch_api2/wiki/Implemented-Features#webhooks)
 * [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
-  * See [implemented topics](https://github.com/Emilgardis/twitch_oauth2/wiki/Implemented-Features#pubsub)
+  * See [implemented topics](https://github.com/Emilgardis/twitch_api2/wiki/Implemented-Features#pubsub)
 * [Extensions](https://dev.twitch.tv/docs/extensions/reference)
 
 This crate should also be able to be used for
