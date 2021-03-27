@@ -71,6 +71,9 @@ pub struct CreateUserFollowsBody {
     /// ID of the channel to be followed by the user
     #[builder(default, setter(into))]
     pub to_id: types::UserId,
+    /// If `true`, the user gets email or push notifications (depending on the user’s notification settings) when the channel goes live. Default value is `false`.
+    #[builder(default, setter(strip_option))]
+    pub allow_notifications: Option<bool>,
 }
 
 impl helix::private::SealedSerialize for CreateUserFollowsBody {}
