@@ -42,7 +42,6 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPut::create_request)
 //! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPut::parse_response())
-
 use super::*;
 /// Query Parameters for [Block User](super::block_user)
 ///
@@ -131,6 +130,8 @@ fn test_request() {
     let req = BlockUserRequest::builder()
         .target_user_id("41245071".to_string())
         .build();
+
+    dbg!(req.create_request(EmptyBody, "token", "clientid").unwrap());
 
     // From twitch docs
     let data = br#""#.to_vec();

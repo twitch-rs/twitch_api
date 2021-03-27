@@ -182,10 +182,21 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
 
 #[test]
 fn test_request() {
-    use crate::eventsub::user::UserUpdateV1;
+    use crate::eventsub::{self, user::UserUpdateV1};
     use helix::*;
     let req: CreateEventSubSubscriptionRequest<UserUpdateV1> =
         CreateEventSubSubscriptionRequest::builder().build();
+
+    let body = CreateEventSubSubscriptionBody::new(
+        UserUpdateV1::builder().user_id("1234").build(),
+        eventsub::Transport {
+            method: eventsub::TransportMethod::Webhook,
+            callback: "example.com".to_string(),
+            secret: "heyhey13".to_string(),
+        },
+    );
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs, FIXME: docs say `users.update` in example for Create EventSub Subscription, they also use kebab-case for status
     // "{"type":"users.update","version":"1","condition":{"user_id":"1234"},"transport":{"method":"webhook","callback":"https://this-is-a-callback.com","secret":"s3cre7"}}"

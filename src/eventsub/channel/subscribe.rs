@@ -5,7 +5,7 @@
 use super::*;
 
 /// [`channel.subscribe`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscribe): a specified channel receives a subscriber. This does not include resubscribes.
-#[derive(Clone, Debug,typed_builder::TypedBuilder,  PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelSubscribeV1 {

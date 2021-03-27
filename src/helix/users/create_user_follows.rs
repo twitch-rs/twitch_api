@@ -67,10 +67,10 @@ pub struct CreateUserFollowsRequest {}
 pub struct CreateUserFollowsBody {
     /// User ID of the follower
     #[builder(default, setter(into))]
-    pub from_id: Option<types::UserId>,
+    pub from_id: types::UserId,
     /// ID of the channel to be followed by the user
     #[builder(default, setter(into))]
-    pub to_id: Option<types::UserId>,
+    pub to_id: types::UserId,
 }
 
 impl helix::private::SealedSerialize for CreateUserFollowsBody {}
@@ -167,6 +167,13 @@ impl helix::RequestPost for CreateUserFollowsRequest {
 fn test_request() {
     use helix::*;
     let req = CreateUserFollowsRequest::builder().build();
+
+    let body = CreateUserFollowsBody::builder()
+        .from_id("1234")
+        .to_id("4321")
+        .build();
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs
     let data = br#""#.to_vec();

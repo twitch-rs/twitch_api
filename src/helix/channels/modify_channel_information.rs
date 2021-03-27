@@ -129,6 +129,12 @@ fn test_request() {
         .broadcaster_id(String::from("0"))
         .build();
 
+    let body = ModifyChannelInformationBody::builder()
+        .title("Hello World!")
+        .build();
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
+
     // From twitch docs
     let data = br#""#.to_vec();
 

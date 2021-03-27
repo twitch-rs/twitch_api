@@ -3,7 +3,7 @@
 use super::*;
 
 /// [`channel.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelupdate) subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
-#[derive(Clone, Debug,typed_builder::TypedBuilder,  PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelUpdateV1 {

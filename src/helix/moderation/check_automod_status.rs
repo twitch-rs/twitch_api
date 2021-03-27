@@ -83,7 +83,18 @@ pub struct CheckAutoModStatusBody {
     pub msg_text: String,
     /// User ID of the sender.
     #[builder(setter(into))]
-    pub user_id: String,
+    pub user_id: types::UserId,
+}
+
+impl CheckAutoModStatusBody {
+    /// Create a new [`CheckAutoModStatusBody`]
+    pub fn new(msg_id: String, msg_text: String, user_id: types::UserId) -> Self {
+        Self {
+            msg_id,
+            msg_text,
+            user_id,
+        }
+    }
 }
 
 impl helix::HelixRequestBody for Vec<CheckAutoModStatusBody> {
@@ -128,6 +139,21 @@ fn test_request() {
     let req = CheckAutoModStatusRequest::builder()
         .broadcaster_id("198704263".to_string())
         .build();
+
+    let body = vec![
+        CheckAutoModStatusBody::new(
+            "123".to_string(),
+            "hello world".to_string(),
+            "1234".to_string(),
+        ),
+        CheckAutoModStatusBody::new(
+            "393".to_string(),
+            "automoded word".to_string(),
+            "1234".to_string(),
+        ),
+    ];
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs
     let data = br#"
