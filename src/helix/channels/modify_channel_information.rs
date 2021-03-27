@@ -81,6 +81,8 @@ pub struct ModifyChannelInformationBody {
     #[builder(default, setter(into, strip_option))]
     pub title: Option<String>,
 }
+
+impl helix::private::SealedSerialize for ModifyChannelInformationBody {}
 /// Return Values for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)

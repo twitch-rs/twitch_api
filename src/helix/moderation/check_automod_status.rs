@@ -86,6 +86,17 @@ pub struct CheckAutoModStatusBody {
     pub user_id: String,
 }
 
+impl helix::HelixRequestBody for Vec<CheckAutoModStatusBody> {
+    fn try_to_body(&self) -> Result<Vec<u8>, helix::BodyError> {
+        #[derive(Serialize)]
+        struct InnerBody<'a> {
+            data: &'a Vec<CheckAutoModStatusBody>,
+        }
+
+        serde_json::to_vec(&InnerBody { data: &self }).map_err(Into::into)
+    }
+}
+
 /// Return Values for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
@@ -109,15 +120,6 @@ impl helix::Request for CheckAutoModStatusRequest {
 
 impl helix::RequestPost for CheckAutoModStatusRequest {
     type Body = Vec<CheckAutoModStatusBody>;
-
-    fn body(&self, body: &Self::Body) -> Result<String, helix::BodyError> {
-        #[derive(Serialize)]
-        struct InnerBody<'a> {
-            data: &'a Vec<CheckAutoModStatusBody>,
-        }
-
-        serde_json::to_string(&InnerBody { data: &body }).map_err(Into::into)
-    }
 }
 
 #[test]

@@ -73,6 +73,8 @@ pub struct CreateUserFollowsBody {
     pub to_id: Option<types::UserId>,
 }
 
+impl helix::private::SealedSerialize for CreateUserFollowsBody {}
+
 /// Return Values for [Create User Follows](super::create_user_follows)
 ///
 /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)

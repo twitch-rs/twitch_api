@@ -31,7 +31,7 @@ impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<
 /// # Notes
 ///
 /// This body is quite different from the official body. If you want the true representation in text, see [`helix::RequestPost::body`] on [`CreateEventSubSubscriptionRequest<E: EventSubscription>`](CreateEventSubSubscriptionRequest)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreateEventSubSubscriptionBody<E: EventSubscription> {
     /// Subscription that will be created
@@ -39,6 +39,26 @@ pub struct CreateEventSubSubscriptionBody<E: EventSubscription> {
     pub subscription: E,
     /// The notification delivery specific information
     pub transport: Transport,
+}
+
+impl<E: EventSubscription> helix::HelixRequestBody for CreateEventSubSubscriptionBody<E> {
+    fn try_to_body(&self) -> Result<Vec<u8>, helix::BodyError> {
+        #[derive(PartialEq, Serialize, Debug)]
+        struct IEventSubRequestBody<'a> {
+            r#type: EventType,
+            version: &'static str,
+            condition: serde_json::Value,
+            transport: &'a Transport,
+        }
+
+        let b = IEventSubRequestBody {
+            r#type: E::EVENT_TYPE,
+            version: E::VERSION,
+            condition: self.subscription.condition()?,
+            transport: &self.transport,
+        };
+        serde_json::to_vec(&b).map_err(Into::into)
+    }
 }
 
 // FIXME: Builder?
@@ -82,24 +102,6 @@ pub struct CreateEventSubSubscription<E: EventSubscription> {
 
 impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequest<E> {
     type Body = CreateEventSubSubscriptionBody<E>;
-
-    fn body(&self, body: &Self::Body) -> Result<String, helix::BodyError> {
-        #[derive(PartialEq, Serialize, Debug)]
-        struct IEventSubRequestBody<'a> {
-            r#type: EventType,
-            version: &'static str,
-            condition: serde_json::Value,
-            transport: &'a Transport,
-        }
-
-        let b = IEventSubRequestBody {
-            r#type: E::EVENT_TYPE,
-            version: E::VERSION,
-            condition: body.subscription.condition()?,
-            transport: &body.transport,
-        };
-        serde_json::to_string(&b).map_err(Into::into)
-    }
 
     fn parse_response(
         request: Option<Self>,

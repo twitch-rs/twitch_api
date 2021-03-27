@@ -35,7 +35,7 @@
 //! let request = block_user::BlockUserRequest::builder()
 //!     .target_user_id("1234")
 //!     .build();
-//! let response: block_user::BlockUser = client.req_put(request, &token).await?;
+//! let response: block_user::BlockUser = client.req_put(request, helix::EmptyBody, &token).await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -121,7 +121,9 @@ impl helix::Request for BlockUserRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageBlockedUsers];
 }
 
-impl helix::RequestPut for BlockUserRequest {}
+impl helix::RequestPut for BlockUserRequest {
+    type Body = helix::EmptyBody;
+}
 
 #[test]
 fn test_request() {

@@ -107,6 +107,8 @@ impl helix::RequestPost for StartCommercialRequest {
     type Body = StartCommercialBody;
 }
 
+impl helix::private::SealedSerialize for StartCommercialBody {}
+
 #[test]
 fn test_request() {
     use helix::*;
