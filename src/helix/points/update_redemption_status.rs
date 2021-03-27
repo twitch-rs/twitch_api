@@ -136,6 +136,8 @@ impl helix::RequestPatch for UpdateRedemptionStatusRequest {
     type Body = UpdateRedemptionStatusBody;
 }
 
+impl helix::private::SealedSerialize for UpdateRedemptionStatusBody {}
+
 #[test]
 fn test_request() {
     use helix::*;
@@ -145,6 +147,11 @@ fn test_request() {
         .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63".to_string())
         .build();
 
+    let body = UpdateRedemptionStatusBody::builder()
+        .status(CustomRewardRedemptionStatus::Unfulfilled)
+        .build();
+
+    dbg!(req.create_request(body, "abcd", "client").unwrap());
     // From twitch docs
     let data = br##"
  {

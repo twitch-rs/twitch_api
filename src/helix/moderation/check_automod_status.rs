@@ -83,7 +83,29 @@ pub struct CheckAutoModStatusBody {
     pub msg_text: String,
     /// User ID of the sender.
     #[builder(setter(into))]
-    pub user_id: String,
+    pub user_id: types::UserId,
+}
+
+impl CheckAutoModStatusBody {
+    /// Create a new [`CheckAutoModStatusBody`]
+    pub fn new(msg_id: String, msg_text: String, user_id: types::UserId) -> Self {
+        Self {
+            msg_id,
+            msg_text,
+            user_id,
+        }
+    }
+}
+
+impl helix::HelixRequestBody for Vec<CheckAutoModStatusBody> {
+    fn try_to_body(&self) -> Result<Vec<u8>, helix::BodyError> {
+        #[derive(Serialize)]
+        struct InnerBody<'a> {
+            data: &'a Vec<CheckAutoModStatusBody>,
+        }
+
+        serde_json::to_vec(&InnerBody { data: &self }).map_err(Into::into)
+    }
 }
 
 /// Return Values for [Check AutoMod Status](super::check_automod_status)
@@ -109,15 +131,6 @@ impl helix::Request for CheckAutoModStatusRequest {
 
 impl helix::RequestPost for CheckAutoModStatusRequest {
     type Body = Vec<CheckAutoModStatusBody>;
-
-    fn body(&self, body: &Self::Body) -> Result<String, helix::BodyError> {
-        #[derive(Serialize)]
-        struct InnerBody<'a> {
-            data: &'a Vec<CheckAutoModStatusBody>,
-        }
-
-        serde_json::to_string(&InnerBody { data: &body }).map_err(Into::into)
-    }
 }
 
 #[test]
@@ -126,6 +139,21 @@ fn test_request() {
     let req = CheckAutoModStatusRequest::builder()
         .broadcaster_id("198704263".to_string())
         .build();
+
+    let body = vec![
+        CheckAutoModStatusBody::new(
+            "123".to_string(),
+            "hello world".to_string(),
+            "1234".to_string(),
+        ),
+        CheckAutoModStatusBody::new(
+            "393".to_string(),
+            "automoded word".to_string(),
+            "1234".to_string(),
+        ),
+    ];
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs
     let data = br#"

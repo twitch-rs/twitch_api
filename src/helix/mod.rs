@@ -187,7 +187,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestPost<Body = B>,
-        B: serde::Serialize,
+        B: HelixRequestBody,
         D: serde::de::DeserializeOwned + PartialEq,
         T: TwitchToken + ?Sized,
     {
@@ -211,7 +211,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     ) -> Result<D, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestPatch<Body = B>,
-        B: serde::Serialize,
+        B: HelixRequestBody,
         D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
             + serde::de::DeserializeOwned
             + PartialEq,
@@ -252,19 +252,22 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     }
 
     /// Request on a valid [`RequestPut`] endpoint
-    pub async fn req_put<R, D, T>(
+    pub async fn req_put<R, B, D, T>(
         &'a self,
         request: R,
+        body: B,
         token: &T,
     ) -> Result<D, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
-        R: Request<Response = D> + Request + RequestPut,
+        R: Request<Response = D> + Request + RequestPut<Body = B>,
+        B: HelixRequestBody,
         D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
             + serde::de::DeserializeOwned
             + PartialEq,
         T: TwitchToken + ?Sized,
     {
-        let req = request.create_request(token.token().secret(), token.client_id().as_str())?;
+        let req =
+            request.create_request(body, token.token().secret(), token.client_id().as_str())?;
         let uri = req.uri().clone();
         let response = self
             .client
@@ -337,12 +340,7 @@ pub trait Request: serde::Serialize {
 #[cfg_attr(nightly, doc(spotlight))]
 pub trait RequestPost: Request {
     /// Body parameters
-    type Body: serde::Serialize;
-
-    /// Create body text from [`RequestPost::Body`]
-    fn body(&self, body: &Self::Body) -> Result<String, BodyError> {
-        serde_json::to_string(body).map_err(Into::into)
-    }
+    type Body: HelixRequestBody;
 
     /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
@@ -353,7 +351,7 @@ pub trait RequestPost: Request {
     ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
         let uri = self.get_uri()?;
 
-        let body = self.body(&body)?;
+        let body = body.try_to_body()?;
         //eprintln!("\n\nbody is ------------ {} ------------", body);
 
         let mut bearer =
@@ -367,7 +365,7 @@ pub trait RequestPost: Request {
             .header("Client-ID", client_id)
             .header("Content-Type", "application/json")
             .header(http::header::AUTHORIZATION, bearer)
-            .body(body.into_bytes())
+            .body(body)
             .map_err(Into::into)
     }
 
@@ -415,12 +413,7 @@ pub trait RequestPatch: Request
 where <Self as Request>::Response:
         std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>> {
     /// Body parameters
-    type Body: serde::Serialize;
-
-    /// Create body text from [`RequestPatch::Body`]
-    fn body(&self, body: &Self::Body) -> Result<String, BodyError> {
-        serde_json::to_string(body).map_err(Into::into)
-    }
+    type Body: HelixRequestBody;
 
     /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
@@ -431,7 +424,7 @@ where <Self as Request>::Response:
     ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
         let uri = self.get_uri()?;
 
-        let body = self.body(&body)?;
+        let body = body.try_to_body()?;
         // eprintln!("\n\nbody is ------------ {} ------------", body);
 
         let mut bearer =
@@ -445,7 +438,7 @@ where <Self as Request>::Response:
             .header("Client-ID", client_id)
             .header("Content-Type", "application/json")
             .header(http::header::AUTHORIZATION, bearer)
-            .body(body.into_bytes())
+            .body(body)
             .map_err(Into::into)
     }
 
@@ -539,13 +532,19 @@ pub trait RequestDelete: Request {
 /// Helix endpoint PUTs information
 #[cfg_attr(nightly, doc(spotlight))]
 pub trait RequestPut: Request {
+    /// Body parameters
+    type Body: HelixRequestBody;
     /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
         &self,
+        body: Self::Body,
         token: &str,
         client_id: &str,
     ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
         let uri = self.get_uri()?;
+
+        let body = body.try_to_body()?;
+        // eprintln!("\n\nbody is ------------ {} ------------", body);
 
         let mut bearer =
             http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
@@ -558,7 +557,7 @@ pub trait RequestPut: Request {
             .header("Client-ID", client_id)
             .header("Content-Type", "application/json")
             .header(http::header::AUTHORIZATION, bearer)
-            .body(Vec::with_capacity(0))
+            .body(body)
             .map_err(Into::into)
     }
 
@@ -588,6 +587,7 @@ pub trait RequestPut: Request {
                 status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
                 uri: uri.clone(),
+                body: response.body().clone(),
             });
         }
 
@@ -598,6 +598,7 @@ pub trait RequestPut: Request {
                 status: response.status(),
                 message: err.to_string(),
                 uri: uri.clone(),
+                body: response.body().clone(),
             }),
         }
     }
@@ -834,7 +835,7 @@ pub enum HelixRequestGetError {
 /// Could not parse PUT response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum HelixRequestPutError {
-    /// helix returned error {status:?} - {error}: {message:?} when calling `PUT {uri}`
+    /// helix returned error {status:?} - {error}: {message:?} when calling `PUT {uri}` with a body
     Error {
         /// Error message related to status code
         error: String,
@@ -844,6 +845,8 @@ pub enum HelixRequestPutError {
         message: String,
         /// URI to the endpoint
         uri: http::Uri,
+        /// Body sent with PUT
+        body: Vec<u8>,
     },
     /// could not parse response as utf8 when calling `PUT {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
@@ -904,7 +907,7 @@ pub enum HelixRequestDeleteError {
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
 }
 
-/// Errors that can happen when creating a body for [`RequestPost`](RequestPost::Body) or [`RequestPatch`](RequestPatch::Body)
+/// Errors that can happen when creating a body
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum BodyError {
     /// could not serialize as json
@@ -913,4 +916,33 @@ pub enum BodyError {
     QuerySerializeError(#[from] ser::Error),
     /// uri is invalid
     InvalidUri(#[from] InvalidUri),
+}
+
+/// Create a body. Used for specializing request bodies
+pub trait HelixRequestBody {
+    /// Create the body
+    fn try_to_body(&self) -> Result<Vec<u8>, BodyError>;
+}
+
+/// An empty body.
+///
+/// Implements [`HelixRequestBody::try_to_body`], returning an empty vector
+#[derive(Default, Clone, Copy)]
+pub struct EmptyBody;
+
+impl HelixRequestBody for EmptyBody {
+    fn try_to_body(&self) -> Result<Vec<u8>, BodyError> { Ok(vec![]) }
+}
+
+// TODO: I would want specialization for this. For now, to override this behavior for a body, we specify a sealed trait
+impl<T> HelixRequestBody for T
+where T: serde::Serialize + private::SealedSerialize
+{
+    fn try_to_body(&self) -> Result<Vec<u8>, BodyError> {
+        serde_json::to_vec(&self).map_err(Into::into)
+    }
+}
+
+pub(crate) mod private {
+    pub trait SealedSerialize {}
 }

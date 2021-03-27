@@ -81,6 +81,8 @@ pub struct ModifyChannelInformationBody {
     #[builder(default, setter(into, strip_option))]
     pub title: Option<String>,
 }
+
+impl helix::private::SealedSerialize for ModifyChannelInformationBody {}
 /// Return Values for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
@@ -126,6 +128,12 @@ fn test_request() {
     let req = ModifyChannelInformationRequest::builder()
         .broadcaster_id(String::from("0"))
         .build();
+
+    let body = ModifyChannelInformationBody::builder()
+        .title("Hello World!")
+        .build();
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs
     let data = br#""#.to_vec();

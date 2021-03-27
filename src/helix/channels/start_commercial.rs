@@ -73,9 +73,9 @@ impl Default for StartCommercialRequest {
 #[non_exhaustive]
 pub struct StartCommercialBody {
     /// ID of the channel requesting a commercial
+    #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
     /// Desired length of the commercial in seconds. Valid options are 30, 60, 90, 120, 150, 180.
-    #[builder(setter(into))]
     pub length: types::CommercialLength,
 }
 
@@ -107,10 +107,19 @@ impl helix::RequestPost for StartCommercialRequest {
     type Body = StartCommercialBody;
 }
 
+impl helix::private::SealedSerialize for StartCommercialBody {}
+
 #[test]
 fn test_request() {
     use helix::*;
     let req = StartCommercialRequest {};
+
+    let body = StartCommercialBody::builder()
+        .broadcaster_id("1234")
+        .length(crate::types::CommercialLength::Length120)
+        .build();
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs
     let data = br#"

@@ -67,11 +67,16 @@ pub struct CreateUserFollowsRequest {}
 pub struct CreateUserFollowsBody {
     /// User ID of the follower
     #[builder(default, setter(into))]
-    pub from_id: Option<types::UserId>,
+    pub from_id: types::UserId,
     /// ID of the channel to be followed by the user
     #[builder(default, setter(into))]
-    pub to_id: Option<types::UserId>,
+    pub to_id: types::UserId,
+    /// If `true`, the user gets email or push notifications (depending on the user’s notification settings) when the channel goes live. Default value is `false`.
+    #[builder(default, setter(strip_option))]
+    pub allow_notifications: Option<bool>,
 }
+
+impl helix::private::SealedSerialize for CreateUserFollowsBody {}
 
 /// Return Values for [Create User Follows](super::create_user_follows)
 ///
@@ -165,6 +170,13 @@ impl helix::RequestPost for CreateUserFollowsRequest {
 fn test_request() {
     use helix::*;
     let req = CreateUserFollowsRequest::builder().build();
+
+    let body = CreateUserFollowsBody::builder()
+        .from_id("1234")
+        .to_id("4321")
+        .build();
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs
     let data = br#""#.to_vec();

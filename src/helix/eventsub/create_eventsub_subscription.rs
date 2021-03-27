@@ -30,8 +30,8 @@ impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<
 ///
 /// # Notes
 ///
-/// This body is quite different from the official body. If you want the true representation in text, see [`helix::RequestPost::body`] on [`CreateEventSubSubscriptionRequest<E: EventSubscription>`](CreateEventSubSubscriptionRequest)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+/// This body is quite different from the official body. If you want the true representation in text, see [`helix::HelixRequestBody::try_to_body`] on [`CreateEventSubSubscriptionRequest<E: EventSubscription>`](CreateEventSubSubscriptionRequest)
+#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreateEventSubSubscriptionBody<E: EventSubscription> {
     /// Subscription that will be created
@@ -39,6 +39,26 @@ pub struct CreateEventSubSubscriptionBody<E: EventSubscription> {
     pub subscription: E,
     /// The notification delivery specific information
     pub transport: Transport,
+}
+
+impl<E: EventSubscription> helix::HelixRequestBody for CreateEventSubSubscriptionBody<E> {
+    fn try_to_body(&self) -> Result<Vec<u8>, helix::BodyError> {
+        #[derive(PartialEq, Serialize, Debug)]
+        struct IEventSubRequestBody<'a> {
+            r#type: EventType,
+            version: &'static str,
+            condition: serde_json::Value,
+            transport: &'a Transport,
+        }
+
+        let b = IEventSubRequestBody {
+            r#type: E::EVENT_TYPE,
+            version: E::VERSION,
+            condition: self.subscription.condition()?,
+            transport: &self.transport,
+        };
+        serde_json::to_vec(&b).map_err(Into::into)
+    }
 }
 
 // FIXME: Builder?
@@ -82,24 +102,6 @@ pub struct CreateEventSubSubscription<E: EventSubscription> {
 
 impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequest<E> {
     type Body = CreateEventSubSubscriptionBody<E>;
-
-    fn body(&self, body: &Self::Body) -> Result<String, helix::BodyError> {
-        #[derive(PartialEq, Serialize, Debug)]
-        struct IEventSubRequestBody<'a> {
-            r#type: EventType,
-            version: &'static str,
-            condition: serde_json::Value,
-            transport: &'a Transport,
-        }
-
-        let b = IEventSubRequestBody {
-            r#type: E::EVENT_TYPE,
-            version: E::VERSION,
-            condition: body.subscription.condition()?,
-            transport: &body.transport,
-        };
-        serde_json::to_string(&b).map_err(Into::into)
-    }
 
     fn parse_response(
         request: Option<Self>,
@@ -180,10 +182,21 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
 
 #[test]
 fn test_request() {
-    use crate::eventsub::user::UserUpdateV1;
+    use crate::eventsub::{self, user::UserUpdateV1};
     use helix::*;
     let req: CreateEventSubSubscriptionRequest<UserUpdateV1> =
         CreateEventSubSubscriptionRequest::builder().build();
+
+    let body = CreateEventSubSubscriptionBody::new(
+        UserUpdateV1::builder().user_id("1234").build(),
+        eventsub::Transport {
+            method: eventsub::TransportMethod::Webhook,
+            callback: "example.com".to_string(),
+            secret: "heyhey13".to_string(),
+        },
+    );
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs, FIXME: docs say `users.update` in example for Create EventSub Subscription, they also use kebab-case for status
     // "{"type":"users.update","version":"1","condition":{"user_id":"1234"},"transport":{"method":"webhook","callback":"https://this-is-a-callback.com","secret":"s3cre7"}}"

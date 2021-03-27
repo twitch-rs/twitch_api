@@ -82,7 +82,7 @@ pub struct WebhookHubRequest<T: Topic> {
 ///
 /// # Notes
 ///
-/// This body is quite different from the official body. If you want the true representation in text, see [`helix::RequestPost::body`] on [`WebhookHubRequest<T: Topic>`](WebhookHubRequest)
+/// This body is quite different from the official body. If you want the true representation in text, see [`helix::HelixRequestBody::try_to_body`] on [`WebhookHubRequest<T: Topic>`](WebhookHubRequest)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct WebhookHubBody<T: Topic> {
@@ -109,6 +109,33 @@ pub enum WebhookSubscriptionMode {
     Subscribe,
     /// Unsubscribe
     Unsubscribe,
+}
+
+impl<T: Topic> helix::HelixRequestBody for WebhookHubBody<T> {
+    fn try_to_body(&self) -> Result<Vec<u8>, helix::BodyError> {
+        #[derive(PartialEq, Serialize)]
+        struct IWebhookHubBody<'a> {
+            #[serde(rename = "hub.callback")]
+            callback: &'a str,
+            #[serde(rename = "hub.mode")]
+            mode: &'a WebhookSubscriptionMode,
+            #[serde(rename = "hub.topic")]
+            topic: String,
+            #[serde(rename = "hub.lease_seconds")]
+            lease_seconds: u32,
+            #[serde(rename = "hub.secret")]
+            secret: Option<&'a str>,
+        }
+
+        let b = IWebhookHubBody {
+            callback: &self.callback,
+            mode: &self.mode,
+            topic: self.topic.get_uri()?.to_string(),
+            lease_seconds: self.lease_seconds,
+            secret: self.secret.as_deref(),
+        };
+        serde_json::to_vec(&b).map_err(Into::into)
+    }
 }
 
 /// Return Values for [Subscribe to/Unsubscribe From Events](super::hub)
@@ -143,31 +170,6 @@ impl<T: Topic> helix::Request for WebhookHubRequest<T> {
 
 impl<T: Topic> helix::RequestPost for WebhookHubRequest<T> {
     type Body = WebhookHubBody<T>;
-
-    fn body(&self, body: &Self::Body) -> Result<String, helix::BodyError> {
-        #[derive(PartialEq, Serialize)]
-        struct IWebhookHubBody<'a> {
-            #[serde(rename = "hub.callback")]
-            callback: &'a str,
-            #[serde(rename = "hub.mode")]
-            mode: &'a WebhookSubscriptionMode,
-            #[serde(rename = "hub.topic")]
-            topic: String,
-            #[serde(rename = "hub.lease_seconds")]
-            lease_seconds: u32,
-            #[serde(rename = "hub.secret")]
-            secret: Option<&'a str>,
-        }
-
-        let b = IWebhookHubBody {
-            callback: &body.callback,
-            mode: &body.mode,
-            topic: body.topic.get_uri()?.to_string(),
-            lease_seconds: body.lease_seconds,
-            secret: body.secret.as_deref(),
-        };
-        serde_json::to_string(&b).map_err(Into::into)
-    }
 
     fn parse_response(
         request: Option<Self>,
