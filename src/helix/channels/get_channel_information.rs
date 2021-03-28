@@ -37,10 +37,12 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetChannelInformationRequest::parse_response(None, &request.get_uri(), response)`](GetChannelInformationRequest::parse_response)
 use std::convert::TryInto;
 
 use super::*;
+use helix::RequestGet;
+
 /// Query Parameters for [Get Channel Information](super::get_channel_information)
 ///
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
@@ -76,7 +78,7 @@ pub struct ChannelInformation {
     pub description: String,
 }
 
-impl helix::Request for GetChannelInformationRequest {
+impl Request for GetChannelInformationRequest {
     type Response = Option<ChannelInformation>;
 
     const PATH: &'static str = "channels";
@@ -84,7 +86,7 @@ impl helix::Request for GetChannelInformationRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetChannelInformationRequest {
+impl RequestGet for GetChannelInformationRequest {
     fn parse_response(
         request: Option<Self>,
         uri: &http::Uri,

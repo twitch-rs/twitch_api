@@ -33,9 +33,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetUsersFollowsRequest::parse_response(None, &request.get_uri(), response)`](GetUsersFollowsRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 /// Query Parameters for [Get Users Follows](super::get_users_follows)
 ///
 /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)
@@ -84,7 +85,7 @@ pub struct UsersFollow {
     pub total: Option<usize>,
 }
 
-impl helix::Request for GetUsersFollowsRequest {
+impl Request for GetUsersFollowsRequest {
     type Response = Vec<UsersFollow>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -94,7 +95,7 @@ impl helix::Request for GetUsersFollowsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetUsersFollowsRequest {}
+impl RequestGet for GetUsersFollowsRequest {}
 
 impl helix::Paginated for GetUsersFollowsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

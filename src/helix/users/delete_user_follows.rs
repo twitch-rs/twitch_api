@@ -39,9 +39,11 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestDelete::parse_response())
+//! and parse the [`http::Response`] with [`DeleteUserFollowsRequest::parse_response(&request.get_uri(), response)`](DeleteUserFollowsRequest::parse_response)
 
 use super::*;
+use helix::RequestDelete;
+
 /// Query Parameters for [Delete Users Follows](super::delete_user_follows)
 ///
 /// [`delete-user-follows`](https://dev.twitch.tv/docs/api/reference#delete-user-follows)
@@ -82,7 +84,7 @@ impl std::convert::TryFrom<http::StatusCode> for DeleteUserFollow {
     }
 }
 
-impl helix::Request for DeleteUserFollowsRequest {
+impl Request for DeleteUserFollowsRequest {
     type Response = DeleteUserFollow;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -92,7 +94,7 @@ impl helix::Request for DeleteUserFollowsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditFollows];
 }
 
-impl helix::RequestDelete for DeleteUserFollowsRequest {}
+impl RequestDelete for DeleteUserFollowsRequest {}
 
 #[test]
 fn test_request() {

@@ -21,7 +21,10 @@
 //! # }
 //! ```
 
-use crate::{helix, types};
+use crate::{
+    helix::{self, Request},
+    types,
+};
 use serde::{Deserialize, Serialize};
 
 pub mod get_channel_editors;

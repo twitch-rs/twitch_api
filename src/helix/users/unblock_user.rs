@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestDelete::parse_response())
+//! and parse the [`http::Response`] with [`UnblockUserRequest::parse_response(&request.get_uri(), response)`](UnblockUserRequest::parse_response)
 
 use super::*;
+use helix::RequestDelete;
 /// Query Parameters for [Unblock User](super::unblock_user)
 ///
 /// [`unblock-user`](https://dev.twitch.tv/docs/api/reference#unblock-user)
@@ -76,7 +77,7 @@ impl std::convert::TryFrom<http::StatusCode> for UnblockUser {
     }
 }
 
-impl helix::Request for UnblockUserRequest {
+impl Request for UnblockUserRequest {
     type Response = UnblockUser;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -86,7 +87,7 @@ impl helix::Request for UnblockUserRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageBlockedUsers];
 }
 
-impl helix::RequestDelete for UnblockUserRequest {}
+impl RequestDelete for UnblockUserRequest {}
 
 #[test]
 fn test_request() {

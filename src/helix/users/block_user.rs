@@ -41,8 +41,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPut::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPut::parse_response())
+//! and parse the [`http::Response`] with [`BlockUserRequest::parse_response(&request.get_uri(), response)`](BlockUserRequest::parse_response)
 use super::*;
+use helix::RequestPut;
+
 /// Query Parameters for [Block User](super::block_user)
 ///
 /// [`block-user`](https://dev.twitch.tv/docs/api/reference#block-user)
@@ -110,7 +112,7 @@ impl std::convert::TryFrom<http::StatusCode> for BlockUser {
     }
 }
 
-impl helix::Request for BlockUserRequest {
+impl Request for BlockUserRequest {
     type Response = BlockUser;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -120,7 +122,7 @@ impl helix::Request for BlockUserRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageBlockedUsers];
 }
 
-impl helix::RequestPut for BlockUserRequest {
+impl RequestPut for BlockUserRequest {
     type Body = helix::EmptyBody;
 }
 

@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetStreamTagsRequest::parse_response(None, &request.get_uri(), response)`](GetStreamTagsRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Stream Tags](super::get_stream_tags)
 ///
@@ -56,7 +57,7 @@ pub struct GetStreamTagsRequest {
 /// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
 pub type Tag = helix::tags::TwitchTag;
 
-impl helix::Request for GetStreamTagsRequest {
+impl Request for GetStreamTagsRequest {
     type Response = Vec<Tag>;
 
     const PATH: &'static str = "streams/tags";
@@ -64,7 +65,7 @@ impl helix::Request for GetStreamTagsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetStreamTagsRequest {}
+impl RequestGet for GetStreamTagsRequest {}
 
 #[test]
 fn test_request() {

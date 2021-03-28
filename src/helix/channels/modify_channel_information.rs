@@ -51,8 +51,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(body, &token, &client_id)`](helix::RequestPatch::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPatch::parse_response())
+//! and parse the [`http::Response`] with [`ModifyChannelInformationRequest::parse_response(&request.get_uri(), response)`](ModifyChannelInformationRequest::parse_response)
 use super::*;
+use helix::RequestPatch;
+
 /// Query Parameters for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
@@ -110,7 +112,7 @@ impl std::convert::TryFrom<http::StatusCode> for ModifyChannelInformation {
     }
 }
 
-impl helix::Request for ModifyChannelInformationRequest {
+impl Request for ModifyChannelInformationRequest {
     type Response = ModifyChannelInformation;
 
     const PATH: &'static str = "channels";
@@ -118,7 +120,7 @@ impl helix::Request for ModifyChannelInformationRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditBroadcast];
 }
 
-impl helix::RequestPatch for ModifyChannelInformationRequest {
+impl RequestPatch for ModifyChannelInformationRequest {
     type Body = ModifyChannelInformationBody;
 }
 

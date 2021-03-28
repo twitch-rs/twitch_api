@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetVideosRequest::parse_response(None, &request.get_uri(), response)`](GetVideosRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 
 // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 /// Query Parameters for [Get Videos](super::get_videos)
@@ -120,7 +121,7 @@ pub struct Video {
     pub viewable: types::VideoPrivacy,
 }
 
-impl helix::Request for GetVideosRequest {
+impl Request for GetVideosRequest {
     type Response = Vec<Video>;
 
     const PATH: &'static str = "videos";
@@ -128,7 +129,7 @@ impl helix::Request for GetVideosRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetVideosRequest {}
+impl RequestGet for GetVideosRequest {}
 
 impl helix::Paginated for GetVideosRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

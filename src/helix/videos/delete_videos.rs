@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestDelete::parse_response())
+//! and parse the [`http::Response`] with [`DeleteVideosRequest::parse_response(&request.get_uri(), response)`](DeleteVideosRequest::parse_response)
 
 use super::*;
+use helix::RequestDelete;
 
 // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 /// Query Parameters for [Get Videos](super::delete_videos)
@@ -79,7 +80,7 @@ impl std::convert::TryFrom<http::StatusCode> for DeleteVideo {
     }
 }
 
-impl helix::Request for DeleteVideosRequest {
+impl Request for DeleteVideosRequest {
     type Response = DeleteVideo;
 
     const PATH: &'static str = "videos";
@@ -87,7 +88,7 @@ impl helix::Request for DeleteVideosRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageVideos];
 }
 
-impl helix::RequestDelete for DeleteVideosRequest {}
+impl RequestDelete for DeleteVideosRequest {}
 
 #[test]
 fn test_request() {

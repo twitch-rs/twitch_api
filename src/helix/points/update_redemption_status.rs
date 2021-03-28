@@ -56,9 +56,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(body, &token, &client_id)`](helix::RequestPatch::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPatch::parse_response())
+//! and parse the [`http::Response`] with [`UpdateRedemptionStatusRequest::parse_response(&request.get_uri(), response)`](UpdateRedemptionStatusRequest::parse_response)
 
 use super::*;
+use helix::RequestPatch;
 
 /// Query Parameters for [Update Redemption Status](super::update_redemption_status)
 ///
@@ -123,7 +124,7 @@ impl std::convert::TryFrom<http::StatusCode> for UpdateRedemptionStatusInformati
     }
 }
 
-impl helix::Request for UpdateRedemptionStatusRequest {
+impl Request for UpdateRedemptionStatusRequest {
     type Response = UpdateRedemptionStatusInformation;
 
     const PATH: &'static str = "channel_points/custom_rewards/redemptions";
@@ -132,7 +133,7 @@ impl helix::Request for UpdateRedemptionStatusRequest {
         &[twitch_oauth2::scopes::Scope::ChannelManageBroadcast];
 }
 
-impl helix::RequestPatch for UpdateRedemptionStatusRequest {
+impl RequestPatch for UpdateRedemptionStatusRequest {
     type Body = UpdateRedemptionStatusBody;
 }
 

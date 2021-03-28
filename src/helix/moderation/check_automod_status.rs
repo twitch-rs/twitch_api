@@ -55,9 +55,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPost::parse_response())
+//! and parse the [`http::Response`] with [`CheckAutoModStatusRequest::parse_response(None, &request.get_uri(), response)`](CheckAutoModStatusRequest::parse_response)
 
 use super::*;
+use helix::RequestPost;
 /// Query Parameters for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
@@ -121,7 +122,7 @@ pub struct CheckAutoModStatus {
     pub is_permitted: bool,
 }
 
-impl helix::Request for CheckAutoModStatusRequest {
+impl Request for CheckAutoModStatusRequest {
     type Response = Vec<CheckAutoModStatus>;
 
     const PATH: &'static str = "moderation/enforcements/status";
@@ -129,7 +130,7 @@ impl helix::Request for CheckAutoModStatusRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
 }
 
-impl helix::RequestPost for CheckAutoModStatusRequest {
+impl RequestPost for CheckAutoModStatusRequest {
     type Body = Vec<CheckAutoModStatusBody>;
 }
 

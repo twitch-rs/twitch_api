@@ -47,8 +47,9 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(body, &token, &client_id)`](helix::RequestPost::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPost::parse_response())
+//! and parse the [`http::Response`] with [`StartCommercialRequest::parse_response(None, &request.get_uri(), response)`](StartCommercialRequest::parse_response)
 use super::*;
+use helix::RequestPost;
 
 impl StartCommercialRequest {
     /// Create a new [`StartCommercialRequest`]
@@ -94,7 +95,7 @@ pub struct StartCommercial {
     pub retry_after: u64,
 }
 
-impl helix::Request for StartCommercialRequest {
+impl Request for StartCommercialRequest {
     /// FIXME: Make non-vec
     type Response = Vec<StartCommercial>;
 
@@ -103,7 +104,7 @@ impl helix::Request for StartCommercialRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelEditCommercial];
 }
 
-impl helix::RequestPost for StartCommercialRequest {
+impl RequestPost for StartCommercialRequest {
     type Body = StartCommercialBody;
 }
 

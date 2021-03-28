@@ -40,10 +40,11 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetBitsLeaderboardRequest::parse_response(None, &request.get_uri(), response)`](GetBitsLeaderboardRequest::parse_response)
 use std::convert::TryInto;
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Bits Leaderboard](super::get_bits_leaderboard)
 ///
@@ -115,7 +116,7 @@ pub struct LeaderboardUser {
     pub user_login: types::UserName,
 }
 
-impl helix::Request for GetBitsLeaderboardRequest {
+impl Request for GetBitsLeaderboardRequest {
     type Response = BitsLeaderboard;
 
     const PATH: &'static str = "bits/leaderboard";
@@ -123,7 +124,7 @@ impl helix::Request for GetBitsLeaderboardRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetBitsLeaderboardRequest {
+impl RequestGet for GetBitsLeaderboardRequest {
     fn parse_response(
         request: Option<Self>,
         uri: &http::Uri,

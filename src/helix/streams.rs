@@ -20,7 +20,10 @@
 //! # Ok(())
 //! # }
 //! ```
-use crate::{helix, types};
+use crate::{
+    helix::{self, Request},
+    types,
+};
 use serde::{Deserialize, Serialize};
 
 pub use get_stream_tags::{GetStreamTagsRequest, Tag};

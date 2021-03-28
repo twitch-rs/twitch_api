@@ -33,9 +33,11 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetUserBlockListRequest::parse_response(None, &request.get_uri(), response)`](GetUserBlockListRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
+
 /// Query Parameters for [Get Users Block List](super::get_user_block_list)
 ///
 /// [`get-user-block-list`](https://dev.twitch.tv/docs/api/reference#get-user-block-list)
@@ -68,7 +70,7 @@ pub struct UserBlock {
     pub display_name: String,
 }
 
-impl helix::Request for GetUserBlockListRequest {
+impl Request for GetUserBlockListRequest {
     type Response = Vec<UserBlock>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -79,7 +81,7 @@ impl helix::Request for GetUserBlockListRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetUserBlockListRequest {}
+impl RequestGet for GetUserBlockListRequest {}
 
 impl helix::Paginated for GetUserBlockListRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

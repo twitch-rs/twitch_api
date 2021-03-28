@@ -40,10 +40,11 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetBroadcasterSubscriptionsEventsRequest::parse_response(None, &request.get_uri(), response)`](GetBroadcasterSubscriptionsEventsRequest::parse_response)
 // FIXME: Twitch docs sucks... This entire endpoint is removed from docs
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Broadcaster Subscriptions Events](super::get_broadcaster_subscriptions_events)
 ///
@@ -139,7 +140,7 @@ where D: serde::de::Deserializer<'de> {
     })
 }
 
-impl helix::Request for GetBroadcasterSubscriptionsEventsRequest {
+impl Request for GetBroadcasterSubscriptionsEventsRequest {
     type Response = Vec<BroadcasterSubscriptionEvent>;
 
     const PATH: &'static str = "subscriptions/events";
@@ -148,7 +149,7 @@ impl helix::Request for GetBroadcasterSubscriptionsEventsRequest {
         &[twitch_oauth2::Scope::ChannelReadSubscriptions];
 }
 
-impl helix::RequestGet for GetBroadcasterSubscriptionsEventsRequest {}
+impl RequestGet for GetBroadcasterSubscriptionsEventsRequest {}
 
 impl helix::Paginated for GetBroadcasterSubscriptionsEventsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

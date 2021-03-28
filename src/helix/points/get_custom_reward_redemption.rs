@@ -42,9 +42,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetCustomRewardRedemptionRequest::parse_response(None, &request.get_uri(), response)`](GetCustomRewardRedemptionRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Custom Reward Redemption](super::get_custom_reward_redemption)
 ///
@@ -132,7 +133,7 @@ pub struct Reward {
     pub cost: i64,
 }
 
-impl helix::Request for GetCustomRewardRedemptionRequest {
+impl Request for GetCustomRewardRedemptionRequest {
     type Response = Vec<CustomRewardRedemption>;
 
     const PATH: &'static str = "channel_points/custom_rewards/redemptions";
@@ -141,7 +142,7 @@ impl helix::Request for GetCustomRewardRedemptionRequest {
         &[twitch_oauth2::scopes::Scope::ChannelReadRedemptions];
 }
 
-impl helix::RequestGet for GetCustomRewardRedemptionRequest {}
+impl RequestGet for GetCustomRewardRedemptionRequest {}
 
 impl helix::Paginated for GetCustomRewardRedemptionRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

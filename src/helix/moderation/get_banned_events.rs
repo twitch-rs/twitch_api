@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetBannedEventsRequest::parse_response(None, &request.get_uri(), response)`](GetBannedEventsRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 use std::collections::HashMap;
 
 /// Query Parameters for [Get Banned Events](super::get_banned_events)
@@ -82,7 +83,7 @@ pub struct BannedEvent {
     pub event_data: HashMap<String, String>,
 }
 
-impl helix::Request for GetBannedEventsRequest {
+impl Request for GetBannedEventsRequest {
     type Response = Vec<BannedEvent>;
 
     const PATH: &'static str = "moderation/banned/events";
@@ -90,7 +91,7 @@ impl helix::Request for GetBannedEventsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
 }
 
-impl helix::RequestGet for GetBannedEventsRequest {}
+impl RequestGet for GetBannedEventsRequest {}
 
 impl helix::Paginated for GetBannedEventsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

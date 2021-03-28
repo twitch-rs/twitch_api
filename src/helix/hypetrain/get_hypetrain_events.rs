@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetHypeTrainEventsRequest::parse_response(None, &request.get_uri(), response)`](GetHypeTrainEventsRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Hype Train Events](super::get_hypetrain_events)
 ///
@@ -115,7 +116,7 @@ pub struct HypeTrainEventData {
     pub id: String,
 }
 
-impl helix::Request for GetHypeTrainEventsRequest {
+impl Request for GetHypeTrainEventsRequest {
     type Response = Vec<HypeTrainEvent>;
 
     const PATH: &'static str = "hypetrain/events";
@@ -123,7 +124,7 @@ impl helix::Request for GetHypeTrainEventsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetHypeTrainEventsRequest {}
+impl RequestGet for GetHypeTrainEventsRequest {}
 
 impl helix::Paginated for GetHypeTrainEventsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.cursor = cursor }
