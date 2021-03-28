@@ -369,8 +369,13 @@ pub trait RequestPost: Request {
             .map_err(Into::into)
     }
 
-    /// Parse response. Override for different behavior
+    /// Parse response.
+    /// 
+    /// # Notes
+    /// 
+    /// Pass in the request to enable [pagination](Response::get_next) if supported.
     fn parse_response(
+        // FIXME: Is this really needed? Its currently only used for error reporting.
         request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
@@ -442,7 +447,7 @@ where <Self as Request>::Response:
             .map_err(Into::into)
     }
 
-    /// Parse response. Override for different behavior
+    /// Parse response.
     fn parse_response(
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
@@ -488,7 +493,7 @@ pub trait RequestDelete: Request {
             .map_err(Into::into)
     }
 
-    /// Parse response. Override for different behavior
+    /// Parse response.
     fn parse_response(
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
@@ -564,7 +569,7 @@ where <Self as Request>::Response:
             .map_err(Into::into)
     }
 
-    /// Parse response. Override for different behavior
+    /// Parse response.
     fn parse_response(
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
@@ -628,7 +633,11 @@ pub trait RequestGet: Request {
             .map_err(Into::into)
     }
 
-    /// Parse response. Override for different behavior
+    /// Parse response.
+    /// 
+    /// # Notes
+    /// 
+    /// Pass in the request to enable [pagination](Response::get_next) if supported.
     fn parse_response(
         request: Option<Self>,
         uri: &http::Uri,
