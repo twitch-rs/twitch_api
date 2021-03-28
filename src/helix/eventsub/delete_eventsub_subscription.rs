@@ -1,4 +1,4 @@
-//! Get a list of your EventSub subscriptions.
+//! Delete an EventSub subscription.
 
 use super::*;
 
