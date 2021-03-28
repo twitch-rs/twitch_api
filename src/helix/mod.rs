@@ -531,9 +531,12 @@ pub trait RequestDelete: Request {
 
 /// Helix endpoint PUTs information
 #[cfg_attr(nightly, doc(spotlight))]
-pub trait RequestPut: Request {
+pub trait RequestPut: Request
+where <Self as Request>::Response:
+        std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>> {
     /// Body parameters
     type Body: HelixRequestBody;
+
     /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
         &self,
@@ -565,12 +568,7 @@ pub trait RequestPut: Request {
     fn parse_response(
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
-    ) -> Result<<Self as Request>::Response, HelixRequestPutError>
-    where
-        <Self as Request>::Response:
-            std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
-        Self: Sized,
-    {
+    ) -> Result<<Self as Request>::Response, HelixRequestPutError> {
         let text = std::str::from_utf8(&response.body()).map_err(|e| {
             HelixRequestPutError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
