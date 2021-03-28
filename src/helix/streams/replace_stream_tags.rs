@@ -21,7 +21,10 @@
 //! ```
 //! # use twitch_api2::helix::streams::replace_stream_tags;
 //! let body = replace_stream_tags::ReplaceStreamTagsBody::builder()
-//!     .tag_ids(vec!["621fb5bf-5498-4d8f-b4ac-db4d40d401bf", "79977fb9-f106-4a87-a386-f1b0f99783dd"])
+//!     .tag_ids(vec![
+//!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".to_string(),
+//!         "79977fb9-f106-4a87-a386-f1b0f99783dd".to_string(),
+//!     ])
 //!     .build();
 //! ```
 //!
@@ -43,7 +46,10 @@
 //!     .broadcaster_id("1234")
 //!     .build();
 //! let body = replace_stream_tags::ReplaceStreamTagsBody::builder()
-//!     .tag_ids(vec!["621fb5bf-5498-4d8f-b4ac-db4d40d401bf", "79977fb9-f106-4a87-a386-f1b0f99783dd"])
+//!     .tag_ids(vec![
+//!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".to_string(),
+//!         "79977fb9-f106-4a87-a386-f1b0f99783dd".to_string(),
+//!     ])
 //!     .build();
 //! let response: replace_stream_tags::ReplaceStreamTags = client.req_put(request, body, &token).await?;
 //! # Ok(())
