@@ -65,7 +65,7 @@ use super::*;
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct ReplaceStreamTagsRequest {
-    /// ID of the channel
+    /// ID of the stream for which tags are to be replaced.
     #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
 }
@@ -73,6 +73,8 @@ pub struct ReplaceStreamTagsRequest {
 /// Body Parameters for [Replace Stream Tags](super::replace_stream_tags)
 ///
 /// [`replace-stream-tags`](https://dev.twitch.tv/docs/api/reference#replace-stream-tags)
+///
+/// # Notes
 ///
 /// Up to five tags can be applied to a stream. If no `tag_ids` is provided, all tags are removed from the stream.
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]

@@ -80,6 +80,7 @@
     - Search Channels
     - Unblock User
     - Update Redemption Status (thanks [Dinnerbone](https://github.com/Dinnerbone))
+    - Replace Stream Tags (thanks [ModProg](https://github.com/ModProg))
 
 ### Changed
 
