@@ -370,9 +370,9 @@ pub trait RequestPost: Request {
     }
 
     /// Parse response.
-    /// 
+    ///
     /// # Notes
-    /// 
+    ///
     /// Pass in the request to enable [pagination](Response::get_next) if supported.
     fn parse_response(
         // FIXME: Is this really needed? Its currently only used for error reporting.
@@ -573,7 +573,10 @@ where <Self as Request>::Response:
     fn parse_response(
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
-    ) -> Result<<Self as Request>::Response, HelixRequestPutError> {
+    ) -> Result<<Self as Request>::Response, HelixRequestPutError>
+    where
+        Self: Sized,
+    {
         let text = std::str::from_utf8(&response.body()).map_err(|e| {
             HelixRequestPutError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
@@ -634,9 +637,9 @@ pub trait RequestGet: Request {
     }
 
     /// Parse response.
-    /// 
+    ///
     /// # Notes
-    /// 
+    ///
     /// Pass in the request to enable [pagination](Response::get_next) if supported.
     fn parse_response(
         request: Option<Self>,
