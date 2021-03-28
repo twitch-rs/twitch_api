@@ -144,7 +144,7 @@ pub enum Payload {
     UserUpdateV1(NotificationPayload<user::UserUpdateV1>),
     /// User Authorization Revoke V1 Event
     UserAuthorizationRevokeV1(NotificationPayload<user::UserAuthorizationRevokeV1>),
-    /// Channel Raid Beta Event
+    /// Channel Raid V1 Event
     ChannelRaidV1(NotificationPayload<channel::ChannelRaidV1>),
 }
 
