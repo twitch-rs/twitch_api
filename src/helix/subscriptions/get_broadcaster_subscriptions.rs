@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetBroadcasterSubscriptionsRequest::parse_response(None, &request.get_uri(), response)`](GetBroadcasterSubscriptionsRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 /// Query Parameters for [Get Broadcaster Subscriptions](super::get_broadcaster_subscriptions)
 ///
 /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
@@ -85,7 +86,7 @@ pub struct BroadcasterSubscription {
     pub user_name: types::DisplayName,
 }
 
-impl helix::Request for GetBroadcasterSubscriptionsRequest {
+impl Request for GetBroadcasterSubscriptionsRequest {
     type Response = Vec<BroadcasterSubscription>;
 
     const PATH: &'static str = "subscriptions";
@@ -94,7 +95,7 @@ impl helix::Request for GetBroadcasterSubscriptionsRequest {
         &[twitch_oauth2::Scope::ChannelReadSubscriptions];
 }
 
-impl helix::RequestGet for GetBroadcasterSubscriptionsRequest {}
+impl RequestGet for GetBroadcasterSubscriptionsRequest {}
 
 impl helix::Paginated for GetBroadcasterSubscriptionsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

@@ -35,9 +35,11 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetUsersRequest::parse_response(None, &request.get_uri(), response)`](GetUsersRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
+
 /// Query Parameters for [Get Users](super::get_users)
 ///
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
@@ -84,7 +86,7 @@ pub struct User {
     pub view_count: usize,
 }
 
-impl helix::Request for GetUsersRequest {
+impl Request for GetUsersRequest {
     type Response = Vec<User>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -94,7 +96,7 @@ impl helix::Request for GetUsersRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetUsersRequest {}
+impl RequestGet for GetUsersRequest {}
 
 #[test]
 fn test_request() {

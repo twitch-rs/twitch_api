@@ -36,8 +36,9 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetCheermotesRequest::parse_response(None, &request.get_uri(), response)`](GetCheermotesRequest::parse_response)
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Cheermotes](super::get_cheermotes)
 ///
@@ -164,7 +165,7 @@ pub struct CheermoteImageArray {
 #[serde(transparent)]
 pub struct Level(pub String);
 
-impl helix::Request for GetCheermotesRequest {
+impl Request for GetCheermotesRequest {
     type Response = Vec<Cheermote>;
 
     const PATH: &'static str = "bits/cheermotes";
@@ -172,7 +173,7 @@ impl helix::Request for GetCheermotesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetCheermotesRequest {}
+impl RequestGet for GetCheermotesRequest {}
 
 #[test]
 fn test_request() {

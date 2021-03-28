@@ -35,11 +35,13 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`CheckUserSubscription::parse_response(None, &request.get_uri(), response)`](CheckUserSubscription::parse_response)
 
 use std::convert::TryInto;
 
 use super::*;
+use helix::RequestGet;
+
 /// Query Parameters for [Check User Subscription](super::check_user_subscription)
 ///
 /// [`check-user-subscription`](https://dev.twitch.tv/docs/api/reference#check-user-subscription)
@@ -77,7 +79,7 @@ pub struct UserSubscription {
     pub tier: types::SubscriptionTier,
 }
 
-impl helix::Request for CheckUserSubscription {
+impl Request for CheckUserSubscription {
     type Response = UserSubscription;
 
     const PATH: &'static str = "subscriptions/user";
@@ -85,7 +87,7 @@ impl helix::Request for CheckUserSubscription {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadSubscriptions];
 }
 
-impl helix::RequestGet for CheckUserSubscription {
+impl RequestGet for CheckUserSubscription {
     fn parse_response(
         request: Option<Self>,
         uri: &http::Uri,

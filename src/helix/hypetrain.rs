@@ -1,7 +1,10 @@
 //! Helix endpoints regarding hype trains
 //!
 //! See also [PubSub hypetrain](crate::pubsub::hypetrain)
-use crate::{helix, types};
+use crate::{
+    helix::{self, Request},
+    types,
+};
 
 use serde::{Deserialize, Serialize};
 

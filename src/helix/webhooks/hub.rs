@@ -57,14 +57,15 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPost::parse_response())
+//! and parse the [`http::Response`] with [`WebhookHubRequest::parse_response(None, &request.get_uri(), response)`](WebhookHubRequest::parse_response)
 
 use crate::helix;
 use std::convert::TryInto;
 
 use serde::{Deserialize, Serialize};
 
-use super::Topic;
+use super::*;
+use helix::RequestPost;
 /// Query Parameters for [Subscribe to/Unsubscribe From Events](super::hub)
 ///
 /// [`subscribe-tounsubscribe-from-events`](https://dev.twitch.tv/docs/api/webhooks-reference#subscribe-tounsubscribe-from-events)
@@ -160,7 +161,7 @@ impl std::convert::TryFrom<http::StatusCode> for WebhookHub {
         }
     }
 }
-impl<T: Topic> helix::Request for WebhookHubRequest<T> {
+impl<T: Topic> Request for WebhookHubRequest<T> {
     type Response = WebhookHub;
 
     const PATH: &'static str = "webhooks/hub";
@@ -168,7 +169,7 @@ impl<T: Topic> helix::Request for WebhookHubRequest<T> {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl<T: Topic> helix::RequestPost for WebhookHubRequest<T> {
+impl<T: Topic> RequestPost for WebhookHubRequest<T> {
     type Body = WebhookHubBody<T>;
 
     fn parse_response(

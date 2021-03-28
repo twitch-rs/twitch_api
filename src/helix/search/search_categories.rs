@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`SearchCategoriesRequest::parse_response(None, &request.get_uri(), response)`](SearchCategoriesRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 
 // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 /// Query Parameters for [Search Categories](super::search_categories)
@@ -65,7 +66,7 @@ pub struct SearchCategoriesRequest {
 /// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
 pub type Category = types::TwitchCategory;
 
-impl helix::Request for SearchCategoriesRequest {
+impl Request for SearchCategoriesRequest {
     type Response = Vec<Category>;
 
     const PATH: &'static str = "search/categories";
@@ -73,7 +74,7 @@ impl helix::Request for SearchCategoriesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for SearchCategoriesRequest {}
+impl RequestGet for SearchCategoriesRequest {}
 
 impl helix::Paginated for SearchCategoriesRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

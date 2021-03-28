@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetGamesRequest::parse_response(None, &request.get_uri(), response)`](GetGamesRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Games](super::get_games)
 ///
@@ -58,7 +59,7 @@ pub struct GetGamesRequest {
 /// [`get-games`](https://dev.twitch.tv/docs/api/reference#get-games)
 pub type Game = types::TwitchCategory;
 
-impl helix::Request for GetGamesRequest {
+impl Request for GetGamesRequest {
     type Response = Vec<Game>;
 
     const PATH: &'static str = "games";
@@ -66,7 +67,7 @@ impl helix::Request for GetGamesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetGamesRequest {}
+impl RequestGet for GetGamesRequest {}
 
 #[test]
 fn test_request() {

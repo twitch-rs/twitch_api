@@ -1,5 +1,8 @@
 //! Helix endpoints regarding games
-use crate::{helix, types};
+use crate::{
+    helix::{self, Request},
+    types,
+};
 
 use serde::{Deserialize, Serialize};
 

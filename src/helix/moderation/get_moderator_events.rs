@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetModeratorEventsRequest::parse_response(None, &request.get_uri(), response)`](GetModeratorEventsRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 use std::collections::HashMap;
 
 /// Query Parameters for [Get Moderators Events](super::get_moderator_events)
@@ -82,7 +83,7 @@ pub struct ModeratorEvent {
     pub event_data: HashMap<String, String>,
 }
 
-impl helix::Request for GetModeratorEventsRequest {
+impl Request for GetModeratorEventsRequest {
     type Response = Vec<ModeratorEvent>;
 
     const PATH: &'static str = "moderation/moderators/events";
@@ -90,7 +91,7 @@ impl helix::Request for GetModeratorEventsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
 }
 
-impl helix::RequestGet for GetModeratorEventsRequest {}
+impl RequestGet for GetModeratorEventsRequest {}
 
 impl helix::Paginated for GetModeratorEventsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

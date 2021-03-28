@@ -21,7 +21,10 @@
 //! # }
 //! ```
 
-use crate::{helix, types};
+use crate::{
+    helix::{self, Request},
+    types,
+};
 use serde::{Deserialize, Serialize};
 
 pub mod check_user_subscription;

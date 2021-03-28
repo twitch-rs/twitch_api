@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`SearchChannelsRequest::parse_response(None, &request.get_uri(), response)`](SearchChannelsRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Search Channels](super::search_channels)
 ///
@@ -89,7 +90,7 @@ pub struct Channel {
     pub tags_ids: Vec<types::TagId>,
 }
 
-impl helix::Request for SearchChannelsRequest {
+impl Request for SearchChannelsRequest {
     type Response = Vec<Channel>;
 
     const PATH: &'static str = "search/categories";
@@ -97,7 +98,7 @@ impl helix::Request for SearchChannelsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for SearchChannelsRequest {}
+impl RequestGet for SearchChannelsRequest {}
 
 impl helix::Paginated for SearchChannelsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

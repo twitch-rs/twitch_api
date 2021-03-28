@@ -2,6 +2,7 @@
 
 use super::*;
 use crate::eventsub;
+use helix::RequestGet;
 
 /// Query Parameters for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
@@ -22,7 +23,7 @@ pub struct GetEventSubSubscriptionsRequest {
     pub first: Option<usize>,
 }
 
-impl helix::Request for GetEventSubSubscriptionsRequest {
+impl Request for GetEventSubSubscriptionsRequest {
     type Response = Vec<EventSubSubscription>;
 
     const PATH: &'static str = "eventsub/subscriptions";
@@ -35,7 +36,7 @@ impl helix::Request for GetEventSubSubscriptionsRequest {
 /// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions)
 pub type EventSubSubscription = eventsub::EventSubSubscription;
 
-impl helix::RequestGet for GetEventSubSubscriptionsRequest {}
+impl RequestGet for GetEventSubSubscriptionsRequest {}
 
 impl helix::Paginated for GetEventSubSubscriptionsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

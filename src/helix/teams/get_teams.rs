@@ -33,9 +33,11 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetTeamsRequest::parse_response(None, &request.get_uri(), response)`](GetTeamsRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
+
 /// Query Parameters for [Get Teams](super::get_teams)
 ///
 /// [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
@@ -64,7 +66,7 @@ pub struct Team {
     pub team: TeamInformation,
 }
 
-impl helix::Request for GetTeamsRequest {
+impl Request for GetTeamsRequest {
     type Response = Vec<Team>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -74,7 +76,7 @@ impl helix::Request for GetTeamsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetTeamsRequest {}
+impl RequestGet for GetTeamsRequest {}
 
 #[test]
 fn test_request() {

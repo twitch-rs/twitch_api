@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetStreamsRequest::parse_response(None, &request.get_uri(), response)`](GetStreamsRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Streams](super::get_streams)
 ///
@@ -103,7 +104,7 @@ pub struct Stream {
     pub viewer_count: usize,
 }
 
-impl helix::Request for GetStreamsRequest {
+impl Request for GetStreamsRequest {
     type Response = Vec<Stream>;
 
     const PATH: &'static str = "streams";
@@ -111,7 +112,7 @@ impl helix::Request for GetStreamsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetStreamsRequest {}
+impl RequestGet for GetStreamsRequest {}
 
 impl helix::Paginated for GetStreamsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

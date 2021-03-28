@@ -47,11 +47,12 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestPost::parse_response())
+//! and parse the [`http::Response`] with [`CreateUserFollowsRequest::parse_response(None, &request.get_uri(), response)`](CreateUserFollowsRequest::parse_response)
 
 use std::convert::TryInto;
 
 use super::*;
+use helix::RequestPost;
 /// Query Parameters for [Create User Follows](super::create_user_follows)
 ///
 /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
@@ -106,7 +107,7 @@ impl std::convert::TryFrom<http::StatusCode> for CreateUserFollows {
     }
 }
 
-impl helix::Request for CreateUserFollowsRequest {
+impl Request for CreateUserFollowsRequest {
     type Response = CreateUserFollows;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -116,7 +117,7 @@ impl helix::Request for CreateUserFollowsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditFollows];
 }
 
-impl helix::RequestPost for CreateUserFollowsRequest {
+impl RequestPost for CreateUserFollowsRequest {
     type Body = CreateUserFollowsBody;
 
     fn parse_response(

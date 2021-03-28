@@ -35,9 +35,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetBannedUsersRequest::parse_response(None, &request.get_uri(), response)`](GetBannedUsersRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Banned Users](super::get_banned_users)
 ///
@@ -81,7 +82,7 @@ pub struct BannedUser {
     pub expires_at: Option<types::Timestamp>,
 }
 
-impl helix::Request for GetBannedUsersRequest {
+impl Request for GetBannedUsersRequest {
     type Response = Vec<BannedUser>;
 
     const PATH: &'static str = "moderation/banned";
@@ -89,7 +90,7 @@ impl helix::Request for GetBannedUsersRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
 }
 
-impl helix::RequestGet for GetBannedUsersRequest {}
+impl RequestGet for GetBannedUsersRequest {}
 
 impl helix::Paginated for GetBannedUsersRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

@@ -34,9 +34,10 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetTopGamesRequest::parse_response(None, &request.get_uri(), response)`](GetTopGamesRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Top Games](super::get_games)
 ///
@@ -61,7 +62,7 @@ pub struct GetTopGamesRequest {
 /// [`get-top-games`](https://dev.twitch.tv/docs/api/reference#get-top-games)
 pub type Game = types::TwitchCategory;
 
-impl helix::Request for GetTopGamesRequest {
+impl Request for GetTopGamesRequest {
     type Response = Vec<Game>;
 
     const PATH: &'static str = "games/top";
@@ -69,7 +70,7 @@ impl helix::Request for GetTopGamesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetTopGamesRequest {}
+impl RequestGet for GetTopGamesRequest {}
 
 impl helix::Paginated for GetTopGamesRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

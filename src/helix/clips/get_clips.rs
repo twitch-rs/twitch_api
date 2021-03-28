@@ -35,9 +35,11 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`request.parse_response(&request.get_uri()?)`](helix::RequestGet::parse_response())
+//! and parse the [`http::Response`] with [`GetClipsRequest::parse_response(None, &request.get_uri(), response)`](GetClipsRequest::parse_response)
 
 use super::*;
+use helix::RequestGet;
+
 /// Query Parameters for [Get Clips](super::get_clips)
 ///
 /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
@@ -108,7 +110,7 @@ pub struct Clip {
     pub view_count: i64,
 }
 
-impl helix::Request for GetClipsRequest {
+impl Request for GetClipsRequest {
     type Response = Vec<Clip>;
 
     const PATH: &'static str = "clips";
@@ -116,7 +118,7 @@ impl helix::Request for GetClipsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl helix::RequestGet for GetClipsRequest {}
+impl RequestGet for GetClipsRequest {}
 
 impl helix::Paginated for GetClipsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

@@ -1,6 +1,7 @@
 //! Get a list of your Webhook subscriptions.
 
 use super::*;
+use helix::RequestGet;
 
 /// Query Parameters for [Get Webhook Subscriptions](super::get_webhook_subscriptions)
 ///
@@ -16,7 +17,7 @@ pub struct GetWebhookSubscriptionsRequest {
     pub first: Option<String>,
 }
 
-impl helix::Request for GetWebhookSubscriptionsRequest {
+impl Request for GetWebhookSubscriptionsRequest {
     type Response = Vec<WebhookSubscription>;
 
     const PATH: &'static str = "webhooks/subscriptions";
@@ -39,7 +40,7 @@ pub struct WebhookSubscription {
     pub topic: String,
 }
 
-impl helix::RequestGet for GetWebhookSubscriptionsRequest {}
+impl RequestGet for GetWebhookSubscriptionsRequest {}
 
 impl helix::Paginated for GetWebhookSubscriptionsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor; }

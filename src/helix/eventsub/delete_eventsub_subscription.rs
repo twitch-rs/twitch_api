@@ -1,6 +1,7 @@
 //! Delete an EventSub subscription.
 
 use super::*;
+use helix::RequestDelete;
 
 /// Query Parameters for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
@@ -13,7 +14,7 @@ pub struct DeleteEventSubSubscriptionRequest {
     pub id: types::EventSubId,
 }
 
-impl helix::Request for DeleteEventSubSubscriptionRequest {
+impl Request for DeleteEventSubSubscriptionRequest {
     type Response = DeleteEventSubSubscription;
 
     const PATH: &'static str = "eventsub/subscriptions";
@@ -52,7 +53,7 @@ impl std::convert::TryFrom<http::StatusCode> for DeleteEventSubSubscription {
     }
 }
 
-impl helix::RequestDelete for DeleteEventSubSubscriptionRequest {}
+impl RequestDelete for DeleteEventSubSubscriptionRequest {}
 
 #[test]
 fn test_request() {
