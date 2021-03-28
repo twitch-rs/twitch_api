@@ -3,13 +3,13 @@
 //!
 //! # Accessing the endpoint
 //!
-//! ## Request: [CheckUserSubscription]
+//! ## Request: [CheckUserSubscriptionRequest]
 //!
-//! To use this endpoint, construct a [`CheckUserSubscription`] with the [`CheckUserSubscription::builder()`] method.
+//! To use this endpoint, construct a [`CheckUserSubscriptionRequest`] with the [`CheckUserSubscriptionRequest::builder()`] method.
 //!
 //! ```rust, no_run
 //! use twitch_api2::helix::subscriptions::check_user_subscription;
-//! let request = check_user_subscription::CheckUserSubscription::builder()
+//! let request = check_user_subscription::CheckUserSubscriptionRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
 //! ```
@@ -26,7 +26,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
-//! let request = check_user_subscription::CheckUserSubscription::builder()
+//! let request = check_user_subscription::CheckUserSubscriptionRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
 //! let response: check_user_subscription::UserSubscription = client.req_get(request, &token).await?.data;
@@ -35,7 +35,7 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`CheckUserSubscription::parse_response(None, &request.get_uri(), response)`](CheckUserSubscription::parse_response)
+//! and parse the [`http::Response`] with [`CheckUserSubscriptionRequest::parse_response(None, &request.get_uri(), response)`](CheckUserSubscriptionRequest::parse_response)
 
 use std::convert::TryInto;
 
@@ -47,7 +47,7 @@ use helix::RequestGet;
 /// [`check-user-subscription`](https://dev.twitch.tv/docs/api/reference#check-user-subscription)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
-pub struct CheckUserSubscription {
+pub struct CheckUserSubscriptionRequest {
     /// User ID of the broadcaster. Must match the User ID in the Bearer token.
     #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
@@ -79,7 +79,7 @@ pub struct UserSubscription {
     pub tier: types::SubscriptionTier,
 }
 
-impl Request for CheckUserSubscription {
+impl Request for CheckUserSubscriptionRequest {
     type Response = UserSubscription;
 
     const PATH: &'static str = "subscriptions/user";
@@ -87,7 +87,7 @@ impl Request for CheckUserSubscription {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadSubscriptions];
 }
 
-impl RequestGet for CheckUserSubscription {
+impl RequestGet for CheckUserSubscriptionRequest {
     fn parse_response(
         request: Option<Self>,
         uri: &http::Uri,
@@ -138,7 +138,7 @@ impl RequestGet for CheckUserSubscription {
 #[test]
 fn test_request1() {
     use helix::*;
-    let req = CheckUserSubscription::builder()
+    let req = CheckUserSubscriptionRequest::builder()
         .broadcaster_id("123".to_string())
         .build();
 
@@ -166,13 +166,13 @@ fn test_request1() {
         "https://api.twitch.tv/helix/subscriptions/user?broadcaster_id=123"
     );
 
-    dbg!(CheckUserSubscription::parse_response(Some(req), &uri, http_response).unwrap());
+    dbg!(CheckUserSubscriptionRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }
 
 #[test]
 fn test_request2() {
     use helix::*;
-    let req = CheckUserSubscription::builder()
+    let req = CheckUserSubscriptionRequest::builder()
         .broadcaster_id("123".to_string())
         .build();
 
@@ -194,5 +194,5 @@ fn test_request2() {
         "https://api.twitch.tv/helix/subscriptions/user?broadcaster_id=123"
     );
 
-    dbg!(CheckUserSubscription::parse_response(Some(req), &uri, http_response).unwrap_err());
+    dbg!(CheckUserSubscriptionRequest::parse_response(Some(req), &uri, http_response).unwrap_err());
 }

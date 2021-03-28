@@ -41,4 +41,4 @@ pub use get_broadcaster_subscriptions_events::{
 };
 
 #[doc(inline)]
-pub use check_user_subscription::{CheckUserSubscription, UserSubscription};
+pub use check_user_subscription::{CheckUserSubscriptionRequest, UserSubscription};
