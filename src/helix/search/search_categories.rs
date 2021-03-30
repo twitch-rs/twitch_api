@@ -37,6 +37,8 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
 //! and parse the [`http::Response`] with [`SearchCategoriesRequest::parse_response(None, &request.get_uri(), response)`](SearchCategoriesRequest::parse_response)
 
+use std::convert::TryInto;
+
 use super::*;
 use helix::RequestGet;
 
@@ -74,7 +76,46 @@ impl Request for SearchCategoriesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for SearchCategoriesRequest {}
+impl RequestGet for SearchCategoriesRequest {
+    fn parse_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: http::Response<Vec<u8>>,
+    ) -> Result<
+        helix::Response<Self, <Self as helix::Request>::Response>,
+        helix::HelixRequestGetError,
+    >
+    where
+        Self: Sized,
+    {
+        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+            helix::HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
+        })?;
+        //eprintln!("\n\nmessage is ------------ {} ------------", text);
+        if let Ok(helix::HelixRequestError {
+            error,
+            status,
+            message,
+        }) = serde_json::from_str::<helix::HelixRequestError>(&text)
+        {
+            return Err(helix::HelixRequestGetError::Error {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                uri: uri.clone(),
+            });
+        }
+        let response: helix::InnerResponse<Option<_>> =
+            serde_json::from_str(&text).map_err(|e| {
+                helix::HelixRequestGetError::DeserializeError(text.to_string(), e, uri.clone())
+            })?;
+        Ok(helix::Response {
+            data: response.data.unwrap_or_default(),
+            pagination: response.pagination.cursor,
+            request,
+        })
+    }
+}
 
 impl helix::Paginated for SearchCategoriesRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
@@ -113,6 +154,33 @@ fn test_request() {
     assert_eq!(
         uri.to_string(),
         "https://api.twitch.tv/helix/search/categories?query=fort"
+    );
+
+    dbg!(SearchCategoriesRequest::parse_response(Some(req), &uri, http_response).unwrap());
+}
+
+#[test]
+fn test_request_null() {
+    use helix::*;
+    let req = SearchCategoriesRequest::builder()
+        .query("aaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        .build();
+
+    // From twitch docs
+    let data = br#"
+{
+    "data": null,
+    "pagination": {}
+}
+"#
+    .to_vec();
+
+    let http_response = http::Response::builder().body(data).unwrap();
+
+    let uri = req.get_uri().unwrap();
+    assert_eq!(
+        uri.to_string(),
+        "https://api.twitch.tv/helix/search/categories?query=aaaaaaaaaaaaaaaaaaaaaaaaaaa"
     );
 
     dbg!(SearchCategoriesRequest::parse_response(Some(req), &uri, http_response).unwrap());
