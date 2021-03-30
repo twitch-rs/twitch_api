@@ -93,7 +93,7 @@ pub struct Channel {
 impl Request for SearchChannelsRequest {
     type Response = Vec<Channel>;
 
-    const PATH: &'static str = "search/categories";
+    const PATH: &'static str = "search/channels";
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
@@ -138,7 +138,7 @@ fn test_request() {
     let uri = req.get_uri().unwrap();
     assert_eq!(
         uri.to_string(),
-        "https://api.twitch.tv/helix/search/categories?query=fort"
+        "https://api.twitch.tv/helix/search/channels?query=fort"
     );
 
     dbg!(SearchChannelsRequest::parse_response(Some(req), &uri, http_response).unwrap());
