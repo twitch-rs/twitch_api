@@ -76,6 +76,8 @@ pub struct UsersFollow {
     pub to_id: types::UserId,
     ///Display name corresponding to to_id.
     pub to_name: types::DisplayName,
+    ///Login of the user being followed by the from_id user.
+    pub to_login: types::UserName,
     // FIXME: This never seems to be returned.
     /// Total number of items returned.
     ///
