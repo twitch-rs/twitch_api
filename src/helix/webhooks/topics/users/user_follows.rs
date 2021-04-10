@@ -64,6 +64,7 @@ fn test_topic() {
             "from_login": "EBI",
             "to_id": "1337",
             "to_name": "oliver0823nagy",
+            "to_login": "oliver0823nagy",
             "followed_at": "2017-08-22T22:55:24Z"
           }
         ]
