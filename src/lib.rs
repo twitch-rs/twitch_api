@@ -1,7 +1,7 @@
 #![allow(unknown_lints, renamed_and_removed_lints)]
 #![deny(missing_docs, broken_intra_doc_links)] // This will be weird until 1.52, see https://github.com/rust-lang/rust/pull/80527
 #![cfg_attr(nightly, deny(rustdoc::broken_intra_doc_links))]
-#![cfg_attr(nightly, feature(doc_cfg, doc_spotlight))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![doc(html_root_url = "https://docs.rs/twitch_api2/0.4.1")]
 #![cfg_attr(all(nightly, doctest), feature(external_doc))]
 //! [![github]](https://github.com/emilgardis/twitch_api2)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api2/0.4.1/twitch_api2)

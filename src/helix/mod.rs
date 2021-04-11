@@ -301,7 +301,6 @@ where
 
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
 #[async_trait::async_trait]
-#[cfg_attr(nightly, doc(spotlight))]
 pub trait Request: serde::Serialize {
     /// The path to the endpoint relative to the helix root. eg. `channels` for [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information)
     const PATH: &'static str;
@@ -337,7 +336,6 @@ pub trait Request: serde::Serialize {
 }
 
 /// Helix endpoint POSTs information
-#[cfg_attr(nightly, doc(spotlight))]
 pub trait RequestPost: Request {
     /// Body parameters
     type Body: HelixRequestBody;
@@ -413,7 +411,6 @@ pub trait RequestPost: Request {
 }
 
 /// Helix endpoint PATCHs information
-#[cfg_attr(nightly, doc(spotlight))]
 pub trait RequestPatch: Request
 where <Self as Request>::Response:
         std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>> {
@@ -468,7 +465,6 @@ where <Self as Request>::Response:
 }
 
 /// Helix endpoint DELETEs information
-#[cfg_attr(nightly, doc(spotlight))]
 pub trait RequestDelete: Request {
     /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
@@ -535,7 +531,6 @@ pub trait RequestDelete: Request {
 }
 
 /// Helix endpoint PUTs information
-#[cfg_attr(nightly, doc(spotlight))]
 pub trait RequestPut: Request
 where <Self as Request>::Response:
         std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>> {
@@ -611,7 +606,6 @@ where <Self as Request>::Response:
 }
 
 /// Helix endpoint GETs information
-#[cfg_attr(nightly, doc(spotlight))]
 pub trait RequestGet: Request {
     /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
