@@ -96,7 +96,6 @@ pub mod video_playback;
 /// A logical partition of messages that clients may subscribe to, to get messages.
 ///
 /// also known as event
-#[cfg_attr(nightly, doc(spotlight))]
 pub trait Topic: Serialize + Into<String> {
     /// Scopes needed by this topic
     ///
