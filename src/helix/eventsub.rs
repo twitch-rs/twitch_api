@@ -19,4 +19,4 @@ pub use delete_eventsub_subscription::{
     DeleteEventSubSubscription, DeleteEventSubSubscriptionRequest,
 };
 #[doc(inline)]
-pub use get_eventsub_subscriptions::{EventSubSubscription, GetEventSubSubscriptionsRequest};
+pub use get_eventsub_subscriptions::{EventSubSubscriptions, GetEventSubSubscriptionsRequest};

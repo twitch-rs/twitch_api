@@ -24,7 +24,7 @@ pub struct GetEventSubSubscriptionsRequest {
 }
 
 impl Request for GetEventSubSubscriptionsRequest {
-    type Response = Vec<EventSubSubscription>;
+    type Response = EventSubSubscriptions;
 
     const PATH: &'static str = "eventsub/subscriptions";
     #[cfg(feature = "twitch_oauth2")]
@@ -34,9 +34,60 @@ impl Request for GetEventSubSubscriptionsRequest {
 /// Return Values for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
 /// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions)
-pub type EventSubSubscription = eventsub::EventSubSubscription;
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct EventSubSubscriptions {
+    /// Total number of subscriptions for the client ID that made the subscription creation request.
+    pub total: i64,
+    /// Total cost of all the subscriptions for the client ID that made the subscription creation request.
+    pub total_cost: i64,
+    /// The maximum total cost allowed for all of the subscriptions for the client ID that made the subscription creation request.
+    pub max_total_cost: i64,
+    /// Subscription limit for client id that made the subscription creation request.
+    pub limit: i64,
+    /// Array containing subscriptions.
+    pub subscriptions: Vec<eventsub::EventSubSubscription>,
+}
 
-impl RequestGet for GetEventSubSubscriptionsRequest {}
+impl RequestGet for GetEventSubSubscriptionsRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        _: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
+    where
+        Self: Sized,
+    {
+        #[derive(PartialEq, Deserialize, Debug)]
+        struct InnerResponse {
+            data: Vec<eventsub::EventSubSubscription>,
+            /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
+            #[serde(default)]
+            pagination: helix::Pagination,
+            total: i64,
+            total_cost: i64,
+            max_total_cost: i64,
+            limit: i64,
+        }
+
+        let response: InnerResponse = serde_json::from_str(response).map_err(|e| {
+            helix::HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
+        })?;
+        Ok(helix::Response {
+            data: EventSubSubscriptions {
+                total: response.total,
+                total_cost: response.total_cost,
+                max_total_cost: response.max_total_cost,
+                limit: response.limit,
+                subscriptions: response.data,
+            },
+            pagination: response.pagination.cursor,
+            request,
+        })
+    }
+}
 
 impl helix::Paginated for GetEventSubSubscriptionsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
@@ -46,7 +97,8 @@ impl helix::Paginated for GetEventSubSubscriptionsRequest {
 fn test_request() {
     use helix::*;
     let req: GetEventSubSubscriptionsRequest = GetEventSubSubscriptionsRequest::builder().build();
-
+    // From twitch docs.
+    // FIXME: Twitch says in example that status is kebab-case, it's actually snake_case
     let data = br#"{
         "total": 2,
         "data": [
@@ -62,7 +114,8 @@ fn test_request() {
                 "transport": {
                     "method": "webhook",
                     "callback": "https://this-is-a-callback.com"
-                }
+                },
+                "cost": 1
             },
             {
                 "id": "35016908-41ff-33ce-7879-61b8dfc2ee16",
@@ -76,10 +129,13 @@ fn test_request() {
                 "transport": {
                     "method": "webhook",
                     "callback": "https://this-is-a-callback.com"
-                }
+                },
+                "cost": 0
             }
         ],
         "limit": 10000,
+        "total_cost": 1,
+        "max_total_cost": 10000,
         "pagination": {}
     }
     "#

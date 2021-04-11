@@ -544,6 +544,8 @@ pub enum Status {
 #[cfg(feature = "eventsub")]
 #[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
 pub struct EventSubSubscription {
+    /// How much the subscription counts against your limit.
+    pub cost: i64,
     /// JSON object specifying custom parameters for the subscription.
     // FIXME: Should be [eventsub::Condition]
     pub condition: serde_json::Value,
@@ -571,6 +573,7 @@ fn test_verification_response() {
             "status": "webhook_callback_verification_pending",
             "type": "channel.follow",
             "version": "1",
+            "cost": 1,
             "condition": {
                     "broadcaster_user_id": "12826"
             },

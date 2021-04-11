@@ -32,12 +32,12 @@ impl Request for GetWebhookSubscriptionsRequest {
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct WebhookSubscriptions {
-    /// Subscriptions 
+    /// Subscriptions
     pub subscriptions: Vec<WebhookSubscription>,
-    /// A hint at the total number of results returned, on all pages. 
-    /// 
+    /// A hint at the total number of results returned, on all pages.
+    ///
     /// # Notes
-    /// 
+    ///
     /// This is an approximation: as you page through the list, some subscriptions may expire and others may be added.
     pub total: i64,
 }
