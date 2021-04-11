@@ -38,8 +38,6 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
 //! and parse the [`http::Response`] with [`GetChannelInformationRequest::parse_response(None, &request.get_uri(), response)`](GetChannelInformationRequest::parse_response)
-use std::convert::TryInto;
-
 use super::*;
 use helix::RequestGet;
 
@@ -87,34 +85,19 @@ impl Request for GetChannelInformationRequest {
 }
 
 impl RequestGet for GetChannelInformationRequest {
-    fn parse_response(
+    fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<Vec<u8>>,
-    ) -> Result<helix::Response<Self, Option<ChannelInformation>>, helix::HelixRequestGetError>
+        response: &str,
+        _: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
-            helix::HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
-        })?;
-        //eprintln!("\n\nmessage is ------------ {} ------------", text);
-        if let Ok(helix::HelixRequestError {
-            error,
-            status,
-            message,
-        }) = serde_json::from_str::<helix::HelixRequestError>(&text)
-        {
-            return Err(helix::HelixRequestGetError::Error {
-                error,
-                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
-                message,
-                uri: uri.clone(),
-            });
-        }
-        let response: helix::InnerResponse<Vec<_>> = serde_json::from_str(&text).map_err(|e| {
-            helix::HelixRequestGetError::DeserializeError(text.to_string(), e, uri.clone())
-        })?;
+        let response: helix::InnerResponse<Vec<ChannelInformation>> =
+            serde_json::from_str(response).map_err(|e| {
+                helix::HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
+            })?;
         Ok(helix::Response {
             data: response.data.into_iter().next(),
             pagination: response.pagination.cursor,

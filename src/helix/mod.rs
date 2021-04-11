@@ -398,9 +398,22 @@ pub trait RequestPost: Request {
                 body: response.body().clone(),
             });
         }
-        let response: InnerResponse<<Self as Request>::Response> = serde_json::from_str(&text)
+        <Self as RequestPost>::parse_inner_response(request, uri, text, response.status())
+    }
+
+    /// Parse a response string into the response.
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        _status: http::StatusCode,
+    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPostError>
+    where
+        Self: Sized,
+    {
+        let response: InnerResponse<<Self as Request>::Response> = serde_json::from_str(&response)
             .map_err(|e| {
-                HelixRequestPostError::DeserializeError(text.to_string(), e, uri.clone())
+                HelixRequestPostError::DeserializeError(response.to_string(), e, uri.clone())
             })?;
         Ok(Response {
             data: response.data,
@@ -660,8 +673,21 @@ pub trait RequestGet: Request {
                 uri: uri.clone(),
             });
         }
-        let response: InnerResponse<_> = serde_json::from_str(&text).map_err(|e| {
-            HelixRequestGetError::DeserializeError(text.to_string(), e, uri.clone())
+        <Self as RequestGet>::parse_inner_response(request, uri, text, response.status())
+    }
+
+    /// Parse a response string into the response.
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        _status: http::StatusCode,
+    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestGetError>
+    where
+        Self: Sized,
+    {
+        let response: InnerResponse<_> = serde_json::from_str(response).map_err(|e| {
+            HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
         })?;
         Ok(Response {
             data: response.data,

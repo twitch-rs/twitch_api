@@ -1,7 +1,4 @@
 //! Creates an EventSub subscription.
-
-use std::convert::TryInto;
-
 use super::*;
 use crate::eventsub::{EventSubscription, EventType, Status, Transport, TransportResponse};
 
@@ -103,14 +100,12 @@ pub struct CreateEventSubSubscription<E: EventSubscription> {
 impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequest<E> {
     type Body = CreateEventSubSubscriptionBody<E>;
 
-    fn parse_response(
+    fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<Vec<u8>>,
-    ) -> Result<
-        helix::Response<Self, <Self as helix::Request>::Response>,
-        helix::HelixRequestPostError,
-    >
+        text: &str,
+        _: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPostError>
     where
         Self: Sized,
     {
@@ -133,25 +128,6 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
             limit: usize,
             total: usize,
         }
-
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
-            helix::HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
-        })?;
-        if let Ok(helix::HelixRequestError {
-            error,
-            status,
-            message,
-        }) = serde_json::from_str::<helix::HelixRequestError>(&text)
-        {
-            return Err(helix::HelixRequestPostError::Error {
-                error,
-                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
-                message,
-                uri: uri.clone(),
-                body: response.body().clone(),
-            });
-        }
-
         let response: InnerResponse<E> = serde_json::from_str(&text).map_err(|e| {
             helix::HelixRequestPostError::DeserializeError(text.to_string(), e, uri.clone())
         })?;

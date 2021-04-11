@@ -12,7 +12,7 @@
 //!     .build();
 //! ```
 //!
-//! ## Response: [UsersFollow]
+//! ## Response: [UsersFollows]
 //!
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
@@ -27,7 +27,7 @@
 //! let request = get_users_follows::GetUsersFollowsRequest::builder()
 //!     .to_id("1234".to_string())
 //!     .build();
-//! let response: Vec<get_users_follows::UsersFollow> = client.req_get(request, &token).await?.data;
+//! let response: Vec<get_users_follows::FollowRelationship> = client.req_get(request, &token).await?.data.follow_relationships;
 //! # Ok(())
 //! # }
 //! ```
@@ -63,7 +63,23 @@ pub struct GetUsersFollowsRequest {
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct UsersFollow {
+pub struct UsersFollows {
+    /// Total number of items returned in all pages.
+    ///
+    /// * If only `from_id` was in the request, this is the total number of followed users.
+    /// * If only `to_id` was in the request, this is the total number of followers.
+    /// * If both `from_id` and `to_id` were in the request, this is 1 (if the "from" user follows the "to" user) or 0.
+    pub total: i64,
+    /// The follow relationships returned by this endpoint on this page. See [Response::get_next](helix::Response::get_next) for getting more pages
+    pub follow_relationships: Vec<FollowRelationship>,
+}
+/// Describes a follow relationship
+///
+/// Used in [UsersFollows]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct FollowRelationship {
     ///Date and time when the from_id user followed the to_id user.
     pub followed_at: types::Timestamp,
     ///ID of the user following the to_id user.
@@ -78,17 +94,10 @@ pub struct UsersFollow {
     pub to_name: types::DisplayName,
     ///Login of the user being followed by the from_id user.
     pub to_login: types::UserName,
-    // FIXME: This never seems to be returned.
-    /// Total number of items returned.
-    ///
-    /// * If only `from_id` was in the request, this is the total number of followed users.
-    /// * If only `to_id` was in the request, this is the total number of followers.
-    /// * If both `from_id` and to_id were in the request, this is 1 (if the "from" user follows the "to" user) or 0.
-    pub total: Option<usize>,
 }
 
 impl Request for GetUsersFollowsRequest {
-    type Response = Vec<UsersFollow>;
+    type Response = UsersFollows;
 
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
@@ -97,7 +106,38 @@ impl Request for GetUsersFollowsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetUsersFollowsRequest {}
+impl RequestGet for GetUsersFollowsRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        _status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
+    where
+        Self: Sized,
+    {
+        #[derive(PartialEq, Deserialize, Debug, Clone)]
+        struct InnerResponse {
+            data: Vec<FollowRelationship>,
+            total: Option<i64>,
+            #[serde(default)]
+            pagination: helix::Pagination,
+        }
+
+        let response: InnerResponse = serde_json::from_str(response).map_err(|e| {
+            helix::HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
+        })?;
+        Ok(helix::Response {
+            data: UsersFollows {
+                // FIXME: Hack for webhook subscription
+                total: response.total.unwrap_or(1),
+                follow_relationships: response.data,
+            },
+            pagination: response.pagination.cursor,
+            request,
+        })
+    }
+}
 
 impl helix::Paginated for GetUsersFollowsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }

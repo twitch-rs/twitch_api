@@ -44,6 +44,6 @@ pub use get_user_block_list::{GetUserBlockListRequest, UserBlock};
 #[doc(inline)]
 pub use get_users::{GetUsersRequest, User};
 #[doc(inline)]
-pub use get_users_follows::{GetUsersFollowsRequest, UsersFollow};
+pub use get_users_follows::{GetUsersFollowsRequest, UsersFollows};
 #[doc(inline)]
 pub use unblock_user::{UnblockUser, UnblockUserRequest};
