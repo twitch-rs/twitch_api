@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/client.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/0674ab042e601af55cf149990f2b461652c6db00">0674ab0</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/3218d252d75033e5bb3b3f706c529e97a26360d2">3218d25</a></p>
 <style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../twitch_oauth2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
@@ -73,58 +73,58 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;reqwest_client&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;reqwest_client&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">oauth2</span>::<span class="ident">reqwest</span>::<span class="ident">async_http_client</span> <span class="kw">as</span> <span class="ident">reqwest_http_client</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">oauth2::reqwest::async_http_client</span> <span class="kw">as</span> <span class="ident">reqwest_http_client</span>;
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf_client&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">surf_client</span>::<span class="ident">http_client</span> <span class="kw">as</span> <span class="ident">surf_http_client</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">surf_client::http_client</span> <span class="kw">as</span> <span class="ident">surf_http_client</span>;
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf_client&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">surf_client</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">SurfError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">surf_client::Error</span> <span class="kw">as</span> <span class="ident">SurfError</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf_client&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">surf_client</span> {
     <span class="kw">use</span> <span class="ident">oauth2</span>::{<span class="ident">HttpRequest</span>, <span class="ident">HttpResponse</span>};
 
     <span class="doccomment">/// Possible errors for [surf_http_client][http_client]</span>
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">displaydoc</span>::<span class="ident">Display</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">displaydoc::Display</span>, <span class="ident">thiserror::Error</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> {
         <span class="doccomment">/// surf failed to do the request: {0}</span>
-        <span class="ident">Surf</span>(<span class="ident">surf</span>::<span class="ident">Error</span>),
+        <span class="ident">Surf</span>(<span class="ident">surf::Error</span>),
         <span class="doccomment">/// could not construct header value</span>
-        <span class="ident">InvalidHeaderValue</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">oauth2</span>::<span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">InvalidHeaderValue</span>),
+        <span class="ident">InvalidHeaderValue</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">oauth2::http::header::InvalidHeaderValue</span>),
         <span class="doccomment">/// could not construct header name</span>
-        <span class="ident">InvalidHeaderName</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">oauth2</span>::<span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">InvalidHeaderName</span>),
+        <span class="ident">InvalidHeaderName</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">oauth2::http::header::InvalidHeaderName</span>),
     }
 
     <span class="doccomment">///  Asynchronous HTTP client using [Surf][surf::Client]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf_client&quot;</span>)))]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">http_client</span>(<span class="ident">request</span>: <span class="ident">HttpRequest</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HttpResponse</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">surf</span>::<span class="ident">Client</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">method</span>: <span class="ident">http_types</span>::<span class="ident">Method</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">method</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">surf</span>::<span class="ident">Request</span>::<span class="ident">new</span>(<span class="ident">method</span>, <span class="ident">request</span>.<span class="ident">url</span>);
+        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">surf::Client::new</span>();
+        <span class="kw">let</span> <span class="ident">method</span>: <span class="ident">http_types::Method</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">method</span>.<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">surf::Request::new</span>(<span class="ident">method</span>, <span class="ident">request</span>.<span class="ident">url</span>);
 
         <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">request</span>.<span class="ident">headers</span> {
-            <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">surf</span>::<span class="ident">http</span>::<span class="ident">headers</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_bytes</span>(<span class="ident">value</span>.<span class="ident">as_bytes</span>().<span class="ident">to_vec</span>())
-                .<span class="ident">map_err</span>(<span class="ident">Error</span>::<span class="ident">Surf</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">surf::http::headers::HeaderValue::from_bytes</span>(<span class="ident">value</span>.<span class="ident">as_bytes</span>().<span class="ident">to_vec</span>())
+                .<span class="ident">map_err</span>(<span class="ident">Error::Surf</span>)<span class="question-mark">?</span>;
             <span class="ident">req</span>.<span class="ident">append_header</span>(<span class="ident">name</span>.<span class="ident">as_str</span>(), <span class="ident">value</span>);
         }
 
         <span class="ident">req</span>.<span class="ident">body_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>.<span class="ident">body</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">send</span>(<span class="ident">req</span>).<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Error</span>::<span class="ident">Surf</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">send</span>(<span class="ident">req</span>).<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Error::Surf</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">response</span>
             .<span class="ident">iter</span>()
             .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="ident">v</span>)<span class="op">|</span> {
                 <span class="prelude-val">Ok</span>((
-                    <span class="ident">oauth2</span>::<span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderName</span>::<span class="ident">from_bytes</span>(<span class="ident">k</span>.<span class="ident">as_str</span>().<span class="ident">as_bytes</span>())<span class="question-mark">?</span>,
-                    <span class="ident">oauth2</span>::<span class="ident">http</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_str</span>(<span class="ident">v</span>.<span class="ident">as_str</span>())<span class="question-mark">?</span>,
+                    <span class="ident">oauth2::http::header::HeaderName::from_bytes</span>(<span class="ident">k</span>.<span class="ident">as_str</span>().<span class="ident">as_bytes</span>())<span class="question-mark">?</span>,
+                    <span class="ident">oauth2::http::HeaderValue::from_str</span>(<span class="ident">v</span>.<span class="ident">as_str</span>())<span class="question-mark">?</span>,
                 ))
             })
             .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span> {
-            <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body_bytes</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Error</span>::<span class="ident">Surf</span>)<span class="question-mark">?</span>,
+            <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body_bytes</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Error::Surf</span>)<span class="question-mark">?</span>,
             <span class="ident">status_code</span>: <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">into</span>(),
             <span class="ident">headers</span>,
         })
