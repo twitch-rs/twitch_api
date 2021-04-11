@@ -18,7 +18,7 @@ pub struct GetWebhookSubscriptionsRequest {
 }
 
 impl Request for GetWebhookSubscriptionsRequest {
-    type Response = Vec<WebhookSubscription>;
+    type Response = WebhookSubscriptions;
 
     const PATH: &'static str = "webhooks/subscriptions";
     #[cfg(feature = "twitch_oauth2")]
@@ -31,6 +31,23 @@ impl Request for GetWebhookSubscriptionsRequest {
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
+pub struct WebhookSubscriptions {
+    /// Subscriptions 
+    pub subscriptions: Vec<WebhookSubscription>,
+    /// A hint at the total number of results returned, on all pages. 
+    /// 
+    /// # Notes
+    /// 
+    /// This is an approximation: as you page through the list, some subscriptions may expire and others may be added.
+    pub total: i64,
+}
+
+/// Describes a Webhook Subscription.
+///
+/// Used in [WebhookSubscriptions]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct WebhookSubscription {
     /// The callback provided for this subscription.
     pub callback: String,
@@ -40,7 +57,38 @@ pub struct WebhookSubscription {
     pub topic: String,
 }
 
-impl RequestGet for GetWebhookSubscriptionsRequest {}
+impl RequestGet for GetWebhookSubscriptionsRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        _status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
+    where
+        Self: Sized,
+    {
+        #[derive(PartialEq, Deserialize, Debug)]
+        struct InnerResponse {
+            data: Vec<WebhookSubscription>,
+            /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
+            #[serde(default)]
+            pagination: helix::Pagination,
+            total: i64,
+        }
+
+        let response: InnerResponse = serde_json::from_str(response).map_err(|e| {
+            helix::HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
+        })?;
+        Ok(helix::Response {
+            data: WebhookSubscriptions {
+                subscriptions: response.data,
+                total: response.total,
+            },
+            pagination: response.pagination.cursor,
+            request,
+        })
+    }
+}
 
 impl helix::Paginated for GetWebhookSubscriptionsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor; }
