@@ -36,9 +36,6 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
 //! and parse the [`http::Response`] with [`CheckUserSubscriptionRequest::parse_response(None, &request.get_uri(), response)`](CheckUserSubscriptionRequest::parse_response)
-
-use std::convert::TryInto;
-
 use super::*;
 use helix::RequestGet;
 
@@ -88,34 +85,15 @@ impl Request for CheckUserSubscriptionRequest {
 }
 
 impl RequestGet for CheckUserSubscriptionRequest {
-    fn parse_response(
+    fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<Vec<u8>>,
-    ) -> Result<
-        helix::Response<Self, <Self as helix::Request>::Response>,
-        helix::HelixRequestGetError,
-    >
+        text: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
-            helix::HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
-        })?;
-        //eprintln!("\n\nmessage is ------------ {} ------------", text);
-        if let Ok(helix::HelixRequestError {
-            error,
-            status,
-            message,
-        }) = serde_json::from_str::<helix::HelixRequestError>(&text)
-        {
-            return Err(helix::HelixRequestGetError::Error {
-                error,
-                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
-                message,
-                uri: uri.clone(),
-            });
-        }
         let inner_response: helix::InnerResponse<Vec<_>> =
             serde_json::from_str(&text).map_err(|e| {
                 helix::HelixRequestGetError::DeserializeError(text.to_string(), e, uri.clone())
@@ -125,7 +103,7 @@ impl RequestGet for CheckUserSubscriptionRequest {
                 helix::HelixRequestGetError::InvalidResponse {
                     reason: "expected an entry in `data`",
                     response: text.to_string(),
-                    status: response.status(),
+                    status,
                     uri: uri.clone(),
                 },
             )?,

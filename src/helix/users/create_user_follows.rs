@@ -165,6 +165,18 @@ impl RequestPost for CreateUserFollowsRequest {
             request,
         })
     }
+
+    fn parse_inner_response(
+        _: Option<Self>,
+        _: &http::Uri,
+        _: &str,
+        _: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPostError>
+    where
+        Self: Sized,
+    {
+        unimplemented!("Create User Follows does not implement `parse_inner_response`")
+    }
 }
 
 #[test]

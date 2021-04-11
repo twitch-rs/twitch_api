@@ -41,8 +41,6 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
 //! and parse the [`http::Response`] with [`GetBitsLeaderboardRequest::parse_response(None, &request.get_uri(), response)`](GetBitsLeaderboardRequest::parse_response)
-use std::convert::TryInto;
-
 use super::*;
 use helix::RequestGet;
 
@@ -125,14 +123,12 @@ impl Request for GetBitsLeaderboardRequest {
 }
 
 impl RequestGet for GetBitsLeaderboardRequest {
-    fn parse_response(
+    fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<Vec<u8>>,
-    ) -> Result<
-        helix::Response<Self, <Self as helix::Request>::Response>,
-        helix::HelixRequestGetError,
-    >
+        response: &str,
+        _: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
     where
         Self: Sized,
     {
@@ -143,26 +139,8 @@ impl RequestGet for GetBitsLeaderboardRequest {
             /// Total number of results (users) returned. This is count or the total number of entries in the leaderboard, whichever is less.
             total: i64,
         }
-
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
-            helix::HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
-        })?;
-        //eprintln!("\n\nmessage is ------------ {} ------------", text);
-        if let Ok(helix::HelixRequestError {
-            error,
-            status,
-            message,
-        }) = serde_json::from_str::<helix::HelixRequestError>(&text)
-        {
-            return Err(helix::HelixRequestGetError::Error {
-                error,
-                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
-                message,
-                uri: uri.clone(),
-            });
-        }
-        let response: InnerResponse = serde_json::from_str(&text).map_err(|e| {
-            helix::HelixRequestGetError::DeserializeError(text.to_string(), e, uri.clone())
+        let response: InnerResponse = serde_json::from_str(response).map_err(|e| {
+            helix::HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
         })?;
         Ok(helix::Response {
             data: BitsLeaderboard {
