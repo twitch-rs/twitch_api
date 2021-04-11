@@ -76,6 +76,8 @@ pub struct UsersFollow {
     pub to_id: types::UserId,
     ///Display name corresponding to to_id.
     pub to_name: types::DisplayName,
+    ///Login of the user being followed by the from_id user.
+    pub to_login: types::UserName,
     // FIXME: This never seems to be returned.
     /// Total number of items returned.
     ///
@@ -120,6 +122,7 @@ fn test_request() {
             "from_name": "IIIsutha067III",
             "to_id": "23161357",
             "to_name": "LIRIK",
+            "to_login": "lirik",
             "followed_at": "2017-08-22T22:55:24Z"
         },
         {
@@ -128,6 +131,7 @@ fn test_request() {
             "from_name": "Birdman616",
             "to_id": "23161357",
             "to_name": "LIRIK",
+            "to_login": "lirik",
             "followed_at": "2017-08-22T22:55:04Z"
         }
     ],
