@@ -126,14 +126,12 @@ pub struct Progress {
     /// BASE64 representation of reward
     pub id: String,
     /// Method by which redemptions were set to new status
-    // FIXME: BY_REWARD etc, need to enumify
+    // FIXME: BY_CHANNEL etc, need to enumify
     pub method: String,
     /// New status of redemptions
     pub new_status: RedemptionStatus,
     /// Total amount of redemptions changed
     pub processed: i64,
-    /// ID of reward
-    pub reward_id: types::RewardId,
     /// Total redemptions
     // FIXME: What is this?
     pub total: i64,
@@ -142,6 +140,7 @@ pub struct Progress {
 /// Reply from [ChannelPointsChannelV1]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", content = "data")]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum ChannelPointsChannelV1Reply {
     /// A reward was redeemed
@@ -172,6 +171,15 @@ pub enum ChannelPointsChannelV1Reply {
     // TODO: This seems to only be on complete all / reject all
     #[serde(rename = "update-redemption-statuses-finished")]
     UpdateRedemptionStatusesFinished {
+        /// Time the pubsub message was sent
+        timestamp: String,
+        /// Data about the reward that had status updated
+        progress: Progress,
+    },
+    /// Status of multiple redemptions were changed
+    // FIXME: No idea what this is, might be same as UpdateRedemptionStatusesFinished
+    #[serde(rename = "update-redemption-statuses-progress")]
+    UpdateRedemptionStatusProgress {
         /// Time the pubsub message was sent
         timestamp: String,
         /// Data about the reward that had status updated
@@ -390,15 +398,46 @@ mod tests {
 {
     "type": "update-redemption-statuses-finished",
     "data": {
-        "timestamp": "2020-12-21T02:25:21.717263168Z",
+        "timestamp": "2021-02-15T00:36:55.938819818Z",
         "progress": {
-            "id": "Y29wb0J1bGtFZGl0UmVkZW1wdGlvblN0YXR1c1Byb2dyZXNzOjEzMzc6QlVMS19FRElUX1JFREVNUFRJT05fU1RBVFVTX01FVEhPRF9CWV9SRVdBUkQ6ZGVhZGJlZWY=",
+            "id": "Y29wb0J1bGtFZGl0UmVkZW1wdGlvblN0YXR1c1Byb2dyZXNzOjEzMzc6QlVMS19FRElUX1JFREVNUFRJT05fU1RBVFVTX01FVEhPRF9CWV9DSEFOTkVMOg==",
             "channel_id": "1337",
-            "reward_id": "deadbeef",
-            "method": "BY_REWARD",
+            "method": "BY_CHANNEL",
             "new_status": "FULFILLED",
-            "processed": 5,
-            "total": 5
+            "processed": 2,
+            "total": 2
+        }
+    }
+}
+        "##;
+
+        let source = format!(
+            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {:?} }}}}"#,
+            message
+        );
+        let actual = dbg!(Response::parse(&source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChannelPointsChannelV1 { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn update_redemption_statuses_progress() {
+        let message = r##"
+{
+    "type": "update-redemption-statuses-progress",
+    "data": {
+        "timestamp": "2021-02-15T00:36:55.916689548Z",
+        "progress": {
+            "id": "Y29wb0J1bGtFZGl0UmVkZW1wdGlvblN0YXR1c1Byb2dyZXNzOjEzMzc6QlVMS19FRElUX1JFREVNUFRJT05fU1RBVFVTX01FVEhPRF9CWV9DSEFOTkVMOg==",
+            "channel_id": "1337",
+            "method": "BY_CHANNEL",
+            "new_status": "FULFILLED",
+            "processed": 1,
+            "total": 2
         }
     }
 }

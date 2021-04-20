@@ -11,7 +11,7 @@ pub struct ChannelPointsCustomRewardRedemptionAddV1 {
     #[builder(setter(into))]
     pub broadcaster_user_id: types::UserId,
     /// Optional. Specify a reward id to only receive notifications for a specific reward.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(default, setter(into))]
     pub reward_id: Option<types::RewardId>,
 }
 

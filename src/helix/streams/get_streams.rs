@@ -54,7 +54,6 @@ pub struct GetStreamsRequest {
     pub before: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[builder(default)]
-    #[builder(setter(strip_option))]
     pub first: Option<usize>,
     /// Returns streams broadcasting a specified game ID. You can specify up to 10 IDs.
     #[builder(default)]
@@ -80,9 +79,11 @@ pub struct Stream {
     /// ID of the game being played on the stream.
     pub game_id: types::CategoryId,
     /// Stream ID.
-    pub id: String,
+    pub id: types::StreamId,
     /// Stream language.
     pub language: String,
+    /// Indicates if the broadcaster has specified their channel contains mature content that may be inappropriate for younger audiences.
+    pub is_mature: bool,
     /// UTC timestamp.
     pub started_at: types::Timestamp,
     /// Shows tag IDs that apply to the stream.
@@ -123,7 +124,7 @@ fn test_request() {
     use helix::*;
     let req = GetStreamsRequest::builder().build();
 
-    // From twitch docs. example 1 in https://dev.twitch.tv/docs/api/reference#get-streams is malformed
+    // From twitch docs, kinda. example 1 in https://dev.twitch.tv/docs/api/reference#get-streams is malformed
     let data = br#"
 {
     "data": [
@@ -141,7 +142,8 @@ fn test_request() {
             "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg",
             "tag_ids":  [
                 "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
-            ]
+            ],
+            "is_mature": false
         },
         {
             "id": "26007494656",
@@ -157,7 +159,8 @@ fn test_request() {
             "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg",
             "tag_ids":  [
                 "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
-            ]
+            ],
+            "is_mature": false
         }
     ],
     "pagination": {

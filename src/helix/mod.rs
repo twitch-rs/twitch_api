@@ -299,6 +299,14 @@ where
     }
 }
 
+/// Deserialize 'null' as <T as Default>::Default
+fn deserialize_default_from_null<'de, D, T>(deserializer: D) -> Result<T, D::Error>
+where
+    D: serde::Deserializer<'de>,
+    T: Deserialize<'de> + Default, {
+    Ok(Option::deserialize(deserializer)?.unwrap_or_default())
+}
+
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
 #[async_trait::async_trait]
 pub trait Request: serde::Serialize {

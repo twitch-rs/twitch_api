@@ -45,10 +45,10 @@ use helix::RequestGet;
 #[non_exhaustive]
 pub struct GetTeamsRequest {
     /// Team ID.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(default, setter(into))]
     pub id: Option<types::TeamId>,
     /// Team name.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(default, setter(into))]
     pub name: Option<String>,
 }
 
@@ -81,7 +81,7 @@ impl RequestGet for GetTeamsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetTeamsRequest::builder().id("6358").build();
+    let req = GetTeamsRequest::builder().id("6358".to_string()).build();
 
     // From twitch docs
     let data = br#"

@@ -90,6 +90,8 @@ pub struct Clip {
     pub creator_id: types::UserId,
     /// Display name corresponding to creator_id.
     pub creator_name: types::DisplayName,
+    /// Duration of the Clip in seconds (up to 0.1 precision).
+    pub duration: f64,
     /// URL to embed the clip.
     pub embed_url: String,
     /// ID of the game assigned to the stream when the clip was created.
@@ -149,7 +151,8 @@ fn test_request() {
         "title": "babymetal",
         "view_count": 10,
         "created_at": "2017-11-30T22:34:18Z",
-        "thumbnail_url": "https://clips-media-assets.twitch.tv/157589949-preview-480x272.jpg"
+        "thumbnail_url": "https://clips-media-assets.twitch.tv/157589949-preview-480x272.jpg",
+        "duration": 60
       }
     ]
 }

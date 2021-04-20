@@ -20,6 +20,8 @@
 //! ```
 //! # use twitch_api2::helix::users::create_user_follows;
 //! let body = create_user_follows::CreateUserFollowsBody::builder()
+//!     .from_id("1337")
+//!     .to_id("7331")
 //!     .build();
 //! ```
 //!
@@ -40,6 +42,8 @@
 //! let request = create_user_follows::CreateUserFollowsRequest::builder()
 //!     .build();
 //! let body = create_user_follows::CreateUserFollowsBody::builder()
+//!     .from_id("1337")
+//!     .to_id("7331")
 //!     .build();
 //! let response: create_user_follows::CreateUserFollows = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
@@ -63,17 +67,17 @@ pub struct CreateUserFollowsRequest {}
 /// Body Parameters for [Create User Follows](super::create_user_follows)
 ///
 /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreateUserFollowsBody {
     /// User ID of the follower
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub from_id: types::UserId,
     /// ID of the channel to be followed by the user
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub to_id: types::UserId,
     /// If `true`, the user gets email or push notifications (depending on the user’s notification settings) when the channel goes live. Default value is `false`.
-    #[builder(default, setter(strip_option))]
+    #[builder(default)]
     pub allow_notifications: Option<bool>,
 }
 
