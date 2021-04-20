@@ -70,17 +70,17 @@ pub struct ModifyChannelInformationRequest {
 /// Body Parameters for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
 #[non_exhaustive]
 pub struct ModifyChannelInformationBody {
     /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(default, setter(into))]
     pub game_id: Option<types::CategoryId>,
     /// Language of the channel
     #[builder(default, setter(into))]
     pub broadcaster_language: Option<String>,
     /// Title of the stream. Value must not be an empty string.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(default, setter(into))]
     pub title: Option<String>,
 }
 
@@ -132,7 +132,7 @@ fn test_request() {
         .build();
 
     let body = ModifyChannelInformationBody::builder()
-        .title("Hello World!")
+        .title("Hello World!".to_string())
         .build();
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());

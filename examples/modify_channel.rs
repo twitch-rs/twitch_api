@@ -42,7 +42,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .build();
 
     let data = twitch_api2::helix::channels::ModifyChannelInformationBody::builder()
-        .title("Hello World!")
+        .title("Hello World!".to_string())
         .build();
 
     println!("scopes: {:?}", token.scopes());

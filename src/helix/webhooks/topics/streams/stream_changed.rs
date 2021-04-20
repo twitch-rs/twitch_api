@@ -70,7 +70,8 @@ fn test_topic() {
             "started_at": "2017-12-01T10:09:45Z",
             "language": "en",
             "thumbnail_url": "https://link/to/thumbnail.jpg",
-            "tag_ids": []
+            "tag_ids": [],
+            "is_mature": true
           }
         ]
       }

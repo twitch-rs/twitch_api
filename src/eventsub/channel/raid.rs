@@ -7,10 +7,10 @@ use super::*;
 #[non_exhaustive]
 pub struct ChannelRaidV1 {
     /// The broadcaster user ID that created the channel raid you want to get notifications for. Use this parameter if you want to know when a specific broadcaster raids another broadcaster.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(default, setter(into))]
     pub from_broadcaster_user_id: Option<types::UserId>,
     /// The broadcaster user ID that received the channel raid you want to get notifications for. Use this parameter if you want to know when a specific broadcaster is raided by another broadcaster.
-    #[builder(default, setter(into, strip_option))]
+    #[builder(default, setter(into))]
     pub to_broadcaster_user_id: Option<types::UserId>,
 }
 
