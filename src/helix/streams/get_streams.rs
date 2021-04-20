@@ -80,7 +80,7 @@ pub struct Stream {
     /// ID of the game being played on the stream.
     pub game_id: types::CategoryId,
     /// Stream ID.
-    pub id: String,
+    pub id: types::StreamId,
     /// Stream language.
     pub language: String,
     /// UTC timestamp.

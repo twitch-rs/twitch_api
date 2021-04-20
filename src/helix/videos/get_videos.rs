@@ -98,8 +98,13 @@ pub struct Video {
     pub id: types::VideoId,
     /// Language of the video.
     pub language: String,
+    /// Muted segments in the video.
+    #[serde(deserialize_with = "helix::deserialize_default_from_null")]
+    pub muted_segments: Vec<MutedSegment>,
     /// Date when the video was published.
     pub published_at: types::Timestamp,
+    /// ID of the stream that the video originated from if the type is "archive". Otherwise set to null.
+    pub stream_id: Option<types::StreamId>,
     /// Template URL for the thumbnail of the video.
     pub thumbnail_url: String,
     /// Title of the video.
@@ -119,6 +124,17 @@ pub struct Video {
     pub view_count: i64,
     /// Indicates whether the video is publicly viewable. Valid values: "public", "private".
     pub viewable: types::VideoPrivacy,
+}
+
+/// muted segment in a video.
+#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct MutedSegment {
+    /// Duration of the muted segment.
+    pub duration: i64,
+    /// Offset in the video at which the muted segment begins.
+    pub offset: i64,
 }
 
 impl Request for GetVideosRequest {
@@ -145,24 +161,33 @@ fn test_request() {
     // From twitch docs
     let data = br#"
 {
-    "data": [{
-      "id": "234482848",
-      "user_id": "67955580",
-      "user_login": "chewiemelodies",
-      "user_name": "ChewieMelodies",
-      "title": "-",
-      "description": "",
-      "created_at": "2018-03-02T20:53:41Z",
-      "published_at": "2018-03-02T20:53:41Z",
-      "url": "https://www.twitch.tv/videos/234482848",
-      "thumbnail_url": "https://static-cdn.jtvnw.net/s3_vods/bebc8cba2926d1967418_chewiemelodies_27786761696_805342775/thumb/thumb0-%{width}x%{height}.jpg",
+  "data": [
+    {
+      "id": "335921245",
+      "stream_id": null,
+      "user_id": "141981764",
+      "user_login": "twitchdev",
+      "user_name": "TwitchDev",
+      "title": "Twitch Developers 101",
+      "description": "Welcome to Twitch development! Here is a quick overview of our products and information to help you get started.",
+      "created_at": "2018-11-14T21:30:18Z",
+      "published_at": "2018-11-14T22:04:30Z",
+      "url": "https://www.twitch.tv/videos/335921245",
+      "thumbnail_url": "https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/twitchdev/335921245/ce0f3a7f-57a3-4152-bc06-0c6610189fb3/thumb/index-0000000000-%{width}x%{height}.jpg",
       "viewable": "public",
-      "view_count": 142,
+      "view_count": 1863062,
       "language": "en",
-      "type": "archive",
-      "duration": "3h8m33s"
-    }],
-    "pagination":{"cursor":"eyJiIjpudWxsLCJhIjoiMTUwMzQ0MTc3NjQyNDQyMjAwMCJ9"}
+      "type": "upload",
+      "duration": "3m21s",
+      "muted_segments": [
+        {
+          "duration": 30,
+          "offset": 120
+        }
+      ]
+    }
+  ],
+  "pagination": {}
 }
 "#
         .to_vec();
