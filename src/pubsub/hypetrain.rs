@@ -153,6 +153,24 @@ pub struct HypeTrainLevelUp {
     pub progress: HypeTrainProgress,
 }
 
+/// Hype train is approaching
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct HypeTrainApproaching {
+    // FIXME: COPIED FROM HypeTrainStart Channel ID is sometimes missing, might be depending on your token
+    /// ID of channel where hype-train was initiated
+    pub channel_id: Option<types::UserId>,
+    /// Participation points needed for this level
+    pub goal: i64,
+    /// remaining events
+    // FIXME: example: "1": 258708980297
+    // What does 258708980297 stand for? is "1" perhaps BADGE type? just not stringified
+    pub events_remaining_durations: std::collections::HashMap<String, i64>,
+    /// Possible rewards for level one
+    pub level_one_rewards: Vec<Reward>,
+}
+
 /// Reply from [HypeTrainEventsV1] or [HypeTrainEventsV1Rewards]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -180,6 +198,9 @@ pub enum HypeTrainEventsV1Reply {
     /// Hype train leveled up
     #[serde(rename = "hype-train-level-up")]
     HypeTrainLevelUp(HypeTrainLevelUp),
+    /// Hype train is approaching
+    #[serde(rename = "hype-train-approaching")]
+    HypeTrainApproaching(HypeTrainApproaching),
 }
 
 /// Configuration of hype train
@@ -1957,6 +1978,18 @@ mod tests {
     #[test]
     fn hype_train_cooldown() {
         let source = r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.233300375","message":"{\"type\":\"hype-train-cooldown-expiration\"}"}}"#;
+        let actual = dbg!(Response::parse(&source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::HypeTrainEventsV1 { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn hype_train_approaching() {
+        let source = r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.35740817","message":"{\"type\":\"hype-train-approaching\",\"data\":{\"channel_id\":\"35740817\",\"goal\":3,\"events_remaining_durations\":{\"1\":258708980297},\"level_one_rewards\":[{\"type\":\"EMOTE\",\"id\":\"304420773\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420921\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420811\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304421029\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420886\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420784\",\"group_id\":\"\",\"reward_level\":0}]}}"}}"#;
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
             actual,
