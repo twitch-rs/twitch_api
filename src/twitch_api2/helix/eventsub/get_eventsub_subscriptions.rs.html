@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/eventsub/get_eventsub_subscriptions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_eventsub_subscriptions.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/319c01885b85022219ecede9ccfb4eff94d853c6">319c018</a></p>
-<style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/8e23ad0a6c15984701d317621a9eaab335d8fe21">8e23ad0</a></p>
+<style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -158,6 +158,12 @@
 <span id="153">153</span>
 <span id="154">154</span>
 <span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Get a list of your EventSub subscriptions.</span>
 
@@ -200,13 +206,17 @@
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EventSubSubscriptions</span> {
     <span class="doccomment">/// Total number of subscriptions for the client ID that made the subscription creation request.</span>
-    <span class="kw">pub</span> <span class="ident">total</span>: <span class="ident">i64</span>,
+    <span class="kw">pub</span> <span class="ident">total</span>: <span class="ident">usize</span>,
     <span class="doccomment">/// Total cost of all the subscriptions for the client ID that made the subscription creation request.</span>
-    <span class="kw">pub</span> <span class="ident">total_cost</span>: <span class="ident">i64</span>,
+    <span class="kw">pub</span> <span class="ident">total_cost</span>: <span class="ident">usize</span>,
     <span class="doccomment">/// The maximum total cost allowed for all of the subscriptions for the client ID that made the subscription creation request.</span>
-    <span class="kw">pub</span> <span class="ident">max_total_cost</span>: <span class="ident">i64</span>,
+    <span class="kw">pub</span> <span class="ident">max_total_cost</span>: <span class="ident">usize</span>,
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.0&quot;</span>,
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;on 2021-05-11, this will no longer be returned. Use max_total_cost instead&quot;</span>
+    )]</span>
     <span class="doccomment">/// Subscription limit for client id that made the subscription creation request.</span>
-    <span class="kw">pub</span> <span class="ident">limit</span>: <span class="ident">i64</span>,
+    <span class="kw">pub</span> <span class="ident">limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Array containing subscriptions.</span>
     <span class="kw">pub</span> <span class="ident">subscriptions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">eventsub::EventSubSubscription</span><span class="op">&gt;</span>,
 }
@@ -222,20 +232,22 @@
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
         <span class="kw">struct</span> <span class="ident">InnerResponse</span> {
             <span class="ident">data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">eventsub::EventSubSubscription</span><span class="op">&gt;</span>,
             <span class="doccomment">/// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.</span>
             <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
             <span class="ident">pagination</span>: <span class="ident">helix::Pagination</span>,
-            <span class="ident">total</span>: <span class="ident">i64</span>,
-            <span class="ident">total_cost</span>: <span class="ident">i64</span>,
-            <span class="ident">max_total_cost</span>: <span class="ident">i64</span>,
-            <span class="ident">limit</span>: <span class="ident">i64</span>,
+            <span class="ident">total</span>: <span class="ident">usize</span>,
+            <span class="ident">total_cost</span>: <span class="ident">usize</span>,
+            <span class="ident">max_total_cost</span>: <span class="ident">usize</span>,
+            <span class="ident">limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
         }
 
         <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">InnerResponse</span> <span class="op">=</span> <span class="ident">serde_json::from_str</span>(<span class="ident">response</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
             <span class="ident">helix::HelixRequestGetError::DeserializeError</span>(<span class="ident">response</span>.<span class="ident">to_string</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
         })<span class="question-mark">?</span>;
+        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
         <span class="prelude-val">Ok</span>(<span class="ident">helix::Response</span> {
             <span class="ident">data</span>: <span class="ident">EventSubSubscriptions</span> {
                 <span class="ident">total</span>: <span class="ident">response</span>.<span class="ident">total</span>,
@@ -259,14 +271,14 @@
     <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
     <span class="kw">let</span> <span class="ident">req</span>: <span class="ident">GetEventSubSubscriptionsRequest</span> <span class="op">=</span> <span class="ident">GetEventSubSubscriptionsRequest::builder</span>().<span class="ident">build</span>();
     <span class="comment">// From twitch docs.</span>
-    <span class="comment">// FIXME: Twitch says in example that status is kebab-case, it&#39;s actually snake_case</span>
+    <span class="comment">// FIXME: Twitch says in example that status is kebab-case, it&#39;s actually snake_case. also, users vs user and stream vs streams</span>
     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">br#&quot;{
         &quot;total&quot;: 2,
         &quot;data&quot;: [
             {
                 &quot;id&quot;: &quot;26b1c993-bfcf-44d9-b876-379dacafe75a&quot;,
                 &quot;status&quot;: &quot;enabled&quot;,
-                &quot;type&quot;: &quot;streams.online&quot;,
+                &quot;type&quot;: &quot;stream.online&quot;,
                 &quot;version&quot;: &quot;1&quot;,
                 &quot;condition&quot;: {
                     &quot;broadcaster_user_id&quot;: &quot;1234&quot;
@@ -281,7 +293,7 @@
             {
                 &quot;id&quot;: &quot;35016908-41ff-33ce-7879-61b8dfc2ee16&quot;,
                 &quot;status&quot;: &quot;webhook_callback_verification_pending&quot;,
-                &quot;type&quot;: &quot;users.update&quot;,
+                &quot;type&quot;: &quot;user.update&quot;,
                 &quot;version&quot;: &quot;1&quot;,
                 &quot;condition&quot;: {
                     &quot;user_id&quot;: &quot;1234&quot;
