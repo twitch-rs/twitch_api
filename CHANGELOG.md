@@ -68,6 +68,7 @@
     - Get Broadcaster Subscriptions Events
     - Get Channel Editors
     - Get Cheermote
+    - Get Custom Reward
     - Get Custom Reward Redemption (thanks [Dinnerbone](https://github.com/Dinnerbone))
     - Get Games
     - Get Hype Train Events

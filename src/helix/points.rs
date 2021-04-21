@@ -29,9 +29,12 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
+pub mod get_custom_reward;
 pub mod get_custom_reward_redemption;
 pub mod update_redemption_status;
 
+#[doc(inline)]
+pub use get_custom_reward::{CustomReward, GetCustomRewardRequest};
 #[doc(inline)]
 pub use get_custom_reward_redemption::{CustomRewardRedemption, GetCustomRewardRedemptionRequest};
 #[doc(inline)]
