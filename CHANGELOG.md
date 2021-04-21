@@ -62,6 +62,7 @@
     - Check User Subscription
     - Create Custom Rewards
     - Create User Follows
+    - Delete Custom Reward
     - Delete User Follows
     - Delete Videos
     - Get All Stream Tags

@@ -30,6 +30,7 @@ use crate::{
 use serde::{Deserialize, Serialize};
 
 pub mod create_custom_rewards;
+pub mod delete_custom_reward;
 pub mod get_custom_reward;
 pub mod get_custom_reward_redemption;
 pub mod update_redemption_status;
@@ -39,6 +40,8 @@ pub use create_custom_rewards::{
     CreateCustomRewardBody, CreateCustomRewardRequest, CreateCustomRewardResponse,
 };
 #[doc(inline)]
+pub use delete_custom_reward::{DeleteCustomReward, DeleteCustomRewardRequest};
+#[doc(inline)]
 pub use get_custom_reward::{CustomReward, GetCustomRewardRequest};
 #[doc(inline)]
 pub use get_custom_reward_redemption::{CustomRewardRedemption, GetCustomRewardRedemptionRequest};
@@ -46,7 +49,6 @@ pub use get_custom_reward_redemption::{CustomRewardRedemption, GetCustomRewardRe
 pub use update_redemption_status::{
     UpdateRedemptionStatusBody, UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,
 };
-
 /// Custom reward redemption statuses: UNFULFILLED, FULFILLED or CANCELED
 #[derive(PartialEq, serde::Serialize, serde::Deserialize, Clone, Debug)]
 pub enum CustomRewardRedemptionStatus {
