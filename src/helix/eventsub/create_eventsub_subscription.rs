@@ -95,6 +95,7 @@ pub struct CreateEventSubSubscription<E: EventSubscription> {
         since = "0.5.0",
         note = "on 2021-05-11, this will no longer be returned. Use max_total_cost instead"
     )]
+    #[serde(default)]
     /// Subscription limit for client id that made the subscription creation request.
     pub limit: Option<usize>,
     /// Total number of subscriptions for the client ID that made the subscription creation request.
