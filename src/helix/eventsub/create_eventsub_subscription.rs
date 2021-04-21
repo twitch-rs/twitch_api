@@ -91,10 +91,20 @@ pub struct CreateEventSubSubscription<E: EventSubscription> {
     pub created_at: types::Timestamp,
     /// JSON object indicating the notification delivery specific information. Includes the transport method and callback URL.
     pub transport: TransportResponse,
+    #[deprecated(
+        since = "0.5.0",
+        note = "on 2021-05-11, this will no longer be returned. Use max_total_cost instead"
+    )]
     /// Subscription limit for client id that made the subscription creation request.
-    pub limit: usize,
+    pub limit: Option<usize>,
     /// Total number of subscriptions for the client ID that made the subscription creation request.
     pub total: usize,
+    /// Total cost of all the subscriptions for the client ID that made the subscription creation request.
+    pub total_cost: usize,
+    /// The maximum total cost allowed for all of the subscriptions for the client ID that made the subscription creation request.
+    pub max_total_cost: usize,
+    /// How much the subscription counts against your limit.
+    pub cost: usize,
 }
 
 impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequest<E> {
@@ -110,23 +120,28 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
         Self: Sized,
     {
         #[derive(PartialEq, Deserialize, Debug)]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         pub struct InnerResponseData<E: EventSubscription> {
-            id: String,
+            cost: usize,
+            #[serde(bound(deserialize = "E: EventSubscription"))]
+            condition: E,
+            created_at: types::Timestamp,
+            id: types::EventSubId,
             status: Status,
+            transport: TransportResponse,
             #[serde(rename = "type")]
             type_: EventType,
             version: String,
-            #[serde(bound(deserialize = "E: EventSubscription"))]
-            condition: E,
-            created_at: String,
-            transport: TransportResponse,
         }
         #[derive(PartialEq, Deserialize, Debug)]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         struct InnerResponse<E: EventSubscription> {
             #[serde(bound(deserialize = "E: EventSubscription"))]
             data: Vec<InnerResponseData<E>>,
-            limit: usize,
+            limit: Option<usize>,
             total: usize,
+            total_cost: usize,
+            max_total_cost: usize,
         }
         let response: InnerResponse<E> = serde_json::from_str(&text).map_err(|e| {
             helix::HelixRequestPostError::DeserializeError(text.to_string(), e, uri.clone())
@@ -138,10 +153,14 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
                 uri.clone(),
             )
         })?;
+        #[allow(deprecated)]
         Ok(helix::Response {
             data: CreateEventSubSubscription {
                 limit: response.limit,
                 total: response.total,
+                total_cost: response.total_cost,
+                max_total_cost: response.max_total_cost,
+                cost: data.cost,
                 id: data.id,
                 status: data.status,
                 type_: data.type_,
@@ -190,11 +209,14 @@ fn test_request() {
             "transport": {
                 "method": "webhook",
                 "callback": "https://this-is-a-callback.com"
-            }
+            },
+            "cost": 1
         }
     ],
     "limit": 10000,
-    "total": 1
+    "total": 1,
+    "total_cost": 1,
+    "max_total_cost": 10000
 }
     "#
     .to_vec();
