@@ -545,6 +545,18 @@ where
     Ok(Option::deserialize(deserializer)?.unwrap_or_default())
 }
 
+/// Deserialize "" as <T as Default>::Default
+fn deserialize_none_from_empty_string<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
+where
+    D: serde::de::Deserializer<'de>,
+    T: serde::de::DeserializeOwned + Default, {
+    let val = serde_json::Value::deserialize(deserializer)?;
+    match val {
+        serde_json::Value::String(string) if string.is_empty() => Ok(None),
+        other => Ok(serde_json::from_value(other).map_err(serde::de::Error::custom)?),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -60,7 +60,9 @@
 * Added Helix endpoints
     - Block User
     - Check User Subscription
+    - Create Custom Rewards
     - Create User Follows
+    - Delete Custom Reward
     - Delete User Follows
     - Delete Videos
     - Get All Stream Tags
@@ -68,6 +70,7 @@
     - Get Broadcaster Subscriptions Events
     - Get Channel Editors
     - Get Cheermote
+    - Get Custom Reward
     - Get Custom Reward Redemption (thanks [Dinnerbone](https://github.com/Dinnerbone))
     - Get Games
     - Get Hype Train Events

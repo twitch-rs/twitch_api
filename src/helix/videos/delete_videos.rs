@@ -41,7 +41,7 @@ use super::*;
 use helix::RequestDelete;
 
 // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
-/// Query Parameters for [Get Videos](super::delete_videos)
+/// Query Parameters for [Delete Videos](super::delete_videos)
 ///
 /// [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
@@ -52,7 +52,7 @@ pub struct DeleteVideosRequest {
     pub id: Vec<types::VideoId>,
 }
 // FIXME: Should return VideoIds
-/// Return Values for [Get Videos](super::delete_videos)
+/// Return Values for [Delete Videos](super::delete_videos)
 ///
 /// [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
 #[derive(PartialEq, Deserialize, Debug, Clone)]

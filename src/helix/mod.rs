@@ -285,13 +285,11 @@ where C: crate::HttpClient<'a> + Default
     fn default() -> HelixClient<'a, C> { HelixClient::new() }
 }
 
-/// Deserialize 'null' as <T as Default>::Default
-fn deserialize_default_from_empty_string<'de, D, T>(
-    deserializer: D,
-) -> Result<Option<T>, D::Error>
+/// Deserialize empty string "" as None
+fn deserialize_none_from_empty_string<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
 where
     D: serde::de::Deserializer<'de>,
-    T: serde::de::DeserializeOwned + Default, {
+    T: serde::de::DeserializeOwned, {
     let val = serde_json::Value::deserialize(deserializer)?;
     match val {
         serde_json::Value::String(string) if string.is_empty() => Ok(None),
@@ -912,6 +910,17 @@ pub enum HelixRequestPostError {
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `POST {2}` with response: {0:?}
     DeserializeError(String, #[source] serde_json::Error, http::Uri),
+    /// invalid or unexpected response from twitch.
+    InvalidResponse {
+        /// Reason for error
+        reason: &'static str,
+        /// Response text
+        response: String,
+        /// Status Code
+        status: http::StatusCode,
+        /// Uri to endpoint
+        uri: http::Uri,
+    },
 }
 
 /// helix returned error {status:?}: {message:?} when calling `PATCH {uri}` with a body

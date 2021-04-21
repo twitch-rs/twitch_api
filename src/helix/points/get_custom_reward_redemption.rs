@@ -54,7 +54,7 @@ use helix::RequestGet;
 #[non_exhaustive]
 pub struct GetCustomRewardRedemptionRequest {
     /// Provided broadcaster_id must match the user_id in the auth token
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
 
     /// When ID is not provided, this parameter returns paginated Custom Reward Redemption objects for redemptions of the Custom Reward with ID reward_id
