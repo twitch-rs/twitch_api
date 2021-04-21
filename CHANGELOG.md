@@ -60,6 +60,7 @@
 * Added Helix endpoints
     - Block User
     - Check User Subscription
+    - Create Custom Rewards
     - Create User Follows
     - Delete User Follows
     - Delete Videos

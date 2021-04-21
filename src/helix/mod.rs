@@ -910,6 +910,17 @@ pub enum HelixRequestPostError {
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `POST {2}` with response: {0:?}
     DeserializeError(String, #[source] serde_json::Error, http::Uri),
+    /// invalid or unexpected response from twitch.
+    InvalidResponse {
+        /// Reason for error
+        reason: &'static str,
+        /// Response text
+        response: String,
+        /// Status Code
+        status: http::StatusCode,
+        /// Uri to endpoint
+        uri: http::Uri,
+    },
 }
 
 /// helix returned error {status:?}: {message:?} when calling `PATCH {uri}` with a body

@@ -1,4 +1,4 @@
-//! Returns a list of Custom Reward objects for the Custom Rewards on a channel. 
+//! Returns a list of Custom Reward objects for the Custom Rewards on a channel.
 //!
 //! Developers only have access to update and delete rewards that were created programmatically by the same/calling client_id.
 //! [`get-custom-reward-redemption`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
@@ -169,15 +169,15 @@ fn test_request() {
      ]
 }
 "##
-        .to_vec();
+    .to_vec();
 
     let http_response = http::Response::builder().body(data).unwrap();
 
     let uri = req.get_uri().unwrap();
     assert_eq!(
-            uri.to_string(),
-            "https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=274637212"
-        );
+        uri.to_string(),
+        "https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=274637212"
+    );
 
     dbg!(GetCustomRewardRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }
