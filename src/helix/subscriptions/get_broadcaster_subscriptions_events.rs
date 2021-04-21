@@ -119,15 +119,26 @@ pub struct BroadcasterSubscriptionEventData {
     #[serde(deserialize_with = "subscription_tier")]
     pub tier: Option<types::SubscriptionTier>,
     /// Name of the subscription.
-    #[serde(deserialize_with = "helix::deserialize_default_from_empty_string")]
+    #[serde(
+        default,
+        deserialize_with = "helix::deserialize_none_from_empty_string"
+    )]
     pub plan_name: Option<String>,
     /// ID of the subscribed user.
     pub user_id: types::UserId,
     /// Display name of the subscribed user.
     pub user_name: types::DisplayName,
     /// ID of the subscribed user.
+    #[serde(
+        default,
+        deserialize_with = "helix::deserialize_none_from_empty_string"
+    )]
     pub gifter_id: Option<types::UserId>,
     /// Display name of the gifter.
+    #[serde(
+        default,
+        deserialize_with = "helix::deserialize_none_from_empty_string"
+    )]
     pub gifter_name: Option<types::DisplayName>,
 }
 

@@ -45,6 +45,10 @@ pub struct ModerationAction {
     /// Type of action
     pub moderation_action: ModerationActionCommand,
     /// ID of message associated with moderation action
+    #[serde(
+        default,
+        deserialize_with = "pubsub::deserialize_none_from_empty_string"
+    )]
     pub msg_id: Option<String>,
     /// Target of moderation action
     pub target_user_id: types::UserId,
@@ -53,6 +57,10 @@ pub struct ModerationAction {
     pub type_: ModerationType,
     // Never filled
     #[doc(hidden)]
+    #[serde(
+        default,
+        deserialize_with = "pubsub::deserialize_none_from_empty_string"
+    )]
     pub target_user_login: Option<String>,
 }
 

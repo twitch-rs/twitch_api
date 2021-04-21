@@ -285,13 +285,11 @@ where C: crate::HttpClient<'a> + Default
     fn default() -> HelixClient<'a, C> { HelixClient::new() }
 }
 
-/// Deserialize 'null' as <T as Default>::Default
-fn deserialize_default_from_empty_string<'de, D, T>(
-    deserializer: D,
-) -> Result<Option<T>, D::Error>
+/// Deserialize empty string "" as None
+fn deserialize_none_from_empty_string<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
 where
     D: serde::de::Deserializer<'de>,
-    T: serde::de::DeserializeOwned + Default, {
+    T: serde::de::DeserializeOwned, {
     let val = serde_json::Value::deserialize(deserializer)?;
     match val {
         serde_json::Value::String(string) if string.is_empty() => Ok(None),
