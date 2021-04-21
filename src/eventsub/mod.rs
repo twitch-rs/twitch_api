@@ -545,7 +545,7 @@ pub enum Status {
 #[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
 pub struct EventSubSubscription {
     /// How much the subscription counts against your limit.
-    pub cost: i64,
+    pub cost: usize,
     /// JSON object specifying custom parameters for the subscription.
     // FIXME: Should be [eventsub::Condition]
     pub condition: serde_json::Value,
@@ -559,7 +559,7 @@ pub struct EventSubSubscription {
     pub transport: TransportResponse,
     /// The category of the subscription.
     #[serde(rename = "type")]
-    pub type_: String,
+    pub type_: EventType,
     /// The version of the subscription.
     pub version: String,
 }

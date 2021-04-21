@@ -39,13 +39,17 @@ impl Request for GetEventSubSubscriptionsRequest {
 #[non_exhaustive]
 pub struct EventSubSubscriptions {
     /// Total number of subscriptions for the client ID that made the subscription creation request.
-    pub total: i64,
+    pub total: usize,
     /// Total cost of all the subscriptions for the client ID that made the subscription creation request.
-    pub total_cost: i64,
+    pub total_cost: usize,
     /// The maximum total cost allowed for all of the subscriptions for the client ID that made the subscription creation request.
-    pub max_total_cost: i64,
+    pub max_total_cost: usize,
+    #[deprecated(
+        since = "0.5.0",
+        note = "on 2021-05-11, this will no longer be returned. Use max_total_cost instead"
+    )]
     /// Subscription limit for client id that made the subscription creation request.
-    pub limit: i64,
+    pub limit: Option<usize>,
     /// Array containing subscriptions.
     pub subscriptions: Vec<eventsub::EventSubSubscription>,
 }
@@ -61,20 +65,22 @@ impl RequestGet for GetEventSubSubscriptionsRequest {
         Self: Sized,
     {
         #[derive(PartialEq, Deserialize, Debug)]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         struct InnerResponse {
             data: Vec<eventsub::EventSubSubscription>,
             /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
             #[serde(default)]
             pagination: helix::Pagination,
-            total: i64,
-            total_cost: i64,
-            max_total_cost: i64,
-            limit: i64,
+            total: usize,
+            total_cost: usize,
+            max_total_cost: usize,
+            limit: Option<usize>,
         }
 
         let response: InnerResponse = serde_json::from_str(response).map_err(|e| {
             helix::HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
         })?;
+        #[allow(deprecated)]
         Ok(helix::Response {
             data: EventSubSubscriptions {
                 total: response.total,
@@ -98,14 +104,14 @@ fn test_request() {
     use helix::*;
     let req: GetEventSubSubscriptionsRequest = GetEventSubSubscriptionsRequest::builder().build();
     // From twitch docs.
-    // FIXME: Twitch says in example that status is kebab-case, it's actually snake_case
+    // FIXME: Twitch says in example that status is kebab-case, it's actually snake_case. also, users vs user and stream vs streams
     let data = br#"{
         "total": 2,
         "data": [
             {
                 "id": "26b1c993-bfcf-44d9-b876-379dacafe75a",
                 "status": "enabled",
-                "type": "streams.online",
+                "type": "stream.online",
                 "version": "1",
                 "condition": {
                     "broadcaster_user_id": "1234"
@@ -120,7 +126,7 @@ fn test_request() {
             {
                 "id": "35016908-41ff-33ce-7879-61b8dfc2ee16",
                 "status": "webhook_callback_verification_pending",
-                "type": "users.update",
+                "type": "user.update",
                 "version": "1",
                 "condition": {
                     "user_id": "1234"

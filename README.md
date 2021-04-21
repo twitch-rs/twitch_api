@@ -21,7 +21,6 @@ use twitch_oauth2::{AccessToken, Scope, TwitchToken, tokens::errors::TokenError,
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
     let token = UserToken::from_existing(
         reqwest_http_client,
         AccessToken::new("mytoken".to_string()),
