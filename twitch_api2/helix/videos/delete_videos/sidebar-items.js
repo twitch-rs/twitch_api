@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["DeleteVideo","Return Values for Get Videos"]],"struct":[["DeleteVideosRequest","Query Parameters for Get Videos"]]});
+initSidebarItems({"enum":[["DeleteVideo","Return Values for Delete Videos"]],"struct":[["DeleteVideosRequest","Query Parameters for Delete Videos"]]});
