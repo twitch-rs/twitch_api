@@ -736,7 +736,7 @@ where
     pub async fn get_next<'a, C: crate::HttpClient<'a>>(
         self,
         client: &'a HelixClient<'a, C>,
-        token: &impl TwitchToken,
+        token: &(impl TwitchToken + ?Sized),
     ) -> Result<Option<Response<R, D>>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     {
         if let Some(mut req) = self.request.clone() {

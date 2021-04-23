@@ -42,6 +42,7 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPut::create_request)
 //! and parse the [`http::Response`] with [`BlockUserRequest::parse_response(&request.get_uri(), response)`](BlockUserRequest::parse_response)
+
 use super::*;
 use helix::RequestPut;
 
@@ -85,6 +86,7 @@ pub enum Reason {
     /// Other
     Other,
 }
+
 /// Return Values for [Block User](super::block_user)
 ///
 /// [`block-user`](https://dev.twitch.tv/docs/api/reference#block-user)
