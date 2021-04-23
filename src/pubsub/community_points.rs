@@ -24,6 +24,8 @@ impl_de_ser!(
 impl pubsub::Topic for CommunityPointsChannelV1 {
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadRedemptions];
+
+    fn into_topic(self) -> pubsub::Topics { super::Topics::CommunityPointsChannelV1(self) }
 }
 #[cfg(test)]
 mod tests {

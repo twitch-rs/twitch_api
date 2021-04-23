@@ -1,6 +1,6 @@
 //! Holds serializable pubsub stuff
 //!
-//! Use [`TopicSubscribe::to_command`] to send subscription listen and parse the responses with [`Response::parse`]
+//! Use [`listen_command()`] to send subscription listen and parse the responses with [`Response::parse`]
 //!
 //! # Undocumented features
 //!
@@ -22,6 +22,21 @@ macro_rules! impl_de_ser {
         }
         impl<'a> From<&'a $type> for String {
             fn from(t: &'a $type) -> Self { format!(concat!($fmt, $(impl_de_ser!(@field $field),)+ $(impl_de_ser!(@field $opt_field),)*), $(t.$field,)*$(t.$opt_field.map(|f| f.to_string()).unwrap_or_default(),)*).trim_end_matches(".").to_owned() }
+        }
+
+        impl From<$type> for super::Topics {
+            fn from(t: $type) -> Self {
+                use super::Topic as _;
+                t.into_topic()
+            }
+        }
+
+        impl ::std::fmt::Display for $type {
+            ///
+            fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+                let s: String = ::std::convert::TryInto::try_into(self).map_err(|_| ::std::fmt::Error)?;
+                f.write_str(&s)
+            }
         }
 
         impl ::std::convert::TryFrom<String> for $type {
@@ -107,139 +122,170 @@ pub trait Topic: Serialize + Into<String> {
     #[cfg(feature = "twitch_oauth2")]
     #[cfg_attr(nightly, doc(cfg(feature = "twitch_oauth2")))]
     const SCOPE: &'static [twitch_oauth2::Scope];
+
+    /// Convert this into a [`Topics`]
+    fn into_topic(self) -> Topics;
 }
 
-/// Command that can be serialized to be sent to twitchs PubSub server to subscribe or unsubscribe to a [Topic]
-pub enum TopicSubscribe {
-    /// Subscribe/Listen
-    Listen {
-        /// Random string to identify the response associated with this request.
-        nonce: Option<String>,
-        /// List of topics to listen on.
-        topics: Vec<String>,
-        /// OAuth token required to listen on some topics.
-        auth_token: String,
-    },
-    /// Unsubscribe/Unlisten
-    Unlisten {
-        /// Random string to identify the response associated with this request.
-        nonce: Option<String>,
-        /// List of topics to listen on.
-        topics: Vec<String>,
-        /// OAuth token required to listen on some topics.
-        auth_token: String,
-    },
+/// All possible topics
+#[derive(Deserialize, Serialize, PartialEq, Eq, Debug)]
+#[serde(untagged)]
+#[non_exhaustive]
+pub enum Topics {
+    /// A user redeems an reward using channel points.
+    ///
+    /// Reply is [`pubsub::channel_points::ChannelPointsChannelV1Reply`]
+    #[cfg(feature = "unsupported")]
+    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
+    CommunityPointsChannelV1(community_points::CommunityPointsChannelV1),
+    /// Anyone cheers in a specified channel.
+    ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2),
+    /// Anyone shares a bit badge in a specified channel.
+    ChannelBitsBadgeUnlocks(channel_bits_badge::ChannelBitsBadgeUnlocks),
+    /// A user redeems a cheer with shared rewards.
+    #[cfg(feature = "unsupported")]
+    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
+    ChannelCheerEventsPublicV1(channel_cheer::ChannelCheerEventsPublicV1),
+    /// A user gifts subs.
+    ///
+    /// This allows one to know how many subs were gifted in a single event. See also [`pubsub::channel_subscriptions::ChannelSubscribeEventsV1`] which needs token from broadcaster
+    #[cfg(feature = "unsupported")]
+    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
+    ChannelSubGiftsV1(channel_sub_gifts::ChannelSubGiftsV1),
+    /// A moderator performs an action in the channel.
+    ChatModeratorActions(moderation::ChatModeratorActions),
+    /// A user redeems an reward using channel points.
+    ChannelPointsChannelV1(channel_points::ChannelPointsChannelV1),
+    /// A subscription event happens in channel
+    ChannelSubscribeEventsV1(channel_subscriptions::ChannelSubscribeEventsV1),
+    /// Statistics about stream
+    #[cfg(feature = "unsupported")]
+    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
+    VideoPlayback(video_playback::VideoPlayback),
+    /// Statistics about stream
+    #[cfg(feature = "unsupported")]
+    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
+    VideoPlaybackById(video_playback::VideoPlaybackById),
+    /// A user redeems an reward using channel points.
+    #[cfg(feature = "unsupported")]
+    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
+    HypeTrainEventsV1(hypetrain::HypeTrainEventsV1),
+    /// A user redeems an reward using channel points.
+    #[cfg(feature = "unsupported")]
+    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
+    HypeTrainEventsV1Rewards(hypetrain::HypeTrainEventsV1Rewards),
+    /// A user follows the channel
+    #[cfg(feature = "unsupported")]
+    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
+    Following(following::Following),
+    /// A user raids the channel
+    #[cfg(feature = "unsupported")]
+    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
+    Raid(raid::Raid),
 }
 
-impl Serialize for TopicSubscribe {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where S: serde::Serializer {
-        #[derive(Serialize)]
-        struct ITopicSubscribeData<'a> {
-            topics: &'a [String],
-            auth_token: &'a str,
-        }
-        #[derive(Serialize)]
-        struct ITopicSubscribe<'a> {
-            #[serde(rename = "type")]
-            _type: &'static str,
-            nonce: Option<&'a str>,
-            data: ITopicSubscribeData<'a>,
-        }
-
-        match self {
-            TopicSubscribe::Listen {
-                nonce,
-                topics,
-                auth_token,
-            } => ITopicSubscribe {
-                _type: "LISTEN",
-                nonce: nonce.as_deref(),
-                data: ITopicSubscribeData {
-                    topics: topics.as_slice(),
-                    auth_token,
-                },
-            }
-            .serialize(serializer),
-            TopicSubscribe::Unlisten {
-                nonce,
-                topics,
-                auth_token,
-            } => ITopicSubscribe {
-                _type: "UNLISTEN",
-                nonce: nonce.as_deref(),
-                data: ITopicSubscribeData {
-                    topics: topics.as_slice(),
-                    auth_token,
-                },
-            }
-            .serialize(serializer),
-        }
+impl std::fmt::Display for Topics {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        use self::Topics::*;
+        let s = match self {
+            CommunityPointsChannelV1(t) => t.to_string(),
+            ChannelBitsEventsV2(t) => t.to_string(),
+            ChannelBitsBadgeUnlocks(t) => t.to_string(),
+            ChannelCheerEventsPublicV1(t) => t.to_string(),
+            ChannelSubGiftsV1(t) => t.to_string(),
+            ChatModeratorActions(t) => t.to_string(),
+            ChannelPointsChannelV1(t) => t.to_string(),
+            ChannelSubscribeEventsV1(t) => t.to_string(),
+            VideoPlayback(t) => t.to_string(),
+            VideoPlaybackById(t) => t.to_string(),
+            HypeTrainEventsV1(t) => t.to_string(),
+            HypeTrainEventsV1Rewards(t) => t.to_string(),
+            Following(t) => t.to_string(),
+            Raid(t) => t.to_string(),
+        };
+        f.write_str(&s)
     }
 }
 
-impl TopicSubscribe {
-    /// Convert this [`TopicSubscribe`] to a string which you can send with your client
-    pub fn to_command(&self) -> Result<String, serde_json::Error> { serde_json::to_string(&self) }
+#[derive(Serialize)]
+struct ITopicSubscribeData<'a> {
+    topics: &'a [String],
+    auth_token: &'a str,
+}
+#[derive(Serialize)]
+struct ITopicSubscribe<'a> {
+    #[serde(rename = "type")]
+    _type: &'static str,
+    nonce: Option<&'a str>,
+    data: ITopicSubscribeData<'a>,
+}
 
-    /// Create a listen command.
-    ///
-    /// # Example
-    ///
-    /// Create a listen message for moderator actions
-    ///
-    /// ```rust
-    /// # use twitch_api2::pubsub;
-    /// // We want to subscribe to moderator actions on channel with id 1234
-    /// // as if we were a user with id 4321 that is moderator on the channel.
-    /// let topic = pubsub::moderation::ChatModeratorActions {
-    ///     user_id: 4321,
-    ///     channel_id: 1234,
-    /// };
-    ///
-    /// // Create the topic command to send to twitch
-    /// let command = pubsub::TopicSubscribe::listen(
-    ///     &[topic],
-    ///     "authtoken".to_string(),
-    ///     "super se3re7 random string".to_string(),
-    /// )
-    /// .to_command().expect("serializing failed");
-    /// // Send the message with your favorite websocket client
-    /// send_command(command).unwrap();
-    /// // To parse the websocket messages, use pubsub::Response::parse
-    /// # fn send_command(command: String) -> Result<(),()> {Ok(())}
-    /// ```
-    pub fn listen<'a, T: Topic, O: Into<Option<String>>>(
-        topics: &'a [T],
-        auth_token: String,
-        nonce: O,
-    ) -> TopicSubscribe
-    where
-        &'a T: Into<String>,
-    {
-        TopicSubscribe::Listen {
-            nonce: nonce.into(),
-            topics: topics.iter().map(|t| t.into()).collect(),
+/// Create a listen command.
+///
+/// # Example
+///
+/// Create a listen message for moderator actions
+///
+/// ```rust
+/// # use twitch_api2::pubsub::{self, Topic as _};
+/// // We want to subscribe to moderator actions on channel with id 1234
+/// // as if we were a user with id 4321 that is moderator on the channel.
+/// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {
+///     user_id: 4321,
+///     channel_id: 1234,
+/// }.into_topic();
+///
+/// // Listen to follows as well
+/// let follows = pubsub::following::Following {
+///     channel_id: 1234,
+/// }.into_topic();
+/// // Create the topic command to send to twitch
+/// let command = pubsub::listen_command(
+///     &[chat_mod_actions, follows],
+///     "authtoken",
+///     "super se3re7 random string",
+/// )
+/// .expect("serializing failed");
+/// // Send the message with your favorite websocket client
+/// send_command(command).unwrap();
+/// // To parse the websocket messages, use pubsub::Response::parse
+/// # fn send_command(command: String) -> Result<(),()> {Ok(())}
+/// ```
+pub fn listen_command<'t, O>(
+    topics: &'t [Topics],
+    auth_token: &'t str,
+    nonce: O,
+) -> Result<String, serde_json::Error>
+where
+    O: Into<Option<&'t str>>,
+{
+    let topics = topics.iter().map(|t| t.to_string()).collect::<Vec<_>>();
+    serde_json::to_string(&ITopicSubscribe {
+        _type: "LISTEN",
+        nonce: nonce.into(),
+        data: ITopicSubscribeData {
+            topics: &topics,
             auth_token,
-        }
-    }
-
-    /// Create a unlisten command.
-    pub fn unlisten<'a, T: Topic, O: Into<Option<String>>>(
-        topics: &'a [T],
-        auth_token: String,
-        nonce: O,
-    ) -> TopicSubscribe
-    where
-        &'a T: Into<String>,
-    {
-        TopicSubscribe::Unlisten {
-            nonce: nonce.into(),
-            topics: topics.iter().map(|t| t.into()).collect(),
-            auth_token,
-        }
-    }
+        },
+    })
 }
+
+// /// Create a unlisten command.
+// pub fn unlisten_command<'t, O>(
+//     topics: &'t [&str],
+//     auth_token: &'t str,
+//     nonce: O,
+// ) -> Result<String, serde_json::Error>
+// where
+//     O: Into<Option<&'t str>>,
+// {
+//     serde_json::to_string(&ITopicSubscribe {
+//         _type: "UNLISTEN",
+//         nonce: nonce.into(),
+//         data: ITopicSubscribeData { topics: topics.map(|t| t.to_string()), auth_token },
+//     })
+// }
+
 /// Response from twitch PubSub
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 pub struct TwitchResponse {
@@ -398,37 +444,9 @@ impl<'de> Deserialize<'de> for TopicData {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         // FIXME: make into macro or actually upstream into serde..., untagged_force = "field"
 
-        #[derive(Deserialize, PartialEq, Eq, Debug)]
-        #[serde(untagged)]
-        enum ITopicMessage {
-            #[cfg(feature = "unsupported")]
-            CommunityPointsChannelV1(community_points::CommunityPointsChannelV1),
-            ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2),
-            ChannelBitsBadgeUnlocks(channel_bits_badge::ChannelBitsBadgeUnlocks),
-            #[cfg(feature = "unsupported")]
-            ChannelCheerEventsPublicV1(channel_cheer::ChannelCheerEventsPublicV1),
-            #[cfg(feature = "unsupported")]
-            ChannelSubGiftsV1(channel_sub_gifts::ChannelSubGiftsV1),
-            ChatModeratorActions(moderation::ChatModeratorActions),
-            ChannelPointsChannelV1(channel_points::ChannelPointsChannelV1),
-            ChannelSubscribeEventsV1(channel_subscriptions::ChannelSubscribeEventsV1),
-            #[cfg(feature = "unsupported")]
-            VideoPlayback(video_playback::VideoPlayback),
-            #[cfg(feature = "unsupported")]
-            VideoPlaybackById(video_playback::VideoPlaybackById),
-            #[cfg(feature = "unsupported")]
-            HypeTrainEventsV1(hypetrain::HypeTrainEventsV1),
-            #[cfg(feature = "unsupported")]
-            HypeTrainEventsV1Rewards(hypetrain::HypeTrainEventsV1Rewards),
-            #[cfg(feature = "unsupported")]
-            Following(following::Following),
-            #[cfg(feature = "unsupported")]
-            Raid(raid::Raid),
-        }
-
         #[derive(Deserialize, Debug)]
         struct ITopicData {
-            topic: ITopicMessage,
+            topic: Topics,
             message: String,
         }
         let reply = ITopicData::deserialize(deserializer).map_err(|e| {
@@ -436,70 +454,67 @@ impl<'de> Deserialize<'de> for TopicData {
         })?;
         Ok(match reply.topic {
             #[cfg(feature = "unsupported")]
-            ITopicMessage::CommunityPointsChannelV1(topic) => TopicData::CommunityPointsChannelV1 {
+            Topics::CommunityPointsChannelV1(topic) => TopicData::CommunityPointsChannelV1 {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
-            ITopicMessage::ChannelBitsEventsV2(topic) => TopicData::ChannelBitsEventsV2 {
+            Topics::ChannelBitsEventsV2(topic) => TopicData::ChannelBitsEventsV2 {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
-            ITopicMessage::ChannelBitsBadgeUnlocks(topic) => TopicData::ChannelBitsBadgeUnlocks {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            #[cfg(feature = "unsupported")]
-            ITopicMessage::ChannelSubGiftsV1(topic) => TopicData::ChannelSubGiftsV1 {
+            Topics::ChannelBitsBadgeUnlocks(topic) => TopicData::ChannelBitsBadgeUnlocks {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
-            ITopicMessage::ChannelCheerEventsPublicV1(topic) => {
-                TopicData::ChannelCheerEventsPublicV1 {
-                    topic,
-                    reply: serde_json::from_str(&reply.message)
-                        .map_err(serde::de::Error::custom)?,
-                }
-            }
-            ITopicMessage::ChatModeratorActions(topic) => TopicData::ChatModeratorActions {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            ITopicMessage::ChannelPointsChannelV1(topic) => TopicData::ChannelPointsChannelV1 {
-                topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
-            },
-            ITopicMessage::ChannelSubscribeEventsV1(topic) => TopicData::ChannelSubscribeEventsV1 {
+            Topics::ChannelSubGiftsV1(topic) => TopicData::ChannelSubGiftsV1 {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
-            ITopicMessage::VideoPlayback(topic) => TopicData::VideoPlayback {
+            Topics::ChannelCheerEventsPublicV1(topic) => TopicData::ChannelCheerEventsPublicV1 {
+                topic,
+                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+            },
+            Topics::ChatModeratorActions(topic) => TopicData::ChatModeratorActions {
+                topic,
+                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+            },
+            Topics::ChannelPointsChannelV1(topic) => TopicData::ChannelPointsChannelV1 {
+                topic,
+                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+            },
+            Topics::ChannelSubscribeEventsV1(topic) => TopicData::ChannelSubscribeEventsV1 {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
-            ITopicMessage::VideoPlaybackById(topic) => TopicData::VideoPlaybackById {
+            Topics::VideoPlayback(topic) => TopicData::VideoPlayback {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
-            ITopicMessage::HypeTrainEventsV1(topic) => TopicData::HypeTrainEventsV1 {
+            Topics::VideoPlaybackById(topic) => TopicData::VideoPlaybackById {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
-            ITopicMessage::HypeTrainEventsV1Rewards(topic) => TopicData::HypeTrainEventsV1Rewards {
+            Topics::HypeTrainEventsV1(topic) => TopicData::HypeTrainEventsV1 {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
-            ITopicMessage::Following(topic) => TopicData::Following {
+            Topics::HypeTrainEventsV1Rewards(topic) => TopicData::HypeTrainEventsV1Rewards {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
-            ITopicMessage::Raid(topic) => TopicData::Raid {
+            Topics::Following(topic) => TopicData::Following {
+                topic,
+                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+            },
+            #[cfg(feature = "unsupported")]
+            Topics::Raid(topic) => TopicData::Raid {
                 topic,
                 reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
             },

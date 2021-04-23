@@ -20,6 +20,8 @@ impl_de_ser!(
 impl pubsub::Topic for ChannelBitsBadgeUnlocks {
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::BitsRead];
+
+    fn into_topic(self) -> pubsub::Topics { super::Topics::ChannelBitsBadgeUnlocks(self) }
 }
 
 /// Reply from [ChannelBitsBadgeUnlocks]

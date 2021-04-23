@@ -21,6 +21,8 @@ impl_de_ser!(
 impl pubsub::Topic for Following {
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+
+    fn into_topic(self) -> pubsub::Topics { super::Topics::Following(self) }
 }
 
 /// Reply from [Following]

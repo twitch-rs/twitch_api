@@ -21,6 +21,8 @@ impl_de_ser!(
 impl pubsub::Topic for HypeTrainEventsV1 {
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+
+    fn into_topic(self) -> pubsub::Topics { super::Topics::HypeTrainEventsV1(self) }
 }
 
 /// A user redeems an reward using channel points.
@@ -41,6 +43,8 @@ impl_de_ser!(
 impl pubsub::Topic for HypeTrainEventsV1Rewards {
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+
+    fn into_topic(self) -> pubsub::Topics { super::Topics::HypeTrainEventsV1Rewards(self) }
 }
 
 /// Hype train rewards
