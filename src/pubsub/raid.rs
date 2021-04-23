@@ -3,7 +3,7 @@
 use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};
 
-/// A user follows the channel
+/// A user raids the channel
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(into = "String", try_from = "String")]
 pub struct Raid {
@@ -16,6 +16,8 @@ impl_de_ser!(Raid, "raid", channel_id);
 impl pubsub::Topic for Raid {
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+
+    fn into_topic(self) -> pubsub::Topics { super::Topics::Raid(self) }
 }
 
 /// Raid go

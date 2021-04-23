@@ -21,6 +21,8 @@ impl_de_ser!(
 impl pubsub::Topic for ChannelPointsChannelV1 {
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadRedemptions];
+
+    fn into_topic(self) -> pubsub::Topics { super::Topics::ChannelPointsChannelV1(self) }
 }
 
 /// A redemption users can "buy" with channel points to trigger rewards

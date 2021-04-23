@@ -23,6 +23,8 @@ impl_de_ser!(
 impl pubsub::Topic for ChannelSubGiftsV1 {
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+
+    fn into_topic(self) -> pubsub::Topics { super::Topics::ChannelSubGiftsV1(self) }
 }
 
 /// Mystery gift
