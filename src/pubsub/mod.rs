@@ -133,8 +133,6 @@ pub trait Topic: Serialize + Into<String> {
 #[non_exhaustive]
 pub enum Topics {
     /// A user redeems an reward using channel points.
-    ///
-    /// Reply is [`pubsub::channel_points::ChannelPointsChannelV1Reply`]
     #[cfg(feature = "unsupported")]
     #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     CommunityPointsChannelV1(community_points::CommunityPointsChannelV1),
@@ -147,8 +145,6 @@ pub enum Topics {
     #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     ChannelCheerEventsPublicV1(channel_cheer::ChannelCheerEventsPublicV1),
     /// A user gifts subs.
-    ///
-    /// This allows one to know how many subs were gifted in a single event. See also [`pubsub::channel_subscriptions::ChannelSubscribeEventsV1`] which needs token from broadcaster
     #[cfg(feature = "unsupported")]
     #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     ChannelSubGiftsV1(channel_sub_gifts::ChannelSubGiftsV1),
@@ -188,19 +184,28 @@ impl std::fmt::Display for Topics {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         use self::Topics::*;
         let s = match self {
+            #[cfg(feature = "unsupported")]
             CommunityPointsChannelV1(t) => t.to_string(),
             ChannelBitsEventsV2(t) => t.to_string(),
             ChannelBitsBadgeUnlocks(t) => t.to_string(),
+            #[cfg(feature = "unsupported")]
             ChannelCheerEventsPublicV1(t) => t.to_string(),
+            #[cfg(feature = "unsupported")]
             ChannelSubGiftsV1(t) => t.to_string(),
             ChatModeratorActions(t) => t.to_string(),
             ChannelPointsChannelV1(t) => t.to_string(),
             ChannelSubscribeEventsV1(t) => t.to_string(),
+            #[cfg(feature = "unsupported")]
             VideoPlayback(t) => t.to_string(),
+            #[cfg(feature = "unsupported")]
             VideoPlaybackById(t) => t.to_string(),
+            #[cfg(feature = "unsupported")]
             HypeTrainEventsV1(t) => t.to_string(),
+            #[cfg(feature = "unsupported")]
             HypeTrainEventsV1Rewards(t) => t.to_string(),
+            #[cfg(feature = "unsupported")]
             Following(t) => t.to_string(),
+            #[cfg(feature = "unsupported")]
             Raid(t) => t.to_string(),
         };
         f.write_str(&s)
