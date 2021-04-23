@@ -50,10 +50,11 @@ surf_client = [
     "surf",
     "url",
     "http-types",
-    "client"
+    "client",
+    "twitch_oauth2/surf_client"
 ]
 
-reqwest_client = ["reqwest", "client"]
+reqwest_client = ["reqwest", "client", "twitch_oauth2/reqwest_client"]
 
 pubsub = ["serde_json"]
 
