@@ -76,7 +76,7 @@ impl RequestGet for GetWebhookSubscriptionsRequest {
             total: i64,
         }
 
-        let response: InnerResponse = serde_json::from_str(response).map_err(|e| {
+        let response: InnerResponse = helix::parse_json(response).map_err(|e| {
             helix::HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
         })?;
         Ok(helix::Response {

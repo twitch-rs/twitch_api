@@ -115,7 +115,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
         request: Option<Self>,
         uri: &http::Uri,
         text: &str,
-        _: http::StatusCode,
+        status: http::StatusCode,
     ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPostError>
     where
         Self: Sized,
@@ -144,15 +144,16 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
             total_cost: usize,
             max_total_cost: usize,
         }
-        let response: InnerResponse<E> = serde_json::from_str(&text).map_err(|e| {
+        let response: InnerResponse<E> = helix::parse_json(&text).map_err(|e| {
             helix::HelixRequestPostError::DeserializeError(text.to_string(), e, uri.clone())
         })?;
         let data = response.data.into_iter().next().ok_or_else(|| {
-            helix::HelixRequestPostError::DeserializeError(
-                text.to_string(),
-                serde::de::Error::custom("missing response `data`"),
-                uri.clone(),
-            )
+            helix::HelixRequestPostError::InvalidResponse {
+                reason: "missing response data",
+                response: text.to_string(),
+                status,
+                uri: uri.clone(),
+            }
         })?;
         #[allow(deprecated)]
         Ok(helix::Response {
