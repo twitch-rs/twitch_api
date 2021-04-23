@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["RaidReply","Reply from [Raid]"]],"struct":[["Raid","A user follows the channel"],["RaidCancelV2","Raid canceled"],["RaidGoV2","Raid go"],["RaidUpdateV2","Raid update"]]});
+initSidebarItems({"enum":[["RaidReply","Reply from [Raid]"]],"struct":[["Raid","A user raids the channel"],["RaidCancelV2","Raid canceled"],["RaidGoV2","Raid go"],["RaidUpdateV2","Raid update"]]});

@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/29f193e275d32dc1fcc3b60091f4f7bc259f9a7b">29f193e</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/7a4b488416255e636fb0efdd169518a8cb82cc3a">7a4b488</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -582,10 +582,30 @@
 <span id="577">577</span>
 <span id="578">578</span>
 <span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Holds serializable pubsub stuff</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Use [`TopicSubscribe::to_command`] to send subscription listen and parse the responses with [`Response::parse`]</span>
+<span class="doccomment">//! Use [`listen_command()`] to send subscription listen and parse the responses with [`Response::parse`]</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Undocumented features</span>
 <span class="doccomment">//!</span>
@@ -607,6 +627,21 @@
         }
         <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">String</span> {
             <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>, $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),)<span class="op">+</span> $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>),)<span class="kw-2">*</span>), $(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>$(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_default</span>(),)<span class="kw-2">*</span>).<span class="ident">trim_end_matches</span>(<span class="string">&quot;.&quot;</span>).<span class="ident">to_owned</span>() }
+        }
+
+        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw">super</span><span class="macro-nonterminal">::Topics</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="kw">use</span> <span class="kw">super</span><span class="macro-nonterminal">::Topic</span> <span class="kw">as</span> <span class="kw">_</span>;
+                <span class="ident">t</span>.<span class="ident">into_topic</span>()
+            }
+        }
+
+        <span class="kw">impl</span> <span class="ident">::std::fmt::Display</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">type</span> {
+            <span class="doccomment">///</span>
+            <span class="kw">fn</span> <span class="macro-nonterminal">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">::std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::std::fmt::Result</span> {
+                <span class="kw">let</span> <span class="ident">s</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">::std::convert::TryInto::try_into</span>(<span class="self">self</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">::std::fmt::Error</span>)<span class="question-mark">?</span>;
+                <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>)
+            }
         }
 
         <span class="kw">impl</span> <span class="ident">::std::convert::TryFrom</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">type</span> {
@@ -692,139 +727,175 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)))]</span>
     <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>];
+
+    <span class="doccomment">/// Convert this into a [`Topics`]</span>
+    <span class="kw">fn</span> <span class="ident">into_topic</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Topics</span>;
 }
 
-<span class="doccomment">/// Command that can be serialized to be sent to twitchs PubSub server to subscribe or unsubscribe to a [Topic]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TopicSubscribe</span> {
-    <span class="doccomment">/// Subscribe/Listen</span>
-    <span class="ident">Listen</span> {
-        <span class="doccomment">/// Random string to identify the response associated with this request.</span>
-        <span class="ident">nonce</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// List of topics to listen on.</span>
-        <span class="ident">topics</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// OAuth token required to listen on some topics.</span>
-        <span class="ident">auth_token</span>: <span class="ident">String</span>,
-    },
-    <span class="doccomment">/// Unsubscribe/Unlisten</span>
-    <span class="ident">Unlisten</span> {
-        <span class="doccomment">/// Random string to identify the response associated with this request.</span>
-        <span class="ident">nonce</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// List of topics to listen on.</span>
-        <span class="ident">topics</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// OAuth token required to listen on some topics.</span>
-        <span class="ident">auth_token</span>: <span class="ident">String</span>,
-    },
+<span class="doccomment">/// All possible topics</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">untagged</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Topics</span> {
+    <span class="doccomment">/// A user redeems an reward using channel points.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
+    <span class="ident">CommunityPointsChannelV1</span>(<span class="ident">community_points::CommunityPointsChannelV1</span>),
+    <span class="doccomment">/// Anyone cheers in a specified channel.</span>
+    <span class="ident">ChannelBitsEventsV2</span>(<span class="ident">channel_bits::ChannelBitsEventsV2</span>),
+    <span class="doccomment">/// Anyone shares a bit badge in a specified channel.</span>
+    <span class="ident">ChannelBitsBadgeUnlocks</span>(<span class="ident">channel_bits_badge::ChannelBitsBadgeUnlocks</span>),
+    <span class="doccomment">/// A user redeems a cheer with shared rewards.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
+    <span class="ident">ChannelCheerEventsPublicV1</span>(<span class="ident">channel_cheer::ChannelCheerEventsPublicV1</span>),
+    <span class="doccomment">/// A user gifts subs.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
+    <span class="ident">ChannelSubGiftsV1</span>(<span class="ident">channel_sub_gifts::ChannelSubGiftsV1</span>),
+    <span class="doccomment">/// A moderator performs an action in the channel.</span>
+    <span class="ident">ChatModeratorActions</span>(<span class="ident">moderation::ChatModeratorActions</span>),
+    <span class="doccomment">/// A user redeems an reward using channel points.</span>
+    <span class="ident">ChannelPointsChannelV1</span>(<span class="ident">channel_points::ChannelPointsChannelV1</span>),
+    <span class="doccomment">/// A subscription event happens in channel</span>
+    <span class="ident">ChannelSubscribeEventsV1</span>(<span class="ident">channel_subscriptions::ChannelSubscribeEventsV1</span>),
+    <span class="doccomment">/// Statistics about stream</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
+    <span class="ident">VideoPlayback</span>(<span class="ident">video_playback::VideoPlayback</span>),
+    <span class="doccomment">/// Statistics about stream</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
+    <span class="ident">VideoPlaybackById</span>(<span class="ident">video_playback::VideoPlaybackById</span>),
+    <span class="doccomment">/// A user redeems an reward using channel points.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
+    <span class="ident">HypeTrainEventsV1</span>(<span class="ident">hypetrain::HypeTrainEventsV1</span>),
+    <span class="doccomment">/// A user redeems an reward using channel points.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
+    <span class="ident">HypeTrainEventsV1Rewards</span>(<span class="ident">hypetrain::HypeTrainEventsV1Rewards</span>),
+    <span class="doccomment">/// A user follows the channel</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
+    <span class="ident">Following</span>(<span class="ident">following::Following</span>),
+    <span class="doccomment">/// A user raids the channel</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
+    <span class="ident">Raid</span>(<span class="ident">raid::Raid</span>),
 }
 
-<span class="kw">impl</span> <span class="ident">Serialize</span> <span class="kw">for</span> <span class="ident">TopicSubscribe</span> {
-    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span>
-    <span class="kw">where</span> <span class="ident">S</span>: <span class="ident">serde::Serializer</span> {
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">ITopicSubscribeData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-            <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">String</span>],
-            <span class="ident">auth_token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-        }
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">ITopicSubscribe</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-            <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
-            <span class="ident">_type</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-            <span class="ident">nonce</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>,
-            <span class="ident">data</span>: <span class="ident">ITopicSubscribeData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-        }
-
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">TopicSubscribe::Listen</span> {
-                <span class="ident">nonce</span>,
-                <span class="ident">topics</span>,
-                <span class="ident">auth_token</span>,
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ITopicSubscribe</span> {
-                <span class="ident">_type</span>: <span class="string">&quot;LISTEN&quot;</span>,
-                <span class="ident">nonce</span>: <span class="ident">nonce</span>.<span class="ident">as_deref</span>(),
-                <span class="ident">data</span>: <span class="ident">ITopicSubscribeData</span> {
-                    <span class="ident">topics</span>: <span class="ident">topics</span>.<span class="ident">as_slice</span>(),
-                    <span class="ident">auth_token</span>,
-                },
-            }
-            .<span class="ident">serialize</span>(<span class="ident">serializer</span>),
-            <span class="ident">TopicSubscribe::Unlisten</span> {
-                <span class="ident">nonce</span>,
-                <span class="ident">topics</span>,
-                <span class="ident">auth_token</span>,
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ITopicSubscribe</span> {
-                <span class="ident">_type</span>: <span class="string">&quot;UNLISTEN&quot;</span>,
-                <span class="ident">nonce</span>: <span class="ident">nonce</span>.<span class="ident">as_deref</span>(),
-                <span class="ident">data</span>: <span class="ident">ITopicSubscribeData</span> {
-                    <span class="ident">topics</span>: <span class="ident">topics</span>.<span class="ident">as_slice</span>(),
-                    <span class="ident">auth_token</span>,
-                },
-            }
-            .<span class="ident">serialize</span>(<span class="ident">serializer</span>),
-        }
+<span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">Topics</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::Topics</span>::<span class="kw-2">*</span>;
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">CommunityPointsChannelV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelBitsEventsV2</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelBitsBadgeUnlocks</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">ChannelCheerEventsPublicV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">ChannelSubGiftsV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChatModeratorActions</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelPointsChannelV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelSubscribeEventsV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">VideoPlayback</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">VideoPlaybackById</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">HypeTrainEventsV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">HypeTrainEventsV1Rewards</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">Following</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">Raid</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+        };
+        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">TopicSubscribe</span> {
-    <span class="doccomment">/// Convert this [`TopicSubscribe`] to a string which you can send with your client</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Error</span><span class="op">&gt;</span> { <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) }
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
+<span class="kw">struct</span> <span class="ident">ITopicSubscribeData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">String</span>],
+    <span class="ident">auth_token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
+}
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
+<span class="kw">struct</span> <span class="ident">ITopicSubscribe</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
+    <span class="ident">_type</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    <span class="ident">nonce</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>,
+    <span class="ident">data</span>: <span class="ident">ITopicSubscribeData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+}
 
-    <span class="doccomment">/// Create a listen command.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Example</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Create a listen message for moderator actions</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # use twitch_api2::pubsub;</span>
-    <span class="doccomment">/// // We want to subscribe to moderator actions on channel with id 1234</span>
-    <span class="doccomment">/// // as if we were a user with id 4321 that is moderator on the channel.</span>
-    <span class="doccomment">/// let topic = pubsub::moderation::ChatModeratorActions {</span>
-    <span class="doccomment">///     user_id: 4321,</span>
-    <span class="doccomment">///     channel_id: 1234,</span>
-    <span class="doccomment">/// };</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // Create the topic command to send to twitch</span>
-    <span class="doccomment">/// let command = pubsub::TopicSubscribe::listen(</span>
-    <span class="doccomment">///     &amp;[topic],</span>
-    <span class="doccomment">///     &quot;authtoken&quot;.to_string(),</span>
-    <span class="doccomment">///     &quot;super se3re7 random string&quot;.to_string(),</span>
-    <span class="doccomment">/// )</span>
-    <span class="doccomment">/// .to_command().expect(&quot;serializing failed&quot;);</span>
-    <span class="doccomment">/// // Send the message with your favorite websocket client</span>
-    <span class="doccomment">/// send_command(command).unwrap();</span>
-    <span class="doccomment">/// // To parse the websocket messages, use pubsub::Response::parse</span>
-    <span class="doccomment">/// # fn send_command(command: String) -&gt; Result&lt;(),()&gt; {Ok(())}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">listen</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Topic</span>, <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>],
-        <span class="ident">auth_token</span>: <span class="ident">String</span>,
-        <span class="ident">nonce</span>: <span class="ident">O</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TopicSubscribe</span>
-    <span class="kw">where</span>
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    {
-        <span class="ident">TopicSubscribe::Listen</span> {
-            <span class="ident">nonce</span>: <span class="ident">nonce</span>.<span class="ident">into</span>(),
-            <span class="ident">topics</span>: <span class="ident">topics</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">into</span>()).<span class="ident">collect</span>(),
+<span class="doccomment">/// Create a listen command.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Example</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Create a listen message for moderator actions</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// # use twitch_api2::pubsub::{self, Topic as _};</span>
+<span class="doccomment">/// // We want to subscribe to moderator actions on channel with id 1234</span>
+<span class="doccomment">/// // as if we were a user with id 4321 that is moderator on the channel.</span>
+<span class="doccomment">/// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {</span>
+<span class="doccomment">///     user_id: 4321,</span>
+<span class="doccomment">///     channel_id: 1234,</span>
+<span class="doccomment">/// }.into_topic();</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// // Listen to follows as well</span>
+<span class="doccomment">/// let follows = pubsub::following::Following {</span>
+<span class="doccomment">///     channel_id: 1234,</span>
+<span class="doccomment">/// }.into_topic();</span>
+<span class="doccomment">/// // Create the topic command to send to twitch</span>
+<span class="doccomment">/// let command = pubsub::listen_command(</span>
+<span class="doccomment">///     &amp;[chat_mod_actions, follows],</span>
+<span class="doccomment">///     &quot;authtoken&quot;,</span>
+<span class="doccomment">///     &quot;super se3re7 random string&quot;,</span>
+<span class="doccomment">/// )</span>
+<span class="doccomment">/// .expect(&quot;serializing failed&quot;);</span>
+<span class="doccomment">/// // Send the message with your favorite websocket client</span>
+<span class="doccomment">/// send_command(command).unwrap();</span>
+<span class="doccomment">/// // To parse the websocket messages, use pubsub::Response::parse</span>
+<span class="doccomment">/// # fn send_command(command: String) -&gt; Result&lt;(),()&gt; {Ok(())}</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">listen_command</span><span class="op">&lt;</span><span class="lifetime">&#39;t</span>, <span class="ident">O</span><span class="op">&gt;</span>(
+    <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> [<span class="ident">Topics</span>],
+    <span class="ident">auth_token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> <span class="ident">str</span>,
+    <span class="ident">nonce</span>: <span class="ident">O</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Error</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+{
+    <span class="kw">let</span> <span class="ident">topics</span> <span class="op">=</span> <span class="ident">topics</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">to_string</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+    <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">ITopicSubscribe</span> {
+        <span class="ident">_type</span>: <span class="string">&quot;LISTEN&quot;</span>,
+        <span class="ident">nonce</span>: <span class="ident">nonce</span>.<span class="ident">into</span>(),
+        <span class="ident">data</span>: <span class="ident">ITopicSubscribeData</span> {
+            <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="ident">topics</span>,
             <span class="ident">auth_token</span>,
-        }
-    }
-
-    <span class="doccomment">/// Create a unlisten command.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unlisten</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Topic</span>, <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>],
-        <span class="ident">auth_token</span>: <span class="ident">String</span>,
-        <span class="ident">nonce</span>: <span class="ident">O</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TopicSubscribe</span>
-    <span class="kw">where</span>
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    {
-        <span class="ident">TopicSubscribe::Unlisten</span> {
-            <span class="ident">nonce</span>: <span class="ident">nonce</span>.<span class="ident">into</span>(),
-            <span class="ident">topics</span>: <span class="ident">topics</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">into</span>()).<span class="ident">collect</span>(),
-            <span class="ident">auth_token</span>,
-        }
-    }
+        },
+    })
 }
+
+<span class="comment">// /// Create a unlisten command.</span>
+<span class="comment">// pub fn unlisten_command&lt;&#39;t, O&gt;(</span>
+<span class="comment">//     topics: &amp;&#39;t [&amp;str],</span>
+<span class="comment">//     auth_token: &amp;&#39;t str,</span>
+<span class="comment">//     nonce: O,</span>
+<span class="comment">// ) -&gt; Result&lt;String, serde_json::Error&gt;</span>
+<span class="comment">// where</span>
+<span class="comment">//     O: Into&lt;Option&lt;&amp;&#39;t str&gt;&gt;,</span>
+<span class="comment">// {</span>
+<span class="comment">//     serde_json::to_string(&amp;ITopicSubscribe {</span>
+<span class="comment">//         _type: &quot;UNLISTEN&quot;,</span>
+<span class="comment">//         nonce: nonce.into(),</span>
+<span class="comment">//         data: ITopicSubscribeData { topics: topics.map(|t| t.to_string()), auth_token },</span>
+<span class="comment">//     })</span>
+<span class="comment">// }</span>
+
 <span class="doccomment">/// Response from twitch PubSub</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TwitchResponse</span> {
@@ -983,37 +1054,9 @@
     <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
         <span class="comment">// FIXME: make into macro or actually upstream into serde..., untagged_force = &quot;field&quot;</span>
 
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">untagged</span>)]</span>
-        <span class="kw">enum</span> <span class="ident">ITopicMessage</span> {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">CommunityPointsChannelV1</span>(<span class="ident">community_points::CommunityPointsChannelV1</span>),
-            <span class="ident">ChannelBitsEventsV2</span>(<span class="ident">channel_bits::ChannelBitsEventsV2</span>),
-            <span class="ident">ChannelBitsBadgeUnlocks</span>(<span class="ident">channel_bits_badge::ChannelBitsBadgeUnlocks</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ChannelCheerEventsPublicV1</span>(<span class="ident">channel_cheer::ChannelCheerEventsPublicV1</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ChannelSubGiftsV1</span>(<span class="ident">channel_sub_gifts::ChannelSubGiftsV1</span>),
-            <span class="ident">ChatModeratorActions</span>(<span class="ident">moderation::ChatModeratorActions</span>),
-            <span class="ident">ChannelPointsChannelV1</span>(<span class="ident">channel_points::ChannelPointsChannelV1</span>),
-            <span class="ident">ChannelSubscribeEventsV1</span>(<span class="ident">channel_subscriptions::ChannelSubscribeEventsV1</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">VideoPlayback</span>(<span class="ident">video_playback::VideoPlayback</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">VideoPlaybackById</span>(<span class="ident">video_playback::VideoPlaybackById</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">HypeTrainEventsV1</span>(<span class="ident">hypetrain::HypeTrainEventsV1</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">HypeTrainEventsV1Rewards</span>(<span class="ident">hypetrain::HypeTrainEventsV1Rewards</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Following</span>(<span class="ident">following::Following</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Raid</span>(<span class="ident">raid::Raid</span>),
-        }
-
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
         <span class="kw">struct</span> <span class="ident">ITopicData</span> {
-            <span class="ident">topic</span>: <span class="ident">ITopicMessage</span>,
+            <span class="ident">topic</span>: <span class="ident">Topics</span>,
             <span class="ident">message</span>: <span class="ident">String</span>,
         }
         <span class="kw">let</span> <span class="ident">reply</span> <span class="op">=</span> <span class="ident">ITopicData::deserialize</span>(<span class="ident">deserializer</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1021,70 +1064,67 @@
         })<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">reply</span>.<span class="ident">topic</span> {
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ITopicMessage::CommunityPointsChannelV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::CommunityPointsChannelV1</span> {
+            <span class="ident">Topics::CommunityPointsChannelV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::CommunityPointsChannelV1</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
-            <span class="ident">ITopicMessage::ChannelBitsEventsV2</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelBitsEventsV2</span> {
+            <span class="ident">Topics::ChannelBitsEventsV2</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelBitsEventsV2</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
-            <span class="ident">ITopicMessage::ChannelBitsBadgeUnlocks</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelBitsBadgeUnlocks</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
-            },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ITopicMessage::ChannelSubGiftsV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelSubGiftsV1</span> {
+            <span class="ident">Topics::ChannelBitsBadgeUnlocks</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelBitsBadgeUnlocks</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ITopicMessage::ChannelCheerEventsPublicV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">TopicData::ChannelCheerEventsPublicV1</span> {
-                    <span class="ident">topic</span>,
-                    <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>)
-                        .<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
-                }
-            }
-            <span class="ident">ITopicMessage::ChatModeratorActions</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChatModeratorActions</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
-            },
-            <span class="ident">ITopicMessage::ChannelPointsChannelV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelPointsChannelV1</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
-            },
-            <span class="ident">ITopicMessage::ChannelSubscribeEventsV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelSubscribeEventsV1</span> {
+            <span class="ident">Topics::ChannelSubGiftsV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelSubGiftsV1</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ITopicMessage::VideoPlayback</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::VideoPlayback</span> {
+            <span class="ident">Topics::ChannelCheerEventsPublicV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelCheerEventsPublicV1</span> {
+                <span class="ident">topic</span>,
+                <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            },
+            <span class="ident">Topics::ChatModeratorActions</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChatModeratorActions</span> {
+                <span class="ident">topic</span>,
+                <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            },
+            <span class="ident">Topics::ChannelPointsChannelV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelPointsChannelV1</span> {
+                <span class="ident">topic</span>,
+                <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            },
+            <span class="ident">Topics::ChannelSubscribeEventsV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelSubscribeEventsV1</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ITopicMessage::VideoPlaybackById</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::VideoPlaybackById</span> {
+            <span class="ident">Topics::VideoPlayback</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::VideoPlayback</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ITopicMessage::HypeTrainEventsV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::HypeTrainEventsV1</span> {
+            <span class="ident">Topics::VideoPlaybackById</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::VideoPlaybackById</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ITopicMessage::HypeTrainEventsV1Rewards</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::HypeTrainEventsV1Rewards</span> {
+            <span class="ident">Topics::HypeTrainEventsV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::HypeTrainEventsV1</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ITopicMessage::Following</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::Following</span> {
+            <span class="ident">Topics::HypeTrainEventsV1Rewards</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::HypeTrainEventsV1Rewards</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ITopicMessage::Raid</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::Raid</span> {
+            <span class="ident">Topics::Following</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::Following</span> {
+                <span class="ident">topic</span>,
+                <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            },
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">Topics::Raid</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::Raid</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
