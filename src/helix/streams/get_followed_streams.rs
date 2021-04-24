@@ -10,7 +10,7 @@
 //! ```rust, no_run
 //! use twitch_api2::helix::streams::get_followed_streams;
 //! let request = get_followed_streams::GetFollowedStreamsRequest::builder()
-//!     .user_login(vec!["justintvfan".to_string()])
+//!     .user_id("1234")
 //!     .build();
 //! ```
 //!
@@ -27,9 +27,9 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let request = get_followed_streams::GetFollowedStreamsRequest::builder()
-//!     .user_login(vec!["justintvfan".to_string()])
+//!     .user_id("1234")
 //!     .build();
-//! let response: Vec<get_followed_streams::Stream> = client.req_get(request, &token).await?.data;
+//! let response: Vec<get_followed_streams::GetFollowedStreamsResponse> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
