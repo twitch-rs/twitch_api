@@ -143,15 +143,20 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     /// Get authenticated users followed [streams](helix::streams::Stream)
     pub async fn get_followed_streams<T>(
         &'a self,
-        token: &twitch_oauth2::UserToken,
+        token: &T,
     ) -> Result<Vec<helix::streams::Stream>, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
     {
+        let user_id = token
+            .user_id()
+            .ok_or_else(|| ClientRequestError::Custom("no user_id found on token".into()))?;
         let mut result = vec![];
 
         let mut resp = self
             .req_get(
                 helix::streams::GetFollowedStreamsRequest::builder()
-                .user_id(token.user_id.clone())
+                    .user_id(user_id)
                     .build(),
                 token,
             )
@@ -234,6 +239,35 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .await?;
 
         Ok(resp.data.total)
+    }
+
+    /// Get games by ID. Can only be at max 100 ids.
+    pub async fn get_games_by_id<T>(
+        &'a self,
+        ids: &[types::CategoryId],
+        token: &T,
+    ) -> Result<std::collections::HashMap<types::CategoryId, helix::games::Game>, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        if ids.len() > 100 {
+            return Err(ClientRequestError::Custom("too many IDs, max 100".into()));
+        }
+
+        let resp = self
+            .req_get(
+                helix::games::GetGamesRequest::builder()
+                    .id(ids.to_vec())
+                    .build(),
+                token,
+            )
+            .await?;
+
+        Ok(resp
+            .data
+            .into_iter()
+            .map(|g: helix::games::Game| (g.id.clone(), g))
+            .collect())
     }
 
     /// Block a user

@@ -70,7 +70,7 @@ impl Request for GetFollowedStreamsRequest {
 
     const PATH: &'static str = "streams/followed";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadFollows];
 }
 
 impl RequestGet for GetFollowedStreamsRequest {}

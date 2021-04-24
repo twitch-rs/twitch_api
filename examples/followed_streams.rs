@@ -1,5 +1,6 @@
-use twitch_api2::{helix::streams::GetStreamsRequest, TwitchClient};
+use twitch_api2::helix::HelixClient;
 use twitch_oauth2::{AccessToken, UserToken};
+
 fn main() {
     use std::error::Error;
     if let Err(err) = run() {
@@ -10,11 +11,6 @@ fn main() {
             e = cause;
         }
     }
-}
-
-#[derive(Default)]
-pub struct Foo {
-    client: TwitchClient<'static, reqwest::Client>,
 }
 
 #[tokio::main]
@@ -31,15 +27,35 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         None,
         None,
     )
-    .await?;
+    .await
+    .unwrap();
 
-    let client = Foo::default();
+    let client: HelixClient<'static, reqwest::Client> = HelixClient::new();
 
-    let req = GetStreamsRequest::builder()
-        .user_login(vec![args.next().expect("please provide an username")])
-        .build();
-    client.client.helix.clone_client();
-    let response = client.client.helix.req_get(req, &token).await?;
-    println!("{:?}", response);
+    let streams = client.get_followed_streams(&token).await?;
+    let games = client
+        .get_games_by_id(
+            streams
+                .iter()
+                .map(|s| s.game_id.clone())
+                .collect::<Vec<_>>()
+                .as_slice(),
+            &token,
+        )
+        .await?;
+
+    println!(
+        "{}",
+        streams
+            .iter()
+            .map(|s| format!(
+                "{user_name}: [{game}] | {title}",
+                user_name = s.user_name,
+                game = games.get(&s.game_id).map(|c| c.name.as_str()).unwrap_or(""),
+                title = s.title
+            ))
+            .collect::<Vec<_>>()
+            .join("\n")
+    );
     Ok(())
 }
