@@ -26,10 +26,16 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
+#[doc(inline)]
+pub use get_followed_streams::GetFollowedStreamsRequest;
+#[doc(inline)]
 pub use get_stream_tags::{GetStreamTagsRequest, Tag};
+#[doc(inline)]
 pub use get_streams::{GetStreamsRequest, Stream};
+#[doc(inline)]
 pub use replace_stream_tags::{ReplaceStreamTags, ReplaceStreamTagsBody, ReplaceStreamTagsRequest};
 
+pub mod get_followed_streams;
 pub mod get_stream_tags;
 pub mod get_streams;
 pub mod replace_stream_tags;

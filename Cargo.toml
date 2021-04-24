@@ -79,48 +79,52 @@ version_check = "0.9.3"
 [[example]]
 name = "automod_check"
 path = "examples/automod_check.rs"
-required-features = ["twitch_oauth2/surf_client", "surf_client"]
+required-features = ["surf_client", "helix"]
 
 [[example]]
 name = "get_channel_status"
 path = "examples/get_channel_status.rs"
-required-features = ["twitch_oauth2/reqwest_client", "reqwest_client"]
+required-features = ["reqwest_client", "helix", "tmi"]
 
 [[example]]
 name = "get_hosts"
 path = "examples/get_hosts.rs"
-required-features = ["surf_client"]
+required-features = ["surf_client", "tmi"]
 
 [[example]]
 name = "get_moderation"
 path = "examples/get_moderation.rs"
-required-features = ["twitch_oauth2/surf_client", "surf_client"]
+required-features = ["surf_client", "helix"]
 
 [[example]]
 name = "get_streams_and_chatters"
 path = "examples/get_streams_and_chatters.rs"
-required-features = ["twitch_oauth2/surf_client", "surf_client"]
+required-features = ["surf_client", "tmi"]
 
 [[example]]
 name = "modify_channel"
 path = "examples/modify_channel.rs"
-required-features = ["twitch_oauth2/surf_client", "surf_client"]
+required-features = ["surf_client", "helix"]
 
 [[example]]
 name = "client"
 path = "examples/client.rs"
-required-features = ["twitch_oauth2/reqwest_client", "reqwest_client"]
+required-features = ["reqwest_client", "helix"]
 
 [[example]]
 name = "create_follower"
 path = "examples/create_follower.rs"
-required-features = ["twitch_oauth2/surf_client"]
+required-features = ["surf_client", "helix"]
 
 [[example]]
 name = "channel_information"
 path = "examples/channel_information.rs"
-required-features = ["twitch_oauth2/reqwest_client", "reqwest_client"]
+required-features = ["reqwest_client", "helix"]
 
+[[example]]
+name = "followed_streams"
+path = "examples/followed_streams.rs"
+required-features = ["reqwest_client", "helix"]
 
 [package.metadata.docs.rs]
 features = ["all", "unsupported"]
