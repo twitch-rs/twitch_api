@@ -140,6 +140,31 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         Ok(result)
     }
 
+    /// Get authenticated users followed [streams](helix::streams::Stream)
+    pub async fn get_followed_streams<T>(
+        &'a self,
+        token: &twitch_oauth2::UserToken,
+    ) -> Result<Vec<helix::streams::Stream>, ClientError<'a, C>>
+    {
+        let mut result = vec![];
+
+        let mut resp = self
+            .req_get(
+                helix::streams::GetFollowedStreamsRequest::builder()
+                .user_id(token.user_id.clone())
+                    .build(),
+                token,
+            )
+            .await?;
+        result.extend(std::mem::take(&mut resp.data));
+        while let Some(resp_new) = resp.get_next(&self, token).await? {
+            resp = resp_new;
+            result.extend(std::mem::take(&mut resp.data));
+        }
+
+        Ok(result)
+    }
+
     /// Get all moderators in a channel [Channels](helix::search::Channel)
     pub async fn get_moderators_in_channel_from_id<T>(
         &'a self,
