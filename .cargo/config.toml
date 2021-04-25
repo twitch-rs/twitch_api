@@ -1,2 +1,4 @@
+[alias]
+xtask = "run -p xtask --"
 [doc.extern-map.registries]
 crates-io = "https://docs.rs/"
