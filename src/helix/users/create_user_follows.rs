@@ -142,7 +142,7 @@ impl RequestPost for CreateUserFollowsRequest {
             error,
             status,
             message,
-        }) = serde_json::from_str::<helix::HelixRequestError>(&text)
+        }) = helix::parse_json::<helix::HelixRequestError>(&text)
         {
             return Err(helix::HelixRequestPostError::Error {
                 error,

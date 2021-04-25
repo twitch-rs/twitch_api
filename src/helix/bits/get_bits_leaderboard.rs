@@ -139,7 +139,7 @@ impl RequestGet for GetBitsLeaderboardRequest {
             /// Total number of results (users) returned. This is count or the total number of entries in the leaderboard, whichever is less.
             total: i64,
         }
-        let response: InnerResponse = serde_json::from_str(response).map_err(|e| {
+        let response: InnerResponse = helix::parse_json(response).map_err(|e| {
             helix::HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
         })?;
         Ok(helix::Response {

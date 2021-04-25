@@ -305,6 +305,13 @@ where
     Ok(Option::deserialize(deserializer)?.unwrap_or_default())
 }
 
+fn parse_json<'a, T: serde::Deserialize<'a>>(
+    s: &'a str,
+) -> Result<T, serde_path_to_error::Error<serde_json::Error>> {
+    let de = &mut serde_json::Deserializer::from_str(s);
+    serde_path_to_error::deserialize(de)
+}
+
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
 #[async_trait::async_trait]
 pub trait Request: serde::Serialize {
@@ -394,7 +401,7 @@ pub trait RequestPost: Request {
             error,
             status,
             message,
-        }) = serde_json::from_str::<HelixRequestError>(&text)
+        }) = parse_json::<HelixRequestError>(&text)
         {
             return Err(HelixRequestPostError::Error {
                 error,
@@ -417,8 +424,8 @@ pub trait RequestPost: Request {
     where
         Self: Sized,
     {
-        let response: InnerResponse<<Self as Request>::Response> = serde_json::from_str(&response)
-            .map_err(|e| {
+        let response: InnerResponse<<Self as Request>::Response> =
+            parse_json(&response).map_err(|e| {
                 HelixRequestPostError::DeserializeError(response.to_string(), e, uri.clone())
             })?;
         Ok(Response {
@@ -527,7 +534,7 @@ pub trait RequestDelete: Request {
             error,
             status,
             message,
-        }) = serde_json::from_str::<HelixRequestError>(&text)
+        }) = parse_json::<HelixRequestError>(&text)
         {
             return Err(HelixRequestDeleteError::Error {
                 error,
@@ -600,7 +607,7 @@ where <Self as Request>::Response:
             error,
             status,
             message,
-        }) = serde_json::from_str::<HelixRequestError>(&text)
+        }) = parse_json::<HelixRequestError>(&text)
         {
             return Err(HelixRequestPutError::Error {
                 error,
@@ -670,7 +677,7 @@ pub trait RequestGet: Request {
             error,
             status,
             message,
-        }) = serde_json::from_str::<HelixRequestError>(&text)
+        }) = parse_json::<HelixRequestError>(&text)
         {
             return Err(HelixRequestGetError::Error {
                 error,
@@ -692,7 +699,7 @@ pub trait RequestGet: Request {
     where
         Self: Sized,
     {
-        let response: InnerResponse<_> = serde_json::from_str(response).map_err(|e| {
+        let response: InnerResponse<_> = parse_json(response).map_err(|e| {
             HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
         })?;
         Ok(Response {
@@ -851,7 +858,11 @@ pub enum HelixRequestGetError {
     /// could not parse response as utf8 when calling `GET {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `GET {2}` with response: {0:?}
-    DeserializeError(String, #[source] serde_json::Error, http::Uri),
+    DeserializeError(
+        String,
+        #[source] serde_path_to_error::Error<serde_json::Error>,
+        http::Uri,
+    ),
     // FIXME: Only used in webhooks parse_payload
     /// could not get URI for request
     InvalidUri(#[from] InvalidUri),
@@ -887,7 +898,11 @@ pub enum HelixRequestPutError {
     /// could not parse response as utf8 when calling `PUT {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `PUT {2}` with response: {0:?}
-    DeserializeError(String, #[source] serde_json::Error, http::Uri),
+    DeserializeError(
+        String,
+        #[source] serde_path_to_error::Error<serde_json::Error>,
+        http::Uri,
+    ),
 }
 
 /// Could not parse POST response
@@ -909,7 +924,11 @@ pub enum HelixRequestPostError {
     /// could not parse response as utf8 when calling `POST {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `POST {2}` with response: {0:?}
-    DeserializeError(String, #[source] serde_json::Error, http::Uri),
+    DeserializeError(
+        String,
+        #[source] serde_path_to_error::Error<serde_json::Error>,
+        http::Uri,
+    ),
     /// invalid or unexpected response from twitch.
     InvalidResponse {
         /// Reason for error
