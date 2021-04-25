@@ -711,9 +711,10 @@ mod test {
         crate::tests::roundtrip(&val)
     }
 
-    #[test]
-    fn verify_request() {
-        use http::header::{HeaderMap, HeaderName, HeaderValue};
+#[test]
+#[cfg(feature = "hmac")]
+fn verify_request() {
+    use http::header::{HeaderMap, HeaderName, HeaderValue};
 
         let secret = b"secretabcd";
         #[rustfmt::skip]
