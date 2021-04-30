@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/client.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/3c46fadb93d1acb0c9350950e7307c97ef283a21">3c46fad</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/6bef6eee008596aa74f219e34ff18f3a73b97b4d">6bef6ee</a></p>
 <style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../twitch_oauth2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
@@ -66,6 +66,11 @@
 <span id="61">61</span>
 <span id="62">62</span>
 <span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Provides different http clients</span>
 <span class="doccomment">//!</span>
@@ -101,33 +106,38 @@
     <span class="doccomment">///  Asynchronous HTTP client using [Surf][surf::Client]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf_client&quot;</span>)))]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">http_client</span>(<span class="ident">request</span>: <span class="ident">HttpRequest</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HttpResponse</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">surf::Client::new</span>();
-        <span class="kw">let</span> <span class="ident">method</span>: <span class="ident">http_types::Method</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">method</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">surf::Request::new</span>(<span class="ident">method</span>, <span class="ident">request</span>.<span class="ident">url</span>);
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">doc</span>))]</span>
+        {
+            <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">surf::Client::new</span>(); <span class="comment">// If this fails to compile, please use feature `surf_client_curl` or specify surf with a client in Cargo.toml</span>
+            <span class="kw">let</span> <span class="ident">method</span>: <span class="ident">http_types::Method</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">method</span>.<span class="ident">into</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">surf::Request::new</span>(<span class="ident">method</span>, <span class="ident">request</span>.<span class="ident">url</span>);
 
-        <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">request</span>.<span class="ident">headers</span> {
-            <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">surf::http::headers::HeaderValue::from_bytes</span>(<span class="ident">value</span>.<span class="ident">as_bytes</span>().<span class="ident">to_vec</span>())
-                .<span class="ident">map_err</span>(<span class="ident">Error::Surf</span>)<span class="question-mark">?</span>;
-            <span class="ident">req</span>.<span class="ident">append_header</span>(<span class="ident">name</span>.<span class="ident">as_str</span>(), <span class="ident">value</span>);
-        }
+            <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">request</span>.<span class="ident">headers</span> {
+                <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">surf::http::headers::HeaderValue::from_bytes</span>(<span class="ident">value</span>.<span class="ident">as_bytes</span>().<span class="ident">to_vec</span>())
+                    .<span class="ident">map_err</span>(<span class="ident">Error::Surf</span>)<span class="question-mark">?</span>;
+                <span class="ident">req</span>.<span class="ident">append_header</span>(<span class="ident">name</span>.<span class="ident">as_str</span>(), <span class="ident">value</span>);
+            }
 
-        <span class="ident">req</span>.<span class="ident">body_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>.<span class="ident">body</span>);
+            <span class="ident">req</span>.<span class="ident">body_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>.<span class="ident">body</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">send</span>(<span class="ident">req</span>).<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Error::Surf</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">response</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="ident">v</span>)<span class="op">|</span> {
-                <span class="prelude-val">Ok</span>((
-                    <span class="ident">oauth2::http::header::HeaderName::from_bytes</span>(<span class="ident">k</span>.<span class="ident">as_str</span>().<span class="ident">as_bytes</span>())<span class="question-mark">?</span>,
-                    <span class="ident">oauth2::http::HeaderValue::from_str</span>(<span class="ident">v</span>.<span class="ident">as_str</span>())<span class="question-mark">?</span>,
-                ))
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">send</span>(<span class="ident">req</span>).<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Error::Surf</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">response</span>
+                .<span class="ident">iter</span>()
+                .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="ident">v</span>)<span class="op">|</span> {
+                    <span class="prelude-val">Ok</span>((
+                        <span class="ident">oauth2::http::header::HeaderName::from_bytes</span>(<span class="ident">k</span>.<span class="ident">as_str</span>().<span class="ident">as_bytes</span>())<span class="question-mark">?</span>,
+                        <span class="ident">oauth2::http::HeaderValue::from_str</span>(<span class="ident">v</span>.<span class="ident">as_str</span>())<span class="question-mark">?</span>,
+                    ))
+                })
+                .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span> {
+                <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body_bytes</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Error::Surf</span>)<span class="question-mark">?</span>,
+                <span class="ident">status_code</span>: <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">into</span>(),
+                <span class="ident">headers</span>,
             })
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">HttpResponse</span> {
-            <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body_bytes</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Error::Surf</span>)<span class="question-mark">?</span>,
-            <span class="ident">status_code</span>: <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">into</span>(),
-            <span class="ident">headers</span>,
-        })
+        }
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">doc</span>)]</span>
+        <span class="macro">unimplemented!</span>(<span class="string">&quot;A client for surf is not provided in documentation generation due to needing a specified surf client, like `curl-client`&quot;</span>)
     }
 }
 </pre></div>

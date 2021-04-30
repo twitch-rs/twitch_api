@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/tokens/user_token.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>user_token.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/3c46fadb93d1acb0c9350950e7307c97ef283a21">3c46fad</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/6bef6eee008596aa74f219e34ff18f3a73b97b4d">6bef6ee</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../twitch_oauth2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -376,6 +376,235 @@
 <span id="371">371</span>
 <span id="372">372</span>
 <span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ClientSecret</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -389,6 +618,8 @@
 <span class="kw">use</span> <span class="ident">oauth2</span>::{<span class="ident">AccessToken</span>, <span class="ident">ClientId</span>, <span class="ident">RedirectUrl</span>, <span class="ident">RefreshToken</span>};
 <span class="kw">use</span> <span class="ident">oauth2</span>::{<span class="ident">HttpRequest</span>, <span class="ident">HttpResponse</span>};
 <span class="kw">use</span> <span class="ident">std::future::Future</span>;
+
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::errors::ImplicitUserTokenExchangeError</span>;
 
 <span class="doccomment">/// An User Token from the [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-implicit-code-flow) or [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-authorization-code-flow)</span>
 <span class="doccomment">///</span>
@@ -569,6 +800,8 @@
 }
 
 <span class="doccomment">/// Builder for [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-authorization-code-flow)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// See [`ImplicitUserTokenBuilder`] for the [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-implicit-code-flow) (does not require Client Secret)</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UserTokenBuilder</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">scopes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Scope</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">client</span>: <span class="kw">crate</span><span class="ident">::TwitchClient</span>,
@@ -715,6 +948,207 @@
     }
 }
 
+<span class="doccomment">/// Builder for [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-implicit-code-flow)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// See [`UserTokenBuilder`] for the [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-authorization-code-flow) (requires Client Secret, generally more secure)</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ImplicitUserTokenBuilder</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">scopes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Scope</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">client</span>: <span class="kw">crate</span><span class="ident">::TwitchClient</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">csrf</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">oauth2::CsrfToken</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">force_verify</span>: <span class="ident">bool</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">ImplicitUserTokenBuilder</span> {
+    <span class="doccomment">/// Create a [`ImplicitUserTokenBuilder`]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
+        <span class="ident">client_id</span>: <span class="ident">ClientId</span>,
+        <span class="ident">redirect_url</span>: <span class="ident">RedirectUrl</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ImplicitUserTokenBuilder</span>, <span class="ident">oauth2::url::ParseError</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">ImplicitUserTokenBuilder</span> {
+            <span class="ident">scopes</span>: <span class="macro">vec!</span>[],
+            <span class="ident">client</span>: <span class="kw">crate</span><span class="ident">::TwitchClient::new</span>(
+                <span class="ident">client_id</span>,
+                <span class="prelude-val">None</span>,
+                <span class="ident">oauth2::AuthUrl::new</span>(<span class="kw">crate</span><span class="ident">::AUTH_URL</span>.<span class="ident">to_string</span>())<span class="question-mark">?</span>,
+                <span class="prelude-val">Some</span>(<span class="ident">oauth2::TokenUrl::new</span>(<span class="kw">crate</span><span class="ident">::TOKEN_URL</span>.<span class="ident">to_string</span>())<span class="question-mark">?</span>),
+            )
+            .<span class="ident">set_auth_type</span>(<span class="ident">oauth2::AuthType::BasicAuth</span>)
+            .<span class="ident">set_redirect_uri</span>(<span class="ident">redirect_url</span>),
+            <span class="ident">csrf</span>: <span class="prelude-val">None</span>,
+            <span class="ident">force_verify</span>: <span class="bool-val">false</span>,
+        })
+    }
+
+    <span class="doccomment">/// Add scopes to the request</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scopes</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">scopes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Scope</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">scopes</span> <span class="op">=</span> <span class="ident">scopes</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Add a single scope to request</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_scope</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">scope</span>: <span class="ident">Scope</span>) { <span class="self">self</span>.<span class="ident">scopes</span>.<span class="ident">push</span>(<span class="ident">scope</span>); }
+
+    <span class="doccomment">/// Enable or disable function to make the user able to switch accounts if needed.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">force_verify</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">b</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">force_verify</span> <span class="op">=</span> <span class="ident">b</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Generate the URL to request a token.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Step 1. in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#auth-implicit-code-flow)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generate_url</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">oauth2::url::Url</span>, <span class="ident">oauth2::CsrfToken</span>) {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">auth</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">client</span>
+            .<span class="ident">authorize_url</span>(<span class="ident">oauth2::CsrfToken::new_random</span>)
+            .<span class="ident">use_implicit_flow</span>();
+
+        <span class="kw">for</span> <span class="ident">scope</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">scopes</span>.<span class="ident">iter</span>() {
+            <span class="ident">auth</span> <span class="op">=</span> <span class="ident">auth</span>.<span class="ident">add_scope</span>(<span class="ident">scope</span>.<span class="ident">as_oauth_scope</span>())
+        }
+
+        <span class="ident">auth</span> <span class="op">=</span> <span class="ident">auth</span>.<span class="ident">add_extra_param</span>(
+            <span class="string">&quot;force_verify&quot;</span>,
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">force_verify</span> { <span class="string">&quot;true&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;false&quot;</span> },
+        );
+
+        <span class="kw">let</span> (<span class="ident">url</span>, <span class="ident">csrf</span>) <span class="op">=</span> <span class="ident">auth</span>.<span class="ident">url</span>();
+        <span class="self">self</span>.<span class="ident">csrf</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">csrf</span>.<span class="ident">clone</span>());
+        (<span class="ident">url</span>, <span class="ident">csrf</span>)
+    }
+
+    <span class="doccomment">/// Generate the code with the help of the hash.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// You can skip this method and instead use the token in the hash directly with [`UserToken::from_existing()`], but it&#39;s provided here for convenience.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Step. 3 and 4 in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-implicit-code-flow)</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// When the user authenticates, they are sent to `&lt;redirecturl&gt;#access_token=&lt;access_token&gt;&amp;scope=&lt;scopes, space (%20) separated&gt;&amp;state=&lt;csrf state&gt;&amp;token_type=bearer`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// On failure, they are sent to</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// `&lt;redirect_url or first defined url in dev console&gt;?error=&lt;error type&gt;&amp;error_description=&lt;error description&gt;&amp;state=&lt;csrf state&gt;`</span>
+    <span class="doccomment">/// Get the hash of the url with javascript.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```js</span>
+    <span class="doccomment">/// document.location.hash.substr(1);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// and send it to your client in what ever way convenient.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Provided below is an example of how to do it, no guarantees on the safety of this method.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```html</span>
+    <span class="doccomment">/// &lt;!DOCTYPE html&gt;</span>
+    <span class="doccomment">/// &lt;html&gt;</span>
+    <span class="doccomment">/// &lt;head&gt;</span>
+    <span class="doccomment">/// &lt;title&gt;Authorization&lt;/title&gt;</span>
+    <span class="doccomment">/// &lt;meta name=&quot;ROBOTS&quot; content=&quot;NOFOLLOW&quot;&gt;</span>
+    <span class="doccomment">/// &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;</span>
+    <span class="doccomment">/// &lt;script type=&quot;text/javascript&quot;&gt;</span>
+    <span class="doccomment">/// &lt;!--</span>
+    <span class="doccomment">/// function initiate() {</span>
+    <span class="doccomment">///     var hash = document.location.hash.substr(1);</span>
+    <span class="doccomment">///     document.getElementById(&quot;javascript&quot;).className = &quot;&quot;;</span>
+    <span class="doccomment">///     if (hash != null) {</span>
+    <span class="doccomment">///             document.location.replace(&quot;/token?&quot;+hash);</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">///     else {</span>
+    <span class="doccomment">///         document.getElementById(&quot;javascript&quot;).innerHTML = &quot;Error: Access Token not found&quot;;</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// --&gt;</span>
+    <span class="doccomment">/// &lt;/script&gt;</span>
+    <span class="doccomment">/// &lt;style type=&quot;text/css&quot;&gt;</span>
+    <span class="doccomment">///     body { text-align: center; background-color: #FFF; max-width: 500px; margin: auto; }</span>
+    <span class="doccomment">///     noscript { color: red;  }</span>
+    <span class="doccomment">///     .hide { display: none; }</span>
+    <span class="doccomment">/// &lt;/style&gt;</span>
+    <span class="doccomment">/// &lt;/head&gt;</span>
+    <span class="doccomment">/// &lt;body onload=&quot;initiate()&quot;&gt;</span>
+    <span class="doccomment">/// &lt;h1&gt;Authorization&lt;/h1&gt;</span>
+    <span class="doccomment">/// &lt;noscript&gt;</span>
+    <span class="doccomment">///     &lt;p&gt;This page requires &lt;strong&gt;JavaScript&lt;/strong&gt; to get your token.</span>
+    <span class="doccomment">/// &lt;/noscript&gt;</span>
+    <span class="doccomment">/// &lt;p id=&quot;javascript&quot; class=&quot;hide&quot;&gt;</span>
+    <span class="doccomment">/// You should be redirected..</span>
+    <span class="doccomment">/// &lt;/p&gt;</span>
+    <span class="doccomment">/// &lt;/body&gt;</span>
+    <span class="doccomment">/// &lt;/html&gt;</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// where `/token?` gives this function it&#39;s corresponding arguments in query params</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Make sure that `/token` removes the query from the history.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```html</span>
+    <span class="doccomment">/// &lt;!DOCTYPE html&gt;</span>
+    <span class="doccomment">/// &lt;html&gt;</span>
+    <span class="doccomment">/// &lt;head&gt;</span>
+    <span class="doccomment">/// &lt;title&gt;Authorization Successful&lt;/title&gt;</span>
+    <span class="doccomment">/// &lt;meta name=&quot;ROBOTS&quot; content=&quot;NOFOLLOW&quot;&gt;</span>
+    <span class="doccomment">/// &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;</span>
+    <span class="doccomment">/// &lt;script type=&quot;text/javascript&quot;&gt;</span>
+    <span class="doccomment">/// &lt;!--</span>
+    <span class="doccomment">/// function initiate() {</span>
+    <span class="doccomment">///     //</span>
+    <span class="doccomment">///     document.location.replace(&quot;/token_retrieved);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// --&gt;</span>
+    <span class="doccomment">/// &lt;/script&gt;</span>
+    <span class="doccomment">/// &lt;style type=&quot;text/css&quot;&gt;</span>
+    <span class="doccomment">///     body { text-align: center; background-color: #FFF; max-width: 500px; margin: auto; }</span>
+    <span class="doccomment">/// &lt;/style&gt;</span>
+    <span class="doccomment">/// &lt;/head&gt;</span>
+    <span class="doccomment">/// &lt;body onload=&quot;initiate()&quot;&gt;</span>
+    <span class="doccomment">/// &lt;h1&gt;Authorization Successful&lt;/h1&gt;</span>
+    <span class="doccomment">/// &lt;/body&gt;</span>
+    <span class="doccomment">/// &lt;/html&gt;</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_user_token</span><span class="op">&lt;</span><span class="ident">RE</span>, <span class="ident">C</span>, <span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="self">self</span>,
+        <span class="ident">http_client</span>: <span class="ident">C</span>,
+        <span class="ident">state</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
+        <span class="ident">access_token</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
+        <span class="ident">error</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
+        <span class="ident">error_description</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">UserToken</span>, <span class="ident">ImplicitUserTokenExchangeError</span><span class="op">&lt;</span><span class="ident">RE</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">RE</span>: <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">C</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">FnOnce</span>(<span class="ident">HttpRequest</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">F</span>,
+        <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HttpResponse</span>, <span class="ident">RE</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">csrf</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">csrf</span> {
+            <span class="kw">if</span> <span class="ident">csrf</span>.<span class="ident">secret</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">state</span>.<span class="ident">unwrap_or</span>(<span class="string">&quot;&quot;</span>) {
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ImplicitUserTokenExchangeError::StateMismatch</span>);
+            }
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ImplicitUserTokenExchangeError::StateMismatch</span>);
+        }
+        <span class="kw">match</span> (<span class="ident">access_token</span>, <span class="ident">error</span>, <span class="ident">error_description</span>) {
+            (<span class="prelude-val">Some</span>(<span class="ident">access_token</span>), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UserToken::from_existing</span>(
+                <span class="ident">http_client</span>,
+                <span class="kw">crate</span><span class="ident">::oauth2::AccessToken::new</span>(<span class="ident">access_token</span>.<span class="ident">to_string</span>()),
+                <span class="prelude-val">None</span>,
+                <span class="prelude-val">None</span>,
+            )
+            .<span class="kw">await</span>
+            .<span class="ident">map_err</span>(<span class="ident">Into::into</span>),
+            (<span class="kw">_</span>, <span class="ident">error</span>, <span class="ident">description</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> (<span class="ident">error</span>, <span class="ident">description</span>) <span class="op">=</span> (
+                    <span class="ident">error</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string</span>()),
+                    <span class="ident">description</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string</span>()),
+                );
+                <span class="prelude-val">Err</span>(<span class="ident">ImplicitUserTokenExchangeError::TwitchError</span> { <span class="ident">error</span>, <span class="ident">description</span> })
+            }
+        }
+    }
+}
+
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
@@ -745,6 +1179,30 @@
         <span class="ident">t</span>.<span class="ident">csrf</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">oauth2::CsrfToken::new</span>(<span class="string">&quot;random&quot;</span>.<span class="ident">to_string</span>()));
         <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">t</span>
             .<span class="ident">get_user_token</span>(<span class="kw">crate</span><span class="ident">::client::surf_http_client</span>, <span class="string">&quot;random&quot;</span>, <span class="string">&quot;authcode&quot;</span>)
+            .<span class="kw">await</span>
+            .<span class="ident">unwrap</span>();
+        <span class="macro">println!</span>(<span class="string">&quot;token: {:?} - {}&quot;</span>, <span class="ident">token</span>, <span class="ident">token</span>.<span class="ident">access_token</span>.<span class="ident">secret</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">tokio::test</span>]</span>
+    <span class="attribute">#[<span class="ident">ignore</span>]</span>
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_implicit_token</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">ImplicitUserTokenBuilder::new</span>(
+            <span class="ident">ClientId::new</span>(<span class="string">&quot;kzgaoxsw1faoezx2udpwmffayywib4&quot;</span>.<span class="ident">to_string</span>()),
+            <span class="kw">crate</span><span class="ident">::RedirectUrl::new</span>(<span class="string">r#&quot;http://localhost/twitch/register&quot;#</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap</span>(),
+        )
+        .<span class="ident">unwrap</span>()
+        .<span class="ident">force_verify</span>(<span class="bool-val">true</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">t</span>.<span class="ident">generate_url</span>().<span class="number">0</span>);
+        <span class="ident">t</span>.<span class="ident">csrf</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">oauth2::CsrfToken::new</span>(<span class="string">&quot;random&quot;</span>.<span class="ident">to_string</span>()));
+        <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">t</span>
+            .<span class="ident">get_user_token</span>(
+                <span class="kw">crate</span><span class="ident">::client::surf_http_client</span>,
+                <span class="prelude-val">Some</span>(<span class="string">&quot;random&quot;</span>),
+                <span class="prelude-val">Some</span>(<span class="string">&quot;authcode&quot;</span>),
+                <span class="prelude-val">None</span>,
+                <span class="prelude-val">None</span>,
+            )
             .<span class="kw">await</span>
             .<span class="ident">unwrap</span>();
         <span class="macro">println!</span>(<span class="string">&quot;token: {:?} - {}&quot;</span>, <span class="ident">token</span>, <span class="ident">token</span>.<span class="ident">access_token</span>.<span class="ident">secret</span>());
