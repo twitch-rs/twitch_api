@@ -87,7 +87,7 @@
 
 ### Changed
 
-* MSRV: 1.49.0
+* MSRV: 1.51.0
 * BREAKING: Removed `helix` and `tmi` features from default-features.
 * BREAKING: Renamed `TMIClient` -> `TmiClient`
 * Improved documentation

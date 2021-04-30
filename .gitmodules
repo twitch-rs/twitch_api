@@ -1,3 +1,4 @@
 [submodule "twitch_oauth2"]
 	path = twitch_oauth2
 	url = https://github.com/Emilgardis/twitch_oauth2
+	branch = surf_features

@@ -10,6 +10,7 @@ keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
 documentation = "https://docs.rs/twitch_api2/0.4.1"
 readme = "README.md"
 build = "build.rs"
+resolver = "2"
 
 [dependencies]
 thiserror = "1.0.24"
@@ -24,8 +25,8 @@ serde_path_to_error = {version = "0.1.4", optional = true }
 async-trait = { version = "0.1.48", optional = true }
 serde_json = { version = "1.0.64", optional = true }
 serde_repr = "0.1.6"
-reqwest = { version = "0.11.2", optional = true }
-surf = { version = "2.2.0", optional = true }
+reqwest = { version = "0.11.2", optional = true, default-features = false }
+surf = { version = "2.2.0", optional = true, default-features = false }
 http-types = { version = "2.10.0", optional = true, features = ["hyperium_http"] }
 sha2 = { version = "0.9.3", optional = true }
 crypto_hmac = { package = "hmac", version = "0.10.1", optional = true }
@@ -53,7 +54,7 @@ surf_client = [
     "url",
     "http-types",
     "client",
-    "twitch_oauth2/surf_client"
+    "twitch_oauth2/surf_client",
 ]
 
 reqwest_client = ["reqwest", "client", "twitch_oauth2/reqwest_client"]
@@ -62,9 +63,18 @@ pubsub = ["serde_json"]
 
 eventsub = ["serde_json"]
 
-hmac = ["crypto_hmac","sha2"]
+hmac = ["crypto_hmac", "sha2"]
 
-all = ["tmi", "helix", "surf_client", "reqwest_client", "client", "pubsub", "eventsub", "hmac"]
+all = [
+    "tmi",
+    "helix",
+    "surf_client",
+    "reqwest_client",
+    "client",
+    "pubsub",
+    "eventsub",
+    "hmac",
+]
 
 [dev-dependencies]
 tokio = { version = "1.5.0", features = ["rt-multi-thread", "macros"] }
@@ -72,6 +82,8 @@ dotenv = "0.15.0"
 futures = "0.3.14"
 serde_cbor = "0.11.1"
 serde_json = "1.0.64"
+surf = "2.2.0"
+reqwest = "0.11.3"
 
 
 [build-dependencies]
