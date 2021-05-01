@@ -211,7 +211,7 @@ impl Payload {
         }
 
         if let Some((message, signature)) = message_and_signature(request) {
-            let mut mac = Hmac::<sha2::Sha256>::new_varkey(secret).expect("");
+            let mut mac = Hmac::<sha2::Sha256>::new_from_slice(secret).expect("");
             mac.update(&message);
             mac.verify(&signature).is_ok()
         } else {
