@@ -78,14 +78,19 @@ impl RequestGet for SearchCategoriesRequest {
         request: Option<Self>,
         uri: &http::Uri,
         response: &str,
-        _: http::StatusCode,
+        status: http::StatusCode,
     ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
     where
         Self: Sized,
     {
         let response: helix::InnerResponse<Option<Self::Response>> = helix::parse_json(&response)
             .map_err(|e| {
-            helix::HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
+            helix::HelixRequestGetError::DeserializeError(
+                response.to_string(),
+                e,
+                uri.clone(),
+                status,
+            )
         })?;
         Ok(helix::Response {
             data: response.data.unwrap_or_default(),

@@ -96,7 +96,12 @@ impl RequestGet for CheckUserSubscriptionRequest {
     {
         let inner_response: helix::InnerResponse<Vec<_>> =
             helix::parse_json(&text).map_err(|e| {
-                helix::HelixRequestGetError::DeserializeError(text.to_string(), e, uri.clone())
+                helix::HelixRequestGetError::DeserializeError(
+                    text.to_string(),
+                    e,
+                    uri.clone(),
+                    status,
+                )
             })?;
         Ok(helix::Response {
             data: inner_response.data.into_iter().next().ok_or(

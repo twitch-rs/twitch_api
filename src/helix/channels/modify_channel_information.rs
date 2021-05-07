@@ -45,13 +45,13 @@
 //! let body = modify_channel_information::ModifyChannelInformationBody::builder()
 //!     .title("Hello World!".to_string())
 //!     .build();
-//! let response: modify_channel_information::ModifyChannelInformation = client.req_patch(request, body, &token).await?;
+//! let response: modify_channel_information::ModifyChannelInformation = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(body, &token, &client_id)`](helix::RequestPatch::create_request)
-//! and parse the [`http::Response`] with [`ModifyChannelInformationRequest::parse_response(&request.get_uri(), response)`](ModifyChannelInformationRequest::parse_response)
+//! and parse the [`http::Response`] with [`ModifyChannelInformationRequest::parse_response(None, &request.get_uri(), response)`](ModifyChannelInformationRequest::parse_response)
 use super::*;
 use helix::RequestPatch;
 
@@ -99,19 +99,6 @@ pub enum ModifyChannelInformation {
     InternalServerError,
 }
 
-impl std::convert::TryFrom<http::StatusCode> for ModifyChannelInformation {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT => Ok(ModifyChannelInformation::Success),
-            // FIXME: Twitch docs says 204 is success...
-            http::StatusCode::OK => Ok(ModifyChannelInformation::Success),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
-}
-
 impl Request for ModifyChannelInformationRequest {
     type Response = ModifyChannelInformation;
 
@@ -122,6 +109,38 @@ impl Request for ModifyChannelInformationRequest {
 
 impl RequestPatch for ModifyChannelInformationRequest {
     type Body = ModifyChannelInformationBody;
+
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPatchError>
+    where
+        Self: Sized,
+    {
+        Ok(helix::Response {
+            data: match status {
+                http::StatusCode::NO_CONTENT => ModifyChannelInformation::Success,
+                // FIXME: Twitch docs says 204 is success...
+                http::StatusCode::OK => ModifyChannelInformation::Success,
+                http::StatusCode::BAD_REQUEST => ModifyChannelInformation::MissingQuery,
+                http::StatusCode::INTERNAL_SERVER_ERROR => {
+                    ModifyChannelInformation::InternalServerError
+                }
+                _ => {
+                    return Err(helix::HelixRequestPatchError::InvalidResponse {
+                        reason: "unexpected status code",
+                        response: response.to_string(),
+                        status,
+                        uri: uri.clone(),
+                    })
+                }
+            },
+            pagination: None,
+            request,
+        })
+    }
 }
 
 #[test]
@@ -148,5 +167,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/channels?broadcaster_id=0"
     );
 
-    dbg!(ModifyChannelInformationRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(ModifyChannelInformationRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

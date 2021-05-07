@@ -31,9 +31,9 @@ use serde::{Deserialize, Serialize};
 
 pub mod create_custom_rewards;
 pub mod delete_custom_reward;
-pub mod update_custom_reward;
 pub mod get_custom_reward;
 pub mod get_custom_reward_redemption;
+pub mod update_custom_reward;
 pub mod update_redemption_status;
 
 #[doc(inline)]
@@ -43,11 +43,11 @@ pub use create_custom_rewards::{
 #[doc(inline)]
 pub use delete_custom_reward::{DeleteCustomReward, DeleteCustomRewardRequest};
 #[doc(inline)]
-pub use update_custom_reward::{UpdateCustomRewardRequest, UpdateCustomRewardBody};
-#[doc(inline)]
 pub use get_custom_reward::{CustomReward, GetCustomRewardRequest};
 #[doc(inline)]
 pub use get_custom_reward_redemption::{CustomRewardRedemption, GetCustomRewardRedemptionRequest};
+#[doc(inline)]
+pub use update_custom_reward::{UpdateCustomRewardBody, UpdateCustomRewardRequest};
 #[doc(inline)]
 pub use update_redemption_status::{
     UpdateRedemptionStatusBody, UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,

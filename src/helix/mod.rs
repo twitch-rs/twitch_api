@@ -208,13 +208,11 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request: R,
         body: B,
         token: &T,
-    ) -> Result<D, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestPatch<Body = B>,
         B: HelixRequestBody,
-        D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
-            + serde::de::DeserializeOwned
-            + PartialEq,
+        D: serde::de::DeserializeOwned + PartialEq,
         T: TwitchToken + ?Sized,
     {
         let req =
@@ -225,7 +223,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        <R>::parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [`RequestDelete`] endpoint
@@ -419,14 +417,19 @@ pub trait RequestPost: Request {
         request: Option<Self>,
         uri: &http::Uri,
         response: &str,
-        _status: http::StatusCode,
+        status: http::StatusCode,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPostError>
     where
         Self: Sized,
     {
         let response: InnerResponse<<Self as Request>::Response> =
             parse_json(&response).map_err(|e| {
-                HelixRequestPostError::DeserializeError(response.to_string(), e, uri.clone())
+                HelixRequestPostError::DeserializeError(
+                    response.to_string(),
+                    e,
+                    uri.clone(),
+                    status,
+                )
             })?;
         Ok(Response {
             data: response.data,
@@ -437,9 +440,7 @@ pub trait RequestPost: Request {
 }
 
 /// Helix endpoint PATCHs information
-pub trait RequestPatch: Request
-where <Self as Request>::Response:
-        std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>> {
+pub trait RequestPatch: Request {
     /// Body parameters
     type Body: HelixRequestBody;
 
@@ -471,23 +472,48 @@ where <Self as Request>::Response:
     }
 
     /// Parse response.
+    ///
+    /// # Notes
+    ///
+    /// Pass in the request to enable [pagination](Response::get_next) if supported.
     fn parse_response(
+        // FIXME: Is this really needed? Its currently only used for error reporting.
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
-    ) -> Result<<Self as Request>::Response, HelixRequestPatchError>
+    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPatchError>
     where
         Self: Sized,
     {
-        match response.status().try_into() {
-            Ok(result) => Ok(result),
-            Err(err) => Err(HelixRequestPatchError {
-                status: response.status(),
-                message: err.to_string(),
+        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+            HelixRequestPatchError::Utf8Error(response.body().clone(), e, uri.clone())
+        })?;
+        if let Ok(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = parse_json::<HelixRequestError>(&text)
+        {
+            return Err(HelixRequestPatchError::Error {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
                 uri: uri.clone(),
                 body: response.body().clone(),
-            }),
+            });
         }
+        <Self as RequestPatch>::parse_inner_response(request, uri, text, response.status())
     }
+
+    /// Parse a response string into the response.
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPatchError>
+    where
+        Self: Sized;
 }
 
 /// Helix endpoint DELETEs information
@@ -694,13 +720,13 @@ pub trait RequestGet: Request {
         request: Option<Self>,
         uri: &http::Uri,
         response: &str,
-        _status: http::StatusCode,
+        status: http::StatusCode,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestGetError>
     where
         Self: Sized,
     {
         let response: InnerResponse<_> = parse_json(response).map_err(|e| {
-            HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
+            HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone(), status)
         })?;
         Ok(Response {
             data: response.data,
@@ -857,11 +883,12 @@ pub enum HelixRequestGetError {
     },
     /// could not parse response as utf8 when calling `GET {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
-    /// deserialization failed when processing request response calling `GET {2}` with response: {0:?}
+    /// deserialization failed when processing request response calling `GET {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
         #[source] serde_path_to_error::Error<serde_json::Error>,
         http::Uri,
+        http::StatusCode,
     ),
     // FIXME: Only used in webhooks parse_payload
     /// could not get URI for request
@@ -897,11 +924,12 @@ pub enum HelixRequestPutError {
     },
     /// could not parse response as utf8 when calling `PUT {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
-    /// deserialization failed when processing request response calling `PUT {2}` with response: {0:?}
+    /// deserialization failed when processing request response calling `PUT {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
         #[source] serde_path_to_error::Error<serde_json::Error>,
         http::Uri,
+        http::StatusCode,
     ),
 }
 
@@ -923,11 +951,12 @@ pub enum HelixRequestPostError {
     },
     /// could not parse response as utf8 when calling `POST {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
-    /// deserialization failed when processing request response calling `POST {2}` with response: {0:?}
+    /// deserialization failed when processing request response calling `POST {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
         #[source] serde_path_to_error::Error<serde_json::Error>,
         http::Uri,
+        http::StatusCode,
     ),
     /// invalid or unexpected response from twitch.
     InvalidResponse {
@@ -942,17 +971,42 @@ pub enum HelixRequestPostError {
     },
 }
 
-/// helix returned error {status:?}: {message:?} when calling `PATCH {uri}` with a body
+/// Could not parse PATCH response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-pub struct HelixRequestPatchError {
-    /// Status code of error, usually 400-499
-    status: http::StatusCode,
-    /// Error message from Twitch
-    message: String,
-    /// URI to the endpoint
-    uri: http::Uri,
-    /// Body sent with PATCH
-    body: Vec<u8>,
+pub enum HelixRequestPatchError {
+    /// helix returned error {status:?}: {message:?} when calling `PATCH {uri}` with a body
+    Error {
+        /// Error message related to status code
+        error: String,
+        /// Status code of error, usually 400-499
+        status: http::StatusCode,
+        /// Error message from Twitch
+        message: String,
+        /// URI to the endpoint
+        uri: http::Uri,
+        /// Body sent with POST
+        body: Vec<u8>,
+    },
+    /// could not parse response as utf8 when calling `POST {2}`
+    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+    /// deserialization failed when processing request response calling `POST {2}` with response: {3} - {0:?}
+    DeserializeError(
+        String,
+        #[source] serde_path_to_error::Error<serde_json::Error>,
+        http::Uri,
+        http::StatusCode,
+    ),
+    /// invalid or unexpected response from twitch.
+    InvalidResponse {
+        /// Reason for error
+        reason: &'static str,
+        /// Response text
+        response: String,
+        /// Status Code
+        status: http::StatusCode,
+        /// Uri to endpoint
+        uri: http::Uri,
+    },
 }
 
 /// Could not parse DELETE response

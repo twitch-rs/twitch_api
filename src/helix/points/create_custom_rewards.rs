@@ -148,6 +148,7 @@ impl RequestPost for CreateCustomRewardRequest {
                     response_str.to_string(),
                     e,
                     uri.clone(),
+                    status,
                 )
             })?;
         let data = response.data.into_iter().next().ok_or_else(|| {
