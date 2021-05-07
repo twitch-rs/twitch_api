@@ -112,6 +112,9 @@ pub struct UpdateCustomRewardBody {
     /// The cooldown in seconds if enabled
     #[builder(default, setter(into))]
     pub global_cooldown_seconds: Option<usize>,
+    /// Is the reward currently paused, if true viewers can’t redeem
+    #[builder(default, setter(into))]
+    pub is_paused: Option<bool>,
     /// Should redemptions be set to FULFILLED status immediately when redeemed and skip the request queue instead of the normal UNFULFILLED status. Defaults false
     #[builder(default, setter(into))]
     pub should_redemptions_skip_request_queue: Option<bool>,
