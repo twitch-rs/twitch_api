@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/points/update_redemption_status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>update_redemption_status.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/25f9d43fcf3ac0236fbc7835532d3b11f22cf9fe">25f9d43</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/702dc6e66f3aaa8f6a3280ab7a88e864a62d6419">702dc6e</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -193,6 +193,48 @@
 <span id="188">188</span>
 <span id="189">189</span>
 <span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Updates the status of Custom Reward Redemption objects on a channel that are in the UNFULFILLED status.</span>
 <span class="doccomment">//!</span>
@@ -246,14 +288,17 @@
 <span class="doccomment">//! let body = UpdateRedemptionStatusBody::builder()</span>
 <span class="doccomment">//!     .status(CustomRewardRedemptionStatus::Canceled)</span>
 <span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! let response: UpdateRedemptionStatusInformation = client.req_patch(request, body, &amp;token).await?;</span>
+<span class="doccomment">//! let response: UpdateRedemptionStatusInformation = client.req_patch(request, body, &amp;token).await?.data;</span>
 <span class="doccomment">//! # Ok(())</span>
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! You can also get the [`http::Request`] with [`request.create_request(body, &amp;token, &amp;client_id)`](helix::RequestPatch::create_request)</span>
-<span class="doccomment">//! and parse the [`http::Response`] with [`UpdateRedemptionStatusRequest::parse_response(&amp;request.get_uri(), response)`](UpdateRedemptionStatusRequest::parse_response)</span>
+<span class="doccomment">//! and parse the [`http::Response`] with [`UpdateRedemptionStatusRequest::parse_response(None, &amp;request.get_uri(), response)`](UpdateRedemptionStatusRequest::parse_response)</span>
 
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::helix</span>::{<span class="ident">parse_json</span>, <span class="ident">HelixRequestPatchError</span>};
+
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span><span class="ident">::CustomRewardRedemption</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">helix::RequestPatch</span>;
 
@@ -295,7 +340,7 @@
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UpdateRedemptionStatusInformation</span> {
     <span class="doccomment">/// 200 - OK</span>
-    <span class="ident">Success</span>,
+    <span class="ident">Success</span>(<span class="ident">CustomRewardRedemption</span>),
     <span class="doccomment">/// 400 - Bad Request: Query Parameter missing or invalid</span>
     <span class="ident">MissingQuery</span>,
     <span class="doccomment">/// 403 - Forbidden: The Custom Reward was created by a different client_id or Channel Points are not available for the broadcaster</span>
@@ -304,20 +349,6 @@
     <span class="ident">NotFound</span>,
     <span class="doccomment">/// Internal Server Error; Failed to update channel</span>
     <span class="ident">InternalServerError</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">std::convert::TryFrom</span><span class="op">&lt;</span><span class="ident">http::StatusCode</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">UpdateRedemptionStatusInformation</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">std::borrow::Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span>;
-
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">s</span>: <span class="ident">http::StatusCode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="ident">s</span> {
-            <span class="ident">http::StatusCode::OK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UpdateRedemptionStatusInformation::Success</span>),
-            <span class="ident">http::StatusCode::BAD_REQUEST</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UpdateRedemptionStatusInformation::MissingQuery</span>),
-            <span class="ident">http::StatusCode::FORBIDDEN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UpdateRedemptionStatusInformation::Forbidden</span>),
-            <span class="ident">http::StatusCode::NOT_FOUND</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UpdateRedemptionStatusInformation::NotFound</span>),
-            <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">other</span>.<span class="ident">canonical_reason</span>().<span class="ident">unwrap_or</span>(<span class="string">&quot;&quot;</span>).<span class="ident">into</span>()),
-        }
-    }
 }
 
 <span class="kw">impl</span> <span class="ident">Request</span> <span class="kw">for</span> <span class="ident">UpdateRedemptionStatusRequest</span> {
@@ -331,6 +362,57 @@
 
 <span class="kw">impl</span> <span class="ident">RequestPatch</span> <span class="kw">for</span> <span class="ident">UpdateRedemptionStatusRequest</span> {
     <span class="kw">type</span> <span class="ident">Body</span> <span class="op">=</span> <span class="ident">UpdateRedemptionStatusBody</span>;
+
+    <span class="kw">fn</span> <span class="ident">parse_inner_response</span>(
+        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
+        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
+        <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+        <span class="ident">status</span>: <span class="ident">http::StatusCode</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">helix::HelixRequestPatchError</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    {
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">status</span> {
+            <span class="ident">http::StatusCode::OK</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">helix::InnerResponse</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CustomRewardRedemption</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">parse_json</span>(<span class="ident">response</span>)
+                    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                        <span class="ident">HelixRequestPatchError::DeserializeError</span>(
+                            <span class="ident">response</span>.<span class="ident">to_string</span>(),
+                            <span class="ident">e</span>,
+                            <span class="ident">uri</span>.<span class="ident">clone</span>(),
+                            <span class="ident">status</span>,
+                        )
+                    })<span class="question-mark">?</span>;
+                <span class="ident">UpdateRedemptionStatusInformation::Success</span>(<span class="ident">resp</span>.<span class="ident">data</span>.<span class="ident">into_iter</span>().<span class="ident">next</span>().<span class="ident">ok_or</span>(
+                    <span class="ident">helix::HelixRequestPatchError::InvalidResponse</span> {
+                        <span class="ident">reason</span>: <span class="string">&quot;expected at least one element in data&quot;</span>,
+                        <span class="ident">response</span>: <span class="ident">response</span>.<span class="ident">to_string</span>(),
+                        <span class="ident">status</span>,
+                        <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
+                    },
+                )<span class="question-mark">?</span>)
+            }
+            <span class="ident">http::StatusCode::BAD_REQUEST</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UpdateRedemptionStatusInformation::MissingQuery</span>,
+            <span class="ident">http::StatusCode::NOT_FOUND</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UpdateRedemptionStatusInformation::NotFound</span>,
+            <span class="ident">http::StatusCode::FORBIDDEN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UpdateRedemptionStatusInformation::Forbidden</span>,
+            <span class="ident">http::StatusCode::INTERNAL_SERVER_ERROR</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">UpdateRedemptionStatusInformation::InternalServerError</span>
+            }
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">helix::HelixRequestPatchError::InvalidResponse</span> {
+                    <span class="ident">reason</span>: <span class="string">&quot;unexpected status code&quot;</span>,
+                    <span class="ident">response</span>: <span class="ident">response</span>.<span class="ident">to_string</span>(),
+                    <span class="ident">status</span>,
+                    <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
+                })
+            }
+        };
+        <span class="prelude-val">Ok</span>(<span class="ident">helix::Response</span> {
+            <span class="ident">data</span>: <span class="ident">resp</span>,
+            <span class="ident">pagination</span>: <span class="prelude-val">None</span>,
+            <span class="ident">request</span>,
+        })
+    }
 }
 
 <span class="kw">impl</span> <span class="ident">helix::private::SealedSerialize</span> <span class="kw">for</span> <span class="ident">UpdateRedemptionStatusBody</span> {}
@@ -351,14 +433,16 @@
     <span class="macro">dbg!</span>(<span class="ident">req</span>.<span class="ident">create_request</span>(<span class="ident">body</span>, <span class="string">&quot;abcd&quot;</span>, <span class="string">&quot;client&quot;</span>).<span class="ident">unwrap</span>());
     <span class="comment">// From twitch docs</span>
     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">br##&quot;
- {
+{
     &quot;data&quot;: [
         {
             &quot;broadcaster_name&quot;: &quot;torpedo09&quot;,
+            &quot;broadcaster_login&quot;: &quot;torpedo09&quot;,
             &quot;broadcaster_id&quot;: &quot;274637212&quot;,
             &quot;id&quot;: &quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;,
             &quot;user_id&quot;: &quot;274637212&quot;,
             &quot;user_name&quot;: &quot;torpedo09&quot;,
+            &quot;user_login&quot;: &quot;torpedo09&quot;,
             &quot;user_input&quot;: &quot;&quot;,
             &quot;status&quot;: &quot;CANCELED&quot;,
             &quot;redeemed_at&quot;: &quot;2020-07-01T18:37:32Z&quot;,
@@ -382,7 +466,7 @@
             <span class="string">&quot;https://api.twitch.tv/helix/channel_points/custom_rewards/redemptions?broadcaster_id=274637212&amp;reward_id=92af127c-7326-4483-a52b-b0da0be61c01&amp;id=17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;</span>
         );
 
-    <span class="macro">dbg!</span>(<span class="ident">UpdateRedemptionStatusRequest::parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
+    <span class="macro">dbg!</span>(<span class="ident">UpdateRedemptionStatusRequest::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">req</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api2" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
