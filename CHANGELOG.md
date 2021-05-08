@@ -4,7 +4,11 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.4.1...Unreleased)
+[Commits](https://github.com/Emilgardis/twitch_api2/compare/0.5.0...Unreleased)
+
+## [v0.5.0] - 2021-05-08
+
+[Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.4.1...v0.5.0)
 
 ### Added
 
@@ -97,4 +101,4 @@
 
 ## [End of Changelog] 
 
-Changelog starts on Unreleased
+Changelog starts on v0.5.0
