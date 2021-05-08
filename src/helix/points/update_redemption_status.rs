@@ -50,14 +50,17 @@
 //! let body = UpdateRedemptionStatusBody::builder()
 //!     .status(CustomRewardRedemptionStatus::Canceled)
 //!     .build();
-//! let response: UpdateRedemptionStatusInformation = client.req_patch(request, body, &token).await?;
+//! let response: UpdateRedemptionStatusInformation = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(body, &token, &client_id)`](helix::RequestPatch::create_request)
-//! and parse the [`http::Response`] with [`UpdateRedemptionStatusRequest::parse_response(&request.get_uri(), response)`](UpdateRedemptionStatusRequest::parse_response)
+//! and parse the [`http::Response`] with [`UpdateRedemptionStatusRequest::parse_response(None, &request.get_uri(), response)`](UpdateRedemptionStatusRequest::parse_response)
 
+use crate::helix::{parse_json, HelixRequestPatchError};
+
+pub use super::CustomRewardRedemption;
 use super::*;
 use helix::RequestPatch;
 
@@ -99,7 +102,7 @@ pub struct UpdateRedemptionStatusBody {
 #[non_exhaustive]
 pub enum UpdateRedemptionStatusInformation {
     /// 200 - OK
-    Success,
+    Success(CustomRewardRedemption),
     /// 400 - Bad Request: Query Parameter missing or invalid
     MissingQuery,
     /// 403 - Forbidden: The Custom Reward was created by a different client_id or Channel Points are not available for the broadcaster
@@ -108,20 +111,6 @@ pub enum UpdateRedemptionStatusInformation {
     NotFound,
     /// Internal Server Error; Failed to update channel
     InternalServerError,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for UpdateRedemptionStatusInformation {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::OK => Ok(UpdateRedemptionStatusInformation::Success),
-            http::StatusCode::BAD_REQUEST => Ok(UpdateRedemptionStatusInformation::MissingQuery),
-            http::StatusCode::FORBIDDEN => Ok(UpdateRedemptionStatusInformation::Forbidden),
-            http::StatusCode::NOT_FOUND => Ok(UpdateRedemptionStatusInformation::NotFound),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl Request for UpdateRedemptionStatusRequest {
@@ -135,6 +124,57 @@ impl Request for UpdateRedemptionStatusRequest {
 
 impl RequestPatch for UpdateRedemptionStatusRequest {
     type Body = UpdateRedemptionStatusBody;
+
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPatchError>
+    where
+        Self: Sized,
+    {
+        let resp = match status {
+            http::StatusCode::OK => {
+                let resp: helix::InnerResponse<Vec<CustomRewardRedemption>> = parse_json(response)
+                    .map_err(|e| {
+                        HelixRequestPatchError::DeserializeError(
+                            response.to_string(),
+                            e,
+                            uri.clone(),
+                            status,
+                        )
+                    })?;
+                UpdateRedemptionStatusInformation::Success(resp.data.into_iter().next().ok_or(
+                    helix::HelixRequestPatchError::InvalidResponse {
+                        reason: "expected at least one element in data",
+                        response: response.to_string(),
+                        status,
+                        uri: uri.clone(),
+                    },
+                )?)
+            }
+            http::StatusCode::BAD_REQUEST => UpdateRedemptionStatusInformation::MissingQuery,
+            http::StatusCode::NOT_FOUND => UpdateRedemptionStatusInformation::NotFound,
+            http::StatusCode::FORBIDDEN => UpdateRedemptionStatusInformation::Forbidden,
+            http::StatusCode::INTERNAL_SERVER_ERROR => {
+                UpdateRedemptionStatusInformation::InternalServerError
+            }
+            _ => {
+                return Err(helix::HelixRequestPatchError::InvalidResponse {
+                    reason: "unexpected status code",
+                    response: response.to_string(),
+                    status,
+                    uri: uri.clone(),
+                })
+            }
+        };
+        Ok(helix::Response {
+            data: resp,
+            pagination: None,
+            request,
+        })
+    }
 }
 
 impl helix::private::SealedSerialize for UpdateRedemptionStatusBody {}
@@ -155,14 +195,16 @@ fn test_request() {
     dbg!(req.create_request(body, "abcd", "client").unwrap());
     // From twitch docs
     let data = br##"
- {
+{
     "data": [
         {
             "broadcaster_name": "torpedo09",
+            "broadcaster_login": "torpedo09",
             "broadcaster_id": "274637212",
             "id": "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
             "user_id": "274637212",
             "user_name": "torpedo09",
+            "user_login": "torpedo09",
             "user_input": "",
             "status": "CANCELED",
             "redeemed_at": "2020-07-01T18:37:32Z",
@@ -186,5 +228,5 @@ fn test_request() {
             "https://api.twitch.tv/helix/channel_points/custom_rewards/redemptions?broadcaster_id=274637212&reward_id=92af127c-7326-4483-a52b-b0da0be61c01&id=17fa2df1-ad76-4804-bfa5-a40ef63efe63"
         );
 
-    dbg!(UpdateRedemptionStatusRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(UpdateRedemptionStatusRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

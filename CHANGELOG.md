@@ -82,6 +82,7 @@
     - Search Categories
     - Search Channels
     - Unblock User
+    - Update Custom Reward (thanks [FoxLisk](https://github.com/FoxLisk))
     - Update Redemption Status (thanks [Dinnerbone](https://github.com/Dinnerbone))
     - Replace Stream Tags (thanks [ModProg](https://github.com/ModProg))
 

@@ -62,7 +62,7 @@ impl RequestGet for GetWebhookSubscriptionsRequest {
         request: Option<Self>,
         uri: &http::Uri,
         response: &str,
-        _status: http::StatusCode,
+        status: http::StatusCode,
     ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
     where
         Self: Sized,
@@ -77,7 +77,12 @@ impl RequestGet for GetWebhookSubscriptionsRequest {
         }
 
         let response: InnerResponse = helix::parse_json(response).map_err(|e| {
-            helix::HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone())
+            helix::HelixRequestGetError::DeserializeError(
+                response.to_string(),
+                e,
+                uri.clone(),
+                status,
+            )
         })?;
         Ok(helix::Response {
             data: WebhookSubscriptions {
