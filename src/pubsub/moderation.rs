@@ -1,5 +1,6 @@
 #![doc(alias = "mod")]
 #![doc(alias = "chat_moderator_actions")]
+#![allow(deprecated)]
 //! PubSub messages for moderator actions
 use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};
@@ -57,13 +58,20 @@ pub struct ModerationAction {
     /// Type of moderation
     #[serde(rename = "type")]
     pub type_: ModerationType,
-    // Never filled
+    // FIXME: Never filled
     #[doc(hidden)]
     #[serde(
         default,
         deserialize_with = "pubsub::deserialize_none_from_empty_string"
     )]
     pub target_user_login: Option<String>,
+    // FIXME: Not sure what this does
+    #[doc(hidden)]
+    #[serde(
+        default,
+        deserialize_with = "pubsub::deserialize_none_from_empty_string"
+    )]
+    pub created_at: Option<types::Timestamp>,
 }
 
 /// A moderator was added. `moderator_added`
@@ -89,6 +97,40 @@ pub struct ModeratorAdded {
     pub created_by: types::UserName,
 }
 
+/// Channel Term actions
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct ChannelTermsAction {
+    /// ID of channel where channel terms were changed
+    pub channel_id: types::UserId,
+    /// If the term added is temporary or not and if not, when it will expire.
+    #[serde(
+        default,
+        deserialize_with = "pubsub::deserialize_none_from_empty_string"
+    )]
+    pub expires_at: Option<types::Timestamp>,
+    /// If the term was permitted/denied because of a previous automod message
+    pub from_automod: bool,
+    /// Id of term
+    pub id: String,
+    /// User ID that caused the term
+    pub requester_id: types::UserId,
+    /// User name that caused the term
+    pub requester_login: types::UserName,
+    /// Term definition
+    pub text: String,
+    /// Type of action done
+    #[serde(rename = "type")]
+    pub type_: ChannelAction,
+    /// Defined if the term was updated, None if new.
+    #[serde(
+        default,
+        deserialize_with = "pubsub::deserialize_none_from_empty_string"
+    )]
+    pub updated_at: Option<types::Timestamp>,
+}
+
 /// Reply from [ChatModeratorActions]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -98,6 +140,9 @@ pub enum ChatModeratorActionsReply {
     /// A moderation action. `moderation_action`
     #[serde(rename = "moderation_action")]
     ModerationAction(ModerationAction),
+    /// A channel term was modified, added or removed
+    #[serde(rename = "channel_terms_action")]
+    ChannelTermsAction(ChannelTermsAction),
     /// A moderator was added. `moderator_added`
     #[serde(rename = "moderator_added")]
     ModeratorAdded(ModeratorAdded),
@@ -170,12 +215,44 @@ pub enum ModerationActionCommand {
     /// Automod message rejected
     AutomodRejected,
     /// Automod permitted term added
+    ///
+    /// # Deprecation
+    ///
+    /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
+    #[deprecated(
+        since = "0.5.1",
+        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2."
+    )]
     AddPermittedTerm,
     /// Automod permitted term removed
+    ///
+    /// # Deprecation
+    ///
+    /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
+    #[deprecated(
+        since = "0.5.1",
+        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2."
+    )]
     DeletePermittedTerm,
     /// Automod blocked term added
+    ///
+    /// # Deprecation
+    ///
+    /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
+    #[deprecated(
+        since = "0.5.1",
+        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2."
+    )]
     AddBlockedTerm,
     /// Automod blocked term removed
+    ///
+    /// # Deprecation
+    ///
+    /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
+    #[deprecated(
+        since = "0.5.1",
+        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2."
+    )]
     DeleteBlockedTerm,
     /// Automod message approved
     ApproveAutomodMessage,
@@ -228,6 +305,21 @@ pub enum ModerationActionCommand {
     /// Unban Request Denied
     #[serde(rename = "DENY_UNBAN_REQUEST")]
     DenyUnbanRequest,
+}
+
+/// A command
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+#[non_exhaustive]
+pub enum ChannelAction {
+    /// Automod permitted term added
+    AddPermittedTerm,
+    /// Automod permitted term removed
+    DeletePermittedTerm,
+    /// Automod blocked term added
+    AddBlockedTerm,
+    /// Automod blocked term removed
+    DeleteBlockedTerm,
 }
 
 impl std::fmt::Display for ModerationActionCommand {
@@ -353,7 +445,7 @@ mod tests {
     "type": "MESSAGE",
     "data": {
         "topic": "chat_moderator_actions.27620241.27620241",
-        "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"delete_blocked_term\",\"args\":[\"cunt dick pussy vagina\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
+        "message": "{\"type\":\"channel_terms_action\",\"data\":{\"type\":\"delete_blocked_term\",\"id\":\"41a8f582-4c60-4ca1-aa10-91ec06161118\",\"text\":\"Hype\",\"requester_id\":\"27620241\",\"requester_login\":\"emilgardis\",\"channel_id\":\"27620241\",\"expires_at\":\"\",\"updated_at\":\"2021-05-10T21:35:28.745222679Z\",\"from_automod\":false}}"
     }
 }"#;
         let actual = dbg!(Response::parse(source).unwrap());
