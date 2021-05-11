@@ -45,6 +45,7 @@ pub mod games;
 pub mod hypetrain;
 pub mod moderation;
 pub mod points;
+pub mod polls;
 pub mod search;
 pub mod streams;
 pub mod subscriptions;
