@@ -40,6 +40,10 @@ pub struct MysteryGiftPurchase {
     pub tier: types::SubscriptionTier,
     /// User ID of user that purchased mystery gifts
     pub user_id: types::UserId,
+    /// User name of user that purchased mystery gifts
+    pub user_name: types::UserName,
+    /// Display name of user that purchased mystery gifts
+    pub display_name: types::DisplayName,
     /// Unknown
     pub uuid: String,
 }
@@ -68,8 +72,10 @@ mod tests {
     "tier": "1000",
     "user_id": "1234",
     "channel_id": "27620241",
-    "uuid": "d749201e-675d-46fb-8ac7-ff2418a0bb99",
-    "type": "mystery-gift-purchase"
+    "uuid": "deadbeef",
+    "type": "mystery-gift-purchase",
+    "user_name": "user",
+    "display_name": "User"
 }
 "##;
 
