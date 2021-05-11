@@ -21,7 +21,7 @@
 //! let body = create_poll::CreatePollBody::builder()
 //!     .broadcaster_id("141981764")
 //!     .title("Heads or Tails?")
-//!     .choices(vec![create_poll::NewChoice::new("Heads"), create_poll::NewChoice::new("Tails")])
+//!     .choices(vec![create_poll::NewPollChoice::new("Heads"), create_poll::NewPollChoice::new("Tails")])
 //!     .channel_points_voting_enabled(true)
 //!     .channel_points_per_vote(100)
 //!     .duration(1800)
@@ -47,7 +47,7 @@
 //! let body = create_poll::CreatePollBody::builder()
 //!     .broadcaster_id("141981764")
 //!     .title("Heads or Tails?")
-//!     .choices(vec![create_poll::NewChoice::new("Heads"), create_poll::NewChoice::new("Tails")])
+//!     .choices(vec![create_poll::NewPollChoice::new("Heads"), create_poll::NewPollChoice::new("Tails")])
 //!     .channel_points_voting_enabled(true)
 //!     .channel_points_per_vote(100)
 //!     .duration(1800)
@@ -116,7 +116,7 @@ pub struct NewPollChoice {
 }
 
 impl NewPollChoice {
-    /// Create a new [`NewChoice`]
+    /// Create a new [`NewPollChoice`]
     pub fn new(title: impl Into<String>) -> Self {
         Self {
             title: title.into(),
@@ -134,8 +134,7 @@ impl Request for CreatePollRequest {
 
     const PATH: &'static str = "polls";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ChannelManageRedemptions];
+    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManagePolls];
 }
 
 impl RequestPost for CreatePollRequest {
@@ -183,7 +182,10 @@ fn test_request() {
     let body = CreatePollBody::builder()
         .broadcaster_id("141981764")
         .title("Heads or Tails?")
-        .choices(vec![NewPollChoice::new("Heads"), NewPollChoice::new("Tails")])
+        .choices(vec![
+            NewPollChoice::new("Heads"),
+            NewPollChoice::new("Tails"),
+        ])
         .channel_points_voting_enabled(true)
         .channel_points_per_vote(100)
         .duration(1800)

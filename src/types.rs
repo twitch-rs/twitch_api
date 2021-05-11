@@ -49,8 +49,13 @@ pub type MsgId = String;
 pub type PollId = String;
 
 /// A poll choice ID
-pub type ChoiceId = String;
+pub type PollChoiceId = String;
 
+/// A prediction ID
+pub type PredictionId = String;
+
+/// A prediction choice ID
+pub type PredictionOutcomeId = String;
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -65,7 +70,7 @@ pub struct TwitchCategory {
 }
 
 /// Subscription tiers
-#[derive(PartialEq, Eq, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
 #[serde(field_identifier)]
 pub enum SubscriptionTier {
     /// Tier 1. $4.99
@@ -97,7 +102,7 @@ impl Serialize for SubscriptionTier {
 }
 
 /// Broadcaster types: "partner", "affiliated", or "".
-#[derive(PartialEq, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
 pub enum BroadcasterType {
     /// Partner
     #[serde(rename = "partner")]
@@ -122,7 +127,7 @@ impl Serialize for BroadcasterType {
 }
 
 /// User types: "staff", "admin", "global_mod", or "".
-#[derive(PartialEq, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
 pub enum UserType {
     /// Staff
     #[serde(rename = "staff")]
@@ -314,6 +319,23 @@ pub enum Max {
     },
 }
 
+/// Poll choices
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct PollChoice {
+    /// ID for the choice.
+    pub id: String,
+    /// Text displayed for the choice.
+    pub title: String,
+    /// Total number of votes received for the choice across all methods of voting.
+    pub votes: i64,
+    /// Number of votes received via Channel Points.
+    pub channel_points_votes: i64,
+    /// Number of votes received via Bits.
+    pub bits_votes: i64,
+}
+
 /// Status of a poll
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -332,4 +354,55 @@ pub enum PollStatus {
     Moderated,
     /// Something went wrong determining the state.
     Invalid,
+}
+/// Status of the Prediction
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[serde(rename_all = "UPPERCASE")]
+#[non_exhaustive]
+pub enum PredictionStatus {
+    /// A winning outcome has been chosen and the Channel Points have been distributed to the users who guessed the correct outcome.
+    Resolved,
+    /// The Prediction is active and viewers can make predictions.
+    Active,
+    /// The Prediction has been canceled and the Channel Points have been refunded to participants.
+    Canceled,
+    /// The Prediction has been locked and viewers can no longer make predictions.
+    Locked,
+}
+/// Outcome for the Prediction
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct PredictionOutcome {
+    /// ID for the outcome.
+    pub id: String,
+    /// Text displayed for outcome.
+    pub title: String,
+    /// Number of unique users that chose the outcome.
+    pub users: i64,
+    /// Number of Channel Points used for the outcome.
+    pub channel_points: i64,
+    /// Array of users who were the top predictors. null if none.
+    #[serde(deserialize_with = "crate::deserialize_default_from_null")]
+    pub top_predictors: Vec<PredictionTopPredictors>,
+    /// Color for the outcome. Valid values: BLUE, PINK
+    pub color: String,
+}
+
+/// Users who were the top predictors.
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct PredictionTopPredictors {
+    /// ID of the user.
+    pub id: UserId,
+    /// Display name of the user.
+    pub name: DisplayName,
+    /// Login of the user.
+    pub login: UserName,
+    /// Number of Channel Points used by the user.
+    pub channel_points_used: i64,
+    /// Number of Channel Points won by the user.
+    pub channel_points_won: i64,
 }

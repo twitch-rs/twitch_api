@@ -299,6 +299,15 @@ pub fn parse_json_value<'a, T: serde::Deserialize<'a>>(
     }
 }
 
+/// Deserialize 'null' as <T as Default>::Default
+fn deserialize_default_from_null<'de, D, T>(deserializer: D) -> Result<T, D::Error>
+where
+    D: serde::Deserializer<'de>,
+    T: serde::Deserialize<'de> + Default, {
+    use serde::Deserialize;
+    Ok(Option::deserialize(deserializer)?.unwrap_or_default())
+}
+
 #[cfg(test)]
 pub mod tests {
     #[track_caller]

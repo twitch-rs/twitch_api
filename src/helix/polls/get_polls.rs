@@ -39,6 +39,7 @@
 
 use super::*;
 use helix::RequestGet;
+pub use types::{PollChoice, PollStatus};
 
 /// Query Parameters for [Get polls](super::get_polls)
 ///
@@ -78,7 +79,7 @@ pub struct Poll {
     /// Question displayed for the poll.
     pub title: String,
     /// Array of the poll choices.
-    pub choices: Vec<types::PollChoice>,
+    pub choices: Vec<PollChoice>,
     /// Indicates if Bits can be used for voting.
     pub bits_voting_enabled: bool,
     /// Number of Bits required to vote once with Bits.
@@ -88,7 +89,7 @@ pub struct Poll {
     /// Number of Channel Points required to vote once with Channel Points.
     pub channel_points_per_vote: i64,
     /// Poll status. Valid values are:
-    pub status: types::PollStatus,
+    pub status: PollStatus,
     /// Total duration for the poll (in seconds).
     pub duration: i64,
     /// UTC timestamp for the poll’s start time.
@@ -100,11 +101,9 @@ pub struct Poll {
 impl Request for GetPollsRequest {
     type Response = Vec<Poll>;
 
-    #[cfg(feature = "twitch_oauth2")]
-    const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
     const PATH: &'static str = "polls";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadPolls];
 }
 
 impl RequestGet for GetPollsRequest {}

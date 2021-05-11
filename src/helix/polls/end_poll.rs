@@ -23,7 +23,7 @@
 //! let body = end_poll::EndPollBody::builder()
 //!     .broadcaster_id("274637212")
 //!     .id("92af127c-7326-4483-a52b-b0da0be61c01")
-//!     .status(twitch_api2::types::PollStatus::Terminated)
+//!     .status(end_poll::PollStatus::Terminated)
 //!     .build();
 //! ```
 //!
@@ -45,7 +45,7 @@
 //! let body = end_poll::EndPollBody::builder()
 //!     .broadcaster_id("274637212")
 //!     .id("92af127c-7326-4483-a52b-b0da0be61c01")
-//!     .status(twitch_api2::types::PollStatus::Terminated)
+//!     .status(end_poll::PollStatus::Terminated)
 //!     .build();
 //! let response: end_poll::EndPoll = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
@@ -59,6 +59,7 @@ use crate::helix::{parse_json, HelixRequestPatchError};
 
 use super::*;
 use helix::RequestPatch;
+pub use types::PollStatus;
 /// Query Parameters for [End Poll](super::end_poll)
 ///
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
@@ -88,7 +89,7 @@ pub struct EndPollBody {
     /// Valid values:
     /// [`TERMINATED`](types::PollStatus::Terminated): End the poll manually, but allow it to be viewed publicly.
     /// [`ARCHIVED`](types::PollStatus::Archived): End the poll manually and do not allow it to be viewed publicly.
-    pub status: types::PollStatus,
+    pub status: PollStatus,
 }
 
 impl helix::private::SealedSerialize for EndPollBody {}
@@ -113,8 +114,7 @@ impl Request for EndPollRequest {
 
     const PATH: &'static str = "polls";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ChannelManageRedemptions];
+    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManagePolls];
 }
 
 impl RequestPatch for EndPollRequest {
@@ -175,7 +175,7 @@ fn test_request() {
     let body = EndPollBody::builder()
         .broadcaster_id("274637212")
         .id("92af127c-7326-4483-a52b-b0da0be61c01")
-        .status(types::PollStatus::Terminated)
+        .status(PollStatus::Terminated)
         .build();
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
@@ -221,7 +221,6 @@ fn test_request() {
     .to_vec();
 
     let http_response = http::Response::builder().status(200).body(data).unwrap();
-    // This is marked as 204 in twitch docs, but in reality it's 200
 
     let uri = req.get_uri().unwrap();
     assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/polls?");
