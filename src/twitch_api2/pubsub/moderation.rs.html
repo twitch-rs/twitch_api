@@ -1,9 +1,9 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/moderation.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>moderation.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/e27ec2382ee011baca47a414ac349ac8898df943">e27ec23</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/35d4a5be8f633665abce733800412c332e33ccc0">35d4a5b</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -447,9 +447,102 @@
 <span id="442">442</span>
 <span id="443">443</span>
 <span id="444">444</span>
-</pre><div class="example-wrap"><pre class="rust ">
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+</pre><pre class="rust">
 <span class="attribute">#![<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;mod&quot;</span>)]</span>
 <span class="attribute">#![<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;chat_moderator_actions&quot;</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="doccomment">//! PubSub messages for moderator actions</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">pubsub</span>, <span class="ident">types</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -507,13 +600,20 @@
     <span class="doccomment">/// Type of moderation</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">type_</span>: <span class="ident">ModerationType</span>,
-    <span class="comment">// Never filled</span>
+    <span class="comment">// FIXME: Never filled</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(
         <span class="ident">default</span>,
         <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
     )]</span>
     <span class="kw">pub</span> <span class="ident">target_user_login</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="comment">// FIXME: Not sure what this does</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(
+        <span class="ident">default</span>,
+        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
+    )]</span>
+    <span class="kw">pub</span> <span class="ident">created_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::Timestamp</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// A moderator was added. `moderator_added`</span>
@@ -539,6 +639,40 @@
     <span class="kw">pub</span> <span class="ident">created_by</span>: <span class="ident">types::UserName</span>,
 }
 
+<span class="doccomment">/// Channel Term actions</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelTermsAction</span> {
+    <span class="doccomment">/// ID of channel where channel terms were changed</span>
+    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types::UserId</span>,
+    <span class="doccomment">/// If the term added is temporary or not and if not, when it will expire.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(
+        <span class="ident">default</span>,
+        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
+    )]</span>
+    <span class="kw">pub</span> <span class="ident">expires_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// If the term was permitted/denied because of a previous automod message</span>
+    <span class="kw">pub</span> <span class="ident">from_automod</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Id of term</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// User ID that caused the term</span>
+    <span class="kw">pub</span> <span class="ident">requester_id</span>: <span class="ident">types::UserId</span>,
+    <span class="doccomment">/// User name that caused the term</span>
+    <span class="kw">pub</span> <span class="ident">requester_login</span>: <span class="ident">types::UserName</span>,
+    <span class="doccomment">/// Term definition</span>
+    <span class="kw">pub</span> <span class="ident">text</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Type of action done</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">type_</span>: <span class="ident">ChannelAction</span>,
+    <span class="doccomment">/// Defined if the term was updated, None if new.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(
+        <span class="ident">default</span>,
+        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
+    )]</span>
+    <span class="kw">pub</span> <span class="ident">updated_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::Timestamp</span><span class="op">&gt;</span>,
+}
+
 <span class="doccomment">/// Reply from [ChatModeratorActions]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
@@ -548,6 +682,9 @@
     <span class="doccomment">/// A moderation action. `moderation_action`</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;moderation_action&quot;</span>)]</span>
     <span class="ident">ModerationAction</span>(<span class="ident">ModerationAction</span>),
+    <span class="doccomment">/// A channel term was modified, added or removed</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel_terms_action&quot;</span>)]</span>
+    <span class="ident">ChannelTermsAction</span>(<span class="ident">ChannelTermsAction</span>),
     <span class="doccomment">/// A moderator was added. `moderator_added`</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;moderator_added&quot;</span>)]</span>
     <span class="ident">ModeratorAdded</span>(<span class="ident">ModeratorAdded</span>),
@@ -620,12 +757,44 @@
     <span class="doccomment">/// Automod message rejected</span>
     <span class="ident">AutomodRejected</span>,
     <span class="doccomment">/// Automod permitted term added</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Deprecation</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.1&quot;</span>,
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2.&quot;</span>
+    )]</span>
     <span class="ident">AddPermittedTerm</span>,
     <span class="doccomment">/// Automod permitted term removed</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Deprecation</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.1&quot;</span>,
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2.&quot;</span>
+    )]</span>
     <span class="ident">DeletePermittedTerm</span>,
     <span class="doccomment">/// Automod blocked term added</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Deprecation</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.1&quot;</span>,
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2.&quot;</span>
+    )]</span>
     <span class="ident">AddBlockedTerm</span>,
     <span class="doccomment">/// Automod blocked term removed</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Deprecation</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.1&quot;</span>,
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2.&quot;</span>
+    )]</span>
     <span class="ident">DeleteBlockedTerm</span>,
     <span class="doccomment">/// Automod message approved</span>
     <span class="ident">ApproveAutomodMessage</span>,
@@ -678,6 +847,21 @@
     <span class="doccomment">/// Unban Request Denied</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;DENY_UNBAN_REQUEST&quot;</span>)]</span>
     <span class="ident">DenyUnbanRequest</span>,
+}
+
+<span class="doccomment">/// A command</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;snake_case&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ChannelAction</span> {
+    <span class="doccomment">/// Automod permitted term added</span>
+    <span class="ident">AddPermittedTerm</span>,
+    <span class="doccomment">/// Automod permitted term removed</span>
+    <span class="ident">DeletePermittedTerm</span>,
+    <span class="doccomment">/// Automod blocked term added</span>
+    <span class="ident">AddBlockedTerm</span>,
+    <span class="doccomment">/// Automod blocked term removed</span>
+    <span class="ident">DeleteBlockedTerm</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">ModerationActionCommand</span> {
@@ -803,7 +987,7 @@
     &quot;type&quot;: &quot;MESSAGE&quot;,
     &quot;data&quot;: {
         &quot;topic&quot;: &quot;chat_moderator_actions.27620241.27620241&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_channel_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;delete_blocked_term\&quot;,\&quot;args\&quot;:[\&quot;cunt dick pussy vagina\&quot;],\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
+        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;channel_terms_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;delete_blocked_term\&quot;,\&quot;id\&quot;:\&quot;41a8f582-4c60-4ca1-aa10-91ec06161118\&quot;,\&quot;text\&quot;:\&quot;Hype\&quot;,\&quot;requester_id\&quot;:\&quot;27620241\&quot;,\&quot;requester_login\&quot;:\&quot;emilgardis\&quot;,\&quot;channel_id\&quot;:\&quot;27620241\&quot;,\&quot;expires_at\&quot;:\&quot;\&quot;,\&quot;updated_at\&quot;:\&quot;2021-05-10T21:35:28.745222679Z\&quot;,\&quot;from_automod\&quot;:false}}&quot;
     }
 }&quot;#</span>;
         <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
