@@ -1,11 +1,8 @@
 use twitch_api2::{
-    helix::moderation::{
-        GetBannedEventsRequest, GetBannedUsersRequest, GetModeratorEventsRequest,
-        GetModeratorsRequest,
-    },
+    helix::moderation::{GetBannedEventsRequest, GetBannedUsersRequest, GetModeratorEventsRequest},
     HelixClient,
 };
-use twitch_oauth2::{AccessToken, TwitchToken, UserToken};
+use twitch_oauth2::{AccessToken, UserToken};
 
 fn main() {
     use std::error::Error;
@@ -35,26 +32,17 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     )
     .await?;
 
-    let broadcaster_id = token
-        .validate_token(twitch_oauth2::client::surf_http_client)
-        .await?
-        .user_id
-        .unwrap();
+    let broadcaster_id = token.user_id.as_str();
 
     let client = HelixClient::with_client(surf::Client::new());
 
     println!("====Moderators====");
-    let moderators_req = GetModeratorsRequest::builder()
-        .broadcaster_id(broadcaster_id.clone())
-        .build();
-
-    let mut response = client.req_get(moderators_req, &token).await?;
-    println!("{:?}", response.data);
-
-    while let Ok(Some(new_response)) = response.get_next(&client, &token).await {
-        response = new_response;
-        println!("{:?}", response.data);
-    }
+    println!(
+        "{:?}",
+        client
+            .get_moderators_in_channel_from_id(broadcaster_id, &token)
+            .await?
+    );
 
     println!("====Last 20 Moderator Events====");
     let moderator_events_req = GetModeratorEventsRequest::builder()

@@ -50,7 +50,6 @@
 //! ```rust,no_run
 //! # use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
 //! # use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::TokenError};
-//!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let surf_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests
@@ -62,7 +61,7 @@
 //! #       Err(TokenError::Request(e)) => panic!("got error: {:?}", e),
 //! #       Err(e) => panic!(e),
 //! #   };
-//! let client = TwitchClient::new();
+//! # let client = TwitchClient::new();
 //! # let _: &TwitchClient<twitch_api2::DummyHttpClient> = &client;
 //!
 //! println!("{:?}", &client.helix.get_channel_from_login("twitch".to_string(), &token).await?.unwrap().title);
