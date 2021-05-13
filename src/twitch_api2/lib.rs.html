@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/ac9e205b94570515e82400a71fe2024d0193708c">ac9e205</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/f62ee85f46556cd1c0dab8f28de8cfa11843838e">f62ee85</a></p>
 <style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -227,7 +227,6 @@
 <span id="222">222</span>
 <span id="223">223</span>
 <span id="224">224</span>
-<span id="225">225</span>
 </pre><pre class="rust">
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unknown_lints</span>, <span class="ident">renamed_and_removed_lints</span>)]</span>
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>, <span class="ident">broken_intra_doc_links</span>)]</span> <span class="comment">// This will be weird until 1.52, see https://github.com/rust-lang/rust/pull/80527</span>
@@ -281,7 +280,6 @@
 <span class="doccomment">//! ```rust,no_run</span>
 <span class="doccomment">//! # use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};</span>
 <span class="doccomment">//! # use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::TokenError};</span>
-<span class="doccomment">//!</span>
 <span class="doccomment">//! # #[tokio::main]</span>
 <span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
 <span class="doccomment">//! # let surf_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests</span>
@@ -293,7 +291,7 @@
 <span class="doccomment">//! #       Err(TokenError::Request(e)) =&gt; panic!(&quot;got error: {:?}&quot;, e),</span>
 <span class="doccomment">//! #       Err(e) =&gt; panic!(e),</span>
 <span class="doccomment">//! #   };</span>
-<span class="doccomment">//! let client = TwitchClient::new();</span>
+<span class="doccomment">//! # let client = TwitchClient::new();</span>
 <span class="doccomment">//! # let _: &amp;TwitchClient&lt;twitch_api2::DummyHttpClient&gt; = &amp;client;</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! println!(&quot;{:?}&quot;, &amp;client.helix.get_channel_from_login(&quot;twitch&quot;.to_string(), &amp;token).await?.unwrap().title);</span>
