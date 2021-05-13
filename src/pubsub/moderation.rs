@@ -51,7 +51,7 @@ pub struct ModerationAction {
         default,
         deserialize_with = "pubsub::deserialize_none_from_empty_string"
     )]
-    pub msg_id: Option<String>,
+    pub msg_id: Option<types::MsgId>,
     /// Target of moderation action
     pub target_user_id: types::UserId,
     /// Type of moderation

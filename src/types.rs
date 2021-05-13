@@ -42,6 +42,9 @@ pub type TeamId = String;
 /// A Stream ID
 pub type StreamId = String;
 
+/// A message ID
+pub type MsgId = String;
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]

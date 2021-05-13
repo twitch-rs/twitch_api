@@ -12,6 +12,7 @@ pub mod get_banned_events;
 pub mod get_banned_users;
 pub mod get_moderator_events;
 pub mod get_moderators;
+pub mod manage_held_automod_messages;
 
 #[doc(inline)]
 pub use check_automod_status::{
@@ -25,3 +26,8 @@ pub use get_banned_users::{BannedUser, GetBannedUsersRequest};
 pub use get_moderator_events::{GetModeratorEventsRequest, ModeratorEvent};
 #[doc(inline)]
 pub use get_moderators::{GetModeratorsRequest, Moderator};
+#[doc(inline)]
+pub use manage_held_automod_messages::{
+    AutoModAction, ManageHeldAutoModMessages, ManageHeldAutoModMessagesBody,
+    ManageHeldAutoModMessagesRequest,
+};
