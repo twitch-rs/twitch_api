@@ -329,30 +329,37 @@ pub struct PollChoice {
     /// Text displayed for the choice.
     pub title: String,
     /// Total number of votes received for the choice across all methods of voting.
-    pub votes: i64,
+    pub votes: Option<i64>,
     /// Number of votes received via Channel Points.
-    pub channel_points_votes: i64,
+    pub channel_points_votes: Option<i64>,
     /// Number of votes received via Bits.
-    pub bits_votes: i64,
+    pub bits_votes: Option<i64>,
 }
 
+// FIXME: Poll status has different name depending on if returned from helix or eventsub. See https://twitch.uservoice.com/forums/310213-developers/suggestions/43402176
 /// Status of a poll
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(rename_all = "UPPERCASE")]
 #[non_exhaustive]
 pub enum PollStatus {
     /// Poll is currently in progress.
+    #[serde(alias = "active")]
     Active,
     /// Poll has reached its ended_at time.
+    #[serde(alias = "completed")]
     Completed,
     /// Poll has been manually terminated before its ended_at time.
+    #[serde(alias = "terminated")]
     Terminated,
     /// Poll is no longer visible on the channel.
+    #[serde(alias = "archived")]
     Archived,
     /// Poll is no longer visible to any user on Twitch.
+    #[serde(alias = "moderated")]
     Moderated,
     /// Something went wrong determining the state.
+    #[serde(alias = "invalid")]
     Invalid,
 }
 /// Status of the Prediction
