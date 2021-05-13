@@ -1,5 +1,5 @@
 use twitch_api2::HelixClient;
-use twitch_oauth2::{AccessToken, TwitchToken, UserToken};
+use twitch_oauth2::{AccessToken, UserToken};
 
 fn main() {
     use std::error::Error;
@@ -29,16 +29,12 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     )
     .await?;
 
-    let broadcaster_id = token
-        .validate_token(twitch_oauth2::client::surf_http_client)
-        .await?
-        .user_id
-        .unwrap();
+    let broadcaster_id = token.user_id.as_str();
 
     let client = HelixClient::with_client(surf::Client::new());
 
     let req = twitch_api2::helix::moderation::CheckAutoModStatusRequest::builder()
-        .broadcaster_id(&broadcaster_id)
+        .broadcaster_id(broadcaster_id)
         .build();
     let data = twitch_api2::helix::moderation::CheckAutoModStatusBody::builder()
         .msg_id("123")

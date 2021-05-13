@@ -16,24 +16,23 @@ See [examples](./examples) for examples.
 [local-docs]: https://img.shields.io/github/workflow/status/Emilgardis/twitch_api2/github%20pages/master?label=master%20docs&style=flat-square&event=push
 
 ```rust ,no_run
-use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
-use twitch_oauth2::{AccessToken, Scope, TwitchToken, tokens::errors::TokenError, UserToken, client::reqwest_http_client};
+use twitch_api2::helix::HelixClient;
+use twitch_oauth2::{AccessToken, UserToken, client::reqwest_http_client};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     let token = UserToken::from_existing(
         reqwest_http_client,
         AccessToken::new("mytoken".to_string()),
-        None, // Client ID
+        None, // Refresh Token
         None, // Client Secret
     )
     .await?;
-    let client: TwitchClient<reqwest::Client> =  TwitchClient::default();
-    let req = GetChannelInformationRequest::builder()
-        .broadcaster_id("12826")
-        .build();
+    let client: HelixClient<reqwest::Client> =  HelixClient::default();
 
-    println!("{:?}", &client.helix.req_get(req, &token).await?.data.unwrap().title);
+    println!("Channel: {:?}",
+            client.get_channel_from_login("twitchdev", &token).await?
+    );
 
     Ok(())
 }
