@@ -46,7 +46,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     println!("====Last 20 Moderator Events====");
     let moderator_events_req = GetModeratorEventsRequest::builder()
-        .broadcaster_id(broadcaster_id.clone())
+        .broadcaster_id(broadcaster_id)
         .build();
 
     let mut response = client.req_get(moderator_events_req, &token).await?;
@@ -60,7 +60,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     println!("====Banned users====");
     let banned_users_req = GetBannedUsersRequest::builder()
-        .broadcaster_id(broadcaster_id.clone())
+        .broadcaster_id(broadcaster_id)
         .build();
     let mut response = client.req_get(banned_users_req, &token).await?;
     println!(
@@ -86,7 +86,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     println!("====Last 10 Banned Events====");
     let banned_events_req = GetBannedEventsRequest::builder()
-        .broadcaster_id(broadcaster_id.clone())
+        .broadcaster_id(broadcaster_id)
         .first(Some(10))
         .build();
     let mut response = client.req_get(banned_events_req, &token).await?;
