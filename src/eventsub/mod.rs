@@ -138,6 +138,14 @@ pub enum Payload {
     ChannelPollProgressV1(NotificationPayload<channel::ChannelPollProgressV1>),
     /// Channel Poll End V1 Event
     ChannelPollEndV1(NotificationPayload<channel::ChannelPollEndV1>),
+    /// Channel Prediction Begin V1 Event
+    ChannelPredictionBeginV1(NotificationPayload<channel::ChannelPredictionBeginV1>),
+    /// Channel Prediction Progress V1 Event
+    ChannelPredictionProgressV1(NotificationPayload<channel::ChannelPredictionProgressV1>),
+    /// Channel Prediction Lock V1 Event
+    ChannelPredictionLockV1(NotificationPayload<channel::ChannelPredictionLockV1>),
+    /// Channel Prediction End V1 Event
+    ChannelPredictionEndV1(NotificationPayload<channel::ChannelPredictionEndV1>),
     /// Channel Hype Train Begin V1 Event
     ChannelHypeTrainBeginV1(NotificationPayload<channel::ChannelHypeTrainBeginV1>),
     /// Channel Hype Train Progress V1 Event
@@ -343,6 +351,10 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelPollBeginV1;
                 channel::ChannelPollProgressV1;
                 channel::ChannelPollEndV1;
+                channel::ChannelPredictionBeginV1;
+                channel::ChannelPredictionProgressV1;
+                channel::ChannelPredictionLockV1;
+                channel::ChannelPredictionEndV1;
                 channel::ChannelRaidV1;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
@@ -376,6 +388,10 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelPollBeginV1;
                 channel::ChannelPollProgressV1;
                 channel::ChannelPollEndV1;
+                channel::ChannelPredictionBeginV1;
+                channel::ChannelPredictionProgressV1;
+                channel::ChannelPredictionLockV1;
+                channel::ChannelPredictionEndV1;
                 channel::ChannelRaidV1;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
@@ -510,6 +526,18 @@ pub enum EventType {
     /// `channel.poll.end`: a poll ends on the specified channel.
     #[serde(rename = "channel.poll.end")]
     ChannelPollEnd,
+    /// `channel.prediction.begin`: a Prediction begins on the specified channel
+    #[serde(rename = "channel.prediction.begin")]
+    ChannelPredictionBegin,
+    /// `channel.prediction.progress`: a user participates in a Prediction on the specified channel.
+    #[serde(rename = "channel.prediction.progress")]
+    ChannelPredictionProgress,
+    /// `channel.prediction.lock`: a Prediction is locked on the specified channel.
+    #[serde(rename = "channel.prediction.lock")]
+    ChannelPredictionLock,
+    /// `channel.prediction.end`: a Prediction ends on the specified channel.
+    #[serde(rename = "channel.prediction.end")]
+    ChannelPredictionEnd,
     /// `channel.raid`: a broadcaster raids another broadcaster’s channel.
     #[serde(rename = "channel.raid")]
     ChannelRaid,

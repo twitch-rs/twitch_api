@@ -11,6 +11,7 @@ pub mod cheer;
 pub mod follow;
 pub mod hypetrain;
 pub mod poll;
+pub mod prediction;
 pub mod raid;
 pub mod subscribe;
 pub mod unban;
@@ -54,6 +55,14 @@ pub use poll::{ChannelPollBeginV1, ChannelPollBeginV1Payload};
 pub use poll::{ChannelPollEndV1, ChannelPollEndV1Payload};
 #[doc(inline)]
 pub use poll::{ChannelPollProgressV1, ChannelPollProgressV1Payload};
+#[doc(inline)]
+pub use prediction::{ChannelPredictionBeginV1, ChannelPredictionBeginV1Payload};
+#[doc(inline)]
+pub use prediction::{ChannelPredictionEndV1, ChannelPredictionEndV1Payload};
+#[doc(inline)]
+pub use prediction::{ChannelPredictionLockV1, ChannelPredictionLockV1Payload};
+#[doc(inline)]
+pub use prediction::{ChannelPredictionProgressV1, ChannelPredictionProgressV1Payload};
 #[doc(inline)]
 pub use raid::{ChannelRaidV1, ChannelRaidV1Payload};
 #[doc(inline)]
