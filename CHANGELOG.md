@@ -6,6 +6,14 @@
 
 [Commits](https://github.com/Emilgardis/twitch_api2/compare/0.5.0...Unreleased)
 
+### Added
+
+* Added Helix endpoint `Manage Held AutoMod Messages`
+* Added Channel Terms to pubsub
+
+### Changed
+
+* Deprecated specific term actions in `ChatModeratorActionsReply`, replacing them with `ChannelTermsAction`
 ## [v0.5.0] - 2021-05-08
 
 [Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.4.1...v0.5.0)
