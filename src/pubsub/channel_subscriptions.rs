@@ -191,6 +191,42 @@ pub struct ResubGift {
     pub display_name: types::DisplayName,
 }
 
+/// User extends a (gifted) sub
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct ExtendSub {
+    /// Unknown
+    pub benefit_end_month: Option<i64>,
+    /// ID of the channel that has been subscribed or subgifted
+    pub channel_id: types::UserId,
+    /// Name of the channel that has been subscribed or subgifted
+    pub channel_name: types::UserName,
+    /// Cumulative months that user has been subscribed
+    pub cumulative_months: i64,
+    #[doc(hidden)]
+    pub is_gift: bool,
+    /// Months
+    pub months: i64,
+    // FIXME: should be a enum
+    /// Duration of subscription, e.g 1, 3 or 6
+    pub multi_month_duration: Option<i64>,
+    /// Message sent with this subscription
+    pub sub_message: SubMessage,
+    /// Subscription plan
+    pub sub_plan: types::SubscriptionTier,
+    /// Name of subscription plan
+    pub sub_plan_name: String,
+    /// Time when pubsub message was sent
+    pub time: types::Timestamp,
+    /// ID of user that purchased gifted subscription
+    pub user_id: types::UserId,
+    /// Username of user that purchased gifted subscription
+    pub user_name: types::UserName,
+    /// Display name of user that purchased gifted subscription
+    pub display_name: types::DisplayName,
+}
+
 // FIXME: Missing anonsubgift and anonresubgift
 // Should probably share fields.
 /// Reply from [ChannelSubscribeEventsV1]
@@ -211,6 +247,11 @@ pub enum ChannelSubscribeEventsV1Reply {
     /// Gifted resubscription with optional message
     #[serde(rename = "resubgift")]
     ResubGift(ResubGift),
+    /// User extends sub through the month.
+    ///
+    /// `User Extended their Tier 1 subscription through June!`
+    #[serde(rename = "extendsub")]
+    ExtendSub(ExtendSub),
 }
 
 /// Described where in a message an emote is
@@ -477,6 +518,44 @@ mod tests {
     "cumulative_months": 24,
     "context": "resubgift",
     "is_gift": true,
+    "multi_month_duration": 0
+}
+"##;
+
+        let source = format!(
+            r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-subscribe-events-v1.27620241", "message": {:?} }}}}"#,
+            message
+        );
+        let actual = dbg!(Response::parse(&source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChannelSubscribeEventsV1 { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn extendsub() {
+        let message = r##"
+{
+    "benefit_end_month": 6,
+    "user_name": "user",
+    "display_name": "User!",
+    "channel_name": "twitch",
+    "user_id": "1234",
+    "channel_id": "123",
+    "time": "2021-05-14T20:54:06.805273338Z",
+    "sub_message": {
+        "message": "",
+        "emotes": null
+    },
+    "sub_plan": "1000",
+    "sub_plan_name": "Channel Subscription (twitch)",
+    "months": 0,
+    "cumulative_months": 5,
+    "context": "extendsub",
+    "is_gift": false,
     "multi_month_duration": 0
 }
 "##;
