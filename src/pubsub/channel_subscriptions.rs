@@ -249,7 +249,7 @@ pub enum ChannelSubscribeEventsV1Reply {
     ResubGift(ResubGift),
     /// User extends sub through the month.
     ///
-    /// `User Extended their Tier 1 subscription through June!`
+    /// Message emited in web chat is something like: `User Extended their Tier 1 subscription through June!`
     #[serde(rename = "extendsub")]
     ExtendSub(ExtendSub),
 }
