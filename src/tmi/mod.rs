@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 /// # async fn main() -> Result<(), Box<dyn Error>> {
 /// let client = TmiClient::new();
 /// # let _: &TmiClient<twitch_api2::DummyHttpClient> = &client;
-/// println!("{:?}", client.get_chatters("justinfan10").await?);
+/// println!("{:?}", client.get_chatters("justinfan10".into()).await?);
 /// # Ok(())
 /// # }
 /// ```
@@ -66,13 +66,13 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
     /// This function will aside from url sanitize the broadcasters username, will also remove any `#` and make it lowercase ascii
     pub async fn get_chatters(
         &'a self,
-        broadcaster: &str,
+        broadcaster: &types::UserNameRef,
     ) -> Result<GetChatters, RequestError<<C as crate::HttpClient<'a>>::Error>> {
         let url = format!(
             "{}{}{}{}",
             crate::TWITCH_TMI_URL,
             "group/user/",
-            broadcaster.replace('#', "").to_ascii_lowercase(),
+            broadcaster.as_str().replace('#', "").to_ascii_lowercase(),
             "/chatters"
         );
         let req = http::Request::builder()

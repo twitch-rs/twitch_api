@@ -10,7 +10,7 @@
 //! ```rust, no_run
 //! use twitch_api2::helix::games::get_games;
 //! let request = get_games::GetGamesRequest::builder()
-//!     .id(vec!["4321".to_string()])
+//!     .id(vec!["4321".into()])
 //!     .build();
 //! ```
 //!
@@ -27,7 +27,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let request = get_games::GetGamesRequest::builder()
-//!     .id(vec!["4321".to_string()])
+//!     .id(vec!["4321".into()])
 //!     .build();
 //! let response: Vec<get_games::Game> = client.req_get(request, &token).await?.data;
 //! # Ok(())
@@ -73,9 +73,7 @@ impl RequestGet for GetGamesRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetGamesRequest::builder()
-        .id(vec!["493057".to_string()])
-        .build();
+    let req = GetGamesRequest::builder().id(vec!["493057".into()]).build();
 
     // From twitch docs
     let data = br#"

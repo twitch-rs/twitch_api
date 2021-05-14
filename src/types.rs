@@ -4,64 +4,86 @@
 use serde::{Deserialize, Serialize};
 
 /// A user ID.
-pub type UserId = String;
+#[aliri_braid::braid(serde)]
+pub struct UserId;
 
 /// A reward ID.
-pub type RewardId = String;
+#[aliri_braid::braid(serde)]
+pub struct RewardId;
 
 /// A reward redemption ID.
-pub type RedemptionId = String;
+#[aliri_braid::braid(serde)]
+pub struct RedemptionId;
 
 /// A username, also specified as login. Should not be capitalized.
 pub type UserName = Nickname;
 
+/// A reference to a borrowed [`UserName`], also specified as login. Should not be capitalized.
+pub type UserNameRef = NicknameRef;
+
 /// A users display name
-pub type DisplayName = String;
+#[aliri_braid::braid(serde)]
+pub struct DisplayName;
 
 /// A nickname, not capitalized.
-pub type Nickname = String;
+#[aliri_braid::braid(serde)]
+pub struct Nickname;
 
 /// RFC3339 timestamp
-pub type Timestamp = String;
+#[aliri_braid::braid(serde)]
+pub struct Timestamp;
 
 /// A game or category ID
-pub type CategoryId = String;
+#[aliri_braid::braid(serde)]
+pub struct CategoryId;
 
 /// A tag ID
-pub type TagId = String;
+#[aliri_braid::braid(serde)]
+pub struct TagId;
 
 /// A video ID
-pub type VideoId = String;
+#[aliri_braid::braid(serde)]
+pub struct VideoId;
 
 /// An EventSub Subscription ID
-pub type EventSubId = String;
+#[aliri_braid::braid(serde)]
+pub struct EventSubId;
 
 /// A Team ID
-pub type TeamId = String;
+#[aliri_braid::braid(serde)]
+pub struct TeamId;
 
 /// A Stream ID
-pub type StreamId = String;
+#[aliri_braid::braid(serde)]
+pub struct StreamId;
 
 /// A message ID
-pub type MsgId = String;
+#[aliri_braid::braid(serde)]
+pub struct MsgId;
 
 /// A poll ID
-pub type PollId = String;
+#[aliri_braid::braid(serde)]
+pub struct PollId;
 
 /// A poll choice ID
-pub type PollChoiceId = String;
+#[aliri_braid::braid(serde)]
+pub struct PollChoiceId;
 
 /// A prediction ID
-pub type PredictionId = String;
+#[aliri_braid::braid(serde)]
+pub struct PredictionId;
 
 /// A prediction choice ID
-pub type PredictionOutcomeId = String;
+#[aliri_braid::braid(serde)]
+pub struct PredictionOutcomeId;
 
 /// A Badge set ID
-pub type BadgeSetId = String;
+#[aliri_braid::braid(serde)]
+pub struct BadgeSetId;
 
 /// A channel chat badge ID
-pub type ChatBadgeId = String;
+#[aliri_braid::braid(serde)]
+pub struct ChatBadgeId;
 
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]

@@ -16,7 +16,7 @@
 //!     .lease_seconds(864000)
 //!     .mode(hub::WebhookSubscriptionMode::Subscribe)
 //!     .secret("12233213890390".to_string())
-//!     .topic(topics::users::UserFollowsTopic::builder().from_id(1336.to_string()).build())
+//!     .topic(topics::users::UserFollowsTopic::builder().from_id(Some("1336".into())).build())
 //!     .build();
 //!
 //! client.req_post(req, body, &token).await?;

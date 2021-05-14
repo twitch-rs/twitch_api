@@ -10,7 +10,7 @@
 //! ```rust, no_run
 //! use twitch_api2::helix::videos::delete_videos;
 //! let request = delete_videos::DeleteVideosRequest::builder()
-//!     .id(vec!["1234".to_string()])
+//!     .id(vec!["1234".into()])
 //!     .build();
 //! ```
 //!
@@ -27,7 +27,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let request = delete_videos::DeleteVideosRequest::builder()
-//!     .id(vec!["1234".to_string()])
+//!     .id(vec!["1234".into()])
 //!     .build();
 //! let response: delete_videos::DeleteVideo = client.req_delete(request, &token).await?.data;
 //! # Ok(())
@@ -101,7 +101,7 @@ impl RequestDelete for DeleteVideosRequest {
 fn test_request() {
     use helix::*;
     let req = DeleteVideosRequest::builder()
-        .id(vec!["234482848".to_string()])
+        .id(vec!["234482848".into()])
         .build();
 
     // From twitch docs

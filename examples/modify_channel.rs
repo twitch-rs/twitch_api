@@ -38,7 +38,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     let client = HelixClient::with_client(surf::Client::new());
 
     let req = twitch_api2::helix::channels::ModifyChannelInformationRequest::builder()
-        .broadcaster_id(&broadcaster_id)
+        .broadcaster_id(&*broadcaster_id)
         .build();
 
     let data = twitch_api2::helix::channels::ModifyChannelInformationBody::builder()

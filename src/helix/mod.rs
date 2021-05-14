@@ -11,7 +11,7 @@
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //!
 //! let request = GetUsersRequest::builder()
-//!     .login(vec!["justintv123".to_string()])
+//!     .login(vec!["justintv123".into()])
 //!     .build();
 //!
 //! // Send it however you want

@@ -10,7 +10,7 @@
 //! ```rust, no_run
 //! use twitch_api2::helix::clips::get_clips;
 //! let request = get_clips::GetClipsRequest::builder()
-//!     .broadcaster_id("1234".to_string())
+//!     .broadcaster_id(Some("1234".into()))
 //!     .build();
 //! ```
 //!
@@ -27,7 +27,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let request = get_clips::GetClipsRequest::builder()
-//!     .broadcaster_id("1234".to_string())
+//!     .broadcaster_id(Some("1234".into()))
 //!     .build();
 //! let response: Vec<get_clips::Clip> = client.req_get(request, &token).await?.data;
 //! # Ok(())

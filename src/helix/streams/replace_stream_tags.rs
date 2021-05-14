@@ -22,8 +22,8 @@
 //! # use twitch_api2::helix::streams::replace_stream_tags;
 //! let body = replace_stream_tags::ReplaceStreamTagsBody::builder()
 //!     .tag_ids(vec![
-//!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".to_string(),
-//!         "79977fb9-f106-4a87-a386-f1b0f99783dd".to_string(),
+//!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
+//!         "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
 //!     ])
 //!     .build();
 //! ```
@@ -47,8 +47,8 @@
 //!     .build();
 //! let body = replace_stream_tags::ReplaceStreamTagsBody::builder()
 //!     .tag_ids(vec![
-//!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".to_string(),
-//!         "79977fb9-f106-4a87-a386-f1b0f99783dd".to_string(),
+//!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
+//!         "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
 //!     ])
 //!     .build();
 //! let response: replace_stream_tags::ReplaceStreamTags = client.req_put(request, body, &token).await?.data;
@@ -145,8 +145,8 @@ fn test_request() {
 
     let body = ReplaceStreamTagsBody::builder()
         .tag_ids(vec![
-            "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".to_string(),
-            "79977fb9-f106-4a87-a386-f1b0f99783dd".to_string(),
+            "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
+            "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
         ])
         .build();
 

@@ -8,7 +8,7 @@
 //! ```rust, no_run
 //! use twitch_api2::helix::users::get_users_follows;
 //! let request = get_users_follows::GetUsersFollowsRequest::builder()
-//!     .to_id("1234".to_string())
+//!     .to_id(Some("1234".into()))
 //!     .build();
 //! ```
 //!
@@ -25,7 +25,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let request = get_users_follows::GetUsersFollowsRequest::builder()
-//!     .to_id("1234".to_string())
+//!     .to_id(Some("1234".into()))
 //!     .build();
 //! let response: Vec<get_users_follows::FollowRelationship> = client.req_get(request, &token).await?.data.follow_relationships;
 //! # Ok(())
@@ -152,7 +152,7 @@ impl helix::Paginated for GetUsersFollowsRequest {
 fn test_request() {
     use helix::*;
     let req = GetUsersFollowsRequest::builder()
-        .to_id("23161357".to_string())
+        .to_id(Some("23161357".into()))
         .build();
 
     // From twitch docs

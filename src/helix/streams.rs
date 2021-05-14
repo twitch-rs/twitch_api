@@ -12,7 +12,7 @@
 //! let client = HelixClient::new();
 //! # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
 //! let req = GetStreamsRequest::builder()
-//!     .user_login(vec!["justinfan1337".to_string()])
+//!     .user_login(vec!["justinfan1337".into()])
 //!     .build();
 //!
 //! // If this doesn't return a result, that would mean the stream is not live.

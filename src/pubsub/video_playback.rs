@@ -315,7 +315,7 @@ mod tests {
         let s = "video-playback.tmi";
         assert_eq!(
             VideoPlayback {
-                channel_login: "tmi".to_string()
+                channel_login: "tmi".into()
             },
             s.to_string().try_into().unwrap()
         );
@@ -330,7 +330,7 @@ mod tests {
     fn check_ser() {
         let s = "video-playback.tmi";
         let right: String = VideoPlayback {
-            channel_login: "tmi".to_string(),
+            channel_login: "tmi".into(),
         }
         .into();
         assert_eq!(s.to_string(), right);

@@ -8,7 +8,7 @@
 //! ```rust, no_run
 //! use twitch_api2::helix::predictions::get_predictions;
 //! let request = get_predictions::GetPredictionsRequest::builder()
-//!     .id(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".to_string()])
+//!     .id(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()])
 //!     .broadcaster_id("1234")
 //!     .build();
 //! ```
@@ -26,7 +26,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let request = get_predictions::GetPredictionsRequest::builder()
-//!     .id(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".to_string()])
+//!     .id(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()])
 //!     .broadcaster_id("1234")
 //!     .build();
 //! let response: Vec<get_predictions::Prediction> = client.req_get(request, &token).await?.data;
@@ -117,7 +117,7 @@ fn test_request() {
     use helix::*;
     let req = GetPredictionsRequest::builder()
         .broadcaster_id("55696719")
-        .id(vec!["d6676d5c-c86e-44d2-bfc4-100fb48f0656".to_string()])
+        .id(vec!["d6676d5c-c86e-44d2-bfc4-100fb48f0656".into()])
         .build();
 
     // From twitch docs

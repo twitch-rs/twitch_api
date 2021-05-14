@@ -82,7 +82,7 @@ impl RequestGet for GetTeamsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetTeamsRequest::builder().id("6358".to_string()).build();
+    let req = GetTeamsRequest::builder().id(Some("6358".into())).build();
 
     // From twitch docs
     let data = br#"

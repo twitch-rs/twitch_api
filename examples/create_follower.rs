@@ -42,7 +42,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         let user_id = match client
             .req_get(
                 twitch_api2::helix::users::GetUsersRequest::builder()
-                    .login(vec![user.to_string()])
+                    .login(vec![user.into()])
                     .build(),
                 &token,
             )
