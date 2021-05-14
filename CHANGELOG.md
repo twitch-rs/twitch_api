@@ -9,7 +9,8 @@
 ### Added
 
 * Added Helix endpoint `Manage Held AutoMod Messages`
-* Added Channel Terms to pubsub
+* Added Channel Terms to pubsub `chat_moderator_actions`
+* Added `extendsub` to pubsub `channel-subscribe-events-v1`
 
 ### Changed
 
