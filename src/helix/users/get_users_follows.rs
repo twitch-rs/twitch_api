@@ -51,10 +51,10 @@ pub struct GetUsersFollowsRequest {
     pub first: Option<usize>,
     /// User ID. The request returns information about users who are being followed by the from_id user.
     #[builder(default, setter(into))]
-    pub from_id: Option<String>,
+    pub from_id: Option<types::UserId>,
     /// User ID. The request returns information about users who are following the to_id user.
     #[builder(default, setter(into))]
-    pub to_id: Option<String>,
+    pub to_id: Option<types::UserId>,
 }
 
 /// Return Values for [Get Users Follows](super::get_users_follows)

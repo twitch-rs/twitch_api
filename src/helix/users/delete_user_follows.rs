@@ -51,10 +51,10 @@ use helix::RequestDelete;
 #[non_exhaustive]
 pub struct DeleteUserFollowsRequest {
     /// User ID of the follower
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub from_id: types::UserId,
     /// Channel to be unfollowed by the user
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub to_id: types::UserId,
 }
 /// Return Values for [Delete Users Follows](super::delete_user_follows)

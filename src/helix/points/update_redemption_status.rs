@@ -71,15 +71,15 @@ use helix::RequestPatch;
 #[non_exhaustive]
 pub struct UpdateRedemptionStatusRequest {
     /// Provided broadcaster_id must match the user_id in the auth token.
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
 
     /// ID of the Custom Reward the redemptions to be updated are for.
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub reward_id: types::RewardId,
 
     /// ID of the Custom Reward Redemption to update, must match a Custom Reward Redemption on broadcaster_id’s channel
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub id: types::RedemptionId,
 }
 
