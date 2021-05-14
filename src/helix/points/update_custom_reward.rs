@@ -66,7 +66,7 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Custom Rewards](super::update_custom_reward)
 ///
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UpdateCustomRewardRequest {
     /// Provided broadcaster_id must match the user_id in the auth token

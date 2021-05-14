@@ -45,7 +45,7 @@ use helix::RequestGet;
 #[non_exhaustive]
 pub struct GetChannelTeamsRequest {
     /// Team ID.
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
 }
 

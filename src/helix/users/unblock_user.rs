@@ -46,7 +46,7 @@ use helix::RequestDelete;
 #[non_exhaustive]
 pub struct UnblockUserRequest {
     /// User ID of the follower
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub target_user_id: types::UserId,
 }
 

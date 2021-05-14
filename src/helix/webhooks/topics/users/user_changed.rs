@@ -18,7 +18,7 @@ impl Topic for UserChangedTopic {
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 pub struct UserChangedTopic {
     /// Specifies the user whose data is monitored.
-    #[builder(setter(into), default)]
+    #[builder(setter(into))]
     pub id: types::UserId,
 }
 

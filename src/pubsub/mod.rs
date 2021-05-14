@@ -569,7 +569,7 @@ where
 fn deserialize_none_from_empty_string<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
 where
     D: serde::de::Deserializer<'de>,
-    T: serde::de::DeserializeOwned + Default, {
+    T: serde::de::DeserializeOwned, {
     let val = serde_json::Value::deserialize(deserializer)?;
     match val {
         serde_json::Value::String(string) if string.is_empty() => Ok(None),

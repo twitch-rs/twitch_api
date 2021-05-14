@@ -14,6 +14,7 @@
 ### Changed
 
 * Deprecated specific term actions in `ChatModeratorActionsReply`, replacing them with `ChannelTermsAction`
+* Removed some derived impls and fixed builders that assumed a default wrongly.
 ## [v0.5.0] - 2021-05-08
 
 [Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.4.1...v0.5.0)

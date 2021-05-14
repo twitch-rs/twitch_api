@@ -58,7 +58,7 @@ pub struct GetCustomRewardRedemptionRequest {
     pub broadcaster_id: types::UserId,
 
     /// When ID is not provided, this parameter returns paginated Custom Reward Redemption objects for redemptions of the Custom Reward with ID reward_id
-    #[builder(default, setter(into))]
+    #[builder(setter(into))]
     pub reward_id: types::RewardId,
 
     /// When id is not provided, this param is required and filters the paginated Custom Reward Redemption objects for redemptions with the matching status. Can be one of UNFULFILLED, FULFILLED or CANCELED
