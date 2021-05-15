@@ -36,8 +36,6 @@ pub struct ChannelPredictionEndV1Payload {
     pub ended_at: types::Timestamp,
     /// Channel Points Prediction ID.
     pub id: types::PredictionId,
-    /// The time the Channel Points Prediction locked.
-    pub locked_at: types::Timestamp,
     /// An array of outcomes for the Channel Points Prediction. Includes top_predictors.
     pub outcomes: Vec<types::PredictionOutcome>,
     /// The time the Channel Points Prediction started.
@@ -128,7 +126,6 @@ fn parse_payload() {
             ],
             "status": "resolved",
             "started_at": "2020-07-15T17:16:03.17106713Z",
-            "locked_at": "2020-07-15T17:16:11.17106713Z",
             "ended_at": "2020-07-15T17:16:11.17106713Z"
         }
     }
