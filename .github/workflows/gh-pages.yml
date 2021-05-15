@@ -18,12 +18,18 @@ jobs:
           profile: minimal
           toolchain: nightly
           override: true
+      - name: Ready cache
+        run: sudo chown -R $(whoami):$(id -ng) ~/.cargo/
       - name: Cache cargo
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         id: cache
         with:
-          path: ~/.cargo
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-nightly-ghpages-cargo-target-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-nightly-cargo-target-${{ hashFiles('**/Cargo.lock') }}
       - name: mention 40 character commit rev in doc
         run: sed -i "s/{{commit}}/$(git rev-parse HEAD)/g" docs/pre-content.html
       - name: mention short commit rev in doc
