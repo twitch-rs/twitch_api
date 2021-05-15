@@ -74,6 +74,8 @@ pub struct ChannelInformation {
     /// Description of the stream
     #[serde(default)]
     pub description: String,
+    /// Stream delay in seconds
+    pub delay: i64,
 }
 
 impl Request for GetChannelInformationRequest {
@@ -128,7 +130,8 @@ fn test_request() {
               "broadcaster_language": "en",
               "game_id": "21779",
               "game_name": "League of Legends",
-              "title": "title"
+              "title": "title",
+              "delay": 0
             }
           ]
         }

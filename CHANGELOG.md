@@ -11,6 +11,7 @@
 * Added Helix endpoint `Manage Held AutoMod Messages`
 * Added Channel Terms to pubsub `chat_moderator_actions`
 * Added `extendsub` to pubsub `channel-subscribe-events-v1`
+* Added `delay` to `Get Channel Information`
 
 ### Changed
 
