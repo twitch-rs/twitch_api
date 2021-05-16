@@ -575,7 +575,6 @@ where
     let val = serde_json::Value::deserialize(deserializer)?;
     match val {
         serde_json::Value::String(string) if string.is_empty() => Ok(None),
-        // FIXME: Doesn't use serde_path_to_error
         other => Ok(parse_json_value(other).map_err(serde::de::Error::custom)?),
     }
 }
