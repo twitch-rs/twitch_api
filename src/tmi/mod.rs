@@ -1,6 +1,6 @@
 #![doc(alias = "TMI")]
 //! TMI Endpoint, twitch's unsupported api for better chatters retrieval
-use crate::{types, parse_json};
+use crate::{parse_json, types};
 use serde::{Deserialize, Serialize};
 /// Client for the twitch TMI endpoint, almost entirely undocumented and certainly not supported.
 ///

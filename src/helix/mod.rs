@@ -55,7 +55,7 @@ pub mod videos;
 pub mod webhooks;
 
 pub(crate) mod ser;
-use crate::parse_json;
+use crate::{parse_json, parse_json_value};
 pub use ser::Error as SerializeError;
 
 #[doc(no_inline)]
@@ -284,7 +284,7 @@ where C: crate::HttpClient<'a> + Default
     fn default() -> HelixClient<'a, C> { HelixClient::new() }
 }
 
-/// Deserialize empty string "" as None
+/// Deserialize "" as <T as Default>::Default
 fn deserialize_none_from_empty_string<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
 where
     D: serde::de::Deserializer<'de>,
@@ -293,7 +293,7 @@ where
     match val {
         serde_json::Value::String(string) if string.is_empty() => Ok(None),
         // FIXME: Doesn't use serde_path_to_error
-        other => Ok(serde_json::from_value(other).map_err(serde::de::Error::custom)?),
+        other => Ok(parse_json_value(other).map_err(serde::de::Error::custom)?),
     }
 }
 

@@ -219,6 +219,15 @@ pub fn parse_json<'a, T: serde::Deserialize<'a>>(
     serde_path_to_error::deserialize(de)
 }
 
+/// Parse a json Value as `T`, logging ignored fields and giving a more detailed error message on parse errors
+#[cfg(all(feature = "serde_json", feature = "serde_path_to_error"))]
+pub fn parse_json_value<'a, T: serde::Deserialize<'a>>(
+    value: serde_json::Value,
+) -> Result<T, serde_path_to_error::Error<serde_json::Error>> {
+    let de = serde::de::IntoDeserializer::into_deserializer(value);
+    serde_path_to_error::deserialize(de)
+}
+
 #[cfg(test)]
 pub mod tests {
     #[track_caller]

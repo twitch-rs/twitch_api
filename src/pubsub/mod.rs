@@ -108,7 +108,7 @@ pub mod raid;
 #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod video_playback;
 
-use crate::parse_json;
+use crate::{parse_json, parse_json_value};
 
 /// A logical partition of messages that clients may subscribe to, to get messages.
 ///
@@ -576,7 +576,7 @@ where
     match val {
         serde_json::Value::String(string) if string.is_empty() => Ok(None),
         // FIXME: Doesn't use serde_path_to_error
-        other => Ok(serde_json::from_value(other).map_err(serde::de::Error::custom)?),
+        other => Ok(parse_json_value(other).map_err(serde::de::Error::custom)?),
     }
 }
 
