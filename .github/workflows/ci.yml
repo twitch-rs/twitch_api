@@ -111,6 +111,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --all-targets --no-default-features --features "pubsub" -- -D warnings
+      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields" -- -D warnings
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields" -- -D warnings
       - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}" -- -D warnings
         uses: actions-rs/clippy-check@v1
         with:

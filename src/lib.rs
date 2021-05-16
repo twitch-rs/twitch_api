@@ -86,7 +86,8 @@
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>hmac</code></span> | Enable [message authentication](eventsub::Payload::verify_payload) using HMAC on [EventSub](eventsub) |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>all</code></span> | Enables all above features. Including reqwest and surf. Do not use this in production, it's better if you specify exactly what you need |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>unsupported</code></span> | Enables undocumented or experimental endpoints or topics. Breakage may occur |
-//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>deny_unknown_fields</code></span> | Adds `#[serde(deny_unknown_fields)]` on all applicable structs/enums. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this  library. |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>trace_unknown_fields</code></span> | Logs ignored fields as `WARN` log messages where  applicable. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>deny_unknown_fields</code></span> | Adds `#[serde(deny_unknown_fields)]` on all applicable structs/enums. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
 //!
 
 #[doc(include = "../README.md")]
@@ -210,22 +211,92 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
     }
 }
 
+/// A deserialization error
+#[cfg(feature = "serde_json")]
+#[derive(Debug, thiserror::Error, displaydoc::Display)]
+pub enum DeserError {
+    /// could not deserialize, error on [{path}]
+    PathError {
+        /// Path to where the erroring key/value is
+        path: String,
+        /// Error for the key/value
+        #[source]
+        error: serde_json::Error,
+    },
+}
+
 /// Parse a string as `T`, logging ignored fields and giving a more detailed error message on parse errors
+///
+/// The log_ignored argument decides if a trace of ignored value should be emitted
 #[cfg(all(feature = "serde_json", feature = "serde_path_to_error"))]
 pub fn parse_json<'a, T: serde::Deserialize<'a>>(
     s: &'a str,
-) -> Result<T, serde_path_to_error::Error<serde_json::Error>> {
-    let de = &mut serde_json::Deserializer::from_str(s);
-    serde_path_to_error::deserialize(de)
+    #[allow(unused_variables)] log_ignored: bool,
+) -> Result<T, DeserError> {
+    #[cfg(feature = "trace_unknown_fields")]
+    {
+        let jd = &mut serde_json::Deserializer::from_str(s);
+        let mut track = serde_path_to_error::Track::new();
+        let pathd = serde_path_to_error::Deserializer::new(jd, &mut track);
+        if log_ignored {
+            let mut fun = |path: serde_ignored::Path| {
+                tracing::warn!(key=%path,"Found ignored key");
+            };
+            serde_ignored::deserialize(pathd, &mut fun).map_err(|e| DeserError::PathError {
+                path: track.path().to_string(),
+                error: e,
+            })
+        } else {
+            T::deserialize(pathd).map_err(|e| DeserError::PathError {
+                path: track.path().to_string(),
+                error: e,
+            })
+        }
+    }
+    #[cfg(not(feature = "trace_unknown_fields"))]
+    {
+        let jd = &mut serde_json::Deserializer::from_str(s);
+        serde_path_to_error::deserialize(jd).map_err(|e| DeserError::PathError {
+            path: e.path().to_string(),
+            error: e.into_inner(),
+        })
+    }
 }
 
 /// Parse a json Value as `T`, logging ignored fields and giving a more detailed error message on parse errors
 #[cfg(all(feature = "serde_json", feature = "serde_path_to_error"))]
 pub fn parse_json_value<'a, T: serde::Deserialize<'a>>(
     value: serde_json::Value,
-) -> Result<T, serde_path_to_error::Error<serde_json::Error>> {
-    let de = serde::de::IntoDeserializer::into_deserializer(value);
-    serde_path_to_error::deserialize(de)
+    #[allow(unused_variables)] log_ignored: bool,
+) -> Result<T, DeserError> {
+    #[cfg(feature = "trace_unknown_fields")]
+    {
+        let de = serde::de::IntoDeserializer::into_deserializer(value);
+        let mut track = serde_path_to_error::Track::new();
+        let pathd = serde_path_to_error::Deserializer::new(de, &mut track);
+        if log_ignored {
+            let mut fun = |path: serde_ignored::Path| {
+                tracing::warn!(key=%path,"Found ignored key");
+            };
+            serde_ignored::deserialize(pathd, &mut fun).map_err(|e| DeserError::PathError {
+                path: track.path().to_string(),
+                error: e,
+            })
+        } else {
+            T::deserialize(pathd).map_err(|e| DeserError::PathError {
+                path: track.path().to_string(),
+                error: e,
+            })
+        }
+    }
+    #[cfg(not(feature = "trace_unknown_fields"))]
+    {
+        let de = serde::de::IntoDeserializer::into_deserializer(value);
+        serde_path_to_error::deserialize(de).map_err(|e| DeserError::PathError {
+            path: e.path().to_string(),
+            error: e.into_inner(),
+        })
+    }
 }
 
 #[cfg(test)]

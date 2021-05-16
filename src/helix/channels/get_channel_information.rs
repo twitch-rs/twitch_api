@@ -96,15 +96,15 @@ impl RequestGet for GetChannelInformationRequest {
     where
         Self: Sized,
     {
-        let response: helix::InnerResponse<Vec<ChannelInformation>> = helix::parse_json(response)
-            .map_err(|e| {
-            helix::HelixRequestGetError::DeserializeError(
-                response.to_string(),
-                e,
-                uri.clone(),
-                status,
-            )
-        })?;
+        let response: helix::InnerResponse<Vec<ChannelInformation>> =
+            helix::parse_json(response, true).map_err(|e| {
+                helix::HelixRequestGetError::DeserializeError(
+                    response.to_string(),
+                    e,
+                    uri.clone(),
+                    status,
+                )
+            })?;
         Ok(helix::Response {
             data: response.data.into_iter().next(),
             pagination: response.pagination.cursor,

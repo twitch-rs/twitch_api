@@ -1,6 +1,6 @@
 #![doc(alias = "TMI")]
 //! TMI Endpoint, twitch's unsupported api for better chatters retrieval
-use crate::{parse_json, types};
+use crate::types;
 use serde::{Deserialize, Serialize};
 /// Client for the twitch TMI endpoint, almost entirely undocumented and certainly not supported.
 ///
@@ -85,7 +85,7 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
             .map_err(|e| RequestError::RequestError(Box::new(e)))?;
         let text = std::str::from_utf8(&req.body())
             .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
-        parse_json(text).map_err(Into::into)
+        crate::parse_json(text, true).map_err(Into::into)
     }
 
     /// Get the broadcaster that a given channel is hosting, or
@@ -124,7 +124,7 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
             .map_err(|e| RequestError::RequestError(Box::new(e)))?;
         let text = std::str::from_utf8(&req.body())
             .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
-        parse_json(text).map_err(Into::into)
+        crate::parse_json(text, true).map_err(Into::into)
     }
 }
 
@@ -206,7 +206,7 @@ pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// http crate returned an error
     HttpError(#[from] http::Error),
     /// deserialization failed
-    DeserializeError(#[from] serde_path_to_error::Error<serde_json::Error>),
+    DeserializeError(#[from] crate::DeserError),
     /// request failed
     RequestError(#[from] Box<RE>),
     /// could not parse body as utf8: {1}
