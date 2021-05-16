@@ -47,7 +47,7 @@ helix = [
     "typed-builder",
 ]
 
-tmi = ["serde_json"]
+tmi = ["serde_json", "serde_path_to_error"]
 
 surf_client = [
     "surf",
