@@ -20,11 +20,6 @@ jobs:
           toolchain: nightly
           override: true
           components: llvm-tools-preview
-      - name: Cache cargo binaries
-        uses: actions/cache@v1
-        with:
-          path: ~/.cargo/bin
-          key: ${{ runner.os }}-nightly-cargo-bin-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache cargo
         uses: actions/cache@v2
         id: cache
@@ -35,17 +30,18 @@ jobs:
             target
           key: ${{ runner.os }}-nightly-cargo-target-cov-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-nightly-cargo-target-${{ hashFiles('**/Cargo.lock') }}
-      - name: Install grcov
-        run: if [[ ! -e ~/.cargo/bin/grcov ]]; then cargo install grcov; fi
-      - name: Run tests
-        run: cargo test --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields"
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --no-fail-fast --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields"
         env:
-          RUSTFLAGS: '-Z instrument-coverage'
-          RUSTDOCFLAGS: '-Z instrument-coverage -Z unstable-options --persist-doctests target/debug/deps/doctestbins'
-      - name: Run grcov
-        run: grcov . --binary-path target/debug/deps/ -s . -t lcov --branch --ignore-not-existing --ignore '../**' --ignore '/*' -o coverage.lcov
+          CARGO_INCREMENTAL: '0'
+          RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
+          RUSTDOCFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
+      - id: coverage  
+        uses: actions-rs/grcov@v0.1
       - name: Coveralls upload
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./coverage.lcov
+          path-to-lcov: ${{ steps.coverage.outputs.report }}
