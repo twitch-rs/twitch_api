@@ -55,6 +55,7 @@ pub mod videos;
 pub mod webhooks;
 
 pub(crate) mod ser;
+use crate::parse_json;
 pub use ser::Error as SerializeError;
 
 #[doc(no_inline)]
@@ -301,13 +302,6 @@ where
     D: serde::Deserializer<'de>,
     T: Deserialize<'de> + Default, {
     Ok(Option::deserialize(deserializer)?.unwrap_or_default())
-}
-
-fn parse_json<'a, T: serde::Deserialize<'a>>(
-    s: &'a str,
-) -> Result<T, serde_path_to_error::Error<serde_json::Error>> {
-    let de = &mut serde_json::Deserializer::from_str(s);
-    serde_path_to_error::deserialize(de)
 }
 
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference

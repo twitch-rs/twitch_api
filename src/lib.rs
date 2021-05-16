@@ -210,6 +210,15 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
     }
 }
 
+/// Parse a string as `T`, logging ignored fields and giving a more detailed error message on parse errors
+#[cfg(all(feature = "serde_json", feature = "serde_path_to_error"))]
+pub fn parse_json<'a, T: serde::Deserialize<'a>>(
+    s: &'a str,
+) -> Result<T, serde_path_to_error::Error<serde_json::Error>> {
+    let de = &mut serde_json::Deserializer::from_str(s);
+    serde_path_to_error::deserialize(de)
+}
+
 #[cfg(test)]
 pub mod tests {
     #[track_caller]
