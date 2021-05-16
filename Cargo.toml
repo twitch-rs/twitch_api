@@ -61,7 +61,7 @@ reqwest_client = ["reqwest", "client", "twitch_oauth2/reqwest_client"]
 
 pubsub = ["serde_json", "serde_path_to_error"]
 
-eventsub = ["serde_json"]
+eventsub = ["serde_json", "serde_path_to_error"]
 
 hmac = ["crypto_hmac", "sha2"]
 
