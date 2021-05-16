@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
       - staging
       - trying
 
@@ -40,7 +38,7 @@ jobs:
       - name: Install grcov
         run: if [[ ! -e ~/.cargo/bin/grcov ]]; then cargo install grcov; fi
       - name: Run tests
-        run: cargo test --features {{ CI_TWITCH_API2_FEATURES }}
+        run: cargo test --features ${{ CI_TWITCH_API2_FEATURES }}
         env:
           RUSTFLAGS: '-Z instrument-coverage'
           RUSTDOCFLAGS: '-Z instrument-coverage -Z unstable-options --persist-doctests target/debug/deps/doctestbins'
