@@ -55,6 +55,7 @@ pub mod videos;
 pub mod webhooks;
 
 pub(crate) mod ser;
+use crate::{parse_json, parse_json_value};
 pub use ser::Error as SerializeError;
 
 #[doc(no_inline)]
@@ -283,7 +284,7 @@ where C: crate::HttpClient<'a> + Default
     fn default() -> HelixClient<'a, C> { HelixClient::new() }
 }
 
-/// Deserialize empty string "" as None
+/// Deserialize "" as <T as Default>::Default
 fn deserialize_none_from_empty_string<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
 where
     D: serde::de::Deserializer<'de>,
@@ -291,7 +292,7 @@ where
     let val = serde_json::Value::deserialize(deserializer)?;
     match val {
         serde_json::Value::String(string) if string.is_empty() => Ok(None),
-        other => Ok(serde_json::from_value(other).map_err(serde::de::Error::custom)?),
+        other => Ok(parse_json_value(other, true).map_err(serde::de::Error::custom)?),
     }
 }
 
@@ -301,13 +302,6 @@ where
     D: serde::Deserializer<'de>,
     T: Deserialize<'de> + Default, {
     Ok(Option::deserialize(deserializer)?.unwrap_or_default())
-}
-
-fn parse_json<'a, T: serde::Deserialize<'a>>(
-    s: &'a str,
-) -> Result<T, serde_path_to_error::Error<serde_json::Error>> {
-    let de = &mut serde_json::Deserializer::from_str(s);
-    serde_path_to_error::deserialize(de)
 }
 
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
@@ -399,7 +393,7 @@ pub trait RequestPost: Request {
             error,
             status,
             message,
-        }) = parse_json::<HelixRequestError>(&text)
+        }) = parse_json::<HelixRequestError>(&text, false)
         {
             return Err(HelixRequestPostError::Error {
                 error,
@@ -422,8 +416,8 @@ pub trait RequestPost: Request {
     where
         Self: Sized,
     {
-        let response: InnerResponse<<Self as Request>::Response> =
-            parse_json(&response).map_err(|e| {
+        let response: InnerResponse<<Self as Request>::Response> = parse_json(&response, true)
+            .map_err(|e| {
                 HelixRequestPostError::DeserializeError(
                     response.to_string(),
                     e,
@@ -492,7 +486,7 @@ pub trait RequestPatch: Request {
             error,
             status,
             message,
-        }) = parse_json::<HelixRequestError>(&text)
+        }) = parse_json::<HelixRequestError>(&text, false)
         {
             return Err(HelixRequestPatchError::Error {
                 error,
@@ -560,7 +554,7 @@ pub trait RequestDelete: Request {
             error,
             status,
             message,
-        }) = parse_json::<HelixRequestError>(&text)
+        }) = parse_json::<HelixRequestError>(&text, false)
         {
             return Err(HelixRequestDeleteError::Error {
                 error,
@@ -633,7 +627,7 @@ where <Self as Request>::Response:
             error,
             status,
             message,
-        }) = parse_json::<HelixRequestError>(&text)
+        }) = parse_json::<HelixRequestError>(&text, false)
         {
             return Err(HelixRequestPutError::Error {
                 error,
@@ -703,7 +697,7 @@ pub trait RequestGet: Request {
             error,
             status,
             message,
-        }) = parse_json::<HelixRequestError>(&text)
+        }) = parse_json::<HelixRequestError>(&text, false)
         {
             return Err(HelixRequestGetError::Error {
                 error,
@@ -725,7 +719,7 @@ pub trait RequestGet: Request {
     where
         Self: Sized,
     {
-        let response: InnerResponse<_> = parse_json(response).map_err(|e| {
+        let response: InnerResponse<_> = parse_json(response, true).map_err(|e| {
             HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone(), status)
         })?;
         Ok(Response {
@@ -886,7 +880,7 @@ pub enum HelixRequestGetError {
     /// deserialization failed when processing request response calling `GET {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
-        #[source] serde_path_to_error::Error<serde_json::Error>,
+        #[source] crate::DeserError,
         http::Uri,
         http::StatusCode,
     ),
@@ -927,7 +921,7 @@ pub enum HelixRequestPutError {
     /// deserialization failed when processing request response calling `PUT {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
-        #[source] serde_path_to_error::Error<serde_json::Error>,
+        #[source] crate::DeserError,
         http::Uri,
         http::StatusCode,
     ),
@@ -954,7 +948,7 @@ pub enum HelixRequestPostError {
     /// deserialization failed when processing request response calling `POST {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
-        #[source] serde_path_to_error::Error<serde_json::Error>,
+        #[source] crate::DeserError,
         http::Uri,
         http::StatusCode,
     ),
@@ -992,7 +986,7 @@ pub enum HelixRequestPatchError {
     /// deserialization failed when processing request response calling `POST {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
-        #[source] serde_path_to_error::Error<serde_json::Error>,
+        #[source] crate::DeserError,
         http::Uri,
         http::StatusCode,
     ),

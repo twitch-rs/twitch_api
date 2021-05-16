@@ -108,6 +108,8 @@ pub mod raid;
 #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod video_playback;
 
+use crate::{parse_json, parse_json_value};
+
 /// A logical partition of messages that clients may subscribe to, to get messages.
 ///
 /// also known as event
@@ -461,67 +463,67 @@ impl<'de> Deserialize<'de> for TopicData {
             #[cfg(feature = "unsupported")]
             Topics::CommunityPointsChannelV1(topic) => TopicData::CommunityPointsChannelV1 {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             Topics::ChannelBitsEventsV2(topic) => TopicData::ChannelBitsEventsV2 {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             Topics::ChannelBitsBadgeUnlocks(topic) => TopicData::ChannelBitsBadgeUnlocks {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
             Topics::ChannelSubGiftsV1(topic) => TopicData::ChannelSubGiftsV1 {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
             Topics::ChannelCheerEventsPublicV1(topic) => TopicData::ChannelCheerEventsPublicV1 {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             Topics::ChatModeratorActions(topic) => TopicData::ChatModeratorActions {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             Topics::ChannelPointsChannelV1(topic) => TopicData::ChannelPointsChannelV1 {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             Topics::ChannelSubscribeEventsV1(topic) => TopicData::ChannelSubscribeEventsV1 {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
             Topics::VideoPlayback(topic) => TopicData::VideoPlayback {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
             Topics::VideoPlaybackById(topic) => TopicData::VideoPlaybackById {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
             Topics::HypeTrainEventsV1(topic) => TopicData::HypeTrainEventsV1 {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
             Topics::HypeTrainEventsV1Rewards(topic) => TopicData::HypeTrainEventsV1Rewards {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
             Topics::Following(topic) => TopicData::Following {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
             #[cfg(feature = "unsupported")]
             Topics::Raid(topic) => TopicData::Raid {
                 topic,
-                reply: serde_json::from_str(&reply.message).map_err(serde::de::Error::custom)?,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
             },
         })
     }
@@ -552,9 +554,7 @@ pub enum Response {
 impl Response {
     // FIXME: Add example
     /// Parse string slice as a response.
-    pub fn parse(source: &str) -> Result<Response, serde_json::Error> {
-        serde_json::from_str(source)
-    }
+    pub fn parse(source: &str) -> Result<Response, crate::DeserError> { parse_json(source, true) }
 }
 
 /// Deserialize 'null' as <T as Default>::Default
@@ -573,7 +573,7 @@ where
     let val = serde_json::Value::deserialize(deserializer)?;
     match val {
         serde_json::Value::String(string) if string.is_empty() => Ok(None),
-        other => Ok(serde_json::from_value(other).map_err(serde::de::Error::custom)?),
+        other => Ok(parse_json_value(other, true).map_err(serde::de::Error::custom)?),
     }
 }
 

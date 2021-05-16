@@ -136,8 +136,8 @@ impl RequestPatch for UpdateRedemptionStatusRequest {
     {
         let resp = match status {
             http::StatusCode::OK => {
-                let resp: helix::InnerResponse<Vec<CustomRewardRedemption>> = parse_json(response)
-                    .map_err(|e| {
+                let resp: helix::InnerResponse<Vec<CustomRewardRedemption>> =
+                    parse_json(response, true).map_err(|e| {
                         HelixRequestPatchError::DeserializeError(
                             response.to_string(),
                             e,

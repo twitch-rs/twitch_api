@@ -173,8 +173,8 @@ impl RequestPatch for UpdateCustomRewardRequest {
     {
         let resp = match status {
             http::StatusCode::OK => {
-                let resp: helix::InnerResponse<Vec<CustomReward>> =
-                    parse_json(response).map_err(|e| {
+                let resp: helix::InnerResponse<Vec<CustomReward>> = parse_json(response, true)
+                    .map_err(|e| {
                         HelixRequestPatchError::DeserializeError(
                             response.to_string(),
                             e,

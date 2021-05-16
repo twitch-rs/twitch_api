@@ -190,7 +190,7 @@ impl<T: Topic> RequestPost for WebhookHubRequest<T> {
             error,
             status,
             message,
-        }) = helix::parse_json::<helix::HelixRequestError>(&text)
+        }) = helix::parse_json::<helix::HelixRequestError>(&text, false)
         {
             return Err(helix::HelixRequestPostError::Error {
                 error,

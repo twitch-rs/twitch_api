@@ -50,6 +50,8 @@
 use crate::types;
 use serde::{de::DeserializeOwned, Deserialize, Deserializer, Serialize};
 
+use crate::{parse_json, parse_json_value};
+
 pub mod channel;
 pub mod stream;
 pub mod user;
@@ -151,7 +153,7 @@ pub enum Payload {
 impl Payload {
     /// Parse string slice as a [Payload]
     pub fn parse(source: &str) -> Result<Payload, PayloadParseError> {
-        serde_json::from_str(source).map_err(Into::into)
+        parse_json(source, true).map_err(Into::into)
     }
 
     /// Parse http post request as a [Payload].
@@ -226,7 +228,7 @@ pub enum PayloadParseError {
     /// could not parse [`http::Request::body()`] as UTF8
     Utf8Error(#[from] std::str::Utf8Error),
     /// could not parse [`http::Request::body()`] as a [`Payload`]
-    DeserializeError(#[from] serde_json::Error),
+    DeserializeError(#[from] crate::DeserError),
 }
 
 impl<'de> Deserialize<'de> for Payload {
@@ -238,13 +240,13 @@ impl<'de> Deserialize<'de> for Payload {
         /// If this is not done, we'd get a much worse error message.
         macro_rules! match_event {
             ($response:expr; $($module:ident::$event:ident);* $(;)?) => {{
-                let sub: IEventSubscripionInformation = serde_json::from_value($response.s).map_err(serde::de::Error::custom)?;
+                let sub: IEventSubscripionInformation = parse_json_value($response.s, true).map_err(serde::de::Error::custom)?;
                 #[deny(unreachable_patterns)]
                 match (&*sub.version, &sub.type_) {
                     $(  (<$module::$event as EventSubscription>::VERSION, &<$module::$event as EventSubscription>::EVENT_TYPE) => {
                         Payload::$event(NotificationPayload {
                             subscription: sub.try_into().map_err(serde::de::Error::custom)?,
-                            event: serde_json::from_value($response.e).map_err(serde::de::Error::custom)?,
+                            event: parse_json_value($response.e, true).map_err(serde::de::Error::custom)?,
                         })
                     }  )*
                     (v, e) => return Err(serde::de::Error::custom(format!("could not find a match for version `{}` on event type `{}`", v, e)))
@@ -295,14 +297,14 @@ impl<'de> Deserialize<'de> for Payload {
         impl<E: EventSubscription> std::convert::TryFrom<IEventSubscripionInformation>
             for EventSubscriptionInformation<E>
         {
-            type Error = serde_json::Error;
+            type Error = crate::DeserError;
 
             fn try_from(info: IEventSubscripionInformation) -> Result<Self, Self::Error> {
                 debug_assert_eq!(info.version, E::VERSION);
                 debug_assert_eq!(info.type_, E::EVENT_TYPE);
                 Ok(EventSubscriptionInformation {
                     id: info.id,
-                    condition: serde_json::from_value(info.condition)?,
+                    condition: parse_json_value(info.condition, true)?,
                     created_at: info.created_at,
                     status: info.status,
                     cost: info.cost,

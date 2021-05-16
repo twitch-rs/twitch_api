@@ -85,7 +85,7 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
             .map_err(|e| RequestError::RequestError(Box::new(e)))?;
         let text = std::str::from_utf8(&req.body())
             .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
-        serde_json::from_str(text).map_err(Into::into)
+        crate::parse_json(text, true).map_err(Into::into)
     }
 
     /// Get the broadcaster that a given channel is hosting, or
@@ -124,7 +124,7 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
             .map_err(|e| RequestError::RequestError(Box::new(e)))?;
         let text = std::str::from_utf8(&req.body())
             .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
-        serde_json::from_str(text).map_err(Into::into)
+        crate::parse_json(text, true).map_err(Into::into)
     }
 }
 
@@ -206,7 +206,7 @@ pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// http crate returned an error
     HttpError(#[from] http::Error),
     /// deserialization failed
-    DeserializeError(#[from] serde_json::Error),
+    DeserializeError(#[from] crate::DeserError),
     /// request failed
     RequestError(#[from] Box<RE>),
     /// could not parse body as utf8: {1}

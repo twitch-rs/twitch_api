@@ -83,15 +83,15 @@ impl RequestGet for SearchCategoriesRequest {
     where
         Self: Sized,
     {
-        let response: helix::InnerResponse<Option<Self::Response>> = helix::parse_json(&response)
-            .map_err(|e| {
-            helix::HelixRequestGetError::DeserializeError(
-                response.to_string(),
-                e,
-                uri.clone(),
-                status,
-            )
-        })?;
+        let response: helix::InnerResponse<Option<Self::Response>> =
+            helix::parse_json(&response, true).map_err(|e| {
+                helix::HelixRequestGetError::DeserializeError(
+                    response.to_string(),
+                    e,
+                    uri.clone(),
+                    status,
+                )
+            })?;
         Ok(helix::Response {
             data: response.data.unwrap_or_default(),
             pagination: response.pagination.cursor,

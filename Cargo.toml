@@ -25,6 +25,8 @@ serde_path_to_error = { version = "0.1.4", optional = true }
 async-trait = { version = "0.1.50", optional = true }
 serde_json = { version = "1.0.64", optional = true }
 serde_repr = "0.1.7"
+serde_ignored = {version = "0.1.2", optional = true }
+tracing = {version = "0.1.26", optional = true}
 reqwest = { version = "0.11.3", optional = true, default-features = false }
 surf = { version = "2.2.0", optional = true, default-features = false }
 http-types = { version = "2.11.1", optional = true, features = ["hyperium_http"] }
@@ -38,6 +40,7 @@ client = ["twitch_oauth2"]
 
 unsupported = []
 deny_unknown_fields = []
+trace_unknown_fields = ["serde_ignored", "tracing"]
 
 helix = [
     "url",
@@ -47,7 +50,7 @@ helix = [
     "typed-builder",
 ]
 
-tmi = ["serde_json"]
+tmi = ["serde_json", "serde_path_to_error"]
 
 surf_client = [
     "surf",
@@ -59,11 +62,12 @@ surf_client = [
 
 reqwest_client = ["reqwest", "client", "twitch_oauth2/reqwest_client"]
 
-pubsub = ["serde_json"]
+pubsub = ["serde_json", "serde_path_to_error"]
 
-eventsub = ["serde_json"]
+eventsub = ["serde_json", "serde_path_to_error"]
 
 hmac = ["crypto_hmac", "sha2"]
+
 
 all = [
     "tmi",

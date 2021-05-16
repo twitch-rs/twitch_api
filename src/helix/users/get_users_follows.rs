@@ -124,7 +124,7 @@ impl RequestGet for GetUsersFollowsRequest {
             pagination: helix::Pagination,
         }
 
-        let response: InnerResponse = helix::parse_json(response).map_err(|e| {
+        let response: InnerResponse = helix::parse_json(response, true).map_err(|e| {
             helix::HelixRequestGetError::DeserializeError(
                 response.to_string(),
                 e,
