@@ -312,13 +312,9 @@ pub enum ModerationActionCommand {
     R9KBetaOff,
     /// User added as VIP
     ///
-    /// # Deprecation
+    /// # Notes
     ///
-    /// This is now returned by the [`VipAdded`](ChatModeratorActionsReply::VipAdded) action. Strangely, /unvip is still valid
-    #[deprecated(
-        since = "0.5.1",
-        note = "This is now returned by VipAdded, will be removed in future version of twitch_api2."
-    )]
+    /// This is now also returned in [`VipAdded`](ChatModeratorActionsReply::VipAdded) action.
     Vip,
     /// User removed as VIP
     Unvip,
