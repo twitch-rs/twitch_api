@@ -16,6 +16,7 @@
 ### Changed
 
 * Deprecated specific term actions in `ChatModeratorActionsReply`, replacing them with `ChannelTermsAction`
+* Deprecated `Vip` action in `ChatModeratorActionsReply`, replacing it with `VipAdded`
 * Removed some derived impls and fixed builders that assumed a default wrongly.
 ## [v0.5.0] - 2021-05-08
 
