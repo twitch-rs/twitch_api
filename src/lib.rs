@@ -215,7 +215,7 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
 #[cfg(feature = "serde_json")]
 #[derive(Debug, thiserror::Error, displaydoc::Display)]
 pub enum DeserError {
-    /// could not deserialize, error on [{path}]
+    /// could not deserialize, error on [{path}]. {error}
     PathError {
         /// Path to where the erroring key/value is
         path: String,

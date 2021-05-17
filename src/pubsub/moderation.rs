@@ -152,6 +152,25 @@ pub enum ChatModeratorActionsReply {
     /// Unban request approved
     #[serde(rename = "approve_unban_request")]
     ApproveUnbanRequest(UnbanRequest),
+    /// VIP Added
+    #[serde(rename = "vip_added")]
+    VipAdded(VipAdded),
+}
+
+/// User added as VIP
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+pub struct VipAdded {
+    /// Id of channel where VIP was added
+    pub channel_id: types::UserId,
+    /// User who made target VIP (usually broadcaster)
+    pub created_by: types::UserName,
+    /// User ID of who made target VIP (usually broadcaster)
+    pub created_by_user_id: types::UserId,
+    /// User ID of who was made VIP
+    pub target_user_id: types::UserId,
+    /// User who was made VIP
+    pub target_user_login: types::UserName,
 }
 
 /// Unban request
@@ -292,6 +311,14 @@ pub enum ModerationActionCommand {
     #[serde(rename = "r9kbetaoff")]
     R9KBetaOff,
     /// User added as VIP
+    ///
+    /// # Deprecation
+    ///
+    /// This is now returned by the [`VipAdded`](ChatModeratorActionsReply::VipAdded) action. Strangely, /unvip is still valid
+    #[deprecated(
+        since = "0.5.1",
+        note = "This is now returned by VipAdded, will be removed in future version of twitch_api2."
+    )]
     Vip,
     /// User removed as VIP
     Unvip,
@@ -525,6 +552,44 @@ mod tests {
         "message": "{\"type\":\"approve_unban_request\",\"data\":{\"moderation_action\":\"APPROVE_UNBAN_REQUEST\",\"created_by_id\":\"27620241\",\"created_by_login\":\"emilgardis\",\"moderator_message\":\"ok\",\"target_user_id\":\"465894629\",\"target_user_login\":\"emil_the_impostor\"}}"
     }
 }"#;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn vip_added() {
+        let source = r#"
+        {
+            "type": "MESSAGE",
+            "data": {
+                "topic": "chat_moderator_actions.80525799.80525799",
+                "message": "{\"type\":\"vip_added\",\"data\":{\"channel_id\":\"80525799\",\"target_user_id\":\"56345511\",\"target_user_login\":\"bossquest\",\"created_by_user_id\":\"80525799\",\"created_by\":\"sessis\"}}"
+            }
+        }"#;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn vip_removed() {
+        let source = r#"
+        {
+            "type": "MESSAGE",
+            "data": {
+                "topic": "chat_moderator_actions.27620241.80525799",
+                "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"unvip\",\"args\":[\"emil_the_impostor\"],\"created_by\":\"sessis\",\"created_by_user_id\":\"80525799\",\"created_at\":\"2021-05-17T17: 16: 51.900072893Z\",\"msg_id\":\"\",\"target_user_id\":\"465894629\",\"target_user_login\":\"\",\"from_automod\":false}}"
+            }
+        }"#;
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
