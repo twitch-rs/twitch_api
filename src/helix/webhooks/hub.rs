@@ -142,7 +142,7 @@ impl<T: Topic> helix::HelixRequestBody for WebhookHubBody<T> {
 /// Return Values for [Subscribe to/Unsubscribe From Events](super::hub)
 ///
 /// [`subscribe-tounsubscribe-from-events`](https://dev.twitch.tv/docs/api/webhooks-reference#subscribe-tounsubscribe-from-events)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum WebhookHub {

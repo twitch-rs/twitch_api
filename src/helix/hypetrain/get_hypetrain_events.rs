@@ -63,7 +63,7 @@ pub struct GetHypeTrainEventsRequest {
 /// Return Values for [Get Hype Train Events](super::get_hypetrain_events)
 ///
 /// [`get-hype-train-events`](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct HypeTrainEvent {
@@ -80,7 +80,7 @@ pub struct HypeTrainEvent {
 }
 
 /// Type of Hype Train event
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum HypeTrainEventType {
     /// Progression
@@ -89,7 +89,7 @@ pub enum HypeTrainEventType {
 }
 
 /// Event data for
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct HypeTrainEventData {

@@ -54,8 +54,8 @@ pub struct DeleteVideosRequest {
 // FIXME: Should return VideoIds
 /// Return Values for [Delete Videos](super::delete_videos)
 ///
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 /// [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum DeleteVideo {

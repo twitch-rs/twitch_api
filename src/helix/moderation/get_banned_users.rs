@@ -68,7 +68,7 @@ pub struct GetBannedUsersRequest {
 /// Return Values for [Get Banned Users](super::get_banned_users)
 ///
 /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BannedUser {

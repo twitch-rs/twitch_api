@@ -86,7 +86,7 @@ impl helix::private::SealedSerialize for CreateUserFollowsBody {}
 /// Return Values for [Create User Follows](super::create_user_follows)
 ///
 /// [`create-user-follows`](https://dev.twitch.tv/docs/api/reference#create-user-follows)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum CreateUserFollows {
     // FIXME: Twitch docs....

@@ -53,7 +53,7 @@ pub struct UnblockUserRequest {
 /// Return Values for [Unblock User](super::unblock_user)
 ///
 /// [`unblock-user`](https://dev.twitch.tv/docs/api/reference#unblock-user)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum UnblockUser {
     /// 204 - User unblocked successfully.

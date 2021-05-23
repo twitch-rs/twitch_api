@@ -66,7 +66,7 @@ pub struct GetModeratorEventsRequest {
 /// Return Values for [Get Moderators Events](super::get_moderator_events)
 ///
 /// [`get-moderator-events`](https://dev.twitch.tv/docs/api/reference#get-moderator-events)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ModeratorEvent {

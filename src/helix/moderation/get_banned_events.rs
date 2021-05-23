@@ -66,7 +66,7 @@ pub struct GetBannedEventsRequest {
 /// Return Values for [Get Banned Events](super::get_banned_events)
 ///
 /// [`get-banned-events`](https://dev.twitch.tv/docs/api/reference#get-banned-events)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BannedEvent {

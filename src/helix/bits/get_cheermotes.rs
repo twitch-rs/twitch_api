@@ -54,7 +54,7 @@ pub struct GetCheermotesRequest {
 /// Return Values for [Get Cheermotes](super::get_cheermotes)
 ///
 /// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Cheermote {
@@ -74,7 +74,7 @@ pub struct Cheermote {
 }
 
 /// Types of cheermotes
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(rename_all = "snake_case")]
 #[non_exhaustive]
@@ -96,7 +96,7 @@ pub enum CheermoteType {
 }
 
 /// Information about tier of emote
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Tiers {
@@ -115,7 +115,7 @@ pub struct Tiers {
 }
 
 /// Images for different themes
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CheermoteImages {
@@ -126,7 +126,7 @@ pub struct CheermoteImages {
 }
 
 /// URLs to the same image, animated or static.
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CheermoteImage {
@@ -137,7 +137,7 @@ pub struct CheermoteImage {
     pub static_: CheermoteImageArray,
 }
 /// Images in sizes
-#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CheermoteImageArray {

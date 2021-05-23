@@ -113,7 +113,7 @@ impl helix::private::SealedSerialize for ManageHeldAutoModMessagesBody {}
 /// Return Values for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum ManageHeldAutoModMessages {

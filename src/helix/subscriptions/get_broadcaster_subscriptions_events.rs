@@ -73,7 +73,7 @@ pub struct GetBroadcasterSubscriptionsEventsRequest {
 /// Return Values for [Get Broadcaster Subscriptions Events](super::get_broadcaster_subscriptions_events)
 ///
 /// [`get-broadcaster-subscriptions-events`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions-events)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BroadcasterSubscriptionEvent {
@@ -90,7 +90,7 @@ pub struct BroadcasterSubscriptionEvent {
 }
 
 /// Type of event
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum BroadcasterSubscriptionEventType {
     /// User has subscribed
@@ -105,7 +105,7 @@ pub enum BroadcasterSubscriptionEventType {
 }
 
 /// Event data for broadcaster events.
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BroadcasterSubscriptionEventData {

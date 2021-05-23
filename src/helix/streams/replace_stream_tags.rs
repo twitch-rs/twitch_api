@@ -89,7 +89,7 @@ pub struct ReplaceStreamTagsBody {
 /// Return Values for [Replace Stream Tags](super::replace_stream_tags)
 ///
 /// [`replace-stream-tags`](https://dev.twitch.tv/docs/api/reference#replace-stream-tags)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum ReplaceStreamTags {
     /// 204 - Stream Tags replaced successfully

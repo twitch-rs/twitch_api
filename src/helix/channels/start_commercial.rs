@@ -83,7 +83,7 @@ pub struct StartCommercialBody {
 /// Return Values for [Start Commercial](super::start_commercial)
 ///
 /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct StartCommercial {

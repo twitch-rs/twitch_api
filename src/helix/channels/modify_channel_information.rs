@@ -88,7 +88,7 @@ impl helix::private::SealedSerialize for ModifyChannelInformationBody {}
 /// Return Values for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum ModifyChannelInformation {
     /// 204 - Channel/Stream updated successfully

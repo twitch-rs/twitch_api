@@ -90,7 +90,7 @@ pub enum Reason {
 /// Return Values for [Block User](super::block_user)
 ///
 /// [`block-user`](https://dev.twitch.tv/docs/api/reference#block-user)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum BlockUser {
     /// 204 - User blocked successfully.
