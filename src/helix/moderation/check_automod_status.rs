@@ -112,7 +112,7 @@ impl helix::HelixRequestBody for Vec<CheckAutoModStatusBody> {
 /// Return Values for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CheckAutoModStatus {

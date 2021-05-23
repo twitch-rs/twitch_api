@@ -46,7 +46,7 @@ pub type StreamId = String;
 pub type MsgId = String;
 
 /// A game or category as defined by Twitch
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TwitchCategory {

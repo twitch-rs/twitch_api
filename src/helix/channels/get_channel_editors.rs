@@ -55,16 +55,16 @@ pub struct GetChannelEditorsRequest {
 /// Return Values for [Get Channel Editors](super::get_channel_editors)
 ///
 /// [`get-channel-editors`](https://dev.twitch.tv/docs/api/reference#get-channel-editors)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Editor {
     /// User ID of the editor.
-    pub user_id: String,
+    pub user_id: types::UserId,
     /// Display name of the editor.
-    pub user_name: String,
+    pub user_name: types::DisplayName,
     /// Date and time the editor was given editor permissions.
-    pub created_at: String,
+    pub created_at: types::Timestamp,
 }
 
 impl Request for GetChannelEditorsRequest {

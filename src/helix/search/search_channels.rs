@@ -63,7 +63,7 @@ pub struct SearchChannelsRequest {
 /// Return Values for [Search Channels](super::search_channels)
 ///
 /// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Channel {

@@ -55,7 +55,7 @@ pub struct GetTeamsRequest {
 /// Return Values for [Get Teams](super::get_teams)
 ///
 /// [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Team {

@@ -63,7 +63,7 @@ pub struct GetCustomRewardRequest {
 /// Return Values for [Get Custom Reward](super::get_custom_reward)
 ///
 /// [`get-custom-reward`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CustomReward {

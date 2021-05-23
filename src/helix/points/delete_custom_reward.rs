@@ -59,7 +59,7 @@ pub struct DeleteCustomRewardRequest {
 /// Return Values for [Delete CustomReward](super::delete_custom_reward)
 ///
 /// [`delete-custom-reward`](https://dev.twitch.tv/docs/api/reference#delete-custom-reward)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum DeleteCustomReward {

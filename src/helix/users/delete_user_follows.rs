@@ -60,7 +60,7 @@ pub struct DeleteUserFollowsRequest {
 /// Return Values for [Delete Users Follows](super::delete_user_follows)
 ///
 /// [`delete-user-follows`](https://dev.twitch.tv/docs/api/reference#delete-user-follows)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum DeleteUserFollow {
     /// 204 - User successfully deleted from list of channel followers

@@ -132,7 +132,7 @@ impl helix::private::SealedSerialize for UpdateCustomRewardBody {}
 /// Return Values for [Update CustomReward](super::update_custom_reward)
 ///
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum UpdateCustomReward {

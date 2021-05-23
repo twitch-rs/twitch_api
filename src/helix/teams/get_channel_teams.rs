@@ -52,7 +52,7 @@ pub struct GetChannelTeamsRequest {
 /// Return Values for [Get Channel Teams](super::get_channel_teams)
 ///
 /// [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BroadcasterTeam {
