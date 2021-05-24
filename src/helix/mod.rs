@@ -813,30 +813,35 @@ struct Pagination {
 pub type Cursor = String;
 
 /// Errors for [`HelixClient::req_get`] and similar functions.
-#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[derive(thiserror::Error, Debug)]
+// #[derive(displaydoc::Display)] https://github.com/yaahc/displaydoc/issues/15
 pub enum ClientRequestError<RE: std::error::Error + Send + Sync + 'static> {
-    /// request failed from reqwests side
+    /// Request failed from reqwests side
+    #[error("request failed from reqwests side")]
     RequestError(RE),
-    /// no pagination found
+    /// No pagination found
+    #[error("no pagination found")]
     NoPage,
-    /// could not create request
+    /// Could not create request
+    #[error("could not create request")]
     CreateRequestError(#[from] CreateRequestError),
-    /// could not parse GET response
-    // #[error(transparent)] // FIXME: https://github.com/yaahc/displaydoc/issues/15
+    /// Got error from GET response
+    #[error(transparent)]
     HelixRequestGetError(#[from] HelixRequestGetError),
-    /// could not parse PUT response
-    // #[error(transparent)] // FIXME: https://github.com/yaahc/displaydoc/issues/15
+    /// Got error from PUT response
+    #[error(transparent)]
     HelixRequestPutError(#[from] HelixRequestPutError),
-    /// could not parse POST response
-    // #[error(transparent)] // FIXME: https://github.com/yaahc/displaydoc/issues/15
+    /// Got error from POST response
+    #[error(transparent)]
     HelixRequestPostError(#[from] HelixRequestPostError),
-    /// could not parse PATCH response
-    // #[error(transparent)] // FIXME: https://github.com/yaahc/displaydoc/issues/15
+    /// Got error from PATCH response
+    #[error(transparent)]
     HelixRequestPatchError(#[from] HelixRequestPatchError),
-    /// could not parse DELETE response
-    // #[error(transparent)] // FIXME: https://github.com/yaahc/displaydoc/issues/15
+    /// Got error from DELETE response
+    #[error(transparent)]
     HelixRequestDeleteError(#[from] HelixRequestDeleteError),
-    /// {0}
+    /// Custom error
+    #[error("{0}")]
     Custom(std::borrow::Cow<'static, str>),
 }
 /// Could not create request
@@ -913,7 +918,7 @@ pub enum HelixRequestPutError {
         message: String,
         /// URI to the endpoint
         uri: http::Uri,
-        /// Body sent with PUT
+        /// Body sent to PUT response
         body: Vec<u8>,
     },
     /// could not parse response as utf8 when calling `PUT {2}`
@@ -951,7 +956,7 @@ pub enum HelixRequestPostError {
         message: String,
         /// URI to the endpoint
         uri: http::Uri,
-        /// Body sent with POST
+        /// Body sent to POST response
         body: Vec<u8>,
     },
     /// could not parse response as utf8 when calling `POST {2}`
@@ -989,7 +994,7 @@ pub enum HelixRequestPatchError {
         message: String,
         /// URI to the endpoint
         uri: http::Uri,
-        /// Body sent with POST
+        /// Body sent to POST response
         body: Vec<u8>,
     },
     /// could not parse response as utf8 when calling `POST {2}`
@@ -1027,7 +1032,7 @@ pub enum HelixRequestDeleteError {
         message: String,
         /// URI to the endpoint
         uri: http::Uri,
-        /// Body sent with DELETE
+        /// Body sent to DELETE response
         body: Vec<u8>,
     },
     /// could not parse response as utf8 when calling `DELETE {2}`
