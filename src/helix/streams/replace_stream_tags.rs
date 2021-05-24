@@ -51,13 +51,13 @@
 //!         "79977fb9-f106-4a87-a386-f1b0f99783dd".to_string(),
 //!     ])
 //!     .build();
-//! let response: replace_stream_tags::ReplaceStreamTags = client.req_put(request, body, &token).await?;
+//! let response: replace_stream_tags::ReplaceStreamTags = client.req_put(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPut::create_request)
-//! and parse the [`http::Response`] with [`ReplaceStreamTagsRequest::parse_response(&request.get_uri(), response)`](ReplaceStreamTagsRequest::parse_response)
+//! and parse the [`http::Response`] with [`ReplaceStreamTagsRequest::parse_response(None, &request.get_uri(), response)`](ReplaceStreamTagsRequest::parse_response)
 use super::*;
 use helix::RequestPut;
 
@@ -94,21 +94,6 @@ pub struct ReplaceStreamTagsBody {
 pub enum ReplaceStreamTags {
     /// 204 - Stream Tags replaced successfully
     Success,
-    /// Internal Server Error; Failed to replace tags
-    InternalServerError,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for ReplaceStreamTags {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT => Ok(ReplaceStreamTags::Success),
-            // FIXME: Twitch docs says 204 is success...
-            http::StatusCode::OK => Ok(ReplaceStreamTags::Success),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl helix::private::SealedSerialize for ReplaceStreamTagsBody {}
@@ -123,6 +108,31 @@ impl Request for ReplaceStreamTagsRequest {
 
 impl RequestPut for ReplaceStreamTagsRequest {
     type Body = ReplaceStreamTagsBody;
+
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPutError>
+    where
+        Self: Sized,
+    {
+        match status {
+            // FIXME: I've seen OK as the status code
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
+                data: ReplaceStreamTags::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestPutError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
 }
 
 #[test]
@@ -151,5 +161,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/streams/tags?broadcaster_id=0"
     );
 
-    dbg!(ReplaceStreamTagsRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(ReplaceStreamTagsRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

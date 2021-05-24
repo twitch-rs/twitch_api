@@ -279,14 +279,16 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        self.req_put(
-            helix::users::BlockUserRequest::builder()
-                .target_user_id(target_user_id)
-                .build(),
-            helix::EmptyBody,
-            token,
-        )
-        .await
+        Ok(self
+            .req_put(
+                helix::users::BlockUserRequest::builder()
+                    .target_user_id(target_user_id)
+                    .build(),
+                helix::EmptyBody,
+                token,
+            )
+            .await?
+            .data)
     }
 
     /// Unblock a user
@@ -298,13 +300,15 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        self.req_delete(
-            helix::users::UnblockUserRequest::builder()
-                .target_user_id(target_user_id)
-                .build(),
-            token,
-        )
-        .await
+        Ok(self
+            .req_delete(
+                helix::users::UnblockUserRequest::builder()
+                    .target_user_id(target_user_id)
+                    .build(),
+                token,
+            )
+            .await?
+            .data)
     }
 }
 

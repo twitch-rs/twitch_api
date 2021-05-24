@@ -35,13 +35,13 @@
 //! let request = block_user::BlockUserRequest::builder()
 //!     .target_user_id("1234")
 //!     .build();
-//! let response: block_user::BlockUser = client.req_put(request, helix::EmptyBody, &token).await?;
+//! let response: block_user::BlockUser = client.req_put(request, helix::EmptyBody, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPut::create_request)
-//! and parse the [`http::Response`] with [`BlockUserRequest::parse_response(&request.get_uri(), response)`](BlockUserRequest::parse_response)
+//! and parse the [`http::Response`] with [`BlockUserRequest::parse_response(None, &request.get_uri(), response)`](BlockUserRequest::parse_response)
 
 use super::*;
 use helix::RequestPut;
@@ -95,23 +95,6 @@ pub enum Reason {
 pub enum BlockUser {
     /// 204 - User blocked successfully.
     Success,
-    /// 400 - Request was invalid.
-    InvalidRequest,
-    /// 401 - Authorization failed.
-    AuthFailed,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for BlockUser {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT => Ok(BlockUser::Success),
-            http::StatusCode::BAD_REQUEST => Ok(BlockUser::InvalidRequest),
-            http::StatusCode::UNAUTHORIZED => Ok(BlockUser::AuthFailed),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl Request for BlockUserRequest {
@@ -126,6 +109,30 @@ impl Request for BlockUserRequest {
 
 impl RequestPut for BlockUserRequest {
     type Body = helix::EmptyBody;
+
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPutError>
+    where
+        Self: Sized,
+    {
+        match status {
+            http::StatusCode::NO_CONTENT => Ok(helix::Response {
+                data: BlockUser::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestPutError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
 }
 
 #[test]
@@ -149,5 +156,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users/blocks?target_user_id=41245071"
     );
 
-    dbg!(BlockUserRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(BlockUserRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

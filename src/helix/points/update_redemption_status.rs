@@ -103,14 +103,6 @@ pub struct UpdateRedemptionStatusBody {
 pub enum UpdateRedemptionStatusInformation {
     /// 200 - OK
     Success(CustomRewardRedemption),
-    /// 400 - Bad Request: Query Parameter missing or invalid
-    MissingQuery,
-    /// 403 - Forbidden: The Custom Reward was created by a different client_id or Channel Points are not available for the broadcaster
-    Forbidden,
-    /// 404 - Not Found: No Custom Reward Redemptions with the specified IDs were found with a status of UNFULFILLED.
-    NotFound,
-    /// Internal Server Error; Failed to update channel
-    InternalServerError,
 }
 
 impl Request for UpdateRedemptionStatusRequest {
@@ -153,12 +145,6 @@ impl RequestPatch for UpdateRedemptionStatusRequest {
                         uri: uri.clone(),
                     },
                 )?)
-            }
-            http::StatusCode::BAD_REQUEST => UpdateRedemptionStatusInformation::MissingQuery,
-            http::StatusCode::NOT_FOUND => UpdateRedemptionStatusInformation::NotFound,
-            http::StatusCode::FORBIDDEN => UpdateRedemptionStatusInformation::Forbidden,
-            http::StatusCode::INTERNAL_SERVER_ERROR => {
-                UpdateRedemptionStatusInformation::InternalServerError
             }
             _ => {
                 return Err(helix::HelixRequestPatchError::InvalidResponse {

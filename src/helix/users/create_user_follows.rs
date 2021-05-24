@@ -53,8 +53,6 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`CreateUserFollowsRequest::parse_response(None, &request.get_uri(), response)`](CreateUserFollowsRequest::parse_response)
 
-use std::convert::TryInto;
-
 use super::*;
 use helix::RequestPost;
 /// Query Parameters for [Create User Follows](super::create_user_follows)
@@ -92,23 +90,6 @@ pub enum CreateUserFollows {
     // FIXME: Twitch docs....
     /// 204 or 200 - Successfully created follows
     Success,
-    /// 400 - Missing Query Parameter
-    MissingQuery,
-    /// 422 - Entity cannot be processed
-    ProcessingError,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for CreateUserFollows {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(CreateUserFollows::Success),
-            http::StatusCode::BAD_REQUEST => Ok(CreateUserFollows::MissingQuery),
-            http::StatusCode::UNPROCESSABLE_ENTITY => Ok(CreateUserFollows::Success),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl Request for CreateUserFollowsRequest {
@@ -124,62 +105,31 @@ impl Request for CreateUserFollowsRequest {
 impl RequestPost for CreateUserFollowsRequest {
     type Body = CreateUserFollowsBody;
 
-    fn parse_response(
+    fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<Vec<u8>>,
-    ) -> Result<
-        helix::Response<Self, <Self as helix::Request>::Response>,
-        helix::HelixRequestPostError,
-    >
-    where
-        Self: Sized,
-    {
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
-            helix::HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
-        })?;
-        if let Ok(helix::HelixRequestError {
-            error,
-            status,
-            message,
-        }) = helix::parse_json::<helix::HelixRequestError>(&text, false)
-        {
-            return Err(helix::HelixRequestPostError::Error {
-                error,
-                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
-                message,
-                uri: uri.clone(),
-                body: response.body().clone(),
-            });
-        }
-
-        let response = response.status().try_into().map_err(|_| {
-            // This path should never be taken, but just to be sure we do this
-            helix::HelixRequestPostError::Error {
-                status: response.status(),
-                uri: uri.clone(),
-                body: response.body().clone(),
-                message: String::new(), // FIXME: None, but this branch should really never be hit
-                error: String::new(),
-            }
-        })?;
-        Ok(helix::Response {
-            data: response, // FIXME: This should be a bit better...
-            pagination: <_>::default(),
-            request,
-        })
-    }
-
-    fn parse_inner_response(
-        _: Option<Self>,
-        _: &http::Uri,
-        _: &str,
-        _: http::StatusCode,
+        response: &str,
+        status: http::StatusCode,
     ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPostError>
     where
         Self: Sized,
     {
-        unimplemented!("Create User Follows does not implement `parse_inner_response`")
+        Ok(helix::Response {
+            data: match status {
+                http::StatusCode::NO_CONTENT | http::StatusCode::OK => CreateUserFollows::Success,
+                // FIXME: Twitch docs says 204 is success...
+                _ => {
+                    return Err(helix::HelixRequestPostError::InvalidResponse {
+                        reason: "unexpected status code",
+                        response: response.to_string(),
+                        status,
+                        uri: uri.clone(),
+                    })
+                }
+            },
+            pagination: None,
+            request,
+        })
     }
 }
 

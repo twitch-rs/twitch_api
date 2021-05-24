@@ -33,13 +33,13 @@
 //! let request = delete_user_follows::DeleteUserFollowsRequest::builder()
 //!     .from_id("1234").to_id("4321")
 //!     .build();
-//! let response: delete_user_follows::DeleteUserFollow = client.req_delete(request, &token).await?;
+//! let response: delete_user_follows::DeleteUserFollow = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
-//! and parse the [`http::Response`] with [`DeleteUserFollowsRequest::parse_response(&request.get_uri(), response)`](DeleteUserFollowsRequest::parse_response)
+//! and parse the [`http::Response`] with [`DeleteUserFollowsRequest::parse_response(None, &request.get_uri(), response)`](DeleteUserFollowsRequest::parse_response)
 
 use super::*;
 use helix::RequestDelete;
@@ -65,23 +65,6 @@ pub struct DeleteUserFollowsRequest {
 pub enum DeleteUserFollow {
     /// 204 - User successfully deleted from list of channel followers
     Success,
-    /// 400 - Missing Query Parameter
-    MissingQuery,
-    /// 422 - Entity cannot be processed
-    ProcessingError,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for DeleteUserFollow {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT => Ok(DeleteUserFollow::Success),
-            http::StatusCode::BAD_REQUEST => Ok(DeleteUserFollow::MissingQuery),
-            http::StatusCode::UNPROCESSABLE_ENTITY => Ok(DeleteUserFollow::ProcessingError),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl Request for DeleteUserFollowsRequest {
@@ -94,7 +77,31 @@ impl Request for DeleteUserFollowsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditFollows];
 }
 
-impl RequestDelete for DeleteUserFollowsRequest {}
+impl RequestDelete for DeleteUserFollowsRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestDeleteError>
+    where
+        Self: Sized,
+    {
+        match status {
+            http::StatusCode::NO_CONTENT => Ok(helix::Response {
+                data: DeleteUserFollow::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
+}
 
 #[test]
 fn test_request() {
@@ -116,5 +123,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users/follows?from_id=41245071&to_id=41245072"
     );
 
-    dbg!(DeleteUserFollowsRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(DeleteUserFollowsRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

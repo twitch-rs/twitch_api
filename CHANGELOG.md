@@ -12,12 +12,17 @@
 * Added Channel Terms to pubsub `chat_moderator_actions`
 * Added `extendsub` to pubsub `channel-subscribe-events-v1`
 * Added `delay` to `Get Channel Information`
+* Added `serde::Serialize` to all helix endpoint return values
 
 ### Changed
 
 * Deprecated specific term actions in `ChatModeratorActionsReply`, replacing them with `ChannelTermsAction`
 * Deprecated `Vip` action in `ChatModeratorActionsReply`, replacing it with `VipAdded`
 * Removed some derived impls and fixed builders that assumed a default wrongly.
+
+### Removed
+
+* Removed enum variants for a lot of error states in helix endpoint responses. Most of these are returned by `HelixRequest_Error::Error`
 ## [v0.5.0] - 2021-05-08
 
 [Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.4.1...v0.5.0)

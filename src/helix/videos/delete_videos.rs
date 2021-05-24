@@ -29,13 +29,13 @@
 //! let request = delete_videos::DeleteVideosRequest::builder()
 //!     .id(vec!["1234".to_string()])
 //!     .build();
-//! let response: delete_videos::DeleteVideo = client.req_delete(request, &token).await?;
+//! let response: delete_videos::DeleteVideo = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
-//! and parse the [`http::Response`] with [`DeleteVideosRequest::parse_response(&request.get_uri(), response)`](DeleteVideosRequest::parse_response)
+//! and parse the [`http::Response`] with [`DeleteVideosRequest::parse_response(None, &request.get_uri(), response)`](DeleteVideosRequest::parse_response)
 
 use super::*;
 use helix::RequestDelete;
@@ -61,23 +61,6 @@ pub struct DeleteVideosRequest {
 pub enum DeleteVideo {
     /// Video(s) deleted.
     Success,
-    /// Request was invalid.
-    InvalidRequest,
-    /// Authorization failed.
-    AuthFailed,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for DeleteVideo {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::OK => Ok(DeleteVideo::Success),
-            http::StatusCode::BAD_REQUEST => Ok(DeleteVideo::InvalidRequest),
-            http::StatusCode::UNAUTHORIZED => Ok(DeleteVideo::AuthFailed),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl Request for DeleteVideosRequest {
@@ -88,7 +71,31 @@ impl Request for DeleteVideosRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageVideos];
 }
 
-impl RequestDelete for DeleteVideosRequest {}
+impl RequestDelete for DeleteVideosRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestDeleteError>
+    where
+        Self: Sized,
+    {
+        match status {
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
+                data: DeleteVideo::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
+}
 
 #[test]
 fn test_request() {
@@ -108,5 +115,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/videos?id=234482848"
     );
 
-    dbg!(DeleteVideosRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(DeleteVideosRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }
