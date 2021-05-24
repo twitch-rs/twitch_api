@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/points/update_redemption_status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>update_redemption_status.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/3cebe2d5560c803e571b62b30db974735722d6f9">3cebe2d</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/7d897514223216234b76ccd017f984d40c790b69">7d89751</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button">?</button>
                 <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -221,20 +221,6 @@
 <span id="216">216</span>
 <span id="217">217</span>
 <span id="218">218</span>
-<span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
-<span id="223">223</span>
-<span id="224">224</span>
-<span id="225">225</span>
-<span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
-<span id="229">229</span>
-<span id="230">230</span>
-<span id="231">231</span>
-<span id="232">232</span>
 </pre><pre class="rust">
 <span class="doccomment">//! Updates the status of Custom Reward Redemption objects on a channel that are in the UNFULFILLED status.</span>
 <span class="doccomment">//!</span>
@@ -341,14 +327,6 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UpdateRedemptionStatusInformation</span> {
     <span class="doccomment">/// 200 - OK</span>
     <span class="ident">Success</span>(<span class="ident">CustomRewardRedemption</span>),
-    <span class="doccomment">/// 400 - Bad Request: Query Parameter missing or invalid</span>
-    <span class="ident">MissingQuery</span>,
-    <span class="doccomment">/// 403 - Forbidden: The Custom Reward was created by a different client_id or Channel Points are not available for the broadcaster</span>
-    <span class="ident">Forbidden</span>,
-    <span class="doccomment">/// 404 - Not Found: No Custom Reward Redemptions with the specified IDs were found with a status of UNFULFILLED.</span>
-    <span class="ident">NotFound</span>,
-    <span class="doccomment">/// Internal Server Error; Failed to update channel</span>
-    <span class="ident">InternalServerError</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Request</span> <span class="kw">for</span> <span class="ident">UpdateRedemptionStatusRequest</span> {
@@ -391,12 +369,6 @@
                         <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
                     },
                 )<span class="question-mark">?</span>)
-            }
-            <span class="ident">http::StatusCode::BAD_REQUEST</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UpdateRedemptionStatusInformation::MissingQuery</span>,
-            <span class="ident">http::StatusCode::NOT_FOUND</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UpdateRedemptionStatusInformation::NotFound</span>,
-            <span class="ident">http::StatusCode::FORBIDDEN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UpdateRedemptionStatusInformation::Forbidden</span>,
-            <span class="ident">http::StatusCode::INTERNAL_SERVER_ERROR</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">UpdateRedemptionStatusInformation::InternalServerError</span>
             }
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">helix::HelixRequestPatchError::InvalidResponse</span> {
