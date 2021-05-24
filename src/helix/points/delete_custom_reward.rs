@@ -65,30 +65,6 @@ pub struct DeleteCustomRewardRequest {
 pub enum DeleteCustomReward {
     /// Reward deleted
     Success,
-    /// Bad Request: Query/Body Parameter missing or invalid
-    BadRequest,
-    /// Unauthenticated: Missing/invalid Token
-    AuthFailed,
-    /// Forbidden: The Custom Reward was created by a different client_id or Channel Points are not available for the broadcaster
-    Forbidden,
-    /// Not Found: The Custom Reward doesn’t exist with the id and broadcaster_id specified
-    NotFound,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for DeleteCustomReward {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT => Ok(DeleteCustomReward::Success),
-            http::StatusCode::BAD_REQUEST => Ok(DeleteCustomReward::BadRequest),
-            http::StatusCode::UNAUTHORIZED => Ok(DeleteCustomReward::AuthFailed),
-            http::StatusCode::FORBIDDEN => Ok(DeleteCustomReward::Forbidden),
-            http::StatusCode::NOT_FOUND => Ok(DeleteCustomReward::NotFound),
-            // http::StatusCode::INTERNAL_SERVER_ERROR => Ok(DeleteCustomReward::InternalServerError),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl Request for DeleteCustomRewardRequest {
@@ -100,7 +76,31 @@ impl Request for DeleteCustomRewardRequest {
         &[twitch_oauth2::Scope::ChannelManageRedemptions];
 }
 
-impl RequestDelete for DeleteCustomRewardRequest {}
+impl RequestDelete for DeleteCustomRewardRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestDeleteError>
+    where
+        Self: Sized,
+    {
+        match status {
+            http::StatusCode::NO_CONTENT => Ok(helix::Response {
+                data: DeleteCustomReward::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
+}
 
 #[test]
 fn test_request() {

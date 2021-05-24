@@ -58,23 +58,6 @@ pub struct UnblockUserRequest {
 pub enum UnblockUser {
     /// 204 - User unblocked successfully.
     Success,
-    /// 400 - Request was invalid.
-    InvalidRequest,
-    /// 401 - Authorization failed.
-    AuthFailed,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for UnblockUser {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT => Ok(UnblockUser::Success),
-            http::StatusCode::BAD_REQUEST => Ok(UnblockUser::InvalidRequest),
-            http::StatusCode::UNAUTHORIZED => Ok(UnblockUser::AuthFailed),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl Request for UnblockUserRequest {
@@ -87,7 +70,31 @@ impl Request for UnblockUserRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageBlockedUsers];
 }
 
-impl RequestDelete for UnblockUserRequest {}
+impl RequestDelete for UnblockUserRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestDeleteError>
+    where
+        Self: Sized,
+    {
+        match status {
+            http::StatusCode::NO_CONTENT => Ok(helix::Response {
+                data: UnblockUser::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
+}
 
 #[test]
 fn test_request() {

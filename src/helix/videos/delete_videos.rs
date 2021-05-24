@@ -61,23 +61,6 @@ pub struct DeleteVideosRequest {
 pub enum DeleteVideo {
     /// Video(s) deleted.
     Success,
-    /// Request was invalid.
-    InvalidRequest,
-    /// Authorization failed.
-    AuthFailed,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for DeleteVideo {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::OK => Ok(DeleteVideo::Success),
-            http::StatusCode::BAD_REQUEST => Ok(DeleteVideo::InvalidRequest),
-            http::StatusCode::UNAUTHORIZED => Ok(DeleteVideo::AuthFailed),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl Request for DeleteVideosRequest {
@@ -88,7 +71,31 @@ impl Request for DeleteVideosRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageVideos];
 }
 
-impl RequestDelete for DeleteVideosRequest {}
+impl RequestDelete for DeleteVideosRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestDeleteError>
+    where
+        Self: Sized,
+    {
+        match status {
+            http::StatusCode::NO_CONTENT => Ok(helix::Response {
+                data: DeleteVideo::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
+}
 
 #[test]
 fn test_request() {

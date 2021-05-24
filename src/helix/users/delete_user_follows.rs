@@ -65,23 +65,6 @@ pub struct DeleteUserFollowsRequest {
 pub enum DeleteUserFollow {
     /// 204 - User successfully deleted from list of channel followers
     Success,
-    /// 400 - Missing Query Parameter
-    MissingQuery,
-    /// 422 - Entity cannot be processed
-    ProcessingError,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for DeleteUserFollow {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT => Ok(DeleteUserFollow::Success),
-            http::StatusCode::BAD_REQUEST => Ok(DeleteUserFollow::MissingQuery),
-            http::StatusCode::UNPROCESSABLE_ENTITY => Ok(DeleteUserFollow::ProcessingError),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl Request for DeleteUserFollowsRequest {
@@ -94,7 +77,31 @@ impl Request for DeleteUserFollowsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditFollows];
 }
 
-impl RequestDelete for DeleteUserFollowsRequest {}
+impl RequestDelete for DeleteUserFollowsRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestDeleteError>
+    where
+        Self: Sized,
+    {
+        match status {
+            http::StatusCode::NO_CONTENT => Ok(helix::Response {
+                data: DeleteUserFollow::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
+}
 
 #[test]
 fn test_request() {

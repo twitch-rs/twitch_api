@@ -232,12 +232,10 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         &'a self,
         request: R,
         token: &T,
-    ) -> Result<D, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestDelete,
-        D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
-            + serde::de::DeserializeOwned
-            + PartialEq,
+        D: serde::de::DeserializeOwned + PartialEq,
         T: TwitchToken + ?Sized,
     {
         let req = request.create_request(token.token().secret(), token.client_id().as_str())?;
@@ -247,7 +245,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        <R>::parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
     /// Request on a valid [`RequestPut`] endpoint
@@ -256,13 +254,11 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request: R,
         body: B,
         token: &T,
-    ) -> Result<D, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
     where
         R: Request<Response = D> + Request + RequestPut<Body = B>,
         B: HelixRequestBody,
-        D: std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>
-            + serde::de::DeserializeOwned
-            + PartialEq,
+        D: serde::de::DeserializeOwned + PartialEq,
         T: TwitchToken + ?Sized,
     {
         let req =
@@ -273,7 +269,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?;
-        <R>::parse_response(&uri, response).map_err(Into::into)
+        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 }
 
@@ -534,22 +530,23 @@ pub trait RequestDelete: Request {
             .body(Vec::with_capacity(0))
             .map_err(Into::into)
     }
-
     /// Parse response.
+    ///
+    /// # Notes
+    ///
+    /// Pass in the request to enable [pagination](Response::get_next) if supported.
     fn parse_response(
+        // FIXME: Is this really needed? Its currently only used for error reporting.
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
-    ) -> Result<<Self as Request>::Response, HelixRequestDeleteError>
+    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestDeleteError>
     where
-        <Self as Request>::Response:
-            std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>>,
         Self: Sized,
     {
         let text = std::str::from_utf8(&response.body()).map_err(|e| {
             HelixRequestDeleteError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
-        // eprintln!("\n\nmessage is ------------ {} ------------", text);
-
         if let Ok(HelixRequestError {
             error,
             status,
@@ -561,25 +558,24 @@ pub trait RequestDelete: Request {
                 status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
                 message,
                 uri: uri.clone(),
+                body: response.body().clone(),
             });
         }
-
-        match response.status().try_into() {
-            Ok(result) => Ok(result),
-            Err(err) => Err(HelixRequestDeleteError::Error {
-                error: String::new(),
-                status: response.status(),
-                message: err.to_string(),
-                uri: uri.clone(),
-            }),
-        }
+        <Self as RequestDelete>::parse_inner_response(request, uri, text, response.status())
     }
+    /// Parse a response string into the response.
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestDeleteError>
+    where
+        Self: Sized;
 }
 
 /// Helix endpoint PUTs information
-pub trait RequestPut: Request
-where <Self as Request>::Response:
-        std::convert::TryFrom<http::StatusCode, Error = std::borrow::Cow<'static, str>> {
+pub trait RequestPut: Request {
     /// Body parameters
     type Body: HelixRequestBody;
 
@@ -611,18 +607,22 @@ where <Self as Request>::Response:
     }
 
     /// Parse response.
+    ///
+    /// # Notes
+    ///
+    /// Pass in the request to enable [pagination](Response::get_next) if supported.
     fn parse_response(
+        // FIXME: Is this really needed? Its currently only used for error reporting.
+        request: Option<Self>,
         uri: &http::Uri,
         response: http::Response<Vec<u8>>,
-    ) -> Result<<Self as Request>::Response, HelixRequestPutError>
+    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPutError>
     where
         Self: Sized,
     {
         let text = std::str::from_utf8(&response.body()).map_err(|e| {
             HelixRequestPutError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
-        // eprintln!("\n\nmessage is ------------ {} ------------", text);
-
         if let Ok(HelixRequestError {
             error,
             status,
@@ -637,18 +637,18 @@ where <Self as Request>::Response:
                 body: response.body().clone(),
             });
         }
-
-        match response.status().try_into() {
-            Ok(result) => Ok(result),
-            Err(err) => Err(HelixRequestPutError::Error {
-                error: String::new(),
-                status: response.status(),
-                message: err.to_string(),
-                uri: uri.clone(),
-                body: response.body().clone(),
-            }),
-        }
+        <Self as RequestPut>::parse_inner_response(request, uri, text, response.status())
     }
+
+    /// Parse a response string into the response.
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPutError>
+    where
+        Self: Sized;
 }
 
 /// Helix endpoint GETs information
@@ -925,6 +925,17 @@ pub enum HelixRequestPutError {
         http::Uri,
         http::StatusCode,
     ),
+    /// invalid or unexpected response from twitch.
+    InvalidResponse {
+        /// Reason for error
+        reason: &'static str,
+        /// Response text
+        response: String,
+        /// Status Code
+        status: http::StatusCode,
+        /// Uri to endpoint
+        uri: http::Uri,
+    },
 }
 
 /// Could not parse POST response
@@ -1016,9 +1027,22 @@ pub enum HelixRequestDeleteError {
         message: String,
         /// URI to the endpoint
         uri: http::Uri,
+        /// Body sent with DELETE
+        body: Vec<u8>,
     },
     /// could not parse response as utf8 when calling `DELETE {2}`
     Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+    /// invalid or unexpected response from twitch.
+    InvalidResponse {
+        /// Reason for error
+        reason: &'static str,
+        /// Response text
+        response: String,
+        /// Status Code
+        status: http::StatusCode,
+        /// Uri to endpoint
+        uri: http::Uri,
+    },
 }
 
 /// Errors that can happen when creating a body

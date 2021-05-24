@@ -98,19 +98,6 @@ pub enum ReplaceStreamTags {
     InternalServerError,
 }
 
-impl std::convert::TryFrom<http::StatusCode> for ReplaceStreamTags {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT => Ok(ReplaceStreamTags::Success),
-            // FIXME: Twitch docs says 204 is success...
-            http::StatusCode::OK => Ok(ReplaceStreamTags::Success),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
-}
-
 impl helix::private::SealedSerialize for ReplaceStreamTagsBody {}
 
 impl Request for ReplaceStreamTagsRequest {
@@ -123,6 +110,31 @@ impl Request for ReplaceStreamTagsRequest {
 
 impl RequestPut for ReplaceStreamTagsRequest {
     type Body = ReplaceStreamTagsBody;
+
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPutError>
+    where
+        Self: Sized,
+    {
+        match status {
+            // FIXME: I've seen OK as the status code
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
+                data: ReplaceStreamTags::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestPutError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
 }
 
 #[test]

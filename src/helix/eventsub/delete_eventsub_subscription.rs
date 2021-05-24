@@ -30,30 +30,34 @@ impl Request for DeleteEventSubSubscriptionRequest {
 pub enum DeleteEventSubSubscription {
     /// 204 - Subscription deleted
     Success,
-    /// 404 - Subscription not found
-    NotFound,
-    /// 400 - Missing Query
-    ///
-    /// # Notes
-    ///
-    /// This will never be encountered if using [DeleteEventSubSubscriptionRequest]
-    MissingQuery,
 }
 
-impl std::convert::TryFrom<http::StatusCode> for DeleteEventSubSubscription {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT => Ok(DeleteEventSubSubscription::Success),
-            http::StatusCode::BAD_REQUEST => Ok(DeleteEventSubSubscription::MissingQuery),
-            http::StatusCode::NOT_FOUND => Ok(DeleteEventSubSubscription::NotFound),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
+impl RequestDelete for DeleteEventSubSubscriptionRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestDeleteError>
+    where
+        Self: Sized,
+    {
+        match status {
+            // FIXME: I've seen OK as the status code
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
+                data: DeleteEventSubSubscription::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
         }
     }
 }
-
-impl RequestDelete for DeleteEventSubSubscriptionRequest {}
 
 #[test]
 fn test_request() {

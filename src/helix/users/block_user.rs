@@ -95,23 +95,6 @@ pub enum Reason {
 pub enum BlockUser {
     /// 204 - User blocked successfully.
     Success,
-    /// 400 - Request was invalid.
-    InvalidRequest,
-    /// 401 - Authorization failed.
-    AuthFailed,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for BlockUser {
-    type Error = std::borrow::Cow<'static, str>;
-
-    fn try_from(s: http::StatusCode) -> Result<Self, Self::Error> {
-        match s {
-            http::StatusCode::NO_CONTENT => Ok(BlockUser::Success),
-            http::StatusCode::BAD_REQUEST => Ok(BlockUser::InvalidRequest),
-            http::StatusCode::UNAUTHORIZED => Ok(BlockUser::AuthFailed),
-            other => Err(other.canonical_reason().unwrap_or("").into()),
-        }
-    }
 }
 
 impl Request for BlockUserRequest {
@@ -126,6 +109,30 @@ impl Request for BlockUserRequest {
 
 impl RequestPut for BlockUserRequest {
     type Body = helix::EmptyBody;
+
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPutError>
+    where
+        Self: Sized,
+    {
+        match status {
+            http::StatusCode::NO_CONTENT => Ok(helix::Response {
+                data: BlockUser::Success,
+                pagination: None,
+                request,
+            }),
+            _ => Err(helix::HelixRequestPutError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
 }
 
 #[test]
