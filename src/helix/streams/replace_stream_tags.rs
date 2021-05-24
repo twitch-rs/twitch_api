@@ -94,8 +94,6 @@ pub struct ReplaceStreamTagsBody {
 pub enum ReplaceStreamTags {
     /// 204 - Stream Tags replaced successfully
     Success,
-    /// Internal Server Error; Failed to replace tags
-    InternalServerError,
 }
 
 impl helix::private::SealedSerialize for ReplaceStreamTagsBody {}

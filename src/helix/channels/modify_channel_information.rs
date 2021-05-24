@@ -93,10 +93,6 @@ impl helix::private::SealedSerialize for ModifyChannelInformationBody {}
 pub enum ModifyChannelInformation {
     /// 204 - Channel/Stream updated successfully
     Success,
-    /// 400 - Missing Query Parameter
-    MissingQuery,
-    /// Internal Server Error; Failed to update channel
-    InternalServerError,
 }
 
 impl Request for ModifyChannelInformationRequest {
@@ -121,13 +117,10 @@ impl RequestPatch for ModifyChannelInformationRequest {
     {
         Ok(helix::Response {
             data: match status {
-                http::StatusCode::NO_CONTENT => ModifyChannelInformation::Success,
-                // FIXME: Twitch docs says 204 is success...
-                http::StatusCode::OK => ModifyChannelInformation::Success,
-                http::StatusCode::BAD_REQUEST => ModifyChannelInformation::MissingQuery,
-                http::StatusCode::INTERNAL_SERVER_ERROR => {
-                    ModifyChannelInformation::InternalServerError
+                http::StatusCode::NO_CONTENT | http::StatusCode::OK => {
+                    ModifyChannelInformation::Success
                 }
+                // FIXME: Twitch docs says 204 is success...
                 _ => {
                     return Err(helix::HelixRequestPatchError::InvalidResponse {
                         reason: "unexpected status code",

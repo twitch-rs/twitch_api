@@ -979,7 +979,7 @@ pub enum HelixRequestPostError {
 /// Could not parse PATCH response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum HelixRequestPatchError {
-    /// helix returned error {status:?}: {message:?} when calling `PATCH {uri}` with a body
+    /// helix returned error {status:?} - {error}: {message:?} when calling `PATCH {uri}` with a body
     Error {
         /// Error message related to status code
         error: String,
@@ -1017,7 +1017,7 @@ pub enum HelixRequestPatchError {
 /// Could not parse DELETE response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 pub enum HelixRequestDeleteError {
-    /// helix returned error {status:?}- {error}: {message:?} when calling `DELETE {uri}`
+    /// helix returned error {status:?} - {error}: {message:?} when calling `DELETE {uri}`
     Error {
         /// Error message related to status code
         error: String,
