@@ -53,8 +53,6 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`CreateUserFollowsRequest::parse_response(None, &request.get_uri(), response)`](CreateUserFollowsRequest::parse_response)
 
-use std::convert::TryInto;
-
 use super::*;
 use helix::RequestPost;
 /// Query Parameters for [Create User Follows](super::create_user_follows)

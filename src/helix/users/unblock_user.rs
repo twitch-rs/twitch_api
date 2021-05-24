@@ -29,13 +29,13 @@
 //! let request = unblock_user::UnblockUserRequest::builder()
 //!     .target_user_id("1234")
 //!     .build();
-//! let response: unblock_user::UnblockUser = client.req_delete(request, &token).await?;
+//! let response: unblock_user::UnblockUser = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
-//! and parse the [`http::Response`] with [`UnblockUserRequest::parse_response(&request.get_uri(), response)`](UnblockUserRequest::parse_response)
+//! and parse the [`http::Response`] with [`UnblockUserRequest::parse_response(None, &request.get_uri(), response)`](UnblockUserRequest::parse_response)
 
 use super::*;
 use helix::RequestDelete;
@@ -115,5 +115,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users/blocks?target_user_id=41245071"
     );
 
-    dbg!(UnblockUserRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(UnblockUserRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

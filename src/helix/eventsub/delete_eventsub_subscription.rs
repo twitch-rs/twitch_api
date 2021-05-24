@@ -77,6 +77,6 @@ fn test_request() {
 
     dbg!(
         "{:#?}",
-        DeleteEventSubSubscriptionRequest::parse_response(&uri, http_response).unwrap()
+        DeleteEventSubSubscriptionRequest::parse_response(Some(req), &uri, http_response).unwrap()
     );
 }

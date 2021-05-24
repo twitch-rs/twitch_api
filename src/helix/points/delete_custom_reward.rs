@@ -31,13 +31,13 @@
 //!     .broadcaster_id("274637212")
 //!     .id("1234")
 //!     .build();
-//! let response: delete_custom_reward::DeleteCustomReward = client.req_delete(request, &token).await?;
+//! let response: delete_custom_reward::DeleteCustomReward = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
-//! and parse the [`http::Response`] with [`DeleteCustomRewardRequest::parse_response(&request.get_uri(), response)`](DeleteCustomRewardRequest::parse_response)
+//! and parse the [`http::Response`] with [`DeleteCustomRewardRequest::parse_response(None, &request.get_uri(), response)`](DeleteCustomRewardRequest::parse_response)
 
 use super::*;
 use helix::RequestDelete;
@@ -121,5 +121,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=274637212&id=b045196d-9ce7-4a27-a9b9-279ed341ab28"
     );
 
-    dbg!(DeleteCustomRewardRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(DeleteCustomRewardRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

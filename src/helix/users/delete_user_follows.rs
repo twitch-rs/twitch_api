@@ -33,13 +33,13 @@
 //! let request = delete_user_follows::DeleteUserFollowsRequest::builder()
 //!     .from_id("1234").to_id("4321")
 //!     .build();
-//! let response: delete_user_follows::DeleteUserFollow = client.req_delete(request, &token).await?;
+//! let response: delete_user_follows::DeleteUserFollow = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
-//! and parse the [`http::Response`] with [`DeleteUserFollowsRequest::parse_response(&request.get_uri(), response)`](DeleteUserFollowsRequest::parse_response)
+//! and parse the [`http::Response`] with [`DeleteUserFollowsRequest::parse_response(None, &request.get_uri(), response)`](DeleteUserFollowsRequest::parse_response)
 
 use super::*;
 use helix::RequestDelete;
@@ -123,5 +123,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users/follows?from_id=41245071&to_id=41245072"
     );
 
-    dbg!(DeleteUserFollowsRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(DeleteUserFollowsRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

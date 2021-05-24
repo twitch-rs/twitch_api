@@ -35,13 +35,13 @@
 //! let request = block_user::BlockUserRequest::builder()
 //!     .target_user_id("1234")
 //!     .build();
-//! let response: block_user::BlockUser = client.req_put(request, helix::EmptyBody, &token).await?;
+//! let response: block_user::BlockUser = client.req_put(request, helix::EmptyBody, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPut::create_request)
-//! and parse the [`http::Response`] with [`BlockUserRequest::parse_response(&request.get_uri(), response)`](BlockUserRequest::parse_response)
+//! and parse the [`http::Response`] with [`BlockUserRequest::parse_response(None, &request.get_uri(), response)`](BlockUserRequest::parse_response)
 
 use super::*;
 use helix::RequestPut;
@@ -156,5 +156,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users/blocks?target_user_id=41245071"
     );
 
-    dbg!(BlockUserRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(BlockUserRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

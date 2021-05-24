@@ -51,13 +51,13 @@
 //!         "79977fb9-f106-4a87-a386-f1b0f99783dd".to_string(),
 //!     ])
 //!     .build();
-//! let response: replace_stream_tags::ReplaceStreamTags = client.req_put(request, body, &token).await?;
+//! let response: replace_stream_tags::ReplaceStreamTags = client.req_put(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPut::create_request)
-//! and parse the [`http::Response`] with [`ReplaceStreamTagsRequest::parse_response(&request.get_uri(), response)`](ReplaceStreamTagsRequest::parse_response)
+//! and parse the [`http::Response`] with [`ReplaceStreamTagsRequest::parse_response(None, &request.get_uri(), response)`](ReplaceStreamTagsRequest::parse_response)
 use super::*;
 use helix::RequestPut;
 
@@ -161,5 +161,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/streams/tags?broadcaster_id=0"
     );
 
-    dbg!(ReplaceStreamTagsRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(ReplaceStreamTagsRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

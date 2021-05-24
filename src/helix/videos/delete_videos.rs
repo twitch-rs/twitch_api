@@ -29,13 +29,13 @@
 //! let request = delete_videos::DeleteVideosRequest::builder()
 //!     .id(vec!["1234".to_string()])
 //!     .build();
-//! let response: delete_videos::DeleteVideo = client.req_delete(request, &token).await?;
+//! let response: delete_videos::DeleteVideo = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestDelete::create_request)
-//! and parse the [`http::Response`] with [`DeleteVideosRequest::parse_response(&request.get_uri(), response)`](DeleteVideosRequest::parse_response)
+//! and parse the [`http::Response`] with [`DeleteVideosRequest::parse_response(None, &request.get_uri(), response)`](DeleteVideosRequest::parse_response)
 
 use super::*;
 use helix::RequestDelete;
@@ -82,7 +82,7 @@ impl RequestDelete for DeleteVideosRequest {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT => Ok(helix::Response {
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
                 data: DeleteVideo::Success,
                 pagination: None,
                 request,
@@ -115,5 +115,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/videos?id=234482848"
     );
 
-    dbg!(DeleteVideosRequest::parse_response(&uri, http_response).unwrap());
+    dbg!(DeleteVideosRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }
