@@ -87,7 +87,8 @@ impl RequestDelete for DeleteCustomRewardRequest {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT => Ok(helix::Response {
+            // FIXME: I've seen OK as the status code
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
                 data: DeleteCustomReward::Success,
                 pagination: None,
                 request,
