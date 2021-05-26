@@ -45,11 +45,7 @@ pub mod games;
 pub mod hypetrain;
 pub mod moderation;
 pub mod points;
-#[cfg(feature = "unsupported")]
-#[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod polls;
-#[cfg(feature = "unsupported")]
-#[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod predictions;
 pub mod search;
 pub mod streams;
@@ -61,8 +57,8 @@ pub mod videos;
 pub mod webhooks;
 
 pub(crate) mod ser;
-use crate::{parse_json, parse_json_value};
 pub(crate) use crate::deserialize_default_from_null;
+use crate::{parse_json, parse_json_value};
 pub use ser::Error as SerializeError;
 
 #[doc(no_inline)]

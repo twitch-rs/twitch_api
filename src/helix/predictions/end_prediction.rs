@@ -135,8 +135,8 @@ impl RequestPatch for EndPredictionRequest {
     {
         let resp = match status {
             http::StatusCode::OK => {
-                let resp: helix::InnerResponse<Vec<Prediction>> =
-                    parse_json(response).map_err(|e| {
+                let resp: helix::InnerResponse<Vec<Prediction>> = parse_json(response, true)
+                    .map_err(|e| {
                         HelixRequestPatchError::DeserializeError(
                             response.to_string(),
                             e,

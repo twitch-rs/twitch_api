@@ -149,8 +149,8 @@ impl RequestPost for CreatePollRequest {
     where
         Self: Sized,
     {
-        let response: helix::InnerResponse<Vec<Self::Response>> = helix::parse_json(&response_str)
-            .map_err(|e| {
+        let response: helix::InnerResponse<Vec<Self::Response>> =
+            helix::parse_json(&response_str, true).map_err(|e| {
                 helix::HelixRequestPostError::DeserializeError(
                     response_str.to_string(),
                     e,

@@ -18,7 +18,7 @@ impl EventSubscription for ChannelPollBeginV1 {
     const EVENT_TYPE: EventType = EventType::ChannelPollBegin;
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadPolls];
-    const VERSION: &'static str = "beta";
+    const VERSION: &'static str = "1";
 }
 
 /// [`channel.poll.begin`](ChannelPollBeginV1) response payload.
@@ -55,7 +55,7 @@ fn parse_payload() {
         "subscription": {
             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
             "type": "channel.poll.begin",
-            "version": "beta",
+            "version": "1",
             "status": "enabled",
             "cost": 0,
             "condition": {

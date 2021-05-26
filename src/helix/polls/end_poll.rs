@@ -131,14 +131,15 @@ impl RequestPatch for EndPollRequest {
     {
         let resp = match status {
             http::StatusCode::OK => {
-                let resp: helix::InnerResponse<Vec<Poll>> = parse_json(response).map_err(|e| {
-                    HelixRequestPatchError::DeserializeError(
-                        response.to_string(),
-                        e,
-                        uri.clone(),
-                        status,
-                    )
-                })?;
+                let resp: helix::InnerResponse<Vec<Poll>> =
+                    parse_json(response, true).map_err(|e| {
+                        HelixRequestPatchError::DeserializeError(
+                            response.to_string(),
+                            e,
+                            uri.clone(),
+                            status,
+                        )
+                    })?;
                 EndPoll::Success(resp.data.into_iter().next().ok_or(
                     helix::HelixRequestPatchError::InvalidResponse {
                         reason: "expected at least one element in data",
