@@ -10,6 +10,7 @@
 
 * Added Helix endpoint `Manage Held AutoMod Messages`
 * Added Channel Terms to pubsub `chat_moderator_actions`
+* Added `user-moderation-notifications` topic to pubsub
 * Added `extendsub` to pubsub `channel-subscribe-events-v1`
 * Added `delay` to `Get Channel Information`
 * Added `serde::Serialize` to all helix endpoint return values
