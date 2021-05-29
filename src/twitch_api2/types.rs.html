@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/types.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>types.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/a12f3d9483a9c903dde9ce8cea07daa3453c3198">a12f3d9</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/55920ef96e56968415aaefd432b4a68491c5169f">55920ef</a></p>
 <style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -312,6 +312,124 @@
 <span id="307">307</span>
 <span id="308">308</span>
 <span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
 </pre><pre class="rust">
 <span class="doccomment">//! Twitch types</span>
 <span class="doccomment">//!</span>
@@ -360,6 +478,17 @@
 <span class="doccomment">/// A message ID</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">MsgId</span> <span class="op">=</span> <span class="ident">String</span>;
 
+<span class="doccomment">/// A poll ID</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PollId</span> <span class="op">=</span> <span class="ident">String</span>;
+
+<span class="doccomment">/// A poll choice ID</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PollChoiceId</span> <span class="op">=</span> <span class="ident">String</span>;
+
+<span class="doccomment">/// A prediction ID</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PredictionId</span> <span class="op">=</span> <span class="ident">String</span>;
+
+<span class="doccomment">/// A prediction choice ID</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PredictionOutcomeId</span> <span class="op">=</span> <span class="ident">String</span>;
 <span class="doccomment">/// A game or category as defined by Twitch</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
@@ -374,7 +503,7 @@
 }
 
 <span class="doccomment">/// Subscription tiers</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">field_identifier</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SubscriptionTier</span> {
     <span class="doccomment">/// Tier 1. $4.99</span>
@@ -406,7 +535,7 @@
 }
 
 <span class="doccomment">/// Broadcaster types: &quot;partner&quot;, &quot;affiliated&quot;, or &quot;&quot;.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BroadcasterType</span> {
     <span class="doccomment">/// Partner</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;partner&quot;</span>)]</span>
@@ -431,7 +560,7 @@
 }
 
 <span class="doccomment">/// User types: &quot;staff&quot;, &quot;admin&quot;, &quot;global_mod&quot;, or &quot;&quot;.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UserType</span> {
     <span class="doccomment">/// Staff</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;staff&quot;</span>)]</span>
@@ -621,6 +750,113 @@
         <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;value&quot;</span>)]</span>
         <span class="ident">max_per_user_per_stream</span>: <span class="ident">u32</span>,
     },
+}
+
+<span class="doccomment">/// Poll choice</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PollChoice</span> {
+    <span class="doccomment">/// ID for the choice.</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Text displayed for the choice.</span>
+    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Total number of votes received for the choice across all methods of voting.</span>
+    <span class="kw">pub</span> <span class="ident">votes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Number of votes received via Channel Points.</span>
+    <span class="kw">pub</span> <span class="ident">channel_points_votes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Number of votes received via Bits.</span>
+    <span class="kw">pub</span> <span class="ident">bits_votes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+}
+
+<span class="comment">// FIXME: Poll status has different name depending on if returned from helix or eventsub. See https://twitch.uservoice.com/forums/310213-developers/suggestions/43402176</span>
+<span class="doccomment">/// Status of a poll</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;UPPERCASE&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PollStatus</span> {
+    <span class="doccomment">/// Poll is currently in progress.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;active&quot;</span>)]</span>
+    <span class="ident">Active</span>,
+    <span class="doccomment">/// Poll has reached its ended_at time.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;completed&quot;</span>)]</span>
+    <span class="ident">Completed</span>,
+    <span class="doccomment">/// Poll has been manually terminated before its ended_at time.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;terminated&quot;</span>)]</span>
+    <span class="ident">Terminated</span>,
+    <span class="doccomment">/// Poll is no longer visible on the channel.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;archived&quot;</span>)]</span>
+    <span class="ident">Archived</span>,
+    <span class="doccomment">/// Poll is no longer visible to any user on Twitch.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;moderated&quot;</span>)]</span>
+    <span class="ident">Moderated</span>,
+    <span class="doccomment">/// Something went wrong determining the state.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;invalid&quot;</span>)]</span>
+    <span class="ident">Invalid</span>,
+}
+
+<span class="comment">// FIXME: Prediction status has different name depending on if returned from helix or eventsub. See https://twitch.uservoice.com/forums/310213-developers/suggestions/43402197</span>
+<span class="doccomment">/// Status of the Prediction</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;UPPERCASE&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PredictionStatus</span> {
+    <span class="doccomment">/// A winning outcome has been chosen and the Channel Points have been distributed to the users who guessed the correct outcome.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;resolved&quot;</span>)]</span>
+    <span class="ident">Resolved</span>,
+    <span class="doccomment">/// The Prediction is active and viewers can make predictions.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;active&quot;</span>)]</span>
+    <span class="ident">Active</span>,
+    <span class="doccomment">/// The Prediction has been canceled and the Channel Points have been refunded to participants.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;canceled&quot;</span>)]</span>
+    <span class="ident">Canceled</span>,
+    <span class="doccomment">/// The Prediction has been locked and viewers can no longer make predictions.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;locked&quot;</span>)]</span>
+    <span class="ident">Locked</span>,
+}
+
+<span class="doccomment">/// Outcome for the Prediction</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PredictionOutcome</span> {
+    <span class="doccomment">/// ID for the outcome.</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Text displayed for outcome.</span>
+    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Number of unique users that chose the outcome.</span>
+    <span class="kw">pub</span> <span class="ident">users</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Number of Channel Points used for the outcome.</span>
+    <span class="kw">pub</span> <span class="ident">channel_points</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Array of users who were the top predictors. null if none. Top 10</span>
+    <span class="kw">pub</span> <span class="ident">top_predictors</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PredictionTopPredictors</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Color for the outcome. Valid values: BLUE, PINK</span>
+    <span class="kw">pub</span> <span class="ident">color</span>: <span class="ident">String</span>,
+}
+
+<span class="comment">// FIXME: eventsub adds prefix `user_*`. See https://discord.com/channels/325552783787032576/326772207844065290/842359030252437514</span>
+<span class="doccomment">/// Users who were the top predictors.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PredictionTopPredictors</span> {
+    <span class="doccomment">/// ID of the user.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;user_id&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">UserId</span>,
+    <span class="doccomment">/// Display name of the user.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;user_name&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">DisplayName</span>,
+    <span class="doccomment">/// Login of the user.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;user_login&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">login</span>: <span class="ident">UserName</span>,
+    <span class="doccomment">/// Number of Channel Points used by the user.</span>
+    <span class="kw">pub</span> <span class="ident">channel_points_used</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Number of Channel Points won by the user.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This value is always null in the event payload for Prediction progress and Prediction lock. This value is 0 if the outcome did not win or if the Prediction was canceled and Channel Points were refunded.</span>
+    <span class="kw">pub</span> <span class="ident">channel_points_won</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_api2" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

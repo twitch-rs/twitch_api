@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EndPoll","Return Values for Update CustomReward"]],"struct":[["EndPollBody","Body Parameters for End Poll"],["EndPollRequest","Query Parameters for End Poll"]]});

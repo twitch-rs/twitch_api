@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GetPollsRequest","Query Parameters for Get polls"],["Poll","Return Values for Get polls"]]});

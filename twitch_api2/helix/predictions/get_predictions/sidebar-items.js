@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GetPredictionsRequest","Query Parameters for Get predictions"],["Prediction","Return Values for Get predictions"]]});

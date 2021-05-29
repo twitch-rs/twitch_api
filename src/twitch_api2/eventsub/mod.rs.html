@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/a12f3d9483a9c903dde9ce8cea07daa3453c3198">a12f3d9</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/55920ef96e56968415aaefd432b4a68491c5169f">55920ef</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -628,6 +628,55 @@
 <span id="623">623</span>
 <span id="624">624</span>
 <span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
 </pre><pre class="rust">
 <span class="doccomment">//! Holds serializable EventSub stuff</span>
 <span class="doccomment">//!</span>
@@ -763,6 +812,20 @@
     <span class="ident">ChannelPointsCustomRewardRedemptionUpdateV1</span>(
         <span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">channel::ChannelPointsCustomRewardRedemptionUpdateV1</span><span class="op">&gt;</span>,
     ),
+    <span class="doccomment">/// Channel Poll Begin V1 Event</span>
+    <span class="ident">ChannelPollBeginV1</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">channel::ChannelPollBeginV1</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// Channel Poll Progress V1 Event</span>
+    <span class="ident">ChannelPollProgressV1</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">channel::ChannelPollProgressV1</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// Channel Poll End V1 Event</span>
+    <span class="ident">ChannelPollEndV1</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">channel::ChannelPollEndV1</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// Channel Prediction Begin V1 Event</span>
+    <span class="ident">ChannelPredictionBeginV1</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">channel::ChannelPredictionBeginV1</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// Channel Prediction Progress V1 Event</span>
+    <span class="ident">ChannelPredictionProgressV1</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">channel::ChannelPredictionProgressV1</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// Channel Prediction Lock V1 Event</span>
+    <span class="ident">ChannelPredictionLockV1</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">channel::ChannelPredictionLockV1</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// Channel Prediction End V1 Event</span>
+    <span class="ident">ChannelPredictionEndV1</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">channel::ChannelPredictionEndV1</span><span class="op">&gt;</span>),
     <span class="doccomment">/// Channel Hype Train Begin V1 Event</span>
     <span class="ident">ChannelHypeTrainBeginV1</span>(<span class="ident">NotificationPayload</span><span class="op">&lt;</span><span class="ident">channel::ChannelHypeTrainBeginV1</span><span class="op">&gt;</span>),
     <span class="doccomment">/// Channel Hype Train Progress V1 Event</span>
@@ -965,6 +1028,13 @@
                 <span class="ident">channel::ChannelPointsCustomRewardRemoveV1</span>;
                 <span class="ident">channel::ChannelPointsCustomRewardRedemptionAddV1</span>;
                 <span class="ident">channel::ChannelPointsCustomRewardRedemptionUpdateV1</span>;
+                <span class="ident">channel::ChannelPollBeginV1</span>;
+                <span class="ident">channel::ChannelPollProgressV1</span>;
+                <span class="ident">channel::ChannelPollEndV1</span>;
+                <span class="ident">channel::ChannelPredictionBeginV1</span>;
+                <span class="ident">channel::ChannelPredictionProgressV1</span>;
+                <span class="ident">channel::ChannelPredictionLockV1</span>;
+                <span class="ident">channel::ChannelPredictionEndV1</span>;
                 <span class="ident">channel::ChannelRaidV1</span>;
                 <span class="ident">channel::ChannelHypeTrainBeginV1</span>;
                 <span class="ident">channel::ChannelHypeTrainProgressV1</span>;
@@ -995,6 +1065,13 @@
                 <span class="ident">channel::ChannelPointsCustomRewardRemoveV1</span>;
                 <span class="ident">channel::ChannelPointsCustomRewardRedemptionAddV1</span>;
                 <span class="ident">channel::ChannelPointsCustomRewardRedemptionUpdateV1</span>;
+                <span class="ident">channel::ChannelPollBeginV1</span>;
+                <span class="ident">channel::ChannelPollProgressV1</span>;
+                <span class="ident">channel::ChannelPollEndV1</span>;
+                <span class="ident">channel::ChannelPredictionBeginV1</span>;
+                <span class="ident">channel::ChannelPredictionProgressV1</span>;
+                <span class="ident">channel::ChannelPredictionLockV1</span>;
+                <span class="ident">channel::ChannelPredictionEndV1</span>;
                 <span class="ident">channel::ChannelRaidV1</span>;
                 <span class="ident">channel::ChannelHypeTrainBeginV1</span>;
                 <span class="ident">channel::ChannelHypeTrainProgressV1</span>;
@@ -1120,6 +1197,27 @@
     <span class="doccomment">/// `channel.channel_points_custom_reward_redemption.update`: a redemption of a channel points custom reward has been updated for the specified channel.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.channel_points_custom_reward_redemption.update&quot;</span>)]</span>
     <span class="ident">ChannelPointsCustomRewardRedemptionUpdate</span>,
+    <span class="doccomment">/// `channel.poll.begin`: a poll begins on the specified channel.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.poll.begin&quot;</span>)]</span>
+    <span class="ident">ChannelPollBegin</span>,
+    <span class="doccomment">/// `channel.poll.progress`: a user responds to a poll on the specified channel.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.poll.progress&quot;</span>)]</span>
+    <span class="ident">ChannelPollProgress</span>,
+    <span class="doccomment">/// `channel.poll.end`: a poll ends on the specified channel.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.poll.end&quot;</span>)]</span>
+    <span class="ident">ChannelPollEnd</span>,
+    <span class="doccomment">/// `channel.prediction.begin`: a Prediction begins on the specified channel</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.prediction.begin&quot;</span>)]</span>
+    <span class="ident">ChannelPredictionBegin</span>,
+    <span class="doccomment">/// `channel.prediction.progress`: a user participates in a Prediction on the specified channel.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.prediction.progress&quot;</span>)]</span>
+    <span class="ident">ChannelPredictionProgress</span>,
+    <span class="doccomment">/// `channel.prediction.lock`: a Prediction is locked on the specified channel.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.prediction.lock&quot;</span>)]</span>
+    <span class="ident">ChannelPredictionLock</span>,
+    <span class="doccomment">/// `channel.prediction.end`: a Prediction ends on the specified channel.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.prediction.end&quot;</span>)]</span>
+    <span class="ident">ChannelPredictionEnd</span>,
     <span class="doccomment">/// `channel.raid`: a broadcaster raids another broadcaster’s channel.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.raid&quot;</span>)]</span>
     <span class="ident">ChannelRaid</span>,

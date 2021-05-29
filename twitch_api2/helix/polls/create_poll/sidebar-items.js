@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreatePollBody","Body Parameters for Create Poll"],["CreatePollRequest","Query Parameters for Create Poll"],["NewPollChoice","Choice settings for a poll"]],"type":[["CreatePollResponse","Return Values for Create Poll"]]});

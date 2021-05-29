@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ChannelPollProgressV1","`channel.hype_train.progress`: an user responds to a poll on the specified channel"],["ChannelPollProgressV1Payload","`channel.hype_train.progress` response payload."]]});

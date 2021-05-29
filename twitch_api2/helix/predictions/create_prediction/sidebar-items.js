@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreatePredictionBody","Body Parameters for Create Prediction"],["CreatePredictionRequest","Query Parameters for Create Prediction"],["NewPredictionOutcome","Choice settings for a poll"]],"type":[["CreatePredictionResponse","Return Values for Create Prediction"]]});
