@@ -521,6 +521,7 @@ pub enum Reward {
     /// Reward is a badge
     #[serde(rename = "BADGE")]
     Badge {
+        // FIXME: Is this the same as in get chat badges?
         /// ID of badge
         badge_id: String,
         /// Group ID of badge

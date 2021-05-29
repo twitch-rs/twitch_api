@@ -56,6 +56,13 @@ pub type PredictionId = String;
 
 /// A prediction choice ID
 pub type PredictionOutcomeId = String;
+
+/// A Badge set ID
+pub type BadgeSetId = String;
+
+/// A channel chat badge ID
+pub type ChatBadgeId = String;
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]

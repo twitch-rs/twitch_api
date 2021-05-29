@@ -37,6 +37,7 @@ mod client_ext;
 
 pub mod bits;
 pub mod channels;
+pub mod chat;
 pub mod clips;
 #[cfg(feature = "eventsub")]
 #[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
