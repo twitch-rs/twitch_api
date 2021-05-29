@@ -39,25 +39,9 @@ pub enum UserModerationNotificationsReply {
         /// Identifier of the message
         message_id: types::MsgId,
         /// Current status of the message
-        status: AutomodStatus,
+        status: types::AutomodStatus,
     },
 }
-/// Status of message.
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[serde(rename_all = "UPPERCASE")]
-#[non_exhaustive]
-pub enum AutomodStatus {
-    /// Message has been caught and pending moderation
-    Pending,
-    /// Message has been allowed
-    Allowed,
-    /// Message has been denied
-    Denied,
-    /// Automod message expired in queue
-    Expired,
-}
-
 #[cfg(test)]
 mod tests {
     use super::super::{Response, TopicData};

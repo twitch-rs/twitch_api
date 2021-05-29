@@ -81,6 +81,8 @@ macro_rules! impl_de_ser {
 }
 
 use serde::{Deserialize, Deserializer, Serialize};
+
+pub mod automod_queue;
 pub mod channel_bits;
 pub mod channel_bits_badge;
 #[cfg(feature = "unsupported")]
@@ -135,6 +137,8 @@ pub trait Topic: Serialize + Into<String> {
 #[serde(untagged)]
 #[non_exhaustive]
 pub enum Topics {
+    /// AutoMod flags a message as potentially inappropriate, and when a moderator takes action on a message.
+    AutoModQueue(automod_queue::AutoModQueue),
     /// A user redeems an reward using channel points.
     #[cfg(feature = "unsupported")]
     #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
@@ -189,6 +193,7 @@ impl std::fmt::Display for Topics {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         use self::Topics::*;
         let s = match self {
+            AutoModQueue(t) => t.to_string(),
             #[cfg(feature = "unsupported")]
             CommunityPointsChannelV1(t) => t.to_string(),
             ChannelBitsEventsV2(t) => t.to_string(),
@@ -317,6 +322,14 @@ impl TwitchResponse {
 /// See [TwitchResponse]
 #[derive(Clone, Debug, PartialEq, Serialize)]
 pub enum TopicData {
+    /// Response from the [automod_queue::AutoModQueue] topic.
+    AutoModQueue {
+        /// Topic message
+        topic: automod_queue::AutoModQueue,
+        /// Message reply from topic subscription
+        #[serde(rename = "message")]
+        reply: Box<automod_queue::AutoModQueueReply>,
+    },
     /// Response from the [channel_bits::ChannelBitsEventsV2] topic.
     ChannelBitsEventsV2 {
         /// Topic message
@@ -472,6 +485,10 @@ impl<'de> Deserialize<'de> for TopicData {
             serde::de::Error::custom(format!("could not deserialize topic reply: {}", e))
         })?;
         Ok(match reply.topic {
+            Topics::AutoModQueue(topic) => TopicData::AutoModQueue {
+                topic,
+                reply: parse_json(&reply.message, true).map_err(serde::de::Error::custom)?,
+            },
             #[cfg(feature = "unsupported")]
             Topics::CommunityPointsChannelV1(topic) => TopicData::CommunityPointsChannelV1 {
                 topic,
