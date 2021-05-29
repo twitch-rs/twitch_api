@@ -81,19 +81,19 @@ pub struct ContentClassification {
     ///
     /// * Aggression
     ///   Threatening, inciting, or promoting violence or other harm
-    /// * Bullying
+    /// * Bullying: namecalling
     ///   Name-calling, insults, or antagonization
     /// * Disability
     ///   Demonstrating hatred or prejudice based on perceived or actual mental or physical abilities
     /// * Sexuality, sex, or gender
     ///   Demonstrating hatred or prejudice based on sexual identity, sexual orientation, gender identity, or gender expression
-    /// * Misogyny
+    /// * Misogyny: misogyny
     ///   Demonstrating hatred or prejudice against women, including sexual objectification
-    /// * Race, ethnicity, or religion
+    /// * Race, ethnicity, or religion: racism
     ///   Demonstrating hatred or prejudice based on race, ethnicity, or religion
-    /// * Sex-based terms
+    /// * Sex-based terms: sexwords
     ///   Sexual acts, anatomy
-    /// * Swearing
+    /// * Swearing: swearing
     ///   Swear words, &*^!#@%
     pub category: String,
     /// Level of classification, eg. how strongly related the classification is related according to AutoMod
