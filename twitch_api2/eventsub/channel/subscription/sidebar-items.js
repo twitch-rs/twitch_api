@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["end","A subscription to the specified channel expires."]],"struct":[["ChannelSubscriptionEndV1","`channel.hype_train.end`: a subscription to the specified channel expires."],["ChannelSubscriptionEndV1Payload","`channel.hype_train.end` response payload."]]});
