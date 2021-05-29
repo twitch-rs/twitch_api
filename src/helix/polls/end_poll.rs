@@ -1,6 +1,5 @@
 //! End a poll that is currently active.
 //!
-//! Only rewards created programmatically by the same client_id can be updated.
 //! [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
 //!
 //! # Accessing the endpoint

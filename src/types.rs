@@ -319,7 +319,7 @@ pub enum Max {
     },
 }
 
-/// Poll choices
+/// Poll choice
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]

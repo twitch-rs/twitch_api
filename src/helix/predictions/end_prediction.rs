@@ -1,6 +1,5 @@
 //! End a prediction that is currently active.
 //!
-//! Only rewards created programmatically by the same client_id can be updated.
 //! [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
 //!
 //! # Accessing the endpoint

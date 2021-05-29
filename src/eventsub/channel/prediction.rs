@@ -1,5 +1,5 @@
 #![doc(alias = "channel.prediction")]
-//!  Prediction on the specified channel begins, progresses, locks or ends.
+//! Prediction on the specified channel begins, progresses, locks or ends.
 use super::{EventSubscription, EventType};
 use crate::types;
 use serde::{Deserialize, Serialize};

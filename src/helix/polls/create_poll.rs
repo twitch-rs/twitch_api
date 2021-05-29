@@ -80,7 +80,7 @@ impl CreatePollRequest {
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreatePollBody {
-    /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token. Maximum: 1
+    /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
     /// Question displayed for the poll. Maximum: 60 characters.

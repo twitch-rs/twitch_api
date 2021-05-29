@@ -93,7 +93,6 @@ pub struct CreatePredictionBody {
 
 impl helix::private::SealedSerialize for CreatePredictionBody {}
 
-// FIXME: I'd prefer this to be a Vec<String> on CreatePredictionBody
 /// Choice settings for a poll
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]

@@ -1,5 +1,5 @@
 #![doc(alias = "channel.poll")]
-//! Polls on a specific channel has been begun, ended or progressed.
+//! Poll on a specific channel has been begun, ended or progressed.
 use super::{EventSubscription, EventType};
 use crate::types;
 use serde::{Deserialize, Serialize};
