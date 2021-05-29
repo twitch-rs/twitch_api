@@ -10,6 +10,8 @@ pub mod channel_points_custom_reward_redemption;
 pub mod cheer;
 pub mod follow;
 pub mod hypetrain;
+pub mod poll;
+pub mod prediction;
 pub mod raid;
 pub mod subscribe;
 pub mod unban;
@@ -47,6 +49,20 @@ pub use hypetrain::{ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload};
 pub use hypetrain::{ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload};
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload};
+#[doc(inline)]
+pub use poll::{ChannelPollBeginV1, ChannelPollBeginV1Payload};
+#[doc(inline)]
+pub use poll::{ChannelPollEndV1, ChannelPollEndV1Payload};
+#[doc(inline)]
+pub use poll::{ChannelPollProgressV1, ChannelPollProgressV1Payload};
+#[doc(inline)]
+pub use prediction::{ChannelPredictionBeginV1, ChannelPredictionBeginV1Payload};
+#[doc(inline)]
+pub use prediction::{ChannelPredictionEndV1, ChannelPredictionEndV1Payload};
+#[doc(inline)]
+pub use prediction::{ChannelPredictionLockV1, ChannelPredictionLockV1Payload};
+#[doc(inline)]
+pub use prediction::{ChannelPredictionProgressV1, ChannelPredictionProgressV1Payload};
 #[doc(inline)]
 pub use raid::{ChannelRaidV1, ChannelRaidV1Payload};
 #[doc(inline)]

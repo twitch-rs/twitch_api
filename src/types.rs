@@ -45,6 +45,17 @@ pub type StreamId = String;
 /// A message ID
 pub type MsgId = String;
 
+/// A poll ID
+pub type PollId = String;
+
+/// A poll choice ID
+pub type PollChoiceId = String;
+
+/// A prediction ID
+pub type PredictionId = String;
+
+/// A prediction choice ID
+pub type PredictionOutcomeId = String;
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -59,7 +70,7 @@ pub struct TwitchCategory {
 }
 
 /// Subscription tiers
-#[derive(PartialEq, Eq, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
 #[serde(field_identifier)]
 pub enum SubscriptionTier {
     /// Tier 1. $4.99
@@ -91,7 +102,7 @@ impl Serialize for SubscriptionTier {
 }
 
 /// Broadcaster types: "partner", "affiliated", or "".
-#[derive(PartialEq, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
 pub enum BroadcasterType {
     /// Partner
     #[serde(rename = "partner")]
@@ -116,7 +127,7 @@ impl Serialize for BroadcasterType {
 }
 
 /// User types: "staff", "admin", "global_mod", or "".
-#[derive(PartialEq, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
 pub enum UserType {
     /// Staff
     #[serde(rename = "staff")]
@@ -306,4 +317,111 @@ pub enum Max {
         #[serde(alias = "value")]
         max_per_user_per_stream: u32,
     },
+}
+
+/// Poll choice
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct PollChoice {
+    /// ID for the choice.
+    pub id: String,
+    /// Text displayed for the choice.
+    pub title: String,
+    /// Total number of votes received for the choice across all methods of voting.
+    pub votes: Option<i64>,
+    /// Number of votes received via Channel Points.
+    pub channel_points_votes: Option<i64>,
+    /// Number of votes received via Bits.
+    pub bits_votes: Option<i64>,
+}
+
+// FIXME: Poll status has different name depending on if returned from helix or eventsub. See https://twitch.uservoice.com/forums/310213-developers/suggestions/43402176
+/// Status of a poll
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[serde(rename_all = "UPPERCASE")]
+#[non_exhaustive]
+pub enum PollStatus {
+    /// Poll is currently in progress.
+    #[serde(alias = "active")]
+    Active,
+    /// Poll has reached its ended_at time.
+    #[serde(alias = "completed")]
+    Completed,
+    /// Poll has been manually terminated before its ended_at time.
+    #[serde(alias = "terminated")]
+    Terminated,
+    /// Poll is no longer visible on the channel.
+    #[serde(alias = "archived")]
+    Archived,
+    /// Poll is no longer visible to any user on Twitch.
+    #[serde(alias = "moderated")]
+    Moderated,
+    /// Something went wrong determining the state.
+    #[serde(alias = "invalid")]
+    Invalid,
+}
+
+// FIXME: Prediction status has different name depending on if returned from helix or eventsub. See https://twitch.uservoice.com/forums/310213-developers/suggestions/43402197
+/// Status of the Prediction
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[serde(rename_all = "UPPERCASE")]
+#[non_exhaustive]
+pub enum PredictionStatus {
+    /// A winning outcome has been chosen and the Channel Points have been distributed to the users who guessed the correct outcome.
+    #[serde(alias = "resolved")]
+    Resolved,
+    /// The Prediction is active and viewers can make predictions.
+    #[serde(alias = "active")]
+    Active,
+    /// The Prediction has been canceled and the Channel Points have been refunded to participants.
+    #[serde(alias = "canceled")]
+    Canceled,
+    /// The Prediction has been locked and viewers can no longer make predictions.
+    #[serde(alias = "locked")]
+    Locked,
+}
+
+/// Outcome for the Prediction
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct PredictionOutcome {
+    /// ID for the outcome.
+    pub id: String,
+    /// Text displayed for outcome.
+    pub title: String,
+    /// Number of unique users that chose the outcome.
+    pub users: Option<i64>,
+    /// Number of Channel Points used for the outcome.
+    pub channel_points: Option<i64>,
+    /// Array of users who were the top predictors. null if none. Top 10
+    pub top_predictors: Option<Vec<PredictionTopPredictors>>,
+    /// Color for the outcome. Valid values: BLUE, PINK
+    pub color: String,
+}
+
+// FIXME: eventsub adds prefix `user_*`. See https://discord.com/channels/325552783787032576/326772207844065290/842359030252437514
+/// Users who were the top predictors.
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct PredictionTopPredictors {
+    /// ID of the user.
+    #[serde(alias = "user_id")]
+    pub id: UserId,
+    /// Display name of the user.
+    #[serde(alias = "user_name")]
+    pub name: DisplayName,
+    /// Login of the user.
+    #[serde(alias = "user_login")]
+    pub login: UserName,
+    /// Number of Channel Points used by the user.
+    pub channel_points_used: i64,
+    /// Number of Channel Points won by the user.
+    ///
+    /// This value is always null in the event payload for Prediction progress and Prediction lock. This value is 0 if the outcome did not win or if the Prediction was canceled and Channel Points were refunded.
+    pub channel_points_won: Option<i64>,
 }

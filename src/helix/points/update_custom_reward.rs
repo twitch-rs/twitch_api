@@ -5,7 +5,7 @@
 //!
 //! # Accessing the endpoint
 //!
-//! ## Request: [CreateCustomRewardRequest]
+//! ## Request: [UpdateCustomRewardRequest]
 //!
 //! To use this endpoint, construct an [`UpdateCustomRewardRequest`] with the [`UpdateCustomRewardRequest::builder()`] method.
 //!
