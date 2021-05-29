@@ -17,6 +17,7 @@
 * Added `extendsub` to pubsub `channel-subscribe-events-v1`
 * Added `delay` to `Get Channel Information`
 * Added `serde::Serialize` to all helix endpoint return values
+* Added `channel.subscription.end` to EventSub
 
 ### Changed
 

@@ -14,6 +14,7 @@ pub mod poll;
 pub mod prediction;
 pub mod raid;
 pub mod subscribe;
+pub mod subscription;
 pub mod unban;
 pub mod update;
 
@@ -67,6 +68,8 @@ pub use prediction::{ChannelPredictionProgressV1, ChannelPredictionProgressV1Pay
 pub use raid::{ChannelRaidV1, ChannelRaidV1Payload};
 #[doc(inline)]
 pub use subscribe::{ChannelSubscribeV1, ChannelSubscribeV1Payload};
+#[doc(inline)]
+pub use subscription::{ChannelSubscriptionEndV1, ChannelSubscriptionEndV1Payload};
 #[doc(inline)]
 pub use unban::{ChannelUnbanV1, ChannelUnbanV1Payload};
 #[doc(inline)]

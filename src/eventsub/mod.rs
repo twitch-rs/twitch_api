@@ -162,6 +162,8 @@ pub enum Payload {
     UserAuthorizationRevokeV1(NotificationPayload<user::UserAuthorizationRevokeV1>),
     /// Channel Raid V1 Event
     ChannelRaidV1(NotificationPayload<channel::ChannelRaidV1>),
+    /// Channel Subscription End V1 Event
+    ChannelSubscriptionEndV1(NotificationPayload<channel::ChannelSubscriptionEndV1>),
 }
 
 impl Payload {
@@ -356,6 +358,7 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelPredictionLockV1;
                 channel::ChannelPredictionEndV1;
                 channel::ChannelRaidV1;
+                channel::ChannelSubscriptionEndV1;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
                 channel::ChannelHypeTrainEndV1;
@@ -393,6 +396,7 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelPredictionLockV1;
                 channel::ChannelPredictionEndV1;
                 channel::ChannelRaidV1;
+                channel::ChannelSubscriptionEndV1;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
                 channel::ChannelHypeTrainEndV1;
@@ -541,6 +545,9 @@ pub enum EventType {
     /// `channel.raid`: a broadcaster raids another broadcaster’s channel.
     #[serde(rename = "channel.raid")]
     ChannelRaid,
+    /// `channel.subscription.end`: a subscription to the specified channel expires.
+    #[serde(rename = "channel.subscription.end")]
+    ChannelSubscriptionEnd,
     /// `channel.hype_train.begin`: a hype train begins on the specified channel.
     #[serde(rename = "channel.hype_train.begin")]
     ChannelHypeTrainBegin,
