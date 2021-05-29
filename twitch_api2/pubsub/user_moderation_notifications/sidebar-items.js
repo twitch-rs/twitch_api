@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AutomodStatus","Status of message."],["UserModerationNotificationsReply","Reply from [UserModerationNotifications]"]],"struct":[["UserModerationNotifications","A user follows the channel"]]});
