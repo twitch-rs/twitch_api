@@ -432,3 +432,19 @@ pub struct PredictionTopPredictors {
     /// This value is always null in the event payload for Prediction progress and Prediction lock. This value is 0 if the outcome did not win or if the Prediction was canceled and Channel Points were refunded.
     pub channel_points_won: Option<i64>,
 }
+
+/// Status of a message that is or was in AutoMod queue
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[serde(rename_all = "UPPERCASE")]
+#[non_exhaustive]
+pub enum AutomodStatus {
+    /// Message has been caught and pending moderation
+    Pending,
+    /// Message has been allowed
+    Allowed,
+    /// Message has been denied
+    Denied,
+    /// Automod message expired in queue
+    Expired,
+}
