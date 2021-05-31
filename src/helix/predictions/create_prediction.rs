@@ -166,6 +166,7 @@ impl RequestPost for CreatePredictionRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

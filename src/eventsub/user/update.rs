@@ -39,6 +39,7 @@ pub struct UserUpdateV1Payload {
     pub user_name: types::DisplayName,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r#"

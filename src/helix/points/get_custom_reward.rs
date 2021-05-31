@@ -120,6 +120,7 @@ impl Request for GetCustomRewardRequest {
 
 impl RequestGet for GetCustomRewardRequest {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

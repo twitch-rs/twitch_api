@@ -71,6 +71,7 @@ pub struct ChannelPointsCustomRewardRemoveV1Payload {
     pub title: String,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     // FIXME: Twitch reee. The condition `reward_id` is documented as a string, but in example is int

@@ -78,6 +78,7 @@ impl Request for GetTeamsRequest {
 
 impl RequestGet for GetTeamsRequest {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

@@ -213,6 +213,7 @@ impl RequestPatch for UpdateCustomRewardRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

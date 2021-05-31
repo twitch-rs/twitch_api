@@ -67,6 +67,7 @@ impl Request for GetStreamTagsRequest {
 
 impl RequestGet for GetStreamTagsRequest {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

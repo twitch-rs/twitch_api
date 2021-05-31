@@ -41,6 +41,7 @@ pub struct StreamOnlineV1Payload {
     pub started_at: types::Timestamp,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r#"

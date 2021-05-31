@@ -44,6 +44,7 @@ pub struct ChannelPredictionLockV1Payload {
     pub title: String,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     // FIXME: example has comments and trailing commas

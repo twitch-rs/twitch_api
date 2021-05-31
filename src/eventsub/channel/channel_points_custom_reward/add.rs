@@ -69,6 +69,7 @@ pub struct ChannelPointsCustomRewardAddV1Payload {
     pub title: String,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r##"

@@ -50,6 +50,7 @@ pub struct ChannelHypeTrainBeginV1Payload {
     pub total: i64,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r##"

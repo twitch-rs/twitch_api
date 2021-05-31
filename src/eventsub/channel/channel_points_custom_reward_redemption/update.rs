@@ -53,6 +53,7 @@ pub struct ChannelPointsCustomRewardRedemptionUpdateV1Payload {
     pub user_input: String,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r##"

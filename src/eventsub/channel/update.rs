@@ -44,6 +44,7 @@ pub struct ChannelUpdateV1Payload {
     pub is_mature: bool,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     // FIXME: https://github.com/twitchdev/issues/issues/268

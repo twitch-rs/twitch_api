@@ -51,7 +51,7 @@ pub struct ChannelBanV1Payload {
     /// Indicates whether the ban is permanent (true) or a timeout (false). If true, ends_at will be null.
     pub is_permanent: bool,
 }
-
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r#"

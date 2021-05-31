@@ -130,6 +130,7 @@ impl helix::Paginated for GetHypeTrainEventsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.cursor = cursor }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

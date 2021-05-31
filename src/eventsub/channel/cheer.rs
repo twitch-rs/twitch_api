@@ -46,6 +46,7 @@ pub struct ChannelCheerV1Payload {
     pub user_name: Option<types::DisplayName>,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r#"

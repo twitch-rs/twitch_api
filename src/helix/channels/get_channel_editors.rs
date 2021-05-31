@@ -77,6 +77,7 @@ impl Request for GetChannelEditorsRequest {
 
 impl RequestGet for GetChannelEditorsRequest {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

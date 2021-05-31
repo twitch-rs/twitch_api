@@ -103,6 +103,7 @@ impl RequestDelete for DeleteUserFollowsRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

@@ -79,6 +79,7 @@ impl Request for GetChannelTeamsRequest {
 
 impl RequestGet for GetChannelTeamsRequest {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

@@ -45,6 +45,7 @@ pub struct ChannelRaidV1Payload {
     pub viewers: i64,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r#"

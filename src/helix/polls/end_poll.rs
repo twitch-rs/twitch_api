@@ -167,6 +167,7 @@ impl RequestPatch for EndPollRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

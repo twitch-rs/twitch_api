@@ -41,7 +41,7 @@ pub struct ChannelFollowV1Payload {
     /// RFC3339 timestamp of when the follow occurred.
     pub followed_at: types::Timestamp,
 }
-
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r#"
