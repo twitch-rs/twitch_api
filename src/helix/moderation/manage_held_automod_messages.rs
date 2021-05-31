@@ -157,6 +157,7 @@ impl RequestPost for ManageHeldAutoModMessagesRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

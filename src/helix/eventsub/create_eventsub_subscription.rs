@@ -177,6 +177,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use crate::eventsub::{self, user::UserUpdateV1};

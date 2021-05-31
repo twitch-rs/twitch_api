@@ -59,6 +59,7 @@ impl RequestDelete for DeleteEventSubSubscriptionRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

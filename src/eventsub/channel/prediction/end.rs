@@ -48,6 +48,7 @@ pub struct ChannelPredictionEndV1Payload {
     pub winning_outcome_id: types::PredictionOutcomeId,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     // FIXME: example has comments and trailing commas

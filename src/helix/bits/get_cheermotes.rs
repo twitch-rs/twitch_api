@@ -175,6 +175,7 @@ impl Request for GetCheermotesRequest {
 
 impl RequestGet for GetCheermotesRequest {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

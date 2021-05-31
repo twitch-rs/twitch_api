@@ -113,6 +113,7 @@ impl RequestGet for GetChannelInformationRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

@@ -103,6 +103,7 @@ impl RequestDelete for DeleteCustomRewardRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

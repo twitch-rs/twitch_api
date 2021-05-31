@@ -66,6 +66,7 @@ impl Request for GetChannelChatBadgesRequest {
 
 impl RequestGet for GetChannelChatBadgesRequest {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

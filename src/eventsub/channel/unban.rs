@@ -46,6 +46,7 @@ pub struct ChannelUnbanV1Payload {
     pub moderator_user_name: types::DisplayName,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r#"

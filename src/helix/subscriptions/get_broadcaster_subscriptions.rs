@@ -101,6 +101,7 @@ impl helix::Paginated for GetBroadcasterSubscriptionsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

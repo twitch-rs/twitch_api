@@ -165,6 +165,7 @@ impl RequestPatch for UpdateRedemptionStatusRequest {
 
 impl helix::private::SealedSerialize for UpdateRedemptionStatusBody {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

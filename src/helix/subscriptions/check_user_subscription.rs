@@ -118,6 +118,7 @@ impl RequestGet for CheckUserSubscriptionRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request1() {
     use helix::*;
@@ -152,6 +153,7 @@ fn test_request1() {
     dbg!(CheckUserSubscriptionRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }
 
+#[cfg(test)]
 #[test]
 fn test_request2() {
     use helix::*;

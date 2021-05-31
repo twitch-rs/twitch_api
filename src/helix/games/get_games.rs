@@ -69,6 +69,7 @@ impl Request for GetGamesRequest {
 
 impl RequestGet for GetGamesRequest {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

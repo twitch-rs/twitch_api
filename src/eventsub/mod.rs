@@ -622,9 +622,12 @@ pub struct EventSubSubscription {
     pub version: String,
 }
 
-#[test]
-fn test_verification_response() {
-    let body = r#"{
+#[cfg(test)]
+mod test {
+
+    #[test]
+    fn test_verification_response() {
+        let body = r#"{
         "challenge": "pogchamp-kappa-360noscope-vohiyo",
         "subscription": {
             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
@@ -643,16 +646,16 @@ fn test_verification_response() {
         }
     }"#;
 
-    let val = dbg!(crate::eventsub::Payload::parse(&body).unwrap());
-    crate::tests::roundtrip(&val)
-}
+        let val = dbg!(crate::eventsub::Payload::parse(&body).unwrap());
+        crate::tests::roundtrip(&val)
+    }
 
-#[test]
-fn verify_request() {
-    use http::header::{HeaderMap, HeaderName, HeaderValue};
+    #[test]
+    fn verify_request() {
+        use http::header::{HeaderMap, HeaderName, HeaderValue};
 
-    let secret = b"secretabcd";
-    #[rustfmt::skip]
+        let secret = b"secretabcd";
+        #[rustfmt::skip]
     let headers: HeaderMap = vec![
         ("Content-Length", "458"),
         ("Content-Type", "application/json"),
@@ -672,10 +675,11 @@ fn verify_request() {
         })
         .collect();
 
-    let body = r#"{"subscription":{"id":"ae2ff348-e102-16be-a3eb-6830c1bf38d2","status":"enabled","type":"channel.follow","version":"1","condition":{"broadcaster_user_id":"44429626"},"transport":{"method":"webhook","callback":"null"},"created_at":"2021-02-19T23:47:00.7621315Z"},"event":{"user_id":"28408015","user_login":"testFromUser","user_name":"testFromUser","broadcaster_user_id":"44429626","broadcaster_user_login":"44429626","broadcaster_user_name":"testBroadcaster"}}"#;
-    let mut request = http::Request::builder();
-    let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
-    let request = request.body(body.as_bytes().to_vec()).unwrap();
-    dbg!(&body);
-    assert!(crate::eventsub::Payload::verify_payload(&request, secret));
+        let body = r#"{"subscription":{"id":"ae2ff348-e102-16be-a3eb-6830c1bf38d2","status":"enabled","type":"channel.follow","version":"1","condition":{"broadcaster_user_id":"44429626"},"transport":{"method":"webhook","callback":"null"},"created_at":"2021-02-19T23:47:00.7621315Z"},"event":{"user_id":"28408015","user_login":"testFromUser","user_name":"testFromUser","broadcaster_user_id":"44429626","broadcaster_user_login":"44429626","broadcaster_user_name":"testBroadcaster"}}"#;
+        let mut request = http::Request::builder();
+        let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
+        let request = request.body(body.as_bytes().to_vec()).unwrap();
+        dbg!(&body);
+        assert!(crate::eventsub::Payload::verify_payload(&request, secret));
+    }
 }

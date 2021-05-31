@@ -171,6 +171,7 @@ impl RequestPatch for EndPredictionRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

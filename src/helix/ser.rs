@@ -938,6 +938,7 @@ impl ser::Serializer for ValueSerializer {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn serialize_query() {
     #[derive(serde::Serialize)]

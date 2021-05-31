@@ -63,6 +63,7 @@ impl Request for GetGlobalChatBadgesRequest {
 
 impl RequestGet for GetGlobalChatBadgesRequest {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

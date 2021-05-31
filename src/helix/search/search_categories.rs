@@ -104,6 +104,7 @@ impl helix::Paginated for SearchCategoriesRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
@@ -142,6 +143,7 @@ fn test_request() {
     dbg!(SearchCategoriesRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }
 
+#[cfg(test)]
 #[test]
 fn test_request_null() {
     use helix::*;

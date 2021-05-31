@@ -41,6 +41,7 @@ pub struct ChannelSubscriptionEndV1Payload {
     pub user_name: types::UserName,
 }
 
+#[cfg(test)]
 #[test]
 fn parse_payload() {
     let payload = r##"

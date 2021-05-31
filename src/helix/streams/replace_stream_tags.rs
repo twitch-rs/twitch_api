@@ -135,6 +135,7 @@ impl RequestPut for ReplaceStreamTagsRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
