@@ -11,7 +11,7 @@
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //!
 //! let request = GetUsersRequest::builder()
-//!     .login(vec!["justintv123".to_string()])
+//!     .login(vec!["justintv123".into()])
 //!     .build();
 //!
 //! // Send it however you want
@@ -806,7 +806,8 @@ struct Pagination {
 }
 
 /// A cursor is a pointer to the current "page" in the twitch api pagination
-pub type Cursor = String;
+#[aliri_braid::braid(serde)]
+pub struct Cursor;
 
 /// Errors for [`HelixClient::req_get`] and similar functions.
 #[derive(thiserror::Error, Debug)]

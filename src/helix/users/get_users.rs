@@ -8,8 +8,8 @@
 //! ```rust, no_run
 //! use twitch_api2::helix::users::get_users;
 //! let request = get_users::GetUsersRequest::builder()
-//!     .id(vec!["1234".to_string()])
-//!     .login(vec!["justintvfan".to_string()])
+//!     .id(vec!["1234".into()])
+//!     .login(vec!["justintvfan".into()])
 //!     .build();
 //! ```
 //!
@@ -26,8 +26,8 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let request = get_users::GetUsersRequest::builder()
-//!     .id(vec!["1234".to_string()])
-//!     .login(vec!["justintvfan".to_string()])
+//!     .id(vec!["1234".into()])
+//!     .login(vec!["justintvfan".into()])
 //!     .build();
 //! let response: Vec<get_users::User> = client.req_get(request, &token).await?.data;
 //! # Ok(())
@@ -102,7 +102,7 @@ impl RequestGet for GetUsersRequest {}
 fn test_request() {
     use helix::*;
     let req = GetUsersRequest::builder()
-        .id(vec!["44322889".to_string()])
+        .id(vec!["44322889".into()])
         .build();
 
     // From twitch docs

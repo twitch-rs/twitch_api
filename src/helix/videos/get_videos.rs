@@ -10,7 +10,7 @@
 //! ```rust, no_run
 //! use twitch_api2::helix::videos::get_videos;
 //! let request = get_videos::GetVideosRequest::builder()
-//!     .user_id("1234".to_string())
+//!     .user_id(Some("1234".into()))
 //!     .build();
 //! ```
 //!
@@ -27,7 +27,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
 //! let request = get_videos::GetVideosRequest::builder()
-//!     .user_id("1234".to_string())
+//!     .user_id(Some("1234".into()))
 //!     .build();
 //! let response: Vec<get_videos::Video> = client.req_get(request, &token).await?.data;
 //! # Ok(())
@@ -154,7 +154,7 @@ impl helix::Paginated for GetVideosRequest {
 fn test_request() {
     use helix::*;
     let req = GetVideosRequest::builder()
-        .id(vec!["234482848".to_string()])
+        .id(vec!["234482848".into()])
         .build();
 
     // From twitch docs

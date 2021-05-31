@@ -11,7 +11,7 @@
 //! let client = HelixClient::new();
 //! # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
 //! let req = GetCheermotesRequest::builder()
-//!     .broadcaster_id("1234".to_string())
+//!     .broadcaster_id(Some("1234".into()))
 //!     .build();
 //!
 //! println!("{:?}", &client.req_get(req, &token).await?.data);

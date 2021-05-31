@@ -31,8 +31,11 @@ async fn main() {
     // Note: This will fetch chatters in the current most viewed stream, might spam your console a bit.
     println!("GetStreams:\n\t{:?}", response.data);
     if let Some(stream) = streams.get(0) {
-        println!("{:?}", client_tmi.get_chatters(stream).await);
-    } else if let Some(stream) = response.data.get(0).map(|stream| &stream.user_name) {
+        println!(
+            "{:?}",
+            client_tmi.get_chatters(stream.as_str().into()).await
+        );
+    } else if let Some(stream) = response.data.get(0).map(|stream| &stream.user_login) {
         println!("{:?}", client_tmi.get_chatters(&stream).await);
     }
 }

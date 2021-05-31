@@ -57,6 +57,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "aliri_braid"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6d5c91a9f7d5ae226cea6a2c5b4458dd9e6bcfb031ff9bd04515a1b0e24904d3"
+dependencies = [
+ "aliri_braid_impl",
+]
+
+[[package]]
+name = "aliri_braid_impl"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7b365bef64fd4113cf54ab806b7b0dff7492e9c1d29359de4091e0e6d596bcac"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "anyhow"
 version = "1.0.40"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1981,6 +2001,7 @@ checksum = "59547bce71d9c38b83d9c0e92b6066c4253371f15005def0c30d9657f50c7642"
 name = "twitch_api2"
 version = "0.5.0"
 dependencies = [
+ "aliri_braid",
  "async-trait",
  "displaydoc",
  "dotenv",

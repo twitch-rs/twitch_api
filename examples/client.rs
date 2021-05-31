@@ -36,7 +36,10 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     let client = Foo::default();
 
     let req = GetStreamsRequest::builder()
-        .user_login(vec![args.next().expect("please provide an username")])
+        .user_login(vec![args
+            .next()
+            .expect("please provide an username")
+            .into()])
         .build();
     client.client.helix.clone_client();
     let response = client.client.helix.req_get(req, &token).await?;

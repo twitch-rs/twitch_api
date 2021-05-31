@@ -11,7 +11,7 @@
 //! ```rust, no_run
 //! use twitch_api2::helix::bits::get_cheermotes;
 //! let request = get_cheermotes::GetCheermotesRequest::builder()
-//!     .broadcaster_id(Some("1234".to_string()))
+//!     .broadcaster_id(Some("1234".into()))
 //!     .build();
 //! // Without broadcaster ID
 //! let request = get_cheermotes::GetCheermotesRequest::builder().build();
@@ -180,7 +180,7 @@ impl RequestGet for GetCheermotesRequest {}
 fn test_request() {
     use helix::*;
     let req = GetCheermotesRequest::builder()
-        .broadcaster_id("1234".to_string())
+        .broadcaster_id(Some("1234".into()))
         .build();
 
     // From api call

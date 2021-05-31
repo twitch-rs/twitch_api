@@ -12,7 +12,7 @@
 //! let client = HelixClient::new();
 //! # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
 //! let req = GetVideosRequest::builder()
-//!     .id(vec!["1337".to_string()])
+//!     .id(vec!["1337".into()])
 //!     .build();
 //!
 //! println!("{:?}", &client.req_get(req, &token).await?.data);

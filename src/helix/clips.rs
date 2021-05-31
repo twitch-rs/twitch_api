@@ -11,7 +11,7 @@
 //! let client = HelixClient::new();
 //! # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
 //! let req = GetClipsRequest::builder()
-//!     .game_id("1234".to_string())
+//!     .game_id(Some("1234".into()))
 //!     .first(100) // max 100, 20 if left unspecified
 //!     .build();
 //!
