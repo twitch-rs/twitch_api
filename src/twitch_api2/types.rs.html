@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/types.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>types.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/0317d2ae6e81d4c35573b099fe18f0682ee7af86">0317d2a</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/1504931717472aaef13124382853d4928a409ebd">1504931</a></p>
 <style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
@@ -453,6 +453,28 @@
 <span id="448">448</span>
 <span id="449">449</span>
 <span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
 </pre><pre class="rust">
 <span class="doccomment">//! Twitch types</span>
 <span class="doccomment">//!</span>
@@ -460,64 +482,86 @@
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="doccomment">/// A user ID.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">UserId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UserId</span>;
 
 <span class="doccomment">/// A reward ID.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">RewardId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RewardId</span>;
 
 <span class="doccomment">/// A reward redemption ID.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">RedemptionId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RedemptionId</span>;
 
 <span class="doccomment">/// A username, also specified as login. Should not be capitalized.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">UserName</span> <span class="op">=</span> <span class="ident">Nickname</span>;
 
+<span class="doccomment">/// A reference to a borrowed [`UserName`], also specified as login. Should not be capitalized.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">UserNameRef</span> <span class="op">=</span> <span class="ident">NicknameRef</span>;
+
 <span class="doccomment">/// A users display name</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">DisplayName</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DisplayName</span>;
 
 <span class="doccomment">/// A nickname, not capitalized.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Nickname</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Nickname</span>;
 
 <span class="doccomment">/// RFC3339 timestamp</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Timestamp</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Timestamp</span>;
 
 <span class="doccomment">/// A game or category ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CategoryId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CategoryId</span>;
 
 <span class="doccomment">/// A tag ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TagId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TagId</span>;
 
 <span class="doccomment">/// A video ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">VideoId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VideoId</span>;
 
 <span class="doccomment">/// An EventSub Subscription ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">EventSubId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EventSubId</span>;
 
 <span class="doccomment">/// A Team ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TeamId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TeamId</span>;
 
 <span class="doccomment">/// A Stream ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">StreamId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StreamId</span>;
 
 <span class="doccomment">/// A message ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">MsgId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MsgId</span>;
 
 <span class="doccomment">/// A poll ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PollId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PollId</span>;
 
 <span class="doccomment">/// A poll choice ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PollChoiceId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PollChoiceId</span>;
 
 <span class="doccomment">/// A prediction ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PredictionId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PredictionId</span>;
 
 <span class="doccomment">/// A prediction choice ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PredictionOutcomeId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PredictionOutcomeId</span>;
 
 <span class="doccomment">/// A Badge set ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BadgeSetId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BadgeSetId</span>;
 
 <span class="doccomment">/// A channel chat badge ID</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ChatBadgeId</span> <span class="op">=</span> <span class="ident">String</span>;
+<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChatBadgeId</span>;
 
 <span class="doccomment">/// A game or category as defined by Twitch</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
