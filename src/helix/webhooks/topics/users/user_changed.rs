@@ -22,6 +22,7 @@ pub struct UserChangedTopic {
     pub id: types::UserId,
 }
 
+#[cfg(test)]
 #[test]
 fn test_topic() {
     use crate::helix::webhooks::hub::*;

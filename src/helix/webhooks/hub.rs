@@ -219,6 +219,7 @@ impl<T: Topic> RequestPost for WebhookHubRequest<T> {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

@@ -96,6 +96,7 @@ impl RequestDelete for UnblockUserRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

@@ -98,6 +98,7 @@ impl Request for GetUsersRequest {
 
 impl RequestGet for GetUsersRequest {}
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

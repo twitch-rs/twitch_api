@@ -97,6 +97,7 @@ impl RequestDelete for DeleteVideosRequest {
     }
 }
 
+#[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;

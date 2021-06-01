@@ -29,6 +29,7 @@ pub struct SubscriptionEventsTopic {
 #[inline(always)]
 const fn one() -> u32 { 1 }
 
+#[cfg(test)]
 #[test]
 fn test_topic() {
     use crate::helix::webhooks::hub::*;
