@@ -31,7 +31,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     let broadcaster_id = token.user_id.as_str();
 
-    let client = HelixClient::with_client(surf::Client::new());
+    let client: HelixClient<surf::Client> = HelixClient::new();
 
     let req = twitch_api2::helix::moderation::CheckAutoModStatusRequest::builder()
         .broadcaster_id(broadcaster_id)

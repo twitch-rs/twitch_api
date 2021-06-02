@@ -30,7 +30,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     .await
     .unwrap();
 
-    let client: HelixClient<'static, reqwest::Client> = HelixClient::new();
+    let client: HelixClient<reqwest::Client> = HelixClient::new();
 
     let streams = client.get_followed_streams(&token).await?;
     let games = client

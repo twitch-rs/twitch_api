@@ -18,7 +18,7 @@ async fn main() {
         return;
     };
 
-    let client = TmiClient::<'_, surf::Client>::new();
+    let client: TmiClient<surf::Client> = TmiClient::new();
 
     let response = client
         .get_hosts(true, HostsRequestId::Host(channel_id))

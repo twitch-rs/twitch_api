@@ -24,10 +24,12 @@
 * Deprecated specific term actions in `ChatModeratorActionsReply`, replacing them with `ChannelTermsAction`
 * Deprecated `Vip` action in `ChatModeratorActionsReply`, replacing it with `VipAdded`
 * Removed some derived impls and fixed builders that assumed a default wrongly.
+* `HelixClient::new`, `TmiClient::new` and `TwitchClient::new` now give a more specified client.
 
 ### Removed
 
 * Removed enum variants for a lot of error states in helix endpoint responses. Most of these are returned by `HelixRequest_Error::Error`
+
 ## [v0.5.0] - 2021-05-08
 
 [Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.4.1...v0.5.0)
