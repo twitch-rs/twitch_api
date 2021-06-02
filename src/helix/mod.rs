@@ -135,8 +135,8 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
 
     /// Create a new [`HelixClient`] with a default [`HttpClient`][crate::HttpClient]
     pub fn new() -> HelixClient<'a, C>
-    where C: Default {
-        let client = C::default();
+    where C: crate::client::ClientDefault<'a> {
+        let client = C::default_client();
         HelixClient::with_client(client)
     }
 
@@ -278,10 +278,10 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
 }
 
 #[cfg(feature = "client")]
-impl<'a, C> Default for HelixClient<'a, C>
-where C: crate::HttpClient<'a> + Default
+impl<C: crate::HttpClient<'static> + crate::client::ClientDefault<'static>> Default
+    for HelixClient<'static, C>
 {
-    fn default() -> HelixClient<'a, C> { HelixClient::new() }
+    fn default() -> Self { Self::new() }
 }
 
 /// Deserialize "" as <T as Default>::Default

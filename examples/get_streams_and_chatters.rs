@@ -1,5 +1,5 @@
-use twitch_api2::TmiClient;
-use twitch_api2::{helix::streams::GetStreamsRequest, HelixClient};
+use twitch_api2::helix::streams::GetStreamsRequest;
+use twitch_api2::TwitchClient;
 use twitch_oauth2::{AccessToken, UserToken};
 
 #[tokio::main]
@@ -19,23 +19,21 @@ async fn main() {
     .await
     .unwrap();
 
-    let client = reqwest::Client::new();
-    let client_tmi = TmiClient::with_client(client.clone());
-    let client_helix = HelixClient::with_client(client);
+    let client: TwitchClient<surf::Client> = TwitchClient::new();
 
     let streams: Vec<String> = args.collect();
     let req = GetStreamsRequest::builder().build();
 
-    let response = client_helix.req_get(req, &token).await.unwrap();
+    let response = client.helix.req_get(req, &token).await.unwrap();
 
     // Note: This will fetch chatters in the current most viewed stream, might spam your console a bit.
     println!("GetStreams:\n\t{:?}", response.data);
     if let Some(stream) = streams.get(0) {
         println!(
             "{:?}",
-            client_tmi.get_chatters(stream.as_str().into()).await
+            client.tmi.get_chatters(stream.as_str().into()).await
         );
     } else if let Some(stream) = response.data.get(0).map(|stream| &stream.user_login) {
-        println!("{:?}", client_tmi.get_chatters(&stream).await);
+        println!("{:?}", client.tmi.get_chatters(&stream).await);
     }
 }

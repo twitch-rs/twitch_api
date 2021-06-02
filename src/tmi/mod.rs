@@ -31,7 +31,7 @@ use serde::{Deserialize, Serialize};
 /// See [`HttpClient`][crate::HttpClient] for implemented http clients, you can also define your own if needed.
 #[cfg(all(feature = "client", feature = "tmi"))]
 #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "tmi"))))] // FIXME: This doc_cfg does nothing
-#[derive(Default, Clone)]
+#[derive(Clone)]
 pub struct TmiClient<'a, C: crate::HttpClient<'a>> {
     client: C,
     _pd: std::marker::PhantomData<&'a ()>,
@@ -39,18 +39,19 @@ pub struct TmiClient<'a, C: crate::HttpClient<'a>> {
 
 #[cfg(all(feature = "tmi", feature = "client"))]
 impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
-    /// Create a new client with a default
-    pub fn new() -> TmiClient<'a, C>
-    where C: Default {
-        TmiClient::with_client(C::default())
-    }
-
-    /// Create a new [`TmiClient`] with an existing [`HttpClient`][crate::HttpClient]
+    /// Create a new client with an existing client
     pub fn with_client(client: C) -> TmiClient<'a, C> {
         TmiClient {
             client,
             _pd: std::marker::PhantomData::default(),
         }
+    }
+
+    /// Create a new [`TmiClient`] with a default [`HttpClient`][crate::HttpClient]
+    pub fn new() -> TmiClient<'a, C>
+    where C: crate::client::ClientDefault<'a> {
+        let client = C::default_client();
+        TmiClient::with_client(client)
     }
 
     /// Retrieve a clone of the [`HttpClient`][crate::HttpClient] inside this [`TmiClient`]
@@ -126,6 +127,13 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
             .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
         crate::parse_json(text, true).map_err(Into::into)
     }
+}
+
+#[cfg(feature = "client")]
+impl<C: crate::HttpClient<'static> + crate::client::ClientDefault<'static>> Default
+    for TmiClient<'static, C>
+{
+    fn default() -> Self { Self::new() }
 }
 
 /// Returned by TMI at `https://tmi.twitch.tv/group/user/{broadcaster}/chatters`

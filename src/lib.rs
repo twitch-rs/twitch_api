@@ -165,7 +165,7 @@ pub static TWITCH_PUBSUB_URL: &str = "wss://pubsub-edge.twitch.tv";
     nightly,
     doc(cfg(all(feature = "client", any(feature = "helix", feature = "tmi"))))
 )]
-#[derive(Clone, Default)]
+#[derive(Clone)]
 #[non_exhaustive]
 pub struct TwitchClient<'a, C>
 where C: HttpClient<'a> {
@@ -180,15 +180,17 @@ where C: HttpClient<'a> {
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
 impl<C: HttpClient<'static>> TwitchClient<'static, C> {
     /// Create a new [`TwitchClient`]
-    #[cfg(all(feature = "helix", feature = "tmi"))]
+    #[cfg(any(feature = "helix", feature = "tmi"))]
     pub fn new() -> TwitchClient<'static, C>
-    where C: Clone + Default {
-        let helix = HelixClient::new();
-        TwitchClient {
-            tmi: TmiClient::with_client(helix.clone_client()),
-            helix,
-        }
+    where C: Clone + client::ClientDefault<'static> {
+        let client = C::default_client();
+        Self::with_client(client)
     }
+}
+
+#[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
+impl<C: HttpClient<'static> + client::ClientDefault<'static>> Default for TwitchClient<'static, C> {
+    fn default() -> Self { Self::new() }
 }
 
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
@@ -201,12 +203,12 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
     #[cfg(any(feature = "helix", feature = "tmi"))]
     pub fn with_client(client: C) -> TwitchClient<'a, C>
     where C: Clone {
-        let helix = HelixClient::with_client(client);
+        // FIXME: This Clone is not used when only using one of the endpoints
         TwitchClient {
             #[cfg(feature = "tmi")]
-            tmi: TmiClient::with_client(helix.clone_client()),
+            tmi: TmiClient::with_client(client.clone()),
             #[cfg(feature = "helix")]
-            helix,
+            helix: HelixClient::with_client(client),
         }
     }
 }

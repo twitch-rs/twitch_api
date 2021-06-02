@@ -54,8 +54,14 @@
 //! See the source of this module for the implementation of [`Client`] for [surf](https://crates.io/crates/surf) and [reqwest](https://crates.io/crates/reqwest) if you need inspiration.
 //!
 
+use std::convert::TryInto;
 use std::error::Error;
 use std::future::Future;
+use std::str::FromStr;
+
+/// The User-Agent `product` of this crate.
+pub static TWITCH_API2_USER_AGENT: &str =
+    concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"),);
 
 /// A boxed future, mimics `futures::future::BoxFuture`
 pub type BoxedFuture<'a, T> = std::pin::Pin<Box<dyn Future<Output = T> + Send + 'a>>;
@@ -72,6 +78,30 @@ pub trait Client<'a>: Send + 'a {
     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, <Self as Client>::Error>>;
 }
 
+/// A specific client default for setting some sane defaults for API calls and oauth2 usage
+pub trait ClientDefault<'a>: Clone + Sized {
+    /// Errors that can happen when assembling the client
+    type Error: std::error::Error + Send + Sync + 'static;
+    /// Construct [`Self`] with sane defaults for API calls and oauth2.
+    fn default_client() -> Self {
+        Self::default_client_with_name(None)
+            .expect("a new twitch_api2 client without an extra product should never fail")
+    }
+
+    /// Constructs [`Self`] with sane defaults for API calls and oauth2 and setting user-agent to include another product
+    ///
+    /// Specifically, one should
+    ///
+    /// * Set User-Agent to `{product} twitch_api2/{version_of_twitch_api2}` (According to RFC7231)
+    ///   See [`TWITCH_API2_USER_AGENT`] for the product of this crate
+    /// * Disallow redirects
+    ///
+    /// # Notes
+    ///
+    /// When the product name is none, this function should never fail. This should be ensured with tests.
+    fn default_client_with_name(product: Option<http::HeaderValue>) -> Result<Self, Self::Error>;
+}
+
 // This makes errors very muddy, preferably we'd actually use rustc_on_unimplemented, but that is highly not recommended (and doesn't work 100% for me at least)
 // impl<'a, F, R, E> Client<'a> for F
 // where
@@ -86,10 +116,10 @@ pub trait Client<'a>: Send + 'a {
 //     }
 // }
 
-#[cfg(all(feature = "reqwest", feature = "client"))]
+#[cfg(feature = "reqwest")]
 use reqwest::Client as ReqwestClient;
 
-#[cfg(all(feature = "reqwest", feature = "client"))]
+#[cfg(feature = "reqwest")]
 #[cfg_attr(nightly, doc(cfg(feature = "reqwest_client")))] // FIXME: This doc_cfg does nothing
 impl<'a> Client<'a> for ReqwestClient {
     type Error = reqwest::Error;
@@ -120,8 +150,40 @@ impl<'a> Client<'a> for ReqwestClient {
     }
 }
 
+/// Possible errors from [`ClientDefault::default_client_with_name`] for [reqwest](https://crates.io/crates/reqwest)
+#[cfg(feature = "reqwest")]
+#[derive(Debug, displaydoc::Display, thiserror::Error)]
+pub enum ReqwestClientDefaultError {
+    /// could not construct header value for User-Agent
+    InvalidHeaderValue(#[from] http::header::InvalidHeaderValue),
+    /// reqwest returned an error
+    ReqwestError(#[from] reqwest::Error),
+}
+
+#[cfg(feature = "reqwest")]
+impl ClientDefault<'static> for ReqwestClient {
+    type Error = ReqwestClientDefaultError;
+
+    fn default_client_with_name(product: Option<http::HeaderValue>) -> Result<Self, Self::Error> {
+        let builder = Self::builder();
+        let user_agent = if let Some(product) = product {
+            let mut user_agent = product.as_bytes().to_owned();
+            user_agent.push(b' ');
+            user_agent.extend(TWITCH_API2_USER_AGENT.as_bytes());
+            user_agent.as_slice().try_into()?
+        } else {
+            http::HeaderValue::from_str(TWITCH_API2_USER_AGENT)?
+        };
+        let builder = builder.user_agent(user_agent);
+        let builder = builder.redirect(reqwest::redirect::Policy::none());
+        builder.build().map_err(Into::into)
+    }
+}
+
 /// Possible errors from [`Client::req()`] when using the [surf](https://crates.io/crates/surf) client
-#[cfg(all(feature = "surf", feature = "client"))]
+///
+/// Also returned by [`ClientDefault::default_client_with_name`]
+#[cfg(feature = "surf")]
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
 pub enum SurfError {
     /// surf failed to do the request: {0}
@@ -134,10 +196,10 @@ pub enum SurfError {
     UrlError(#[from] url::ParseError),
 }
 
-#[cfg(all(feature = "surf", feature = "client"))]
+#[cfg(feature = "surf")]
 use surf::Client as SurfClient;
 
-#[cfg(all(feature = "surf", feature = "client"))]
+#[cfg(feature = "surf")]
 #[cfg_attr(nightly, doc(cfg(feature = "surf_client")))] // FIXME: This doc_cfg does nothing
 impl<'a> Client<'a> for SurfClient {
     type Error = SurfError;
@@ -206,6 +268,69 @@ impl<'a> Client<'a> for SurfClient {
     }
 }
 
+/// Possible errors from [`ClientDefault::default_client_with_name`] for [surf](https://crates.io/crates/surf)
+#[cfg(feature = "surf")]
+#[derive(Debug, displaydoc::Display, thiserror::Error)]
+pub enum SurfClientDefaultError {
+    /// surf returned an error: {0}
+    SurfError(surf::Error),
+}
+
+#[cfg(feature = "surf")]
+impl ClientDefault<'static> for SurfClient
+where Self: Default
+{
+    type Error = SurfClientDefaultError;
+
+    fn default_client_with_name(product: Option<http::HeaderValue>) -> Result<Self, Self::Error> {
+        #[cfg(feature = "surf")]
+        struct SurfAgentMiddleware {
+            user_agent: surf::http::headers::HeaderValue,
+        }
+
+        #[cfg(feature = "surf")]
+        #[async_trait::async_trait]
+        impl surf::middleware::Middleware for SurfAgentMiddleware {
+            async fn handle(
+                &self,
+                req: surf::Request,
+                client: SurfClient,
+                next: surf::middleware::Next<'_>,
+            ) -> surf::Result<surf::Response> {
+                let mut req = req;
+                // if let Some(header) = req.header_mut(surf::http::headers::USER_AGENT) {
+                //     let mut user_agent = self.user_agent.as_str().as_bytes().to_owned();
+                //     user_agent.push(b' ');
+                //     user_agent.extend(header.as_str().as_bytes());
+                //     req.set_header(
+                //         surf::http::headers::USER_AGENT,
+                //         surf::http::headers::HeaderValue::from_bytes(user_agent).expect(
+                //             "product User-Agent + existing User-Agent is expected to be valid ASCII",
+                //         ),
+                //     );
+                // } else {
+                req.set_header(surf::http::headers::USER_AGENT, self.user_agent.clone());
+                // }
+                next.run(req, client).await
+            }
+        }
+
+        let client = surf::Client::default();
+        let user_agent = if let Some(product) = product {
+            let mut user_agent = product.as_bytes().to_owned();
+            user_agent.push(b' ');
+            user_agent.extend(TWITCH_API2_USER_AGENT.as_bytes());
+            surf::http::headers::HeaderValue::from_bytes(user_agent)
+                .map_err(SurfClientDefaultError::SurfError)?
+        } else {
+            surf::http::headers::HeaderValue::from_str(TWITCH_API2_USER_AGENT)
+                .map_err(SurfClientDefaultError::SurfError)?
+        };
+        let middleware = SurfAgentMiddleware { user_agent };
+        Ok(client.with(middleware))
+    }
+}
+
 #[derive(Debug, Default, thiserror::Error, Clone)]
 /// A client that will never work, used to trick documentation tests
 #[error("this client does not do anything, only used for documentation test that only checks")]
@@ -216,5 +341,34 @@ impl<'a> Client<'a> for DummyHttpClient {
 
     fn req(&'a self, _: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
         Box::pin(async { Err(DummyHttpClient) })
+    }
+}
+
+#[cfg(feature = "surf")]
+impl ClientDefault<'static> for DummyHttpClient
+where Self: Default
+{
+    type Error = DummyHttpClient;
+
+    fn default_client_with_name(_: Option<http::HeaderValue>) -> Result<Self, Self::Error> {
+        Ok(Self)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    #[cfg(feature = "surf_client")]
+    fn surf() {
+        SurfClient::default_client_with_name(Some("test/123".try_into().unwrap())).unwrap();
+        SurfClient::default_client();
+    }
+
+    #[test]
+    #[cfg(feature = "reqwest_client")]
+    fn reqwest() {
+        ReqwestClient::default_client_with_name(Some("test/123".try_into().unwrap())).unwrap();
+        ReqwestClient::default_client();
     }
 }
