@@ -16,7 +16,7 @@
 //!     .build();
 //!
 //!
-//! println!("{:?}", &client.req_get(req, &token).await?.data.get(0));
+//! println!("{:?}", &client.req_get(req, &token).await?.data);
 //! # Ok(())
 //! # }
 //! ```
