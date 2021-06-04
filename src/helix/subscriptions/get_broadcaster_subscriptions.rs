@@ -14,7 +14,7 @@
 //!     .build();
 //! ```
 //!
-//! ## Response: [BroadcasterSubscription]
+//! ## Response: [BroadcasterSubscriptions]
 //!
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
@@ -29,7 +29,7 @@
 //! let request = get_broadcaster_subscriptions::GetBroadcasterSubscriptionsRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
-//! let response: Vec<get_broadcaster_subscriptions::BroadcasterSubscription> = client.req_get(request, &token).await?.data;
+//! let response: get_broadcaster_subscriptions::BroadcasterSubscriptions = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -65,6 +65,17 @@ pub struct GetBroadcasterSubscriptionsRequest {
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
+pub struct BroadcasterSubscriptions {
+    /// List of users subscribed to the broadcaster and the details of the subscription.
+    pub subscriptions: Vec<BroadcasterSubscription>,
+    /// The number of Twitch users subscribed to the broadcaster.
+    pub total: i64,
+}
+
+/// A subscription in a channel
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub struct BroadcasterSubscription {
     /// User ID of the broadcaster.
     pub broadcaster_id: types::UserId,
@@ -72,6 +83,24 @@ pub struct BroadcasterSubscription {
     pub broadcaster_login: types::UserName,
     /// Display name of the broadcaster.
     pub broadcaster_name: types::DisplayName,
+    /// User ID of the broadcaster.
+    #[serde(
+        default,
+        deserialize_with = "helix::deserialize_none_from_empty_string"
+    )]
+    pub gifter_id: Option<types::UserId>,
+    /// Login of the gifter.
+    #[serde(
+        default,
+        deserialize_with = "helix::deserialize_none_from_empty_string"
+    )]
+    pub gifter_login: Option<types::UserName>,
+    /// Display name of the gifter.
+    #[serde(
+        default,
+        deserialize_with = "helix::deserialize_none_from_empty_string"
+    )]
+    pub gifter_name: Option<types::DisplayName>,
     /// Determines if the subscription is a gift subscription.
     pub is_gift: bool,
     /// Type of subscription (Tier 1, Tier 2, Tier 3). 1000 = Tier 1, 2000 = Tier 2, 3000 = Tier 3 subscriptions.
@@ -87,7 +116,7 @@ pub struct BroadcasterSubscription {
 }
 
 impl Request for GetBroadcasterSubscriptionsRequest {
-    type Response = Vec<BroadcasterSubscription>;
+    type Response = BroadcasterSubscriptions;
 
     const PATH: &'static str = "subscriptions";
     #[cfg(feature = "twitch_oauth2")]
@@ -95,7 +124,41 @@ impl Request for GetBroadcasterSubscriptionsRequest {
         &[twitch_oauth2::Scope::ChannelReadSubscriptions];
 }
 
-impl RequestGet for GetBroadcasterSubscriptionsRequest {}
+impl RequestGet for GetBroadcasterSubscriptionsRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
+    where
+        Self: Sized,
+    {
+        #[derive(PartialEq, Deserialize, Debug)]
+        struct InnerResponse {
+            data: Vec<BroadcasterSubscription>,
+            #[serde(default)]
+            pagination: helix::Pagination,
+            total: i64,
+        }
+        let response: InnerResponse = helix::parse_json(response, true).map_err(|e| {
+            helix::HelixRequestGetError::DeserializeError(
+                response.to_string(),
+                e,
+                uri.clone(),
+                status,
+            )
+        })?;
+        Ok(helix::Response {
+            data: BroadcasterSubscriptions {
+                subscriptions: response.data,
+                total: response.total,
+            },
+            pagination: response.pagination.cursor,
+            request,
+        })
+    }
+}
 
 impl helix::Paginated for GetBroadcasterSubscriptionsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
@@ -109,26 +172,30 @@ fn test_request() {
         .broadcaster_id("123".to_string())
         .build();
 
-    // From twitch docs. Malformed example on https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions
+    // From twitch docs. Example has ...
     let data = br#"
-{
-    "data": [
-        {
-        "broadcaster_id": "123",
-        "broadcaster_login": "test_user",
-        "broadcaster_name": "test_user",
-        "is_gift": true,
-        "tier": "1000",
-        "plan_name": "The Ninjas",
-        "user_id": "123",
-        "user_login": "snoirf",
-        "user_name": "snoirf"
-        }
-    ],
-    "pagination": {
-        "cursor": "xxxx"
-    }
-}
+    {
+        "data": [
+          {
+            "broadcaster_id": "141981764",
+            "broadcaster_login": "twitchdev",
+            "broadcaster_name": "TwitchDev",
+            "gifter_id": "12826",
+            "gifter_login": "twitch",
+            "gifter_name": "Twitch",
+            "is_gift": true,
+            "tier": "1000",
+            "plan_name": "Channel Subscription (twitchdev)",
+            "user_id": "527115020",
+            "user_name": "twitchgaming",
+            "user_login": "twitchgaming"
+          }
+        ],
+        "pagination": {
+          "cursor": "xxxx"
+        },
+        "total": 13
+      }
 "#
     .to_vec();
 
