@@ -26,6 +26,7 @@
 * Removed some derived impls and fixed builders that assumed a default wrongly.
 * `HelixClient::new`, `TmiClient::new` and `TwitchClient::new` now give a more specified client.
 * Added total and gifter information to helix `Get Broadcaster Subscriptions`
+* Made all specific "string" types actual types with [`aliri_braid`](https://crates.io/crates/aliri_braid)
 
 ### Removed
 
