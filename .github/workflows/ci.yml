@@ -91,41 +91,41 @@ jobs:
             target
           key: ${{ runner.os }}-nightly-clippy-cargo-target-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-nightly-cargo-target-${{ hashFiles('**/Cargo.lock') }}
-      - name: Run clippy --all-targets --no-default-features -- -D warnings
+      - name: Run clippy --all-targets --no-default-features
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --no-default-features -- -D warnings
-      - name: Run clippy --all-targets --no-default-features --features "helix" -- -D warnings
+          args: --all-targets --no-default-features
+      - name: Run clippy --all-targets --no-default-features --features "helix"
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --no-default-features --features "helix" -- -D warnings
-      - name: Run clippy --all-targets --no-default-features --features "tmi" -- -D warnings
+          args: --all-targets --no-default-features --features "helix"
+      - name: Run clippy --all-targets --no-default-features --features "tmi"
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --no-default-features --features "tmi" -- -D warnings
-      - name: Run clippy --all-targets --no-default-features --features "pubsub" -- -D warnings
+          args: --all-targets --no-default-features --features "tmi"
+      - name: Run clippy --all-targets --no-default-features --features "pubsub"
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --no-default-features --features "pubsub" -- -D warnings
-      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields" -- -D warnings
+          args: --all-targets --no-default-features --features "pubsub"
+      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields" -- -D warnings
-      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}" -- -D warnings
+          args: --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
+      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}" -- -D warnings
-      - name: Run clippy --all-targets --all-features -- -D warnings
+          args: --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+      - name: Run clippy --all-targets --all-features
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --all-features -- -D warnings
+          args: --all-targets --all-features
   docs:
     name: Docs
     runs-on: ubuntu-latest
