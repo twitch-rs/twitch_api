@@ -378,14 +378,14 @@ pub trait RequestPost: Request {
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+        let text = std::str::from_utf8(response.body()).map_err(|e| {
             HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         if let Ok(HelixRequestError {
             error,
             status,
             message,
-        }) = parse_json::<HelixRequestError>(&text, false)
+        }) = parse_json::<HelixRequestError>(text, false)
         {
             return Err(HelixRequestPostError::Error {
                 error,
@@ -408,7 +408,7 @@ pub trait RequestPost: Request {
     where
         Self: Sized,
     {
-        let response: InnerResponse<<Self as Request>::Response> = parse_json(&response, true)
+        let response: InnerResponse<<Self as Request>::Response> = parse_json(response, true)
             .map_err(|e| {
                 HelixRequestPostError::DeserializeError(
                     response.to_string(),
@@ -471,14 +471,14 @@ pub trait RequestPatch: Request {
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+        let text = std::str::from_utf8(response.body()).map_err(|e| {
             HelixRequestPatchError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         if let Ok(HelixRequestError {
             error,
             status,
             message,
-        }) = parse_json::<HelixRequestError>(&text, false)
+        }) = parse_json::<HelixRequestError>(text, false)
         {
             return Err(HelixRequestPatchError::Error {
                 error,
@@ -540,14 +540,14 @@ pub trait RequestDelete: Request {
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+        let text = std::str::from_utf8(response.body()).map_err(|e| {
             HelixRequestDeleteError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         if let Ok(HelixRequestError {
             error,
             status,
             message,
-        }) = parse_json::<HelixRequestError>(&text, false)
+        }) = parse_json::<HelixRequestError>(text, false)
         {
             return Err(HelixRequestDeleteError::Error {
                 error,
@@ -616,14 +616,14 @@ pub trait RequestPut: Request {
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+        let text = std::str::from_utf8(response.body()).map_err(|e| {
             HelixRequestPutError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         if let Ok(HelixRequestError {
             error,
             status,
             message,
-        }) = parse_json::<HelixRequestError>(&text, false)
+        }) = parse_json::<HelixRequestError>(text, false)
         {
             return Err(HelixRequestPutError::Error {
                 error,
@@ -685,7 +685,7 @@ pub trait RequestGet: Request {
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+        let text = std::str::from_utf8(response.body()).map_err(|e| {
             HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         //eprintln!("\n\nmessage is ------------ {} ------------", text);
@@ -693,7 +693,7 @@ pub trait RequestGet: Request {
             error,
             status,
             message,
-        }) = parse_json::<HelixRequestError>(&text, false)
+        }) = parse_json::<HelixRequestError>(text, false)
         {
             return Err(HelixRequestGetError::Error {
                 error,

@@ -674,7 +674,7 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         _variant_index: u32,
         variant: &'static str,
     ) -> Result<Self::Ok, Self::Error> {
-        self.urlencoder.append_pair(self.key, &variant);
+        self.urlencoder.append_pair(self.key, variant);
         Ok(self.urlencoder)
     }
 
