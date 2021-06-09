@@ -3,7 +3,6 @@
 #![cfg_attr(nightly, deny(rustdoc::broken_intra_doc_links))]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![doc(html_root_url = "https://docs.rs/twitch_api2/0.5.0")]
-#![cfg_attr(all(nightly, doctest), feature(external_doc))]
 //! [![github]](https://github.com/emilgardis/twitch_api2)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api2/0.5.0/twitch_api2)
 //!
 //! [github]: https://img.shields.io/badge/github-emilgardis/twitch__api2-8da0cb?style=for-the-badge&labelColor=555555&logo=github"
@@ -90,8 +89,12 @@
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>deny_unknown_fields</code></span> | Adds `#[serde(deny_unknown_fields)]` on all applicable structs/enums. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
 //!
 
-#[doc(include = "../README.md")]
-#[cfg(all(doctest, feature = "all"))]
+// FIXME: This is a hack to prevent early pass failing on
+// `arbitrary expressions in key-value attributes are unstable` on stable rust pre 1.54.
+// Remove when MSRV 1.54 (or when  hits stable)
+// https://github.com/rust-lang/rust/issues/82768
+/// Doc test for README
+#[cfg_attr(all(doctest, nightly, feature = "all"), cfg_attr(all(doctest, nightly, feature = "all"), doc = include_str!("../README.md")))]
 pub struct ReadmeDoctests;
 
 pub mod types;

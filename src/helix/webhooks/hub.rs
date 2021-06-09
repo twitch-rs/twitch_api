@@ -183,14 +183,14 @@ impl<T: Topic> RequestPost for WebhookHubRequest<T> {
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(&response.body()).map_err(|e| {
+        let text = std::str::from_utf8(response.body()).map_err(|e| {
             helix::HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         if let Ok(helix::HelixRequestError {
             error,
             status,
             message,
-        }) = helix::parse_json::<helix::HelixRequestError>(&text, false)
+        }) = helix::parse_json::<helix::HelixRequestError>(text, false)
         {
             return Err(helix::HelixRequestPostError::Error {
                 error,

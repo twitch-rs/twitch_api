@@ -105,7 +105,7 @@ impl helix::HelixRequestBody for Vec<CheckAutoModStatusBody> {
             data: &'a Vec<CheckAutoModStatusBody>,
         }
 
-        serde_json::to_vec(&InnerBody { data: &self }).map_err(Into::into)
+        serde_json::to_vec(&InnerBody { data: self }).map_err(Into::into)
     }
 }
 
