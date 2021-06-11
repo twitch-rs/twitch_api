@@ -12,6 +12,9 @@
   *  `Manage Held AutoMod Messages`
   *  `Get Global Chat Badges`
   *  `Get Channel Chat Badges`
+  *  `Get Channel Emotes`
+  *  `Get Global Emotes`
+  *  `Get Emote Sets`
 * Added Channel Terms to pubsub `chat_moderator_actions`
 * Added `user-moderation-notifications` topic to pubsub
 * Added `extendsub` to pubsub `channel-subscribe-events-v1`

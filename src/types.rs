@@ -85,6 +85,14 @@ pub struct BadgeSetId;
 #[aliri_braid::braid(serde)]
 pub struct ChatBadgeId;
 
+/// A chat Emote ID
+#[aliri_braid::braid(serde)]
+pub struct EmoteId;
+
+/// An Emote Set ID
+#[aliri_braid::braid(serde)]
+pub struct EmoteSetId;
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
