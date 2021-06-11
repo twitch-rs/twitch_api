@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Emote","Return Values for Get Channel Emotes"],["GetEmoteSetsRequest","Query Parameters for Get Channel Emotes"]]});
