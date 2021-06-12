@@ -1,3 +1,4 @@
+use futures::TryStreamExt;
 use twitch_api2::helix::HelixClient;
 use twitch_oauth2::{AccessToken, UserToken};
 
@@ -32,7 +33,10 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     let client: HelixClient<reqwest::Client> = HelixClient::new();
 
-    let streams = client.get_followed_streams(&token).await?;
+    let streams = client
+        .get_followed_streams(&token)
+        .try_collect::<Vec<_>>()
+        .await?;
     let games = client
         .get_games_by_id(
             streams

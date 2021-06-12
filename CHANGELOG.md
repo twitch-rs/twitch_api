@@ -21,6 +21,7 @@
 * Added `delay` to `Get Channel Information`
 * Added `serde::Serialize` to all helix endpoint return values
 * Added `channel.subscription.end` to EventSub
+* Added `helix::make_stream` to make streams out of paginated responses.
 
 ### Changed
 
@@ -30,6 +31,7 @@
 * `HelixClient::new`, `TmiClient::new` and `TwitchClient::new` now give a more specified client.
 * Added total and gifter information to helix `Get Broadcaster Subscriptions`
 * Made all specific "string" types actual types with [`aliri_braid`](https://crates.io/crates/aliri_braid)
+* `HelixClient` methods `search_categories`, `search_channels`, `get_followed_streams` and `get_moderators_in_channel_from_id` now use streams to provide paginated response. 
 
 ### Removed
 

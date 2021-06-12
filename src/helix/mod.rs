@@ -35,6 +35,10 @@ use twitch_oauth2::TwitchToken;
 #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "helix"))))]
 mod client_ext;
 
+#[cfg(all(feature = "client"))]
+#[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "helix"))))]
+pub use client_ext::make_stream;
+
 pub mod bits;
 pub mod channels;
 pub mod chat;
@@ -172,6 +176,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         R: Request<Response = D> + Request + RequestGet,
         D: serde::de::DeserializeOwned + PartialEq,
         T: TwitchToken + ?Sized,
+        C: Send,
     {
         let req = request.create_request(token.token().secret(), token.client_id().as_str())?;
         let uri = req.uri().clone();
@@ -788,7 +793,7 @@ where
     }
 }
 
-/// Request can be paginated with a cursor
+/// A request that can be paginated.
 pub trait Paginated: Request {
     /// Should returns the current pagination cursor.
     ///
