@@ -83,6 +83,22 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Search [Categories](helix::search::Category)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+    /// use twitch_api2::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let categories: Vec<helix::search::Category> = client.search_categories("Fortnite", &token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
     pub fn search_categories<T>(
         &'a self,
         query: impl Into<String>,
@@ -99,7 +115,23 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
-    /// Search [Channels](helix::search::Channel)
+    /// Search [Channels](helix::search::Channel) via channel name or description
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+    /// use twitch_api2::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let channel: Vec<helix::search::Channel> = client.search_channels("twitchdev", false, &token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
     pub fn search_channels<T>(
         &'a self,
         query: impl Into<String>,
@@ -119,6 +151,22 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Get authenticated users' followed [streams](helix::streams::Stream)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+    /// use twitch_api2::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let channels: Vec<helix::streams::Stream> = client.get_followed_streams(&token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
     pub fn get_followed_streams<T>(
         &'a self,
         token: &'a T,
@@ -144,6 +192,22 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Get all moderators in a channel [Get Moderators](helix::moderation::GetModeratorsRequest)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+    /// use twitch_api2::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let moderators: Vec<helix::moderation::Moderator> = client.get_moderators_in_channel_from_id("twitchdev", &token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
     pub fn get_moderators_in_channel_from_id<T>(
         &'a self,
         broadcaster_id: impl Into<types::UserId>,
@@ -298,8 +362,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
 /// helix::make_stream(req, &token, &client, std::collections::VecDeque::from).try_collect::<Vec<_>>().await?
 /// # ;
 /// # Ok(())
-/// }
-///
+/// # }
 /// ```
 pub fn make_stream<
     'a,
