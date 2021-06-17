@@ -93,6 +93,10 @@ pub struct EmoteId;
 #[aliri_braid::braid(serde)]
 pub struct EmoteSetId;
 
+/// A Stream Segment ID.
+#[aliri_braid::braid(serde)]
+pub struct StreamSegmentId;
+
 /// An emote index as defined by eventsub, similar to IRC `emotes` twitch tag.
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -117,11 +121,11 @@ impl std::fmt::Display for ResubscriptionEmote {
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TwitchCategory {
-    ///Template URL for the game’s box art.
+    /// Template URL for the game’s box art.
     pub box_art_url: String,
     /// Game or category ID.
     pub id: CategoryId,
-    ///Game name.
+    /// Game name.
     pub name: String,
 }
 
