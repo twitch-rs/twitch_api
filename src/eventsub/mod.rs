@@ -166,6 +166,8 @@ pub enum Payload {
     ChannelSubscriptionEndV1(NotificationPayload<channel::ChannelSubscriptionEndV1>),
     /// Channel Subscription Gift V1 Event
     ChannelSubscriptionGiftV1(NotificationPayload<channel::ChannelSubscriptionGiftV1>),
+    /// Channel Subscription Message V1 Event
+    ChannelSubscriptionMessageV1(NotificationPayload<channel::ChannelSubscriptionMessageV1>),
 }
 
 impl Payload {
@@ -362,6 +364,7 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelRaidV1;
                 channel::ChannelSubscriptionEndV1;
                 channel::ChannelSubscriptionGiftV1;
+                channel::ChannelSubscriptionMessageV1;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
                 channel::ChannelHypeTrainEndV1;
@@ -401,6 +404,7 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelRaidV1;
                 channel::ChannelSubscriptionEndV1;
                 channel::ChannelSubscriptionGiftV1;
+                channel::ChannelSubscriptionMessageV1;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
                 channel::ChannelHypeTrainEndV1;
@@ -555,6 +559,9 @@ pub enum EventType {
     /// `channel.subscription.gift`: a user gives one or more gifted subscriptions in a channel.
     #[serde(rename = "channel.subscription.gift")]
     ChannelSubscriptionGift,
+    /// `channel.subscription.gift`: a user sends a resubscription chat message in a specific channel
+    #[serde(rename = "channel.subscription.message")]
+    ChannelSubscriptionMessage,
     /// `channel.hype_train.begin`: a hype train begins on the specified channel.
     #[serde(rename = "channel.hype_train.begin")]
     ChannelHypeTrainBegin,

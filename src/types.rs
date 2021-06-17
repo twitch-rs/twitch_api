@@ -93,6 +93,25 @@ pub struct EmoteId;
 #[aliri_braid::braid(serde)]
 pub struct EmoteSetId;
 
+/// An emote index as defined by eventsub, similar to IRC `emotes` twitch tag.
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct ResubscriptionEmote {
+    /// The index of where the Emote starts in the text.
+    pub begin: i64,
+    /// The index of where the Emote ends in the text.
+    pub end: i64,
+    /// The emote ID.
+    pub id: EmoteId,
+}
+
+impl std::fmt::Display for ResubscriptionEmote {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}:{}-{}", self.id, self.begin, self.end)
+    }
+}
+
 /// A game or category as defined by Twitch
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]

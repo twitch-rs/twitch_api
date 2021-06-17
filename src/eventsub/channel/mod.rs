@@ -73,6 +73,8 @@ pub use subscription::{ChannelSubscriptionEndV1, ChannelSubscriptionEndV1Payload
 #[doc(inline)]
 pub use subscription::{ChannelSubscriptionGiftV1, ChannelSubscriptionGiftV1Payload};
 #[doc(inline)]
+pub use subscription::{ChannelSubscriptionMessageV1, ChannelSubscriptionMessageV1Payload};
+#[doc(inline)]
 pub use unban::{ChannelUnbanV1, ChannelUnbanV1Payload};
 #[doc(inline)]
 pub use update::{ChannelUpdateV1, ChannelUpdateV1Payload};
