@@ -1,8 +1,8 @@
-#![doc(alias = "channel.hype_train.end")]
+#![doc(alias = "channel.subscription.end")]
 //! A subscription to the specified channel expires.
 
 use super::*;
-/// [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelSubscriptionEnd-beta): a subscription to the specified channel expires.
+/// [`channel.subscription.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelSubscriptionEnd): a subscription to the specified channel expires.
 #[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -22,22 +22,22 @@ impl EventSubscription for ChannelSubscriptionEndV1 {
     const VERSION: &'static str = "1";
 }
 
-/// [`channel.hype_train.end`](ChannelSubscriptionEndV1) response payload.
+/// [`channel.subscription.end`](ChannelSubscriptionEndV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelSubscriptionEndV1Payload {
-    /// The user ID for the user whose subscription ended.
-    pub broadcaster_user_id: types::UserId,
-    /// The user login for the user whose subscription ended.
-    pub broadcaster_user_login: types::DisplayName,
-    /// The user display name for the user whose subscription ended.
-    pub broadcaster_user_name: types::UserName,
     /// The broadcaster user ID.
+    pub broadcaster_user_id: types::UserId,
+    /// The broadcaster login.
+    pub broadcaster_user_login: types::DisplayName,
+    /// The broadcaster display name.
+    pub broadcaster_user_name: types::UserName,
+    /// The user ID for the user whose subscription ended.
     pub user_id: types::UserId,
-    /// The broadcaster login.
+    /// The user login for the user whose subscription ended.
     pub user_login: types::DisplayName,
-    /// The broadcaster login.
+    /// The user display name for the user whose subscription ended.
     pub user_name: types::UserName,
 }
 

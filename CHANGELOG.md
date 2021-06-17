@@ -21,6 +21,8 @@
 * Added `delay` to `Get Channel Information`
 * Added `serde::Serialize` to all helix endpoint return values
 * Added `channel.subscription.end` to EventSub
+* Added `channel.subscription.gift` to EventSub
+* Added `channel.subscription.message` to EventSub
 * Added `helix::make_stream` to make streams out of paginated responses.
 
 ### Changed
