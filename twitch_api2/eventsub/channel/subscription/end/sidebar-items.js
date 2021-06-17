@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ChannelSubscriptionEndV1","`channel.hype_train.end`: a subscription to the specified channel expires."],["ChannelSubscriptionEndV1Payload","`channel.hype_train.end` response payload."]]});
+initSidebarItems({"struct":[["ChannelSubscriptionEndV1","`channel.subscription.end`: a subscription to the specified channel expires."],["ChannelSubscriptionEndV1Payload","`channel.subscription.end` response payload."]]});

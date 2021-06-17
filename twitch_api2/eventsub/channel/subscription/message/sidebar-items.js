@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ChannelSubscriptionMessageV1","`channel.subscription.message`: a subscription to the specified channel expires."],["ChannelSubscriptionMessageV1Payload","`channel.subscription.message` response payload."],["SubscriptionMessage","A message attached to a [`ChannelSubscriptionMessageV1Payload`]"]]});
