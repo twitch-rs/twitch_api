@@ -138,16 +138,6 @@ impl helix::private::SealedSerialize for UpdateCustomRewardBody {}
 pub enum UpdateCustomReward {
     /// Reward updated
     Success(CustomReward),
-    /// Bad Request: Query/Body Parameter missing or invalid
-    MissingQuery,
-    /// Unauthenticated: Missing/invalid Token
-    AuthFailed,
-    /// Forbidden: The Custom Reward was created by a different client_id or Channel Points are not available for the broadcaster
-    Forbidden,
-    /// Not Found: The Custom Reward doesn’t exist with the id and broadcaster_id specified
-    NotFound,
-    /// Internal Server Error: Something bad happened on our side
-    InternalServerError,
 }
 
 impl Request for UpdateCustomRewardRequest {
@@ -191,11 +181,6 @@ impl RequestPatch for UpdateCustomRewardRequest {
                     },
                 )?)
             }
-            http::StatusCode::BAD_REQUEST => UpdateCustomReward::MissingQuery,
-            http::StatusCode::NOT_FOUND => UpdateCustomReward::NotFound,
-            http::StatusCode::UNAUTHORIZED => UpdateCustomReward::AuthFailed,
-            http::StatusCode::FORBIDDEN => UpdateCustomReward::Forbidden,
-            http::StatusCode::INTERNAL_SERVER_ERROR => UpdateCustomReward::InternalServerError,
             _ => {
                 return Err(helix::HelixRequestPatchError::InvalidResponse {
                     reason: "unexpected status code",
