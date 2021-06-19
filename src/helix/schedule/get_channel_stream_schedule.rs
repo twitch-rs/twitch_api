@@ -1,12 +1,15 @@
 //! Gets all scheduled broadcasts or specific scheduled broadcasts from a channel’s stream schedule. Scheduled broadcasts are defined as “stream segments” in the API.
 //! [`get-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule)
 //!
+//! ## Notes
+//!
+//! See also [`get_channel_schedule`](helix::HelixClient::get_channel_schedule)
 //! ## Request: [GetChannelStreamScheduleRequest]
 //!
 //! To use this endpoint, construct a [`GetChannelStreamScheduleRequest`] with the [`GetChannelStreamScheduleRequest::builder()`] method.
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::predictions::get_channel_stream_schedule;
+//! use twitch_api2::helix::schedule::get_channel_stream_schedule;
 //! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
@@ -17,7 +20,7 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, predictions::get_channel_stream_schedule};
+//! use twitch_api2::helix::{self, schedule::get_channel_stream_schedule};
 //! # use twitch_api2::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -27,7 +30,7 @@
 //! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
-//! let response: Vec<get_channel_stream_schedule::ScheduledBroadcasts> = client.req_get(request, &token).await?.data;
+//! let response: helix::schedule::ScheduledBroadcasts = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```

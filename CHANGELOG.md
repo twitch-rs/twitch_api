@@ -17,6 +17,8 @@
   *  `Get Emote Sets`
   *  `Get Channel Stream Schedule`
   *  `Update Channel Stream Schedule`
+  *  `Create Channel Stream Schedule Segment`
+  *  `Delete Channel Stream Schedule Segment`
 * Added Channel Terms to pubsub `chat_moderator_actions`
 * Added `user-moderation-notifications` topic to pubsub
 * Added `extendsub` to pubsub `channel-subscribe-events-v1`

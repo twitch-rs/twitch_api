@@ -5,16 +5,23 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
+pub mod create_channel_stream_schedule_segment;
 pub mod get_channel_stream_schedule;
 pub mod update_channel_stream_schedule;
-pub mod create_channel_stream_schedule_segment;
+pub mod update_channel_stream_schedule_segment;
 
+#[doc(inline)]
+pub use create_channel_stream_schedule_segment::{
+    CreateChannelStreamScheduleSegmentBody, CreateChannelStreamScheduleSegmentRequest,
+};
 #[doc(inline)]
 pub use get_channel_stream_schedule::GetChannelStreamScheduleRequest;
 #[doc(inline)]
-pub use update_channel_stream_schedule::{UpdateChannelStreamScheduleRequest, UpdateChannelStreamSchedule};
+pub use update_channel_stream_schedule::{
+    UpdateChannelStreamSchedule, UpdateChannelStreamScheduleRequest,
+};
 
-/// Scheduled broadcasts for a specific channel given by [Get Channel Stream Schedule](super::get_channel_stream_schedule)
+/// Scheduled broadcasts for a specific channel given by [Get Channel Stream Schedule](self)
 #[derive(PartialEq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]

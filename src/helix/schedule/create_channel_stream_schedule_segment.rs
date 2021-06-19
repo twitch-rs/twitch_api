@@ -9,7 +9,9 @@
 //!
 //! ```rust, no_run
 //! use twitch_api2::helix::schedule::create_channel_stream_schedule_segment;
-//! let request = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::new();
+//! let request = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::builder()
+//!     .broadcaster_id("141981764")
+//!     .build();
 //! ```
 //!
 //! ## Body: [CreateChannelStreamScheduleSegmentBody]
@@ -19,13 +21,16 @@
 //! ```
 //! # use twitch_api2::helix::schedule::create_channel_stream_schedule_segment;
 //! let body = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!     .action(true)
-//!     .user_id("9327994")
-//!     .msg_id("836013710")
+//!     .start_time("2021-07-01T18:00:00Z")
+//!     .timezone("America/New_York")
+//!     .is_recurring(false)
+//!     .duration("60".to_string())
+//!     .category_id(Some("509670".into()))
+//!     .title("TwitchDev Monthly Update // July 1, 2021".to_string())
 //!     .build();
 //! ```
 //!
-//! ## Response: [CreateChannelStreamScheduleSegment]
+//! ## Response: [ScheduledBroadcasts]
 //!
 //!
 //! Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
@@ -39,18 +44,23 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
-//! let request = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::new();
-//! let body = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!     .action(true)
-//!     .user_id("9327994")
-//!     .msg_id("836013710")
+//! let request = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::builder()
+//!     .broadcaster_id("141981764")
 //!     .build();
-//! let response: create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegment = client.req_post(request, body, &token).await?.data;
+//! let body = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
+//!     .start_time("2021-07-01T18:00:00Z")
+//!     .timezone("America/New_York")
+//!     .is_recurring(false)
+//!     .duration("60".to_string())
+//!     .category_id(Some("509670".into()))
+//!     .title("TwitchDev Monthly Update // July 1, 2021".to_string())
+//!     .build();
+//! let response: create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentResponse = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
-//! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
+//! You can also get the [`http::Request`] with [`request.create_request(&body, &token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`CreateChannelStreamScheduleSegmentRequest::parse_response(None, &request.get_uri(), response)`](CreateChannelStreamScheduleSegmentRequest::parse_response)
 
 use super::*;

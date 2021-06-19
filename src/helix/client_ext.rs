@@ -345,8 +345,8 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// Get all scheduled streams in a channel.
     ///
     /// # Notes
-    /// 
-    /// Make sure to limit the data here using [`take_while`](futures::stream::TryStreamExt::trytake_while), otherwise this will never end on recurring scheduled streams.
+    ///
+    /// Make sure to limit the data here using [`try_take_while`](futures::stream::TryStreamExt::try_take_while), otherwise this will never end on recurring scheduled streams.
     ///
     ///
     /// # Examples
