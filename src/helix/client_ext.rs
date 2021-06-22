@@ -340,6 +340,52 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
             .await?
             .data)
     }
+
+    // FIXME: Example should use https://github.com/Emilgardis/twitch_api2/issues/162
+    /// Get all scheduled streams in a channel.
+    ///
+    /// # Notes
+    ///
+    /// Make sure to limit the data here using [`try_take_while`](futures::stream::TryStreamExt::try_take_while), otherwise this will never end on recurring scheduled streams.
+    ///
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+    /// use twitch_api2::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let schedule: Vec<helix::schedule::Segment> = client
+    ///     .get_channel_schedule("twitchdev", &token)
+    ///     .try_take_while(|s| {
+    ///         futures::future::ready(Ok(!s.start_time.as_str().starts_with("2021-10")))
+    ///     })
+    ///     .try_collect()
+    ///     .await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub fn get_channel_schedule<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        token: &'a T,
+    ) -> std::pin::Pin<
+        Box<dyn futures::Stream<Item = Result<helix::schedule::Segment, ClientError<'a, C>>> + 'a>,
+    >
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::schedule::GetChannelStreamScheduleRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .build();
+
+        make_stream(req, token, self, |broadcasts| broadcasts.segments.into())
+    }
 }
 
 /// Make a paginate-able request into a stream
