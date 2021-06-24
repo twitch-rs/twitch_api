@@ -39,6 +39,10 @@ pub struct ChannelSubscriptionEndV1Payload {
     pub user_login: types::DisplayName,
     /// The user display name for the user whose subscription ended.
     pub user_name: types::UserName,
+    /// The tier of the subscription that ended. Valid values are 1000, 2000, and 3000.
+    pub tier: types::SubscriptionTier,
+    /// Whether the subscription was a gift.
+    pub is_gift: bool,
 }
 
 #[cfg(test)]
@@ -67,7 +71,9 @@ fn parse_payload() {
             "user_name": "Cool_User",
             "broadcaster_user_id": "1337",
             "broadcaster_user_login": "cooler_user",
-            "broadcaster_user_name": "Cooler_User"
+            "broadcaster_user_name": "Cooler_User",
+            "tier": "1000",
+            "is_gift": false
         }
     }
     "##;
