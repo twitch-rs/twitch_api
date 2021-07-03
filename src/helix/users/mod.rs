@@ -1,4 +1,5 @@
 #![doc(alias = "user")]
+#![allow(deprecated)]
 //! Helix endpoints regarding users
 //!
 //! # Examples
@@ -26,7 +27,15 @@ use crate::{
 use serde::{Deserialize, Serialize};
 
 pub mod block_user;
+#[deprecated(
+    since = "0.6.0",
+    note = "This follow endpoint is deprecated as of 2021-06-28"
+)]
 pub mod create_user_follows;
+#[deprecated(
+    since = "0.6.0",
+    note = "This follow endpoint is deprecated as of 2021-06-28"
+)]
 pub mod delete_user_follows;
 pub mod get_user_block_list;
 pub mod get_users;
