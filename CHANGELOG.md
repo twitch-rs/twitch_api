@@ -27,6 +27,7 @@
 * Added `channel.subscription.end` to EventSub
 * Added `channel.subscription.gift` to EventSub
 * Added `channel.subscription.message` to EventSub
+* Added `user.authorization.grant` to EventSub
 * Added `helix::make_stream` to make streams out of paginated responses.
 
 ### Changed

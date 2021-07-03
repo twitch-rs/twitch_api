@@ -158,6 +158,8 @@ pub enum Payload {
     StreamOfflineV1(NotificationPayload<stream::StreamOfflineV1>),
     /// User Update V1 Event
     UserUpdateV1(NotificationPayload<user::UserUpdateV1>),
+    /// User Authorization Grant V1 Event
+    UserAuthorizationGrantV1(NotificationPayload<user::UserAuthorizationGrantV1>),
     /// User Authorization Revoke V1 Event
     UserAuthorizationRevokeV1(NotificationPayload<user::UserAuthorizationRevokeV1>),
     /// Channel Raid V1 Event
@@ -371,6 +373,7 @@ impl<'de> Deserialize<'de> for Payload {
                 stream::StreamOnlineV1;
                 stream::StreamOfflineV1;
                 user::UserUpdateV1;
+                user::UserAuthorizationGrantV1;
                 user::UserAuthorizationRevokeV1;
         );
 
@@ -411,6 +414,7 @@ impl<'de> Deserialize<'de> for Payload {
                 stream::StreamOnlineV1;
                 stream::StreamOfflineV1;
                 user::UserUpdateV1;
+                user::UserAuthorizationGrantV1;
                 user::UserAuthorizationRevokeV1;
             }),
         }
@@ -583,6 +587,9 @@ pub enum EventType {
     /// `user.authorization.revoke`: a user has revoked authorization for your client id. Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.
     #[serde(rename = "user.authorization.revoke")]
     UserAuthorizationRevoke,
+    /// `user.authorization.revoke`: a user’s authorization has been granted to your client id.
+    #[serde(rename = "user.authorization.grant")]
+    UserAuthorizationGrant,
 }
 
 impl std::fmt::Display for EventType {
