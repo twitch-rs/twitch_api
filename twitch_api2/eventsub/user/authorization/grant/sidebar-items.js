@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["UserAuthorizationGrantV1","`user.authorization.grant`: a user’s authorization has been granted to your client id."],["UserAuthorizationGrantV1Payload","`user.authorization.grant` response payload."]]});

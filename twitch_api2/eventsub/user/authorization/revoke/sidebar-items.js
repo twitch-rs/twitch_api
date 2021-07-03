@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["UserAuthorizationRevokeV1","`user.authorization.revoke`: a user has revoked authorization for your client id.  Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA."],["UserAuthorizationRevokeV1Payload","`user.authorization.revoke` response payload."]]});
