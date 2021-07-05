@@ -161,15 +161,15 @@ impl Serialize for SubscriptionTier {
     }
 }
 
-/// Broadcaster types: "partner", "affiliated", or "".
+/// Broadcaster types: "partner", "affiliate", or "".
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
 pub enum BroadcasterType {
     /// Partner
     #[serde(rename = "partner")]
     Partner,
-    /// Affiliated
-    #[serde(rename = "affiliated")]
-    Affiliated,
+    /// Affiliate
+    #[serde(rename = "affiliate")]
+    Affiliate,
     /// None
     #[serde(other)]
     None,
@@ -180,7 +180,7 @@ impl Serialize for BroadcasterType {
     where S: serde::Serializer {
         serializer.serialize_str(match self {
             BroadcasterType::Partner => "partner",
-            BroadcasterType::Affiliated => "affiliated",
+            BroadcasterType::Affiliate => "affiliate",
             BroadcasterType::None => "",
         })
     }
