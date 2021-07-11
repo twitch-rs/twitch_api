@@ -84,7 +84,7 @@ pub struct ReplaceStreamTagsRequest {
 pub struct ReplaceStreamTagsBody {
     /// IDs of tags to be applied to the stream.
     #[builder(default, setter(into))]
-    pub tag_ids: Vec<types::CategoryId>,
+    pub tag_ids: Vec<types::TagId>,
 }
 /// Return Values for [Replace Stream Tags](super::replace_stream_tags)
 ///
