@@ -1983,7 +1983,7 @@ mod tests {
     #[test]
     fn hype_train_cooldown() {
         let source = r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.233300375","message":"{\"type\":\"hype-train-cooldown-expiration\"}"}}"#;
-        let actual = dbg!(Response::parse(&source).unwrap());
+        let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
             Response::Message {
@@ -1995,7 +1995,7 @@ mod tests {
     #[test]
     fn hype_train_approaching() {
         let source = r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.35740817","message":"{\"type\":\"hype-train-approaching\",\"data\":{\"channel_id\":\"35740817\",\"goal\":3,\"events_remaining_durations\":{\"1\":258708980297},\"level_one_rewards\":[{\"type\":\"EMOTE\",\"id\":\"304420773\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420921\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420811\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304421029\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420886\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420784\",\"group_id\":\"\",\"reward_level\":0}]}}"}}"#;
-        let actual = dbg!(Response::parse(&source).unwrap());
+        let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
             Response::Message {

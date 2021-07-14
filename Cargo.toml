@@ -1,6 +1,6 @@
 [package]
 name = "twitch_api2"
-version = "0.5.0"
+version = "0.6.0-rc.1"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/Emilgardis/twitch_api2"
@@ -13,8 +13,8 @@ build = "build.rs"
 resolver = "2"
 
 [dependencies]
-thiserror = "1.0.24"
-displaydoc = "0.2.1"
+thiserror = "1.0.26"
+displaydoc = "0.2.2"
 http = "0.2.4"
 typed-builder = { version = "0.9.0", optional = true }
 url = { version = "2.2.2", optional = true }
@@ -25,15 +25,15 @@ serde_path_to_error = { version = "0.1.4", optional = true }
 async-trait = { version = "0.1.50", optional = true }
 serde_json = { version = "1.0.64", optional = true }
 serde_repr = "0.1.7"
-serde_ignored = {version = "0.1.2", optional = true }
-tracing = {version = "0.1.26", optional = true}
-reqwest = { version = "0.11.3", optional = true, default-features = false }
+serde_ignored = { version = "0.1.2", optional = true }
+tracing = { version = "0.1.26", optional = true }
+reqwest = { version = "0.11.4", optional = true, default-features = false }
 surf = { version = "2.2.0", optional = true, default-features = false }
 http-types = { version = "2.11.1", optional = true, features = ["hyperium_http"] }
 sha2 = { version = "0.9.5", optional = true }
 crypto_hmac = { package = "hmac", version = "0.11.0", optional = true }
-aliri_braid = "0.1.4"
-futures = {version = "0.3.15", optional = true}
+aliri_braid = "0.1.9"
+futures = { version = "0.3.15", optional = true }
 
 [features]
 default = []
@@ -90,7 +90,7 @@ futures = "0.3.15"
 serde_cbor = "0.11.1"
 serde_json = "1.0.64"
 surf = "2.2.0"
-reqwest = "0.11.3"
+reqwest = "0.11.4"
 
 
 [build-dependencies]
