@@ -34,6 +34,6 @@ async fn main() {
             client.tmi.get_chatters(stream.as_str().into()).await
         );
     } else if let Some(stream) = response.data.get(0).map(|stream| &stream.user_login) {
-        println!("{:?}", client.tmi.get_chatters(&stream).await);
+        println!("{:?}", client.tmi.get_chatters(stream).await);
     }
 }

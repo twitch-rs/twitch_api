@@ -84,7 +84,7 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
             .req(req)
             .await
             .map_err(|e| RequestError::RequestError(Box::new(e)))?;
-        let text = std::str::from_utf8(&req.body())
+        let text = std::str::from_utf8(req.body())
             .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
         crate::parse_json(text, true).map_err(Into::into)
     }
@@ -123,7 +123,7 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
             .req(req)
             .await
             .map_err(|e| RequestError::RequestError(Box::new(e)))?;
-        let text = std::str::from_utf8(&req.body())
+        let text = std::str::from_utf8(req.body())
             .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
         crate::parse_json(text, true).map_err(Into::into)
     }

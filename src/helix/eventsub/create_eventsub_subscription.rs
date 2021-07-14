@@ -144,7 +144,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
             total_cost: usize,
             max_total_cost: usize,
         }
-        let response: InnerResponse<E> = helix::parse_json(&text, true).map_err(|e| {
+        let response: InnerResponse<E> = helix::parse_json(text, true).map_err(|e| {
             helix::HelixRequestPostError::DeserializeError(text.to_string(), e, uri.clone(), status)
         })?;
         let data = response.data.into_iter().next().ok_or_else(|| {

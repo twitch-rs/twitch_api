@@ -549,7 +549,7 @@ where
             }
             StateMode::Next(Some(_)) => {
                 let resp = state.mode.take_next();
-                let f = resp.get_next(&state.client, state.token);
+                let f = resp.get_next(state.client, state.token);
                 let resp = match f.await {
                     Ok(Some(resp)) => resp,
                     Ok(None) => return None,

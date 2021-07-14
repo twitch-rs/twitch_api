@@ -206,9 +206,9 @@ impl Payload {
             let body = request.body();
 
             let mut message = Vec::with_capacity(id.len() + timestamp.len() + body.len());
-            message.extend_from_slice(&id);
-            message.extend_from_slice(&timestamp);
-            message.extend_from_slice(&body);
+            message.extend_from_slice(id);
+            message.extend_from_slice(timestamp);
+            message.extend_from_slice(body);
 
             let signature = request
                 .headers()
@@ -667,7 +667,7 @@ mod test {
         }
     }"#;
 
-        let val = dbg!(crate::eventsub::Payload::parse(&body).unwrap());
+        let val = dbg!(crate::eventsub::Payload::parse(body).unwrap());
         crate::tests::roundtrip(&val)
     }
 
