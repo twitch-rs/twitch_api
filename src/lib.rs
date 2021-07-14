@@ -44,7 +44,7 @@
 //! # }
 //! ```
 //!
-//! There is also a convenience function for accesssing channel information with a specified login name
+//! There is also a convenience function for accessing channel information with a specified login name
 //!
 //! ```rust,no_run
 //! # use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
@@ -95,6 +95,7 @@
 // https://github.com/rust-lang/rust/issues/82768
 /// Doc test for README
 #[cfg_attr(all(doctest, nightly, feature = "all"), cfg_attr(all(doctest, nightly, feature = "all"), doc = include_str!("../README.md")))]
+#[doc(hidden)]
 pub struct ReadmeDoctests;
 
 pub mod types;
