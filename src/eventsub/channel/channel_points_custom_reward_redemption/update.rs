@@ -36,7 +36,7 @@ pub struct ChannelPointsCustomRewardRedemptionUpdateV1Payload {
     /// The requested broadcaster display name.
     pub broadcaster_user_name: types::DisplayName,
     /// The redemption identifier.
-    pub id: types::RewardId,
+    pub id: types::RedemptionId,
     /// RFC3339 timestamp of when the reward was redeemed.
     pub redeemed_at: types::Timestamp,
     /// Basic information about the reward that was redeemed, at the time it was redeemed.
