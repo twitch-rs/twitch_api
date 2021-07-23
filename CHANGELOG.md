@@ -29,6 +29,7 @@
 * Added `channel.subscription.message` to EventSub
 * Added `user.authorization.grant` to EventSub
 * Added `helix::make_stream` to make streams out of paginated responses.
+* Added fields `moderator_id`,`moderator_login`,`moderator_name` and `reason` to `BannedUser`
 
 ### Changed
 

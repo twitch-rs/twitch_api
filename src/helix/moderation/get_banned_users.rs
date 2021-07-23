@@ -78,8 +78,18 @@ pub struct BannedUser {
     pub user_name: types::DisplayName,
     /// Login of a user who has been banned.
     pub user_login: types::UserName,
+    #[serde(deserialize_with = "helix::deserialize_none_from_empty_string")]
     /// RFC3339 formatted timestamp for timeouts; empty string for bans.
     pub expires_at: Option<types::Timestamp>,
+    /// The reason for the ban if provided by the moderator.
+    #[serde(deserialize_with = "helix::deserialize_none_from_empty_string")]
+    pub reason: Option<String>,
+    /// User ID of the moderator who initiated the ban.
+    pub moderator_id: types::UserId,
+    /// Login of the moderator who initiated the ban.
+    pub moderator_login: types::UserName,
+    /// Display name of the moderator who initiated the ban.
+    pub moderator_name: types::DisplayName,
 }
 
 impl Request for GetBannedUsersRequest {
@@ -112,13 +122,31 @@ fn test_request() {
       "user_id": "423374343",
       "user_login": "glowillig",
       "user_name": "glowillig",
-      "expires_at": "2019-03-15T02:00:28Z"
+      "expires_at": "2022-03-15T02:00:28Z",
+      "reason": "Does not like pineapple on pizza.",
+      "moderator_id": "141981764",
+      "moderator_login": "twitchdev",
+      "moderator_name": "TwitchDev"
     },
     {
       "user_id": "424596340",
       "user_login": "quotrok",
       "user_name": "quotrok",
-      "expires_at": "2018-08-07T02:07:55Z"
+      "expires_at": "2022-08-07T02:07:55Z",
+      "reason": "Inappropriate words.",
+      "moderator_id": "141981764",
+      "moderator_login": "twitchdev",
+      "moderator_name": "TwitchDev"
+    },
+    {
+      "user_id": "424596340",
+      "user_login": "quotrok",
+      "user_name": "quotrok",
+      "expires_at": "",
+      "reason": "",
+      "moderator_id": "141981764",
+      "moderator_login": "twitchdev",
+      "moderator_name": "TwitchDev"
     }
   ],
   "pagination": {

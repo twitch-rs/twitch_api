@@ -79,7 +79,7 @@ pub struct BannedEvent {
     /// Returns the version of the endpoint.
     pub version: String,
     // FIXME: Should be a struct, maybe
-    /// Returns `broadcaster_id`, `broadcaster_name`, `broadcaster_login`, `user_id`, `user_name`, `user_login`, and `expires_at`.
+    /// Returns `broadcaster_id`, `broadcaster_name`, `broadcaster_login`, `user_id`, `user_name`, `user_login`, `expires_at`, `reason`, `moderator_id`, `moderator_name` and `moderator_login`.
     pub event_data: HashMap<String, String>,
 }
 
@@ -121,7 +121,11 @@ fn test_request() {
         "user_id": "424596340",
         "user_login": "quotrok",
         "user_name": "quotrok",
-        "expires_at": ""
+        "expires_at": "",
+        "reason": "Does not like pineapple on pizza.",
+        "moderator_id": "141981764",
+        "moderator_login": "twitchdev",
+        "moderator_name": "TwitchDev"
       }
     },
     {
@@ -136,22 +140,11 @@ fn test_request() {
         "user_id": "424596340",
         "user_login": "quotrok",
         "user_name": "quotrok",
-        "expires_at": ""
-      }
-    },
-    {
-      "id": "1IPFqmlu9W2q4mXXjULyM8zX0rb",
-      "event_type": "moderation.user.ban",
-      "event_timestamp": "2019-03-13T15:55:19Z",
-      "version": "1.0",
-      "event_data": {
-        "broadcaster_id": "198704263",
-        "broadcaster_login": "racageneg",
-        "broadcaster_name": "racageneg",
-        "user_id": "424596340",
-        "user_login": "quotrok",
-        "user_name": "quotrok",
-        "expires_at": ""
+        "expires_at": "",
+        "reason": "Does not like pineapple on pizza.",
+        "moderator_id": "141981764",
+        "moderator_login": "twitchdev",
+        "moderator_name": "TwitchDev"
       }
     }
   ],
