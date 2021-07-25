@@ -38,7 +38,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: doc
-          args: --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}" -p twitch_api2 -p twitch_oauth2
+          args: --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}" -p twitch_api2 -p twitch_oauth2 -Zrustdoc-map
       - name: move index.html
         run: cp ./docs/index.html ./target/doc/index.html
       - name: Deploy
