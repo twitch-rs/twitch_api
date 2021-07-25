@@ -226,7 +226,8 @@ impl std::fmt::Display for Topics {
 #[derive(Serialize)]
 struct ITopicSubscribeData<'a> {
     topics: &'a [String],
-    auth_token: &'a str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    auth_token: Option<&'a str>,
 }
 #[derive(Serialize)]
 struct ITopicSubscribe<'a> {
@@ -281,7 +282,7 @@ where
         nonce: nonce.into(),
         data: ITopicSubscribeData {
             topics: &topics,
-            auth_token,
+            auth_token: Some(auth_token),
         },
     })
 }
