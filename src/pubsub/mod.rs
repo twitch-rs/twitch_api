@@ -661,4 +661,22 @@ mod tests {
         let actual = Response::parse(source).unwrap();
         assert_eq!(expected, actual);
     }
+
+    #[test]
+    fn listen() {
+        let topic =
+            Topics::ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2 { channel_id: 12345 });
+        let expected = r#"{"type":"LISTEN","nonce":"my nonce","data":{"topics":["channel-bits-events-v2.12345"],"auth_token":"my token"}}"#;
+        let actual = listen_command(&[topic], "my token", "my nonce").expect("should serialize");
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn unlisten() {
+        let topic =
+            Topics::ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2 { channel_id: 12345 });
+        let expected = r#"{"type":"UNLISTEN","nonce":"my nonce","data":{"topics":["channel-bits-events-v2.12345"]}}"#;
+        let actual = unlisten_command(&[topic], "my nonce").expect("should serialize");
+        assert_eq!(expected, actual);
+    }
 }
