@@ -137,7 +137,7 @@ enum EmoteScale {
 
 /// Builder for [emote URLs](https://dev.twitch.tv/docs/irc/emotes#emote-cdn-url-format).
 ///
-/// # Example
+/// # Examples
 ///
 /// ```rust
 /// # use twitch_api2::types::EmoteId;

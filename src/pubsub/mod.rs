@@ -239,7 +239,7 @@ struct ITopicSubscribe<'a> {
 
 /// Create a listen command.
 ///
-/// # Example
+/// # Examples
 ///
 /// Create a listen message for moderator actions
 ///
@@ -290,7 +290,7 @@ where
 
 /// Create a unlisten command.
 ///
-/// # Example
+/// # Examples
 ///
 /// Unlisten from moderator actions and follows
 ///
