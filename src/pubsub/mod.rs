@@ -226,7 +226,8 @@ impl std::fmt::Display for Topics {
 #[derive(Serialize)]
 struct ITopicSubscribeData<'a> {
     topics: &'a [String],
-    auth_token: &'a str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    auth_token: Option<&'a str>,
 }
 #[derive(Serialize)]
 struct ITopicSubscribe<'a> {
@@ -267,13 +268,14 @@ struct ITopicSubscribe<'a> {
 /// // To parse the websocket messages, use pubsub::Response::parse
 /// # fn send_command(command: String) -> Result<(),()> {Ok(())}
 /// ```
-pub fn listen_command<'t, O>(
+pub fn listen_command<'t, T, N>(
     topics: &'t [Topics],
-    auth_token: &'t str,
-    nonce: O,
+    auth_token: T,
+    nonce: N,
 ) -> Result<String, serde_json::Error>
 where
-    O: Into<Option<&'t str>>,
+    T: Into<Option<&'t str>>,
+    N: Into<Option<&'t str>>,
 {
     let topics = topics.iter().map(|t| t.to_string()).collect::<Vec<_>>();
     serde_json::to_string(&ITopicSubscribe {
@@ -281,26 +283,58 @@ where
         nonce: nonce.into(),
         data: ITopicSubscribeData {
             topics: &topics,
-            auth_token,
+            auth_token: auth_token.into(),
         },
     })
 }
 
-// /// Create a unlisten command.
-// pub fn unlisten_command<'t, O>(
-//     topics: &'t [&str],
-//     auth_token: &'t str,
-//     nonce: O,
-// ) -> Result<String, serde_json::Error>
-// where
-//     O: Into<Option<&'t str>>,
-// {
-//     serde_json::to_string(&ITopicSubscribe {
-//         _type: "UNLISTEN",
-//         nonce: nonce.into(),
-//         data: ITopicSubscribeData { topics: topics.map(|t| t.to_string()), auth_token },
-//     })
-// }
+/// Create a unlisten command.
+///
+/// # Example
+///
+/// Unlisten from moderator actions and follows
+///
+/// ```rust
+/// # use twitch_api2::pubsub::{self, Topic as _};
+/// // These are the exact same topics as for the `listen_command`.
+/// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {
+///     user_id: 4321,
+///     channel_id: 1234,
+/// }.into_topic();
+///
+/// let follows = pubsub::following::Following {
+///     channel_id: 1234,
+/// }.into_topic();
+/// // Create the command to send to twitch
+/// let command = pubsub::unlisten_command(
+///     &[chat_mod_actions, follows],
+///     // This does not need to be the same nonce that was sent for listening.
+///     // The nonce is only there to identify the payload and the response.
+///     "super se3re7 random string",
+/// )
+/// .expect("serializing failed");
+/// // Send the message with your favorite websocket client
+/// send_command(command).unwrap();
+/// // To parse the websocket messages, use pubsub::Response::parse
+/// # fn send_command(command: String) -> Result<(),()> {Ok(())}
+/// ```
+pub fn unlisten_command<'t, O>(
+    topics: &'t [Topics],
+    nonce: O,
+) -> Result<String, serde_json::Error>
+where
+    O: Into<Option<&'t str>>,
+{
+    let topics = topics.iter().map(|t| t.to_string()).collect::<Vec<_>>();
+    serde_json::to_string(&ITopicSubscribe {
+        _type: "UNLISTEN",
+        nonce: nonce.into(),
+        data: ITopicSubscribeData {
+            topics: &topics,
+            auth_token: None,
+        },
+    })
+}
 
 /// Response from twitch PubSub
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -627,6 +661,24 @@ mod tests {
             error: Some(String::new()),
         });
         let actual = Response::parse(source).unwrap();
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn listen() {
+        let topic =
+            Topics::ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2 { channel_id: 12345 });
+        let expected = r#"{"type":"LISTEN","nonce":"my nonce","data":{"topics":["channel-bits-events-v2.12345"],"auth_token":"my token"}}"#;
+        let actual = listen_command(&[topic], "my token", "my nonce").expect("should serialize");
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn unlisten() {
+        let topic =
+            Topics::ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2 { channel_id: 12345 });
+        let expected = r#"{"type":"UNLISTEN","nonce":"my nonce","data":{"topics":["channel-bits-events-v2.12345"]}}"#;
+        let actual = unlisten_command(&[topic], "my nonce").expect("should serialize");
         assert_eq!(expected, actual);
     }
 }
