@@ -268,13 +268,14 @@ struct ITopicSubscribe<'a> {
 /// // To parse the websocket messages, use pubsub::Response::parse
 /// # fn send_command(command: String) -> Result<(),()> {Ok(())}
 /// ```
-pub fn listen_command<'t, O>(
+pub fn listen_command<'t, T, N>(
     topics: &'t [Topics],
-    auth_token: &'t str,
-    nonce: O,
+    auth_token: T,
+    nonce: N,
 ) -> Result<String, serde_json::Error>
 where
-    O: Into<Option<&'t str>>,
+    T: Into<Option<&'t str>>,
+    N: Into<Option<&'t str>>,
 {
     let topics = topics.iter().map(|t| t.to_string()).collect::<Vec<_>>();
     serde_json::to_string(&ITopicSubscribe {
@@ -282,7 +283,7 @@ where
         nonce: nonce.into(),
         data: ITopicSubscribeData {
             topics: &topics,
-            auth_token: Some(auth_token),
+            auth_token: auth_token.into(),
         },
     })
 }
