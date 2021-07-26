@@ -30,6 +30,7 @@
 * Added `user.authorization.grant` to EventSub
 * Added `helix::make_stream` to make streams out of paginated responses.
 * Added fields `moderator_id`,`moderator_login`,`moderator_name` and `reason` to `BannedUser`
+* Added `pubsub::unlisten_command`
 
 ### Changed
 
@@ -42,6 +43,7 @@
 * `HelixClient` methods `search_categories`, `search_channels`, `get_followed_streams` and `get_moderators_in_channel_from_id` now use streams to provide paginated response. 
 * Renamed `BroadcasterType::Affiliated` -> `BroadcasterType::Affiliate`
 * Client extension methods that are paginated are now paginated lazily using a stream.
+* `pubsub::listen_command` now accepts `Into<Option<&str>>` as the `auth_token`.
 
 ### Removed
 
