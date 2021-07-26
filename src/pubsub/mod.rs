@@ -289,6 +289,7 @@ where
 }
 
 /// Create a unlisten command.
+///
 /// # Example
 ///
 /// Unlisten from moderator actions and follows
