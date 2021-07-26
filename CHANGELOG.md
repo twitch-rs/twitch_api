@@ -32,6 +32,7 @@
 * Added fields `moderator_id`,`moderator_login`,`moderator_name` and `reason` to `BannedUser`
 * Added `pubsub::unlisten_command`
 * Added `moderator_removed` as a moderation action to PubSub.
+* Added `EmoteUrlBuilder` to make an url with `EmoteId::url()`
 
 ### Changed
 

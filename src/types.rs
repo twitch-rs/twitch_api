@@ -89,6 +89,142 @@ pub struct ChatBadgeId;
 #[aliri_braid::braid(serde)]
 pub struct EmoteId;
 
+impl EmoteIdRef {
+    /// Generates url for this emote.
+    ///
+    /// Generated URL will be `"https://static-cdn.jtvnw.net/emoticons/v2/{emote_id}/default/light/1.0"`
+    pub fn default_render(&self) -> String {
+        EmoteUrlBuilder {
+            id: self.into(),
+            animation_setting: EmoteAnimationSetting::Default,
+            theme_mode: EmoteThemeMode::Light,
+            scale: EmoteScale::Size1_0,
+        }
+        .render()
+    }
+
+    /// Create a [`EmoteUrlBuilder`] for this emote
+    pub fn url(&self) -> EmoteUrlBuilder<'_> { EmoteUrlBuilder::new(self) }
+}
+
+#[derive(Debug, Clone, displaydoc::Display)]
+enum EmoteAnimationSetting {
+    /// default
+    Default,
+    /// static
+    Static,
+    /// animated
+    Animated,
+}
+
+#[derive(Debug, Clone, displaydoc::Display)]
+enum EmoteThemeMode {
+    /// light
+    Light,
+    /// dark
+    Dark,
+}
+
+#[derive(Debug, Clone, displaydoc::Display)]
+enum EmoteScale {
+    /// 1.0
+    Size1_0,
+    /// 2.0
+    Size2_0,
+    /// 3.0
+    Size3_0,
+}
+
+/// Builder for [emote URLs](https://dev.twitch.tv/docs/irc/emotes#emote-cdn-url-format).
+///
+/// # Example
+///
+/// ```rust
+/// # use twitch_api2::types::EmoteId;
+/// let emote_id = EmoteId::from("emotesv2_dc24652ada1e4c84a5e3ceebae4de709");
+/// assert_eq!(emote_id.url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0")
+/// ```
+#[derive(Debug, Clone)]
+pub struct EmoteUrlBuilder<'a> {
+    id: std::borrow::Cow<'a, EmoteIdRef>,
+    animation_setting: EmoteAnimationSetting,
+    theme_mode: EmoteThemeMode,
+    scale: EmoteScale,
+}
+
+impl EmoteUrlBuilder<'_> {
+    // FIXME: AsRef
+    /// Construct a new [`EmoteUrlBuilder`] from a [`EmoteId`]
+    ///
+    /// Defaults to `1.0` scale, `default` animation and `light` theme.
+    pub fn new(id: &EmoteIdRef) -> EmoteUrlBuilder<'_> {
+        EmoteUrlBuilder {
+            id: id.into(),
+            animation_setting: EmoteAnimationSetting::Default,
+            theme_mode: EmoteThemeMode::Light,
+            scale: EmoteScale::Size1_0,
+        }
+    }
+
+    /// Set size to 1.0
+    pub fn size_1x(mut self) -> Self {
+        self.scale = EmoteScale::Size1_0;
+        self
+    }
+
+    /// Set size to 2.0
+    pub fn size_2x(mut self) -> Self {
+        self.scale = EmoteScale::Size2_0;
+        self
+    }
+
+    /// Set size to 3.0
+    pub fn size_3x(mut self) -> Self {
+        self.scale = EmoteScale::Size3_0;
+        self
+    }
+
+    /// Set theme to dark mode
+    pub fn dark_mode(mut self) -> Self {
+        self.theme_mode = EmoteThemeMode::Dark;
+        self
+    }
+
+    /// Set theme to light mode
+    pub fn light_mode(mut self) -> Self {
+        self.theme_mode = EmoteThemeMode::Light;
+        self
+    }
+
+    /// Set animation mode to default
+    pub fn animation_default(mut self) -> Self {
+        self.animation_setting = EmoteAnimationSetting::Default;
+        self
+    }
+
+    /// Set animation mode to static(
+    pub fn animation_static(mut self) -> Self {
+        self.animation_setting = EmoteAnimationSetting::Static;
+        self
+    }
+
+    /// Set animation mode to animate
+    pub fn animation_animated(mut self) -> Self {
+        self.animation_setting = EmoteAnimationSetting::Animated;
+        self
+    }
+
+    /// Create the URL for this emote.
+    pub fn render(self) -> String {
+        format!("https://static-cdn.jtvnw.net/emoticons/v2/{emote_id}/{animation_setting}/{theme_mode}/{scale}",
+            emote_id = self.id,
+            animation_setting = self.animation_setting,
+            theme_mode = self.theme_mode,
+            scale = self.scale,
+        )
+    }
+}
+
 /// An Emote Set ID
 #[aliri_braid::braid(serde)]
 pub struct EmoteSetId;
