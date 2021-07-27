@@ -133,7 +133,7 @@ pub trait Topic: Serialize + Into<String> {
 }
 
 /// All possible topics
-#[derive(Deserialize, Serialize, PartialEq, Eq, Debug)]
+#[derive(Deserialize, Serialize, PartialEq, Eq, Debug, Clone)]
 #[serde(untagged)]
 #[non_exhaustive]
 pub enum Topics {
