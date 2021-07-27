@@ -212,7 +212,7 @@ pub struct Automod {
     /// The different topics and their level for the automod reason.
     ///
     /// # Examples
-    /// 
+    ///
     /// ```text
     /// "topics": {
     ///     "vulgar": 6

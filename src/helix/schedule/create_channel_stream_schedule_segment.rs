@@ -21,7 +21,7 @@
 //! ```
 //! # use twitch_api2::helix::schedule::create_channel_stream_schedule_segment;
 //! let body = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!     .start_time("2021-07-01T18:00:00Z")
+//!     .start_time(twitch_api2::types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
 //!     .timezone("America/New_York")
 //!     .is_recurring(false)
 //!     .duration("60".to_string())
@@ -48,7 +48,7 @@
 //!     .broadcaster_id("141981764")
 //!     .build();
 //! let body = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!     .start_time("2021-07-01T18:00:00Z")
+//!     .start_time(twitch_api2::types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
 //!     .timezone("America/New_York")
 //!     .is_recurring(false)
 //!     .duration("60".to_string())
@@ -130,7 +130,7 @@ fn test_request() {
         .build();
 
     let body = CreateChannelStreamScheduleSegmentBody::builder()
-        .start_time("2021-07-01T18:00:00Z")
+        .start_time(types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
         .timezone("America/New_York")
         .is_recurring(false)
         .duration("60".to_string())

@@ -34,6 +34,7 @@ sha2 = { version = "0.9.5", optional = true }
 crypto_hmac = { package = "hmac", version = "0.11.0", optional = true }
 aliri_braid = "0.1.9"
 futures = { version = "0.3.16", optional = true }
+chrono = { version = "0.4.19", optional = true, default-features = false, features = ["clock", "std"] }
 
 [features]
 default = []
@@ -70,7 +71,6 @@ eventsub = ["serde_json", "serde_path_to_error"]
 
 hmac = ["crypto_hmac", "sha2"]
 
-
 all = [
     "tmi",
     "helix",
@@ -81,6 +81,8 @@ all = [
     "eventsub",
     "hmac",
     "twitch_oauth2/all",
+    "tracing",
+    "chrono",
 ]
 
 [dev-dependencies]
