@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 /// A user redeems an reward using channel points.
 ///
 /// Reply is [`pubsub::channel_points::ChannelPointsChannelV1Reply`]
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[serde(into = "String", try_from = "String")]
 pub struct CommunityPointsChannelV1 {
     /// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint

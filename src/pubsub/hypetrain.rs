@@ -4,7 +4,7 @@ use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};
 
 /// A user redeems an reward using channel points.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(into = "String", try_from = "String")]
 pub struct HypeTrainEventsV1 {
@@ -26,7 +26,7 @@ impl pubsub::Topic for HypeTrainEventsV1 {
 }
 
 /// A user redeems an reward using channel points.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(into = "String", try_from = "String")]
 pub struct HypeTrainEventsV1Rewards {

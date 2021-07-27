@@ -3,7 +3,7 @@ use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};
 
 /// A user follows the channel
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[serde(into = "String", try_from = "String")]
 pub struct UserModerationNotifications {
     /// The currently authenticated user for whose automod messages will be reported on

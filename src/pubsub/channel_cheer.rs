@@ -5,7 +5,7 @@ use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};
 
 /// A user redeems a cheer with shared rewards.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[serde(into = "String", try_from = "String")]
 pub struct ChannelCheerEventsPublicV1 {
     /// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
