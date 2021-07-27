@@ -4,7 +4,7 @@ use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};
 
 /// Anyone shares a bit badge in a specified channel.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
 #[serde(into = "String", try_from = "String")]
 pub struct ChannelBitsBadgeUnlocks {
     /// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint

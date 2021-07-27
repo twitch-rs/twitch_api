@@ -9,7 +9,7 @@ use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};
 
 /// Statistics about stream
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
 #[serde(into = "String", try_from = "String")]
 pub struct VideoPlayback {
     /// The channel_login to watch.
@@ -26,7 +26,7 @@ impl pubsub::Topic for VideoPlayback {
 }
 
 /// Statistics about stream
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
 #[serde(into = "String", try_from = "String")]
 pub struct VideoPlaybackById {
     /// The channel_login to watch.

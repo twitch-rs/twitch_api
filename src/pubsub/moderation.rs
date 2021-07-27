@@ -6,7 +6,7 @@ use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};
 
 /// A moderator performs an action in the channel.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
 #[serde(into = "String", try_from = "String")]
 pub struct ChatModeratorActions {
     /// The user_id to listen as. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint

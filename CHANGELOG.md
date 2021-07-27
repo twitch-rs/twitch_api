@@ -44,6 +44,7 @@
 * Renamed `BroadcasterType::Affiliated` -> `BroadcasterType::Affiliate`
 * Client extension methods that are paginated are now paginated lazily using a stream.
 * `pubsub::listen_command` now accepts `Into<Option<&str>>` as the `auth_token`.
+* `pubsub::Topics` and all topics now implement `Clone` and `Hash`.
 
 ### Removed
 

@@ -6,7 +6,7 @@ use crate::{pubsub, types};
 use serde::{Deserialize, Serialize};
 
 /// A subscription event happens in channel
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[serde(into = "String", try_from = "String")]
 pub struct ChannelSubscribeEventsV1 {
     /// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
