@@ -150,6 +150,49 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
+    /// Get information on a [follow relationship](helix::users::FollowRelationship)
+    ///
+    /// Can be used to see if X follows Y
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+    /// use twitch_api2::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// // Get the followers of channel "1234"
+    /// let followers: Vec<helix::users::FollowRelationship> = client.get_follow_relationships(types::UserId::new("1234"), None, &token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub fn get_follow_relationships<T>(
+        &'a self,
+        to_id: impl Into<Option<types::UserId>>,
+        from_id: impl Into<Option<types::UserId>>,
+        token: &'a T,
+    ) -> std::pin::Pin<
+        Box<
+            dyn futures::Stream<Item = Result<helix::users::FollowRelationship, ClientError<'a, C>>>
+                + 'a,
+        >,
+    >
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::users::GetUsersFollowsRequest::builder()
+            .to_id(to_id)
+            .from_id(from_id)
+            .build();
+        make_stream(req, token, self, |s| {
+            std::collections::VecDeque::from(s.follow_relationships)
+        })
+    }
+
     /// Get authenticated users' followed [streams](helix::streams::Stream)
     ///
     /// # Examples
