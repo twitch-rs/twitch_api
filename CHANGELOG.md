@@ -49,6 +49,7 @@
 ### Removed
 
 * Removed enum variants for a lot of error states in helix endpoint responses. Most of these are returned by `HelixRequest_Error::Error`
+* Removed deprecated follow endpoints `Create Users Follows` and `Delete Users Follows`
 
 ## [v0.5.0] - 2021-05-08
 

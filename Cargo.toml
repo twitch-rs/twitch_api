@@ -133,11 +133,6 @@ path = "examples/client.rs"
 required-features = ["reqwest_client", "helix"]
 
 [[example]]
-name = "create_follower"
-path = "examples/create_follower.rs"
-required-features = ["surf_client", "helix"]
-
-[[example]]
 name = "channel_information"
 path = "examples/channel_information.rs"
 required-features = ["reqwest_client", "helix"]
