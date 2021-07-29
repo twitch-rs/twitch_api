@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["CreateUserFollows","Return Values for Create User Follows"]],"struct":[["CreateUserFollowsBody","Body Parameters for Create User Follows"],["CreateUserFollowsRequest","Query Parameters for Create User Follows"]]});
