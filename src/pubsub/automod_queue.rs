@@ -110,9 +110,41 @@ pub struct Message {
     /// Chat ID of the message
     pub id: types::MsgId,
     /// User that sent the message
-    pub sender: types::User,
+    pub sender: MessageUser,
     /// Time at which the message was sent
     pub sent_at: types::Timestamp,
+}
+
+/// A user according to Automod
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct MessageUser {
+    /// ID of the user
+    pub user_id: types::UserId,
+    /// Login name of the user, not capitalized
+    pub login: types::UserName,
+    /// Display name of user
+    pub display_name: types::DisplayName,
+    /// Senders badges
+    #[serde(default)]
+    pub badges: Vec<MessageUserBadges>,
+    /// Color of the user
+    pub chat_color: Option<String>,
+}
+
+/// A users badges in the chat
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct MessageUserBadges {
+    // FIXME: Enum?
+    /// Id or type of the badge
+    pub id: String,
+    /// Version of the badge
+    ///
+    /// e.g `1000` for tier 1, `2000` for tier 2, etc.
+    pub version: String,
 }
 
 /// The contents of a AutoMod message
@@ -148,6 +180,27 @@ pub enum Fragment {
         /// Text associated with this fragment
         text: String,
     },
+    /// A text fragment that mentions another user
+    UserMention {
+        /// Text associated with this fragment
+        text: String,
+        /// User mentioned
+        user_mention: FragmentUserMention,
+    },
+}
+
+/// A mentioned user in a fragment
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct FragmentUserMention {
+    /// User ID of the user
+    #[serde(rename = "userID")]
+    pub user_id: types::UserId,
+    /// Username of the user
+    pub login: types::UserName,
+    /// Display name of the user
+    pub display_name: types::DisplayName,
 }
 
 /// Specific AutoMod classification
@@ -190,6 +243,20 @@ mod tests {
         let source = r#"
         {"type":"MESSAGE","data":{"topic":"automod-queue.27620241.27620241","message":"{\"type\":\"automod_caught_message\",\"data\":{\"content_classification\":{\"category\":\"aggression\",\"level\":4},\"message\":{\"content\":{\"text\":\"you suck balls\",\"fragments\":[{\"text\":\"you suck balls\",\"automod\":{\"topics\":{\"bullying\":3,\"dating_and_sexting\":7,\"vulgar\":5}}}]},\"id\":\"23b15313-ff6c-4e1c-8d0d-ea9c382a3806\",\"sender\":{\"user_id\":\"268131879\",\"login\":\"prettyb0i_swe\",\"display_name\":\"prettyb0i_swe\"},\"sent_at\":\"2021-05-29T13:12:41.237693525Z\"},\"reason_code\":\"\",\"resolver_id\":\"\",\"resolver_login\":\"\",\"status\":\"PENDING\"}}"}}
         "#;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::AutoModQueue { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn automodcaught3() {
+        let source = r##"
+        {"type":"MESSAGE","data":{"topic":"automod-queue.27620241.27620241","message":"{\"type\":\"automod_caught_message\",\"data\":{\"content_classification\":{\"category\":\"aggression\",\"level\":1},\"message\":{\"content\":{\"text\":\"No I have been told that I can have an I;ll kill you face that scares the crap out of people when I am annoyed with ot angry at them. SO be it. It takes a lot to get me in that mood so you deserve it. @Emilgardis\",\"fragments\":[{\"text\":\"No I have been told that I can have an \"},{\"text\":\"I;ll kill you\",\"automod\":{\"topics\":{\"bullying\":7}}},{\"text\":\" face that scares the crap out of people when I am annoyed with ot angry at them. SO be it. It takes a lot to get me in that mood so you deserve it. \"},{\"text\":\"@Emilgardis\",\"user_mention\":{\"userID\":\"27620241\",\"login\":\"emilgardis\",\"display_name\":\"Emilgardis\"}}]},\"id\":\"87b2ae08-ac64-43e7-b2b7-28ae168e00ce\",\"sender\":{\"user_id\":\"1234\",\"login\":\"justintvfan\",\"display_name\":\"justintvfan\",\"chat_color\":\"#DAA520\",\"badges\":[{\"id\":\"subscriber\",\"version\":\"18\"},{\"id\":\"bits\",\"version\":\"1000\"}]},\"sent_at\":\"2021-06-27T19:28:48.747156458Z\"},\"reason_code\":\"\",\"resolver_id\":\"27620241\",\"resolver_login\":\"emilgardis\",\"status\":\"ALLOWED\"}}"}}
+        "##;
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
