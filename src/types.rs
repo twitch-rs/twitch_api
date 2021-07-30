@@ -318,6 +318,7 @@ pub enum CommercialLengthParseError {
 
 /// A user according to many endpoints
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 pub struct User {
     /// ID of the user
     #[serde(alias = "user_id")]
