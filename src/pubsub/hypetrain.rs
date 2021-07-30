@@ -165,8 +165,16 @@ pub struct HypeTrainApproaching {
     // FIXME: COPIED FROM HypeTrainStart Channel ID is sometimes missing, might be depending on your token
     /// ID of channel where hype-train was initiated
     pub channel_id: Option<types::UserId>,
+    /// Creator color
+    #[serde(
+        default,
+        deserialize_with = "pubsub::deserialize_none_from_empty_string"
+    )]
+    pub creator_color: Option<String>,
     /// Participation points needed for this level
     pub goal: i64,
+    /// Participators
+    pub participants: Vec<types::UserId>,
     /// remaining events
     // FIXME: example: "1": 258708980297
     // What does 258708980297 stand for? is "1" perhaps BADGE type? just not stringified
@@ -1994,7 +2002,7 @@ mod tests {
 
     #[test]
     fn hype_train_approaching() {
-        let source = r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.35740817","message":"{\"type\":\"hype-train-approaching\",\"data\":{\"channel_id\":\"35740817\",\"goal\":3,\"events_remaining_durations\":{\"1\":258708980297},\"level_one_rewards\":[{\"type\":\"EMOTE\",\"id\":\"304420773\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420921\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420811\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304421029\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420886\",\"group_id\":\"\",\"reward_level\":0},{\"type\":\"EMOTE\",\"id\":\"304420784\",\"group_id\":\"\",\"reward_level\":0}]}}"}}"#;
+        let source = r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.159498717","message":"{\"type\":\"hype-train-approaching\",\"data\":{\"channel_id\":\"159498717\",\"goal\":5,\"events_remaining_durations\":{\"1\":195},\"level_one_rewards\":[{\"type\":\"EMOTE\",\"id\":\"emotesv2_d20a5e514e534288a1104b92c4f87834\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeWow\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_62199faa2ca34ea8a0f3567990a72a14\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeHeh\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_69a7806c6837428f82475e99677d2f78\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeDoh\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_a964a0cbae9348e6bd981bc714eec71d\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeYum\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_680c3aae688947d8b6067cff1a8bcdbe\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeShame\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_6a99bc2baae743099b23ed6ab07bc5c4\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeHide\"}],\"creator_color\":\"99BBFF\",\"participants\":[\"195079041\",\"70447505\",\"77795507\",\"157269176\"]}}"}}"#;
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
