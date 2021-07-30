@@ -43,7 +43,7 @@ pub struct ChannelSubscriptionMessageV1Payload {
     /// The number of consecutive months the user’s current subscription has been active. This value is null if the user has opted out of sharing this information.
     pub streak_months: Option<i64>,
     /// The tier of the user’s subscription.
-    pub tier: String,
+    pub tier: types::SubscriptionTier,
     /// The user ID of the user who sent a resubscription chat message.
     pub user_id: types::UserId,
     /// The user login of the user who sent a resubscription chat message.

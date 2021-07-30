@@ -52,7 +52,7 @@ pub struct GetUserBlockListRequest {
     pub first: Option<usize>,
     ///  User ID for a Twitch user.
     #[builder(setter(into))]
-    pub broadcaster_id: String,
+    pub broadcaster_id: types::UserId,
 }
 
 /// Return Values for [Get Users Block List](super::get_user_block_list)
@@ -63,11 +63,11 @@ pub struct GetUserBlockListRequest {
 #[non_exhaustive]
 pub struct UserBlock {
     /// User ID of the blocked user.
-    pub user_id: String,
+    pub user_id: types::UserId,
     /// Login of the blocked user.
-    pub user_login: String,
+    pub user_login: types::UserName,
     /// Display name of the blocked user.
-    pub display_name: String,
+    pub display_name: types::DisplayName,
 }
 
 impl Request for GetUserBlockListRequest {
@@ -92,7 +92,7 @@ impl helix::Paginated for GetUserBlockListRequest {
 fn test_request() {
     use helix::*;
     let req = GetUserBlockListRequest::builder()
-        .broadcaster_id("23161357".to_string())
+        .broadcaster_id("23161357")
         .build();
 
     // From twitch docs // FIXME: twitch docs say id, not user_id

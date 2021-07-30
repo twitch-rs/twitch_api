@@ -38,7 +38,7 @@ pub struct ChannelSubscriptionGiftV1Payload {
     /// Whether the subscription gift was anonymous.
     pub is_anonymous: bool,
     /// The tier of subscriptions in the subscription gift.
-    pub tier: String,
+    pub tier: types::SubscriptionTier,
     /// The number of subscriptions in the subscription gift.
     pub total: i64,
     /// The user ID of the user who sent the subscription gift. Set to null if it was an anonymous subscription gift.
