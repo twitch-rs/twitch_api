@@ -111,7 +111,7 @@ pub struct Vod {
     /// Availability of VOD
     pub viewable: types::VideoPrivacy,
     /// ID of current VOD
-    pub vod_id: String,
+    pub vod_id: types::VideoId,
     /// ID of current watch party
     pub wp_id: String,
     /// Type of current watch party

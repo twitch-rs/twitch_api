@@ -29,11 +29,11 @@ pub struct ChannelPollBeginV1Payload {
     /// The Bits voting settings for the poll.
     pub bits_voting: BitsVoting,
     /// The requested broadcaster ID.
-    pub broadcaster_user_id: String,
+    pub broadcaster_user_id: types::UserId,
     /// The requested broadcaster login.
-    pub broadcaster_user_login: String,
+    pub broadcaster_user_login: types::UserName,
     /// The requested broadcaster display name.
-    pub broadcaster_user_name: String,
+    pub broadcaster_user_name: types::DisplayName,
     /// The Channel Points voting settings for the poll.
     pub channel_points_voting: ChannelPointsVoting,
     /// An array of choices for the poll.

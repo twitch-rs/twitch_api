@@ -221,7 +221,7 @@ pub enum HypeTrainEventsV1Reply {
 #[non_exhaustive]
 pub struct Config {
     /// Hype train public callout emote ID
-    pub callout_emote_id: String,
+    pub callout_emote_id: types::EmoteId,
     /// Hype train public callout emote token
     pub callout_emote_token: String,
     // FIXME: Channel ID is sometimes missing, might be depending on your token
@@ -517,24 +517,25 @@ pub enum Reward {
         /// Group ID of emote
         group_id: String,
         /// ID of emote
-        id: String,
+        id: types::EmoteId,
         /// Level that this emote is from
         reward_level: i64,
         // FIXME: Token and set_id seems to only be present on hype-train-start
         /// Token for this emote
         token: Option<String>,
         /// ID of emote set
-        set_id: Option<String>,
+        set_id: Option<types::EmoteSetId>,
     },
     /// Reward is a badge
     #[serde(rename = "BADGE")]
     Badge {
         // FIXME: Is this the same as in get chat badges?
         /// ID of badge
-        badge_id: String,
+        badge_id: types::ChatBadgeId,
         /// Group ID of badge
         group_id: String,
-        /// ID of badge
+        // FIXME: What is this?
+        /// ID of badge in this object
         id: String,
         /// URL to image of badge
         image_url: String,
