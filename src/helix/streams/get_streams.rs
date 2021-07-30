@@ -87,6 +87,7 @@ pub struct Stream {
     /// UTC timestamp.
     pub started_at: types::Timestamp,
     /// Shows tag IDs that apply to the stream.
+    #[serde(deserialize_with = "helix::deserialize_default_from_null")]
     pub tag_ids: Vec<types::TagId>,
     /// Thumbnail URL of the stream. All image URLs have variable width and height. You can replace {width} and {height} with any values to get that size image
     pub thumbnail_url: String,
@@ -161,6 +162,47 @@ fn test_request() {
             "tag_ids":  [
                 "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
             ],
+            "is_mature": false
+        }
+    ],
+    "pagination": {
+        "cursor": "eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6MjB9fQ=="
+    }
+}
+"#
+        .to_vec();
+
+    let http_response = http::Response::builder().body(data).unwrap();
+
+    let uri = req.get_uri().unwrap();
+    assert_eq!(uri.to_string(), "https://api.twitch.tv/helix/streams?");
+
+    dbg!(GetStreamsRequest::parse_response(Some(req), &uri, http_response).unwrap());
+}
+
+#[cfg(test)]
+#[test]
+fn test_request_null_tags_issue184() {
+    use helix::*;
+    let req = GetStreamsRequest::builder().build();
+
+    // From twitch docs, kinda. example 1 in https://dev.twitch.tv/docs/api/reference#get-streams is malformed
+    let data = br#"
+{
+    "data": [
+        {
+            "id": "26007494656",
+            "user_id": "23161357",
+            "user_name": "LIRIK",
+            "user_login": "lirik",
+            "game_id": "417752",
+            "type": "live",
+            "title": "Hey Guys, It's Monday - Twitter: @Lirik",
+            "viewer_count": 32575,
+            "started_at": "2017-08-14T16:08:32Z",
+            "language": "en",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg",
+            "tag_ids":  null,
             "is_mature": false
         }
     ],
