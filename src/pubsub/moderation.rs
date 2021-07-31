@@ -75,10 +75,6 @@ pub struct ModerationAction {
 }
 
 /// A moderator was added. `moderator_added`
-///
-/// # Notes
-///
-/// There is no `moderator_removed` message
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -88,6 +84,25 @@ pub struct ModeratorAdded {
     /// ID of added moderator
     pub target_user_id: types::UserId,
     /// Moderation action. Should be [`mod`](ModerationActionCommand::Mod)
+    pub moderation_action: ModerationActionCommand,
+    /// Username of added moderator
+    pub target_user_login: types::UserName,
+    /// ID of user that added moderator
+    pub created_by_user_id: types::UserId,
+    /// Username of user that added moderator
+    pub created_by: types::UserName,
+}
+
+/// A moderator was removed. `moderator_removed`
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct ModeratorRemoved {
+    /// ID of channel where moderator was added
+    pub channel_id: types::UserId,
+    /// ID of added moderator
+    pub target_user_id: types::UserId,
+    /// Moderation action. Should be [`unmod`](ModerationActionCommand::Unmod)
     pub moderation_action: ModerationActionCommand,
     /// Username of added moderator
     pub target_user_login: types::UserName,
@@ -146,6 +161,9 @@ pub enum ChatModeratorActionsReply {
     /// A moderator was added. `moderator_added`
     #[serde(rename = "moderator_added")]
     ModeratorAdded(ModeratorAdded),
+    /// A moderator was removed. `moderator_removed`
+    #[serde(rename = "moderator_removed")]
+    ModeratorRemoved(ModeratorRemoved),
     /// Unban request denied
     #[serde(rename = "deny_unban_request")]
     DenyUnbanRequest(UnbanRequest),
@@ -446,6 +464,19 @@ mod tests {
             }
         ));
     }
+
+    #[test]
+    fn mod_remove_moderator() {
+        let source = r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.691109305.129546453","message":"{\"type\":\"moderator_removed\",\"data\":{\"channel_id\":\"129546453\",\"target_user_id\":\"691109305\",\"moderation_action\":\"unmod\",\"target_user_login\":\"rewardmore\",\"created_by_user_id\":\"129546453\",\"created_by\":\"nerixyz\"}}"}}"#;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
+            }
+        ));
+    }
+
     #[test]
     fn mod_automod() {
         let source = r#"
