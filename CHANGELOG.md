@@ -31,6 +31,7 @@
 * Added `helix::make_stream` to make streams out of paginated responses.
 * Added fields `moderator_id`,`moderator_login`,`moderator_name` and `reason` to `BannedUser`
 * Added `pubsub::unlisten_command`
+* Added `moderator_removed` as a moderation action to PubSub.
 
 ### Changed
 
