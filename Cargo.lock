@@ -1988,6 +1988,7 @@ version = "0.6.0-rc.1"
 dependencies = [
  "aliri_braid",
  "async-trait",
+ "chrono",
  "displaydoc",
  "dotenv",
  "futures",

@@ -12,7 +12,6 @@
 //! ```rust, no_run
 //! use twitch_api2::helix::bits::get_bits_leaderboard;
 //! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder()
-//!     .started_at(Some("2020-01-01T07:00:00Z".into()))
 //!     .period("day".to_string())
 //!     .build();
 //! // Get leaderbord for the lifetime of the channel

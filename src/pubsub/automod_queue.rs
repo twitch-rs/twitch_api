@@ -211,7 +211,8 @@ pub struct Automod {
     // FIXME: This should be a hash map of enum, i64
     /// The different topics and their level for the automod reason.
     ///
-    /// # Example
+    /// # Examples
+    ///
     /// ```text
     /// "topics": {
     ///     "vulgar": 6

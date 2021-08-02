@@ -3,7 +3,7 @@
 //! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscription) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).
 //! Parse the response payload text with [`Payload::parse`] or [`Payload::parse_http`].
 //!
-//! # Example
+//! # Examples
 //!
 //! You've used [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscription) to create a subscription for [`user.authorization.revoke`](EventType::UserAuthorizationRevoke), after verifying your callback accordingly you will then get events sent to the callback
 //!

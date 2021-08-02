@@ -32,6 +32,9 @@
 * Added fields `moderator_id`,`moderator_login`,`moderator_name` and `reason` to `BannedUser`
 * Added `pubsub::unlisten_command`
 * Added `moderator_removed` as a moderation action to PubSub.
+* Added `EmoteUrlBuilder` to make an url with `EmoteId::url()`
+* Added methods to `Timestamp` for constructing and handling them. Can use the `chrono` crate behind the `chrono` feature.
+* New `HelixClient` method `get_follow_relationships` for getting follows.
 
 ### Changed
 

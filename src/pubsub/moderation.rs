@@ -617,8 +617,8 @@ mod tests {
         {
             "type": "MESSAGE",
             "data": {
-                "topic": "chat_moderator_actions.27620241.80525799",
-                "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"unvip\",\"args\":[\"emil_the_impostor\"],\"created_by\":\"sessis\",\"created_by_user_id\":\"80525799\",\"created_at\":\"2021-05-17T17: 16: 51.900072893Z\",\"msg_id\":\"\",\"target_user_id\":\"465894629\",\"target_user_login\":\"\",\"from_automod\":false}}"
+                "topic": "chat_moderator_actions.27620241.27620241",
+                "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"unvip\",\"args\":[\"emil_the_impostor\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"created_at\":\"2021-07-27T22:28:31.075027599Z\",\"msg_id\":\"\",\"target_user_id\":\"465894629\",\"target_user_login\":\"\",\"from_automod\":false}}"
             }
         }"#;
         let actual = dbg!(Response::parse(source).unwrap());

@@ -125,8 +125,8 @@ fn test_request() {
     let req = UpdateChannelStreamScheduleRequest::builder()
         .broadcaster_id("141981764")
         .is_vacation_enabled(true)
-        .vacation_start_time(Some("2021-05-16T00:00:00Z".into()))
-        .vacation_end_time(Some("2021-05-23T00:00:00Z".into()))
+        .vacation_start_time(Some("2021-05-16T00:00:00Z".try_into().unwrap()))
+        .vacation_end_time(Some("2021-05-23T00:00:00Z".try_into().unwrap()))
         .timezone("America/New_York".to_string())
         .build();
 
