@@ -56,7 +56,6 @@
 use std::convert::TryInto;
 use std::error::Error;
 use std::future::Future;
-use std::str::FromStr;
 
 /// The User-Agent `product` of this crate.
 pub static TWITCH_API2_USER_AGENT: &str =
@@ -282,6 +281,8 @@ where Self: Default
     type Error = SurfClientDefaultError;
 
     fn default_client_with_name(product: Option<http::HeaderValue>) -> Result<Self, Self::Error> {
+        use std::str::FromStr as _;
+
         #[cfg(feature = "surf")]
         struct SurfAgentMiddleware {
             user_agent: surf::http::headers::HeaderValue,

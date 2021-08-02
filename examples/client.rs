@@ -13,7 +13,7 @@ fn main() {
 }
 
 #[derive(Default)]
-pub struct Foo {
+pub struct FooClient {
     client: TwitchClient<'static, reqwest::Client>,
 }
 
@@ -22,10 +22,10 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     let _ = dotenv::dotenv();
     let mut args = std::env::args().skip(1);
 
-    let foo = Foo::default();
+    let foo_client = FooClient::default();
 
     let token = UserToken::from_existing(
-        &foo.client,
+        &foo_client.client,
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
@@ -42,8 +42,8 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
             .expect("please provide an username")
             .into()])
         .build();
-    foo.client.helix.clone_client();
-    let response = foo.client.helix.req_get(req, &token).await?;
+    foo_client.client.helix.clone_client();
+    let response = foo_client.client.helix.req_get(req, &token).await?;
     println!("{:?}", response);
     Ok(())
 }
