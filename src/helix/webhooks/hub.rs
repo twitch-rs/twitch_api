@@ -24,7 +24,11 @@
 //!     .lease_seconds(864000)
 //!     .mode(hub::WebhookSubscriptionMode::Subscribe)
 //!     .secret("12233213890390".to_string())
-//!     .topic(twitch_api2::helix::webhooks::topics::users::UserFollowsTopic::builder().from_id(Some("1336".into())).build())
+//!     .topic(
+//!         twitch_api2::helix::webhooks::topics::users::UserFollowsTopic::builder()
+//!             .from_id(Some("1336".into()))
+//!             .build(),
+//!     )
 //!     .build();
 //! ```
 //!
@@ -41,7 +45,7 @@
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+//! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = hub::WebhookHubRequest::builder()
 //!     .build();
 //! let body = hub::WebhookHubBody::builder()

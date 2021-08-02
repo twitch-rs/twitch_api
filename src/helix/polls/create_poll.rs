@@ -21,7 +21,10 @@
 //! let body = create_poll::CreatePollBody::builder()
 //!     .broadcaster_id("141981764")
 //!     .title("Heads or Tails?")
-//!     .choices(vec![create_poll::NewPollChoice::new("Heads"), create_poll::NewPollChoice::new("Tails")])
+//!     .choices(vec![
+//!         create_poll::NewPollChoice::new("Heads"),
+//!         create_poll::NewPollChoice::new("Tails"),
+//!     ])
 //!     .channel_points_voting_enabled(true)
 //!     .channel_points_per_vote(100)
 //!     .duration(1800)
@@ -41,7 +44,7 @@
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+//! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = create_poll::CreatePollRequest::builder()
 //!     .build();
 //! let body = create_poll::CreatePollBody::builder()

@@ -25,7 +25,7 @@
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+//! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = delete_videos::DeleteVideosRequest::builder()
 //!     .id(vec!["1234".into()])
 //!     .build();
@@ -53,7 +53,6 @@ pub struct DeleteVideosRequest {
 }
 // FIXME: Should return VideoIds
 /// Return Values for [Delete Videos](super::delete_videos)
-///
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 /// [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]

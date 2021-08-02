@@ -1,5 +1,4 @@
 //! Twitch types
-//!
 
 use serde::{Deserialize, Serialize};
 

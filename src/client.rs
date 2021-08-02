@@ -52,12 +52,10 @@
 //! Of course, sometimes the clients use different types for their responses and requests. but simply translate them into [`http`] types and it will work.
 //!
 //! See the source of this module for the implementation of [`Client`] for [surf](https://crates.io/crates/surf) and [reqwest](https://crates.io/crates/reqwest) if you need inspiration.
-//!
 
 use std::convert::TryInto;
 use std::error::Error;
 use std::future::Future;
-use std::str::FromStr;
 
 /// The User-Agent `product` of this crate.
 pub static TWITCH_API2_USER_AGENT: &str =
@@ -283,6 +281,8 @@ where Self: Default
     type Error = SurfClientDefaultError;
 
     fn default_client_with_name(product: Option<http::HeaderValue>) -> Result<Self, Self::Error> {
+        use std::str::FromStr as _;
+
         #[cfg(feature = "surf")]
         struct SurfAgentMiddleware {
             user_agent: surf::http::headers::HeaderValue,
@@ -344,6 +344,14 @@ impl<'a> Client<'a> for DummyHttpClient {
     }
 }
 
+impl<'a> Client<'a> for twitch_oauth2::client::DummyClient {
+    type Error = twitch_oauth2::client::DummyClient;
+
+    fn req(&'a self, _: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+        Box::pin(async { Err(twitch_oauth2::client::DummyClient) })
+    }
+}
+
 #[cfg(feature = "surf")]
 impl ClientDefault<'static> for DummyHttpClient
 where Self: Default
@@ -352,6 +360,42 @@ where Self: Default
 
     fn default_client_with_name(_: Option<http::HeaderValue>) -> Result<Self, Self::Error> {
         Ok(Self)
+    }
+}
+
+#[cfg(feature = "helix")]
+impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::HelixClient<'a, C> {
+    type Error = <C as Client<'a>>::Error;
+
+    fn req(
+        &'a self,
+        request: Req,
+    ) -> BoxedFuture<'a, Result<Response, <Self as twitch_oauth2::client::Client>::Error>> {
+        self.client.req(request)
+    }
+}
+
+#[cfg(feature = "tmi")]
+impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::TmiClient<'a, C> {
+    type Error = <C as Client<'a>>::Error;
+
+    fn req(
+        &'a self,
+        request: Req,
+    ) -> BoxedFuture<'a, Result<Response, <Self as twitch_oauth2::client::Client>::Error>> {
+        self.client.req(request)
+    }
+}
+
+#[cfg(any(feature = "tmi", feature = "helix"))]
+impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::TwitchClient<'a, C> {
+    type Error = <C as Client<'a>>::Error;
+
+    fn req(
+        &'a self,
+        request: Req,
+    ) -> BoxedFuture<'a, Result<Response, <Self as twitch_oauth2::client::Client>::Error>> {
+        self.client().req(request)
     }
 }
 

@@ -17,18 +17,20 @@ See [examples](./examples) for examples.
 
 ```rust ,no_run
 use twitch_api2::helix::HelixClient;
-use twitch_oauth2::{AccessToken, UserToken, client::reqwest_http_client};
+use twitch_oauth2::{AccessToken, UserToken};
+use reqwest::Client as ReqwestClient;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+  let client: HelixClient<ReqwestClient> =  HelixClient::default();
+
     let token = UserToken::from_existing(
-        reqwest_http_client,
+        &client,
         AccessToken::new("mytoken".to_string()),
         None, // Refresh Token
         None, // Client Secret
     )
     .await?;
-    let client: HelixClient<reqwest::Client> =  HelixClient::default();
 
     println!("Channel: {:?}",
             client.get_channel_from_login("twitchdev", &token).await?
