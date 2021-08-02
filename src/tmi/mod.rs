@@ -71,7 +71,7 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
     ) -> Result<GetChatters, RequestError<<C as crate::HttpClient<'a>>::Error>> {
         let url = format!(
             "{}{}{}{}",
-            crate::TWITCH_TMI_URL,
+            crate::TWITCH_TMI_URL.as_str(),
             "group/user/",
             broadcaster.as_str().replace('#', "").to_ascii_lowercase(),
             "/chatters"
@@ -103,7 +103,7 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
     ) -> Result<GetHosts, RequestError<<C as crate::HttpClient<'a>>::Error>> {
         let url = format!(
             "{}{}{}{}",
-            crate::TWITCH_TMI_URL,
+            crate::TWITCH_TMI_URL.as_str(),
             "hosts?",
             if include_logins {
                 "include_logins=1&"

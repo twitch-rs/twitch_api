@@ -3,4 +3,5 @@
     "rust-analyzer.checkOnSave.features": ["all", "unsupported", "twitch_oauth2/reqwest_client", "twitch_oauth2/surf_client", "deny_unknown_fields", "surf/curl-client"],
     "rust-analyzer.checkOnSave.enable": true,
     "rust-analyzer.cargo.features": ["all", "unsupported", "deny_unknown_fields"],
+    "rust-analyzer.experimental.procAttrMacros": true,
 }

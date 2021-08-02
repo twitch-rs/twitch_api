@@ -1972,6 +1972,7 @@ dependencies = [
  "hmac 0.11.0",
  "http",
  "http-types",
+ "once_cell",
  "reqwest",
  "serde",
  "serde_cbor",

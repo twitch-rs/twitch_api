@@ -86,7 +86,11 @@ pub struct Channel {
     /// Live status
     pub is_live: bool,
     /// UTC timestamp. (live only)
-    pub started_at: types::Timestamp,
+    #[serde(
+        default,
+        deserialize_with = "helix::deserialize_none_from_empty_string"
+    )]
+    pub started_at: Option<types::Timestamp>,
     // FIXME: Twitch doc say tag_ids
     /// Shows tag IDs that apply to the stream (live only).See <https://www.twitch.tv/directory/all/tags> for tag types
     pub tag_ids: Vec<types::TagId>,

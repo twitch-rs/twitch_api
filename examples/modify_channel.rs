@@ -7,7 +7,7 @@ fn main() {
         println!("Error: {}", err);
         let mut e: &'_ dyn Error = err.as_ref();
         while let Some(cause) = e.source() {
-            println!("Caused by: {:?}", cause);
+            println!("Caused by: {}", cause);
             e = cause;
         }
     }

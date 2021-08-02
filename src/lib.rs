@@ -137,18 +137,48 @@ pub use client::Client as HttpClient;
 #[cfg(feature = "client")]
 pub use client::DummyHttpClient;
 
+/// Generate a url with a default if `mock_api` feature is disabled, or env var is not defined or is invalid utf8
+macro_rules! mock_env_url {
+    ($var:literal, $default:expr $(,)?) => {
+        once_cell::sync::Lazy::new(move || {
+            #[cfg(feature = "mock_api")]
+            if let Ok(url) = std::env::var($var) {
+                return url::Url::parse(&url).expect(concat!(
+                    "URL could not be made from `env:",
+                    $var,
+                    "`."
+                ));
+            };
+            url::Url::parse(&$default).unwrap()
+        })
+    };
+}
+
 /// Location of Twitch Helix
+///
+/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_HELIX_URL`.
+///
+/// # Examples
+///
+/// Set the environment variable `TWITCH_HELIX_URL` to `http://localhost:8080/mock/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.
 #[cfg(feature = "helix")]
 #[cfg_attr(nightly, doc(cfg(feature = "helix")))]
-pub static TWITCH_HELIX_URL: &str = "https://api.twitch.tv/helix/";
+pub static TWITCH_HELIX_URL: once_cell::sync::Lazy<url::Url> =
+    mock_env_url!("TWITCH_HELIX_URL", "https://api.twitch.tv/helix/");
 /// Location of Twitch TMI
+///
+/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_TMI_URL`.
 #[cfg(feature = "tmi")]
 #[cfg_attr(nightly, doc(cfg(feature = "tmi")))]
-pub static TWITCH_TMI_URL: &str = "https://tmi.twitch.tv/";
+pub static TWITCH_TMI_URL: once_cell::sync::Lazy<url::Url> =
+    mock_env_url!("TWITCH_TMI_URL", "https://tmi.twitch.tv/");
 /// Location to twitch PubSub
+///
+/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_PUBSUB_URL`.
 #[cfg(feature = "pubsub")]
 #[cfg_attr(nightly, doc(cfg(feature = "pubsub")))]
-pub static TWITCH_PUBSUB_URL: &str = "wss://pubsub-edge.twitch.tv";
+pub static TWITCH_PUBSUB_URL: once_cell::sync::Lazy<url::Url> =
+    mock_env_url!("TWITCH_PUBSUB_URL", "wss://pubsub-edge.twitch.tv");
 
 /// Client for Twitch APIs.
 ///
