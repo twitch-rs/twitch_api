@@ -30,7 +30,7 @@
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+//! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = GetCustomRewardRedemptionRequest::builder()
 //!     .broadcaster_id("274637212".to_string())
 //!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())

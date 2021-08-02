@@ -17,8 +17,10 @@ fn main() {
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     let _ = dotenv::dotenv();
     let mut args = std::env::args().skip(1);
+    let client: HelixClient<surf::Client> = HelixClient::default();
+
     let token = UserToken::from_existing(
-        twitch_oauth2::client::surf_http_client,
+        &client,
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
@@ -30,8 +32,6 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     .await?;
 
     let broadcaster_id = token.user_id.as_str();
-
-    let client: HelixClient<surf::Client> = HelixClient::new();
 
     let req = twitch_api2::helix::moderation::CheckAutoModStatusRequest::builder()
         .broadcaster_id(broadcaster_id)

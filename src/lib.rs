@@ -19,27 +19,28 @@
 //!
 //! ```rust,no_run
 //! use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
-//! use twitch_oauth2::client::surf_http_client;
-//! use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::TokenError};
+//! use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::AppAccessTokenError};
+//! # pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
 //!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-//! # let surf_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests
-//! # let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
-//! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret".to_string());
-//! let token =
-//!     match AppAccessToken::get_app_access_token(surf_http_client, client_id, client_secret, Scope::all()).await {
-//!         Ok(t) => t,
-//!         Err(TokenError::Request(e)) => panic!("got error: {:?}", e),
-//!         Err(e) => panic!(e),
-//!     };
-//! let client = TwitchClient::new();
-//! # let _: &TwitchClient<twitch_api2::DummyHttpClient> = &client;
+//! # let client_id = twitch_oauth2::ClientId::new("validclientid");
+//! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret");
+//!
+//! let client: TwitchClient<reqwest::Client> = TwitchClient::default();
+//! let token = AppAccessToken::get_app_access_token(
+//!     &client,
+//!     client_id,
+//!     client_secret,
+//!     Scope::all(),
+//!     ).await?;
 //! let req = GetChannelInformationRequest::builder()
 //!     .broadcaster_id("27620241")
 //!     .build();
-//!
-//! println!("{:?}", &client.helix.req_get(req, &token).await?.data.unwrap().title);
+//! println!(
+//!     "{:?}",
+//!     &client.helix.req_get(req, &token).await?.data.unwrap().title
+//! );
 //! # Ok(())
 //! # }
 //! ```
@@ -48,20 +49,19 @@
 //!
 //! ```rust,no_run
 //! # use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
-//! # use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::TokenError};
+//! # use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::AppAccessTokenError};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-//! # let surf_http_client = twitch_oauth2::dummy_http_client; // This is only here to fool doc tests
+//! let client = TwitchClient::default();
+//! # let _:&TwitchClient<twitch_api2::DummyHttpClient> = &client;
 //! # let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
 //! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret".to_string());
 //! # let token =
-//! #   match AppAccessToken::get_app_access_token(surf_http_client, client_id, client_secret, Scope::all()).await {
+//! #   match AppAccessToken::get_app_access_token(&client, client_id, client_secret, Scope::all()).await {
 //! #       Ok(t) => t,
-//! #       Err(TokenError::Request(e)) => panic!("got error: {:?}", e),
+//! #       Err(AppAccessTokenError::Request(e)) => panic!("got error: {:?}", e),
 //! #       Err(e) => panic!(e),
 //! #   };
-//! # let client = TwitchClient::new();
-//! # let _: &TwitchClient<twitch_api2::DummyHttpClient> = &client;
 //!
 //! println!("{:?}", &client.helix.get_channel_from_login("twitch".to_string(), &token).await?.unwrap().title);
 //! # Ok(())
@@ -88,7 +88,6 @@
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>unsupported</code></span> | Enables undocumented or experimental endpoints or topics. Breakage may occur |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>trace_unknown_fields</code></span> | Logs ignored fields as `WARN` log messages where  applicable. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>deny_unknown_fields</code></span> | Adds `#[serde(deny_unknown_fields)]` on all applicable structs/enums. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
-//!
 
 // FIXME: This is a hack to prevent early pass failing on
 // `arbitrary expressions in key-value attributes are unstable` on stable rust pre 1.54.
@@ -214,6 +213,20 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
             tmi: TmiClient::with_client(client.clone()),
             #[cfg(feature = "helix")]
             helix: HelixClient::with_client(client),
+        }
+    }
+
+    pub(crate) fn client(&self) -> &C {
+        #[cfg(feature = "helix")]
+        {
+            &self.helix.client
+        }
+        #[cfg(not(feature = "helix"))]
+        {
+            #[cfg(feature = "tmi")]
+            {
+                &self.tmi.client
+            }
         }
     }
 }

@@ -250,12 +250,11 @@ struct ITopicSubscribe<'a> {
 /// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {
 ///     user_id: 4321,
 ///     channel_id: 1234,
-/// }.into_topic();
+/// }
+/// .into_topic();
 ///
 /// // Listen to follows as well
-/// let follows = pubsub::following::Following {
-///     channel_id: 1234,
-/// }.into_topic();
+/// let follows = pubsub::following::Following { channel_id: 1234 }.into_topic();
 /// // Create the topic command to send to twitch
 /// let command = pubsub::listen_command(
 ///     &[chat_mod_actions, follows],
@@ -300,11 +299,10 @@ where
 /// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {
 ///     user_id: 4321,
 ///     channel_id: 1234,
-/// }.into_topic();
+/// }
+/// .into_topic();
 ///
-/// let follows = pubsub::following::Following {
-///     channel_id: 1234,
-/// }.into_topic();
+/// let follows = pubsub::following::Following { channel_id: 1234 }.into_topic();
 /// // Create the command to send to twitch
 /// let command = pubsub::unlisten_command(
 ///     &[chat_mod_actions, follows],

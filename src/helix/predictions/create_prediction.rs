@@ -23,7 +23,10 @@
 //! let body = create_prediction::CreatePredictionBody::builder()
 //!     .broadcaster_id("141981764")
 //!     .title("Any leeks in the stream?")
-//!     .outcomes(create_prediction::NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."))
+//!     .outcomes(create_prediction::NewPredictionOutcome::new_tuple(
+//!         "Yes, give it time.",
+//!         "Definitely not.",
+//!     ))
 //!     .prediction_window(120)
 //!     .build();
 //! ```
@@ -41,7 +44,7 @@
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+//! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = create_prediction::CreatePredictionRequest::builder()
 //!     .build();
 //! let body = create_prediction::CreatePredictionBody::builder()

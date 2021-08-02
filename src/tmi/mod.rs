@@ -33,7 +33,7 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "tmi"))))] // FIXME: This doc_cfg does nothing
 #[derive(Clone)]
 pub struct TmiClient<'a, C: crate::HttpClient<'a>> {
-    client: C,
+    pub(crate) client: C,
     _pd: std::marker::PhantomData<&'a ()>,
 }
 

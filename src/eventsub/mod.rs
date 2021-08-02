@@ -88,10 +88,10 @@ pub struct VerificationRequest {
     pub challenge: String,
     /// Information about subscription, including ID
     pub subscription: EventSubSubscription,
-    // /// Signature of message
-    // pub signature: String,
-    // /// ID of subscription, also contained in [`subscription`](VerificationRequest::subscription)
-    // pub id: types::EventSubId,
+    /* /// Signature of message
+     * pub signature: String,
+     * /// ID of subscription, also contained in [`subscription`](VerificationRequest::subscription)
+     * pub id: types::EventSubId, */
 }
 
 /// Subscription payload. Received on events. Enumerates all possible [`NotificationPayload`s](NotificationPayload)

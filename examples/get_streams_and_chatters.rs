@@ -6,8 +6,9 @@ use twitch_oauth2::{AccessToken, UserToken};
 async fn main() {
     let _ = dotenv::dotenv();
     let mut args = std::env::args().skip(1);
+    let client: TwitchClient<surf::Client> = TwitchClient::new();
     let token = UserToken::from_existing(
-        twitch_oauth2::client::surf_http_client,
+        &client,
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
@@ -18,8 +19,6 @@ async fn main() {
     )
     .await
     .unwrap();
-
-    let client: TwitchClient<surf::Client> = TwitchClient::new();
 
     let streams: Vec<String> = args.collect();
     let req = GetStreamsRequest::builder().build();

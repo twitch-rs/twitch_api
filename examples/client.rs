@@ -21,8 +21,11 @@ pub struct Foo {
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     let _ = dotenv::dotenv();
     let mut args = std::env::args().skip(1);
+
+    let foo = Foo::default();
+
     let token = UserToken::from_existing(
-        twitch_oauth2::client::reqwest_http_client,
+        &foo.client,
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
@@ -33,16 +36,14 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     )
     .await?;
 
-    let client = Foo::default();
-
     let req = GetStreamsRequest::builder()
         .user_login(vec![args
             .next()
             .expect("please provide an username")
             .into()])
         .build();
-    client.client.helix.clone_client();
-    let response = client.client.helix.req_get(req, &token).await?;
+    foo.client.helix.clone_client();
+    let response = foo.client.helix.req_get(req, &token).await?;
     println!("{:?}", response);
     Ok(())
 }

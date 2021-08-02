@@ -20,14 +20,15 @@
 //!
 //! ```
 //! # use twitch_api2::helix::schedule::create_channel_stream_schedule_segment;
-//! let body = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!     .start_time(twitch_api2::types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
-//!     .timezone("America/New_York")
-//!     .is_recurring(false)
-//!     .duration("60".to_string())
-//!     .category_id(Some("509670".into()))
-//!     .title("TwitchDev Monthly Update // July 1, 2021".to_string())
-//!     .build();
+//! let body =
+//!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
+//!         .start_time(twitch_api2::types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
+//!         .timezone("America/New_York")
+//!         .is_recurring(false)
+//!         .duration("60".to_string())
+//!         .category_id(Some("509670".into()))
+//!         .title("TwitchDev Monthly Update // July 1, 2021".to_string())
+//!         .build();
 //! ```
 //!
 //! ## Response: [ScheduledBroadcasts]
@@ -43,7 +44,7 @@
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+//! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::builder()
 //!     .broadcaster_id("141981764")
 //!     .build();

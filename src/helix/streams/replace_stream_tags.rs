@@ -41,7 +41,7 @@
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-//! # let token = twitch_oauth2::UserToken::from_existing(twitch_oauth2::dummy_http_client, token, None, None).await?;
+//! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = replace_stream_tags::ReplaceStreamTagsRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
