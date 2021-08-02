@@ -137,6 +137,7 @@ pub use client::Client as HttpClient;
 #[cfg(feature = "client")]
 pub use client::DummyHttpClient;
 
+#[cfg(any(feature = "helix", feature = "tmi", feature = "pubsub"))]
 /// Generate a url with a default if `mock_api` feature is disabled, or env var is not defined or is invalid utf8
 macro_rules! mock_env_url {
     ($var:literal, $default:expr $(,)?) => {
@@ -156,7 +157,7 @@ macro_rules! mock_env_url {
 
 /// Location of Twitch Helix
 ///
-/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_HELIX_URL`.
+/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_HELIX_URL`.
 ///
 /// # Examples
 ///

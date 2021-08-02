@@ -145,5 +145,10 @@ name = "followed_streams"
 path = "examples/followed_streams.rs"
 required-features = ["reqwest_client", "helix"]
 
+[[example]]
+name = "mock_api"
+path = "examples/mock_api.rs"
+required-features = ["reqwest_client", "helix"]
+
 [package.metadata.docs.rs]
 features = ["all", "unsupported"]
