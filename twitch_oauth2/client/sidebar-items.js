@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["SurfError","Possible errors for [surf_http_client][http_client]"]],"fn":[["reqwest_http_client","Asynchronous HTTP client."],["surf_http_client","Asynchronous HTTP client using [Surf][surf::Client]"]]});
+initSidebarItems({"enum":[["SurfError","Possible errors from [`Client::req()`] when using the surf client"]],"static":[["TWITCH_OAUTH2_USER_AGENT","The User-Agent `product` of this crate."]],"trait":[["Client","A client that can do OAUTH2 requests"]]});
