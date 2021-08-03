@@ -34,23 +34,20 @@ pub trait Topic: DeserializeOwned + Serialize + PartialEq {
     /// Returns full URI for the request, including query parameters.
     fn get_uri(&self) -> Result<http::Uri, helix::InvalidUri> {
         use std::str::FromStr;
-        http::Uri::from_str(&format!(
-            "{}{}?{}",
-            crate::TWITCH_HELIX_URL,
-            <Self as Topic>::PATH,
-            self.query()?
-        ))
-        .map_err(Into::into)
+        let query = self.query()?;
+        let url = crate::TWITCH_HELIX_URL
+            .join(<Self as Topic>::PATH)
+            .map(|mut u| {
+                u.set_query(Some(&query));
+                u
+            })?;
+        http::Uri::from_str(url.as_str()).map_err(Into::into)
     }
     /// Returns bare URI for the request, NOT including query parameters.
     fn get_bare_uri() -> Result<http::Uri, helix::InvalidUri> {
         use std::str::FromStr;
-        http::Uri::from_str(&format!(
-            "{}{}?",
-            crate::TWITCH_HELIX_URL,
-            <Self as Topic>::PATH,
-        ))
-        .map_err(Into::into)
+        let url = crate::TWITCH_HELIX_URL.join(<Self as Topic>::PATH)?;
+        http::Uri::from_str(url.as_str()).map_err(Into::into)
     }
 
     /// Parse payload received on webhook.

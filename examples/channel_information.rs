@@ -7,7 +7,7 @@ fn main() {
         println!("Error: {}", err);
         let mut e: &'_ dyn Error = err.as_ref();
         while let Some(cause) = e.source() {
-            println!("Caused by: {:?}", cause);
+            println!("Caused by: {}", cause);
             e = cause;
         }
     }
@@ -23,9 +23,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .or_else(|| args.next())
         .map(AccessToken::new)
         .expect("Please set env: TWITCH_TOKEN or pass token as first argument");
-    let token = UserToken::from_existing(&client, token, None, None)
-        .await
-        .unwrap();
+    let token = UserToken::from_existing(&client, token, None, None).await?;
 
     let user = client
         .get_user_from_login(args.next().unwrap(), &token)

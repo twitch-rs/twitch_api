@@ -586,8 +586,8 @@ where
                         Some((Ok(d), state))
                     }
                 } else {
-                    // We've taken all the entries, but not returned a proper request. This is a bug
-                    panic!("exhausted the deq without handling a new response")
+                    // New request returned empty.
+                    None
                 }
             }
             StateMode::Next(Some(_)) => {
