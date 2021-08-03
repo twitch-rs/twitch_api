@@ -61,8 +61,10 @@ pub struct GetChannelInformationRequest {
 pub struct ChannelInformation {
     /// Twitch User ID of this channel owner
     pub broadcaster_id: types::UserId,
+    /// Twitch User login of this channel owner
+    pub broadcaster_login: types::UserName,
     /// Twitch user display name of this channel owner
-    pub broadcaster_name: types::UserName,
+    pub broadcaster_name: types::DisplayName,
     /// Current game ID being played on the channel
     pub game_id: types::CategoryId,
     /// Name of the game being played on the channel
@@ -128,6 +130,7 @@ fn test_request() {
             {
               "broadcaster_id": "44445592",
               "broadcaster_name": "pokimane",
+              "broadcaster_login": "pokimane",
               "broadcaster_language": "en",
               "game_id": "21779",
               "game_name": "League of Legends",

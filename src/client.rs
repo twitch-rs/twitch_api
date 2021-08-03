@@ -134,7 +134,7 @@ impl<'a> Client<'a> for ReqwestClient {
         Box::pin(async move {
             // Await the request and translate to `http::Response`
             let mut response = fut.await?;
-            let mut result = http::Response::builder();
+            let mut result = http::Response::builder().status(response.status());
             let headers = result
                 .headers_mut()
                 // This should not fail, we just created the response.
@@ -233,7 +233,7 @@ impl<'a> Client<'a> for SurfClient {
         Box::pin(async move {
             // Send the request and translate the response into a `http::Response`
             let mut response = client.send(req).await.map_err(SurfError::Surf)?;
-            let mut result = http::Response::builder();
+            let mut result = http::Response::builder().status(response.status());
 
             let mut response_headers: http::header::HeaderMap = response
                 .iter()
