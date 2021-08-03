@@ -43,7 +43,6 @@ impl RequestDelete for DeleteEventSubSubscriptionRequest {
         Self: Sized,
     {
         match status {
-            // FIXME: I've seen OK as the status code
             http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
                 data: DeleteEventSubSubscription::Success,
                 pagination: None,

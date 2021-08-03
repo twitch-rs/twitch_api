@@ -120,7 +120,6 @@ impl RequestPatch for ModifyChannelInformationRequest {
                 http::StatusCode::NO_CONTENT | http::StatusCode::OK => {
                     ModifyChannelInformation::Success
                 }
-                // FIXME: Twitch docs says 204 is success...
                 _ => {
                     return Err(helix::HelixRequestPatchError::InvalidResponse {
                         reason: "unexpected status code",
