@@ -59,6 +59,11 @@ pub mod tags;
 pub mod teams;
 pub mod users;
 pub mod videos;
+#[allow(deprecated_in_future, deprecated)]
+#[deprecated(
+    since = "0.6.0",
+    note = "webhooks are deprecated and decommisioned on 2021-09-16, use eventsub instead"
+)]
 pub mod webhooks;
 
 pub(crate) mod ser;
