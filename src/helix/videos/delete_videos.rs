@@ -85,6 +85,7 @@ impl RequestDelete for DeleteVideosRequest {
                 data: DeleteVideo::Success,
                 pagination: None,
                 request,
+                total: None,
             }),
             _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: "unexpected status",

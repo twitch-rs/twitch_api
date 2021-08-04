@@ -85,6 +85,7 @@ impl RequestDelete for UnblockUserRequest {
                 data: UnblockUser::Success,
                 pagination: None,
                 request,
+                total: None,
             }),
             _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: "unexpected status",

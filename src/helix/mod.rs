@@ -124,6 +124,8 @@ struct InnerResponse<D> {
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
     #[serde(default)]
     pagination: Pagination,
+    #[serde(default)]
+    total: Option<i64>,
 }
 #[derive(Deserialize, Clone, Debug)]
 struct HelixRequestError {
@@ -428,6 +430,7 @@ pub trait RequestPost: Request {
             data: response.data,
             pagination: response.pagination.cursor,
             request,
+            total: response.total,
         })
     }
 }
@@ -729,12 +732,14 @@ pub trait RequestGet: Request {
             data: response.data,
             pagination: response.pagination.cursor,
             request,
+            total: response.total,
         })
     }
 }
 
 /// Response retrieved from endpoint. Data is the type in [`Request::Response`]
 #[derive(PartialEq, Debug)]
+#[non_exhaustive]
 pub struct Response<R, D>
 where
     R: Request<Response = D>,
@@ -745,6 +750,8 @@ where
     pub pagination: Option<Cursor>,
     /// The request that was sent, used for [pagination](Paginated).
     pub request: Option<R>,
+    /// Response would return this many results if fully paginated. Sometimes this is not emmitted or correct for this purpose, in those cases, this value will be `None`.
+    pub total: Option<i64>,
 }
 
 impl<R, D, T> Response<R, D>

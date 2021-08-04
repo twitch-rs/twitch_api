@@ -134,12 +134,13 @@ impl RequestGet for GetUsersFollowsRequest {
         })?;
         Ok(helix::Response {
             data: UsersFollows {
-                // FIXME: Hack for webhook subscription
+                // FIXME: Hack for webhook subscription, remove when fully deprecated
                 total: response.total.unwrap_or(1),
                 follow_relationships: response.data,
             },
             pagination: response.pagination.cursor,
             request,
+            total: response.total,
         })
     }
 }

@@ -96,6 +96,7 @@ impl RequestGet for SearchCategoriesRequest {
             data: response.data.unwrap_or_default(),
             pagination: response.pagination.cursor,
             request,
+            total: response.total,
         })
     }
 }

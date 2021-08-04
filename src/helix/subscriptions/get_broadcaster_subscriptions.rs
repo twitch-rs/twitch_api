@@ -156,6 +156,7 @@ impl RequestGet for GetBroadcasterSubscriptionsRequest {
             },
             pagination: response.pagination.cursor,
             request,
+            total: Some(response.total),
         })
     }
 }

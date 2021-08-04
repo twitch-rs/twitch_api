@@ -91,6 +91,7 @@ impl RequestDelete for DeleteCustomRewardRequest {
                 data: DeleteCustomReward::Success,
                 pagination: None,
                 request,
+                total: None,
             }),
             _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: "unexpected status",

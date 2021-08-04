@@ -163,6 +163,7 @@ impl RequestPost for CreateCustomRewardRequest {
             data,
             pagination: response.pagination.cursor,
             request,
+            total: response.total,
         })
     }
 }

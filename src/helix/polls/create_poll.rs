@@ -173,6 +173,7 @@ impl RequestPost for CreatePollRequest {
             data,
             pagination: response.pagination.cursor,
             request,
+            total: None,
         })
     }
 }

@@ -111,6 +111,7 @@ impl RequestGet for GetChannelInformationRequest {
             data: response.data.into_iter().next(),
             pagination: response.pagination.cursor,
             request,
+            total: None,
         })
     }
 }

@@ -72,7 +72,7 @@ impl RequestGet for GetEventSubSubscriptionsRequest {
             /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
             #[serde(default)]
             pagination: helix::Pagination,
-            total: usize,
+            total: i64,
             total_cost: usize,
             max_total_cost: usize,
             limit: Option<usize>,
@@ -89,7 +89,8 @@ impl RequestGet for GetEventSubSubscriptionsRequest {
         #[allow(deprecated)]
         Ok(helix::Response {
             data: EventSubSubscriptions {
-                total: response.total,
+                // FIXME: This should probably be i64
+                total: response.total as usize,
                 total_cost: response.total_cost,
                 max_total_cost: response.max_total_cost,
                 limit: response.limit,
@@ -97,6 +98,7 @@ impl RequestGet for GetEventSubSubscriptionsRequest {
             },
             pagination: response.pagination.cursor,
             request,
+            total: Some(response.total),
         })
     }
 }
