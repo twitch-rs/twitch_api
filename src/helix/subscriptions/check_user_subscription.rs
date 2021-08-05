@@ -114,6 +114,7 @@ impl RequestGet for CheckUserSubscriptionRequest {
             )?,
             pagination: inner_response.pagination.cursor,
             request,
+            total: inner_response.total,
         })
     }
 }

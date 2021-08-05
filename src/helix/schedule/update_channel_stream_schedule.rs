@@ -114,6 +114,7 @@ impl RequestPatch for UpdateChannelStreamScheduleRequest {
             data: resp,
             pagination: None,
             request,
+            total: None,
         })
     }
 }

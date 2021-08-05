@@ -165,6 +165,7 @@ impl RequestPost for CreatePredictionRequest {
             data,
             pagination: response.pagination.cursor,
             request,
+            total: None,
         })
     }
 }

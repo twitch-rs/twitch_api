@@ -146,6 +146,7 @@ impl RequestPost for ManageHeldAutoModMessagesRequest {
                 data: ManageHeldAutoModMessages::Success,
                 pagination: None,
                 request,
+                total: None,
             }),
             _ => Err(helix::HelixRequestPostError::InvalidResponse {
                 reason: "unexpected status",

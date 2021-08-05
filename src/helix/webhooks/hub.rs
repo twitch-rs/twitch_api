@@ -219,6 +219,7 @@ impl<T: Topic> RequestPost for WebhookHubRequest<T> {
             data: response, // FIXME: This should be a bit better...
             pagination: <_>::default(),
             request,
+            total: None,
         })
     }
 }

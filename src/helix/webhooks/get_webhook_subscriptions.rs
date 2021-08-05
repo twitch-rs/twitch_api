@@ -91,6 +91,7 @@ impl RequestGet for GetWebhookSubscriptionsRequest {
             },
             pagination: response.pagination.cursor,
             request,
+            total: Some(response.total),
         })
     }
 }

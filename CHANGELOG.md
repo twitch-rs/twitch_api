@@ -51,6 +51,8 @@
 * `pubsub::listen_command` now accepts `Into<Option<&str>>` as the `auth_token`.
 * `pubsub::Topics` and all topics now implement `Clone` and `Hash`.
 * `TWITCH_HELIX_URL`, `TWITCH_TMI_URL` and `TWITCH_PUBSUB_URL` are now `url::Url`s and can be overridden with environment variables. See the docs for more information.
+* Added field total to `helix::Response`
+
 ### Removed
 
 * Removed enum variants for a lot of error states in helix endpoint responses. Most of these are returned by `HelixRequest_Error::Error`

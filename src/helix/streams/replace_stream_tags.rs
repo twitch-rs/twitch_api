@@ -123,6 +123,7 @@ impl RequestPut for ReplaceStreamTagsRequest {
                 data: ReplaceStreamTags::Success,
                 pagination: None,
                 request,
+                total: None,
             }),
             _ => Err(helix::HelixRequestPutError::InvalidResponse {
                 reason: "unexpected status",

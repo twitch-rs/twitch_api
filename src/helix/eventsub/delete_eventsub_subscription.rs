@@ -47,6 +47,7 @@ impl RequestDelete for DeleteEventSubSubscriptionRequest {
                 data: DeleteEventSubSubscription::Success,
                 pagination: None,
                 request,
+                total: None,
             }),
             _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: "unexpected status",
