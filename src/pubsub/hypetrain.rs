@@ -1415,11 +1415,12 @@ mod tests {
 {
     "type": "hype-train-conductor-update",
     "data": {
-        "source": "BITS",
+        "source": "SUBS",
         "user": {
             "id": "1234",
             "login": "tmi",
-            "display_name": "TMI"
+            "display_name": "TMI",
+            "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/deadbeef-profile_image-50x50.png"
         },
         "participations": {
             "BITS.CHEER": 101,
@@ -2004,6 +2005,18 @@ mod tests {
     #[test]
     fn hype_train_approaching() {
         let source = r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.159498717","message":"{\"type\":\"hype-train-approaching\",\"data\":{\"channel_id\":\"159498717\",\"goal\":5,\"events_remaining_durations\":{\"1\":195},\"level_one_rewards\":[{\"type\":\"EMOTE\",\"id\":\"emotesv2_d20a5e514e534288a1104b92c4f87834\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeWow\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_62199faa2ca34ea8a0f3567990a72a14\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeHeh\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_69a7806c6837428f82475e99677d2f78\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeDoh\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_a964a0cbae9348e6bd981bc714eec71d\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeYum\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_680c3aae688947d8b6067cff1a8bcdbe\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeShame\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_6a99bc2baae743099b23ed6ab07bc5c4\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeHide\"}],\"creator_color\":\"99BBFF\",\"participants\":[\"195079041\",\"70447505\",\"77795507\",\"157269176\"]}}"}}"#;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::HypeTrainEventsV1 { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn hype_train_conductor() {
+        let source = r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.159498717","message":"{\"type\":\"hype-train-conductor-update\",\"data\":{\"source\":\"SUBS\",\"user\":{\"id\":\"478358701\",\"login\":\"darkscarlatti\",\"display_name\":\"DarkScarlatti\",\"profile_image_url\":\"https://static-cdn.jtvnw.net/jtv_user_pictures/b332ddad-b1a6-42b2-ab03-ef157ab89f1c-profile_image-50x50.png\"},\"participations\":{\"SUBS.TIER_3_SUB\":1}}}"}}"#;
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
