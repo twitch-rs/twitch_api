@@ -78,6 +78,8 @@ pub struct GetStreamsRequest {
 pub struct Stream {
     /// ID of the game being played on the stream.
     pub game_id: types::CategoryId,
+    /// Name of the game being played.
+    pub game_name: types::CategoryId,
     /// Stream ID.
     pub id: types::StreamId,
     /// Stream language.
@@ -136,6 +138,7 @@ fn test_request() {
             "user_name": "LIRIK",
             "user_login": "lirik",
             "game_id": "417752",
+            "game_name": "Talk Shows & Podcasts",
             "type": "live",
             "title": "Hey Guys, It's Monday - Twitter: @Lirik",
             "viewer_count": 32575,
@@ -153,6 +156,7 @@ fn test_request() {
             "user_name": "LIRIK",
             "user_login": "lirik",
             "game_id": "417752",
+            "game_name": "Talk Shows & Podcasts",
             "type": "live",
             "title": "Hey Guys, It's Monday - Twitter: @Lirik",
             "viewer_count": 32575,
@@ -196,6 +200,7 @@ fn test_request_null_tags_issue184() {
             "user_name": "LIRIK",
             "user_login": "lirik",
             "game_id": "417752",
+            "game_name": "Talk Shows & Podcasts",
             "type": "live",
             "title": "Hey Guys, It's Monday - Twitter: @Lirik",
             "viewer_count": 32575,

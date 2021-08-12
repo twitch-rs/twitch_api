@@ -1,4 +1,5 @@
 use futures::TryStreamExt;
+use twitch_api2::helix;
 use twitch_api2::types;
 use twitch_api2::HelixClient;
 use twitch_oauth2::Scope;
@@ -51,7 +52,11 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         client_id,
         client_secret,
         &user_id,
-        vec![Scope::ModerationRead],
+        vec![
+            Scope::ModerationRead,
+            Scope::UserReadFollows,
+            Scope::ChannelReadSubscriptions,
+        ],
     )
     .await?;
 
@@ -70,20 +75,28 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .expect("no channel found");
 
     let _s: Vec<_> = client
-        .search_categories("test", &token)
+        .search_categories("Just", &token)
         .try_collect()
         .await?;
     let _s: Vec<_> = client
-        .search_channels("test", true, &token)
+        .search_channels("Sample", true, &token)
         .try_collect()
         .await?;
     let search: Vec<_> = client
-        .search_channels("test", false, &token)
+        .search_channels("e", false, &token)
         .try_collect()
         .await?;
+    dbg!(search.get(0));
     let _total = client
         .get_total_followers_from_id(search.get(0).unwrap().id.clone(), &token)
         .await?;
+    dbg!(_total);
+    let streams: Vec<_> = client.get_followed_streams(&token).try_collect().await?;
+    let subs: Vec<_> = client
+        .get_broadcaster_subscriptions(&token)
+        .try_collect()
+        .await?;
+    dbg!(subs);
     moderation(&client, &user_id, &token).await?;
     Ok(())
 }

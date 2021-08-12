@@ -234,6 +234,54 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
+    /// Get authenticated broadcasters' [subscribers](helix::subscriptions::BroadcasterSubscription)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api2::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let subs: Vec<helix::subscriptions::BroadcasterSubscription> = client.get_broadcaster_subscriptions(&token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub fn get_broadcaster_subscriptions<T>(
+        &'a self,
+        token: &'a T,
+    ) -> std::pin::Pin<
+        Box<
+            dyn futures::Stream<
+                    Item = Result<
+                        helix::subscriptions::BroadcasterSubscription,
+                        ClientError<'a, C>,
+                    >,
+                > + 'a,
+        >,
+    >
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        use futures::StreamExt;
+
+        let user_id = match token
+            .user_id()
+            .ok_or_else(|| ClientRequestError::Custom("no user_id found on token".into()))
+        {
+            Ok(t) => t,
+            Err(e) => return futures::stream::once(async { Err(e) }).boxed(),
+        };
+        let req = helix::subscriptions::GetBroadcasterSubscriptionsRequest::builder()
+            .broadcaster_id(user_id)
+            .build();
+        make_stream(req, token, self, std::collections::VecDeque::from)
+    }
+
     /// Get all moderators in a channel [Get Moderators](helix::moderation::GetModeratorsRequest)
     ///
     /// # Examples
