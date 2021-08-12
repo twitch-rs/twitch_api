@@ -837,6 +837,9 @@ pub struct User {
     /// Display name of user
     #[serde(alias = "user_display_name", alias = "user_name")]
     pub display_name: DisplayName,
+    #[serde(default)]
+    /// URL of the user's profile
+    pub profile_image_url: Option<String>,
 }
 
 /// Links to the same image of different sizes
