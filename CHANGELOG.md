@@ -36,6 +36,8 @@
 * Added methods to `Timestamp` for constructing and handling them. Can use the `chrono` crate behind the `chrono` feature.
 * New `HelixClient` method `get_follow_relationships` for getting follows.
 * `twitch_oauth2` has been upgraded, and following this upgrade, `HelixClient`, `TmiClient` and `TwitchClient` can be used as clients for token requests.
+* Added field `game_name` to `Streams`
+* Added function `get_broadcaster_subscribers`
 
 ### Changed
 
@@ -52,6 +54,7 @@
 * `pubsub::Topics` and all topics now implement `Clone` and `Hash`.
 * `TWITCH_HELIX_URL`, `TWITCH_TMI_URL` and `TWITCH_PUBSUB_URL` are now `url::Url`s and can be overridden with environment variables. See the docs for more information.
 * Added field total to `helix::Response`
+* Changed return type of `GetBroadcasterSubscriptions` to be a vector of `BroadcasterSubscription`
 
 ### Removed
 

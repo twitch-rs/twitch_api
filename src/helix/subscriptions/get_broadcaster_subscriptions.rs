@@ -14,7 +14,7 @@
 //!     .build();
 //! ```
 //!
-//! ## Response: [BroadcasterSubscriptions]
+//! ## Response: [BroadcasterSubscription]
 //!
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
@@ -29,7 +29,7 @@
 //! let request = get_broadcaster_subscriptions::GetBroadcasterSubscriptionsRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
-//! let response: get_broadcaster_subscriptions::BroadcasterSubscriptions = client.req_get(request, &token).await?.data;
+//! let response: Vec<get_broadcaster_subscriptions::BroadcasterSubscription> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -62,17 +62,6 @@ pub struct GetBroadcasterSubscriptionsRequest {
 /// Return Values for [Get Broadcaster Subscriptions](super::get_broadcaster_subscriptions)
 ///
 /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub struct BroadcasterSubscriptions {
-    /// List of users subscribed to the broadcaster and the details of the subscription.
-    pub subscriptions: Vec<BroadcasterSubscription>,
-    /// The number of Twitch users subscribed to the broadcaster.
-    pub total: i64,
-}
-
-/// A subscription in a channel
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -116,7 +105,7 @@ pub struct BroadcasterSubscription {
 }
 
 impl Request for GetBroadcasterSubscriptionsRequest {
-    type Response = BroadcasterSubscriptions;
+    type Response = Vec<BroadcasterSubscription>;
 
     const PATH: &'static str = "subscriptions";
     #[cfg(feature = "twitch_oauth2")]
@@ -124,42 +113,7 @@ impl Request for GetBroadcasterSubscriptionsRequest {
         &[twitch_oauth2::Scope::ChannelReadSubscriptions];
 }
 
-impl RequestGet for GetBroadcasterSubscriptionsRequest {
-    fn parse_inner_response(
-        request: Option<Self>,
-        uri: &http::Uri,
-        response: &str,
-        status: http::StatusCode,
-    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
-    where
-        Self: Sized,
-    {
-        #[derive(PartialEq, Deserialize, Debug)]
-        struct InnerResponse {
-            data: Vec<BroadcasterSubscription>,
-            #[serde(default)]
-            pagination: helix::Pagination,
-            total: i64,
-        }
-        let response: InnerResponse = helix::parse_json(response, true).map_err(|e| {
-            helix::HelixRequestGetError::DeserializeError(
-                response.to_string(),
-                e,
-                uri.clone(),
-                status,
-            )
-        })?;
-        Ok(helix::Response {
-            data: BroadcasterSubscriptions {
-                subscriptions: response.data,
-                total: response.total,
-            },
-            pagination: response.pagination.cursor,
-            request,
-            total: Some(response.total),
-        })
-    }
-}
+impl RequestGet for GetBroadcasterSubscriptionsRequest {}
 
 impl helix::Paginated for GetBroadcasterSubscriptionsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
@@ -208,7 +162,10 @@ fn test_request() {
         "https://api.twitch.tv/helix/subscriptions?broadcaster_id=123"
     );
 
-    dbg!(
-        GetBroadcasterSubscriptionsRequest::parse_response(Some(req), &uri, http_response).unwrap()
-    );
+    let resp =
+        dbg!(
+            GetBroadcasterSubscriptionsRequest::parse_response(Some(req), &uri, http_response)
+                .unwrap()
+        );
+    assert_eq!(resp.total, Some(13));
 }

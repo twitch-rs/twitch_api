@@ -65,6 +65,7 @@ fn test_topic() {
             "user_name": "wjdtkdqhs",
             "user_login": "wjdtkdqhs",
             "game_id": "21779",
+            "game_name": "no",
             "type": "live",
             "title": "Best Stream Ever",
             "viewer_count": 417,
