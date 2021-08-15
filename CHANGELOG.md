@@ -32,12 +32,12 @@
 * Added fields `moderator_id`,`moderator_login`,`moderator_name` and `reason` to `BannedUser`
 * Added `pubsub::unlisten_command`
 * Added `moderator_removed` as a moderation action to PubSub.
-* Added `EmoteUrlBuilder` to make an url with `EmoteId::url()`
+* Added `EmoteUrlBuilder` to make an url with `EmoteId::url()` and `ChannelEmote::url()`
 * Added methods to `Timestamp` for constructing and handling them. Can use the `chrono` crate behind the `chrono` feature.
-* New `HelixClient` method `get_follow_relationships` for getting follows.
 * `twitch_oauth2` has been upgraded, and following this upgrade, `HelixClient`, `TmiClient` and `TwitchClient` can be used as clients for token requests.
 * Added field `game_name` to `Streams`
-* Added function `get_broadcaster_subscribers`
+* Added function `get_follow_relationships`, `get_broadcaster_subscribers`, `get_global_emotes`, `get_channel_emotes_from_id`, `get_channel_emotes_from_login` and `get_emote_sets` to `HelixClient`
+* Added fields `format`, `scale`, `theme_mode` and `template` to `ChannelEmote`, `GetEmoteSets` and `GlobalEmote`
 
 ### Changed
 

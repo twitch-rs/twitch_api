@@ -60,18 +60,53 @@ pub struct GetEmoteSetsRequest {
 #[non_exhaustive]
 pub struct Emote {
     /// Emote ID.
-    id: types::EmoteId,
+    pub id: types::EmoteId,
     /// Name of the emote a viewer types into Twitch chat for the image to appear.
-    name: String,
+    pub name: String,
     /// Object of image URLs for the emote.
-    images: types::Image,
+    pub images: types::Image,
     // FIXME: Enumify?
     /// The type of emote.
-    emote_type: String,
+    pub emote_type: String,
     /// ID of the emote set the emote belongs to.
-    emote_set_id: types::EmoteSetId,
+    pub emote_set_id: types::EmoteSetId,
     /// User ID of the broadcaster who owns the emote.
-    owner_id: types::UserId,
+    pub owner_id: types::UserId,
+    /// The formats that the emote is available in.
+    pub format: Vec<types::EmoteAnimationSetting>,
+    /// The sizes that the emote is available in.
+    pub scale: Vec<types::EmoteScale>,
+    /// The background themes that the emote is available in.
+    pub theme_mode: Vec<types::EmoteThemeMode>,
+}
+
+impl Emote {
+    /// Create an emote builder for this emote.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// use twitch_api2::helix::{self, chat::get_channel_emotes};
+    /// # use twitch_api2::client;
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// let emotes = client.get_emote_sets(&["301590448".into()], &token).await?;
+    /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0");
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn url(&self) -> types::EmoteUrlBuilder<'_> {
+        EmoteUrlBuilder {
+            id: std::borrow::Cow::Borrowed(&self.id),
+            animation_setting: <_>::default(),
+            theme_mode: <_>::default(),
+            scale: <_>::default(),
+            template: types::EMOTE_V2_URL_TEMPLATE.into(),
+        }
+    }
 }
 
 impl Request for GetEmoteSetsRequest {
@@ -100,17 +135,29 @@ fn test_request() {
         {
           "id": "304456832",
           "name": "twitchdevPitchfork",
-          "images":
-            {
-              "url_1x": "https://static-cdn.jtvnw.net/emoticons/v1/304456832/1.0",
-              "url_2x": "https://static-cdn.jtvnw.net/emoticons/v1/304456832/2.0",
-              "url_4x": "https://static-cdn.jtvnw.net/emoticons/v1/304456832/3.0"
-            },
+          "images": {
+            "url_1x": "https://static-cdn.jtvnw.net/emoticons/v2/304456832/static/light/1.0",
+            "url_2x": "https://static-cdn.jtvnw.net/emoticons/v2/304456832/static/light/2.0",
+            "url_4x": "https://static-cdn.jtvnw.net/emoticons/v2/304456832/static/light/3.0"
+          },
           "emote_type": "subscriptions",
           "emote_set_id": "301590448",
-          "owner_id": "141981764"
+          "owner_id": "141981764",
+          "format": [
+            "static"
+          ],
+          "scale": [
+            "1.0",
+            "2.0",
+            "3.0"
+          ],
+          "theme_mode": [
+            "light",
+            "dark"
+          ]
         }
-      ]
+      ],
+      "template": "https://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}"
     }
 "#
     .to_vec();

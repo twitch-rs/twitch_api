@@ -477,6 +477,66 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
 
         make_stream(req, token, self, |broadcasts| broadcasts.segments.into())
     }
+
+    /// Get all global emotes
+    pub async fn get_global_emotes<T>(
+        &'a self,
+        token: &T,
+    ) -> Result<Vec<helix::chat::GlobalEmote>, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::chat::GetGlobalEmotesRequest::builder().build();
+        Ok(self.req_get(req, token).await?.data)
+    }
+
+    /// Get channel emotes in channel with user id
+    pub async fn get_channel_emotes_from_id<T>(
+        &'a self,
+        user_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<Vec<helix::chat::ChannelEmote>, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::chat::GetChannelEmotesRequest::builder()
+            .broadcaster_id(user_id)
+            .build();
+        Ok(self.req_get(req, token).await?.data)
+    }
+
+    /// Get channel emotes in channel with user login
+    pub async fn get_channel_emotes_from_login<T>(
+        &'a self,
+        login: impl Into<types::UserName>,
+        token: &T,
+    ) -> Result<Option<Vec<helix::chat::ChannelEmote>>, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        if let Some(user) = self.get_user_from_login(login, token).await? {
+            self.get_channel_emotes_from_id(user.id, token)
+                .await
+                .map(Some)
+        } else {
+            Ok(None)
+        }
+    }
+
+    /// Get emotes in emote set
+    pub async fn get_emote_sets<T>(
+        &'a self,
+        emote_sets: &[types::EmoteSetId],
+        token: &T,
+    ) -> Result<Vec<helix::chat::get_emote_sets::Emote>, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::chat::GetEmoteSetsRequest::builder()
+            .emote_set_id(emote_sets.to_owned())
+            .build();
+        Ok(self.req_get(req, token).await?.data)
+    }
 }
 
 /// Make a paginate-able request into a stream

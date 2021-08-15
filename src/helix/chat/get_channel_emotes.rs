@@ -71,29 +71,41 @@ impl RequestGet for GetChannelEmotesRequest {}
 fn test_request() {
     use helix::*;
     let req = GetChannelEmotesRequest::builder()
-        .broadcaster_id("135093069")
+        .broadcaster_id("304456832")
         .build();
 
     // From twitch docs
     // FIXME: Example has ... and is malformed, uses [] in images
     let data = br#"
     {
-        "data": [
-          {
-            "id": "304456832",
-            "name": "twitchdevPitchfork",
-            "images":
-              {
-                "url_1x": "https://static-cdn.jtvnw.net/emoticons/v1/304456832/1.0",
-                "url_2x": "https://static-cdn.jtvnw.net/emoticons/v1/304456832/2.0",
-                "url_4x": "https://static-cdn.jtvnw.net/emoticons/v1/304456832/3.0"
-              },
-            "tier": "1000",
-            "emote_type": "subscriptions",
-            "emote_set_id": "301590448"
-          }
-        ]
-      }
+      "data": [
+        {
+          "id": "304456832",
+          "name": "twitchdevPitchfork",
+          "images": {
+            "url_1x": "https://static-cdn.jtvnw.net/emoticons/v2/304456832/static/light/1.0",
+            "url_2x": "https://static-cdn.jtvnw.net/emoticons/v2/304456832/static/light/2.0",
+            "url_4x": "https://static-cdn.jtvnw.net/emoticons/v2/304456832/static/light/3.0"
+          },
+          "tier": "1000",
+          "emote_type": "subscriptions",
+          "emote_set_id": "301590448",
+          "format": [
+            "static"
+          ],
+          "scale": [
+            "1.0",
+            "2.0",
+            "3.0"
+          ],
+          "theme_mode": [
+            "light",
+            "dark"
+          ]
+        }
+      ],
+      "template": "https://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}"
+    }
 "#
     .to_vec();
 
@@ -102,7 +114,7 @@ fn test_request() {
     let uri = req.get_uri().unwrap();
     assert_eq!(
         uri.to_string(),
-        "https://api.twitch.tv/helix/chat/emotes?broadcaster_id=135093069"
+        "https://api.twitch.tv/helix/chat/emotes?broadcaster_id=304456832"
     );
 
     dbg!(GetChannelEmotesRequest::parse_response(Some(req), &uri, http_response).unwrap());
