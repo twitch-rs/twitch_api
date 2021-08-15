@@ -468,9 +468,10 @@ impl EmoteIdRef {
     pub fn default_render(&self) -> String {
         EmoteUrlBuilder {
             id: self.into(),
-            animation_setting: EmoteAnimationSetting::Default,
+            animation_setting: None,
             theme_mode: EmoteThemeMode::Light,
             scale: EmoteScale::Size1_0,
+            template: EMOTE_V2_URL_TEMPLATE.into(),
         }
         .render()
     }
@@ -479,32 +480,61 @@ impl EmoteIdRef {
     pub fn url(&self) -> EmoteUrlBuilder<'_> { EmoteUrlBuilder::new(self) }
 }
 
-#[derive(Debug, Clone, displaydoc::Display)]
-enum EmoteAnimationSetting {
-    /// default
-    Default,
-    /// static
+pub(crate) static EMOTE_V2_URL_TEMPLATE: &str =
+    "https://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}";
+
+/// Formats for an emote.
+#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum EmoteAnimationSetting {
+    /// Static
     Static,
-    /// animated
+    /// Animated
     Animated,
 }
 
-#[derive(Debug, Clone, displaydoc::Display)]
-enum EmoteThemeMode {
-    /// light
+impl std::fmt::Display for EmoteAnimationSetting {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
+}
+
+/// Background themes available for an emote.
+#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum EmoteThemeMode {
+    /// Light
     Light,
-    /// dark
+    /// Dark
     Dark,
 }
 
-#[derive(Debug, Clone, displaydoc::Display)]
-enum EmoteScale {
+impl Default for EmoteThemeMode {
+    fn default() -> Self { Self::Light }
+}
+
+impl std::fmt::Display for EmoteThemeMode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
+}
+
+/// Scales available for an emote.
+#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
+pub enum EmoteScale {
     /// 1.0
+    #[serde(rename = "1.0")]
     Size1_0,
     /// 2.0
+    #[serde(rename = "2.0")]
     Size2_0,
     /// 3.0
+    #[serde(rename = "3.0")]
     Size3_0,
+}
+
+impl Default for EmoteScale {
+    fn default() -> Self { Self::Size1_0 }
+}
+
+impl std::fmt::Display for EmoteScale {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
 }
 
 /// Builder for [emote URLs](https://dev.twitch.tv/docs/irc/emotes#emote-cdn-url-format).
@@ -518,10 +548,11 @@ enum EmoteScale {
 /// ```
 #[derive(Debug, Clone)]
 pub struct EmoteUrlBuilder<'a> {
-    id: std::borrow::Cow<'a, EmoteIdRef>,
-    animation_setting: EmoteAnimationSetting,
-    theme_mode: EmoteThemeMode,
-    scale: EmoteScale,
+    pub(crate) id: std::borrow::Cow<'a, EmoteIdRef>,
+    pub(crate) animation_setting: Option<EmoteAnimationSetting>,
+    pub(crate) theme_mode: EmoteThemeMode,
+    pub(crate) scale: EmoteScale,
+    pub(crate) template: std::borrow::Cow<'a, str>,
 }
 
 impl EmoteUrlBuilder<'_> {
@@ -532,9 +563,10 @@ impl EmoteUrlBuilder<'_> {
     pub fn new(id: &EmoteIdRef) -> EmoteUrlBuilder<'_> {
         EmoteUrlBuilder {
             id: id.into(),
-            animation_setting: EmoteAnimationSetting::Default,
-            theme_mode: EmoteThemeMode::Light,
-            scale: EmoteScale::Size1_0,
+            animation_setting: <_>::default(),
+            theme_mode: <_>::default(),
+            scale: <_>::default(),
+            template: EMOTE_V2_URL_TEMPLATE.into(),
         }
     }
 
@@ -570,27 +602,56 @@ impl EmoteUrlBuilder<'_> {
 
     /// Set animation mode to default
     pub fn animation_default(mut self) -> Self {
-        self.animation_setting = EmoteAnimationSetting::Default;
+        self.animation_setting = None;
         self
     }
 
-    /// Set animation mode to static(
+    /// Set animation mode to static
     pub fn animation_static(mut self) -> Self {
-        self.animation_setting = EmoteAnimationSetting::Static;
+        self.animation_setting = Some(EmoteAnimationSetting::Static);
         self
     }
 
     /// Set animation mode to animate
     pub fn animation_animated(mut self) -> Self {
-        self.animation_setting = EmoteAnimationSetting::Animated;
+        self.animation_setting = Some(EmoteAnimationSetting::Animated);
         self
     }
 
     /// Create the URL for this emote.
     pub fn render(self) -> String {
+        if self.template != "ahttps://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}" {
+            let custom_template = |builder: &EmoteUrlBuilder| -> Option<String> {
+                let mut template = self.template.clone().into_owned();
+                let emote_id_range = template.find("{{id}}")?;
+                eprintln!("id");
+                template.replace_range(emote_id_range..emote_id_range+"{{id}}".len(), builder.id.as_str());
+                eprintln!("format");
+                let format_range = template.find("{{format}}")?;
+                template.replace_range(format_range..format_range+"{{format}}".len(), &builder.animation_setting.as_ref().map(|s| s.to_string()).unwrap_or_else(|| String::from("default")));
+                eprintln!("theme_mode");
+                let theme_mode_range = template.find("{{theme_mode}}")?;
+                template.replace_range(theme_mode_range..theme_mode_range+"{{theme_mode}}".len(), &builder.theme_mode.to_string());
+                eprintln!("scale");
+                let scale_range = template.find("{{scale}}")?;
+                template.replace_range(scale_range..scale_range+"{{scale}}".len(), &builder.scale.to_string());
+                if template.contains("{{") || template.contains("}}") {
+                    None
+                } else {
+                    Some(template)
+                }
+            };
+            if let Some(template) = custom_template(&self) {
+                return template
+            } else {
+                #[cfg(feature = "tracing")]
+                tracing::warn!(template = %self.template, "emote builder was supplied an invalid or unknown template url, falling back to standard builder");
+            }
+        }
+        // fallback to known working template
         format!("https://static-cdn.jtvnw.net/emoticons/v2/{emote_id}/{animation_setting}/{theme_mode}/{scale}",
             emote_id = self.id,
-            animation_setting = self.animation_setting,
+            animation_setting = self.animation_setting.as_ref().map(|s| s.to_string()).unwrap_or_else(|| String::from("default")),
             theme_mode = self.theme_mode,
             scale = self.scale,
         )

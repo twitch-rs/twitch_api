@@ -128,8 +128,8 @@ required-features = ["surf_client", "helix", "tmi"]
 [[example]]
 name = "modify_channel"
 path = "examples/modify_channel.rs"
-required-features = ["surf_client", "helix"]
 
+required-features = ["surf_client", "helix"]
 [[example]]
 name = "client"
 path = "examples/client.rs"

@@ -15,21 +15,21 @@ pub mod get_teams;
 #[non_exhaustive]
 pub struct TeamInformation {
     /// URL of the Team background image.
-    background_image_url: Option<String>,
+    pub background_image_url: Option<String>,
     /// URL for the Team banner.
-    banner: Option<String>,
+    pub banner: Option<String>,
     /// Date and time the Team was created.
-    created_at: types::Timestamp,
+    pub created_at: types::Timestamp,
     /// Date and time the Team was last updated.
-    updated_at: types::Timestamp,
+    pub updated_at: types::Timestamp,
     /// Team description.
-    info: String,
+    pub info: String,
     /// Image URL for the Team logo.
-    thumbnail_url: String,
+    pub thumbnail_url: String,
     /// Team name.
-    team_name: String,
+    pub team_name: String,
     /// Team display name.
-    team_display_name: String,
+    pub team_display_name: String,
     /// Team ID.
-    id: types::TeamId,
+    pub id: types::TeamId,
 }

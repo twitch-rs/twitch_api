@@ -2,7 +2,7 @@
 
 use crate::{
     helix::{self, Request},
-    types,
+    types::{self, EmoteUrlBuilder},
 };
 use serde::{Deserialize, Serialize};
 
@@ -60,17 +60,17 @@ pub struct ChatBadge {
 #[non_exhaustive]
 pub struct ChannelEmote {
     /// ID of the emote.
-    id: types::EmoteId,
+    pub id: types::EmoteId,
     /// Name of the emote a viewer types into Twitch chat for the image to appear.
-    name: String,
+    pub name: String,
     /// Object of image URLs for the emote.
-    images: types::Image,
+    pub images: types::Image,
     /// If the emote_type is "subscriptions", this indicates the subscriber tier at which the emote is unlocked. Set to an empty string otherwise.
     #[serde(
         default,
         deserialize_with = "helix::deserialize_none_from_empty_string"
     )]
-    tier: Option<types::SubscriptionTier>,
+    pub tier: Option<types::SubscriptionTier>,
     // FIXME: Enumify?
     /// The type of emote.
     ///
@@ -81,9 +81,43 @@ pub struct ChannelEmote {
     /// `bitstier`: Indicates a custom Bits tier emote.
     ///
     /// `follower`: Indicates a custom follower emote.
-    emote_type: String,
+    pub emote_type: String,
     /// ID of the emote set the emote belongs to.
-    emote_set_id: types::EmoteSetId,
+    pub emote_set_id: types::EmoteSetId,
+    /// The formats that the emote is available in.
+    pub format: Vec<types::EmoteAnimationSetting>,
+    /// The sizes that the emote is available in.
+    pub scale: Vec<types::EmoteScale>,
+    /// The background themes that the emote is available in.
+    pub theme_mode: Vec<types::EmoteThemeMode>,
+}
+
+impl ChannelEmote {
+    /// Create an emote builder for this emote.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # use twitch_api2::{client, helix};
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// let emotes = client.get_channel_emotes_from_login("twitchdev", &token).await?.expect("user not found");
+    /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0");
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn url(&self) -> types::EmoteUrlBuilder<'_> {
+        EmoteUrlBuilder {
+            id: std::borrow::Cow::Borrowed(&self.id),
+            animation_setting: <_>::default(),
+            theme_mode: <_>::default(),
+            scale: <_>::default(),
+            template: types::EMOTE_V2_URL_TEMPLATE.into(),
+        }
+    }
 }
 
 /// A chat emote
@@ -92,9 +126,15 @@ pub struct ChannelEmote {
 #[non_exhaustive]
 pub struct GlobalEmote {
     /// ID of the emote.
-    id: types::EmoteId,
+    pub id: types::EmoteId,
     /// Name of the emote a viewer types into Twitch chat for the image to appear.
-    name: String,
+    pub name: String,
     /// Object of image URLs for the emote.
-    images: types::Image,
+    pub images: types::Image,
+    /// The formats that the emote is available in.
+    pub format: Vec<types::EmoteAnimationSetting>,
+    /// The sizes that the emote is available in.
+    pub scale: Vec<types::EmoteScale>,
+    /// The background themes that the emote is available in.
+    pub theme_mode: Vec<types::EmoteThemeMode>,
 }
