@@ -77,6 +77,7 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq + Clone {
         serde_json::to_value(self)
     }
 }
+
 /// Verification Request
 #[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -179,20 +180,38 @@ impl Payload {
     }
 
     /// Parse http post request as a [Payload].
-    pub fn parse_http(request: &http::Request<Vec<u8>>) -> Result<Payload, PayloadParseError> {
-        Payload::parse(std::str::from_utf8(request.body())?)
+    ///
+    /// If your [`Request<B>`](http::Request) is of another type that doesn't implement `AsRef<[u8]>`, try converting it with [`Request::map`](http::Request::map)
+    ///
+    /// ```rust
+    /// use http::Request;
+    /// use twitch_api2::eventsub::Payload;
+    /// # struct Body {} impl Body { fn new() -> Self {Body {}} fn to_bytes(&self) -> &[u8] { &[] } }
+    /// # fn a() -> Result<(), twitch_api2::eventsub::PayloadParseError> {
+    /// // Example of a request with a body that doesn't implement `AsRef<[u8]>`
+    /// let original_request: Request<Body> = http::Request::new(Body::new());
+    /// // Convert to a request with a body of `Vec<u8>`, which does implement `AsRef<[u8]>`
+    /// let converted_request: Request<Vec<u8>> = original_request.map(|r| r.to_bytes().to_owned());
+    /// Payload::parse_http(&converted_request)?
+    /// # ; Ok(())}
+    /// ```
+    pub fn parse_http<B>(request: &http::Request<B>) -> Result<Payload, PayloadParseError>
+    where B: AsRef<[u8]> {
+        Payload::parse(std::str::from_utf8(request.body().as_ref())?)
     }
 
     /// Verify that this payload is authentic using `HMAC-SHA256`.
     ///
     /// HMAC key is `secret`, HMAC message is a concatenation of `Twitch-Eventsub-Message-Id` header, `Twitch-Eventsub-Message-Timestamp` header and the request body.
-    /// HMAC signature is `Twitch-Eventsub-Message-Signature` header
+    /// HMAC signature is `Twitch-Eventsub-Message-Signature` header.
     #[cfg(feature = "hmac")]
     #[cfg_attr(nightly, doc(cfg(feature = "hmac")))]
-    pub fn verify_payload(request: &http::Request<Vec<u8>>, secret: &[u8]) -> bool {
+    pub fn verify_payload<B>(request: &http::Request<B>, secret: &[u8]) -> bool
+    where B: AsRef<[u8]> {
         use crypto_hmac::{Hmac, Mac, NewMac};
 
-        fn message_and_signature(request: &http::Request<Vec<u8>>) -> Option<(Vec<u8>, Vec<u8>)> {
+        fn message_and_signature<B>(request: &http::Request<B>) -> Option<(Vec<u8>, Vec<u8>)>
+        where B: AsRef<[u8]> {
             static SHA_HEADER: &str = "sha256=";
 
             let id = request
@@ -203,7 +222,7 @@ impl Payload {
                 .headers()
                 .get("Twitch-Eventsub-Message-Timestamp")?
                 .as_bytes();
-            let body = request.body();
+            let body = request.body().as_ref();
 
             let mut message = Vec::with_capacity(id.len() + timestamp.len() + body.len());
             message.extend_from_slice(id);

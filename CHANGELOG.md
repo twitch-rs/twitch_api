@@ -55,6 +55,7 @@
 * `TWITCH_HELIX_URL`, `TWITCH_TMI_URL` and `TWITCH_PUBSUB_URL` are now `url::Url`s and can be overridden with environment variables. See the docs for more information.
 * Added field total to `helix::Response`
 * Changed return type of `GetBroadcasterSubscriptions` to be a vector of `BroadcasterSubscription`
+* Made `Payload::verify` and `Payload::parse_http` generic on the body type for `AsRef<[u8]>`
 
 ### Removed
 
