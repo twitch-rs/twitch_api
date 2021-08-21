@@ -9,7 +9,6 @@ description = "Library for talking with the new Twitch API aka. \"Helix\", TMI a
 keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
 documentation = "https://docs.rs/twitch_api2/0.6.0-rc.2"
 readme = "README.md"
-build = "build.rs"
 resolver = "2"
 
 [dependencies]
@@ -30,7 +29,7 @@ serde_ignored = { version = "0.1.2", optional = true }
 tracing = { version = "0.1.26", optional = true }
 reqwest = { version = "0.11.4", optional = true, default-features = false }
 surf = { version = "2.2.0", optional = true, default-features = false }
-http-types = { version = "2.11.1", optional = true, features = ["hyperium_http"] }
+http-types = { version = "2.12.0", optional = true, features = ["hyperium_http"] }
 sha2 = { version = "0.9.5", optional = true }
 crypto_hmac = { package = "hmac", version = "0.11.0", optional = true }
 aliri_braid = "0.1.9"
@@ -87,10 +86,10 @@ all = [
 ]
 
 [dev-dependencies]
-tokio = { version = "1.9.0", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.10.0", features = ["rt-multi-thread", "macros"] }
 dotenv = "0.15.0"
 futures = "0.3.16"
-serde_cbor = "0.11.1"
+serde_cbor = "0.11.2"
 serde_json = "1.0.66"
 surf = "2.2.0"
 reqwest = "0.11.4"
@@ -157,3 +156,4 @@ required-features = ["reqwest_client", "helix"]
 
 [package.metadata.docs.rs]
 features = ["all", "unsupported"]
+rustc-args = ["--cfg", "nightly"]
