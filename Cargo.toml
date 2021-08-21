@@ -42,7 +42,7 @@ default = []
 
 client = ["twitch_oauth2", "futures"]
 
-unsupported = []
+unsupported = ["serde_json/raw_value"]
 deny_unknown_fields = []
 trace_unknown_fields = ["serde_ignored", "tracing"]
 
@@ -139,6 +139,11 @@ required-features = ["reqwest_client", "helix"]
 name = "channel_information"
 path = "examples/channel_information.rs"
 required-features = ["reqwest_client", "helix"]
+
+[[example]]
+name = "channel_information_custom"
+path = "examples/channel_information_custom.rs"
+required-features = ["reqwest_client", "helix", "unsupported"]
 
 [[example]]
 name = "followed_streams"
