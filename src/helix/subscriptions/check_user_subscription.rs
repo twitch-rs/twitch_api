@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`CheckUserSubscriptionRequest`] with the [`CheckUserSubscriptionRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::subscriptions::check_user_subscription;
 //! let request = check_user_subscription::CheckUserSubscriptionRequest::builder()
 //!     .broadcaster_id("1234")

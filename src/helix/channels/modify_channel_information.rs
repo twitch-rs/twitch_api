@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`ModifyChannelInformationRequest`] with the [`ModifyChannelInformationRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::channels::modify_channel_information;
 //! let request = modify_channel_information::ModifyChannelInformationRequest::builder()
 //!     .broadcaster_id("1234")

@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`StartCommercialRequest`] with the [`StartCommercialRequest::new()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::channels::start_commercial;
 //! let request = start_commercial::StartCommercialRequest::new();
 //! ```

@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetModeratorEventsRequest`] with the [`GetModeratorEventsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::moderation::get_moderator_events;
 //! let request = get_moderator_events::GetModeratorEventsRequest::builder()
 //!     .broadcaster_id("1234")

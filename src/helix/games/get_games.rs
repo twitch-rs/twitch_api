@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetGamesRequest`] with the [`GetGamesRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::games::get_games;
 //! let request = get_games::GetGamesRequest::builder()
 //!     .id(vec!["4321".into()])

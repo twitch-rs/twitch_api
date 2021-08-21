@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`BlockUserRequest`] with the [`BlockUserRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::users::block_user::{self, SourceContext, Reason};
 //! let request = block_user::BlockUserRequest::builder()
 //!     .target_user_id("1234")

@@ -9,7 +9,7 @@
 //!
 //! To use this endpoint, construct a [`CreatePredictionRequest`] with the [`CreatePredictionRequest::new()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::predictions::create_prediction;
 //! let request = create_prediction::CreatePredictionRequest::new();
 //! ```

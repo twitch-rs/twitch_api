@@ -9,7 +9,7 @@
 //!
 //! To use this endpoint, construct a [`GetCustomRewardRequest`] with the [`GetCustomRewardRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::points::GetCustomRewardRequest;
 //! let request = GetCustomRewardRequest::builder()
 //!     .broadcaster_id("274637212".to_string())

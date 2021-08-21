@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`GetCheermotesRequest`] with the [`GetCheermotesRequest::builder()`] method.
 //! If you do not provide an ID, the request will only include global cheermotes as defined by twitch.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::bits::get_cheermotes;
 //! let request = get_cheermotes::GetCheermotesRequest::builder()
 //!     .broadcaster_id(Some("1234".into()))

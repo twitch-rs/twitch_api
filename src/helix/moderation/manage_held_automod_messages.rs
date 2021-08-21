@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`ManageHeldAutoModMessagesRequest`] with the [`ManageHeldAutoModMessagesRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::moderation::manage_held_automod_messages;
 //! let request = manage_held_automod_messages::ManageHeldAutoModMessagesRequest::new();
 //! ```
@@ -132,7 +132,7 @@ impl Request for ManageHeldAutoModMessagesRequest {
 impl RequestPost for ManageHeldAutoModMessagesRequest {
     type Body = ManageHeldAutoModMessagesBody;
 
-    fn parse_inner_response(
+    fn parse_inner_response<'d>(
         request: Option<Self>,
         uri: &http::Uri,
         response: &str,

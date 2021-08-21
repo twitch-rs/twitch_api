@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`SearchChannelsRequest`] with the [`SearchChannelsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::search::search_channels;
 //! let request = search_channels::SearchChannelsRequest::builder()
 //!     .query("hello")

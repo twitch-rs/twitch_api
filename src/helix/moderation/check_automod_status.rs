@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`CheckAutoModStatusRequest`] with the [`CheckAutoModStatusRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::moderation::check_automod_status;
 //! let request = check_automod_status::CheckAutoModStatusRequest::builder()
 //!     .broadcaster_id("1234")

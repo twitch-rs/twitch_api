@@ -8,7 +8,7 @@
 //!
 //! To use this endpoint, construct an [`EndPredictionRequest`] with the [`EndPredictionRequest::new()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::predictions::end_prediction;
 //! let request = end_prediction::EndPredictionRequest::new();
 //! ```

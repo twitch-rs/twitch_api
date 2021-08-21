@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetBannedUsersRequest`] with the [`GetBannedUsersRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::moderation::get_banned_users;
 //! let request = get_banned_users::GetBannedUsersRequest::builder()
 //!     .broadcaster_id("1234")

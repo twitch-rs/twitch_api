@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`SearchCategoriesRequest`] with the [`SearchCategoriesRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::search::search_categories;
 //! let request = search_categories::SearchCategoriesRequest::builder()
 //!     .query("hello")

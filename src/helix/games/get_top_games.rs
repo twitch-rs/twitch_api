@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetTopGamesRequest`] with the [`GetTopGamesRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::games::get_top_games;
 //! let request = get_top_games::GetTopGamesRequest::builder()
 //!     .first(100)

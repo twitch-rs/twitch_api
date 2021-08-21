@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetEmoteSetsRequest`] with the [`GetEmoteSetsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::chat::get_emote_sets;
 //! let request = get_emote_sets::GetEmoteSetsRequest::builder()
 //!     .emote_set_id(vec!["1234".into()])

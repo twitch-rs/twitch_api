@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetHypeTrainEventsRequest`] with the [`GetHypeTrainEventsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::hypetrain::get_hypetrain_events;
 //! let request = get_hypetrain_events::GetHypeTrainEventsRequest::builder()
 //!     .broadcaster_id("4321".to_string())

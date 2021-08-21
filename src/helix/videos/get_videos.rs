@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetVideosRequest`] with the [`GetVideosRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::videos::get_videos;
 //! let request = get_videos::GetVideosRequest::builder()
 //!     .user_id(Some("1234".into()))

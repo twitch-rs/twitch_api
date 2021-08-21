@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetClipsRequest`] with the [`GetClipsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::clips::get_clips;
 //! let request = get_clips::GetClipsRequest::builder()
 //!     .broadcaster_id(Some("1234".into()))

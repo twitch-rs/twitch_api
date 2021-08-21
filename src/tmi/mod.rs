@@ -19,7 +19,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
 ///
-/// ```rust,no_run
+/// ```rust
 /// # use twitch_api2::{TmiClient}; pub mod surf {pub type Client = twitch_api2::client::DummyHttpClient;}
 /// pub struct MyStruct {
 ///     twitch: TmiClient<'static, surf::Client>,

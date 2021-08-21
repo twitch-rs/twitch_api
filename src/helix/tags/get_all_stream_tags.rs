@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetAllStreamTagsRequest`] with the [`GetAllStreamTagsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::tags::get_all_stream_tags;
 //! let request = get_all_stream_tags::GetAllStreamTagsRequest::builder()
 //!     .first(100)

@@ -8,7 +8,7 @@
 //!
 //! To use this endpoint, construct an [`EndPollRequest`] with the [`EndPollRequest::new()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::polls::end_poll;
 //! let request = end_poll::EndPollRequest::new();
 //! ```

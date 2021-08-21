@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetChannelEmotesRequest`] with the [`GetChannelEmotesRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::chat::get_channel_emotes;
 //! let request = get_channel_emotes::GetChannelEmotesRequest::builder()
 //!     .broadcaster_id("1234".to_string())

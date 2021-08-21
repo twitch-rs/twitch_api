@@ -5,7 +5,7 @@
 //!
 //! To use this endpoint, construct a [`GetChannelTeamsRequest`] with the [`GetChannelTeamsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::teams::get_channel_teams;
 //! let request = get_channel_teams::GetChannelTeamsRequest::builder()
 //!     .broadcaster_id("1337")

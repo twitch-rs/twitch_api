@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetChannelChatBadgesRequest`] with the [`GetChannelChatBadgesRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::chat::get_channel_chat_badges;
 //! let request = get_channel_chat_badges::GetChannelChatBadgesRequest::builder()
 //!     .broadcaster_id("1234".to_string())

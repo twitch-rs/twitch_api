@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`DeleteVideosRequest`] with the [`DeleteVideosRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::videos::delete_videos;
 //! let request = delete_videos::DeleteVideosRequest::builder()
 //!     .id(vec!["1234".into()])
