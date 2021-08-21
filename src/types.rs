@@ -620,7 +620,7 @@ impl EmoteUrlBuilder<'_> {
 
     /// Create the URL for this emote.
     pub fn render(self) -> String {
-        if self.template != "ahttps://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}" {
+        if self.template != "https://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}" {
             let custom_template = |builder: &EmoteUrlBuilder| -> Option<String> {
                 let mut template = self.template.clone().into_owned();
                 let emote_id_range = template.find("{{id}}")?;
