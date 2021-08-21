@@ -42,12 +42,13 @@
 
 ### Changed
 
+* MSRV: 1.53.0
+* Made all specific "string" types actual types with [`aliri_braid`](https://crates.io/crates/aliri_braid)
 * Deprecated specific term actions in `ChatModeratorActionsReply`, replacing them with `ChannelTermsAction`
 * Deprecated `Vip` action in `ChatModeratorActionsReply`, replacing it with `VipAdded`
 * Removed some derived impls and fixed builders that assumed a default wrongly.
 * `HelixClient::new`, `TmiClient::new` and `TwitchClient::new` now give a more specified client.
 * Added total and gifter information to helix `Get Broadcaster Subscriptions`
-* Made all specific "string" types actual types with [`aliri_braid`](https://crates.io/crates/aliri_braid)
 * `HelixClient` methods `search_categories`, `search_channels`, `get_followed_streams` and `get_moderators_in_channel_from_id` now use streams to provide paginated response. 
 * Renamed `BroadcasterType::Affiliated` -> `BroadcasterType::Affiliate`
 * Client extension methods that are paginated are now paginated lazily using a stream.
