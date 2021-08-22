@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;helix&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/8c6b47ef8a661a31f4eb8972e65b5de0120420dc">8c6b47e</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/8fd930968b5814597a8eef955e6c0e616145c39e">8fd9309</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
@@ -1499,13 +1499,21 @@
 <span id="1497">1497</span>
 <span id="1498">1498</span>
 <span id="1499">1499</span>
+<span id="1500">1500</span>
+<span id="1501">1501</span>
+<span id="1502">1502</span>
+<span id="1503">1503</span>
+<span id="1504">1504</span>
+<span id="1505">1505</span>
+<span id="1506">1506</span>
+<span id="1507">1507</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Aside from using [`HelixClient`] as described on [the crate documentation](crate),</span>
 <span class="doccomment">//! you can decide to use this library without any specific client implementation.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust,no_run</span>
+<span class="doccomment">//! ```rust</span>
 <span class="doccomment">//! use twitch_api2::helix::{self, Request, RequestGet, users::{GetUsersRequest, User}};</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # #[tokio::main]</span>
@@ -1525,8 +1533,16 @@
 <span class="doccomment">//! println!(&quot;{:#?}&quot;, user);</span>
 <span class="doccomment">//! # Ok(())</span>
 <span class="doccomment">//! # }</span>
-<span class="doccomment">//! # fn send_http_request(_: http::Request&lt;Vec&lt;u8&gt;&gt;) -&gt; Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;,&amp;&#39;static str&gt; {todo!()}</span>
+<span class="doccomment">//! # fn send_http_request(_: http::Request&lt;Vec&lt;u8&gt;&gt;) -&gt; Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;,&amp;&#39;static str&gt; {</span>
+<span class="doccomment">//! # Ok(http::Response::builder().body(r#&quot;{&quot;data&quot;:[{&quot;id&quot;:&quot;141981764&quot;,&quot;login&quot;:&quot;twitchdev&quot;,&quot;display_name&quot;:&quot;TwitchDev&quot;,&quot;type&quot;:&quot;&quot;,&quot;broadcaster_type&quot;:&quot;partner&quot;,&quot;description&quot;:&quot;Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.&quot;,&quot;profile_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png&quot;,&quot;offline_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png&quot;,&quot;view_count&quot;:5980557,&quot;email&quot;:&quot;not-real@email.com&quot;,&quot;created_at&quot;:&quot;2016-12-14T20:32:28.894263Z&quot;}]}&quot;#.as_bytes().to_owned()).unwrap())</span>
+<span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+
+<span class="comment">// fn send_http_request(_: http::Request&lt;Vec&lt;u8&gt;&gt;) -&gt; Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, &amp;&#39;static str&gt; {</span>
+<span class="comment">//     Ok(http::Response::builder().body(r#&quot;{&quot;data&quot;:[{&quot;id&quot;:&quot;141981764&quot;,&quot;login&quot;:&quot;twitchdev&quot;,&quot;display_name&quot;:&quot;TwitchDev&quot;,&quot;type&quot;:&quot;&quot;,&quot;broadcaster_type&quot;:&quot;partner&quot;,&quot;description&quot;:&quot;Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.&quot;,&quot;profile_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png&quot;,&quot;offline_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png&quot;,&quot;view_count&quot;:5980557,&quot;email&quot;:&quot;not-real@email.com&quot;,&quot;created_at&quot;:&quot;2016-12-14T20:32:28.894263Z&quot;}]}&quot;#.as_bytes().to_owned()).unwrap())</span>
+<span class="comment">// }</span>
+
 <span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryInto</span>, <span class="ident">str::FromStr</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
