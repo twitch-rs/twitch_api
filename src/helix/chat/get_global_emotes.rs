@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetGlobalEmotesRequest`] with the [`GetGlobalEmotesRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::chat::get_global_emotes;
 //! let request = get_global_emotes::GetGlobalEmotesRequest::default();
 //! ```

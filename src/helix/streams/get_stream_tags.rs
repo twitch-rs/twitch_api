@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetStreamTagsRequest`] with the [`GetStreamTagsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::streams::get_stream_tags;
 //! let request = get_stream_tags::GetStreamTagsRequest::builder()
 //!     .broadcaster_id("1234")

@@ -5,7 +5,7 @@
 //!
 //! To use this endpoint, construct a [`GetUsersRequest`] with the [`GetUsersRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::users::get_users;
 //! let request = get_users::GetUsersRequest::builder()
 //!     .id(vec!["1234".into()])

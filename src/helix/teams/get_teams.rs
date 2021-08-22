@@ -5,7 +5,7 @@
 //!
 //! To use this endpoint, construct a [`GetTeamsRequest`] with the [`GetTeamsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::teams::get_teams;
 //! let request = get_teams::GetTeamsRequest::builder()
 //!     .name("coolteam".to_string())

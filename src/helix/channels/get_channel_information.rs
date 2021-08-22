@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::channels::get_channel_information;
 //! let request = get_channel_information::GetChannelInformationRequest::builder()
 //!     .broadcaster_id("1234")

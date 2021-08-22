@@ -5,7 +5,7 @@
 //!
 //! To use this endpoint, construct a [`GetPollsRequest`] with the [`GetPollsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::polls::get_polls;
 //! let request = get_polls::GetPollsRequest::builder()
 //!     .id(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()])

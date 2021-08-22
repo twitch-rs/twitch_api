@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetGlobalChatBadgesRequest`] with the [`GetGlobalChatBadgesRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::chat::get_global_chat_badges;
 //! let request = get_global_chat_badges::GetGlobalChatBadgesRequest::new();
 //! ```

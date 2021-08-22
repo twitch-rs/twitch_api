@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`ReplaceStreamTagsRequest`] with the [`ReplaceStreamTagsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::streams::replace_stream_tags;
 //! let request = replace_stream_tags::ReplaceStreamTagsRequest::builder()
 //!     .broadcaster_id("1234")

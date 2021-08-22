@@ -5,7 +5,7 @@
 //!
 //! To use this endpoint, construct a [`GetUsersFollowsRequest`] with the [`GetUsersFollowsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::users::get_users_follows;
 //! let request = get_users_follows::GetUsersFollowsRequest::builder()
 //!     .to_id(Some("1234".into()))

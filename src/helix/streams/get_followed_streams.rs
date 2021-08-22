@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetFollowedStreamsRequest`] with the [`GetFollowedStreamsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::streams::get_followed_streams;
 //! let request = get_followed_streams::GetFollowedStreamsRequest::builder()
 //!     .user_id("1234")

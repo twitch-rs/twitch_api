@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`CreatePollRequest`] with the [`CreatePollRequest::new()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::polls::create_poll;
 //! let request = create_poll::CreatePollRequest::new();
 //! ```

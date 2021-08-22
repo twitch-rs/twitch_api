@@ -12,7 +12,7 @@
 //!
 //! To use this endpoint, construct a [`GetBroadcasterSubscriptionsEventsRequest`] with the [`GetBroadcasterSubscriptionsEventsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::subscriptions::get_broadcaster_subscriptions_events;
 //! let request = get_broadcaster_subscriptions_events::GetBroadcasterSubscriptionsEventsRequest::builder()
 //!     .broadcaster_id("1234")

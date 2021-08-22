@@ -9,7 +9,7 @@
 //!
 //! To parse these, use [`Payload::parse`]
 //!
-//! ```rust,no_run
+//! ```rust
 //! use twitch_api2::eventsub::Payload;
 //! let payload = r#"{
 //!     "subscription": {

@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`DeleteCustomRewardRequest`] with the [`DeleteCustomRewardRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::points::delete_custom_reward;
 //! let request = delete_custom_reward::DeleteCustomRewardRequest::builder()
 //!     .broadcaster_id("274637212")

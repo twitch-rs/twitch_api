@@ -7,7 +7,7 @@
 //!
 //! To use this endpoint, construct a [`GetStreamsRequest`] with the [`GetStreamsRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::streams::get_streams;
 //! let request = get_streams::GetStreamsRequest::builder()
 //!     .user_login(vec!["justintvfan".into()])

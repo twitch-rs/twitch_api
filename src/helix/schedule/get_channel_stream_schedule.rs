@@ -8,7 +8,7 @@
 //!
 //! To use this endpoint, construct a [`GetChannelStreamScheduleRequest`] with the [`GetChannelStreamScheduleRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::schedule::get_channel_stream_schedule;
 //! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::builder()
 //!     .broadcaster_id("1234")

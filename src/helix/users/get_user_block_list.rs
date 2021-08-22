@@ -5,7 +5,7 @@
 //!
 //! To use this endpoint, construct a [`GetUserBlockListRequest`] with the [`GetUserBlockListRequest::builder()`] method.
 //!
-//! ```rust, no_run
+//! ```rust
 //! use twitch_api2::helix::users::get_user_block_list;
 //! let request = get_user_block_list::GetUserBlockListRequest::builder()
 //!     .broadcaster_id("1234".to_string())

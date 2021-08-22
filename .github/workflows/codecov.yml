@@ -1,0 +1,52 @@
+# This doesn't work currently there is a bug in the output of grcov
+on:
+  push:
+    branches:
+      - master
+      - trying
+
+name: Code Coverage
+jobs:
+  coverage:
+    name: Run test coverage
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: Toolchain setup
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          components: llvm-tools-preview
+      - name: Cache cargo
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+          key: ${{ runner.os }}-nightly-cargo-target-cov-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-nightly-cargo-target-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install cargo-llvm-cov
+        run: curl -LsSf https://github.com/taiki-e/cargo-llvm-cov/releases/latest/download/cargo-llvm-cov-x86_64-unknown-linux-gnu.tar.gz | tar xzf - -C ~/.cargo/bin
+      - name: Generate code coverage
+        # env:
+        #   RUSTFLAGS: '-Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
+        #   RUSTDOCFLAGS: '-Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
+        run: cargo llvm-cov --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields" --doctests --ignore-filename-regex "twitch_oauth2" --lcov --output-path lcov.info
+      - name: Determine PR number
+        if: ${{ github.ref == 'refs/heads/trying' }}
+        run: git log -1 --pretty=format:"%s" | awk '{ print "PR_NUMBER=" substr($NF,2,length($NF)-2) }' >> $GITHUB_ENV
+      # - name: Determine actual commit
+      #   if: ${{ github.ref == 'refs/heads/trying' }}
+      #   run: git rev-parse HEAD~1 | awk '{ print "ACTUAL_COMMIT_SHA=" $NF }' >> $GITHUB_ENV
+      - name: Upload to codecov.io
+        uses: codecov/codecov-action@v2
+        with:
+          files: ./lcov.info
+          override_pr: ${{env.PR_NUMBER}}
+          # override_commit: ${{env.ACTUAL_COMMIT_SHA}}
