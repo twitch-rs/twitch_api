@@ -5,10 +5,6 @@ use clap::Clap;
 struct Opts {
     #[clap(subcommand)]
     sub: SubCmd,
-    #[clap(long, default_value = "twitch_oauth2/all unsupported deny_unknown_fields client")]
-    features: String,
-    #[clap(long, default_values = &["lib","doc","examples"])]
-    targets: Vec<Target>,
     #[clap(long)]
     feature: Option<Vec<String>>,
 }
@@ -17,7 +13,7 @@ struct Opts {
 pub enum Target {
     Lib,
     Doc,
-    Examples,
+    Example(String),
 }
 
 impl std::fmt::Display for Target {
@@ -25,7 +21,7 @@ impl std::fmt::Display for Target {
         match self {
             Target::Lib => f.write_str("lib"),
             Target::Doc => f.write_str("doc"),
-            Target::Examples => f.write_str("examples"),
+            Target::Example(s) => write!(f, "example {}", s),
         }
     }
 }
@@ -37,7 +33,13 @@ impl std::str::FromStr for Target {
         Ok(match s.to_lowercase().as_str() {
             "lib" => Target::Lib,
             "doc" => Target::Doc,
-            "examples" => Target::Examples,
+            example if example.starts_with("example ") => Target::Example(
+                example
+                    .split_once(' ')
+                    .ok_or("No example mentioned")?
+                    .1
+                    .to_owned(),
+            ),
             _ => return Err("No such target"),
         })
     }
@@ -52,32 +54,35 @@ pub enum SubCmd {
 pub struct ClippyCmd {
     #[clap(long, default_values = &["helix", "tmi", "pubsub", "eventsub"])]
     endpoints: Vec<String>,
+    #[clap(long, default_value = "unsupported deny_unknown_fields client")]
+    features: String,
 }
 
 #[derive(Clap, Debug)]
 pub struct TestCmd {
     #[clap(long, default_values = &["helix", "tmi", "pubsub", "eventsub"])]
     endpoints: Vec<String>,
+    #[clap(long, default_value = "unsupported deny_unknown_fields client")]
+    features: String,
+    #[clap(long, default_values = &["lib", "doc"])]
+    targets: Vec<Target>,
 }
 
 fn main() -> Result<(), anyhow::Error> {
     let opts: Opts = dbg!(Opts::try_parse()?);
-    let features = opts.features;
     match opts.sub {
         SubCmd::Clippy(clippy) => {
             let endpoints = clippy.endpoints.join(" ");
-            for target in opts.targets.iter().filter(|t|  !&[Target::Doc].iter().any(|o| t == &o )) {
-                let target = target.to_string();
-                xshell::cmd!("cargo clippy --{target} --features {features} --features {endpoints}").run()?;
-            }
+            let features = clippy.features;
+            xshell::cmd!("cargo clippy --all-targets --features {features} --features {endpoints}")
+                .run()?;
         }
 
         SubCmd::Test(test) => {
             let endpoints = test.endpoints.join(" ");
-            for target in opts.targets {
-                let target = target.to_string();
-                xshell::cmd!("cargo test --{target} --features {features} --features {endpoints}").run()?;
-            }
+            let features = test.features;
+            xshell::cmd!("cargo test --features {features} --features {endpoints}")
+                .run()?;
         }
     }
     Ok(())

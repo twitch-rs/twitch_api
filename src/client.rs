@@ -352,7 +352,6 @@ impl<'a> Client<'a> for twitch_oauth2::client::DummyClient {
     }
 }
 
-#[cfg(feature = "surf")]
 impl ClientDefault<'static> for DummyHttpClient
 where Self: Default
 {
