@@ -113,7 +113,7 @@ pub struct HypeTrainEventData {
     /// Total points contributed to the hype train.
     pub total: i64,
     /// The distinct ID of this Hype Train
-    pub id: String,
+    pub id: types::HypeTrainId,
 }
 
 impl Request for GetHypeTrainEventsRequest {

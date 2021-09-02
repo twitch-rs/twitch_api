@@ -27,6 +27,8 @@ impl EventSubscription for ChannelHypeTrainBeginV1 {
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelHypeTrainBeginV1Payload {
+    /// The Hype Train ID.
+    pub id: types::HypeTrainId,
     /// The requested broadcaster ID.
     pub broadcaster_user_id: types::UserId,
     /// The requested broadcaster login.
@@ -71,6 +73,7 @@ fn parse_payload() {
             "created_at": "2019-11-16T10:11:12.123Z"
         },
         "event": {
+            "id": "1b0AsbInCHZW2SQFQkCzqN07Ib2",
             "broadcaster_user_id": "1337",
             "broadcaster_user_login": "cool_user",
             "broadcaster_user_name": "Cool_User",

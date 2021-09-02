@@ -666,6 +666,10 @@ pub struct EmoteSetId;
 #[aliri_braid::braid(serde)]
 pub struct StreamSegmentId;
 
+/// A Hype Train ID
+#[aliri_braid::braid(serde)]
+pub struct HypeTrainId;
+
 /// An emote index as defined by eventsub, similar to IRC `emotes` twitch tag.
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
