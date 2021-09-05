@@ -106,6 +106,12 @@ pub struct HypeTrainEnd {
     pub ending_reason: EndingReason,
 }
 
+/// Hype train cooldown expired
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct HypeTrainCooldownExpiration {}
+
 /// Hype train conductor updated
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -199,8 +205,12 @@ pub enum HypeTrainEventsV1Reply {
     #[serde(rename = "hype-train-end")]
     HypeTrainEnd(HypeTrainEnd),
     /// Hype train cooldown expired
+    ///
+    /// # Note
+    ///
+    /// There is no data associated with this event.
     #[serde(rename = "hype-train-cooldown-expiration")]
-    HypeTrainCooldownExpiration(#[doc(hidden)] Option<()>),
+    HypeTrainCooldownExpiration(Option<HypeTrainCooldownExpiration>),
     /// Hype train conductor updated
     #[serde(rename = "hype-train-conductor-update")]
     HypeTrainConductorUpdate(HypeTrainConductorUpdate),
