@@ -39,6 +39,7 @@
 * Added function `get_follow_relationships`, `get_broadcaster_subscribers`, `get_global_emotes`, `get_channel_emotes_from_id`, `get_channel_emotes_from_login` and `get_emote_sets` to `HelixClient`
 * Added fields `format`, `scale`, `theme_mode` and `template` to `ChannelEmote`, `GetEmoteSets` and `GlobalEmote`
 * Added functions `HelixClient::req_<method>_custom` to return a specific struct/enum defined by the user. This also enables references in responses for these functions.
+* Added `HypeTrainId` to relevant eventsub and helix endpoints
 
 ### Changed
 
