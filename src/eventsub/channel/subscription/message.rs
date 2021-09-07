@@ -60,54 +60,67 @@ pub struct SubscriptionMessage {
     /// The text of the resubscription chat message.
     pub text: String,
     /// An array that includes the emote ID and start and end positions for where the emote appears in the text.
+    #[serde(deserialize_with = "crate::deserialize_default_from_null")]
     pub emotes: Vec<types::ResubscriptionEmote>,
 }
 
 #[cfg(test)]
-#[test]
-fn parse_payload() {
-    let payload = r##"
-    {
-        "subscription": {
-            "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
-            "type": "channel.subscription.message",
-            "version": "1",
-            "status": "enabled",
-            "cost": 0,
-            "condition": {
-               "broadcaster_user_id": "1337"
+pub mod tests {
+    use super::*;
+    #[test]
+    fn parse_payload() {
+        let payload = r##"
+        {
+            "subscription": {
+                "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+                "type": "channel.subscription.message",
+                "version": "1",
+                "status": "enabled",
+                "cost": 0,
+                "condition": {
+                    "broadcaster_user_id": "1337"
+                },
+                "transport": {
+                    "method": "webhook",
+                    "callback": "https://example.com/webhooks/callback"
+                },
+                "created_at": "2019-11-16T10:11:12.123Z"
             },
-             "transport": {
-                "method": "webhook",
-                "callback": "https://example.com/webhooks/callback"
-            },
-            "created_at": "2019-11-16T10:11:12.123Z"
-        },
-        "event": {
-            "user_id": "1234",
-            "user_login": "cool_user",
-            "user_name": "Cool_User",
-            "broadcaster_user_id": "1337",
-            "broadcaster_user_login": "cooler_user",
-            "broadcaster_user_name": "Cooler_User",
-            "tier": "1000",
-            "message": {
-                "text": "Love the stream! FevziGG",
-                "emotes": [
-                    {
-                        "begin": 23,
-                        "end": 30,
-                        "id": "302976485"
-                    }
-                ]
-            },
-            "cumulative_months": 15,
-            "streak_months": 1,
-            "duration_months": 6
-        }
-    }
-    "##;
+            "event": {
+                "user_id": "1234",
+                "user_login": "cool_user",
+                "user_name": "Cool_User",
+                "broadcaster_user_id": "1337",
+                "broadcaster_user_login": "cooler_user",
+                "broadcaster_user_name": "Cooler_User",
+                "tier": "1000",
+                "message": {
+                    "text": "Love the stream! FevziGG",
+                    "emotes": [
+                        {
+                            "begin": 23,
+                            "end": 30,
+                            "id": "302976485"
+                        }
+                        ]
+                    },
+                    "cumulative_months": 15,
+                    "streak_months": 1,
+                    "duration_months": 6
+                }
+            }
+            "##;
 
-    let val = dbg!(crate::eventsub::Payload::parse(payload).unwrap());
-    crate::tests::roundtrip(&val)
+        let val = dbg!(crate::eventsub::Payload::parse(payload).unwrap());
+        crate::tests::roundtrip(&val)
+    }
+    #[test]
+    fn parse_emotes_null() {
+        let message = r#"
+            {
+                "text": "",
+                "emotes": null
+            }"#;
+        crate::parse_json::<SubscriptionMessage>(message, true).unwrap();
+    }
 }
