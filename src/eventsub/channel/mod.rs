@@ -9,6 +9,7 @@ pub mod channel_points_custom_reward;
 pub mod channel_points_custom_reward_redemption;
 pub mod cheer;
 pub mod follow;
+pub mod goal;
 pub mod hypetrain;
 pub mod poll;
 pub mod prediction;
@@ -44,6 +45,12 @@ pub use channel_points_custom_reward_redemption::{
 pub use cheer::{ChannelCheerV1, ChannelCheerV1Payload};
 #[doc(inline)]
 pub use follow::{ChannelFollowV1, ChannelFollowV1Payload};
+#[doc(inline)]
+pub use goal::{ChannelGoalBeginV1, ChannelGoalBeginV1Payload};
+#[doc(inline)]
+pub use goal::{ChannelGoalEndV1, ChannelGoalEndV1Payload};
+#[doc(inline)]
+pub use goal::{ChannelGoalProgressV1, ChannelGoalProgressV1Payload};
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload};
 #[doc(inline)]

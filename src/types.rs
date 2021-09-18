@@ -670,6 +670,10 @@ pub struct StreamSegmentId;
 #[aliri_braid::braid(serde)]
 pub struct HypeTrainId;
 
+/// A Creator Goal ID
+#[aliri_braid::braid(serde)]
+pub struct CreatorGoalId;
+
 /// An emote index as defined by eventsub, similar to IRC `emotes` twitch tag.
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -1077,4 +1081,15 @@ pub enum AutomodStatus {
     Denied,
     /// Automod message expired in queue
     Expired,
+}
+
+/// Type of creator goal
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "lowercase")]
+#[non_exhaustive]
+pub enum CreatorGoalType {
+    /// Creator goal is for followers
+    Follower,
+    /// Creator goal is for subscriptions
+    Subscription,
 }
