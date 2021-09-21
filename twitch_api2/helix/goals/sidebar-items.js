@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["get_creator_goals","Gets the broadcaster’s list of active goals. Use this to get the current progress of each goal. `get-creator-goals`"]],"struct":[["CreatorGoal","Return Values for Get Creator Goals"],["GetCreatorGoalsRequest","Query Parameters for Get Creator Goals"]]});

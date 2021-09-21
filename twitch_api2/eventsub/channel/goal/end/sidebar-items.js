@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ChannelGoalEndV1","`channel.goal.end`: a specified broadcaster ends a goal."],["ChannelGoalEndV1Payload","`channel.goal.end` response payload."]]});
