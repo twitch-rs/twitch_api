@@ -26,7 +26,8 @@ jobs:
         id: cache
         with:
           path: |
-            ~/.cargo/registry
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
             ~/.cargo/git
             target
           key: ${{ runner.os }}-nightly-ghpages-cargo-target-${{ hashFiles('**/Cargo.lock') }}
@@ -39,7 +40,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: doc
-          args: --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}" -p twitch_api2 -p twitch_oauth2 -Zrustdoc-map
+          args: --no-deps --locked --features "${{ env.CI_TWITCH_API2_FEATURES }}" -p twitch_api2 -p twitch_oauth2 -Zrustdoc-map
       - name: move index.html
         run: cp ./docs/index.html ./target/doc/index.html
       - name: Deploy

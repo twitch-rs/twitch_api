@@ -147,6 +147,12 @@ pub enum Payload {
     ChannelPredictionLockV1(NotificationPayload<channel::ChannelPredictionLockV1>),
     /// Channel Prediction End V1 Event
     ChannelPredictionEndV1(NotificationPayload<channel::ChannelPredictionEndV1>),
+    /// Channel Goal Begin V1 Event
+    ChannelGoalBeginV1(NotificationPayload<channel::ChannelGoalBeginV1>),
+    /// Channel Goal Progress V1 Event
+    ChannelGoalProgressV1(NotificationPayload<channel::ChannelGoalProgressV1>),
+    /// Channel Goal End V1 Event
+    ChannelGoalEndV1(NotificationPayload<channel::ChannelGoalEndV1>),
     /// Channel Hype Train Begin V1 Event
     ChannelHypeTrainBeginV1(NotificationPayload<channel::ChannelHypeTrainBeginV1>),
     /// Channel Hype Train Progress V1 Event
@@ -386,6 +392,9 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelSubscriptionEndV1;
                 channel::ChannelSubscriptionGiftV1;
                 channel::ChannelSubscriptionMessageV1;
+                channel::ChannelGoalBeginV1;
+                channel::ChannelGoalProgressV1;
+                channel::ChannelGoalEndV1;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
                 channel::ChannelHypeTrainEndV1;
@@ -427,6 +436,9 @@ impl<'de> Deserialize<'de> for Payload {
                 channel::ChannelSubscriptionEndV1;
                 channel::ChannelSubscriptionGiftV1;
                 channel::ChannelSubscriptionMessageV1;
+                channel::ChannelGoalBeginV1;
+                channel::ChannelGoalProgressV1;
+                channel::ChannelGoalEndV1;
                 channel::ChannelHypeTrainBeginV1;
                 channel::ChannelHypeTrainProgressV1;
                 channel::ChannelHypeTrainEndV1;
@@ -585,6 +597,15 @@ pub enum EventType {
     /// `channel.subscription.gift`: a user sends a resubscription chat message in a specific channel
     #[serde(rename = "channel.subscription.message")]
     ChannelSubscriptionMessage,
+    /// `channel.goal.begin`: a goal begins on the specified channel.
+    #[serde(rename = "channel.goal.begin")]
+    ChannelGoalBegin,
+    /// `channel.goal.progress`: a goal makes progress on the specified channel.
+    #[serde(rename = "channel.goal.progress")]
+    ChannelGoalProgress,
+    /// `channel.goal.end`: a goal ends on the specified channel.
+    #[serde(rename = "channel.goal.end")]
+    ChannelGoalEnd,
     /// `channel.hype_train.begin`: a hype train begins on the specified channel.
     #[serde(rename = "channel.hype_train.begin")]
     ChannelHypeTrainBegin,

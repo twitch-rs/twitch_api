@@ -19,6 +19,7 @@
   *  `Update Channel Stream Schedule`
   *  `Create Channel Stream Schedule Segment`
   *  `Delete Channel Stream Schedule Segment`
+  *  `Get Creator Goals`
 * Added Channel Terms to pubsub `chat_moderator_actions`
 * Added `user-moderation-notifications` topic to pubsub
 * Added `extendsub` to pubsub `channel-subscribe-events-v1`
@@ -28,6 +29,7 @@
 * Added `channel.subscription.gift` to EventSub
 * Added `channel.subscription.message` to EventSub
 * Added `user.authorization.grant` to EventSub
+* Added `channel.goal.begin`, `channel.goal.progress` and `channel.goal.end` to EventSub
 * Added `helix::make_stream` to make streams out of paginated responses.
 * Added fields `moderator_id`,`moderator_login`,`moderator_name` and `reason` to `BannedUser`
 * Added `pubsub::unlisten_command`

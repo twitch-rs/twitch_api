@@ -26,9 +26,11 @@ jobs:
         id: cache
         with:
           path: |
-            ~/.cargo/registry
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
             ~/.cargo/git
             ~/.cargo/bin
+            target
           key: ${{ runner.os }}-nightly-cargo-target-cov-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-nightly-cargo-target-${{ hashFiles('**/Cargo.lock') }}
       - name: Install cargo-llvm-cov

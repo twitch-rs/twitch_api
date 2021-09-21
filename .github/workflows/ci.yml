@@ -39,7 +39,8 @@ jobs:
         id: cache
         with:
           path: |
-            ~/.cargo/registry
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
             ~/.cargo/git
             target
           key: ${{ runner.os }}-${{ matrix.rust }}-cargo-target-${{ hashFiles('**/Cargo.lock') }}
@@ -47,7 +48,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
@@ -86,7 +87,8 @@ jobs:
         id: cache
         with:
           path: |
-            ~/.cargo/registry
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
             ~/.cargo/git
             target
           key: ${{ runner.os }}-nightly-clippy-cargo-target-${{ hashFiles('**/Cargo.lock') }}
@@ -95,37 +97,37 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --no-default-features
+          args: --locked --all-targets --no-default-features
       - name: Run clippy --all-targets --no-default-features --features "helix"
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --no-default-features --features "helix"
+          args: --locked --all-targets --no-default-features --features "helix"
       - name: Run clippy --all-targets --no-default-features --features "tmi"
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --no-default-features --features "tmi"
+          args: --locked --all-targets --no-default-features --features "tmi"
       - name: Run clippy --all-targets --no-default-features --features "pubsub"
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --no-default-features --features "pubsub"
+          args: --locked --all-targets --no-default-features --features "pubsub"
       - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
+          args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
       - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
       - name: Run clippy --all-targets --all-features
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --all-features
+          args: --locked --all-targets --all-features
   docs:
     name: Docs
     runs-on: ubuntu-latest
@@ -144,7 +146,8 @@ jobs:
         id: cache-doc
         with:
           path: |
-            ~/.cargo/registry
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
             ~/.cargo/git
             target
           key: ${{ runner.os }}-nightly-doc-cargo-target-${{ hashFiles('**/Cargo.lock') }}
@@ -159,7 +162,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: doc
-          args: --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --locked --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}"
   release:
     name: Release
     runs-on: ubuntu-latest
