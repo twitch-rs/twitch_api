@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["ChannelBanChangeEventsTopic","Notifies when a broadcaster bans or un-bans people in their channel. Topic: Channel Ban Change Events"]]});

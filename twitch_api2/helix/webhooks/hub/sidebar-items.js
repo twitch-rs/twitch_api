@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["WebhookHub","Return Values for Subscribe to/Unsubscribe From Events"],["WebhookSubscriptionMode","Subscription mode"]],"struct":[["WebhookHubBody","Body Parameters for Subscribe to/Unsubscribe From Events"],["WebhookHubRequest","Query Parameters for Subscribe to/Unsubscribe From Events"]]});

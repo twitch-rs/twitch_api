@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["hypetrain_event","Notifies when a hype train progression occurs."]],"struct":[["HypeTrainEventTopic","Notifies when a hype train progression occurs Topic: Hype Train Event"]]});

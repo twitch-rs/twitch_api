@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["SubscriptionEventsTopic","Notifies on subscription changes. Topic: Subscription Events"]]});
