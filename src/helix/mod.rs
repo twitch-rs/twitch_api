@@ -68,12 +68,6 @@ pub mod tags;
 pub mod teams;
 pub mod users;
 pub mod videos;
-#[allow(deprecated_in_future, deprecated)]
-#[deprecated(
-    since = "0.6.0",
-    note = "webhooks are deprecated and decommisioned on 2021-09-16, use eventsub instead"
-)]
-pub mod webhooks;
 
 pub(crate) mod ser;
 pub(crate) use crate::deserialize_default_from_null;
@@ -1306,9 +1300,6 @@ pub enum HelixRequestGetError {
         http::Uri,
         http::StatusCode,
     ),
-    // FIXME: Only used in webhooks parse_payload
-    /// could not get URI for request
-    InvalidUri(#[from] InvalidUri),
     /// invalid or unexpected response from twitch.
     InvalidResponse {
         /// Reason for error

@@ -119,7 +119,7 @@ impl RequestGet for GetUsersFollowsRequest {
         #[derive(PartialEq, Deserialize, Debug, Clone)]
         struct InnerResponse {
             data: Vec<FollowRelationship>,
-            total: Option<i64>,
+            total: i64,
             #[serde(default)]
             pagination: helix::Pagination,
         }
@@ -134,13 +134,12 @@ impl RequestGet for GetUsersFollowsRequest {
         })?;
         Ok(helix::Response {
             data: UsersFollows {
-                // FIXME: Hack for webhook subscription, remove when fully deprecated
-                total: response.total.unwrap_or(1),
+                total: response.total,
                 follow_relationships: response.data,
             },
             pagination: response.pagination.cursor,
             request,
-            total: response.total,
+            total: Some(response.total),
         })
     }
 }
