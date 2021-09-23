@@ -50,8 +50,6 @@ This crate aims to target
   * See [implemented endpoints](https://github.com/Emilgardis/twitch_api2/wiki/Implemented-Features#tmi)
 * [EventSub](https://dev.twitch.tv/docs/eventsub/eventsub-reference)
   * See [implemented eventsub Helix endpoints](https://github.com/Emilgardis/twitch_api2/wiki/Implemented-Features#eventsub)
-* [Webhooks](https://dev.twitch.tv/docs/api/webhooks-reference)
-  * See [implemented webhooks](https://github.com/Emilgardis/twitch_api2/wiki/Implemented-Features#webhooks)
 * [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
   * See [implemented topics](https://github.com/Emilgardis/twitch_api2/wiki/Implemented-Features#pubsub)
 * [Extensions](https://dev.twitch.tv/docs/extensions/reference)
