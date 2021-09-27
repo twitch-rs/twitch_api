@@ -9,3 +9,13 @@ clap = "3.0.0-beta.2"
 anyhow = "1"
 thiserror = "1"
 xshell = "0.1"
+ureq = { version = "2.2.0", features = ["json"], optional = true }
+serde_json = { version = "1", default-features = false, optional = true }
+serde = { version = "1", features = ["derive"], optional = true }
+fastrand = { version = "1.5.0", optional = true }
+cargo_metadata = { version = "0.14.0", optional = true }
+
+[features]
+default = ["mocking", "explore"]
+mocking = ["ureq", "serde", "serde_json", "fastrand"]
+explore = ["serde", "serde_json", "cargo_metadata"]

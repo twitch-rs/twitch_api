@@ -159,5 +159,5 @@ features = ["all", "unsupported"]
 rustc-args = ["--cfg", "nightly"]
 
 [workspace]
-members = [".","xtask"]
+members = [".","xtask", "mock"]
 default-members = ["."]
