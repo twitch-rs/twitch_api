@@ -1,13 +1,13 @@
 [package]
 name = "twitch_api2"
-version = "0.6.0-rc.2"
+version = "0.6.0-rc.3"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/Emilgardis/twitch_api2"
 license = "MIT OR Apache-2.0"
 description = "Library for talking with the new Twitch API aka. \"Helix\", TMI and more!"
 keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
-documentation = "https://docs.rs/twitch_api2/0.6.0-rc.2"
+documentation = "https://docs.rs/twitch_api2/0.6.0-rc.3"
 readme = "README.md"
 resolver = "2"
 
@@ -18,7 +18,7 @@ http = "0.2.4"
 typed-builder = { version = "0.9.0", optional = true }
 url = "2.2.2"
 once_cell = "1.8.0"
-twitch_oauth2 = { version = "0.6.0-rc.2", optional = true, path = "twitch_oauth2/" }
+twitch_oauth2 = { version = "0.6.0", optional = true, path = "twitch_oauth2/" }
 serde = { version = "1.0.127", features = ["derive"] }
 serde_derive = "1.0.127"
 serde_path_to_error = { version = "0.1.4", optional = true }
@@ -152,7 +152,7 @@ required-features = ["reqwest_client", "helix"]
 [[example]]
 name = "mock_api"
 path = "examples/mock_api.rs"
-required-features = ["reqwest_client", "helix"]
+required-features = ["reqwest_client", "helix", "mock_api", "twitch_oauth2/mock_api"]
 
 [package.metadata.docs.rs]
 features = ["all", "unsupported"]

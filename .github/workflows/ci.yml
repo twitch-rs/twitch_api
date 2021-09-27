@@ -160,6 +160,9 @@ jobs:
           args: --doc --features "${{ env.CI_TWITCH_API2_FEATURES }}"
       - name: Check twitch_api2 docs
         uses: actions-rs/cargo@v1
+        env:
+          RUSTDOCFLAGS: "--cfg nightly"
+          RUSTFLAGS: "--cfg nightly"
         with:
           command: doc
           args: --locked --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}"
