@@ -152,7 +152,7 @@ required-features = ["reqwest_client", "helix"]
 [[example]]
 name = "mock_api"
 path = "examples/mock_api.rs"
-required-features = ["reqwest_client", "helix"]
+required-features = ["reqwest_client", "helix", "mock_api", "twitch_oauth2/mock_api"]
 
 [package.metadata.docs.rs]
 features = ["all", "unsupported"]
