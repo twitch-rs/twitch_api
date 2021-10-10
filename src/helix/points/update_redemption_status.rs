@@ -160,6 +160,7 @@ impl RequestPatch for UpdateRedemptionStatusRequest {
             pagination: None,
             request,
             total: None,
+            other: None,
         })
     }
 }

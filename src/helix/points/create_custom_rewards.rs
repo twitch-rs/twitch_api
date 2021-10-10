@@ -164,6 +164,7 @@ impl RequestPost for CreateCustomRewardRequest {
             pagination: response.pagination.cursor,
             request,
             total: response.total,
+            other: None,
         })
     }
 }

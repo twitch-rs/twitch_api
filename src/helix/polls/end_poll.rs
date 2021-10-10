@@ -164,6 +164,7 @@ impl RequestPatch for EndPollRequest {
             pagination: None,
             request,
             total: None,
+            other: None,
         })
     }
 }

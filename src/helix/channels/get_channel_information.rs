@@ -112,6 +112,7 @@ impl RequestGet for GetChannelInformationRequest {
             pagination: response.pagination.cursor,
             request,
             total: None,
+            other: None,
         })
     }
 }

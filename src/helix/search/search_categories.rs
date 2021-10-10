@@ -97,6 +97,7 @@ impl RequestGet for SearchCategoriesRequest {
             pagination: response.pagination.cursor,
             request,
             total: response.total,
+            other: None,
         })
     }
 }

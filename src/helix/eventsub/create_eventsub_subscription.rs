@@ -175,6 +175,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
             request,
             // helix::Response total is generally the total number of results, not what the total for this endpoint means. Thus, we set it to None.
             total: None,
+            other: None,
         })
     }
 }
