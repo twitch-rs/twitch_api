@@ -102,6 +102,7 @@ impl helix::private::SealedSerialize for EndPredictionBody {}
 #[derive(PartialEq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
+#[allow(clippy::large_enum_variant)]
 pub enum EndPrediction {
     /// Prediction ended successfully.
     Success(Prediction),
