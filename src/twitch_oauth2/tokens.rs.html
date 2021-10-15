@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2&#x2F;src&#x2F;tokens.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tokens.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/463d5bb915dd0f394c9131687d16eaf12e0f70da">463d5bb</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/10544b3e787a2b946c45f136d6d84325de0de00c">10544b3</a></p>
 <style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../twitch_oauth2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -199,9 +199,9 @@
 <span class="attribute">#[<span class="ident">async_trait::async_trait</span>]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TwitchToken</span> {
     <span class="doccomment">/// Get the type of token.</span>
-    <span class="kw">fn</span> <span class="ident">token_type</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BearerTokenType</span>;
+    <span class="kw">fn</span> <span class="ident">token_type</span>() -&gt; <span class="ident">BearerTokenType</span>;
     <span class="doccomment">/// Client ID associated with the token. Twitch requires this in all helix API calls</span>
-    <span class="kw">fn</span> <span class="ident">client_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ClientId</span>;
+    <span class="kw">fn</span> <span class="ident">client_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">ClientId</span>;
     <span class="doccomment">/// Get the [AccessToken] for authenticating</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Example</span>
@@ -213,21 +213,21 @@
     <span class="doccomment">/// use twitch_oauth2::TwitchToken;</span>
     <span class="doccomment">/// println!(&quot;token: {}&quot;, user_token.token().secret());</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">token</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">AccessToken</span>;
+    <span class="kw">fn</span> <span class="ident">token</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">AccessToken</span>;
     <span class="doccomment">/// Get the username associated to this token</span>
-    <span class="kw">fn</span> <span class="ident">login</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">login</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Get the user id associated to this token</span>
-    <span class="kw">fn</span> <span class="ident">user_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">user_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Refresh this token, changing the token to a newer one</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">refresh_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">http_client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
         <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Get current lifetime of token.</span>
-    <span class="kw">fn</span> <span class="ident">expires_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::time::Duration</span>;
+    <span class="kw">fn</span> <span class="ident">expires_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">std::time::Duration</span>;
 
     <span class="doccomment">/// Returns whether or not the token is expired.</span>
     <span class="doccomment">///</span>
@@ -243,12 +243,12 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// # Ok(()) }</span>
     <span class="doccomment">/// # fn main() {run();}</span>
-    <span class="kw">fn</span> <span class="ident">is_elapsed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_elapsed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">exp</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">expires_in</span>();
-        <span class="ident">exp</span>.<span class="ident">as_secs</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">exp</span>.<span class="ident">as_nanos</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+        <span class="ident">exp</span>.<span class="ident">as_secs</span>() <span class="op">==</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">exp</span>.<span class="ident">as_nanos</span>() <span class="op">==</span> <span class="number">0</span>
     }
     <span class="doccomment">/// Retrieve scopes attached to the token</span>
-    <span class="kw">fn</span> <span class="ident">scopes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">Scope</span>];
+    <span class="kw">fn</span> <span class="ident">scopes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">Scope</span>];
     <span class="doccomment">/// Validate this token. Should be checked on regularly, according to &lt;https://dev.twitch.tv/docs/authentication#validating-requests&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Note</span>
@@ -257,7 +257,7 @@
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">validate_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http_client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ValidatedToken</span>, <span class="ident">ValidationError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ValidatedToken</span>, <span class="ident">ValidationError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
         <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
@@ -270,7 +270,7 @@
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">revoke_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">http_client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RevokeTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RevokeTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
         <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
@@ -283,20 +283,20 @@
 
 <span class="attribute">#[<span class="ident">async_trait::async_trait</span>]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span> <span class="ident">TwitchToken</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">token_type</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BearerTokenType</span> { <span class="ident">T::token_type</span>() }
+    <span class="kw">fn</span> <span class="ident">token_type</span>() -&gt; <span class="ident">BearerTokenType</span> { <span class="ident">T::token_type</span>() }
 
-    <span class="kw">fn</span> <span class="ident">client_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ClientId</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">client_id</span>() }
+    <span class="kw">fn</span> <span class="ident">client_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">ClientId</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">client_id</span>() }
 
-    <span class="kw">fn</span> <span class="ident">token</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">AccessToken</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">token</span>() }
+    <span class="kw">fn</span> <span class="ident">token</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">AccessToken</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">token</span>() }
 
-    <span class="kw">fn</span> <span class="ident">login</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">login</span>() }
+    <span class="kw">fn</span> <span class="ident">login</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">login</span>() }
 
-    <span class="kw">fn</span> <span class="ident">user_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">user_id</span>() }
+    <span class="kw">fn</span> <span class="ident">user_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">user_id</span>() }
 
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">refresh_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">http_client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
         <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
@@ -304,9 +304,9 @@
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">refresh_token</span>(<span class="ident">http_client</span>).<span class="kw">await</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">expires_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::time::Duration</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">expires_in</span>() }
+    <span class="kw">fn</span> <span class="ident">expires_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">std::time::Duration</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">expires_in</span>() }
 
-    <span class="kw">fn</span> <span class="ident">scopes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">Scope</span>] { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">scopes</span>() }
+    <span class="kw">fn</span> <span class="ident">scopes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">Scope</span>] { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">scopes</span>() }
 }
 
 <span class="doccomment">/// Token validation returned from `https://id.twitch.tv/oauth2/validate`</span>
@@ -329,7 +329,7 @@
 
 <span class="kw">fn</span> <span class="ident">seconds_to_duration</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">D</span>: <span class="ident">serde::de::Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>(
     <span class="ident">d</span>: <span class="ident">D</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">std::time::Duration</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">std::time::Duration</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
     <span class="prelude-val">Ok</span>(<span class="ident">std::time::Duration::from_secs</span>(<span class="ident">u64::deserialize</span>(<span class="ident">d</span>)<span class="question-mark">?</span>))
 }
 </code></pre></div>

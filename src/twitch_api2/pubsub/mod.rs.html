@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;pubsub&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/463d5bb915dd0f394c9131687d16eaf12e0f70da">463d5bb</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/10544b3e787a2b946c45f136d6d84325de0de00c">10544b3</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -699,17 +699,17 @@
 
 <span class="doccomment">/// Implement `From&lt;$type&gt; for String` for serializing and `TryFrom&lt;String&gt; for $type` for deserializing.</span>
 <span class="macro">macro_rules!</span> <span class="ident">impl_de_ser</span> {
-    (@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {<span class="string">&quot;.{}&quot;</span>};
-    (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>:<span class="ident">literal</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span> $(<span class="question-mark">?</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) =&gt; {<span class="string">&quot;.{}&quot;</span>};
+    (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>:<span class="ident">literal</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span> $(<span class="question-mark">?</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span>) =&gt; {
         <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">String</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">Self</span> { <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>, $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),)<span class="op">+</span> $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>),)<span class="kw-2">*</span>), $(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>$(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_default</span>(),)<span class="kw-2">*</span>).<span class="ident">trim_end_matches</span>(<span class="string">&quot;.&quot;</span>).<span class="ident">to_owned</span>() }
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self</span> { <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>, $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),)<span class="op">+</span> $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>),)<span class="kw-2">*</span>), $(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>$(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_default</span>(),)<span class="kw-2">*</span>).<span class="ident">trim_end_matches</span>(<span class="string">&quot;.&quot;</span>).<span class="ident">to_owned</span>() }
         }
         <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">String</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">Self</span> { <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>, $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),)<span class="op">+</span> $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>),)<span class="kw-2">*</span>), $(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>$(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_default</span>(),)<span class="kw-2">*</span>).<span class="ident">trim_end_matches</span>(<span class="string">&quot;.&quot;</span>).<span class="ident">to_owned</span>() }
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self</span> { <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>, $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),)<span class="op">+</span> $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>),)<span class="kw-2">*</span>), $(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>$(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_default</span>(),)<span class="kw-2">*</span>).<span class="ident">trim_end_matches</span>(<span class="string">&quot;.&quot;</span>).<span class="ident">to_owned</span>() }
         }
 
         <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">super::Topics</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">Self</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self</span> {
                 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Topic</span> <span class="kw">as</span> <span class="kw">_</span>;
                 <span class="ident">t</span>.<span class="ident">into_topic</span>()
             }
@@ -717,7 +717,7 @@
 
         <span class="kw">impl</span> <span class="ident">::std::fmt::Display</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">type</span> {
             <span class="doccomment">///</span>
-            <span class="kw">fn</span> <span class="macro-nonterminal">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">::std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::std::fmt::Result</span> {
+            <span class="kw">fn</span> <span class="macro-nonterminal">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">::std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">::std::fmt::Result</span> {
                 <span class="kw">let</span> <span class="ident">s</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">::std::convert::TryInto::try_into</span>(<span class="self">self</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">::std::fmt::Error</span>)<span class="question-mark">?</span>;
                 <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>)
             }
@@ -726,11 +726,11 @@
         <span class="kw">impl</span> <span class="ident">::std::convert::TryFrom</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">type</span> {
             <span class="kw">type</span> <span class="macro-nonterminal">Error</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
 
-            <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">s</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::std::result::Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">s</span>: <span class="ident">String</span>) -&gt; <span class="ident">::std::result::Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">starts_with</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>) {
                     <span class="kw">let</span> <span class="ident">sub_s</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">strip_prefix</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>).<span class="ident">ok_or</span>(<span class="string">&quot;could not strip str, this should never be hit&quot;</span>)<span class="question-mark">?</span>;
                     <span class="kw">match</span> <span class="ident">sub_s</span>.<span class="ident">split</span>(<span class="string">&#39;.&#39;</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>().<span class="ident">as_slice</span>() {
-                        [<span class="string">&quot;&quot;</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="op">*</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>,)<span class="kw-2">*</span>] <span class="op">=</span><span class="op">&gt;</span> {
+                        [<span class="string">&quot;&quot;</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="op">*</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>,)<span class="kw-2">*</span>] =&gt; {
                             <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="kw">type</span> {
                                 $(
                                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>.<span class="ident">parse</span>()
@@ -743,7 +743,7 @@
                             } )
                         }
                         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_patterns</span>)]</span>
-                        [<span class="string">&quot;&quot;</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>] <span class="op">=</span><span class="op">&gt;</span> {
+                        [<span class="string">&quot;&quot;</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>] =&gt; {
                             <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="kw">type</span> {
                                 $(
                                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>.<span class="ident">parse</span>()
@@ -754,7 +754,7 @@
                                 )<span class="op">*</span>
                             } )
                         }
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::pubsub::ERROR_TRYFROM</span>)
+                        <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::pubsub::ERROR_TRYFROM</span>)
                     }
                 } <span class="kw">else</span> {
                     <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::pubsub::ERROR_TRYFROM</span>)
@@ -813,7 +813,7 @@
     <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>];
 
     <span class="doccomment">/// Convert this into a [`Topics`]</span>
-    <span class="kw">fn</span> <span class="ident">into_topic</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Topics</span>;
+    <span class="kw">fn</span> <span class="ident">into_topic</span>(<span class="self">self</span>) -&gt; <span class="ident">Topics</span>;
 }
 
 <span class="doccomment">/// All possible topics</span>
@@ -874,34 +874,34 @@
 }
 
 <span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">Topics</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="kw">use</span> <span class="ident"><span class="self">self</span>::Topics</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">AutoModQueue</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">AutoModQueue</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">CommunityPointsChannelV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelBitsEventsV2</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelBitsBadgeUnlocks</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">CommunityPointsChannelV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelBitsEventsV2</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelBitsBadgeUnlocks</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ChannelCheerEventsPublicV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelCheerEventsPublicV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ChannelSubGiftsV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChatModeratorActions</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelPointsChannelV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelSubscribeEventsV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelSubGiftsV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChatModeratorActions</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelPointsChannelV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">ChannelSubscribeEventsV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">VideoPlayback</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">VideoPlayback</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">VideoPlaybackById</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">VideoPlaybackById</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">HypeTrainEventsV1</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">HypeTrainEventsV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">HypeTrainEventsV1Rewards</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">HypeTrainEventsV1Rewards</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Following</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">Following</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Raid</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">UserModerationNotifications</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">Raid</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
+            <span class="ident">UserModerationNotifications</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
         };
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>)
     }
@@ -955,7 +955,7 @@
     <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> [<span class="ident">Topics</span>],
     <span class="ident">auth_token</span>: <span class="ident">T</span>,
     <span class="ident">nonce</span>: <span class="ident">N</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Error</span><span class="op">&gt;</span>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
@@ -1003,7 +1003,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unlisten_command</span><span class="op">&lt;</span><span class="lifetime">&#39;t</span>, <span class="ident">O</span><span class="op">&gt;</span>(
     <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> [<span class="ident">Topics</span>],
     <span class="ident">nonce</span>: <span class="ident">O</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Error</span><span class="op">&gt;</span>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 {
@@ -1029,7 +1029,7 @@
 
 <span class="kw">impl</span> <span class="ident">TwitchResponse</span> {
     <span class="doccomment">/// Whether response indicates success or not</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_successful</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> { <span class="self">self</span>.<span class="ident">error</span>.<span class="ident">as_ref</span>().<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">is_empty</span>()) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_successful</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> { <span class="self">self</span>.<span class="ident">error</span>.<span class="ident">as_ref</span>().<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">is_empty</span>()) }
 }
 
 <span class="comment">// FIXME: Add example</span>
@@ -1189,7 +1189,7 @@
 
 <span class="comment">// This impl is here because otherwise we hide the errors from deser</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TopicData</span> {
-    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
         <span class="comment">// FIXME: make into macro or actually upstream into serde..., untagged_force = &quot;field&quot;</span>
 
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
@@ -1201,76 +1201,76 @@
             <span class="ident">serde::de::Error::custom</span>(<span class="macro">format!</span>(<span class="string">&quot;could not deserialize topic reply: {}&quot;</span>, <span class="ident">e</span>))
         })<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">reply</span>.<span class="ident">topic</span> {
-            <span class="ident">Topics::AutoModQueue</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::AutoModQueue</span> {
+            <span class="ident">Topics::AutoModQueue</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::AutoModQueue</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::CommunityPointsChannelV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::CommunityPointsChannelV1</span> {
+            <span class="ident">Topics::CommunityPointsChannelV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::CommunityPointsChannelV1</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
-            <span class="ident">Topics::ChannelBitsEventsV2</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelBitsEventsV2</span> {
+            <span class="ident">Topics::ChannelBitsEventsV2</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelBitsEventsV2</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
-            <span class="ident">Topics::ChannelBitsBadgeUnlocks</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelBitsBadgeUnlocks</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
-            },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::ChannelSubGiftsV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelSubGiftsV1</span> {
+            <span class="ident">Topics::ChannelBitsBadgeUnlocks</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelBitsBadgeUnlocks</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::ChannelCheerEventsPublicV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelCheerEventsPublicV1</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
-            },
-            <span class="ident">Topics::ChatModeratorActions</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChatModeratorActions</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
-            },
-            <span class="ident">Topics::ChannelPointsChannelV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelPointsChannelV1</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
-            },
-            <span class="ident">Topics::ChannelSubscribeEventsV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::ChannelSubscribeEventsV1</span> {
+            <span class="ident">Topics::ChannelSubGiftsV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelSubGiftsV1</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::VideoPlayback</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::VideoPlayback</span> {
+            <span class="ident">Topics::ChannelCheerEventsPublicV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelCheerEventsPublicV1</span> {
+                <span class="ident">topic</span>,
+                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            },
+            <span class="ident">Topics::ChatModeratorActions</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChatModeratorActions</span> {
+                <span class="ident">topic</span>,
+                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            },
+            <span class="ident">Topics::ChannelPointsChannelV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelPointsChannelV1</span> {
+                <span class="ident">topic</span>,
+                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            },
+            <span class="ident">Topics::ChannelSubscribeEventsV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelSubscribeEventsV1</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::VideoPlaybackById</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::VideoPlaybackById</span> {
+            <span class="ident">Topics::VideoPlayback</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::VideoPlayback</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::HypeTrainEventsV1</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::HypeTrainEventsV1</span> {
+            <span class="ident">Topics::VideoPlaybackById</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::VideoPlaybackById</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::HypeTrainEventsV1Rewards</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::HypeTrainEventsV1Rewards</span> {
+            <span class="ident">Topics::HypeTrainEventsV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::HypeTrainEventsV1</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::Following</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::Following</span> {
+            <span class="ident">Topics::HypeTrainEventsV1Rewards</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::HypeTrainEventsV1Rewards</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::Raid</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::Raid</span> {
+            <span class="ident">Topics::Following</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::Following</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
-            <span class="ident">Topics::UserModerationNotifications</span>(<span class="ident">topic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TopicData::UserModerationNotifications</span> {
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
+            <span class="ident">Topics::Raid</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::Raid</span> {
+                <span class="ident">topic</span>,
+                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            },
+            <span class="ident">Topics::UserModerationNotifications</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::UserModerationNotifications</span> {
                 <span class="ident">topic</span>,
                 <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
             },
@@ -1303,11 +1303,11 @@
 <span class="kw">impl</span> <span class="ident">Response</span> {
     <span class="comment">// FIXME: Add example</span>
     <span class="doccomment">/// Parse string slice as a response.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span>, <span class="ident"><span class="kw">crate</span>::DeserError</span><span class="op">&gt;</span> { <span class="ident">parse_json</span>(<span class="ident">source</span>, <span class="bool-val">true</span>) }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span>, <span class="ident"><span class="kw">crate</span>::DeserError</span><span class="op">&gt;</span> { <span class="ident">parse_json</span>(<span class="ident">source</span>, <span class="bool-val">true</span>) }
 }
 
 <span class="doccomment">/// Deserialize &#39;null&#39; as &lt;T as Default&gt;::Default</span>
-<span class="kw">fn</span> <span class="ident">deserialize_default_from_null</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">deserialize_default_from_null</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
     <span class="ident">T</span>: <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Default</span>, {
@@ -1315,14 +1315,14 @@
 }
 
 <span class="doccomment">/// Deserialize &quot;&quot; as &lt;T as Default&gt;::Default</span>
-<span class="kw">fn</span> <span class="ident">deserialize_none_from_empty_string</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">deserialize_none_from_empty_string</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">D</span>: <span class="ident">serde::de::Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
     <span class="ident">T</span>: <span class="ident">serde::de::DeserializeOwned</span>, {
     <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">serde_json::Value::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>;
     <span class="kw">match</span> <span class="ident">val</span> {
-        <span class="ident">serde_json::Value::String</span>(<span class="ident">string</span>) <span class="kw">if</span> <span class="ident">string</span>.<span class="ident">is_empty</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
-        <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">parse_json_value</span>(<span class="ident">other</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>),
+        <span class="ident">serde_json::Value::String</span>(<span class="ident">string</span>) <span class="kw">if</span> <span class="ident">string</span>.<span class="ident">is_empty</span>() =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+        <span class="ident">other</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">parse_json_value</span>(<span class="ident">other</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>),
     }
 }
 
