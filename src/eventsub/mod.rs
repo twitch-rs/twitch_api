@@ -95,6 +95,17 @@ pub struct VerificationRequest {
      * pub id: types::EventSubId, */
 }
 
+/// A payload not containing any event data.
+///
+/// Used by [subscription revocations](https://dev.twitch.tv/docs/eventsub#subscription-revocation)
+#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct SubscriptionInformation {
+    /// Information about subscription, including ID
+    pub subscription: EventSubSubscription,
+}
+
 /// Subscription payload. Received on events. Enumerates all possible [`NotificationPayload`s](NotificationPayload)
 ///
 /// Use [`Payload::parse`] to construct
@@ -103,6 +114,8 @@ pub struct VerificationRequest {
 pub enum Payload {
     /// Webhook Callback Verification
     VerificationRequest(VerificationRequest),
+    /// Subscription information, e.g when a subscription is revoked
+    SubscriptionInformation(SubscriptionInformation),
     /// Channel Update V1 Event
     ChannelUpdateV1(NotificationPayload<channel::ChannelUpdateV1>),
     /// Channel Follow V1 Event
@@ -212,6 +225,7 @@ impl Payload {
     /// HMAC signature is `Twitch-Eventsub-Message-Signature` header.
     #[cfg(feature = "hmac")]
     #[cfg_attr(nightly, doc(cfg(feature = "hmac")))]
+    #[must_use]
     pub fn verify_payload<B>(request: &http::Request<B>, secret: &[u8]) -> bool
     where B: AsRef<[u8]> {
         use crypto_hmac::{Hmac, Mac, NewMac};
@@ -312,7 +326,8 @@ impl<'de> Deserialize<'de> for Payload {
                 #[serde(remote = "Payload")]
                 pub enum Corrected {
                     $($event(NotificationPayload<$module::$event>),)*
-                    VerificationRequest(VerificationRequest)
+                    VerificationRequest(VerificationRequest),
+                    SubscriptionInformation(SubscriptionInformation),
                 }
         }
     }
@@ -359,12 +374,26 @@ impl<'de> Deserialize<'de> for Payload {
                 })
             }
         }
+
+        // a [SubscriptionInformation] event, but with forced "deny_unknown_fields"
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        #[cfg(not(feature = "deny_unknown_fields"))]
+        struct InternalSubscriptionInformation {
+            subscription: EventSubSubscription,
+        }
+
         #[derive(Deserialize)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         #[serde(untagged)]
         enum InternalResponse {
             #[serde(with = "Corrected")]
             Valid(Payload),
+            #[cfg_attr(
+                not(feature = "deny_unknown_fields"),
+                serde(with = "InternalSubscriptionInformation")
+            )]
+            SubscriptionInformation(SubscriptionInformation),
             VerificationRequest(VerificationRequest),
             InternalPayloadResponse(InternalPayloadResponse),
         }
@@ -410,6 +439,7 @@ impl<'de> Deserialize<'de> for Payload {
         })?;
         match response {
             InternalResponse::Valid(p) => Ok(p),
+            InternalResponse::SubscriptionInformation(i) => Ok(Payload::SubscriptionInformation(i)),
             InternalResponse::VerificationRequest(verification) => {
                 Ok(Payload::VerificationRequest(verification))
             }
@@ -712,6 +742,38 @@ mod test {
     }
 
     #[test]
+    fn test_revoke() {
+        use http::header::{HeaderMap, HeaderName, HeaderValue};
+
+        let secret = b"secretabcd";
+        #[rustfmt::skip]
+    let headers: HeaderMap = vec![
+        ("Content-Length", "458"),
+        ("Twitch-Eventsub-Message-Id", "84c1e79a-2a4b-4c13-ba0b-4312293e9308"),
+        ("Twitch-Eventsub-Message-Retry", "0"),
+        ("Twitch-Eventsub-Message-Type", "revocation"),
+        ("Twitch-Eventsub-Message-Signature", "sha256=c1f92c51dab9888b0d6fb5f7e8e758"),
+        ("Twitch-Eventsub-Message-Timestamp", "2019-11-16T10:11:12.123Z"),
+        ("Twitch-Eventsub-Subscription-Type", "channel.follow"),
+        ("Twitch-Eventsub-Subscription-Version", "1"),
+    ].into_iter()
+        .map(|(h, v)| {
+            (
+                h.parse::<HeaderName>().unwrap(),
+                v.parse::<HeaderValue>().unwrap(),
+            )
+        })
+        .collect();
+
+        let body = r#"{"subscription":{"id":"f1c2a387-161a-49f9-a165-0f21d7a4e1c4","status":"authorization_revoked","type":"channel.follow","cost":1,"version":"1","condition":{"broadcaster_user_id":"12826"},"transport":{"method":"webhook","callback":"https://example.com/webhooks/callback"},"created_at":"2019-11-16T10:11:12.123Z"}}"#;
+        let mut request = http::Request::builder();
+        let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
+        let request = request.body(body.as_bytes().to_vec()).unwrap();
+        let payload = dbg!(crate::eventsub::Payload::parse_http(&request).unwrap());
+        crate::tests::roundtrip(&payload)
+    }
+    #[test]
+    #[cfg(feature = "hmac")]
     fn verify_request() {
         use http::header::{HeaderMap, HeaderName, HeaderValue};
 

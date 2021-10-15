@@ -61,6 +61,7 @@
 * Added field total to `helix::Response`
 * Changed return type of `GetBroadcasterSubscriptions` to be a vector of `BroadcasterSubscription`
 * Made `Payload::verify` and `Payload::parse_http` generic on the body type for `AsRef<[u8]>`
+* Made `Payload` in EventSub able to consume payloads with optional events. [#219](https://github.com/Emilgardis/twitch_api2/issues/219)
 
 ### Removed
 
