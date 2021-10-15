@@ -10,7 +10,7 @@
 //! To parse these, use [`Payload::parse`]
 //!
 //! ```rust
-//! use twitch_api2::eventsub::Payload;
+//! use twitch_api2::eventsub::{Payload, NotificationPayload};
 //! let payload = r#"{
 //!     "subscription": {
 //!         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
@@ -37,14 +37,21 @@
 //!
 //! let payload = Payload::parse(payload).unwrap();
 //! match payload {
-//!     Payload::UserAuthorizationRevokeV1(p) => {
-//!         println!("User with id `{}` has revoked access to client `{}`",
-//!             p.event.user_id,
-//!             p.event.client_id
+//!     Payload::UserAuthorizationRevokeV1(
+//!         NotificationPayload {
+//!             event: Some(event), ..
+//!         },
+//!     ) => {
+//!         println!(
+//!             "User with id `{}` has revoked access to client `{}`",
+//!             event.user_id, event.client_id
 //!         )
 //!     }
-//!     _ => { panic!() }
-//! }
+//!     _ => {
+//!         panic!()
+//!     }
+//! }   
+//!
 //! ```
 
 use crate::types;
@@ -212,6 +219,7 @@ impl Payload {
     /// HMAC signature is `Twitch-Eventsub-Message-Signature` header.
     #[cfg(feature = "hmac")]
     #[cfg_attr(nightly, doc(cfg(feature = "hmac")))]
+    #[must_use]
     pub fn verify_payload<B>(request: &http::Request<B>, secret: &[u8]) -> bool
     where B: AsRef<[u8]> {
         use crypto_hmac::{Hmac, Mac, NewMac};
@@ -293,7 +301,12 @@ impl<'de> Deserialize<'de> for Payload {
                     $(  (<$module::$event as EventSubscription>::VERSION, &<$module::$event as EventSubscription>::EVENT_TYPE) => {
                         Payload::$event(NotificationPayload {
                             subscription: sub.try_into().map_err(serde::de::Error::custom)?,
-                            event: parse_json_value($response.e, true).map_err(serde::de::Error::custom)?,
+                            event: if let Some(event) = $response.e
+                            {
+                                parse_json_value(event, true).map_err(serde::de::Error::custom)?
+                            } else {
+                                None
+                            },
                         })
                     }  )*
                     (v, e) => return Err(serde::de::Error::custom(format!("could not find a match for version `{}` on event type `{}`", v, e)))
@@ -338,7 +351,7 @@ impl<'de> Deserialize<'de> for Payload {
             #[serde(rename = "subscription")]
             s: serde_json::Value,
             #[serde(rename = "event")]
-            e: serde_json::Value,
+            e: Option<serde_json::Value>,
         }
 
         impl<E: EventSubscription> std::convert::TryFrom<IEventSubscripionInformation>
@@ -462,7 +475,7 @@ pub struct NotificationPayload<E: EventSubscription + Clone> {
     pub subscription: EventSubscriptionInformation<E>,
     /// Event information.
     #[serde(bound = "E: EventSubscription")]
-    pub event: <E as EventSubscription>::Payload,
+    pub event: Option<<E as EventSubscription>::Payload>,
 }
 
 /// Metadata about the subscription.
@@ -711,6 +724,36 @@ mod test {
         crate::tests::roundtrip(&val)
     }
 
+    #[test]
+    fn test_revoke() {
+        use http::header::{HeaderMap, HeaderName, HeaderValue};
+
+        let secret = b"secretabcd";
+        #[rustfmt::skip]
+    let headers: HeaderMap = vec![
+        ("Content-Length", "458"),
+        ("Twitch-Eventsub-Message-Id", "84c1e79a-2a4b-4c13-ba0b-4312293e9308"),
+        ("Twitch-Eventsub-Message-Retry", "0"),
+        ("Twitch-Eventsub-Message-Type", "revocation"),
+        ("Twitch-Eventsub-Message-Signature", "sha256=c1f92c51dab9888b0d6fb5f7e8e758"),
+        ("Twitch-Eventsub-Message-Timestamp", "2019-11-16T10:11:12.123Z"),
+        ("Twitch-Eventsub-Subscription-Type", "channel.follow"),
+        ("Twitch-Eventsub-Subscription-Version", "1"),
+    ].into_iter()
+        .map(|(h, v)| {
+            (
+                h.parse::<HeaderName>().unwrap(),
+                v.parse::<HeaderValue>().unwrap(),
+            )
+        })
+        .collect();
+
+        let body = r#"{"subscription":{"id":"f1c2a387-161a-49f9-a165-0f21d7a4e1c4","status":"authorization_revoked","type":"channel.follow","cost":1,"version":"1","condition":{"broadcaster_user_id":"12826"},"transport":{"method":"webhook","callback":"https://example.com/webhooks/callback"},"created_at":"2019-11-16T10:11:12.123Z"}}"#;
+        let mut request = http::Request::builder();
+        let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
+        let request = request.body(body.as_bytes().to_vec()).unwrap();
+        let payload = dbg!(crate::eventsub::Payload::parse_http(&request).unwrap());
+    }
     #[test]
     fn verify_request() {
         use http::header::{HeaderMap, HeaderName, HeaderValue};
