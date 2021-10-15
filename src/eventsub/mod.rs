@@ -386,6 +386,7 @@ impl<'de> Deserialize<'de> for Payload {
         #[derive(Deserialize)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         #[serde(untagged)]
+        #[allow(clippy::large_enum_variant)]
         enum InternalResponse {
             #[serde(with = "Corrected")]
             Valid(Payload),
@@ -745,18 +746,17 @@ mod test {
     fn test_revoke() {
         use http::header::{HeaderMap, HeaderName, HeaderValue};
 
-        let secret = b"secretabcd";
         #[rustfmt::skip]
-    let headers: HeaderMap = vec![
-        ("Content-Length", "458"),
-        ("Twitch-Eventsub-Message-Id", "84c1e79a-2a4b-4c13-ba0b-4312293e9308"),
-        ("Twitch-Eventsub-Message-Retry", "0"),
-        ("Twitch-Eventsub-Message-Type", "revocation"),
-        ("Twitch-Eventsub-Message-Signature", "sha256=c1f92c51dab9888b0d6fb5f7e8e758"),
-        ("Twitch-Eventsub-Message-Timestamp", "2019-11-16T10:11:12.123Z"),
-        ("Twitch-Eventsub-Subscription-Type", "channel.follow"),
-        ("Twitch-Eventsub-Subscription-Version", "1"),
-    ].into_iter()
+        let headers: HeaderMap = vec![
+            ("Content-Length", "458"),
+            ("Twitch-Eventsub-Message-Id", "84c1e79a-2a4b-4c13-ba0b-4312293e9308"),
+            ("Twitch-Eventsub-Message-Retry", "0"),
+            ("Twitch-Eventsub-Message-Type", "revocation"),
+            ("Twitch-Eventsub-Message-Signature", "sha256=c1f92c51dab9888b0d6fb5f7e8e758"),
+            ("Twitch-Eventsub-Message-Timestamp", "2019-11-16T10:11:12.123Z"),
+            ("Twitch-Eventsub-Subscription-Type", "channel.follow"),
+            ("Twitch-Eventsub-Subscription-Version", "1"),
+            ].into_iter()
         .map(|(h, v)| {
             (
                 h.parse::<HeaderName>().unwrap(),
