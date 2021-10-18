@@ -61,7 +61,7 @@
 * Added field total to `helix::Response`
 * Changed return type of `GetBroadcasterSubscriptions` to be a vector of `BroadcasterSubscription`
 * Made `Payload::verify` and `Payload::parse_http` generic on the body type for `AsRef<[u8]>`
-* Made `Payload` in EventSub enumerate over the different message types, `verification`, `revocation` and `notification`. Adds a new `Notification` type which holds the different notification payloads.
+* Made `Payload` in EventSub enumerate over the different message types, `verification`, `revocation` and `notification`. Adds a new `Notification` type which holds the different notification payloads. `Payload` is now `Event` and old `NotificationPayload` is now called `Payload`, this is because a payload can be a revocation, notification or verification.
 
 ### Removed
 
