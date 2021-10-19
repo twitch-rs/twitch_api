@@ -46,7 +46,7 @@
 //! }
 //!
 //! ```
-//!
+//! 
 //! If your client is from a remote crate, you can use [the newtype pattern](https://github.com/rust-unofficial/patterns/blob/607fcb00c4ecb9c6317e4e101e16dc15717758bd/patterns/newtype.md)
 //!
 //! Of course, sometimes the clients use different types for their responses and requests. but simply translate them into [`http`] types and it will work.
