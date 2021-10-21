@@ -24,7 +24,7 @@
 //!     .build();
 //! let transport = Transport::webhook(
 //!     "https://example.org/eventsub/channelfollow",
-//!     String::from("secretabc"),
+//!     String::from("secretabcd"),
 //! );
 //!
 //! let request = CreateEventSubSubscriptionRequest::default();
