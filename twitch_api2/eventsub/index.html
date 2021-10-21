@@ -1,62 +1,85 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Holds serializable EventSub stuff"><meta name="keywords" content="rust, rustlang, rust-lang, eventsub"><title>twitch_api2::eventsub - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/10544b3e787a2b946c45f136d6d84325de0de00c">10544b3</a></p>
-<style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a><h2 class="location">Module eventsub</h2><div class="sidebar-elems"><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#traits">Traits</a></li></ul></div><div id="sidebar-vars" data-name="eventsub" data-ty="mod" data-relpath="./"></div><script defer src="./sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Module <a href="../index.html">twitch_api2</a>::<wbr><a class="mod" href="#">eventsub</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../../src/twitch_api2/eventsub/mod.rs.html#1-808" title="goto source code">[src]</a></span></h1><div class="item-info"><div class="stab portability">This is supported on <strong>crate feature <code>eventsub</code></strong> only.</div></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Holds serializable EventSub stuff</p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/1eafcf7baab4f6d0d0d34513d5d72b0ab3ec305d">1eafcf7</a></p>
+<style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a><h2 class="location">Module eventsub</h2><div class="sidebar-elems"><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#traits">Traits</a></li></ul></div><div id="sidebar-vars" data-name="eventsub" data-ty="mod" data-relpath="./"></div><script defer src="./sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Module <a href="../index.html">twitch_api2</a>::<wbr><a class="mod" href="#">eventsub</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../../src/twitch_api2/eventsub/mod.rs.html#1-566" title="goto source code">[src]</a></span></h1><div class="item-info"><div class="stab portability">This is supported on <strong>crate feature <code>eventsub</code></strong> only.</div></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Holds serializable EventSub stuff</p>
 <p>Use <a href="../helix/eventsub/struct.CreateEventSubSubscription.html"><code>CreateEventSubSubscription</code></a> to subscribe to an event according to the <a href="https://dev.twitch.tv/docs/eventsub">EventSub guide</a>.
-Parse the response payload text with <a href="enum.Payload.html#method.parse" title="Payload::parse"><code>Payload::parse</code></a> or <a href="enum.Payload.html#method.parse_http" title="Payload::parse_http"><code>Payload::parse_http</code></a>.</p>
+Parse the response payload text with <a href="struct.Payload.html#method.parse" title="Payload::parse"><code>Payload::parse</code></a> or <a href="struct.Payload.html#method.parse_http" title="Payload::parse_http"><code>Payload::parse_http</code></a>.</p>
 <h2 id="examples" class="section-header"><a href="#examples">Examples</a></h2>
-<p>You’ve used <a href="../helix/eventsub/struct.CreateEventSubSubscription.html"><code>CreateEventSubSubscription</code></a> to create a subscription for <a href="enum.EventType.html#variant.UserAuthorizationRevoke"><code>user.authorization.revoke</code></a>, after verifying your callback accordingly you will then get events sent to the callback</p>
-<p>To parse these, use <a href="enum.Payload.html#method.parse" title="Payload::parse"><code>Payload::parse</code></a></p>
+<p>Subscribe to a channel’s follow events:</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">twitch_api2::eventsub::Payload</span>;
-<span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="string">r#&quot;{
-    &quot;subscription&quot;: {
-        &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
-        &quot;type&quot;: &quot;user.authorization.revoke&quot;,
-        &quot;version&quot;: &quot;1&quot;,
-        &quot;status&quot;: &quot;enabled&quot;,
-        &quot;cost&quot;: 0,
-        &quot;condition&quot;: {
-            &quot;client_id&quot;: &quot;crq72vsaoijkc83xx42hz6i37&quot;
-        },
-         &quot;transport&quot;: {
-            &quot;method&quot;: &quot;webhook&quot;,
-            &quot;callback&quot;: &quot;https://example.com/webhooks/callback&quot;
-        },
-        &quot;created_at&quot;: &quot;2019-11-16T10:11:12.123Z&quot;
-    },
-    &quot;event&quot;: {
-        &quot;client_id&quot;: &quot;crq72vsaoijkc83xx42hz6i37&quot;,
-        &quot;user_id&quot;: &quot;1337&quot;,
-        &quot;user_login&quot;: &quot;cool_user&quot;,
-        &quot;user_name&quot;: &quot;Cool_User&quot;
-    }
-}&quot;#</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">twitch_api2::eventsub</span>::{<span class="ident">channel::ChannelFollowV1</span>, <span class="ident">Transport</span>, <span class="ident">TransportMethod</span>};
+<span class="kw">use</span> <span class="ident">twitch_api2::helix</span>::{<span class="self">self</span>, <span class="ident">eventsub</span>::{
+    <span class="ident">CreateEventSubSubscriptionBody</span>, <span class="ident">CreateEventSubSubscriptionRequest</span>,
+}};
 
-<span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">Payload::parse</span>(<span class="ident">payload</span>).<span class="ident">unwrap</span>();
-<span class="kw">match</span> <span class="ident">payload</span> {
-    <span class="ident">Payload::UserAuthorizationRevokeV1</span>(<span class="ident">p</span>) =&gt; {
-        <span class="macro">println!</span>(<span class="string">&quot;User with id `{}` has revoked access to client `{}`&quot;</span>,
-            <span class="ident">p</span>.<span class="ident">event</span>.<span class="ident">user_id</span>,
-            <span class="ident">p</span>.<span class="ident">event</span>.<span class="ident">client_id</span>
-        )
+<span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> <span class="ident">ChannelFollowV1::builder</span>()
+    .<span class="ident">broadcaster_user_id</span>(<span class="string">&quot;1234&quot;</span>)
+    .<span class="ident">build</span>();
+<span class="kw">let</span> <span class="ident">transport</span> <span class="op">=</span> <span class="ident">Transport::webhook</span>(
+    <span class="string">&quot;https://example.org/eventsub/channelfollow&quot;</span>,
+    <span class="ident">String::from</span>(<span class="string">&quot;secretabcd&quot;</span>),
+);
+
+<span class="kw">let</span> <span class="ident">request</span> <span class="op">=</span> <span class="ident">CreateEventSubSubscriptionRequest::default</span>();
+<span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">CreateEventSubSubscriptionBody::builder</span>()
+    .<span class="ident">subscription</span>(<span class="ident">event</span>)
+    .<span class="ident">transport</span>(<span class="ident">transport</span>)
+    .<span class="ident">build</span>();
+
+<span class="kw">let</span> <span class="ident">event_information</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">req_post</span>(<span class="ident">request</span>, <span class="ident">body</span>, <span class="kw-2">&amp;</span><span class="ident">token</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="ident">data</span>;
+
+<span class="macro">println!</span>(<span class="string">&quot;event id: {:?}&quot;</span>, <span class="ident">event_information</span>.<span class="ident">id</span>);</code></pre></div>
+<p>You’ll now get a http POST request to the url you specified as the <code>callback</code>.
+You need to respond to this request from your webserver with a 200 OK response with the <a href="struct.VerificationRequest.html#structfield.challenge"><code>challenge</code></a> as the body.
+After this, you’ll get notifications</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">twitch_api2::eventsub</span>::{<span class="ident">Event</span>, <span class="ident">Payload</span>, <span class="ident">Message</span>};
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_request</span>(
+    <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="comment">// First, we verify the response, assuring it&#39;s legit.</span>
+    <span class="kw">if</span> <span class="op">!</span><span class="ident">Event::verify_payload</span>(<span class="ident">request</span>, <span class="string">b&quot;secretabcd&quot;</span>) {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">todo!</span>());
     }
-    <span class="kw">_</span> =&gt; { <span class="macro">panic!</span>() }
+    <span class="kw">match</span> <span class="ident">Event::parse_http</span>(<span class="ident">request</span>)<span class="question-mark">?</span> {
+        <span class="ident">Event::ChannelFollowV1</span>(<span class="ident">Payload</span> {
+            <span class="ident">message</span>: <span class="ident">Message::VerificationRequest</span>(<span class="ident">ver</span>),
+            ..
+        }) =&gt; {
+            <span class="comment">// We&#39;ve verified the request, so we can respond to it with the challenge</span>
+            <span class="prelude-val">Ok</span>(<span class="ident">http::Response::builder</span>()
+                .<span class="ident">status</span>(<span class="number">200</span>)
+                .<span class="ident">body</span>(<span class="ident">ver</span>.<span class="ident">challenge</span>.<span class="ident">into_bytes</span>())<span class="question-mark">?</span>)
+        },
+        <span class="ident">Event::ChannelFollowV1</span>(<span class="ident">Payload</span> {
+            <span class="ident">message</span>: <span class="ident">Message::Notification</span>(<span class="ident">notif</span>),
+            ..
+        }) =&gt; {
+            <span class="comment">// make sure you save the `Twitch-Eventsub-Message-Id` headers value,</span>
+            <span class="comment">// twitch may resend notifications, and in those cases you should just return 200 OK.</span>
+             
+            <span class="comment">// Do whatever you need to do with the event. Preferably send the event to a channel.</span>
+            <span class="macro">println!</span>(<span class="string">&quot;user {:?} followed {:?}&quot;</span>, <span class="ident">notif</span>.<span class="ident">user_name</span>, <span class="ident">notif</span>.<span class="ident">broadcaster_user_name</span>);
+            <span class="prelude-val">Ok</span>(<span class="ident">http::Response::builder</span>().<span class="ident">status</span>(<span class="number">200</span>).<span class="ident">body</span>(<span class="macro">vec!</span>[])<span class="question-mark">?</span>)
+        }   
+        <span class="kw">_</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">http::Response::builder</span>().<span class="ident">status</span>(<span class="number">200</span>).<span class="ident">body</span>(<span class="macro">vec!</span>[])<span class="question-mark">?</span>),
+    }
 }</code></pre></div>
 </div></details><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
 <div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="channel/index.html" title="twitch_api2::eventsub::channel mod">channel</a></div><div class="item-right docblock-short"><p>Subscription types regarding channels</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="event/index.html" title="twitch_api2::eventsub::event mod">event</a></div><div class="item-right docblock-short"><p>EventSub events and their types</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="stream/index.html" title="twitch_api2::eventsub::stream mod">stream</a></div><div class="item-right docblock-short"><p>Subscription types regarding streams</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="user/index.html" title="twitch_api2::eventsub::user mod">user</a></div><div class="item-right docblock-short"><p>Subscription types regarding users</p>
 </div></div></div><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
 <div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.EventSubSubscription.html" title="twitch_api2::eventsub::EventSubSubscription struct">EventSubSubscription</a></div><div class="item-right docblock-short"><p>General information about an EventSub subscription.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.EventSubscriptionInformation.html" title="twitch_api2::eventsub::EventSubscriptionInformation struct">EventSubscriptionInformation</a></div><div class="item-right docblock-short"><p>Metadata about the subscription.</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.NotificationPayload.html" title="twitch_api2::eventsub::NotificationPayload struct">NotificationPayload</a></div><div class="item-right docblock-short"><p>Notification received</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SubscriptionInformation.html" title="twitch_api2::eventsub::SubscriptionInformation struct">SubscriptionInformation</a></div><div class="item-right docblock-short"><p>A payload not containing any event data.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Payload.html" title="twitch_api2::eventsub::Payload struct">Payload</a></div><div class="item-right docblock-short"><p>Notification received</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Transport.html" title="twitch_api2::eventsub::Transport struct">Transport</a></div><div class="item-right docblock-short"><p>Transport setting for event notification</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.TransportResponse.html" title="twitch_api2::eventsub::TransportResponse struct">TransportResponse</a></div><div class="item-right docblock-short"><p>Transport response on event notification</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.VerificationRequest.html" title="twitch_api2::eventsub::VerificationRequest struct">VerificationRequest</a></div><div class="item-right docblock-short"><p>Verification Request</p>
 </div></div></div><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2>
-<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.EventType.html" title="twitch_api2::eventsub::EventType enum">EventType</a></div><div class="item-right docblock-short"><p>Event name</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Payload.html" title="twitch_api2::eventsub::Payload enum">Payload</a></div><div class="item-right docblock-short"><p>Subscription payload. Received on events. Enumerates all possible <a href="struct.NotificationPayload.html"><code>NotificationPayload</code>s</a></p>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Event.html" title="twitch_api2::eventsub::Event enum">Event</a></div><div class="item-right docblock-short"><p>A notification with an event payload. Enumerates all possible <a href="struct.Payload.html"><code>Payload</code>s</a></p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.EventType.html" title="twitch_api2::eventsub::EventType enum">EventType</a></div><div class="item-right docblock-short"><p>Event types</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Message.html" title="twitch_api2::eventsub::Message enum">Message</a></div><div class="item-right docblock-short"><p>Subscription message/payload. Received on events and other messages.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.PayloadParseError.html" title="twitch_api2::eventsub::PayloadParseError enum">PayloadParseError</a></div><div class="item-right docblock-short"><p>Errors that can happen when parsing payload</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Status.html" title="twitch_api2::eventsub::Status enum">Status</a></div><div class="item-right docblock-short"><p>Subscription request status</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.TransportMethod.html" title="twitch_api2::eventsub::TransportMethod enum">TransportMethod</a></div><div class="item-right docblock-short"><p>Transport method</p>
