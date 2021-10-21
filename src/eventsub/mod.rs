@@ -5,56 +5,94 @@
 //!
 //! # Examples
 //!
-//! You've used [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscription) to create a subscription for [`user.authorization.revoke`](EventType::UserAuthorizationRevoke), after verifying your callback accordingly you will then get events sent to the callback
+//! Subscribe to a channel's follow events:
 //!
-//! To parse these, use [`Payload::parse`]
+//! ```rust, no_run
+//! use twitch_api2::eventsub::{channel::ChannelFollowV1, Transport, TransportMethod};
+//! use twitch_api2::helix::{self, eventsub::{
+//!     CreateEventSubSubscriptionBody, CreateEventSubSubscriptionRequest,
+//! }};
+//! # use twitch_api2::client;
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+//! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+//! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+//! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+//!
+//! let event = ChannelFollowV1::builder()
+//!     .broadcaster_user_id("1234")
+//!     .build();
+//! let transport = Transport::webhook(
+//!     "https://example.org/eventsub/channelfollow",
+//!     String::from("secretabcd"),
+//! );
+//!
+//! let request = CreateEventSubSubscriptionRequest::default();
+//! let body = CreateEventSubSubscriptionBody::builder()
+//!     .subscription(event)
+//!     .transport(transport)
+//!     .build();
+//!
+//! let event_information = client.req_post(request, body, &token).await?.data;
+//!
+//! println!("event id: {:?}", event_information.id);
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! You'll now get a http POST request to the url you specified as the `callback`.
+//! You need to respond to this request from your webserver with a 200 OK response with the [`challenge`](VerificationRequest::challenge) as the body.
+//! After this, you'll get notifications
 //!
 //! ```rust
-//! use twitch_api2::eventsub::Payload;
-//! let payload = r#"{
-//!     "subscription": {
-//!         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
-//!         "type": "user.authorization.revoke",
-//!         "version": "1",
-//!         "status": "enabled",
-//!         "cost": 0,
-//!         "condition": {
-//!             "client_id": "crq72vsaoijkc83xx42hz6i37"
-//!         },
-//!          "transport": {
-//!             "method": "webhook",
-//!             "callback": "https://example.com/webhooks/callback"
-//!         },
-//!         "created_at": "2019-11-16T10:11:12.123Z"
-//!     },
-//!     "event": {
-//!         "client_id": "crq72vsaoijkc83xx42hz6i37",
-//!         "user_id": "1337",
-//!         "user_login": "cool_user",
-//!         "user_name": "Cool_User"
+//! use twitch_api2::eventsub::{Event, Payload, Message};
+//! pub fn parse_request(
+//!     request: &http::Request<Vec<u8>>,
+//! ) -> Result<http::Response<Vec<u8>>, Box<dyn std::error::Error + Send + Sync + 'static>> {
+//!     // First, we verify the response, assuring it's legit.
+//!     if !Event::verify_payload(request, b"secretabcd") {
+//!         return Err(todo!());
 //!     }
-//! }"#;
-//!
-//! let payload = Payload::parse(payload).unwrap();
-//! match payload {
-//!     Payload::UserAuthorizationRevokeV1(p) => {
-//!         println!("User with id `{}` has revoked access to client `{}`",
-//!             p.event.user_id,
-//!             p.event.client_id
-//!         )
+//!     match Event::parse_http(request)? {
+//!         Event::ChannelFollowV1(Payload {
+//!             message: Message::VerificationRequest(ver),
+//!             ..
+//!         }) => {
+//!             // We've verified the request, so we can respond to it with the challenge
+//!             Ok(http::Response::builder()
+//!                 .status(200)
+//!                 .body(ver.challenge.into_bytes())?)
+//!         },
+//!         Event::ChannelFollowV1(Payload {
+//!             message: Message::Notification(notif),
+//!             ..
+//!         }) => {
+//!             // make sure you save the `Twitch-Eventsub-Message-Id` headers value,
+//!             // twitch may resend notifications, and in those cases you should just return 200 OK.
+//!             
+//!             // Do whatever you need to do with the event. Preferably send the event to a channel.
+//!             println!("user {:?} followed {:?}", notif.user_name, notif.broadcaster_user_name);
+//!             Ok(http::Response::builder().status(200).body(vec![])?)
+//!         }   
+//!         _ => Ok(http::Response::builder().status(200).body(vec![])?),
 //!     }
-//!     _ => { panic!() }
 //! }
 //! ```
 
-use crate::types;
-use serde::{de::DeserializeOwned, Deserialize, Deserializer, Serialize};
+use std::borrow::Cow;
 
-use crate::{parse_json, parse_json_value};
+use crate::types;
+use serde::{de::DeserializeOwned, Deserialize, Serialize};
+
+use crate::parse_json;
 
 pub mod channel;
+pub mod event;
 pub mod stream;
 pub mod user;
+
+#[doc(inline)]
+pub use event::{Event, EventType};
 
 /// An EventSub subscription.
 pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq + Clone {
@@ -86,199 +124,156 @@ pub struct VerificationRequest {
     /// Challenge string.
     ///
     /// After verifying that the response is legit, send back this challenge.
+    /// You can do so with [`Event::verify_payload`]
     pub challenge: String,
-    /// Information about subscription, including ID
-    pub subscription: EventSubSubscription,
-    /* /// Signature of message
-     * pub signature: String,
-     * /// ID of subscription, also contained in [`subscription`](VerificationRequest::subscription)
-     * pub id: types::EventSubId, */
 }
 
-/// A payload not containing any event data.
+/// Subscription message/payload. Received on events and other messages.
 ///
-/// Used by [subscription revocations](https://dev.twitch.tv/docs/eventsub#subscription-revocation)
+/// Use [`Event::parse_http`] to construct
 #[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub struct SubscriptionInformation {
-    /// Information about subscription, including ID
-    pub subscription: EventSubSubscription,
-}
-
-/// Subscription payload. Received on events. Enumerates all possible [`NotificationPayload`s](NotificationPayload)
-///
-/// Use [`Payload::parse`] to construct
-#[derive(PartialEq, Debug, Serialize, Clone)]
 #[allow(clippy::large_enum_variant)]
-pub enum Payload {
+#[non_exhaustive]
+pub enum Message<E: EventSubscription + Clone> {
     /// Webhook Callback Verification
     VerificationRequest(VerificationRequest),
-    /// Subscription information, e.g when a subscription is revoked
-    SubscriptionInformation(SubscriptionInformation),
-    /// Channel Update V1 Event
-    ChannelUpdateV1(NotificationPayload<channel::ChannelUpdateV1>),
-    /// Channel Follow V1 Event
-    ChannelFollowV1(NotificationPayload<channel::ChannelFollowV1>),
-    /// Channel Subscribe V1 Event
-    ChannelSubscribeV1(NotificationPayload<channel::ChannelSubscribeV1>),
-    /// Channel Cheer V1 Event
-    ChannelCheerV1(NotificationPayload<channel::ChannelCheerV1>),
-    /// Channel Ban V1 Event
-    ChannelBanV1(NotificationPayload<channel::ChannelBanV1>),
-    /// Channel Unban V1 Event
-    ChannelUnbanV1(NotificationPayload<channel::ChannelUnbanV1>),
-    /// Channel Points Custom Reward Add V1 Event
-    ChannelPointsCustomRewardAddV1(NotificationPayload<channel::ChannelPointsCustomRewardAddV1>),
-    /// Channel Points Custom Reward Update V1 Event
-    ChannelPointsCustomRewardUpdateV1(
-        NotificationPayload<channel::ChannelPointsCustomRewardUpdateV1>,
-    ),
-    /// Channel Points Custom Reward Remove V1 Event
-    ChannelPointsCustomRewardRemoveV1(
-        NotificationPayload<channel::ChannelPointsCustomRewardRemoveV1>,
-    ),
-    /// Channel Points Custom Reward Redemption Add V1 Event
-    ChannelPointsCustomRewardRedemptionAddV1(
-        NotificationPayload<channel::ChannelPointsCustomRewardRedemptionAddV1>,
-    ),
-    /// Channel Points Custom Reward Redemption Update V1 Event
-    ChannelPointsCustomRewardRedemptionUpdateV1(
-        NotificationPayload<channel::ChannelPointsCustomRewardRedemptionUpdateV1>,
-    ),
-    /// Channel Poll Begin V1 Event
-    ChannelPollBeginV1(NotificationPayload<channel::ChannelPollBeginV1>),
-    /// Channel Poll Progress V1 Event
-    ChannelPollProgressV1(NotificationPayload<channel::ChannelPollProgressV1>),
-    /// Channel Poll End V1 Event
-    ChannelPollEndV1(NotificationPayload<channel::ChannelPollEndV1>),
-    /// Channel Prediction Begin V1 Event
-    ChannelPredictionBeginV1(NotificationPayload<channel::ChannelPredictionBeginV1>),
-    /// Channel Prediction Progress V1 Event
-    ChannelPredictionProgressV1(NotificationPayload<channel::ChannelPredictionProgressV1>),
-    /// Channel Prediction Lock V1 Event
-    ChannelPredictionLockV1(NotificationPayload<channel::ChannelPredictionLockV1>),
-    /// Channel Prediction End V1 Event
-    ChannelPredictionEndV1(NotificationPayload<channel::ChannelPredictionEndV1>),
-    /// Channel Goal Begin V1 Event
-    ChannelGoalBeginV1(NotificationPayload<channel::ChannelGoalBeginV1>),
-    /// Channel Goal Progress V1 Event
-    ChannelGoalProgressV1(NotificationPayload<channel::ChannelGoalProgressV1>),
-    /// Channel Goal End V1 Event
-    ChannelGoalEndV1(NotificationPayload<channel::ChannelGoalEndV1>),
-    /// Channel Hype Train Begin V1 Event
-    ChannelHypeTrainBeginV1(NotificationPayload<channel::ChannelHypeTrainBeginV1>),
-    /// Channel Hype Train Progress V1 Event
-    ChannelHypeTrainProgressV1(NotificationPayload<channel::ChannelHypeTrainProgressV1>),
-    /// Channel Hype Train End V1 Event
-    ChannelHypeTrainEndV1(NotificationPayload<channel::ChannelHypeTrainEndV1>),
-    /// StreamOnline V1 Event
-    StreamOnlineV1(NotificationPayload<stream::StreamOnlineV1>),
-    /// StreamOffline V1 Event
-    StreamOfflineV1(NotificationPayload<stream::StreamOfflineV1>),
-    /// User Update V1 Event
-    UserUpdateV1(NotificationPayload<user::UserUpdateV1>),
-    /// User Authorization Grant V1 Event
-    UserAuthorizationGrantV1(NotificationPayload<user::UserAuthorizationGrantV1>),
-    /// User Authorization Revoke V1 Event
-    UserAuthorizationRevokeV1(NotificationPayload<user::UserAuthorizationRevokeV1>),
-    /// Channel Raid V1 Event
-    ChannelRaidV1(NotificationPayload<channel::ChannelRaidV1>),
-    /// Channel Subscription End V1 Event
-    ChannelSubscriptionEndV1(NotificationPayload<channel::ChannelSubscriptionEndV1>),
-    /// Channel Subscription Gift V1 Event
-    ChannelSubscriptionGiftV1(NotificationPayload<channel::ChannelSubscriptionGiftV1>),
-    /// Channel Subscription Message V1 Event
-    ChannelSubscriptionMessageV1(NotificationPayload<channel::ChannelSubscriptionMessageV1>),
+    /// A [subscription revocation](https://dev.twitch.tv/docs/eventsub#subscription-revocation)
+    Revocation(),
+    /// A notification holding some event data.
+    #[serde(bound = "E: EventSubscription")]
+    Notification(<E as EventSubscription>::Payload),
 }
 
-impl Payload {
-    /// Parse string slice as a [Payload]
-    pub fn parse(source: &str) -> Result<Payload, PayloadParseError> {
-        parse_json(source, true).map_err(Into::into)
+impl<E: EventSubscription + Clone> Message<E> {
+    /// Returns `true` if the message is [`VerificationRequest`].
+    ///
+    /// [`VerificationRequest`]: Message::VerificationRequest
+    pub fn is_verification_request(&self) -> bool { matches!(self, Self::VerificationRequest(..)) }
+
+    /// Returns `true` if the message is [`Revocation`].
+    ///
+    /// [`Revocation`]: Message::Revocation
+    pub fn is_revocation(&self) -> bool { matches!(self, Self::Revocation(..)) }
+
+    /// Returns `true` if the message is [`Notification`].
+    ///
+    /// [`Notification`]: Message::Notification
+    pub fn is_notification(&self) -> bool { matches!(self, Self::Notification(..)) }
+}
+
+impl<E: EventSubscription> Payload<E> {
+    /// Parse string slice as a [`Payload`], this will assume your string is from an eventsub message with type `notification`
+    pub fn parse(source: &str) -> Result<Payload<E>, PayloadParseError> {
+        Self::parse_notification(source)
     }
 
-    /// Parse http post request as a [Payload].
+    /// Parse string slice as a [`Payload`] with a message of [`Message::Notification`].
+    pub fn parse_notification(source: &str) -> Result<Payload<E>, PayloadParseError> {
+        #[derive(Deserialize)]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+        struct Notification<E: EventSubscription> {
+            #[serde(bound = "E: EventSubscription")]
+            pub subscription: EventSubscriptionInformation<E>,
+            #[serde(bound = "E: EventSubscription")]
+            pub event: <E as EventSubscription>::Payload,
+        }
+
+        let Notification {
+            subscription,
+            event,
+        } = parse_json::<Notification<E>>(source, true)?;
+
+        Ok(Payload {
+            subscription,
+            message: Message::Notification(event),
+        })
+    }
+
+    /// Parse string slice as a [`Payload`] with a message of [`Message::Revocation`].
+    pub fn parse_revocation(source: &str) -> Result<Payload<E>, PayloadParseError> {
+        #[derive(Deserialize)]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+        struct Notification<E: EventSubscription> {
+            #[serde(bound = "E: EventSubscription")]
+            pub subscription: EventSubscriptionInformation<E>,
+        }
+
+        let Notification { subscription } = parse_json::<Notification<E>>(source, true)?;
+
+        Ok(Payload {
+            subscription,
+            message: Message::Revocation(),
+        })
+    }
+
+    /// Parse string slice as a [`Payload`] with a message of [`Message::VerificationRequest`].
+    pub fn parse_verification_request(source: &str) -> Result<Payload<E>, PayloadParseError> {
+        #[derive(Deserialize)]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+        struct Notification<E: EventSubscription> {
+            #[serde(bound = "E: EventSubscription")]
+            pub subscription: EventSubscriptionInformation<E>,
+            #[serde(bound = "E: EventSubscription")]
+            pub challenge: String,
+        }
+
+        let Notification {
+            subscription,
+            challenge,
+        } = parse_json::<Notification<E>>(source, true)?;
+
+        Ok(Payload {
+            subscription,
+            message: Message::VerificationRequest(VerificationRequest { challenge }),
+        })
+    }
+
+    /// Parse http post request as a [Payload] with a specific [event](EventSubscription).
+    ///
+    /// If you don't know what event this payload is, use [`Event::parse_http`] instead.
     ///
     /// If your [`Request<B>`](http::Request) is of another type that doesn't implement `AsRef<[u8]>`, try converting it with [`Request::map`](http::Request::map)
     ///
     /// ```rust
     /// use http::Request;
-    /// use twitch_api2::eventsub::Payload;
+    /// use twitch_api2::eventsub::{Payload, channel::ChannelFollowV1};
     /// # struct Body {} impl Body { fn new() -> Self {Body {}} fn to_bytes(&self) -> &[u8] { &[] } }
     /// # fn a() -> Result<(), twitch_api2::eventsub::PayloadParseError> {
     /// // Example of a request with a body that doesn't implement `AsRef<[u8]>`
     /// let original_request: Request<Body> = http::Request::new(Body::new());
     /// // Convert to a request with a body of `Vec<u8>`, which does implement `AsRef<[u8]>`
     /// let converted_request: Request<Vec<u8>> = original_request.map(|r| r.to_bytes().to_owned());
-    /// Payload::parse_http(&converted_request)?
+    /// Payload::<ChannelFollowV1>::parse_http(&converted_request)?
     /// # ; Ok(())}
     /// ```
-    pub fn parse_http<B>(request: &http::Request<B>) -> Result<Payload, PayloadParseError>
+    pub fn parse_http<B>(request: &http::Request<B>) -> Result<Payload<E>, PayloadParseError>
     where B: AsRef<[u8]> {
-        Payload::parse(std::str::from_utf8(request.body().as_ref())?)
+        // FIXME: Add some debug assertions for version and type
+
+        let source = request.body().as_ref().into();
+        let ty = request
+            .headers()
+            .get("Twitch-Eventsub-Message-Type")
+            .map(|v| v.as_bytes())
+            .unwrap_or_else(|| b"notification")
+            .into();
+        Self::parse_request(ty, source)
     }
 
-    /// Verify that this payload is authentic using `HMAC-SHA256`.
-    ///
-    /// HMAC key is `secret`, HMAC message is a concatenation of `Twitch-Eventsub-Message-Id` header, `Twitch-Eventsub-Message-Timestamp` header and the request body.
-    /// HMAC signature is `Twitch-Eventsub-Message-Signature` header.
-    #[cfg(feature = "hmac")]
-    #[cfg_attr(nightly, doc(cfg(feature = "hmac")))]
-    #[must_use]
-    pub fn verify_payload<B>(request: &http::Request<B>, secret: &[u8]) -> bool
-    where B: AsRef<[u8]> {
-        use crypto_hmac::{Hmac, Mac, NewMac};
-
-        fn message_and_signature<B>(request: &http::Request<B>) -> Option<(Vec<u8>, Vec<u8>)>
-        where B: AsRef<[u8]> {
-            static SHA_HEADER: &str = "sha256=";
-
-            let id = request
-                .headers()
-                .get("Twitch-Eventsub-Message-Id")?
-                .as_bytes();
-            let timestamp = request
-                .headers()
-                .get("Twitch-Eventsub-Message-Timestamp")?
-                .as_bytes();
-            let body = request.body().as_ref();
-
-            let mut message = Vec::with_capacity(id.len() + timestamp.len() + body.len());
-            message.extend_from_slice(id);
-            message.extend_from_slice(timestamp);
-            message.extend_from_slice(body);
-
-            let signature = request
-                .headers()
-                .get("Twitch-Eventsub-Message-Signature")?
-                .to_str()
-                .ok()?;
-            if !signature.starts_with(&SHA_HEADER) {
-                return None;
-            }
-            let signature = signature.split_at(SHA_HEADER.len()).1;
-            if signature.len() % 2 == 0 {
-                // Convert signature to [u8] from hex digits
-                // Hex decode inspired by https://stackoverflow.com/a/52992629
-                let signature = ((0..signature.len())
-                    .step_by(2)
-                    .map(|i| u8::from_str_radix(&signature[i..i + 2], 16))
-                    .collect::<Result<Vec<u8>, _>>())
-                .ok()?;
-
-                Some((message, signature))
-            } else {
-                None
-            }
-        }
-
-        if let Some((message, signature)) = message_and_signature(request) {
-            let mut mac = Hmac::<sha2::Sha256>::new_from_slice(secret).expect("");
-            mac.update(&message);
-            mac.verify(&signature).is_ok()
-        } else {
-            false
+    /// Parse a string slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or [`Payload::parse`].
+    #[doc(hidden)]
+    pub fn parse_request<'a>(
+        ty: Cow<'a, [u8]>,
+        source: Cow<'a, [u8]>,
+    ) -> Result<Payload<E>, PayloadParseError> {
+        let source = std::str::from_utf8(&source)?;
+        match ty.as_ref() {
+            b"notification" => Payload::parse_notification(source),
+            b"webhook_callback_verification" => Payload::parse_verification_request(source),
+            b"revocation" => Payload::parse_revocation(source),
+            typ => Err(PayloadParseError::UnknownMessageType(
+                String::from_utf8_lossy(typ).into_owned(),
+            )),
         }
     }
 }
@@ -290,210 +285,40 @@ pub enum PayloadParseError {
     Utf8Error(#[from] std::str::Utf8Error),
     /// could not parse [`http::Request::body()`] as a [`Payload`]
     DeserializeError(#[from] crate::DeserError),
-}
-
-impl<'de> Deserialize<'de> for Payload {
-    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        use std::convert::TryInto;
-
-        /// Match on all defined eventsub types.
-        ///
-        /// If this is not done, we'd get a much worse error message.
-        macro_rules! match_event {
-            ($response:expr; $($module:ident::$event:ident);* $(;)?) => {{
-                let sub: IEventSubscripionInformation = parse_json_value($response.s, true).map_err(serde::de::Error::custom)?;
-                #[deny(unreachable_patterns)]
-                match (&*sub.version, &sub.type_) {
-                    $(  (<$module::$event as EventSubscription>::VERSION, &<$module::$event as EventSubscription>::EVENT_TYPE) => {
-                        Payload::$event(NotificationPayload {
-                            subscription: sub.try_into().map_err(serde::de::Error::custom)?,
-                            event: parse_json_value($response.e, true).map_err(serde::de::Error::custom)?,
-                        })
-                    }  )*
-                    (v, e) => return Err(serde::de::Error::custom(format!("could not find a match for version `{}` on event type `{}`", v, e)))
-                }
-            }}
-        }
-        /// macro to deserialize a "correct" payload. Used for roundtrip, eg. serializing a Payload and then deserializing it again.
-        ///
-        /// Without this, it would fail if the serializer did not undo what this deserializer does.
-        ///
-        /// Instead, we convert the response to our format, and then assume the input for deserializing is either from twitch or from this crate.
-        macro_rules! corrected {
-            ($($module:ident::$event:ident);* $(;)?) => {
-                // This struct simulates a unmodified payload deserialize implementation
-                #[derive(Deserialize)]
-                #[serde(remote = "Payload")]
-                pub enum Corrected {
-                    $($event(NotificationPayload<$module::$event>),)*
-                    VerificationRequest(VerificationRequest),
-                    SubscriptionInformation(SubscriptionInformation),
-                }
-        }
-    }
-
-        #[derive(Deserialize, Clone)]
-        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-        struct IEventSubscripionInformation {
-            condition: serde_json::Value,
-            created_at: types::Timestamp,
-            status: Status,
-            cost: i64,
-            id: String,
-            transport: TransportResponse,
-            #[serde(rename = "type")]
-            type_: EventType,
-            version: String,
-        }
-
-        #[derive(Deserialize)]
-        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-        struct InternalPayloadResponse {
-            /// This will always be converted to a [`EventSubscriptionInformation`], but is a generic Value to allow for better error messages on missing fields
-            #[serde(rename = "subscription")]
-            s: serde_json::Value,
-            #[serde(rename = "event")]
-            e: serde_json::Value,
-        }
-
-        impl<E: EventSubscription> std::convert::TryFrom<IEventSubscripionInformation>
-            for EventSubscriptionInformation<E>
-        {
-            type Error = crate::DeserError;
-
-            fn try_from(info: IEventSubscripionInformation) -> Result<Self, Self::Error> {
-                debug_assert_eq!(info.version, E::VERSION);
-                debug_assert_eq!(info.type_, E::EVENT_TYPE);
-                Ok(EventSubscriptionInformation {
-                    id: info.id,
-                    condition: parse_json_value(info.condition, true)?,
-                    created_at: info.created_at,
-                    status: info.status,
-                    cost: info.cost,
-                    transport: info.transport,
-                })
-            }
-        }
-
-        // a [SubscriptionInformation] event, but with forced "deny_unknown_fields"
-        #[derive(Deserialize)]
-        #[serde(deny_unknown_fields)]
-        #[cfg(not(feature = "deny_unknown_fields"))]
-        struct InternalSubscriptionInformation {
-            subscription: EventSubSubscription,
-        }
-
-        #[derive(Deserialize)]
-        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-        #[serde(untagged)]
-        #[allow(clippy::large_enum_variant)]
-        enum InternalResponse {
-            #[serde(with = "Corrected")]
-            Valid(Payload),
-            #[cfg_attr(
-                not(feature = "deny_unknown_fields"),
-                serde(with = "InternalSubscriptionInformation")
-            )]
-            SubscriptionInformation(SubscriptionInformation),
-            VerificationRequest(VerificationRequest),
-            InternalPayloadResponse(InternalPayloadResponse),
-        }
-
-        corrected!(
-            channel::ChannelUpdateV1;
-                channel::ChannelFollowV1;
-                channel::ChannelSubscribeV1;
-                channel::ChannelCheerV1;
-                channel::ChannelBanV1;
-                channel::ChannelUnbanV1;
-                channel::ChannelPointsCustomRewardAddV1;
-                channel::ChannelPointsCustomRewardUpdateV1;
-                channel::ChannelPointsCustomRewardRemoveV1;
-                channel::ChannelPointsCustomRewardRedemptionAddV1;
-                channel::ChannelPointsCustomRewardRedemptionUpdateV1;
-                channel::ChannelPollBeginV1;
-                channel::ChannelPollProgressV1;
-                channel::ChannelPollEndV1;
-                channel::ChannelPredictionBeginV1;
-                channel::ChannelPredictionProgressV1;
-                channel::ChannelPredictionLockV1;
-                channel::ChannelPredictionEndV1;
-                channel::ChannelRaidV1;
-                channel::ChannelSubscriptionEndV1;
-                channel::ChannelSubscriptionGiftV1;
-                channel::ChannelSubscriptionMessageV1;
-                channel::ChannelGoalBeginV1;
-                channel::ChannelGoalProgressV1;
-                channel::ChannelGoalEndV1;
-                channel::ChannelHypeTrainBeginV1;
-                channel::ChannelHypeTrainProgressV1;
-                channel::ChannelHypeTrainEndV1;
-                stream::StreamOnlineV1;
-                stream::StreamOfflineV1;
-                user::UserUpdateV1;
-                user::UserAuthorizationGrantV1;
-                user::UserAuthorizationRevokeV1;
-        );
-
-        let response = InternalResponse::deserialize(deserializer).map_err(|e| {
-            serde::de::Error::custom(format!("could not deserialize response: {}", e))
-        })?;
-        match response {
-            InternalResponse::Valid(p) => Ok(p),
-            InternalResponse::SubscriptionInformation(i) => Ok(Payload::SubscriptionInformation(i)),
-            InternalResponse::VerificationRequest(verification) => {
-                Ok(Payload::VerificationRequest(verification))
-            }
-            InternalResponse::InternalPayloadResponse(response) => Ok(match_event! { response;
-                channel::ChannelUpdateV1;
-                channel::ChannelFollowV1;
-                channel::ChannelSubscribeV1;
-                channel::ChannelCheerV1;
-                channel::ChannelBanV1;
-                channel::ChannelUnbanV1;
-                channel::ChannelPointsCustomRewardAddV1;
-                channel::ChannelPointsCustomRewardUpdateV1;
-                channel::ChannelPointsCustomRewardRemoveV1;
-                channel::ChannelPointsCustomRewardRedemptionAddV1;
-                channel::ChannelPointsCustomRewardRedemptionUpdateV1;
-                channel::ChannelPollBeginV1;
-                channel::ChannelPollProgressV1;
-                channel::ChannelPollEndV1;
-                channel::ChannelPredictionBeginV1;
-                channel::ChannelPredictionProgressV1;
-                channel::ChannelPredictionLockV1;
-                channel::ChannelPredictionEndV1;
-                channel::ChannelRaidV1;
-                channel::ChannelSubscriptionEndV1;
-                channel::ChannelSubscriptionGiftV1;
-                channel::ChannelSubscriptionMessageV1;
-                channel::ChannelGoalBeginV1;
-                channel::ChannelGoalProgressV1;
-                channel::ChannelGoalEndV1;
-                channel::ChannelHypeTrainBeginV1;
-                channel::ChannelHypeTrainProgressV1;
-                channel::ChannelHypeTrainEndV1;
-                stream::StreamOnlineV1;
-                stream::StreamOfflineV1;
-                user::UserUpdateV1;
-                user::UserAuthorizationGrantV1;
-                user::UserAuthorizationRevokeV1;
-            }),
-        }
-    }
+    /// unknown message type encountered: {0}
+    UnknownMessageType(String),
+    /// unknown event type encountered: {0}
+    UnknownEventType(String),
+    /// event could not be parsed, some context missing
+    MalformedEvent,
+    /// could not find an implementation for version `{version}` on event type `{event_type}` in this library
+    UnimplementedEvent {
+        /// Version
+        version: String,
+        /// Event type
+        event_type: EventType,
+    },
 }
 
 /// Notification received
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct NotificationPayload<E: EventSubscription + Clone> {
+pub struct Payload<E: EventSubscription + Clone> {
     /// Subscription information.
     #[serde(bound = "E: EventSubscription")]
     pub subscription: EventSubscriptionInformation<E>,
     /// Event information.
     #[serde(bound = "E: EventSubscription")]
-    pub event: <E as EventSubscription>::Payload,
+    pub message: Message<E>,
+}
+
+impl<E: EventSubscription + Clone> Payload<E> {
+    /// Convenience method for getting the event type from the payload.
+    pub fn get_event_type(&self) -> EventType { E::EVENT_TYPE }
+
+    /// Convenience method for getting the event version from the payload.
+    pub fn get_event_version(&self) -> &'static str { E::VERSION }
 }
 
 /// Metadata about the subscription.
@@ -501,12 +326,12 @@ pub struct NotificationPayload<E: EventSubscription + Clone> {
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct EventSubscriptionInformation<E: EventSubscription> {
-    /// Your client ID.
-    pub id: String,
+    /// ID of the subscription.
+    pub id: types::EventSubId,
     /// Status of EventSub subscription
     pub status: Status,
     /// How much the subscription counts against your limit.
-    pub cost: i64,
+    pub cost: usize,
     /// Subscription-specific parameters.
     #[serde(bound = "E: EventSubscription")]
     pub condition: E,
@@ -514,6 +339,11 @@ pub struct EventSubscriptionInformation<E: EventSubscription> {
     pub created_at: types::Timestamp,
     /// Transport method
     pub transport: TransportResponse,
+    /// Event type. Consider using [`E::EVENT_TYPE`](EventSubscription::EVENT_TYPE) instead.
+    #[serde(rename = "type")]
+    pub type_: EventType,
+    /// Event version. Consider using [`E::VERSION`](EventSubscription::VERSION) instead.
+    pub version: String,
 }
 
 /// Transport setting for event notification
@@ -531,6 +361,17 @@ pub struct Transport {
     ///
     /// Secret must be between 10 and 100 characters
     pub secret: String,
+}
+
+impl Transport {
+    /// Convenience method for making a webhook transport
+    pub fn webhook(callback: impl std::string::ToString, secret: String) -> Transport {
+        Transport {
+            method: TransportMethod::Webhook,
+            callback: callback.to_string(),
+            secret,
+        }
+    }
 }
 
 /// Transport response on event notification
@@ -555,112 +396,6 @@ pub struct TransportResponse {
 pub enum TransportMethod {
     /// Webhook
     Webhook,
-}
-
-/// Event name
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub enum EventType {
-    /// `channel.update` subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
-    #[serde(rename = "channel.update")]
-    ChannelUpdate,
-    /// `channel.follow`: a specified channel receives a follow.
-    #[serde(rename = "channel.follow")]
-    ChannelFollow,
-    /// `channel.subscribe`: a specified channel receives a subscriber. This does not include resubscribes.
-    #[serde(rename = "channel.subscribe")]
-    ChannelSubscribe,
-    /// `channel.cheer`: a user cheers on the specified channel.
-    #[serde(rename = "channel.cheer")]
-    ChannelCheer,
-    /// `channel.ban`: a viewer is banned from the specified channel.
-    #[serde(rename = "channel.ban")]
-    ChannelBan,
-    /// `channel.unban`: a viewer is unbanned from the specified channel.
-    #[serde(rename = "channel.unban")]
-    ChannelUnban,
-    /// `channel.channel_points_custom_reward.add`: a custom channel points reward has been created for the specified channel.
-    #[serde(rename = "channel.channel_points_custom_reward.add")]
-    ChannelPointsCustomRewardAdd,
-    /// `channel.channel_points_custom_reward.update`: a custom channel points reward has been updated for the specified channel.
-    #[serde(rename = "channel.channel_points_custom_reward.update")]
-    ChannelPointsCustomRewardUpdate,
-    /// `channel.channel_points_custom_reward.remove`: a custom channel points reward has been removed from the specified channel.
-    #[serde(rename = "channel.channel_points_custom_reward.remove")]
-    ChannelPointsCustomRewardRemove,
-    /// `channel.channel_points_custom_reward_redemption.add`: a viewer has redeemed a custom channel points reward on the specified channel.
-    #[serde(rename = "channel.channel_points_custom_reward_redemption.add")]
-    ChannelPointsCustomRewardRedemptionAdd,
-    /// `channel.channel_points_custom_reward_redemption.update`: a redemption of a channel points custom reward has been updated for the specified channel.
-    #[serde(rename = "channel.channel_points_custom_reward_redemption.update")]
-    ChannelPointsCustomRewardRedemptionUpdate,
-    /// `channel.poll.begin`: a poll begins on the specified channel.
-    #[serde(rename = "channel.poll.begin")]
-    ChannelPollBegin,
-    /// `channel.poll.progress`: a user responds to a poll on the specified channel.
-    #[serde(rename = "channel.poll.progress")]
-    ChannelPollProgress,
-    /// `channel.poll.end`: a poll ends on the specified channel.
-    #[serde(rename = "channel.poll.end")]
-    ChannelPollEnd,
-    /// `channel.prediction.begin`: a Prediction begins on the specified channel
-    #[serde(rename = "channel.prediction.begin")]
-    ChannelPredictionBegin,
-    /// `channel.prediction.progress`: a user participates in a Prediction on the specified channel.
-    #[serde(rename = "channel.prediction.progress")]
-    ChannelPredictionProgress,
-    /// `channel.prediction.lock`: a Prediction is locked on the specified channel.
-    #[serde(rename = "channel.prediction.lock")]
-    ChannelPredictionLock,
-    /// `channel.prediction.end`: a Prediction ends on the specified channel.
-    #[serde(rename = "channel.prediction.end")]
-    ChannelPredictionEnd,
-    /// `channel.raid`: a broadcaster raids another broadcaster’s channel.
-    #[serde(rename = "channel.raid")]
-    ChannelRaid,
-    /// `channel.subscription.end`: a subscription to the specified channel expires.
-    #[serde(rename = "channel.subscription.end")]
-    ChannelSubscriptionEnd,
-    /// `channel.subscription.gift`: a user gives one or more gifted subscriptions in a channel.
-    #[serde(rename = "channel.subscription.gift")]
-    ChannelSubscriptionGift,
-    /// `channel.subscription.gift`: a user sends a resubscription chat message in a specific channel
-    #[serde(rename = "channel.subscription.message")]
-    ChannelSubscriptionMessage,
-    /// `channel.goal.begin`: a goal begins on the specified channel.
-    #[serde(rename = "channel.goal.begin")]
-    ChannelGoalBegin,
-    /// `channel.goal.progress`: a goal makes progress on the specified channel.
-    #[serde(rename = "channel.goal.progress")]
-    ChannelGoalProgress,
-    /// `channel.goal.end`: a goal ends on the specified channel.
-    #[serde(rename = "channel.goal.end")]
-    ChannelGoalEnd,
-    /// `channel.hype_train.begin`: a hype train begins on the specified channel.
-    #[serde(rename = "channel.hype_train.begin")]
-    ChannelHypeTrainBegin,
-    /// `channel.hype_train.progress`: a hype train makes progress on the specified channel.
-    #[serde(rename = "channel.hype_train.progress")]
-    ChannelHypeTrainProgress,
-    /// `channel.hype_train.end`: a hype train ends on the specified channel.
-    #[serde(rename = "channel.hype_train.end")]
-    ChannelHypeTrainEnd,
-    /// `stream.online`: the specified broadcaster starts a stream.
-    #[serde(rename = "stream.online")]
-    StreamOnline,
-    /// `stream.online`: the specified broadcaster stops a stream.
-    #[serde(rename = "stream.offline")]
-    StreamOffline,
-    /// `user.update`: user updates their account.
-    #[serde(rename = "user.update")]
-    UserUpdate,
-    /// `user.authorization.revoke`: a user has revoked authorization for your client id. Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.
-    #[serde(rename = "user.authorization.revoke")]
-    UserAuthorizationRevoke,
-    /// `user.authorization.revoke`: a user’s authorization has been granted to your client id.
-    #[serde(rename = "user.authorization.grant")]
-    UserAuthorizationGrant,
 }
 
 impl std::fmt::Display for EventType {
@@ -719,27 +454,50 @@ mod test {
 
     #[test]
     fn test_verification_response() {
-        let body = r#"{
-        "challenge": "pogchamp-kappa-360noscope-vohiyo",
-        "subscription": {
-            "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
-            "status": "webhook_callback_verification_pending",
-            "type": "channel.follow",
-            "version": "1",
-            "cost": 1,
-            "condition": {
-                    "broadcaster_user_id": "12826"
-            },
-            "transport": {
-                "method": "webhook",
-                "callback": "https://example.com/webhooks/callback"
-            },
-            "created_at": "2019-11-16T10:11:12.123Z"
-        }
-    }"#;
+        use http::header::{HeaderMap, HeaderName, HeaderValue};
 
-        let val = dbg!(crate::eventsub::Payload::parse(body).unwrap());
-        crate::tests::roundtrip(&val)
+        #[rustfmt::skip]
+        let headers: HeaderMap = vec![
+            ("Twitch-Eventsub-Message-Id", "e76c6bd4-55c9-4987-8304-da1588d8988b"),
+            ("Twitch-Eventsub-Message-Retry", "0"),
+            ("Twitch-Eventsub-Message-Type", "webhook_callback_verification"),
+            ("Twitch-Eventsub-Message-Signature", "sha256=f56bf6ce06a1adf46fa27831d7d15d"),
+            ("Twitch-Eventsub-Message-Timestamp", "2019-11-16T10:11:12.123Z"),
+            ("Twitch-Eventsub-Subscription-Type", "channel.follow"),
+            ("Twitch-Eventsub-Subscription-Version", "1"),
+            ].into_iter()
+        .map(|(h, v)| {
+            (
+                h.parse::<HeaderName>().unwrap(),
+                v.parse::<HeaderValue>().unwrap(),
+            )
+        })
+        .collect();
+
+        let body = r#"{
+            "challenge": "pogchamp-kappa-360noscope-vohiyo",
+            "subscription": {
+                "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+                "status": "webhook_callback_verification_pending",
+                "type": "channel.follow",
+                "version": "1",
+                "cost": 1,
+                "condition": {
+                        "broadcaster_user_id": "12826"
+                },
+                "transport": {
+                    "method": "webhook",
+                    "callback": "https://example.com/webhooks/callback"
+                },
+                "created_at": "2019-11-16T10:11:12.123Z"
+            }
+        }"#;
+
+        let mut request = http::Request::builder();
+        let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
+        let request = request.body(body.as_bytes().to_vec()).unwrap();
+        let payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
+        crate::tests::roundtrip(&payload)
     }
 
     #[test]
@@ -769,7 +527,7 @@ mod test {
         let mut request = http::Request::builder();
         let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
         let request = request.body(body.as_bytes().to_vec()).unwrap();
-        let payload = dbg!(crate::eventsub::Payload::parse_http(&request).unwrap());
+        let payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
         crate::tests::roundtrip(&payload)
     }
     #[test]
@@ -803,6 +561,6 @@ mod test {
         let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
         let request = request.body(body.as_bytes().to_vec()).unwrap();
         dbg!(&body);
-        assert!(crate::eventsub::Payload::verify_payload(&request, secret));
+        assert!(crate::eventsub::Event::verify_payload(&request, secret));
     }
 }

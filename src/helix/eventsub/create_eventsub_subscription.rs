@@ -5,12 +5,20 @@ use crate::eventsub::{EventSubscription, EventType, Status, Transport, Transport
 /// Query Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
 /// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
-#[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug, Default)]
+#[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreateEventSubSubscriptionRequest<E: EventSubscription> {
     #[builder(setter(skip), default)]
     #[serde(skip)]
     phantom: std::marker::PhantomData<E>,
+}
+
+impl<E: EventSubscription> Default for CreateEventSubSubscriptionRequest<E> {
+    fn default() -> Self {
+        Self {
+            phantom: Default::default(),
+        }
+    }
 }
 
 impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<E> {

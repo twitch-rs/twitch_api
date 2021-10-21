@@ -9,7 +9,9 @@
 //!
 //! ```rust
 //! use twitch_api2::helix::schedule::create_channel_stream_schedule_segment;
-//! let request = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::builder()
+//! let request =
+//!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::builder(
+//!     )
 //!     .broadcaster_id("141981764")
 //!     .build();
 //! ```

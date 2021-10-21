@@ -41,7 +41,7 @@
 * Added function `get_follow_relationships`, `get_broadcaster_subscribers`, `get_global_emotes`, `get_channel_emotes_from_id`, `get_channel_emotes_from_login` and `get_emote_sets` to `HelixClient`
 * Added fields `format`, `scale`, `theme_mode` and `template` to `ChannelEmote`, `GetEmoteSets` and `GlobalEmote`
 * Added functions `HelixClient::req_<method>_custom` to return a specific struct/enum defined by the user. This also enables references in responses for these functions.
-* Added `HypeTrainId` to relevant eventsub and helix endpoints
+* Added `HypeTrainId` to relevant eventsub and helix endpoints.
 
 ### Changed
 
@@ -61,7 +61,7 @@
 * Added field total to `helix::Response`
 * Changed return type of `GetBroadcasterSubscriptions` to be a vector of `BroadcasterSubscription`
 * Made `Payload::verify` and `Payload::parse_http` generic on the body type for `AsRef<[u8]>`
-* Made `Payload` in EventSub able to consume payloads with optional events. [#219](https://github.com/Emilgardis/twitch_api2/issues/219)
+* Made `Payload` in EventSub enumerate over the different message types, `verification`, `revocation` and `notification`. Adds a new `Notification` type which holds the different notification payloads. `Payload` is now `Event` and old `NotificationPayload` is now called `Payload`, this is because a payload can be a revocation, notification or verification.
 
 ### Removed
 

@@ -88,6 +88,6 @@ fn parse_payload() {
     }
     "#;
 
-    let val = dbg!(crate::eventsub::Payload::parse(payload).unwrap());
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
     crate::tests::roundtrip(&val)
 }

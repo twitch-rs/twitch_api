@@ -11,21 +11,22 @@ on:
 
 jobs:
   audit:
-    needs: [security-audit, cargo-deny]
+    needs: [cargo-deny] # security-audit,
     runs-on: ubuntu-latest
     steps:
       - name: Done
         run: exit 0
-  security-audit:
-    name: Security Audit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - uses: actions-rs/audit-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+  # Disabled due to https://github.com/actions-rs/audit-check/issues/132
+  # security-audit:
+  #   name: Security Audit
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         submodules: recursive
+  #     - uses: actions-rs/audit-check@v1
+  #       with:
+  #         token: ${{ secrets.GITHUB_TOKEN }}
   cargo-deny:
     name: Cargo Deny
     runs-on: ubuntu-latest
