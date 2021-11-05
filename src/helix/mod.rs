@@ -106,9 +106,11 @@ pub use twitch_oauth2::Scope;
 /// let client: HelixClient<'static, reqwest::Client> = HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-/// use twitch_api2::helix::{HelixClient, users::User};
+/// use twitch_api2::helix::{users::User, HelixClient};
 /// let user: Option<User> = client
-///     .get_user_from_login("justintv".to_string(), &token).await.unwrap();
+///     .get_user_from_login("justintv".to_string(), &token)
+///     .await
+///     .unwrap();
 /// # Ok(()) }
 /// ```
 #[cfg(all(feature = "client"))]

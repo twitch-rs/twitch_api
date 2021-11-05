@@ -30,16 +30,20 @@ jobs:
             ~/.cargo/registry/cache
             ~/.cargo/git
             ~/.cargo/bin
-            target
           key: ${{ runner.os }}-nightly-cargo-target-cov-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-nightly-cargo-target-${{ hashFiles('**/Cargo.lock') }}
       - name: Install cargo-llvm-cov
         run: curl -LsSf https://github.com/taiki-e/cargo-llvm-cov/releases/latest/download/cargo-llvm-cov-x86_64-unknown-linux-gnu.tar.gz | tar xzf - -C ~/.cargo/bin
-      - name: Generate code coverage
-        # env:
-        #   RUSTFLAGS: '-Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
-        #   RUSTDOCFLAGS: '-Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
-        run: cargo llvm-cov --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields" --doctests --ignore-filename-regex "twitch_oauth2" --lcov --output-path lcov.info
+      - name: Generate code coverage for tests
+        run: cargo llvm-cov --no-report --tests --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields"
+      - name: Generate code coverage for tests without any features
+        run: cargo llvm-cov --no-report --tests
+      - name: Generate code coverage for examples
+        run: cargo llvm-cov --no-report --examples --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields"
+      #- name: Generate code coverage for docs
+      #  run: cargo llvm-cov --no-report --doc --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields"
+      - name: Merge lcov.info
+        run: cargo llvm-cov --no-run --lcov --ignore-filename-regex "twitch_oauth2" --output-path lcov.info 
       - name: Determine PR number
         if: ${{ github.ref == 'refs/heads/trying' }}
         run: git log -1 --pretty=format:"%s" | awk '{ print "PR_NUMBER=" substr($NF,2,length($NF)-2) }' >> $GITHUB_ENV

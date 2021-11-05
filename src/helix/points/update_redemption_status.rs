@@ -35,11 +35,15 @@
 //!
 //! ```rust, no_run
 //! use twitch_api2::helix;
-//! use twitch_api2::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusRequest, UpdateRedemptionStatusBody, UpdateRedemptionStatusInformation};
+//! use twitch_api2::helix::points::{
+//!     CustomRewardRedemptionStatus, UpdateRedemptionStatusBody,
+//!     UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,
+//! };
 //! # use twitch_api2::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-//! let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+//! let client: helix::HelixClient<'static, client::DummyHttpClient> =
+//!     helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = UpdateRedemptionStatusRequest::builder()
@@ -50,7 +54,8 @@
 //! let body = UpdateRedemptionStatusBody::builder()
 //!     .status(CustomRewardRedemptionStatus::Canceled)
 //!     .build();
-//! let response: UpdateRedemptionStatusInformation = client.req_patch(request, body, &token).await?.data;
+//! let response: UpdateRedemptionStatusInformation =
+//!     client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```

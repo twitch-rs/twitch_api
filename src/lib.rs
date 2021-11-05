@@ -16,8 +16,8 @@
 //! Get information about a channel with the [`Get Channel Information`](crate::helix::channels::get_channel_information) helix endpoint.
 //!
 //! ```rust,no_run
-//! use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
-//! use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::AppAccessTokenError};
+//! use twitch_api2::{helix::channels::GetChannelInformationRequest, TwitchClient};
+//! use twitch_oauth2::{tokens::errors::AppAccessTokenError, AppAccessToken, Scope, TwitchToken};
 //! # pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
 //!
 //! # #[tokio::main]
@@ -26,12 +26,9 @@
 //! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret");
 //!
 //! let client: TwitchClient<reqwest::Client> = TwitchClient::default();
-//! let token = AppAccessToken::get_app_access_token(
-//!     &client,
-//!     client_id,
-//!     client_secret,
-//!     Scope::all(),
-//!     ).await?;
+//! let token =
+//!     AppAccessToken::get_app_access_token(&client, client_id, client_secret, Scope::all())
+//!         .await?;
 //! let req = GetChannelInformationRequest::builder()
 //!     .broadcaster_id("27620241")
 //!     .build();
