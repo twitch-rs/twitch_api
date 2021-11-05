@@ -16,17 +16,16 @@ jobs:
     steps:
       - name: Done
         run: exit 0
-  # Disabled due to https://github.com/actions-rs/audit-check/issues/132
-  # security-audit:
-  #   name: Security Audit
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         submodules: recursive
-  #     - uses: actions-rs/audit-check@v1
-  #       with:
-  #         token: ${{ secrets.GITHUB_TOKEN }}
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions-rs/audit-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
   cargo-deny:
     name: Cargo Deny
     runs-on: ubuntu-latest
