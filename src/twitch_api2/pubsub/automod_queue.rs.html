@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;pubsub&#x2F;automod_queue.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>automod_queue.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/4067c680d9f2370ae74e4c6a7341aef5b1c0a582">4067c68</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/0317fa370954a52f0e4f71ee69e9d99990de3aa2">0317fa3</a></p>
 <style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../twitch_api2/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -293,6 +293,27 @@
 <span id="291">291</span>
 <span id="292">292</span>
 <span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
 </pre><pre class="rust"><code><span class="doccomment">//! PubSub messages for when AutoMod flags a message as potentially inappropriate, and when a moderator takes action on a message.</span>
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">pubsub</span>, <span class="ident">types</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -333,7 +354,7 @@
 }
 
 <span class="doccomment">/// Message held by automod</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AutoModCaughtMessage</span> {
@@ -396,7 +417,7 @@
 }
 
 <span class="doccomment">/// Message that was caught by AutoMod</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Message</span> {
@@ -408,6 +429,8 @@
     <span class="kw">pub</span> <span class="ident">sender</span>: <span class="ident">MessageUser</span>,
     <span class="doccomment">/// Time at which the message was sent</span>
     <span class="kw">pub</span> <span class="ident">sent_at</span>: <span class="ident">types::Timestamp</span>,
+    <span class="doccomment">/// Language of the part of the message that was caught</span>
+    <span class="kw">pub</span> <span class="ident">non_broadcaster_language</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// A user according to Automod</span>
@@ -443,7 +466,7 @@
 }
 
 <span class="doccomment">/// The contents of a AutoMod message</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Content</span> {
@@ -458,7 +481,7 @@
 <span class="doccomment">/// A fragment of a AutoModded message</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Can either be regular text, or classified as part of the reason for AutoMod</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">untagged</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
@@ -499,7 +522,7 @@
 }
 
 <span class="doccomment">/// Specific AutoMod classification</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Automod</span> {
@@ -553,6 +576,25 @@
         <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r##&quot;
         {&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;automod-queue.27620241.27620241&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;automod_caught_message\&quot;,\&quot;data\&quot;:{\&quot;content_classification\&quot;:{\&quot;category\&quot;:\&quot;aggression\&quot;,\&quot;level\&quot;:1},\&quot;message\&quot;:{\&quot;content\&quot;:{\&quot;text\&quot;:\&quot;No I have been told that I can have an I;ll kill you face that scares the crap out of people when I am annoyed with ot angry at them. SO be it. It takes a lot to get me in that mood so you deserve it. @Emilgardis\&quot;,\&quot;fragments\&quot;:[{\&quot;text\&quot;:\&quot;No I have been told that I can have an \&quot;},{\&quot;text\&quot;:\&quot;I;ll kill you\&quot;,\&quot;automod\&quot;:{\&quot;topics\&quot;:{\&quot;bullying\&quot;:7}}},{\&quot;text\&quot;:\&quot; face that scares the crap out of people when I am annoyed with ot angry at them. SO be it. It takes a lot to get me in that mood so you deserve it. \&quot;},{\&quot;text\&quot;:\&quot;@Emilgardis\&quot;,\&quot;user_mention\&quot;:{\&quot;userID\&quot;:\&quot;27620241\&quot;,\&quot;login\&quot;:\&quot;emilgardis\&quot;,\&quot;display_name\&quot;:\&quot;Emilgardis\&quot;}}]},\&quot;id\&quot;:\&quot;87b2ae08-ac64-43e7-b2b7-28ae168e00ce\&quot;,\&quot;sender\&quot;:{\&quot;user_id\&quot;:\&quot;1234\&quot;,\&quot;login\&quot;:\&quot;justintvfan\&quot;,\&quot;display_name\&quot;:\&quot;justintvfan\&quot;,\&quot;chat_color\&quot;:\&quot;#DAA520\&quot;,\&quot;badges\&quot;:[{\&quot;id\&quot;:\&quot;subscriber\&quot;,\&quot;version\&quot;:\&quot;18\&quot;},{\&quot;id\&quot;:\&quot;bits\&quot;,\&quot;version\&quot;:\&quot;1000\&quot;}]},\&quot;sent_at\&quot;:\&quot;2021-06-27T19:28:48.747156458Z\&quot;},\&quot;reason_code\&quot;:\&quot;\&quot;,\&quot;resolver_id\&quot;:\&quot;27620241\&quot;,\&quot;resolver_login\&quot;:\&quot;emilgardis\&quot;,\&quot;status\&quot;:\&quot;ALLOWED\&quot;}}&quot;}}
         &quot;##</span>;
+        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+            <span class="ident">actual</span>,
+            <span class="ident">Response::Message</span> {
+                <span class="ident">data</span>: <span class="ident">TopicData::AutoModQueue</span> { .. },
+            }
+        ));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">automodcaught_foreign</span>() {
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r##&quot;
+{
+    &quot;type&quot;: &quot;MESSAGE&quot;,
+    &quot;data&quot;: {
+        &quot;topic&quot;: &quot;automod-queue.27620241.27620241&quot;,
+        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;automod_caught_message\&quot;,\&quot;data\&quot;:{\&quot;content_classification\&quot;:{\&quot;category\&quot;:\&quot;homophobia\&quot;,\&quot;level\&quot;:1},\&quot;message\&quot;:{\&quot;content\&quot;:{\&quot;text\&quot;:\&quot;Automod had an issues with the word deps?\&quot;,\&quot;fragments\&quot;:[{\&quot;text\&quot;:\&quot;Automod had an issues with the word \&quot;},{\&quot;text\&quot;:\&quot;deps?\&quot;,\&quot;automod\&quot;:{\&quot;topics\&quot;:{\&quot;identity\&quot;:7}}}]},\&quot;id\&quot;:\&quot;933829c6-9db6-4b16-8f9d-4569cd4dd8d7\&quot;,\&quot;sender\&quot;:{\&quot;user_id\&quot;:\&quot;1234\&quot;,\&quot;login\&quot;:\&quot;justinfan123\&quot;,\&quot;display_name\&quot;:\&quot;justinfan123\&quot;,\&quot;chat_color\&quot;:\&quot;#B382E8\&quot;,\&quot;badges\&quot;:[{\&quot;id\&quot;:\&quot;partner\&quot;,\&quot;version\&quot;:\&quot;1\&quot;}]},\&quot;sent_at\&quot;:\&quot;2021-10-18T19:12:01.860963699Z\&quot;,\&quot;non_broadcaster_language\&quot;:\&quot;fr\&quot;},\&quot;reason_code\&quot;:\&quot;\&quot;,\&quot;resolver_id\&quot;:\&quot;\&quot;,\&quot;resolver_login\&quot;:\&quot;\&quot;,\&quot;status\&quot;:\&quot;PENDING\&quot;}}&quot;
+    }
+}&quot;##</span>;
         <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             <span class="ident">actual</span>,
