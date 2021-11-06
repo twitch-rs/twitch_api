@@ -187,6 +187,8 @@ pub struct HypeTrainApproaching {
     pub events_remaining_durations: std::collections::HashMap<String, i64>,
     /// Possible rewards for level one
     pub level_one_rewards: Vec<Reward>,
+    /// ID of the approaching hype train
+    pub approaching_hype_train_id: types::HypeTrainId,
 }
 
 /// Reply from [HypeTrainEventsV1] or [HypeTrainEventsV1Rewards]
@@ -2014,7 +2016,7 @@ mod tests {
 
     #[test]
     fn hype_train_approaching() {
-        let source = r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.159498717","message":"{\"type\":\"hype-train-approaching\",\"data\":{\"channel_id\":\"159498717\",\"goal\":5,\"events_remaining_durations\":{\"1\":195},\"level_one_rewards\":[{\"type\":\"EMOTE\",\"id\":\"emotesv2_d20a5e514e534288a1104b92c4f87834\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeWow\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_62199faa2ca34ea8a0f3567990a72a14\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeHeh\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_69a7806c6837428f82475e99677d2f78\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeDoh\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_a964a0cbae9348e6bd981bc714eec71d\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeYum\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_680c3aae688947d8b6067cff1a8bcdbe\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeShame\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_6a99bc2baae743099b23ed6ab07bc5c4\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"c9f00977-83ce-4391-bef1-525ae806b16f\",\"token\":\"HypeHide\"}],\"creator_color\":\"99BBFF\",\"participants\":[\"195079041\",\"70447505\",\"77795507\",\"157269176\"]}}"}}"#;
+        let source = r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.1337","message":"{\"type\":\"hype-train-approaching\",\"data\":{\"channel_id\":\"1337\",\"goal\":3,\"events_remaining_durations\":{\"1\":47},\"level_one_rewards\":[{\"type\":\"EMOTE\",\"id\":\"emotesv2_6d27dcab0df7442b88260a25d60bd807\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypeCozy1\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_e7a6e7e24a844e709c4d93c0845422e1\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypeLUL\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_e2a11d74a4824cbf9a8b28079e5e67dd\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypeCool\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_036fd741be4141198999b2ca4300668e\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypeLove1\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_3114c3d12dc44f53810140f632128b54\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypeSleep\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_7d457ecda087479f98501f80e23b5a04\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypePat\"}],\"creator_color\":\"5247FF\",\"participants\":[\"123\",\"1234\"],\"approaching_hype_train_id\":\"1d76561e-a477-4418-a43c-6e8f0441f8c1\"}}"}}"#;
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,
