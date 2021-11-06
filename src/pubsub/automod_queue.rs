@@ -38,7 +38,7 @@ pub enum AutoModQueueReply {
 }
 
 /// Message held by automod
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct AutoModCaughtMessage {
@@ -101,7 +101,7 @@ pub struct ContentClassification {
 }
 
 /// Message that was caught by AutoMod
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Message {
@@ -113,6 +113,8 @@ pub struct Message {
     pub sender: MessageUser,
     /// Time at which the message was sent
     pub sent_at: types::Timestamp,
+    /// Language of the part of the message that was caught
+    pub non_broadcaster_language: Option<String>,
 }
 
 /// A user according to Automod
@@ -148,7 +150,7 @@ pub struct MessageUserBadges {
 }
 
 /// The contents of a AutoMod message
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Content {
@@ -163,7 +165,7 @@ pub struct Content {
 /// A fragment of a AutoModded message
 ///
 /// Can either be regular text, or classified as part of the reason for AutoMod
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(untagged)]
 #[non_exhaustive]
@@ -204,7 +206,7 @@ pub struct FragmentUserMention {
 }
 
 /// Specific AutoMod classification
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Automod {
@@ -258,6 +260,25 @@ mod tests {
         let source = r##"
         {"type":"MESSAGE","data":{"topic":"automod-queue.27620241.27620241","message":"{\"type\":\"automod_caught_message\",\"data\":{\"content_classification\":{\"category\":\"aggression\",\"level\":1},\"message\":{\"content\":{\"text\":\"No I have been told that I can have an I;ll kill you face that scares the crap out of people when I am annoyed with ot angry at them. SO be it. It takes a lot to get me in that mood so you deserve it. @Emilgardis\",\"fragments\":[{\"text\":\"No I have been told that I can have an \"},{\"text\":\"I;ll kill you\",\"automod\":{\"topics\":{\"bullying\":7}}},{\"text\":\" face that scares the crap out of people when I am annoyed with ot angry at them. SO be it. It takes a lot to get me in that mood so you deserve it. \"},{\"text\":\"@Emilgardis\",\"user_mention\":{\"userID\":\"27620241\",\"login\":\"emilgardis\",\"display_name\":\"Emilgardis\"}}]},\"id\":\"87b2ae08-ac64-43e7-b2b7-28ae168e00ce\",\"sender\":{\"user_id\":\"1234\",\"login\":\"justintvfan\",\"display_name\":\"justintvfan\",\"chat_color\":\"#DAA520\",\"badges\":[{\"id\":\"subscriber\",\"version\":\"18\"},{\"id\":\"bits\",\"version\":\"1000\"}]},\"sent_at\":\"2021-06-27T19:28:48.747156458Z\"},\"reason_code\":\"\",\"resolver_id\":\"27620241\",\"resolver_login\":\"emilgardis\",\"status\":\"ALLOWED\"}}"}}
         "##;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::AutoModQueue { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn automodcaught_foreign() {
+        let source = r##"
+{
+    "type": "MESSAGE",
+    "data": {
+        "topic": "automod-queue.27620241.27620241",
+        "message": "{\"type\":\"automod_caught_message\",\"data\":{\"content_classification\":{\"category\":\"homophobia\",\"level\":1},\"message\":{\"content\":{\"text\":\"Automod had an issues with the word deps?\",\"fragments\":[{\"text\":\"Automod had an issues with the word \"},{\"text\":\"deps?\",\"automod\":{\"topics\":{\"identity\":7}}}]},\"id\":\"933829c6-9db6-4b16-8f9d-4569cd4dd8d7\",\"sender\":{\"user_id\":\"1234\",\"login\":\"justinfan123\",\"display_name\":\"justinfan123\",\"chat_color\":\"#B382E8\",\"badges\":[{\"id\":\"partner\",\"version\":\"1\"}]},\"sent_at\":\"2021-10-18T19:12:01.860963699Z\",\"non_broadcaster_language\":\"fr\"},\"reason_code\":\"\",\"resolver_id\":\"\",\"resolver_login\":\"\",\"status\":\"PENDING\"}}"
+    }
+}"##;
         let actual = dbg!(Response::parse(source).unwrap());
         assert!(matches!(
             actual,

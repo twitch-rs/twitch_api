@@ -37,13 +37,20 @@ pub struct ModerationAction {
     /// Arguments for moderation_action
     #[serde(deserialize_with = "pubsub::deserialize_default_from_null")]
     pub args: Vec<String>,
-    // FIXME: Should be option::none if empty
     /// User that did moderation action
-    pub created_by: types::UserName,
-    // FIXME: Should be option::none if empty
+    #[serde(
+        default,
+        deserialize_with = "pubsub::deserialize_none_from_empty_string"
+    )]
+    pub created_by: Option<types::UserName>,
     /// ID of user that did moderation action
-    pub created_by_user_id: types::UserId,
+    #[serde(
+        default,
+        deserialize_with = "pubsub::deserialize_none_from_empty_string"
+    )]
+    pub created_by_user_id: Option<types::UserId>,
     /// Moderation action is triggered from automod
+    #[serde(default)]
     pub from_automod: bool,
     /// Type of action
     pub moderation_action: ModerationActionCommand,
@@ -249,6 +256,7 @@ pub enum ModerationActionCommand {
     ///
     /// Given when a user is unbanned with `/unban <user>` or `/untimeout <user>`
     Unban,
+    // TODO: (2021-11-06) is this still returned?
     /// Automod message rejected
     AutomodRejected,
     /// Automod permitted term added
@@ -350,6 +358,8 @@ pub enum ModerationActionCommand {
     /// Unban Request Denied
     #[serde(rename = "DENY_UNBAN_REQUEST")]
     DenyUnbanRequest,
+    /// Users own message was deleted.
+    DeleteNotification,
 }
 
 /// A command
@@ -380,6 +390,10 @@ pub enum ModerationType {
     ChatLoginModeration,
     /// Channel moderated
     ChatChannelModeration,
+    /// Chat targeted login moderation
+    ///
+    /// These events are sent when the [user](ChatModeratorActions::user_id) in the event is targeted by a moderation command.
+    ChatTargetedLoginModeration,
 }
 
 #[cfg(test)]
@@ -476,7 +490,17 @@ mod tests {
             }
         ));
     }
-
+    #[test]
+    fn mod_targeted_delete() {
+        let source = r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.80525799","message":"{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_targeted_login_moderation\",\"moderation_action\":\"delete_notification\",\"args\":[\"you have the moonpool no?\"],\"msg_id\":\"b7ffbf8a-ca9f-497e-bc6f-ae0e606e99dc\",\"target_user_id\":\"27620241\",\"target_user_login\":\"emilgardis\"}}"}}"#;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
+            }
+        ));
+    }
     #[test]
     fn mod_automod() {
         let source = r#"
