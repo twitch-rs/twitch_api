@@ -15,7 +15,6 @@
 //!     .first(100) // max 100, 20 if left unspecified
 //!     .build();
 //!
-//!
 //! println!("{:?}", &client.req_get(req, &token).await?.data.get(0));
 //! # Ok(())
 //! # }
