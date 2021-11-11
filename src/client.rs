@@ -491,6 +491,7 @@ mod tests {
     #[test]
     #[cfg(feature = "surf_client")]
     fn surf() {
+        use super::ClientDefault;
         use std::convert::TryInto;
 
         super::SurfClient::default_client_with_name(Some("test/123".try_into().unwrap())).unwrap();
@@ -500,6 +501,7 @@ mod tests {
     #[test]
     #[cfg(feature = "reqwest_client")]
     fn reqwest() {
+        use super::ClientDefault;
         use std::convert::TryInto;
 
         super::ReqwestClient::default_client_with_name(Some("test/123".try_into().unwrap()))
