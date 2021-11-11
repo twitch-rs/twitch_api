@@ -169,6 +169,7 @@ impl RequestPatch for EndPredictionRequest {
             pagination: None,
             request,
             total: None,
+            other: None,
         })
     }
 }

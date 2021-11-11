@@ -119,6 +119,29 @@ impl helix::Paginated for GetBroadcasterSubscriptionsRequest {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
 }
 
+impl helix::Response<GetBroadcasterSubscriptionsRequest, Vec<BroadcasterSubscription>> {
+    /// The current number of subscriber points earned by this broadcaster.
+    pub fn points(&self) -> Result<i64, BroadcasterSubscriptionPointsError> {
+        let points = self.get_other("points")?;
+        if let Some(points) = points {
+            Ok(points)
+        } else {
+            Err(BroadcasterSubscriptionPointsError::PointsNotFound)
+        }
+    }
+}
+
+/// Errors when retrieving `points` in [Get Broadcaster Subscriptions](self)
+#[derive(Debug, thiserror::Error)]
+pub enum BroadcasterSubscriptionPointsError {
+    /// Deserialization error
+    #[error(transparent)]
+    DeserError(#[from] serde_json::Error),
+    /// `points` not found in the response
+    #[error("`points` not found in the response")]
+    PointsNotFound,
+}
+
 #[cfg(test)]
 #[test]
 fn test_request() {
@@ -149,7 +172,8 @@ fn test_request() {
         "pagination": {
           "cursor": "xxxx"
         },
-        "total": 13
+        "total": 13,
+        "points": 13
       }
 "#
     .to_vec();
@@ -168,4 +192,5 @@ fn test_request() {
                 .unwrap()
         );
     assert_eq!(resp.total, Some(13));
+    assert_eq!(resp.points().unwrap(), 13);
 }

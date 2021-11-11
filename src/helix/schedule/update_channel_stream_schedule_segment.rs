@@ -140,6 +140,7 @@ impl RequestPatch for UpdateChannelStreamScheduleSegmentRequest {
             pagination: response.pagination.cursor,
             request,
             total: response.total,
+            other: None,
         })
     }
 }

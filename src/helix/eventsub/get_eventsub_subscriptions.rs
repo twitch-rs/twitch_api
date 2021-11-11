@@ -99,6 +99,7 @@ impl RequestGet for GetEventSubSubscriptionsRequest {
             pagination: response.pagination.cursor,
             request,
             total: Some(response.total),
+            other: None,
         })
     }
 }

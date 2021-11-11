@@ -132,6 +132,7 @@ impl RequestPatch for ModifyChannelInformationRequest {
             pagination: None,
             request,
             total: None,
+            other: None,
         })
     }
 }

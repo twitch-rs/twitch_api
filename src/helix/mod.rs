@@ -130,6 +130,8 @@ struct InnerResponse<D> {
     pagination: Pagination,
     #[serde(default)]
     total: Option<i64>,
+    #[serde(default, flatten)]
+    other: Option<serde_json::Map<String, serde_json::Value>>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -778,6 +780,7 @@ pub trait RequestPost: Request {
             pagination: response.pagination.cursor,
             request,
             total: response.total,
+            other: None,
         })
     }
 }
@@ -1080,6 +1083,7 @@ pub trait RequestGet: Request {
             pagination: response.pagination.cursor,
             request,
             total: response.total,
+            other: response.other,
         })
     }
 }
@@ -1099,6 +1103,10 @@ where
     pub request: Option<R>,
     /// Response would return this many results if fully paginated. Sometimes this is not emmitted or correct for this purpose, in those cases, this value will be `None`.
     pub total: Option<i64>,
+    /// Fields which are not part of the data response, but are returned by the endpoint.
+    ///
+    /// See for example [Get Broadcaster Subscriptions](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions) which returns this.
+    pub other: Option<serde_json::Map<String, serde_json::Value>>,
 }
 
 impl<R, D> Response<R, D>
@@ -1106,6 +1114,30 @@ where
     R: Request,
     D: serde::de::DeserializeOwned + PartialEq,
 {
+    /// Get a field from the response that is not part of `data`.
+    pub fn get_other<Q, V>(&self, key: &Q) -> Result<Option<V>, serde_json::Error>
+    where
+        String: std::borrow::Borrow<Q>,
+        Q: ?Sized + Ord + Eq + std::hash::Hash,
+        V: serde::de::DeserializeOwned, {
+        use std::borrow::Borrow as _;
+        match &key {
+            total if &String::from("total").borrow() == total => {
+                if let Some(total) = self.total {
+                    let total = serde_json::json!(total);
+                    Some(serde_json::from_value(total)).transpose()
+                } else {
+                    Ok(None)
+                }
+            }
+            _ => self
+                .other
+                .as_ref()
+                .and_then(|map| map.get(key.borrow()))
+                .map(|v| serde_json::from_value(v.clone()))
+                .transpose(),
+        }
+    }
 }
 
 /// Custom response retrieved from endpoint, used for specializing responses

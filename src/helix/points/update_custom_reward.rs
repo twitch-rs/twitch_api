@@ -195,6 +195,7 @@ impl RequestPatch for UpdateCustomRewardRequest {
             pagination: None,
             request,
             total: None,
+            other: None,
         })
     }
 }

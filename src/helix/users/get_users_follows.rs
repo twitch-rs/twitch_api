@@ -140,6 +140,7 @@ impl RequestGet for GetUsersFollowsRequest {
             pagination: response.pagination.cursor,
             request,
             total: Some(response.total),
+            other: None,
         })
     }
 }

@@ -125,6 +125,7 @@ impl RequestPut for BlockUserRequest {
                 pagination: None,
                 request,
                 total: None,
+                other: None,
             }),
             _ => Err(helix::HelixRequestPutError::InvalidResponse {
                 reason: "unexpected status",

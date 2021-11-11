@@ -155,6 +155,7 @@ impl RequestGet for GetBitsLeaderboardRequest {
             pagination: None,
             request,
             total: Some(response.total),
+            other: None,
         })
     }
 }
