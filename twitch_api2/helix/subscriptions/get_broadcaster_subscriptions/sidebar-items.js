@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BroadcasterSubscription","Return Values for Get Broadcaster Subscriptions"],["GetBroadcasterSubscriptionsRequest","Query Parameters for Get Broadcaster Subscriptions"]]});
+initSidebarItems({"enum":[["BroadcasterSubscriptionPointsError","Errors when retrieving `points` in Get Broadcaster Subscriptions"]],"struct":[["BroadcasterSubscription","Return Values for Get Broadcaster Subscriptions"],["GetBroadcasterSubscriptionsRequest","Query Parameters for Get Broadcaster Subscriptions"]]});
