@@ -81,16 +81,23 @@ mock_api = []
 all = [
     "tmi",
     "helix",
-    "surf_client",
-    "reqwest_client",
-    "ureq_client",
     "client",
     "pubsub",
     "eventsub",
     "hmac",
-    "twitch_oauth2/all",
+    "twitch_oauth2",
     "tracing",
     "time",
+]
+
+_all = [
+    "all",
+    "surf_client",
+    "reqwest_client",
+    "ureq_client",
+    "twitch_oauth2/surf_client",
+    "twitch_oauth2/reqwest_client",
+    "mock_api",
 ]
 
 [dev-dependencies]
@@ -163,5 +170,5 @@ path = "examples/mock_api.rs"
 required-features = ["reqwest_client", "helix", "mock_api", "twitch_oauth2/mock_api"]
 
 [package.metadata.docs.rs]
-features = ["all", "unsupported"]
+features = ["all", "unsupported", "_all"]
 rustc-args = ["--cfg", "nightly"]

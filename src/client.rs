@@ -53,7 +53,6 @@
 //!
 //! See the source of this module for the implementation of [`Client`] for [surf](https://crates.io/crates/surf) and [reqwest](https://crates.io/crates/reqwest) if you need inspiration.
 
-use std::convert::TryInto;
 use std::error::Error;
 use std::future::Future;
 
@@ -249,6 +248,8 @@ impl ClientDefault<'static> for ReqwestClient {
     type Error = ReqwestClientDefaultError;
 
     fn default_client_with_name(product: Option<http::HeaderValue>) -> Result<Self, Self::Error> {
+        use std::convert::TryInto;
+
         let builder = Self::builder();
         let user_agent = if let Some(product) = product {
             let mut user_agent = product.as_bytes().to_owned();
@@ -487,18 +488,22 @@ impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::Twit
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     #[test]
     #[cfg(feature = "surf_client")]
     fn surf() {
-        SurfClient::default_client_with_name(Some("test/123".try_into().unwrap())).unwrap();
-        SurfClient::default_client();
+        use std::convert::TryInto;
+
+        super::SurfClient::default_client_with_name(Some("test/123".try_into().unwrap())).unwrap();
+        super::SurfClient::default_client();
     }
 
     #[test]
     #[cfg(feature = "reqwest_client")]
     fn reqwest() {
-        ReqwestClient::default_client_with_name(Some("test/123".try_into().unwrap())).unwrap();
-        ReqwestClient::default_client();
+        use std::convert::TryInto;
+
+        super::ReqwestClient::default_client_with_name(Some("test/123".try_into().unwrap()))
+            .unwrap();
+        super::ReqwestClient::default_client();
     }
 }
