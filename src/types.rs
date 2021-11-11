@@ -36,12 +36,12 @@ impl aliri_braid::Validator for Timestamp {
     type Error = TimestampParseError;
 
     fn validate(s: &str) -> Result<(), Self::Error> {
-        #[cfg(feature = "chrono")]
+        #[cfg(feature = "time")]
         {
-            let _ = chrono::DateTime::<chrono::FixedOffset>::parse_from_rfc3339(s)?;
+            let _ = time::OffsetDateTime::parse(s, &time::format_description::well_known::Rfc3339)?;
             Ok(())
         }
-        #[cfg(not(feature = "chrono"))]
+        #[cfg(not(feature = "time"))]
         {
             // This validator is lacking some features for now
             if !s.chars().all(|c| {
@@ -71,8 +71,7 @@ impl aliri_braid::Validator for Timestamp {
                 let partial_time = if let Some(stripped) = full_time.strip_suffix('Z') {
                     stripped
                 } else {
-                    // time is offset from UTC.
-                    &full_time[..full_time.len() - "+00:00".len()]
+                    return Err(TimestampParseError::Other("unsupported non-UTC timestamp, enable the `time` feature in `twitch_api2` to enable parsing these"));
                 };
                 if 2 != partial_time
                     .chars()
@@ -98,21 +97,24 @@ impl aliri_braid::Validator for Timestamp {
             } else {
                 return Err(TimestampParseError::invalid());
             }
-
             Ok(())
         }
     }
 }
 
 /// Errors that can occur when parsing a timestamp.
-#[derive(Debug, Clone, thiserror::Error, displaydoc::Display)]
+#[derive(Debug, thiserror::Error, displaydoc::Display)]
 #[ignore_extra_doc_attributes]
 #[non_exhaustive]
 pub enum TimestampParseError {
-    /// Could not parse the timestamp using `chrono`
-    #[cfg(feature = "chrono")]
-    #[cfg_attr(nightly, doc(cfg(feature = "chrono")))]
-    ChronoError(#[from] chrono::ParseError),
+    /// Could not parse the timestamp using `time`
+    #[cfg(feature = "time")]
+    #[cfg_attr(nightly, doc(cfg(feature = "time")))]
+    TimeError(#[from] time::error::Parse),
+    /// Could not format the timestamp using `time`
+    #[cfg(feature = "time")]
+    #[cfg_attr(nightly, doc(cfg(feature = "time")))]
+    TimeFormatError(#[from] time::error::Format),
     /// {0}
     Other(&'static str),
     /// timestamp has an invalid format. {s:?} - {location}
@@ -125,7 +127,7 @@ pub enum TimestampParseError {
 }
 
 impl TimestampParseError {
-    #[cfg(not(feature = "chrono"))]
+    #[cfg(not(feature = "time"))]
     #[track_caller]
     fn invalid() -> Self {
         Self::InvalidFormat {
@@ -134,7 +136,7 @@ impl TimestampParseError {
         }
     }
 
-    #[cfg(not(feature = "chrono"))]
+    #[cfg(not(feature = "time"))]
     #[track_caller]
     fn invalid_s(s: &str) -> Self {
         Self::InvalidFormat {
@@ -149,19 +151,23 @@ impl Timestamp {
     ///
     /// # Panics
     ///
-    /// Internally, without the `chrono` feature, this uses `unsafe` to deal with the raw string bytes. To ensure safety, the method will panic on invalid input and source.
-    fn set_time(&mut self, hours: u32, minutes: u32, seconds: u32) {
-        #[cfg(feature = "chrono")]
+    /// Internally, without the `time` feature, this uses `unsafe` to deal with the raw string bytes. To ensure safety, the method will panic on invalid input and source.
+    fn set_time(&mut self, hours: u8, minutes: u8, seconds: u8) {
+        #[cfg(feature = "time")]
         {
+            use std::convert::TryInto;
             let _ = std::mem::replace(
                 self,
                 self.to_fixed_offset()
-                    .date()
-                    .and_hms(hours, minutes, seconds)
-                    .into(),
+                    .replace_time(
+                        time::Time::from_hms(hours, minutes, seconds)
+                            .expect("could not create time"),
+                    )
+                    .try_into()
+                    .expect("could not make timestamp"),
             );
         }
-        #[cfg(not(feature = "chrono"))]
+        #[cfg(not(feature = "time"))]
         {
             const ERROR_MSG: &str = "malformed timestamp";
             assert!(hours < 24);
@@ -210,25 +216,24 @@ impl Timestamp {
     }
 }
 
-#[cfg(feature = "chrono")]
-#[cfg_attr(nightly, doc(cfg(feature = "chrono")))]
+#[cfg(feature = "time")]
+#[cfg_attr(nightly, doc(cfg(feature = "time")))]
 impl Timestamp {
     /// Create a timestamp corresponding to current time
     pub fn now() -> Timestamp {
-        // Safety:
-        // chrono will always return a valid RFC3339 timestamp
-        Timestamp(chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::AutoSi, true))
+        use std::convert::TryInto;
+        time::OffsetDateTime::now_utc()
+            .try_into()
+            .expect("could not make timestamp")
     }
 
     /// Create a timestamp corresponding to the start of the current day. Timezone will always be UTC.
     pub fn today() -> Timestamp {
-        // Safety:
-        // chrono will always return a valid RFC3339 timestamp
-        Timestamp(
-            chrono::Utc::today()
-                .and_hms(0, 0, 0)
-                .to_rfc3339_opts(chrono::SecondsFormat::AutoSi, true),
-        )
+        use std::convert::TryInto;
+        time::OffsetDateTime::now_utc()
+            .replace_time(time::Time::MIDNIGHT)
+            .try_into()
+            .expect("could not make timestamp")
     }
 }
 
@@ -246,18 +251,19 @@ impl TimestampRef {
     /// assert_ne!(time2.normalize()?.as_ref(), &time2);
     /// # Ok::<(), std::boxed::Box<dyn std::error::Error + 'static>>(())
     /// ```
+    #[allow(unreachable_code)]
     pub fn normalize(&'_ self) -> Result<std::borrow::Cow<'_, TimestampRef>, TimestampParseError> {
         let s = self.as_str();
         if s.ends_with('Z') {
             Ok(self.into())
         } else {
-            #[cfg(feature = "chrono")]
+            #[cfg(feature = "time")]
             {
-                let utc: chrono::DateTime<chrono::Utc> = self.to_utc();
-                return Ok(std::borrow::Cow::Owned(utc.into()));
+                use std::convert::TryInto;
+                let utc = self.to_utc();
+                return Ok(std::borrow::Cow::Owned(utc.try_into()?));
             }
-            #[allow(unreachable_code)]
-            Err(TimestampParseError::Other("normalization for non `Z` timestamps is not enabled without the `chrono` feature enabled for `twitch_api2`"))
+            panic!("non `Z` timestamps are not possible to use without the `time` feature enabled for `twitch_api2`")
         }
     }
 
@@ -268,11 +274,9 @@ impl TimestampRef {
     /// ```rust
     /// use twitch_api2::types::Timestamp;
     ///
-    /// let time1 = Timestamp::new("2021-07-01T13:37:00Z").unwrap();
-    /// let time2 = Timestamp::new("2021-07-01T13:36:00Z").unwrap();
-    /// assert!(time2.is_before(&time1));
-    /// let time_now = chrono::Utc::now();
-    /// assert!(time1.is_before(&time_now));
+    /// let time2021 = Timestamp::new("2021-07-01T13:37:00Z").unwrap();
+    /// let time2020 = Timestamp::new("2020-07-01T13:37:00Z").unwrap();
+    /// assert!(time2020.is_before(&time2021));
     /// ```
     pub fn is_before<T>(&self, other: &T) -> bool
     where Self: PartialOrd<T> {
@@ -296,23 +300,26 @@ impl TimestampRef {
     }
 }
 
-#[cfg(feature = "chrono")]
-#[cfg_attr(nightly, doc(cfg(feature = "chrono")))]
+#[cfg(feature = "time")]
+#[cfg_attr(nightly, doc(cfg(feature = "time")))]
 impl TimestampRef {
-    /// Construct into a [`DateTime<Utc>`](chrono::DateTime) time.
+    /// Construct into a [`OffsetDateTime`](time::OffsetDateTime) time with a guaranteed UTC offset.
     ///
     /// # Panics
     ///
     /// This method assumes the timestamp is a valid rfc3339 timestamp, and panics if not.
-    pub fn to_utc(&self) -> chrono::DateTime<chrono::Utc> { self.to_fixed_offset().into() }
+    pub fn to_utc(&self) -> time::OffsetDateTime {
+        self.to_fixed_offset().to_offset(time::UtcOffset::UTC)
+    }
 
-    /// Construct into a [`DateTime<FixedOffset>`](chrono::DateTime) time.
+    /// Construct into a [`OffsetDateTime`](time::OffsetDateTime) time.
     ///
     /// # Panics
     ///
     /// This method assumes the timestamp is a valid rfc3339 timestamp, and panics if not.
-    pub fn to_fixed_offset(&self) -> chrono::DateTime<chrono::FixedOffset> {
-        chrono::DateTime::<chrono::FixedOffset>::parse_from_rfc3339(self.as_str()).unwrap()
+    pub fn to_fixed_offset(&self) -> time::OffsetDateTime {
+        time::OffsetDateTime::parse(&self.0, &time::format_description::well_known::Rfc3339)
+            .expect("this should never fail")
     }
 }
 
@@ -337,7 +344,7 @@ impl PartialOrd for TimestampRef {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         // to check ordering, we normalize offset, then do a lexicographic comparison if possible,
         // We can do this because the timestamp should always be RFC3339 with time-offset = 'Z' with normalize.
-        // However, we need to make sure punctuation and length is correct.
+        // However, we need to make sure punctuation and length is correct. Without the `time` feature, it's impossible to get a non-UTC timestamp, so normalize will do nothing.
         let this = self
             .normalize()
             .expect("normalization failed, this is a bug");
@@ -359,49 +366,49 @@ impl PartialOrd for TimestampRef {
     }
 }
 
-#[cfg(feature = "chrono")]
-#[cfg_attr(nightly, doc(cfg(feature = "chrono")))]
-impl<Tz: chrono::TimeZone> PartialEq<chrono::DateTime<Tz>> for Timestamp {
-    fn eq(&self, other: &chrono::DateTime<Tz>) -> bool {
+#[cfg(feature = "time")]
+#[cfg_attr(nightly, doc(cfg(feature = "time")))]
+impl PartialEq<time::OffsetDateTime> for Timestamp {
+    fn eq(&self, other: &time::OffsetDateTime) -> bool {
         // Defer to TimestampRef impl
         let this: &TimestampRef = self.as_ref();
         this.eq(other)
     }
 }
 
-#[cfg(feature = "chrono")]
-#[cfg_attr(nightly, doc(cfg(feature = "chrono")))]
-impl<Tz: chrono::TimeZone> PartialOrd<chrono::DateTime<Tz>> for Timestamp {
-    fn partial_cmp(&self, other: &chrono::DateTime<Tz>) -> Option<std::cmp::Ordering> {
+#[cfg(feature = "time")]
+#[cfg_attr(nightly, doc(cfg(feature = "time")))]
+impl PartialOrd<time::OffsetDateTime> for Timestamp {
+    fn partial_cmp(&self, other: &time::OffsetDateTime) -> Option<std::cmp::Ordering> {
         // Defer to TimestampRef impl
         let this: &TimestampRef = self.as_ref();
         this.partial_cmp(other)
     }
 }
 
-#[cfg(feature = "chrono")]
-#[cfg_attr(nightly, doc(cfg(feature = "chrono")))]
-impl<Tz: chrono::TimeZone> PartialEq<chrono::DateTime<Tz>> for TimestampRef {
-    fn eq(&self, other: &chrono::DateTime<Tz>) -> bool { &self.to_utc() == other }
+#[cfg(feature = "time")]
+#[cfg_attr(nightly, doc(cfg(feature = "time")))]
+impl PartialEq<time::OffsetDateTime> for TimestampRef {
+    fn eq(&self, other: &time::OffsetDateTime) -> bool { &self.to_utc() == other }
 }
 
-#[cfg(feature = "chrono")]
-#[cfg_attr(nightly, doc(cfg(feature = "chrono")))]
-impl<Tz: chrono::TimeZone> PartialOrd<chrono::DateTime<Tz>> for TimestampRef {
-    fn partial_cmp(&self, other: &chrono::DateTime<Tz>) -> Option<std::cmp::Ordering> {
+#[cfg(feature = "time")]
+#[cfg_attr(nightly, doc(cfg(feature = "time")))]
+impl PartialOrd<time::OffsetDateTime> for TimestampRef {
+    fn partial_cmp(&self, other: &time::OffsetDateTime) -> Option<std::cmp::Ordering> {
         self.to_utc().partial_cmp(other)
     }
 }
 
-#[cfg(feature = "chrono")]
-#[cfg_attr(nightly, doc(cfg(feature = "chrono")))]
-impl<Tz: chrono::TimeZone> From<chrono::DateTime<Tz>> for Timestamp
-where chrono::DateTime<Tz>: Into<chrono::DateTime<chrono::Utc>>
-{
-    fn from(value: chrono::DateTime<Tz>) -> Self {
-        let utc: chrono::DateTime<chrono::Utc> = value.into();
+#[cfg(feature = "time")]
+#[cfg_attr(nightly, doc(cfg(feature = "time")))]
+impl std::convert::TryFrom<time::OffsetDateTime> for Timestamp {
+    type Error = time::error::Format;
 
-        Timestamp(utc.to_rfc3339_opts(chrono::SecondsFormat::AutoSi, true))
+    fn try_from(value: time::OffsetDateTime) -> Result<Self, Self::Error> {
+        Ok(Timestamp(
+            value.format(&time::format_description::well_known::Rfc3339)?,
+        ))
     }
 }
 
@@ -1092,4 +1099,22 @@ pub enum CreatorGoalType {
     Follower,
     /// Creator goal is for subscriptions
     Subscription,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    pub fn time_test() {
+        let mut time1 = Timestamp::new("2021-11-11T10:00:00Z").unwrap();
+        time1.set_time(10, 0, 32);
+        let time2 = Timestamp::new("2021-11-10T10:00:00Z").unwrap();
+        assert!(time2.is_before(&time1));
+        dbg!(time1.normalize().unwrap());
+        #[cfg(feature = "time")]
+        let time = Timestamp::new("2021-11-11T13:37:00-01:00").unwrap();
+        #[cfg(feature = "time")]
+        dbg!(time.normalize().unwrap());
+    }
 }
