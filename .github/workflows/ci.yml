@@ -1,6 +1,6 @@
 name: CI
 env:
-  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all unsupported deny_unknown_fields"
+  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all unsupported deny_unknown_fields ureq_client"
 on:
   pull_request:
     types: [opened, reopened, synchronize]
@@ -122,7 +122,7 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} _all"
       - name: Run clippy --all-targets --all-features
         uses: actions-rs/clippy-check@v1
         with:
@@ -157,7 +157,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --doc --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --doc --features "${{ env.CI_TWITCH_API2_FEATURES }} _all"
       - name: Check twitch_api2 docs
         uses: actions-rs/cargo@v1
         env:
@@ -165,7 +165,7 @@ jobs:
           RUSTFLAGS: "--cfg nightly"
         with:
           command: doc
-          args: --locked --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --locked --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }} _all"
   release:
     name: Release
     runs-on: ubuntu-latest

@@ -27,6 +27,7 @@ serde_json = { version = "1.0.66", optional = true }
 serde_repr = "0.1.7"
 serde_ignored = { version = "0.1.2", optional = true }
 tracing = { version = "0.1.26", optional = true }
+ureq = {version = "2.3.0", optional = true, default-features = false, features = ["tls"] }
 reqwest = { version = "0.11.4", optional = true, default-features = false }
 surf = { version = "2.2.0", optional = true, default-features = false }
 http-types = { version = "2.12.0", optional = true, features = ["hyperium_http"] }
@@ -61,6 +62,12 @@ surf_client = [
     "twitch_oauth2/surf_client",
 ]
 
+ureq_client = [
+    "ureq",
+    "client",
+    "twitch_oauth2/surf_client",
+]
+
 reqwest_client = ["reqwest", "client", "twitch_oauth2/reqwest_client"]
 
 pubsub = ["serde_json", "serde_path_to_error"]
@@ -74,15 +81,23 @@ mock_api = []
 all = [
     "tmi",
     "helix",
-    "surf_client",
-    "reqwest_client",
     "client",
     "pubsub",
     "eventsub",
     "hmac",
-    "twitch_oauth2/all",
+    "twitch_oauth2",
     "tracing",
     "time",
+]
+
+_all = [
+    "all",
+    "surf_client",
+    "reqwest_client",
+    "ureq_client",
+    "twitch_oauth2/surf_client",
+    "twitch_oauth2/reqwest_client",
+    "mock_api",
 ]
 
 [dev-dependencies]
@@ -155,5 +170,5 @@ path = "examples/mock_api.rs"
 required-features = ["reqwest_client", "helix", "mock_api", "twitch_oauth2/mock_api"]
 
 [package.metadata.docs.rs]
-features = ["all", "unsupported"]
+features = ["all", "unsupported", "_all"]
 rustc-args = ["--cfg", "nightly"]
