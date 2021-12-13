@@ -412,6 +412,10 @@ impl std::convert::TryFrom<time::OffsetDateTime> for Timestamp {
     }
 }
 
+/// A blocked term ID
+#[aliri_braid::braid(serde)]
+pub struct BlockedTermId;
+
 /// A game or category ID
 #[aliri_braid::braid(serde)]
 pub struct CategoryId;
