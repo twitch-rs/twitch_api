@@ -17,6 +17,8 @@ pub mod get_banned_users;
 pub mod get_moderator_events;
 pub mod get_moderators;
 pub mod manage_held_automod_messages;
+#[cfg(feature = "unsupported")]
+pub mod unban_user;
 
 #[doc(inline)]
 #[cfg(feature = "unsupported")]
@@ -41,3 +43,6 @@ pub use manage_held_automod_messages::{
     AutoModAction, ManageHeldAutoModMessages, ManageHeldAutoModMessagesBody,
     ManageHeldAutoModMessagesRequest,
 };
+#[doc(inline)]
+#[cfg(feature = "unsupported")]
+pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
