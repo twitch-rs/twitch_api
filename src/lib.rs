@@ -243,16 +243,17 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
         }
     }
 
-    pub(crate) fn client(&self) -> &C {
+    /// Retrieve a reference of the [`HttpClient`][crate::HttpClient] inside this [`TwitchClient`]
+    pub fn get_client(&self) -> &C {
         #[cfg(feature = "helix")]
         {
-            &self.helix.client
+            self.helix.get_client()
         }
         #[cfg(not(feature = "helix"))]
         {
             #[cfg(feature = "tmi")]
             {
-                &self.tmi.client
+                self.tmi.get_client()
             }
         }
     }

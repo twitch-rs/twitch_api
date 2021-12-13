@@ -458,7 +458,7 @@ impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::Heli
         &'a self,
         request: Req,
     ) -> BoxedFuture<'a, Result<Response, <Self as twitch_oauth2::client::Client>::Error>> {
-        self.client.req(request)
+        self.get_client().req(request)
     }
 }
 
@@ -470,7 +470,7 @@ impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::TmiC
         &'a self,
         request: Req,
     ) -> BoxedFuture<'a, Result<Response, <Self as twitch_oauth2::client::Client>::Error>> {
-        self.client.req(request)
+        self.get_client().req(request)
     }
 }
 
@@ -482,7 +482,7 @@ impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::Twit
         &'a self,
         request: Req,
     ) -> BoxedFuture<'a, Result<Response, <Self as twitch_oauth2::client::Client>::Error>> {
-        self.client().req(request)
+        self.get_client().req(request)
     }
 }
 

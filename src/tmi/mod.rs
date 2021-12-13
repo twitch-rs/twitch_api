@@ -60,6 +60,9 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
         self.client.clone()
     }
 
+    /// Retrieve a reference of the [`HttpClient`][crate::HttpClient] inside this [`TmiClient`]
+    pub fn get_client(&self) -> &C { &self.client }
+
     /// Get all the chatters in the chat
     ///
     /// # Notes
