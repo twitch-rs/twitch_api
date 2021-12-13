@@ -179,6 +179,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         self.client.clone()
     }
 
+    /// Retrieve a reference of the [`HttpClient`][crate::HttpClient] inside this [`HelixClient`]
+    pub fn get_client(&self) -> &C { &self.client }
+
     /// Request on a valid [`RequestGet`] endpoint
     ///
     /// ```rust,no_run
