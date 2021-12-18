@@ -43,7 +43,7 @@
 //!     .moderator_id("5678")
 //!     .build();
 //! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of".to_string());
-//! let response: &add_blocked_term::BlockedTerm = client.req_post(request, body, &token).await?.data.first().unwrap();
+//! let response: &helix::moderation::BlockedTerm = client.req_post(request, body, &token).await?.data.first().unwrap();
 //! # Ok(())
 //! # }
 //! ```
@@ -103,25 +103,7 @@ impl helix::HelixRequestBody for Vec<AddBlockedTermBody> {
 /// Return Values for [Add Blocked Term](super::add_blocked_term)
 ///
 /// [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub struct BlockedTerm {
-    /// The broadcaster that owns the list of blocked terms.
-    pub broadcaster_id: types::UserId,
-    /// The UTC date and time (in RFC3339 format) of when the term was blocked.
-    pub created_at: types::Timestamp,
-    /// When the blocked term will expire. This will always be [`None`](Option::None) when retreived from this endpoint
-    pub expires_at: Option<types::Timestamp>,
-    /// An ID that uniquely identifies this blocked term.
-    pub id: types::BlockedTermId,
-    /// The moderator that blocked the word or phrase from being used in the broadcaster’s chat room.
-    pub moderator_id: types::UserId,
-    /// The blocked word or phrase.
-    pub text: String,
-    /// The UTC date and time (in RFC3339 format) of when the term was updated. This timestamp is the same as created_at.
-    pub updated_at: types::Timestamp,
-}
+type AddBlockedTermResponse = BlockedTerm;
 
 impl Request for AddBlockedTermRequest {
     // FIXME: this is a single entry
