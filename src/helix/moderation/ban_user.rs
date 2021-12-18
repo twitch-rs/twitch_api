@@ -1,72 +1,72 @@
-//! Bans one or more users from participating in a broadcaster’s chat room, or puts them in a timeout.
-//! [`ban-users`](https://dev.twitch.tv/docs/api/reference#ban-users)
+//! Bans a user from participating in a broadcaster’s chat room, or puts them in a timeout.
+//! [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 //!
 //! # Accessing the endpoint
 //!
-//! ## Request: [BanUsersRequest]
+//! ## Request: [BanUserRequest]
 //!
-//! To use this endpoint, construct a [`BanUsersRequest`] with the [`BanUsersRequest::builder()`] method.
+//! To use this endpoint, construct a [`BanUserRequest`] with the [`BanUserRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::moderation::ban_users;
-//! let request = ban_users::BanUsersRequest::builder()
+//! use twitch_api2::helix::moderation::ban_user;
+//! let request = ban_user::BanUserRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
 //!     .build();
 //! ```
 //!
-//! ## Body: [BanUsersBody]
+//! ## Body: [BanUserBody]
 //!
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::moderation::ban_users;
-//! let body = ban_users::BanUsersBody::builder()
+//! # use twitch_api2::helix::moderation::ban_user;
+//! let body = ban_user::BanUserBody::builder()
 //!     .msg_id("test1")
 //!     .msg_text("automod please approve this!")
 //!     .user_id("1234")
 //!     .build();
 //! ```
 //!
-//! ## Response: [BanUsersResponse]
+//! ## Response: [BanUserResponse]
 //!
 //!
 //! Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, moderation::ban_users};
+//! use twitch_api2::helix::{self, moderation::ban_user};
 //! # use twitch_api2::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = ban_users::BanUsersRequest::builder()
+//! let request = ban_user::BanUserRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
 //!     .build();
-//! let body = vec![ban_users::BanUsersBody::builder()
+//! let body = ban_user::BanUserBody::builder()
 //!     .msg_id("test1")
 //!     .msg_text("automod please approve this!")
 //!     .user_id("1234")
-//!     .build()];
-//! let response: ban_users::BanUsersResponse = client.req_post(request, body, &token).await?.data;
+//!     .build();
+//! let response: ban_user::BanUserResponse = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
-//! and parse the [`http::Response`] with [`BanUsersRequest::parse_response(None, &request.get_uri(), response)`](BanUsersRequest::parse_response)
+//! and parse the [`http::Response`] with [`BanUserRequest::parse_response(None, &request.get_uri(), response)`](BanUserRequest::parse_response)
 
 use super::*;
 use helix::RequestPost;
-/// Query Parameters for [Ban Users](super::ban_users)
+/// Query Parameters for [Ban User](super::ban_user)
 ///
-/// [`ban-users`](https://dev.twitch.tv/docs/api/reference#ban-users)
+/// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
-pub struct BanUsersRequest {
+pub struct BanUserRequest {
     /// The ID of the broadcaster whose chat room the user is being banned from.
     #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
@@ -75,12 +75,12 @@ pub struct BanUsersRequest {
     pub moderator_id: types::UserId,
 }
 
-/// Body Parameters for [Ban Users](super::ban_users)
+/// Body Parameters for [Ban User](super::ban_user)
 ///
-/// [`ban-users`](https://dev.twitch.tv/docs/api/reference#ban-users)
+/// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 #[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
-pub struct BanUsersBody {
+pub struct BanUserBody {
     /// Duration of the (optional) timeout in seconds.
     ///
     /// To ban a user indefinitely, don’t include this field.
@@ -95,8 +95,8 @@ pub struct BanUsersBody {
     pub user_id: types::UserId,
 }
 
-impl BanUsersBody {
-    /// Create a new [`BanUsersBody`]
+impl BanUserBody {
+    /// Create a new [`BanUserBody`]
     pub fn new(user_id: types::UserId, reason: String, duration: impl Into<Option<u32>>) -> Self {
         Self {
             duration: duration.into(),
@@ -106,31 +106,20 @@ impl BanUsersBody {
     }
 }
 
-impl helix::HelixRequestBody for Vec<BanUsersBody> {
+impl helix::HelixRequestBody for BanUserBody {
     fn try_to_body(&self) -> Result<Vec<u8>, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
-            data: &'a Vec<BanUsersBody>,
+            data: &'a Vec<&'a BanUserBody>,
         }
-
-        serde_json::to_vec(&InnerBody { data: self }).map_err(Into::into)
+        let v = vec![self];
+        serde_json::to_vec(&InnerBody { data: &v }).map_err(Into::into)
     }
 }
 
-/// Return Values for [Ban Users](super::ban_users)
+/// Return Values for [Ban User](super::ban_user)
 ///
-/// [`ban-users`](https://dev.twitch.tv/docs/api/reference#ban-users)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub struct BanUsersResponse {
-    /// List of sucessfully banned or timedout users and their [related](BanUser) information.
-    pub banned: Vec<BanUser>,
-    /// List of [user IDs](types::UserId) that raised an error.
-    pub errors: Vec<BanUserError>,
-}
-
-/// Describes a user that was banned. See also [`get_banned_users::BannedUser`](super::BannedUser)
+/// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -145,29 +134,8 @@ pub struct BanUser {
     pub user_id: types::UserId,
 }
 
-/// An error that occurred when banning or timing out a [user id](types::UserId) using [`BanUserRequest`].
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-pub struct BanUserError(String);
-
-impl BanUserError {
-    fn inner(&self) -> Option<(&types::UserIdRef, &str)> {
-        self.as_str()
-            .split_once(':')
-            .map(|t| (t.0.into(), t.1.trim_start()))
-    }
-
-    /// Return the [`UserId`](types::UserId) of the user that raised this [error](self::error).
-    pub fn user_id(&self) -> Option<&types::UserIdRef> { self.inner().map(|t| t.0) }
-
-    /// Return the error that was raised this when doing a ban or timeout.
-    pub fn error(&self) -> Option<&str> { self.inner().map(|t| t.1) }
-
-    /// Get the error formatted as given by twitch: `9876: user is already banned`
-    pub fn as_str(&self) -> &str { &self.0 }
-}
-
-impl Request for BanUsersRequest {
-    type Response = BanUsersResponse;
+impl Request for BanUserRequest {
+    type Response = BanUser;
 
     const PATH: &'static str = "moderation/bans";
     #[cfg(feature = "twitch_oauth2")]
@@ -175,8 +143,8 @@ impl Request for BanUsersRequest {
         &[twitch_oauth2::Scope::ModeratorManageBannedUsers];
 }
 
-impl RequestPost for BanUsersRequest {
-    type Body = Vec<BanUsersBody>;
+impl RequestPost for BanUserRequest {
+    type Body = BanUserBody;
 
     fn parse_inner_response(
         request: Option<Self>,
@@ -190,9 +158,8 @@ impl RequestPost for BanUsersRequest {
         #[derive(PartialEq, Deserialize, Debug, Clone)]
         struct InnerResponse {
             data: Vec<BanUser>,
-            errors: Vec<BanUserError>,
         }
-        let InnerResponse { data, errors } = helix::parse_json(response, true).map_err(|e| {
+        let InnerResponse { data } = helix::parse_json(response, true).map_err(|e| {
             helix::HelixRequestPostError::DeserializeError(
                 response.to_string(),
                 e,
@@ -201,10 +168,14 @@ impl RequestPost for BanUsersRequest {
             )
         })?;
         Ok(helix::Response {
-            data: BanUsersResponse {
-                banned: data,
-                errors,
-            },
+            data: data.into_iter().next().ok_or_else(|| {
+                helix::HelixRequestPostError::InvalidResponse {
+                    reason: "missing response data",
+                    response: response.to_string(),
+                    status,
+                    uri: uri.clone(),
+                }
+            })?,
             pagination: None,
             request,
             total: None,
@@ -217,16 +188,12 @@ impl RequestPost for BanUsersRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = BanUsersRequest::builder()
+    let req = BanUserRequest::builder()
         .broadcaster_id("1234")
         .moderator_id("5678")
         .build();
 
-    let body = vec![BanUsersBody::new(
-        "9876".into(),
-        "no reason".to_string(),
-        300,
-    )];
+    let body = BanUserBody::new("9876".into(), "no reason".to_string(), 300);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
@@ -237,12 +204,9 @@ fn test_request() {
           {
             "broadcaster_id": "1234",
             "moderator_id": "5678",
-            "user_id": "5432",
-            "end_time": "2021-09-28T16:19:11Z"
+            "user_id": "9876",
+            "end_time": "2021-09-28T19:22:31Z"
           }
-        ],
-        "errors": [
-          "9876: user is already banned"
         ]
       }
 "#
@@ -256,5 +220,39 @@ fn test_request() {
         "https://api.twitch.tv/helix/moderation/bans?broadcaster_id=1234&moderator_id=5678"
     );
 
-    dbg!(BanUsersRequest::parse_response(Some(req), &uri, http_response).unwrap());
+    dbg!(BanUserRequest::parse_response(Some(req), &uri, http_response).unwrap());
+}
+
+#[cfg(test)]
+#[test]
+fn test_request_error() {
+    use helix::*;
+    let req = BanUserRequest::builder()
+        .broadcaster_id("1234")
+        .moderator_id("5678")
+        .build();
+
+    let body = BanUserBody::new("9876".into(), "no reason".to_string(), 300);
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
+
+    // From twitch docs
+    let data = br#"
+    { 
+        "error": "Bad Request", 
+        "status": 400, 
+        "message": "user is already banned" 
+    }
+"#
+    .to_vec();
+
+    let http_response = http::Response::builder().status(400).body(data).unwrap();
+
+    let uri = req.get_uri().unwrap();
+    assert_eq!(
+        uri.to_string(),
+        "https://api.twitch.tv/helix/moderation/bans?broadcaster_id=1234&moderator_id=5678"
+    );
+
+    dbg!(BanUserRequest::parse_response(Some(req), &uri, http_response).unwrap_err());
 }

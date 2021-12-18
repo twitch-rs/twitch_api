@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 #[cfg(feature = "unsupported")]
 pub mod add_blocked_term;
 #[cfg(feature = "unsupported")]
-pub mod ban_users;
+pub mod ban_user;
 pub mod check_automod_status;
 pub mod get_banned_events;
 pub mod get_banned_users;
@@ -27,7 +27,7 @@ pub mod unban_user;
 pub use add_blocked_term::{AddBlockedTermBody, AddBlockedTermRequest};
 #[doc(inline)]
 #[cfg(feature = "unsupported")]
-pub use ban_users::{BanUser, BanUserError, BanUsersBody, BanUsersRequest, BanUsersResponse};
+pub use ban_user::{BanUser, BanUserBody, BanUserRequest};
 #[doc(inline)]
 pub use check_automod_status::{
     CheckAutoModStatus, CheckAutoModStatusBody, CheckAutoModStatusRequest,
@@ -48,8 +48,6 @@ pub use manage_held_automod_messages::{
 #[doc(inline)]
 #[cfg(feature = "unsupported")]
 pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
-
-
 
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
