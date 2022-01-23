@@ -7,26 +7,21 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
-#[cfg(feature = "unsupported")]
 pub mod add_blocked_term;
-#[cfg(feature = "unsupported")]
 pub mod ban_user;
 pub mod check_automod_status;
 pub mod get_banned_events;
 pub mod get_banned_users;
-#[cfg(feature = "unsupported")]
 pub mod get_blocked_terms;
 pub mod get_moderator_events;
 pub mod get_moderators;
 pub mod manage_held_automod_messages;
-#[cfg(feature = "unsupported")]
 pub mod unban_user;
+pub mod remove_blocked_term;
 
 #[doc(inline)]
-#[cfg(feature = "unsupported")]
 pub use add_blocked_term::{AddBlockedTermBody, AddBlockedTermRequest};
 #[doc(inline)]
-#[cfg(feature = "unsupported")]
 pub use ban_user::{BanUser, BanUserBody, BanUserRequest};
 #[doc(inline)]
 pub use check_automod_status::{
@@ -46,8 +41,9 @@ pub use manage_held_automod_messages::{
     ManageHeldAutoModMessagesRequest,
 };
 #[doc(inline)]
-#[cfg(feature = "unsupported")]
 pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
+#[doc(inline)]
+pub use remove_blocked_term::{RemoveBlockedTerm, RemoveBlockedTermRequest};
 
 /// A blocked term in automod
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
