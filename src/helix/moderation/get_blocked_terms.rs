@@ -66,7 +66,7 @@ pub struct GetBlockedTerms {
 /// Return Values for [Get Blocked Terms](super::get_blocked_terms)
 ///
 /// [`get-blocked-terms`](https://dev.twitch.tv/docs/api/reference#get-blocked-terms)
-type GetBlockedTermsResponse = BlockedTerm;
+pub type GetBlockedTermsResponse = BlockedTerm;
 
 impl Request for GetBlockedTerms {
     type Response = Vec<BlockedTerm>;

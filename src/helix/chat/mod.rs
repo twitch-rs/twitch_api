@@ -11,6 +11,7 @@ pub mod get_channel_emotes;
 pub mod get_emote_sets;
 pub mod get_global_chat_badges;
 pub mod get_global_emotes;
+pub mod update_chat_settings;
 
 #[doc(inline)]
 pub use get_channel_chat_badges::GetChannelChatBadgesRequest;
@@ -26,6 +27,9 @@ pub use get_global_emotes::GetGlobalEmotesRequest;
 
 #[doc(inline)]
 pub use get_emote_sets::GetEmoteSetsRequest;
+
+#[doc(inline)]
+pub use update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};
 
 /// A set of badges
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
@@ -137,4 +141,56 @@ pub struct GlobalEmote {
     pub scale: Vec<types::EmoteScale>,
     /// The background themes that the emote is available in.
     pub theme_mode: Vec<types::EmoteThemeMode>,
+}
+
+/// Chat settings
+#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct ChatSettings {
+    /// The ID of the broadcaster specified in the request.
+    pub broadcaster_id: types::UserId,
+    /// A Boolean value that determines whether chat messages must contain only emotes. Is true, if only messages that are 100% emotes are allowed; otherwise, false.
+    pub emote_mode: bool,
+    /// A Boolean value that determines whether the broadcaster restricts the chat room to followers only, based on how long they’ve followed.
+    ///
+    /// Is true, if the broadcaster restricts the chat room to followers only; otherwise, false.
+    /// See [`follower_mode_duration`] for how long the followers must have followed the broadcaster to participate in the chat room.
+    pub follower_mode: bool,
+    /// The length of time, in minutes, that the followers must have followed the broadcaster to participate in the chat room. See [`follower_mode`].
+    ///
+    /// Is null if [`follower_mode`] is false.
+    pub follower_mode_duration: Option<u64>,
+    /// The ID of the moderator specified in the request for chat settings.
+    pub moderator_id: Option<types::UserId>,
+    /// A Boolean value that determines whether the broadcaster adds a short delay before chat messages appear in the chat room. This gives chat moderators and bots a chance to remove them before viewers can see the message.
+    ///
+    /// Is true, if the broadcaster applies a delay; otherwise, false.
+    /// See [`non_moderator_chat_delay_duration`] for the length of the delay.
+    ///
+    /// # Notes
+    ///
+    /// This field and [`non_moderator_chat_delay_duration`] are not received when the request is made without a specified `moderator_id`.
+    pub non_moderator_chat_delay: Option<bool>,
+    /// The amount of time, in seconds, that messages are delayed from appearing in chat. See [`non_moderator_chat_delay`].
+    ///
+    /// Is null if [`non_moderator_chat_delay`] is false.
+    pub non_moderator_chat_delay_duration: Option<u64>,
+    /// A Boolean value that determines whether the broadcaster limits how often users in the chat room are allowed to send messages.
+    ///
+    /// Is true, if the broadcaster applies a delay; otherwise, false.
+    /// See [`slow_mode_wait_time`] for the delay.
+    pub slow_mode: bool,
+    /// The amount of time, in seconds, that users need to wait between sending messages. See slow_mode.
+    ///
+    /// Is null if slow_mode is false.
+    pub slow_mode_wait_time: Option<u64>,
+    /// A Boolean value that determines whether only users that subscribe to the broadcaster’s channel can talk in the chat room.
+    ///
+    /// Is true, if the broadcaster restricts the chat room to subscribers only; otherwise, false.
+    pub subscriber_mode: bool,
+    /// A Boolean value that determines whether the broadcaster requires users to post only unique messages in the chat room.
+    ///
+    /// Is true, if the broadcaster requires unique messages only; otherwise, false.
+    pub unique_chat_mode: bool,
 }

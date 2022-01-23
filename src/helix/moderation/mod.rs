@@ -49,6 +49,7 @@ pub use manage_held_automod_messages::{
 #[cfg(feature = "unsupported")]
 pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
 
+/// A blocked term in automod
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]

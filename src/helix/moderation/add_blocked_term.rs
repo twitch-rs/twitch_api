@@ -103,7 +103,7 @@ impl helix::HelixRequestBody for Vec<AddBlockedTermBody> {
 /// Return Values for [Add Blocked Term](super::add_blocked_term)
 ///
 /// [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
-type AddBlockedTermResponse = BlockedTerm;
+pub type AddBlockedTermResponse = BlockedTerm;
 
 impl Request for AddBlockedTermRequest {
     // FIXME: this is a single entry
