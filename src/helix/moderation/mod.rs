@@ -16,8 +16,8 @@ pub mod get_blocked_terms;
 pub mod get_moderator_events;
 pub mod get_moderators;
 pub mod manage_held_automod_messages;
-pub mod unban_user;
 pub mod remove_blocked_term;
+pub mod unban_user;
 
 #[doc(inline)]
 pub use add_blocked_term::{AddBlockedTermBody, AddBlockedTermRequest};
@@ -41,9 +41,9 @@ pub use manage_held_automod_messages::{
     ManageHeldAutoModMessagesRequest,
 };
 #[doc(inline)]
-pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
-#[doc(inline)]
 pub use remove_blocked_term::{RemoveBlockedTerm, RemoveBlockedTermRequest};
+#[doc(inline)]
+pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
 
 /// A blocked term in automod
 #[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
