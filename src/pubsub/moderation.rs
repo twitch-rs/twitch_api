@@ -307,6 +307,10 @@ pub enum ModerationActionCommand {
     ///
     /// Given when editor/broadcaster does `/raid <channel>`
     Raid,
+    /// Unraid
+    ///
+    /// Given when editor/broadcaster does `/unraid`
+    Unraid,
     /// Slow-mode chat enabled
     Slow,
     #[serde(rename = "slowoff")]
@@ -643,6 +647,25 @@ mod tests {
             "data": {
                 "topic": "chat_moderator_actions.27620241.27620241",
                 "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"unvip\",\"args\":[\"emil_the_impostor\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"created_at\":\"2021-07-27T22:28:31.075027599Z\",\"msg_id\":\"\",\"target_user_id\":\"465894629\",\"target_user_login\":\"\",\"from_automod\":false}}"
+            }
+        }"#;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn unraid() {
+        let source = r#"
+        {
+            "type": "MESSAGE",
+            "data": {
+                "topic": "chat_moderator_actions.27620241.27620241",
+                "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"unraid\",\"args\":[\"emilgradis\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"created_at\":\"\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
             }
         }"#;
         let actual = dbg!(Response::parse(source).unwrap());
