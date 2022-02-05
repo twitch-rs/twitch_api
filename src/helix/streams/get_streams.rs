@@ -79,7 +79,7 @@ pub struct Stream {
     /// ID of the game being played on the stream.
     pub game_id: types::CategoryId,
     /// Name of the game being played.
-    pub game_name: types::CategoryId,
+    pub game_name: String,
     /// Stream ID.
     pub id: types::StreamId,
     /// Stream language.
