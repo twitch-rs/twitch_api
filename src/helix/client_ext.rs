@@ -585,7 +585,7 @@ pub fn make_stream<
         + Sync
         + Copy
         + 'static,
-) -> std::pin::Pin<Box<dyn futures::Stream<Item = Result<Item, ClientError<'a, C>>> + 'a>>
+) -> std::pin::Pin<Box<dyn futures::Stream<Item = Result<Item, ClientError<'a, C>>> + 'a + Send>>
 where
     // FIXME: This clone is bad. I want to be able to return the data, but not in a way that limits the response to be Default
     // I also want to keep allocations low, so std::mem::take is perfect, but that makes get_next not work optimally.
