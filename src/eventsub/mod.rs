@@ -497,6 +497,10 @@ mod test {
         let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
         let request = request.body(body.as_bytes().to_vec()).unwrap();
         let payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
+        let payload = dbg!(crate::eventsub::Event::parse(
+            std::str::from_utf8(request.body()).unwrap()
+        )
+        .unwrap());
         crate::tests::roundtrip(&payload)
     }
 
@@ -528,6 +532,10 @@ mod test {
         let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
         let request = request.body(body.as_bytes().to_vec()).unwrap();
         let payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
+        let payload = dbg!(crate::eventsub::Event::parse(
+            std::str::from_utf8(request.body()).unwrap()
+        )
+        .unwrap());
         crate::tests::roundtrip(&payload)
     }
     #[test]
@@ -561,6 +569,39 @@ mod test {
         let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
         let request = request.body(body.as_bytes().to_vec()).unwrap();
         dbg!(&body);
+        assert!(crate::eventsub::Event::verify_payload(&request, secret));
+    }
+
+    #[test]
+    #[cfg(feature = "hmac")]
+    fn verify_request_challenge() {
+        use http::header::{HeaderMap, HeaderName, HeaderValue};
+
+        let secret = b"HELLOabc2321";
+        #[rustfmt::skip]
+        let headers: HeaderMap = vec![
+            ("Twitch-Eventsub-Message-Id", "8d8fa82b-9792-79da-4e11-a6fa58a7a582"),
+            ("Twitch-Eventsub-Message-Retry", "0"),
+            ("Twitch-Eventsub-Message-Signature", "sha256=091f6a5c74fba820f2d50e9d0c5e7650556ee009375af2cc662e610e670bc412"),
+            ("Twitch-Eventsub-Message-Timestamp", "2022-02-06T04:03:24.2726598Z"),
+            ("Twitch-Eventsub-Message-Type", "webhook_callback_verification"),
+            ("Twitch-Eventsub-Subscription-Type", "channel.subscribe"),
+            ("Twitch-Eventsub-Subscription-Version", "1"),
+            ].into_iter()
+        .map(|(h, v)| {
+            (
+                h.parse::<HeaderName>().unwrap(),
+                v.parse::<HeaderValue>().unwrap(),
+            )
+        })
+        .collect();
+
+        let body = r#"{"challenge":"11535768-497e-14ec-8197-ba2cb5341a01","subscription":{"id":"8d8fa82b-9792-79da-4e11-a6fa58a7a582","status":"webhook_callback_verification_pending","type":"channel.subscribe","version":"1","condition":{"broadcaster_user_id":"88525095"},"transport":{"method":"webhook","callback":"http://localhost:80/twitch/eventsub"},"created_at":"2022-02-06T04:03:24.2706497Z","cost":0}}"#;
+
+        let mut request = http::Request::builder();
+        let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
+        let request = request.body(body.as_bytes().to_vec()).unwrap();
+        let payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
         assert!(crate::eventsub::Event::verify_payload(&request, secret));
     }
 }

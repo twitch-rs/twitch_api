@@ -446,12 +446,9 @@ fn get_version_event_type_and_message_type_from_text(
     #[derive(Deserialize)]
     struct IEvent {
         subscription: IEventSubscripionInformation,
-        challenge: Option<Empty>,
-        event: Option<Empty>,
+        challenge: Option<serde_json::Value>,
+        event: Option<serde_json::Value>,
     }
-
-    #[derive(Deserialize)]
-    struct Empty {}
 
     let IEvent {
         subscription,
