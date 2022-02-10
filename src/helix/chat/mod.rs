@@ -155,31 +155,31 @@ pub struct ChatSettings {
     /// A Boolean value that determines whether the broadcaster restricts the chat room to followers only, based on how long they’ve followed.
     ///
     /// Is true, if the broadcaster restricts the chat room to followers only; otherwise, false.
-    /// See [`follower_mode_duration`] for how long the followers must have followed the broadcaster to participate in the chat room.
+    /// See [`follower_mode_duration`](Self::follower_mode_duration) for how long the followers must have followed the broadcaster to participate in the chat room.
     pub follower_mode: bool,
-    /// The length of time, in minutes, that the followers must have followed the broadcaster to participate in the chat room. See [`follower_mode`].
+    /// The length of time, in minutes, that the followers must have followed the broadcaster to participate in the chat room. See [`follower_mode`](Self::follower_mode).
     ///
-    /// Is null if [`follower_mode`] is false.
+    /// Is null if [`follower_mode`](Self::follower_mode) is false.
     pub follower_mode_duration: Option<u64>,
     /// The ID of the moderator specified in the request for chat settings.
     pub moderator_id: Option<types::UserId>,
     /// A Boolean value that determines whether the broadcaster adds a short delay before chat messages appear in the chat room. This gives chat moderators and bots a chance to remove them before viewers can see the message.
     ///
     /// Is true, if the broadcaster applies a delay; otherwise, false.
-    /// See [`non_moderator_chat_delay_duration`] for the length of the delay.
+    /// See [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) for the length of the delay.
     ///
     /// # Notes
     ///
-    /// This field and [`non_moderator_chat_delay_duration`] are not received when the request is made without a specified `moderator_id`.
+    /// This field and [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) are not received when the request is made without a specified `moderator_id`.
     pub non_moderator_chat_delay: Option<bool>,
-    /// The amount of time, in seconds, that messages are delayed from appearing in chat. See [`non_moderator_chat_delay`].
+    /// The amount of time, in seconds, that messages are delayed from appearing in chat. See [`non_moderator_chat_delay`](Self::non_moderator_chat_delay).
     ///
-    /// Is null if [`non_moderator_chat_delay`] is false.
+    /// Is null if [`non_moderator_chat_delay`](Self::non_moderator_chat_delay) is false.
     pub non_moderator_chat_delay_duration: Option<u64>,
     /// A Boolean value that determines whether the broadcaster limits how often users in the chat room are allowed to send messages.
     ///
     /// Is true, if the broadcaster applies a delay; otherwise, false.
-    /// See [`slow_mode_wait_time`] for the delay.
+    /// See [`slow_mode_wait_time`](Self::slow_mode_wait_time) for the delay.
     pub slow_mode: bool,
     /// The amount of time, in seconds, that users need to wait between sending messages. See slow_mode.
     ///

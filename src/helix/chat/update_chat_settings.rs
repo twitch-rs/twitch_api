@@ -93,7 +93,7 @@ pub struct UpdateChatSettingsBody {
     ///
     /// Set to true, if the broadcaster restricts the chat room to followers only; otherwise, false. Default is true.
     ///
-    /// See follower_mode_duration for how long the followers must have followed the broadcaster to participate in the chat room.
+    /// See [`follower_mode_duration`](Self::follower_mode_duration) for how long the followers must have followed the broadcaster to participate in the chat room.
     #[builder(default, setter(into))]
     pub follower_mode: Option<bool>,
     /// The length of time, in minutes, that the followers must have followed the broadcaster to participate in the chat room (see follower_mode).
@@ -105,25 +105,25 @@ pub struct UpdateChatSettingsBody {
     ///
     /// Set to true, if the broadcaster applies a delay; otherwise, false. Default is false.
     ///
-    /// See non_moderator_chat_delay_duration for the length of the delay.
+    /// See [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) for the length of the delay.
     #[builder(default, setter(into))]
     pub non_moderator_chat_delay: Option<bool>,
     /// The amount of time, in seconds, that messages are delayed from appearing in chat.
     ///
     /// Possible values are:
     ///
-    ///     2 — 2 second delay (recommended)
-    ///     4 — 4 second delay
-    ///     6 — 6 second delay
+    /// * 2 — 2 second delay (recommended)
+    /// * 4 — 4 second delay
+    /// * 6 — 6 second delay
     ///
-    /// See non_moderator_chat_delay.
+    /// See [`non_moderator_chat_delay`](Self::non_moderator_chat_delay).
     #[builder(default, setter(into))]
     pub non_moderator_chat_delay_duration: Option<u64>,
     /// A Boolean value that determines whether the broadcaster limits how often users in the chat room are allowed to send messages.
     ///
     /// Set to true, if the broadcaster applies a wait period messages; otherwise, false. Default is false.
     ///
-    /// See slow_mode_wait_time for the delay.
+    /// See [`slow_mode_wait_time`](Self::slow_mode_wait_time) for the delay.
     #[builder(default, setter(into))]
     pub slow_mode: Option<bool>,
     /// The amount of time, in seconds, that users need to wait between sending messages (see slow_mode).

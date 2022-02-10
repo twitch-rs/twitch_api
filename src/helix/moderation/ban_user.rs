@@ -21,14 +21,10 @@
 //!
 //! ```
 //! # use twitch_api2::helix::moderation::ban_user;
-//! let body = ban_user::BanUserBody::builder()
-//!     .msg_id("test1")
-//!     .msg_text("automod please approve this!")
-//!     .user_id("1234")
-//!     .build();
+//! let body = ban_user::BanUserBody::new("9876".into(), "no reason".to_string(), 120);
 //! ```
 //!
-//! ## Response: [BanUserResponse]
+//! ## Response: [BanUser]
 //!
 //!
 //! Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
@@ -46,12 +42,8 @@
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
 //!     .build();
-//! let body = ban_user::BanUserBody::builder()
-//!     .msg_id("test1")
-//!     .msg_text("automod please approve this!")
-//!     .user_id("1234")
-//!     .build();
-//! let response: ban_user::BanUserResponse = client.req_post(request, body, &token).await?.data;
+//! let body = ban_user::BanUserBody::new("9876".into(), "no reason".to_string(), 120);
+//! let response: ban_user::BanUser = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -97,11 +89,15 @@ pub struct BanUserBody {
 
 impl BanUserBody {
     /// Create a new [`BanUserBody`]
-    pub fn new(user_id: types::UserId, reason: String, duration: impl Into<Option<u32>>) -> Self {
+    pub fn new(
+        user_id: impl Into<types::UserId>,
+        reason: String,
+        duration: impl Into<Option<u32>>,
+    ) -> Self {
         Self {
             duration: duration.into(),
             reason,
-            user_id,
+            user_id: user_id.into(),
         }
     }
 }
