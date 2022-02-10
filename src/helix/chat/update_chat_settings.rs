@@ -10,10 +10,10 @@
 //! To use this endpoint, construct an [`UpdateChatSettingsRequest`] with the [`UpdateChatSettingsRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::moderation::update_chat_settings;
+//! use twitch_api2::helix::chat::update_chat_settings;
 //! let request = update_chat_settings::UpdateChatSettingsRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("reward-id")
+//!     .broadcaster_id("1234")
+//!     .moderator_id("5678")
 //!     .build();
 //! ```
 //!
@@ -22,10 +22,10 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::moderation::update_chat_settings;
+//! # use twitch_api2::helix::chat::update_chat_settings;
 //! let body = update_chat_settings::UpdateChatSettingsBody::builder()
-//!     .cost(501)
-//!     .title("hydrate but differently now!".to_string())
+//!     .slow_mode(true)
+//!     .slow_mode_wait_time(10)
 //!     .build();
 //! ```
 //!
@@ -36,7 +36,7 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, moderation::update_chat_settings};
+//! use twitch_api2::helix::{self, chat::update_chat_settings};
 //! # use twitch_api2::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -44,14 +44,14 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = update_chat_settings::UpdateChatSettingsRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("reward-id")
+//!     .broadcaster_id("1234")
+//!     .moderator_id("5678")
 //!     .build();
 //! let body = update_chat_settings::UpdateChatSettingsBody::builder()
-//!     .cost(501)
-//!     .title("hydrate but differently now!".to_string())
+//!     .slow_mode(true)
+//!     .slow_mode_wait_time(10)
 //!     .build();
-//! let response: update_chat_settings::ChatSettings = client.req_patch(request, body, &token).await?.data;
+//! let response: helix::chat::ChatSettings = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```

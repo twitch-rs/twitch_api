@@ -21,7 +21,7 @@
 //!
 //! ```
 //! # use twitch_api2::helix::moderation::ban_user;
-//! let body = ban_user::BanUserBody::new("9876".into(), "no reason".to_string(), 120);
+//! let body = ban_user::BanUserBody::new("9876", "no reason".to_string(), 120);
 //! ```
 //!
 //! ## Response: [BanUser]
@@ -42,7 +42,7 @@
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
 //!     .build();
-//! let body = ban_user::BanUserBody::new("9876".into(), "no reason".to_string(), 120);
+//! let body = ban_user::BanUserBody::new("9876", "no reason".to_string(), 120);
 //! let response: ban_user::BanUser = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -189,7 +189,7 @@ fn test_request() {
         .moderator_id("5678")
         .build();
 
-    let body = BanUserBody::new("9876".into(), "no reason".to_string(), 300);
+    let body = BanUserBody::new("9876", "no reason".to_string(), 300);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
@@ -228,7 +228,7 @@ fn test_request_error() {
         .moderator_id("5678")
         .build();
 
-    let body = BanUserBody::new("9876".into(), "no reason".to_string(), 300);
+    let body = BanUserBody::new("9876", "no reason".to_string(), 300);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
