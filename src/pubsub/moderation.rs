@@ -135,7 +135,7 @@ pub struct ChannelTermsAction {
     /// If the term was permitted/denied because of a previous automod message
     pub from_automod: bool,
     /// Id of term
-    pub id: String,
+    pub id: types::BlockedTermId,
     /// User ID that caused the term
     pub requester_id: types::UserId,
     /// User name that caused the term

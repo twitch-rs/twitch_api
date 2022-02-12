@@ -20,6 +20,12 @@
   *  `Create Channel Stream Schedule Segment`
   *  `Delete Channel Stream Schedule Segment`
   *  `Get Creator Goals`
+  *  `Add Blocked Term`
+  *  `Get Blocked Terms`
+  *  `Remove Blocked Term`
+  *  `Unban User`
+  *  `Ban User`
+  *  `Update Chat Settings`
 * Added Channel Terms to pubsub `chat_moderator_actions`
 * Added `user-moderation-notifications` topic to pubsub
 * Added `extendsub` to pubsub `channel-subscribe-events-v1`
