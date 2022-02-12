@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["UpdateChatSettingsBody","Body Parameters for Update Chat Settingss"],["UpdateChatSettingsRequest","Query Parameters for Update Chat Settingss"]],"type":[["UpdateChatSettingsResponse","Return Values for Update Chat Settings"]]});

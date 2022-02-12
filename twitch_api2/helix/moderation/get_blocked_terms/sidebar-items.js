@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GetBlockedTerms","Query Parameters for Get Blocked Terms"]],"type":[["GetBlockedTermsResponse","Return Values for Get Blocked Terms"]]});

@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/chat/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><script defer src="../../../../main.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script>
     <noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><!-- intentional break -->
-<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/fff58ea9449f29022bb1f3390c1ebea16c71eeab">fff58ea</a></p>
+<p class="content">This documentation was built on commit <a href="https://github.com/Emilgardis/twitch_api2/tree/f338de64b6bfa3cee18447e9a2e862a2da269d35">f338de6</a></p>
 </head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../twitch_api2/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
@@ -145,6 +145,62 @@
 <span id="138">138</span>
 <span id="139">139</span>
 <span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding chat</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -158,6 +214,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_emote_sets</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_global_chat_badges</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_global_emotes</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">update_chat_settings</span>;
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_channel_chat_badges::GetChannelChatBadgesRequest</span>;
@@ -173,6 +230,9 @@
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_emote_sets::GetEmoteSetsRequest</span>;
+
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">update_chat_settings</span>::{<span class="ident">UpdateChatSettingsBody</span>, <span class="ident">UpdateChatSettingsRequest</span>};
 
 <span class="doccomment">/// A set of badges</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
@@ -285,6 +345,58 @@
     <span class="doccomment">/// The background themes that the emote is available in.</span>
     <span class="kw">pub</span> <span class="ident">theme_mode</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types::EmoteThemeMode</span><span class="op">&gt;</span>,
 }
+
+<span class="doccomment">/// Chat settings</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChatSettings</span> {
+    <span class="doccomment">/// The ID of the broadcaster specified in the request.</span>
+    <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types::UserId</span>,
+    <span class="doccomment">/// A Boolean value that determines whether chat messages must contain only emotes. Is true, if only messages that are 100% emotes are allowed; otherwise, false.</span>
+    <span class="kw">pub</span> <span class="ident">emote_mode</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// A Boolean value that determines whether the broadcaster restricts the chat room to followers only, based on how long they’ve followed.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Is true, if the broadcaster restricts the chat room to followers only; otherwise, false.</span>
+    <span class="doccomment">/// See [`follower_mode_duration`](Self::follower_mode_duration) for how long the followers must have followed the broadcaster to participate in the chat room.</span>
+    <span class="kw">pub</span> <span class="ident">follower_mode</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// The length of time, in minutes, that the followers must have followed the broadcaster to participate in the chat room. See [`follower_mode`](Self::follower_mode).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Is null if [`follower_mode`](Self::follower_mode) is false.</span>
+    <span class="kw">pub</span> <span class="ident">follower_mode_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The ID of the moderator specified in the request for chat settings.</span>
+    <span class="kw">pub</span> <span class="ident">moderator_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A Boolean value that determines whether the broadcaster adds a short delay before chat messages appear in the chat room. This gives chat moderators and bots a chance to remove them before viewers can see the message.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Is true, if the broadcaster applies a delay; otherwise, false.</span>
+    <span class="doccomment">/// See [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) for the length of the delay.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Notes</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This field and [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) are not received when the request is made without a specified `moderator_id`.</span>
+    <span class="kw">pub</span> <span class="ident">non_moderator_chat_delay</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The amount of time, in seconds, that messages are delayed from appearing in chat. See [`non_moderator_chat_delay`](Self::non_moderator_chat_delay).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Is null if [`non_moderator_chat_delay`](Self::non_moderator_chat_delay) is false.</span>
+    <span class="kw">pub</span> <span class="ident">non_moderator_chat_delay_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A Boolean value that determines whether the broadcaster limits how often users in the chat room are allowed to send messages.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Is true, if the broadcaster applies a delay; otherwise, false.</span>
+    <span class="doccomment">/// See [`slow_mode_wait_time`](Self::slow_mode_wait_time) for the delay.</span>
+    <span class="kw">pub</span> <span class="ident">slow_mode</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// The amount of time, in seconds, that users need to wait between sending messages. See slow_mode.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Is null if slow_mode is false.</span>
+    <span class="kw">pub</span> <span class="ident">slow_mode_wait_time</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A Boolean value that determines whether only users that subscribe to the broadcaster’s channel can talk in the chat room.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Is true, if the broadcaster restricts the chat room to subscribers only; otherwise, false.</span>
+    <span class="kw">pub</span> <span class="ident">subscriber_mode</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// A Boolean value that determines whether the broadcaster requires users to post only unique messages in the chat room.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Is true, if the broadcaster requires unique messages only; otherwise, false.</span>
+    <span class="kw">pub</span> <span class="ident">unique_chat_mode</span>: <span class="ident">bool</span>,
+}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (88fb06a1f 2022-02-05)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (e789f3a3a 2022-02-11)" ></div>
 </body></html>

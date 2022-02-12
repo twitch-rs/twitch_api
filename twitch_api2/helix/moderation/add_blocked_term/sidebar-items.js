@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AddBlockedTermBody","Body Parameters for Add Blocked Term"],["AddBlockedTermRequest","Query Parameters for Add Blocked Term"]],"type":[["AddBlockedTermResponse","Return Values for Add Blocked Term"]]});
