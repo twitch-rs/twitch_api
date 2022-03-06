@@ -1,5 +1,6 @@
 #![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![cfg_attr(nightly, feature(doc_cfg))]
+#![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![doc(html_root_url = "https://docs.rs/twitch_api2/0.6.0-rc.3")]
 //! [![github]](https://github.com/emilgardis/twitch_api2)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api2/0.6.0-rc.3/twitch_api2)
 //!
