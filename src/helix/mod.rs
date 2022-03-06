@@ -51,11 +51,13 @@ pub mod response;
 #[doc(inline)]
 pub use client::{client_ext::make_stream, *};
 pub use endpoints::*;
+#[cfg(feature = "client")]
+#[doc(inline)]
+pub use request::errors::ClientRequestError;
 #[doc(inline)]
 pub use request::errors::{
-    ClientRequestError, CreateRequestError, HelixRequestDeleteError, HelixRequestGetError,
-    HelixRequestPatchError, HelixRequestPostError, HelixRequestPutError, InvalidUri,
-    SerializeError,
+    CreateRequestError, HelixRequestDeleteError, HelixRequestGetError, HelixRequestPatchError,
+    HelixRequestPostError, HelixRequestPutError, InvalidUri, SerializeError,
 };
 #[doc(inline)]
 pub use request::{Request, RequestDelete, RequestGet, RequestPatch, RequestPost, RequestPut};
