@@ -16,10 +16,10 @@ Release Checklist
   * A commit will also be done, push it
 
 * do bors r+ to merge.
-* Checkout and pull master branch. Push to branch release.
+* Checkout and pull main branch. Push to branch release.
 * ```pwsh
-* git checkout master; git pull
-* git push <remote> master:release
+* git checkout main; git pull
+* git push <remote> main:release
 * ```
 * publish version to crates.io (skip verify if you want)
   ```
