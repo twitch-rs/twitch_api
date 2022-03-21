@@ -2,7 +2,7 @@
 on:
   push:
     branches:
-      - master
+      - main
       - trying
 
 name: Code Coverage
