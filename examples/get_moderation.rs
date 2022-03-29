@@ -1,8 +1,5 @@
 use futures::TryStreamExt;
-use twitch_api2::{
-    helix::moderation::{GetBannedEventsRequest, GetBannedUsersRequest, GetModeratorEventsRequest},
-    HelixClient,
-};
+use twitch_api2::{helix::moderation::GetBannedUsersRequest, HelixClient};
 use twitch_oauth2::{AccessToken, UserToken};
 
 fn main() {
@@ -45,57 +42,14 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
             .await?,
     );
 
-    println!("====Last 20 Moderator Events====");
-    let moderator_events_req = GetModeratorEventsRequest::builder()
-        .broadcaster_id(broadcaster_id)
-        .build();
-
-    let mut response = client.req_get(moderator_events_req, &token).await?;
-    println!("{:?}", response.data);
-
-    // /mod and /unmod events
-    while let Ok(Some(new_response)) = response.get_next(&client, &token).await {
-        response = new_response;
-        println!("{:?}", response.data);
-    }
-
     println!("====Banned users====");
-    let banned_users_req = GetBannedUsersRequest::builder()
-        .broadcaster_id(broadcaster_id)
-        .build();
-    let mut response = client.req_get(banned_users_req, &token).await?;
     println!(
         "{:?}",
-        response
-            .data
-            .iter()
-            .map(|user| &user.user_name)
-            .collect::<Vec<_>>()
+        client
+            .get_banned_users_in_channel_from_id(broadcaster_id, &token)
+            .try_collect::<Vec<_>>()
+            .await?,
     );
 
-    while let Ok(Some(new_response)) = response.get_next(&client, &token).await {
-        response = new_response;
-        println!(
-            "{:?}",
-            response
-                .data
-                .iter()
-                .map(|user| &user.user_name)
-                .collect::<Vec<_>>()
-        );
-    }
-
-    println!("====Last 10 Banned Events====");
-    let banned_events_req = GetBannedEventsRequest::builder()
-        .broadcaster_id(broadcaster_id)
-        .first(Some(10))
-        .build();
-    let mut response = client.req_get(banned_events_req, &token).await?;
-    println!("{:?}", response.data);
-
-    while let Ok(Some(new_response)) = response.get_next(&client, &token).await {
-        response = new_response;
-        println!("{:?}", response.data);
-    }
     Ok(())
 }
