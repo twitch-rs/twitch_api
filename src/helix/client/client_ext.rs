@@ -321,6 +321,43 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
+    /// Get all banned users in a channel [Get Banned Users](helix::moderation::GetBannedUsersRequest)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api2::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let moderators: Vec<helix::moderation::BannedUser> = client.get_banned_users_in_channel_from_id("twitchdev", &token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub fn get_banned_users_in_channel_from_id<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        token: &'a T,
+    ) -> std::pin::Pin<
+        Box<
+            dyn futures::Stream<Item = Result<helix::moderation::BannedUser, ClientError<'a, C>>>
+                + 'a,
+        >,
+    >
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::moderation::GetBannedUsersRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .build();
+
+        make_stream(req, token, self, std::collections::VecDeque::from)
+    }
+
     /// Get a users, with login, follow count
     pub async fn get_total_followers_from_login<T>(
         &'a self,
