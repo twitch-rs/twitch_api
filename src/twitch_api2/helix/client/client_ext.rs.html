@@ -721,6 +721,43 @@
 <span id="716">716</span>
 <span id="717">717</span>
 <span id="718">718</span>
+<span id="719">719</span>
+<span id="720">720</span>
+<span id="721">721</span>
+<span id="722">722</span>
+<span id="723">723</span>
+<span id="724">724</span>
+<span id="725">725</span>
+<span id="726">726</span>
+<span id="727">727</span>
+<span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::helix</span>::{<span class="self">self</span>, <span class="ident">ClientRequestError</span>, <span class="ident">HelixClient</span>};
@@ -1038,6 +1075,43 @@
         <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
     {
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::moderation::GetModeratorsRequest::builder</span>()
+            .<span class="ident">broadcaster_id</span>(<span class="ident">broadcaster_id</span>)
+            .<span class="ident">build</span>();
+
+        <span class="ident">make_stream</span>(<span class="ident">req</span>, <span class="ident">token</span>, <span class="self">self</span>, <span class="ident">std::collections::VecDeque::from</span>)
+    }
+
+    <span class="doccomment">/// Get all banned users in a channel [Get Banned Users](helix::moderation::GetBannedUsersRequest)</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust, no_run</span>
+    <span class="doccomment">/// # #[tokio::main]</span>
+    <span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
+    <span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, twitch_api2::client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
+    <span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
+    <span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
+    <span class="doccomment">/// use twitch_api2::helix;</span>
+    <span class="doccomment">/// use futures::TryStreamExt;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let moderators: Vec&lt;helix::moderation::BannedUser&gt; = client.get_banned_users_in_channel_from_id(&quot;twitchdev&quot;, &amp;token).try_collect().await?;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Ok(()) }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_banned_users_in_channel_from_id</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
+        <span class="ident">broadcaster_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
+        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
+    ) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span>
+        <span class="ident">Box</span><span class="op">&lt;</span>
+            <span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::moderation::BannedUser</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
+                <span class="op">+</span> <span class="lifetime">&#39;a</span>,
+        <span class="op">&gt;</span>,
+    <span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    {
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::moderation::GetBannedUsersRequest::builder</span>()
             .<span class="ident">broadcaster_id</span>(<span class="ident">broadcaster_id</span>)
             .<span class="ident">build</span>();
 

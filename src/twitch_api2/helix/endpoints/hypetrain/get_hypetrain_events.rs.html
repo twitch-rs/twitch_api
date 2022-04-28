@@ -193,7 +193,13 @@
 <span id="188">188</span>
 <span id="189">189</span>
 <span id="190">190</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Gets the information of the most recent Hype Train of the given channel ID.</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">allow</span>(<span class="ident">deprecated_in_future</span>, <span class="ident">deprecated</span>)]</span>
+<span class="doccomment">//! Gets the information of the most recent Hype Train of the given channel ID.</span>
 <span class="doccomment">//! [`get-hype-train-events`](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Accessing the endpoint</span>
@@ -251,6 +257,10 @@
     <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
     <span class="kw">pub</span> <span class="ident">first</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Retreive a single event by event ID</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.6.0&quot;</span>,
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;this does nothing, see https://discuss.dev.twitch.tv/t/get-hype-train-events-api-endpoint-id-query-parameter-deprecation/37613&quot;</span>
+    )]</span>
     <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
