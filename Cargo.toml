@@ -98,7 +98,6 @@ _all = [
     "reqwest",
     "ureq",
     "twitch_oauth2/surf_client_curl",
-    "twitch_oauth2/reqwest_client",
     "mock_api",
 ]
 
@@ -120,53 +119,53 @@ version_check = "0.9.3"
 [[example]]
 name = "automod_check"
 path = "examples/automod_check.rs"
-required-features = ["surf_client", "helix"]
+required-features = ["surf", "helix"]
 
 [[example]]
 name = "get_channel_status"
 path = "examples/get_channel_status.rs"
-required-features = ["reqwest_client", "helix"]
+required-features = ["reqwest", "helix"]
 
 [[example]]
 name = "get_moderation"
 path = "examples/get_moderation.rs"
-required-features = ["surf_client", "helix"]
+required-features = ["surf", "helix"]
 
 [[example]]
 name = "get_streams_and_chatters"
 path = "examples/get_streams_and_chatters.rs"
-required-features = ["surf_client", "helix", "tmi"]
+required-features = ["surf", "helix", "tmi"]
 
 [[example]]
 name = "modify_channel"
 path = "examples/modify_channel.rs"
 
-required-features = ["surf_client", "helix"]
+required-features = ["surf", "helix"]
 [[example]]
 name = "client"
 path = "examples/client.rs"
-required-features = ["reqwest_client", "helix"]
+required-features = ["reqwest", "helix"]
 
 [[example]]
 name = "channel_information"
 path = "examples/channel_information.rs"
-required-features = ["reqwest_client", "helix"]
+required-features = ["reqwest", "helix"]
 
 [[example]]
 name = "channel_information_custom"
 path = "examples/channel_information_custom.rs"
-required-features = ["reqwest_client", "helix", "unsupported"]
+required-features = ["reqwest", "helix", "unsupported"]
 
 [[example]]
 name = "followed_streams"
 path = "examples/followed_streams.rs"
-required-features = ["reqwest_client", "helix"]
+required-features = ["reqwest", "helix"]
 
 [[example]]
 name = "mock_api"
 path = "examples/mock_api.rs"
 required-features = [
-    "reqwest_client",
+    "reqwest",
     "helix",
     "mock_api",
     "twitch_oauth2/mock_api",
