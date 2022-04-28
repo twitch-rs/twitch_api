@@ -23,17 +23,7 @@ jobs:
           toolchain: nightly
           override: true
           components: llvm-tools-preview
-      - name: Cache cargo
-        uses: actions/cache@v2
-        id: cache
-        with:
-          path: |
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
-            ~/.cargo/git
-            ~/.cargo/bin
-          key: ${{ runner.os }}-nightly-cargo-target-cov-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-nightly-cargo-target-${{ hashFiles('**/Cargo.lock') }}
+      - uses: Swatinem/rust-cache@v1
       - name: Install cargo-llvm-cov
         run: curl -LsSf https://github.com/taiki-e/cargo-llvm-cov/releases/latest/download/cargo-llvm-cov-x86_64-unknown-linux-gnu.tar.gz | tar xzf - -C ~/.cargo/bin
       - name: Generate code coverage for tests
