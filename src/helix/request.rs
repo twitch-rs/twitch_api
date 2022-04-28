@@ -50,7 +50,7 @@ pub trait RequestPost: Request {
         body: Self::Body,
         token: &str,
         client_id: &str,
-    ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
+    ) -> Result<http::Request<hyper::body::Bytes>, CreateRequestError> {
         let uri = self.get_uri()?;
 
         let body = body.try_to_body()?;
@@ -76,16 +76,17 @@ pub trait RequestPost: Request {
     /// # Notes
     ///
     /// Pass in the request to enable [pagination](Response::get_next) if supported.
-    fn parse_response(
+    fn parse_response<B: Into<hyper::body::Bytes>>(
         // FIXME: Is this really needed? Its currently only used for error reporting.
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<Vec<u8>>,
+        response: http::Response<B>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPostError>
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(response.body()).map_err(|e| {
+        let response: http::Response<hyper::body::Bytes> = response.map(|b| b.into());
+        let text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
             HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         if let Ok(HelixRequestError {
@@ -145,7 +146,7 @@ pub trait RequestPatch: Request {
         body: Self::Body,
         token: &str,
         client_id: &str,
-    ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
+    ) -> Result<http::Request<hyper::body::Bytes>, CreateRequestError> {
         let uri = self.get_uri()?;
 
         let body = body.try_to_body()?;
@@ -171,16 +172,17 @@ pub trait RequestPatch: Request {
     /// # Notes
     ///
     /// Pass in the request to enable [pagination](Response::get_next) if supported.
-    fn parse_response(
+    fn parse_response<B: Into<hyper::body::Bytes>>(
         // FIXME: Is this really needed? Its currently only used for error reporting.
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<Vec<u8>>,
+        response: http::Response<B>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPatchError>
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(response.body()).map_err(|e| {
+        let response: http::Response<hyper::body::Bytes> = response.map(|b| b.into());
+        let text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
             HelixRequestPatchError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         if let Ok(HelixRequestError {
@@ -218,7 +220,7 @@ pub trait RequestDelete: Request {
         &self,
         token: &str,
         client_id: &str,
-    ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
+    ) -> Result<http::Request<hyper::body::Bytes>, CreateRequestError> {
         let uri = self.get_uri()?;
 
         let mut bearer =
@@ -232,7 +234,7 @@ pub trait RequestDelete: Request {
             .header("Client-ID", client_id)
             .header("Content-Type", "application/json")
             .header(http::header::AUTHORIZATION, bearer)
-            .body(Vec::with_capacity(0))
+            .body(Vec::with_capacity(0).into())
             .map_err(Into::into)
     }
     /// Parse response.
@@ -240,16 +242,17 @@ pub trait RequestDelete: Request {
     /// # Notes
     ///
     /// Pass in the request to enable [pagination](Response::get_next) if supported.
-    fn parse_response(
+    fn parse_response<B: Into<hyper::body::Bytes>>(
         // FIXME: Is this really needed? Its currently only used for error reporting.
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<Vec<u8>>,
+        response: http::Response<B>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestDeleteError>
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(response.body()).map_err(|e| {
+        let response: http::Response<hyper::body::Bytes> = response.map(|b| b.into());
+        let text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
             HelixRequestDeleteError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         if let Ok(HelixRequestError {
@@ -290,7 +293,7 @@ pub trait RequestPut: Request {
         body: Self::Body,
         token: &str,
         client_id: &str,
-    ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
+    ) -> Result<http::Request<hyper::body::Bytes>, CreateRequestError> {
         let uri = self.get_uri()?;
 
         let body = body.try_to_body()?;
@@ -316,16 +319,17 @@ pub trait RequestPut: Request {
     /// # Notes
     ///
     /// Pass in the request to enable [pagination](Response::get_next) if supported.
-    fn parse_response(
+    fn parse_response<B: Into<hyper::body::Bytes>>(
         // FIXME: Is this really needed? Its currently only used for error reporting.
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<Vec<u8>>,
+        response: http::Response<B>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestPutError>
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(response.body()).map_err(|e| {
+        let response: http::Response<hyper::body::Bytes> = response.map(|b| b.into());
+        let text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
             HelixRequestPutError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         if let Ok(HelixRequestError {
@@ -363,7 +367,7 @@ pub trait RequestGet: Request {
         &self,
         token: &str,
         client_id: &str,
-    ) -> Result<http::Request<Vec<u8>>, CreateRequestError> {
+    ) -> Result<http::Request<hyper::body::Bytes>, CreateRequestError> {
         let uri = self.get_uri()?;
 
         let mut bearer =
@@ -377,7 +381,7 @@ pub trait RequestGet: Request {
             .header("Client-ID", client_id)
             .header("Content-Type", "application/json")
             .header(http::header::AUTHORIZATION, bearer)
-            .body(Vec::with_capacity(0))
+            .body(Vec::with_capacity(0).into())
             .map_err(Into::into)
     }
 
@@ -386,15 +390,16 @@ pub trait RequestGet: Request {
     /// # Notes
     ///
     /// Pass in the request to enable [pagination](Response::get_next) if supported.
-    fn parse_response(
+    fn parse_response<B: Into<hyper::body::Bytes>>(
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<Vec<u8>>,
+        response: http::Response<B>,
     ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestGetError>
     where
         Self: Sized,
     {
-        let text = std::str::from_utf8(response.body()).map_err(|e| {
+        let response: http::Response<hyper::body::Bytes> = response.map(|b| b.into());
+        let text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
             HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
         })?;
         //eprintln!("\n\nmessage is ------------ {} ------------", text);

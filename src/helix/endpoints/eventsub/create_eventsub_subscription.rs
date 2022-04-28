@@ -47,7 +47,7 @@ pub struct CreateEventSubSubscriptionBody<E: EventSubscription> {
 }
 
 impl<E: EventSubscription> helix::HelixRequestBody for CreateEventSubSubscriptionBody<E> {
-    fn try_to_body(&self) -> Result<Vec<u8>, helix::BodyError> {
+    fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(PartialEq, Serialize, Debug)]
         struct IEventSubRequestBody<'a> {
             r#type: EventType,
@@ -62,7 +62,7 @@ impl<E: EventSubscription> helix::HelixRequestBody for CreateEventSubSubscriptio
             condition: self.subscription.condition()?,
             transport: &self.transport,
         };
-        serde_json::to_vec(&b).map_err(Into::into)
+        serde_json::to_vec(&b).map_err(Into::into).map(Into::into)
     }
 }
 

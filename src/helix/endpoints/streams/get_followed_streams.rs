@@ -56,7 +56,7 @@ pub struct GetFollowedStreamsRequest {
     #[builder(default)]
     pub before: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default)]
+    #[builder(default, setter(into))]
     pub first: Option<usize>,
 }
 

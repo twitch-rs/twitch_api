@@ -1,6 +1,6 @@
 name: CI
 env:
-  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all unsupported deny_unknown_fields ureq_client"
+  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all unsupported deny_unknown_fields ureq"
 on:
   pull_request:
     types: [opened, reopened, synchronize]
@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
-        rust: [1.53.0, nightly]
+        rust: [1.60.0, nightly]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -31,19 +31,7 @@ jobs:
         with:
           toolchain: ${{ matrix.rust }}
           override: true
-      - name: Ready cache
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo chown -R $(whoami):$(id -ng) ~/.cargo/
-      - name: Cache cargo
-        uses: actions/cache@v2
-        id: cache
-        with:
-          path: |
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-${{ matrix.rust }}-cargo-target-${{ hashFiles('**/Cargo.lock') }}
+      - uses: Swatinem/rust-cache@v1
       - name: Test twitch_api2
         uses: actions-rs/cargo@v1
         with:
@@ -80,53 +68,41 @@ jobs:
           toolchain: nightly
           override: true
           components: clippy
-      - name: Ready cache
-        run: sudo chown -R $(whoami):$(id -ng) ~/.cargo/
-      - name: Cache cargo
-        uses: actions/cache@v2
-        id: cache
-        with:
-          path: |
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-nightly-clippy-cargo-target-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-nightly-cargo-target-${{ hashFiles('**/Cargo.lock') }}
+      - uses: Swatinem/rust-cache@v1
       - name: Run clippy --all-targets --no-default-features
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --no-default-features
       - name: Run clippy --all-targets --no-default-features --features "helix"
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --no-default-features --features "helix"
       - name: Run clippy --all-targets --no-default-features --features "tmi"
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --no-default-features --features "tmi"
       - name: Run clippy --all-targets --no-default-features --features "pubsub"
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --no-default-features --features "pubsub"
       - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
       - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} _all"
       - name: Run clippy --all-targets --all-features
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --all-features
   docs:
     name: Docs
@@ -139,19 +115,7 @@ jobs:
         with:
           toolchain: nightly
           override: true
-      - name: Ready cache
-        run: sudo chown -R $(whoami):$(id -ng) ~/.cargo/
-      - name: Cache cargo
-        uses: actions/cache@v2
-        id: cache-doc
-        with:
-          path: |
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-nightly-doc-cargo-target-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-nightly-cargo-target-${{ hashFiles('**/Cargo.lock') }}
+      - uses: Swatinem/rust-cache@v1
       # We do the following to make sure docs.rs can document properly without anything broken, and that docs are working.
       - name: Run doc tests
         uses: actions-rs/cargo@v1

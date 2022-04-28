@@ -77,6 +77,7 @@ pub struct ChannelInformation {
     #[serde(default)]
     pub description: String,
     /// Stream delay in seconds
+    #[serde(default)]
     pub delay: i64,
 }
 

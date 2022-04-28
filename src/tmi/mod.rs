@@ -81,53 +81,16 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
         );
         let req = http::Request::builder()
             .uri(url)
-            .body(Vec::with_capacity(0))?;
-        let req = self
+            .body(Vec::with_capacity(0).into())?;
+        let resp = self
             .client
             .req(req)
             .await
             .map_err(|e| RequestError::RequestError(Box::new(e)))?;
-        let text = std::str::from_utf8(req.body())
-            .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
-        crate::parse_json(text, true).map_err(Into::into)
-    }
-
-    /// Get the broadcaster that a given channel is hosting, or
-    /// the list of channels hosting a given target broadcaster.
-    ///
-    /// # Notes
-    /// This endpoint requires `host={id}` XOR `target={id}` in the query
-    /// (providing both will result in an error, therefore this function takes
-    /// a [`HostsRequestId`] enum).
-    pub async fn get_hosts(
-        &'a self,
-        include_logins: bool,
-        channel_id: HostsRequestId,
-    ) -> Result<GetHosts, RequestError<<C as crate::HttpClient<'a>>::Error>> {
-        let url = format!(
-            "{}{}{}{}",
-            crate::TWITCH_TMI_URL.as_str(),
-            "hosts?",
-            if include_logins {
-                "include_logins=1&"
-            } else {
-                ""
-            },
-            match channel_id {
-                HostsRequestId::Host(id) => format!("host={}", id),
-                HostsRequestId::Target(id) => format!("target={}", id),
-            }
-        );
-        let req = http::Request::builder()
-            .uri(url)
-            .body(Vec::with_capacity(0))?;
-        let req = self
-            .client
-            .req(req)
-            .await
-            .map_err(|e| RequestError::RequestError(Box::new(e)))?;
-        let text = std::str::from_utf8(req.body())
-            .map_err(|e| RequestError::Utf8Error(req.body().clone(), e))?;
+        let (parts, mut body) = resp.into_parts();
+        let resp = http::Response::from_parts(parts, hyper::body::to_bytes(&mut body).await?);
+        let text = std::str::from_utf8(&resp.body())
+            .map_err(|e| RequestError::Utf8Error(resp.body().to_vec(), e))?;
         crate::parse_json(text, true).map_err(Into::into)
     }
 }
@@ -169,45 +132,6 @@ pub struct Chatters {
     pub viewers: Vec<types::Nickname>,
 }
 
-/// Possible options for a [`TmiClient::get_hosts`] request.
-#[derive(Debug)]
-pub enum HostsRequestId {
-    /// Request the broadcaster that a given channel is hosting.
-    Host(UserId),
-    /// Request a list of channels hosting a target broadcaster.
-    Target(UserId),
-}
-
-/// Returned by TMI at `https://tmi.twitch.tv/hosts`
-///
-/// See [`TmiClient::get_hosts`]
-#[derive(Debug, Serialize, Deserialize)]
-pub struct GetHosts {
-    /// List of host records. `len()` will be 1 if successfully requested for a
-    /// [HostsRequestId::Host], in which case `target_id` may be missing if the
-    /// channel is not hosting anyone.
-    pub hosts: Vec<Host>,
-}
-
-/// A host record returned by TMI at `https://tmi.twitch.tv/hosts`
-///
-/// See [`TmiClient::get_hosts`]
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Host {
-    /// User ID of the hosting channel
-    pub host_id: UserId,
-    /// User ID of the hosted channel. Will be missing if the given channel is not hosting anyone.
-    pub target_id: Option<UserId>,
-    /// Login of the hosting channel, if requested with `include_logins = true`
-    pub host_login: Option<types::Nickname>,
-    /// Login of the hosted channel, if requested with `include_logins = true`
-    pub target_login: Option<types::Nickname>,
-    /// Display name of the hosting channel, if requested with `include_logins = true`
-    pub host_display_name: Option<types::Nickname>,
-    /// Display name of the hosted channel, if requested with `include_logins = true`
-    pub target_display_name: Option<types::Nickname>,
-}
-
 /// User ID
 pub type UserId = u64; // TMI user ID's appear to still be ints, even though Helix uses strings.
 
@@ -216,6 +140,8 @@ pub type UserId = u64; // TMI user ID's appear to still be ints, even though Hel
 pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// http crate returned an error
     HttpError(#[from] http::Error),
+    /// hyper crate returned an error
+    HyperError(#[from] hyper::Error),
     /// deserialization failed
     DeserializeError(#[from] crate::DeserError),
     /// request failed

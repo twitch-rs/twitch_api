@@ -53,7 +53,7 @@ pub struct GetStreamsRequest {
     #[builder(default)]
     pub before: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default)]
+    #[builder(default, setter(into))]
     pub first: Option<usize>,
     /// Returns streams broadcasting a specified game ID. You can specify up to 10 IDs.
     #[builder(default)]

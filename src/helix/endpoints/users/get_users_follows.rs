@@ -47,7 +47,7 @@ pub struct GetUsersFollowsRequest {
     #[builder(default)]
     pub after: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default)]
+    #[builder(default, setter(into))]
     pub first: Option<usize>,
     /// User ID. The request returns information about users who are being followed by the from_id user.
     #[builder(default, setter(into))]

@@ -9,8 +9,11 @@ use crate::helix::BodyError;
 // #[derive(displaydoc::Display)] https://github.com/yaahc/displaydoc/issues/15
 pub enum ClientRequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// Request failed from reqwests side
-    #[error("request failed from reqwests side")]
+    #[error("request failed")]
     RequestError(RE),
+    /// Request failed from reqwests side
+    #[error("body conversion failed")]
+    HyperError(#[from] hyper::Error),
     /// No pagination found
     #[error("no pagination found")]
     NoPage,
@@ -75,7 +78,7 @@ pub enum HelixRequestGetError {
         uri: http::Uri,
     },
     /// could not parse response as utf8 when calling `GET {2}`
-    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+    Utf8Error(hyper::body::Bytes, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `GET {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
@@ -110,10 +113,10 @@ pub enum HelixRequestPutError {
         /// URI to the endpoint
         uri: http::Uri,
         /// Body sent to PUT response
-        body: Vec<u8>,
+        body: hyper::body::Bytes,
     },
     /// could not parse response as utf8 when calling `PUT {2}`
-    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+    Utf8Error(hyper::body::Bytes, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `PUT {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
@@ -148,10 +151,10 @@ pub enum HelixRequestPostError {
         /// URI to the endpoint
         uri: http::Uri,
         /// Body sent to POST response
-        body: Vec<u8>,
+        body: hyper::body::Bytes,
     },
     /// could not parse response as utf8 when calling `POST {2}`
-    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+    Utf8Error(hyper::body::Bytes, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `POST {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
@@ -186,10 +189,10 @@ pub enum HelixRequestPatchError {
         /// URI to the endpoint
         uri: http::Uri,
         /// Body sent to POST response
-        body: Vec<u8>,
+        body: hyper::body::Bytes,
     },
     /// could not parse response as utf8 when calling `POST {2}`
-    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+    Utf8Error(hyper::body::Bytes, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `POST {2}` with response: {3} - {0:?}
     DeserializeError(
         String,
@@ -224,10 +227,10 @@ pub enum HelixRequestDeleteError {
         /// URI to the endpoint
         uri: http::Uri,
         /// Body sent to DELETE response
-        body: Vec<u8>,
+        body: hyper::body::Bytes,
     },
     /// could not parse response as utf8 when calling `DELETE {2}`
-    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
+    Utf8Error(hyper::body::Bytes, #[source] std::str::Utf8Error, http::Uri),
     /// invalid or unexpected response from twitch.
     InvalidResponse {
         /// Reason for error
