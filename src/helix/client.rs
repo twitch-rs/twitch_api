@@ -1,4 +1,6 @@
 //! Client for Helix endpoints
+use crate::client::ResponseExt;
+
 use super::*;
 
 pub(crate) mod client_ext;
@@ -116,7 +118,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?
+            .into_response_vec()
+            .await?;
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
@@ -140,7 +144,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?
+            .into_response_vec()
+            .await?;
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
@@ -164,7 +170,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?
+            .into_response_vec()
+            .await?;
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
@@ -185,7 +193,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?
+            .into_response_vec()
+            .await?;
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
@@ -209,7 +219,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?
+            .into_response_vec()
+            .await?;
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 }

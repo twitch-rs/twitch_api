@@ -1,4 +1,5 @@
 use super::*;
+use std::convert::TryInto;
 
 /// Custom response retrieved from endpoint, used for specializing responses
 #[non_exhaustive]
@@ -51,7 +52,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?
+            .into_response_bytes()
+            .await?;
         {
             let request = Some(request);
             let uri = &uri;
@@ -113,7 +116,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?
+            .into_response_bytes()
+            .await?;
         {
             let request = Some(request);
             let uri = &uri;
@@ -182,7 +187,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?
+            .into_response_bytes()
+            .await?;
         {
             let uri = &uri;
             let text = std::str::from_utf8(response.body()).map_err(|e| {
@@ -247,7 +254,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?
+            .into_response_bytes()
+            .await?;
         {
             let uri = &uri;
             let text = std::str::from_utf8(response.body()).map_err(|e| {
@@ -315,7 +324,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?;
+            .map_err(ClientRequestError::RequestError)?
+            .into_response_bytes()
+            .await?;
         {
             let uri = &uri;
             let text = std::str::from_utf8(response.body()).map_err(|e| {

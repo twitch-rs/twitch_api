@@ -124,6 +124,7 @@ impl RequestPatch for UpdateChannelStreamScheduleRequest {
 #[test]
 fn test_request() {
     use helix::*;
+    use std::convert::TryInto;
     let req = UpdateChannelStreamScheduleRequest::builder()
         .broadcaster_id("141981764")
         .is_vacation_enabled(true)

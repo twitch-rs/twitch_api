@@ -16,37 +16,47 @@
 //! To use that for requests we do the following.
 //!
 //! ```no_run
-//! use twitch_api2::client::{BoxedFuture, Req, Response};
-//! # mod foo { use twitch_api2::client::{BoxedFuture, Req, Response}; pub struct Client; impl Client{pub fn call(&self, req: http::Request<Vec<u8>>) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>> {unimplemented!()}} pub type ClientError = std::io::Error;}
+//! use twitch_api2::client::{BoxedFuture, Request, RequestExt as _, Response};
+//! mod foo {
+//!     use twitch_api2::client::{BoxedFuture, Response};
+//!     pub struct Client;
+//!     impl Client {
+//!         pub fn call(
+//!             &self,
+//!             req: http::Request<Vec<u8>>,
+//!         ) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>>
+//!         {
+//!             unimplemented!()
+//!         }
+//!     }
+//!     pub type ClientError = std::io::Error;
+//! }
 //! impl<'a> twitch_api2::HttpClient<'a> for foo::Client {
 //!     type Error = foo::ClientError;
 //!
-//!     fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
-//!         let fut = self.call(request);
-//!         Box::pin(async {fut.await})
+//!     fn req(&'a self, request: Request) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+//!         Box::pin(async move {
+//!             Ok(self
+//!                 .call(
+//!                     request
+//!                         // The `RequestExt` trait provides a convenience function to convert
+//!                         // a `Request<impl Into<hyper::body::Body>>` into a `Request<Vec<u8>>`
+//!                         .into_request_vec()
+//!                         .await
+//!                         .expect("a request given to the client should always be valid"),
+//!                 )
+//!                 .await?
+//!                 .map(|body| body.into()))
+//!         })
 //!     }
 //! }
-//! ```
-//! We can then use it like usual.
-//!
-//!  ```rust,no_run
-//! # use twitch_api2::client::{BoxedFuture, Req, Response};
-//! # mod foo { use twitch_api2::client::{BoxedFuture, Req, Response}; pub struct Client; impl Client{pub fn call(&self, req: http::Request<Vec<u8>>) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>> {unimplemented!()}} pub type ClientError = std::io::Error;}
-//! # impl<'a> twitch_api2::HttpClient<'a> for foo::Client {
-//! #     type Error = foo::ClientError;
-//! #    fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
-//! #        let fut = self.call(request);
-//! #        Box::pin(async {fut.await})
-//! #    }
-//! # }
-//! # use twitch_api2::{TwitchClient};
+//! // And for full usage
+//! use twitch_api2::TwitchClient;
 //! pub struct MyStruct {
 //!     twitch: TwitchClient<'static, foo::Client>,
 //!     token: twitch_oauth2::AppAccessToken,
 //! }
-//!
 //! ```
-//! 
 //! If your client is from a remote crate, you can use [the newtype pattern](https://github.com/rust-unofficial/patterns/blob/607fcb00c4ecb9c6317e4e101e16dc15717758bd/patterns/newtype.md)
 //!
 //! Of course, sometimes the clients use different types for their responses and requests. but simply translate them into [`http`] types and it will work.
@@ -56,6 +66,24 @@
 use std::error::Error;
 use std::future::Future;
 
+pub use hyper::body::Bytes;
+pub use hyper::Body;
+
+#[cfg(feature = "ureq")]
+mod ureq_impl;
+#[cfg(feature = "ureq")]
+pub use ureq_impl::UreqError;
+
+#[cfg(feature = "surf")]
+mod surf_impl;
+#[cfg(feature = "surf")]
+pub use surf_impl::SurfError;
+
+#[cfg(feature = "reqwest")]
+mod reqwest_impl;
+#[cfg(feature = "reqwest")]
+pub use reqwest_impl::ReqwestClientDefaultError;
+
 /// The User-Agent `product` of this crate.
 pub static TWITCH_API2_USER_AGENT: &str =
     concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"),);
@@ -64,15 +92,84 @@ pub static TWITCH_API2_USER_AGENT: &str =
 pub type BoxedFuture<'a, T> = std::pin::Pin<Box<dyn Future<Output = T> + Send + 'a>>;
 
 /// The request type we're expecting with body.
-pub type Req = http::Request<Vec<u8>>;
+pub type Request = http::Request<Bytes>;
 /// The response type we're expecting with body
-pub type Response = http::Response<Vec<u8>>;
+pub type Response = http::Response<Body>;
+
+/// Extension trait for [`Response`]
+pub trait ResponseExt {
+    /// Error returned
+    type Error;
+    /// Return the body as a vector of bytes
+    fn into_response_vec<'a>(self)
+        -> BoxedFuture<'a, Result<http::Response<Vec<u8>>, Self::Error>>;
+    /// Return the body as a [`Bytes`]
+    fn into_response_bytes<'a>(
+        self,
+    ) -> BoxedFuture<'a, Result<http::Response<hyper::body::Bytes>, Self::Error>>;
+}
+
+impl<Buffer> ResponseExt for http::Response<Buffer>
+where Buffer: Into<hyper::body::Body>
+{
+    type Error = hyper::Error;
+
+    fn into_response_vec<'a>(
+        self,
+    ) -> BoxedFuture<'a, Result<http::Response<Vec<u8>>, Self::Error>> {
+        let (parts, body) = self.into_parts();
+        let body: Body = body.into();
+        Box::pin(async move {
+            let body = hyper::body::to_bytes(body).await?.to_vec();
+            Ok(http::Response::from_parts(parts, body))
+        })
+    }
+
+    fn into_response_bytes<'a>(
+        self,
+    ) -> BoxedFuture<'a, Result<http::Response<hyper::body::Bytes>, Self::Error>> {
+        let (parts, body) = self.into_parts();
+        let body: Body = body.into();
+        Box::pin(async move {
+            let body = hyper::body::to_bytes(body).await?;
+            Ok(http::Response::from_parts(parts, body))
+        })
+    }
+}
+
+/// Extension trait for [`Request`]
+pub trait RequestExt {
+    /// Error returned
+    type Error;
+    /// Return the body as a vector of bytes
+    fn into_request_vec<'a>(self) -> BoxedFuture<'a, Result<http::Request<Vec<u8>>, Self::Error>>;
+}
+
+impl<Buffer> RequestExt for http::Request<Buffer>
+where Buffer: Into<hyper::body::Body>
+{
+    type Error = hyper::Error;
+
+    // TODO: Specialize for Buffer = AsRef<[u8]> or Vec<u8>
+    fn into_request_vec<'a>(self) -> BoxedFuture<'a, Result<http::Request<Vec<u8>>, Self::Error>> {
+        let (parts, body) = self.into_parts();
+        let body = body.into();
+        Box::pin(async move {
+            let body = hyper::body::to_bytes(body).await?.to_vec();
+            Ok(http::Request::from_parts(parts, body))
+        })
+    }
+}
+
 /// A client that can do requests
-pub trait Client<'a>: Send + 'a {
+pub trait Client<'a>: Send + Sync + 'a {
     /// Error returned by the client
     type Error: Error + Send + Sync + 'static;
     /// Send a request
-    fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, <Self as Client>::Error>>;
+    fn req(
+        &'a self,
+        request: Request,
+    ) -> BoxedFuture<'a, Result<Response, <Self as Client>::Error>>;
 }
 
 /// A specific client default for setting some sane defaults for API calls and oauth2 usage
@@ -113,311 +210,6 @@ pub trait ClientDefault<'a>: Clone + Sized {
 //     }
 // }
 
-#[cfg(feature = "ureq")]
-use ureq::Agent as UreqAgent;
-
-/// Possible errors from [`Client::req()`] when using the [ureq](https://crates.io/crates/ureq) client
-///
-/// Also returned by [`ClientDefault::default_client_with_name`]
-#[cfg(feature = "ureq")]
-#[derive(Debug, displaydoc::Display, thiserror::Error)]
-pub enum UreqError {
-    /// Ureq failed to do the request
-    Ureq(#[from] ureq::Error),
-    /// Http failed
-    Http(#[from] http::Error),
-    /// The response could not be collected
-    Io(#[from] std::io::Error),
-    /// could not construct header value
-    InvalidHeaderValue(#[from] http::header::InvalidHeaderValue),
-    /// could not construct header name
-    InvalidHeaderName(#[from] http::header::InvalidHeaderName),
-    /// uri could not be translated into an url.
-    UrlError(#[from] url::ParseError),
-}
-
-#[cfg(feature = "ureq")]
-#[cfg_attr(nightly, doc(cfg(feature = "ureq_client")))] // FIXME: This doc_cfg does nothing
-impl<'a> Client<'a> for UreqAgent {
-    type Error = UreqError;
-
-    fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
-        use std::io::Read;
-
-        let method = request.method().to_string();
-        let url = request.uri().to_string();
-        let mut req = self.request(&method, &url);
-
-        for (header, value) in request.headers() {
-            if let Ok(value) = value.to_str() {
-                req = req.set(header.as_str(), value);
-            }
-        }
-
-        let response = match req.send_bytes(request.body()).map_err(UreqError::Ureq) {
-            Ok(val) => val,
-            Err(err) => return Box::pin(async { Err(err) }),
-        };
-
-        let mut result = http::Response::builder().status(response.status());
-        let headers = result
-            .headers_mut()
-            // This should not fail, we just created the response.
-            .expect("expected to get headers mut when building response");
-        for name in response.headers_names() {
-            if let Some(value) = response.header(&name) {
-                let value = match http::header::HeaderValue::from_bytes(value.as_bytes())
-                    .map_err(UreqError::InvalidHeaderValue)
-                {
-                    Ok(val) => val,
-                    Err(err) => return Box::pin(async { Err(err) }),
-                };
-                let header = match http::header::HeaderName::from_bytes(name.as_bytes())
-                    .map_err(UreqError::InvalidHeaderName)
-                {
-                    Ok(val) => val,
-                    Err(err) => return Box::pin(async { Err(err) }),
-                };
-                headers.append(header, value);
-            }
-        }
-        result = result.version(match response.http_version() {
-            "HTTP/0.9" => http::Version::HTTP_09,
-            "HTTP/1.0" => http::Version::HTTP_10,
-            "HTTP/1.1" => http::Version::HTTP_11,
-            "HTTP/2.0" => http::Version::HTTP_2,
-            "HTTP/3.0" => http::Version::HTTP_3,
-            // TODO: Log this somewhere...
-            _ => http::Version::HTTP_11,
-        });
-        Box::pin(async move {
-            match response.into_reader().take(10_000_000).bytes().collect() {
-                Ok(v) => result.body(v).map_err(Into::into),
-                Err(e) => Err(e.into()),
-            }
-        })
-    }
-}
-
-#[cfg(feature = "reqwest")]
-use reqwest::Client as ReqwestClient;
-
-#[cfg(feature = "reqwest")]
-#[cfg_attr(nightly, doc(cfg(feature = "reqwest_client")))] // FIXME: This doc_cfg does nothing
-impl<'a> Client<'a> for ReqwestClient {
-    type Error = reqwest::Error;
-
-    fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
-        // Reqwest plays really nice here and has a try_from on `http::Request` -> `reqwest::Request`
-        use std::convert::TryFrom;
-        let req = match reqwest::Request::try_from(request) {
-            Ok(req) => req,
-            Err(e) => return Box::pin(async { Err(e) }),
-        };
-        // We need to "call" the execute outside the async closure to not capture self.
-        let fut = self.execute(req);
-        Box::pin(async move {
-            // Await the request and translate to `http::Response`
-            let mut response = fut.await?;
-            let mut result = http::Response::builder().status(response.status());
-            let headers = result
-                .headers_mut()
-                // This should not fail, we just created the response.
-                .expect("expected to get headers mut when building response");
-            std::mem::swap(headers, response.headers_mut());
-            let result = result.version(response.version());
-            Ok(result
-                .body(response.bytes().await?.as_ref().to_vec())
-                .expect("mismatch reqwest -> http conversion should not fail"))
-        })
-    }
-}
-
-/// Possible errors from [`ClientDefault::default_client_with_name`] for [reqwest](https://crates.io/crates/reqwest)
-#[cfg(feature = "reqwest")]
-#[derive(Debug, displaydoc::Display, thiserror::Error)]
-pub enum ReqwestClientDefaultError {
-    /// could not construct header value for User-Agent
-    InvalidHeaderValue(#[from] http::header::InvalidHeaderValue),
-    /// reqwest returned an error
-    ReqwestError(#[from] reqwest::Error),
-}
-
-#[cfg(feature = "reqwest")]
-impl ClientDefault<'static> for ReqwestClient {
-    type Error = ReqwestClientDefaultError;
-
-    fn default_client_with_name(product: Option<http::HeaderValue>) -> Result<Self, Self::Error> {
-        use std::convert::TryInto;
-
-        let builder = Self::builder();
-        let user_agent = if let Some(product) = product {
-            let mut user_agent = product.as_bytes().to_owned();
-            user_agent.push(b' ');
-            user_agent.extend(TWITCH_API2_USER_AGENT.as_bytes());
-            user_agent.as_slice().try_into()?
-        } else {
-            http::HeaderValue::from_str(TWITCH_API2_USER_AGENT)?
-        };
-        let builder = builder.user_agent(user_agent);
-        let builder = builder.redirect(reqwest::redirect::Policy::none());
-        builder.build().map_err(Into::into)
-    }
-}
-
-/// Possible errors from [`Client::req()`] when using the [surf](https://crates.io/crates/surf) client
-///
-/// Also returned by [`ClientDefault::default_client_with_name`]
-#[cfg(feature = "surf")]
-#[derive(Debug, displaydoc::Display, thiserror::Error)]
-pub enum SurfError {
-    /// surf failed to do the request: {0}
-    Surf(surf::Error),
-    /// could not construct header value
-    InvalidHeaderValue(#[from] http::header::InvalidHeaderValue),
-    /// could not construct header name
-    InvalidHeaderName(#[from] http::header::InvalidHeaderName),
-    /// uri could not be translated into an url.
-    UrlError(#[from] url::ParseError),
-}
-
-#[cfg(feature = "surf")]
-use surf::Client as SurfClient;
-
-#[cfg(feature = "surf")]
-#[cfg_attr(nightly, doc(cfg(feature = "surf_client")))] // FIXME: This doc_cfg does nothing
-impl<'a> Client<'a> for SurfClient {
-    type Error = SurfError;
-
-    fn req(&'a self, request: Req) -> BoxedFuture<'static, Result<Response, Self::Error>> {
-        // First we translate the `http::Request` method and uri into types that surf understands.
-
-        let method: surf::http::Method = request.method().clone().into();
-
-        let url = match url::Url::parse(&request.uri().to_string()) {
-            Ok(url) => url,
-            Err(err) => return Box::pin(async move { Err(err.into()) }),
-        };
-        // Construct the request
-        let mut req = surf::Request::new(method, url);
-
-        // move the headers into the surf request
-        for (name, value) in request.headers().iter() {
-            let value =
-                match surf::http::headers::HeaderValue::from_bytes(value.as_bytes().to_vec())
-                    .map_err(SurfError::Surf)
-                {
-                    Ok(val) => val,
-                    Err(err) => return Box::pin(async { Err(err) }),
-                };
-            req.append_header(name.as_str(), value);
-        }
-
-        // assembly the request, now we can send that to our `surf::Client`
-        req.body_bytes(&request.body());
-
-        let client = self.clone();
-        Box::pin(async move {
-            // Send the request and translate the response into a `http::Response`
-            let mut response = client.send(req).await.map_err(SurfError::Surf)?;
-            let mut result = http::Response::builder().status(response.status());
-
-            let mut response_headers: http::header::HeaderMap = response
-                .iter()
-                .map(|(k, v)| {
-                    Ok((
-                        http::header::HeaderName::from_bytes(k.as_str().as_bytes())?,
-                        http::HeaderValue::from_str(v.as_str())?,
-                    ))
-                })
-                .collect::<Result<_, SurfError>>()?;
-
-            let _ = std::mem::replace(&mut result.headers_mut(), Some(&mut response_headers));
-            let result = if let Some(v) = response.version() {
-                result.version(match v {
-                    surf::http::Version::Http0_9 => http::Version::HTTP_09,
-                    surf::http::Version::Http1_0 => http::Version::HTTP_10,
-                    surf::http::Version::Http1_1 => http::Version::HTTP_11,
-                    surf::http::Version::Http2_0 => http::Version::HTTP_2,
-                    surf::http::Version::Http3_0 => http::Version::HTTP_3,
-                    // TODO: Log this somewhere...
-                    _ => http::Version::HTTP_11,
-                })
-            } else {
-                result
-            };
-            Ok(result
-                .body(response.body_bytes().await.map_err(SurfError::Surf)?)
-                .expect("mismatch surf -> http conversion should not fail"))
-        })
-    }
-}
-
-/// Possible errors from [`ClientDefault::default_client_with_name`] for [surf](https://crates.io/crates/surf)
-#[cfg(feature = "surf")]
-#[derive(Debug, displaydoc::Display, thiserror::Error)]
-pub enum SurfClientDefaultError {
-    /// surf returned an error: {0}
-    SurfError(surf::Error),
-}
-
-#[cfg(feature = "surf")]
-impl ClientDefault<'static> for SurfClient
-where Self: Default
-{
-    type Error = SurfClientDefaultError;
-
-    fn default_client_with_name(product: Option<http::HeaderValue>) -> Result<Self, Self::Error> {
-        use std::str::FromStr as _;
-
-        #[cfg(feature = "surf")]
-        struct SurfAgentMiddleware {
-            user_agent: surf::http::headers::HeaderValue,
-        }
-
-        #[cfg(feature = "surf")]
-        #[async_trait::async_trait]
-        impl surf::middleware::Middleware for SurfAgentMiddleware {
-            async fn handle(
-                &self,
-                req: surf::Request,
-                client: SurfClient,
-                next: surf::middleware::Next<'_>,
-            ) -> surf::Result<surf::Response> {
-                let mut req = req;
-                // if let Some(header) = req.header_mut(surf::http::headers::USER_AGENT) {
-                //     let mut user_agent = self.user_agent.as_str().as_bytes().to_owned();
-                //     user_agent.push(b' ');
-                //     user_agent.extend(header.as_str().as_bytes());
-                //     req.set_header(
-                //         surf::http::headers::USER_AGENT,
-                //         surf::http::headers::HeaderValue::from_bytes(user_agent).expect(
-                //             "product User-Agent + existing User-Agent is expected to be valid ASCII",
-                //         ),
-                //     );
-                // } else {
-                req.set_header(surf::http::headers::USER_AGENT, self.user_agent.clone());
-                // }
-                next.run(req, client).await
-            }
-        }
-
-        let client = surf::Client::default();
-        let user_agent = if let Some(product) = product {
-            let mut user_agent = product.as_bytes().to_owned();
-            user_agent.push(b' ');
-            user_agent.extend(TWITCH_API2_USER_AGENT.as_bytes());
-            surf::http::headers::HeaderValue::from_bytes(user_agent)
-                .map_err(SurfClientDefaultError::SurfError)?
-        } else {
-            surf::http::headers::HeaderValue::from_str(TWITCH_API2_USER_AGENT)
-                .map_err(SurfClientDefaultError::SurfError)?
-        };
-        let middleware = SurfAgentMiddleware { user_agent };
-        Ok(client.with(middleware))
-    }
-}
-
 #[derive(Debug, Default, thiserror::Error, Clone)]
 /// A client that will never work, used to trick documentation tests
 #[error("this client does not do anything, only used for documentation test that only checks")]
@@ -426,7 +218,7 @@ pub struct DummyHttpClient;
 impl<'a> Client<'a> for DummyHttpClient {
     type Error = DummyHttpClient;
 
-    fn req(&'a self, _: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+    fn req(&'a self, _: Request) -> BoxedFuture<'a, Result<Response, Self::Error>> {
         Box::pin(async { Err(DummyHttpClient) })
     }
 }
@@ -434,8 +226,18 @@ impl<'a> Client<'a> for DummyHttpClient {
 impl<'a> Client<'a> for twitch_oauth2::client::DummyClient {
     type Error = twitch_oauth2::client::DummyClient;
 
-    fn req(&'a self, _: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+    fn req(&'a self, _: Request) -> BoxedFuture<'a, Result<Response, Self::Error>> {
         Box::pin(async { Err(twitch_oauth2::client::DummyClient) })
+    }
+}
+
+impl<'a, C> Client<'a> for std::sync::Arc<C>
+where C: Client<'a>
+{
+    type Error = <C as Client<'a>>::Error;
+
+    fn req(&'a self, req: Request) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+        self.as_ref().req(req)
     }
 }
 
@@ -450,62 +252,119 @@ where Self: Default
     }
 }
 
+/// A compability shim for ensuring an error can represent [`hyper::Error`]
+#[derive(Debug, thiserror::Error)]
+pub enum CompatError<E> {
+    /// An error occurrec when assembling the body
+    #[error("could not get the body of the response")]
+    BodyError(#[source] hyper::Error),
+    /// An error occured
+    #[error(transparent)]
+    Other(#[from] E),
+}
+
 #[cfg(feature = "helix")]
 impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::HelixClient<'a, C> {
-    type Error = <C as Client<'a>>::Error;
+    type Error = CompatError<<C as Client<'a>>::Error>;
 
     fn req(
         &'a self,
-        request: Req,
-    ) -> BoxedFuture<'a, Result<Response, <Self as twitch_oauth2::client::Client>::Error>> {
-        self.get_client().req(request)
+        request: http::Request<Vec<u8>>,
+    ) -> BoxedFuture<
+        'a,
+        Result<http::Response<Vec<u8>>, <Self as twitch_oauth2::client::Client>::Error>,
+    > {
+        let client = self.get_client();
+        {
+            let request = request.map(Bytes::from);
+            let resp = client.req(request);
+            Box::pin(async {
+                let resp = resp.await?;
+                let (parts, mut body) = resp.into_parts();
+                Ok(http::Response::from_parts(
+                    parts,
+                    hyper::body::to_bytes(&mut body)
+                        .await
+                        .map_err(CompatError::BodyError)?
+                        .to_vec(),
+                ))
+            })
+        }
     }
 }
 
 #[cfg(feature = "tmi")]
 impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::TmiClient<'a, C> {
-    type Error = <C as Client<'a>>::Error;
+    type Error = CompatError<<C as Client<'a>>::Error>;
 
     fn req(
         &'a self,
-        request: Req,
-    ) -> BoxedFuture<'a, Result<Response, <Self as twitch_oauth2::client::Client>::Error>> {
-        self.get_client().req(request)
+        request: http::Request<Vec<u8>>,
+    ) -> BoxedFuture<
+        'a,
+        Result<http::Response<Vec<u8>>, <Self as twitch_oauth2::client::Client>::Error>,
+    > {
+        let client = self.get_client();
+        {
+            let request = request.map(|b| Bytes::from(b));
+            let resp = client.req(request);
+            Box::pin(async {
+                let resp = resp.await?;
+                let (parts, mut body) = resp.into_parts();
+                Ok(http::Response::from_parts(
+                    parts,
+                    hyper::body::to_bytes(&mut body)
+                        .await
+                        .map_err(CompatError::BodyError)?
+                        .to_vec(),
+                ))
+            })
+        }
     }
 }
 
 #[cfg(any(feature = "tmi", feature = "helix"))]
 impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::TwitchClient<'a, C> {
-    type Error = <C as Client<'a>>::Error;
+    type Error = CompatError<<C as Client<'a>>::Error>;
 
     fn req(
         &'a self,
-        request: Req,
-    ) -> BoxedFuture<'a, Result<Response, <Self as twitch_oauth2::client::Client>::Error>> {
-        self.get_client().req(request)
+        request: http::Request<Vec<u8>>,
+    ) -> BoxedFuture<
+        'a,
+        Result<http::Response<Vec<u8>>, <Self as twitch_oauth2::client::Client>::Error>,
+    > {
+        let client = self.get_client();
+        {
+            let request = request.map(|b| Bytes::from(b));
+            let resp = client.req(request);
+            Box::pin(async {
+                let resp = resp.await?;
+                let (parts, mut body) = resp.into_parts();
+                Ok(http::Response::from_parts(
+                    parts,
+                    hyper::body::to_bytes(&mut body)
+                        .await
+                        .map_err(CompatError::BodyError)?
+                        .to_vec(),
+                ))
+            })
+        }
     }
 }
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    #[cfg(feature = "surf_client")]
-    fn surf() {
-        use super::ClientDefault;
-        use std::convert::TryInto;
+/// Gives the User-Agent header value for a client annotated with an added `twitch_api2` product
+pub fn user_agent(
+    product: Option<http::HeaderValue>,
+) -> Result<http::HeaderValue, http::header::InvalidHeaderValue> {
+    use std::convert::TryInto;
 
-        super::SurfClient::default_client_with_name(Some("test/123".try_into().unwrap())).unwrap();
-        super::SurfClient::default_client();
-    }
-
-    #[test]
-    #[cfg(feature = "reqwest_client")]
-    fn reqwest() {
-        use super::ClientDefault;
-        use std::convert::TryInto;
-
-        super::ReqwestClient::default_client_with_name(Some("test/123".try_into().unwrap()))
-            .unwrap();
-        super::ReqwestClient::default_client();
+    if let Some(product) = product {
+        let mut user_agent = product.as_bytes().to_owned();
+        user_agent.push(b' ');
+        user_agent.extend(TWITCH_API2_USER_AGENT.as_bytes());
+        user_agent.as_slice().try_into()
+    } else {
+        http::HeaderValue::from_str(TWITCH_API2_USER_AGENT)
     }
 }

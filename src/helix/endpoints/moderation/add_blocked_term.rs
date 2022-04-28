@@ -90,13 +90,15 @@ impl AddBlockedTermBody {
 impl helix::private::SealedSerialize for AddBlockedTermBody {}
 
 impl helix::HelixRequestBody for Vec<AddBlockedTermBody> {
-    fn try_to_body(&self) -> Result<Vec<u8>, helix::BodyError> {
+    fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
             data: &'a Vec<AddBlockedTermBody>,
         }
 
-        serde_json::to_vec(&InnerBody { data: self }).map_err(Into::into)
+        serde_json::to_vec(&InnerBody { data: self })
+            .map_err(Into::into)
+            .map(Into::into)
     }
 }
 

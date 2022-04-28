@@ -103,13 +103,15 @@ impl BanUserBody {
 }
 
 impl helix::HelixRequestBody for BanUserBody {
-    fn try_to_body(&self) -> Result<Vec<u8>, helix::BodyError> {
+    fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
             data: &'a Vec<&'a BanUserBody>,
         }
         let v = vec![self];
-        serde_json::to_vec(&InnerBody { data: &v }).map_err(Into::into)
+        serde_json::to_vec(&InnerBody { data: &v })
+            .map_err(Into::into)
+            .map(Into::into)
     }
 }
 
