@@ -10,6 +10,7 @@ keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
 documentation = "https://docs.rs/twitch_api2/0.6.0"
 readme = "README.md"
 resolver = "2"
+include = ["src/*", "./README.md", "CONTRIBUTING.md", "CHANGELOG.md", "LICENSE*"]
 
 [dependencies]
 thiserror = "1.0.26"
