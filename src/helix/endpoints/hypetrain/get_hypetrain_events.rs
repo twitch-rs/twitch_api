@@ -1,3 +1,4 @@
+#![allow(deprecated_in_future, deprecated)]
 //! Gets the information of the most recent Hype Train of the given channel ID.
 //! [`get-hype-train-events`](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)
 //!
@@ -56,6 +57,10 @@ pub struct GetHypeTrainEventsRequest {
     #[builder(default, setter(into))]
     pub first: Option<usize>,
     /// Retreive a single event by event ID
+    #[deprecated(
+        since = "0.6.0",
+        note = "this does nothing, see https://discuss.dev.twitch.tv/t/get-hype-train-events-api-endpoint-id-query-parameter-deprecation/37613"
+    )]
     #[builder(default, setter(into))]
     pub id: Option<String>,
 }
