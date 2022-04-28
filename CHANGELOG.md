@@ -4,7 +4,11 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/Emilgardis/twitch_api2/compare/0.5.0...Unreleased)
+[Commits](https://github.com/Emilgardis/twitch_api2/compare/0.6.0...Unreleased)
+
+## [v0.6.0] - 2022-04-28
+
+[Commits](https://github.com/Emilgardis/twitch_api2/compare/0.5.0...v0.6.0)
 
 ### Added
 
@@ -51,7 +55,7 @@
 
 ### Changed
 
-* MSRV: 1.53.0
+* MSRV: 1.60.0
 * Made all specific "string" types actual types with [`aliri_braid`](https://crates.io/crates/aliri_braid)
 * Deprecated specific term actions in `ChatModeratorActionsReply`, replacing them with `ChannelTermsAction`
 * Deprecated `Vip` action in `ChatModeratorActionsReply`, replacing it with `VipAdded`
@@ -74,6 +78,8 @@
 * Removed enum variants for a lot of error states in helix endpoint responses. Most of these are returned by `HelixRequest_Error::Error`
 * Removed deprecated follow endpoints `Create Users Follows` and `Delete Users Follows`
 * Removed helix `webhook`s and `HelixRequestGetError::InvalidUri`
+* Removed TMI `get_hosts`
+* Removed Helix `Get Banned Events` and `Get Moderator Events`
 
 ## [v0.5.0] - 2021-05-08
 
