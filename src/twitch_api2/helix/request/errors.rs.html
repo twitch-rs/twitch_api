@@ -245,6 +245,9 @@
 <span id="240">240</span>
 <span id="241">241</span>
 <span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Errors that can occur during request processing.</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::ser::Error</span> <span class="kw">as</span> <span class="ident">SerializeError</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::helix::BodyError</span>;
@@ -256,8 +259,11 @@
 <span class="comment">// #[derive(displaydoc::Display)] https://github.com/yaahc/displaydoc/issues/15</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="ident">RE</span>: <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Request failed from reqwests side</span>
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;request failed from reqwests side&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;request failed&quot;</span>)]</span>
     <span class="ident">RequestError</span>(<span class="ident">RE</span>),
+    <span class="doccomment">/// Request failed from reqwests side</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;body conversion failed&quot;</span>)]</span>
+    <span class="ident">HyperError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">hyper::Error</span>),
     <span class="doccomment">/// No pagination found</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;no pagination found&quot;</span>)]</span>
     <span class="ident">NoPage</span>,
@@ -322,7 +328,7 @@
         <span class="ident">uri</span>: <span class="ident">http::Uri</span>,
     },
     <span class="doccomment">/// could not parse response as utf8 when calling `GET {2}`</span>
-    <span class="ident">Utf8Error</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">std::str::Utf8Error</span>, <span class="ident">http::Uri</span>),
+    <span class="ident">Utf8Error</span>(<span class="ident">hyper::body::Bytes</span>, <span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">std::str::Utf8Error</span>, <span class="ident">http::Uri</span>),
     <span class="doccomment">/// deserialization failed when processing request response calling `GET {2}` with response: {3} - {0:?}</span>
     <span class="ident">DeserializeError</span>(
         <span class="ident">String</span>,
@@ -357,10 +363,10 @@
         <span class="doccomment">/// URI to the endpoint</span>
         <span class="ident">uri</span>: <span class="ident">http::Uri</span>,
         <span class="doccomment">/// Body sent to PUT response</span>
-        <span class="ident">body</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+        <span class="ident">body</span>: <span class="ident">hyper::body::Bytes</span>,
     },
     <span class="doccomment">/// could not parse response as utf8 when calling `PUT {2}`</span>
-    <span class="ident">Utf8Error</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">std::str::Utf8Error</span>, <span class="ident">http::Uri</span>),
+    <span class="ident">Utf8Error</span>(<span class="ident">hyper::body::Bytes</span>, <span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">std::str::Utf8Error</span>, <span class="ident">http::Uri</span>),
     <span class="doccomment">/// deserialization failed when processing request response calling `PUT {2}` with response: {3} - {0:?}</span>
     <span class="ident">DeserializeError</span>(
         <span class="ident">String</span>,
@@ -395,10 +401,10 @@
         <span class="doccomment">/// URI to the endpoint</span>
         <span class="ident">uri</span>: <span class="ident">http::Uri</span>,
         <span class="doccomment">/// Body sent to POST response</span>
-        <span class="ident">body</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+        <span class="ident">body</span>: <span class="ident">hyper::body::Bytes</span>,
     },
     <span class="doccomment">/// could not parse response as utf8 when calling `POST {2}`</span>
-    <span class="ident">Utf8Error</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">std::str::Utf8Error</span>, <span class="ident">http::Uri</span>),
+    <span class="ident">Utf8Error</span>(<span class="ident">hyper::body::Bytes</span>, <span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">std::str::Utf8Error</span>, <span class="ident">http::Uri</span>),
     <span class="doccomment">/// deserialization failed when processing request response calling `POST {2}` with response: {3} - {0:?}</span>
     <span class="ident">DeserializeError</span>(
         <span class="ident">String</span>,
@@ -433,10 +439,10 @@
         <span class="doccomment">/// URI to the endpoint</span>
         <span class="ident">uri</span>: <span class="ident">http::Uri</span>,
         <span class="doccomment">/// Body sent to POST response</span>
-        <span class="ident">body</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+        <span class="ident">body</span>: <span class="ident">hyper::body::Bytes</span>,
     },
     <span class="doccomment">/// could not parse response as utf8 when calling `POST {2}`</span>
-    <span class="ident">Utf8Error</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">std::str::Utf8Error</span>, <span class="ident">http::Uri</span>),
+    <span class="ident">Utf8Error</span>(<span class="ident">hyper::body::Bytes</span>, <span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">std::str::Utf8Error</span>, <span class="ident">http::Uri</span>),
     <span class="doccomment">/// deserialization failed when processing request response calling `POST {2}` with response: {3} - {0:?}</span>
     <span class="ident">DeserializeError</span>(
         <span class="ident">String</span>,
@@ -471,10 +477,10 @@
         <span class="doccomment">/// URI to the endpoint</span>
         <span class="ident">uri</span>: <span class="ident">http::Uri</span>,
         <span class="doccomment">/// Body sent to DELETE response</span>
-        <span class="ident">body</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+        <span class="ident">body</span>: <span class="ident">hyper::body::Bytes</span>,
     },
     <span class="doccomment">/// could not parse response as utf8 when calling `DELETE {2}`</span>
-    <span class="ident">Utf8Error</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">std::str::Utf8Error</span>, <span class="ident">http::Uri</span>),
+    <span class="ident">Utf8Error</span>(<span class="ident">hyper::body::Bytes</span>, <span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">std::str::Utf8Error</span>, <span class="ident">http::Uri</span>),
     <span class="doccomment">/// invalid or unexpected response from twitch.</span>
     <span class="ident">InvalidResponse</span> {
         <span class="doccomment">/// Reason for error</span>
@@ -488,5 +494,5 @@
     },
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (c84f39e6c 2022-03-20)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (69a5d2481 2022-04-27)" ></div>
 </body></html>

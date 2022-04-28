@@ -218,7 +218,21 @@
 <span id="213">213</span>
 <span id="214">214</span>
 <span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Client for Helix endpoints</span>
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client::ResponseExt</span>;
+
 <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">client_ext</span>;
@@ -336,7 +350,9 @@
             .<span class="ident">client</span>
             .<span class="ident">req</span>(<span class="ident">req</span>)
             .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
+            .<span class="ident">into_response_vec</span>()
+            .<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="ident">::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">request</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">response</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
     }
 
@@ -360,7 +376,9 @@
             .<span class="ident">client</span>
             .<span class="ident">req</span>(<span class="ident">req</span>)
             .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
+            .<span class="ident">into_response_vec</span>()
+            .<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="ident">::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">request</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">response</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
     }
 
@@ -384,7 +402,9 @@
             .<span class="ident">client</span>
             .<span class="ident">req</span>(<span class="ident">req</span>)
             .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
+            .<span class="ident">into_response_vec</span>()
+            .<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="ident">::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">request</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">response</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
     }
 
@@ -405,7 +425,9 @@
             .<span class="ident">client</span>
             .<span class="ident">req</span>(<span class="ident">req</span>)
             .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
+            .<span class="ident">into_response_vec</span>()
+            .<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="ident">::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">request</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">response</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
     }
 
@@ -429,10 +451,12 @@
             .<span class="ident">client</span>
             .<span class="ident">req</span>(<span class="ident">req</span>)
             .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
+            .<span class="ident">into_response_vec</span>()
+            .<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="ident">::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">request</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">response</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (c84f39e6c 2022-03-20)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (69a5d2481 2022-04-27)" ></div>
 </body></html>

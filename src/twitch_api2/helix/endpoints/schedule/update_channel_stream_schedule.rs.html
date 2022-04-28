@@ -156,6 +156,7 @@
 <span id="151">151</span>
 <span id="152">152</span>
 <span id="153">153</span>
+<span id="154">154</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Update the settings for a channel’s stream schedule. This can be used for setting vacation details.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [`update-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference/#update-channel-stream-schedule)</span>
@@ -282,6 +283,7 @@
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">test_request</span>() {
     <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="ident">std::convert::TryInto</span>;
     <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">UpdateChannelStreamScheduleRequest::builder</span>()
         .<span class="ident">broadcaster_id</span>(<span class="string">&quot;141981764&quot;</span>)
         .<span class="ident">is_vacation_enabled</span>(<span class="bool-val">true</span>)
@@ -310,5 +312,5 @@
     );
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (c84f39e6c 2022-03-20)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (69a5d2481 2022-04-27)" ></div>
 </body></html>

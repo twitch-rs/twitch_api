@@ -176,9 +176,6 @@
 <span id="171">171</span>
 <span id="172">172</span>
 <span id="173">173</span>
-<span id="174">174</span>
-<span id="175">175</span>
-<span id="176">176</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!</span>
@@ -196,26 +193,21 @@
 <span class="doccomment">//!     .build();</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! // Send it however you want</span>
-<span class="doccomment">//! // Create a [`http::Response&lt;Vec&lt;u8&gt;&gt;`] with RequestGet::create_request, which takes an access token and a client_id</span>
+<span class="doccomment">//! // Create a [`http::Response&lt;hyper::body::Bytes&gt;`] with RequestGet::create_request, which takes an access token and a client_id</span>
 <span class="doccomment">//! let response = send_http_request(request.create_request(&quot;accesstoken&quot;, &quot;client_id&quot;)?)?;</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! // then parse the response</span>
 <span class="doccomment">//! let uri = request.get_uri()?;</span>
-<span class="doccomment">//! let user: helix::Response&lt;_, Vec&lt;User&gt;&gt; = GetUsersRequest::parse_response(Some(request), &amp;uri,response)?;</span>
+<span class="doccomment">//! let user: helix::Response&lt;_, Vec&lt;User&gt;&gt; = GetUsersRequest::parse_response(Some(request), &amp;uri, response)?;</span>
 <span class="doccomment">//! println!(&quot;{:#?}&quot;, user);</span>
 <span class="doccomment">//! # Ok(())</span>
 <span class="doccomment">//! # }</span>
-<span class="doccomment">//! # fn send_http_request(_: http::Request&lt;Vec&lt;u8&gt;&gt;) -&gt; Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;,&amp;&#39;static str&gt; {</span>
-<span class="doccomment">//! # Ok(http::Response::builder().body(r#&quot;{&quot;data&quot;:[{&quot;id&quot;:&quot;141981764&quot;,&quot;login&quot;:&quot;twitchdev&quot;,&quot;display_name&quot;:&quot;TwitchDev&quot;,&quot;type&quot;:&quot;&quot;,&quot;broadcaster_type&quot;:&quot;partner&quot;,&quot;description&quot;:&quot;Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.&quot;,&quot;profile_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png&quot;,&quot;offline_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png&quot;,&quot;view_count&quot;:5980557,&quot;email&quot;:&quot;not-real@email.com&quot;,&quot;created_at&quot;:&quot;2016-12-14T20:32:28.894263Z&quot;}]}&quot;#.as_bytes().to_owned()).unwrap())</span>
+<span class="doccomment">//! # fn send_http_request(_: http::Request&lt;hyper::body::Bytes&gt;) -&gt; Result&lt;http::Response&lt;hyper::body::Bytes&gt;,&amp;&#39;static str&gt; {</span>
+<span class="doccomment">//! # Ok(http::Response::builder().body(r#&quot;{&quot;data&quot;:[{&quot;id&quot;:&quot;141981764&quot;,&quot;login&quot;:&quot;twitchdev&quot;,&quot;display_name&quot;:&quot;TwitchDev&quot;,&quot;type&quot;:&quot;&quot;,&quot;broadcaster_type&quot;:&quot;partner&quot;,&quot;description&quot;:&quot;Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.&quot;,&quot;profile_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png&quot;,&quot;offline_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png&quot;,&quot;view_count&quot;:5980557,&quot;email&quot;:&quot;not-real@email.com&quot;,&quot;created_at&quot;:&quot;2016-12-14T20:32:28.894263Z&quot;}]}&quot;#.as_bytes().to_owned().into()).unwrap())</span>
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
 
-<span class="comment">// fn send_http_request(_: http::Request&lt;Vec&lt;u8&gt;&gt;) -&gt; Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, &amp;&#39;static str&gt; {</span>
-<span class="comment">//     Ok(http::Response::builder().body(r#&quot;{&quot;data&quot;:[{&quot;id&quot;:&quot;141981764&quot;,&quot;login&quot;:&quot;twitchdev&quot;,&quot;display_name&quot;:&quot;TwitchDev&quot;,&quot;type&quot;:&quot;&quot;,&quot;broadcaster_type&quot;:&quot;partner&quot;,&quot;description&quot;:&quot;Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.&quot;,&quot;profile_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png&quot;,&quot;offline_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png&quot;,&quot;view_count&quot;:5980557,&quot;email&quot;:&quot;not-real@email.com&quot;,&quot;created_at&quot;:&quot;2016-12-14T20:32:28.894263Z&quot;}]}&quot;#.as_bytes().to_owned()).unwrap())</span>
-<span class="comment">// }</span>
-
 <span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
-<span class="kw">use</span> <span class="ident">std::convert::TryInto</span>;
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">no_inline</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">twitch_oauth2::Scope</span>;
@@ -330,7 +322,7 @@
 <span class="doccomment">/// Create a body. Used for specializing request bodies</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">HelixRequestBody</span> {
     <span class="doccomment">/// Create the body</span>
-    <span class="kw">fn</span> <span class="ident">try_to_body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">BodyError</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">try_to_body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span>, <span class="ident">BodyError</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// An empty body.</span>
@@ -340,15 +332,17 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EmptyBody</span>;
 
 <span class="kw">impl</span> <span class="ident">HelixRequestBody</span> <span class="kw">for</span> <span class="ident">EmptyBody</span> {
-    <span class="kw">fn</span> <span class="ident">try_to_body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">BodyError</span><span class="op">&gt;</span> { <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[]) }
+    <span class="kw">fn</span> <span class="ident">try_to_body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span>, <span class="ident">BodyError</span><span class="op">&gt;</span> { <span class="prelude-val">Ok</span>(<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::default</span>()) }
 }
 
 <span class="comment">// TODO: I would want specialization for this. For now, to override this behavior for a body, we specify a sealed trait</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">HelixRequestBody</span> <span class="kw">for</span> <span class="ident">T</span>
 <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">serde::Serialize</span> <span class="op">+</span> <span class="ident">private::SealedSerialize</span>
 {
-    <span class="kw">fn</span> <span class="ident">try_to_body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">BodyError</span><span class="op">&gt;</span> {
-        <span class="ident">serde_json::to_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+    <span class="kw">fn</span> <span class="ident">try_to_body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span>, <span class="ident">BodyError</span><span class="op">&gt;</span> {
+        <span class="ident">serde_json::to_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>)
+            .<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+            .<span class="ident">map</span>(<span class="ident">Into::into</span>)
     }
 }
 
@@ -356,5 +350,5 @@
     <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">SealedSerialize</span> {}
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (c84f39e6c 2022-03-20)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (69a5d2481 2022-04-27)" ></div>
 </body></html>

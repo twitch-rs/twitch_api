@@ -719,6 +719,8 @@
 <span id="714">714</span>
 <span id="715">715</span>
 <span id="716">716</span>
+<span id="717">717</span>
+<span id="718">718</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::helix</span>::{<span class="self">self</span>, <span class="ident">ClientRequestError</span>, <span class="ident">HelixClient</span>};
@@ -899,6 +901,7 @@
     ) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span>
         <span class="ident">Box</span><span class="op">&lt;</span>
             <span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::users::FollowRelationship</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
+                <span class="op">+</span> <span class="ident">Send</span>
                 <span class="op">+</span> <span class="lifetime">&#39;a</span>,
         <span class="op">&gt;</span>,
     <span class="op">&gt;</span>
@@ -908,6 +911,7 @@
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::users::GetUsersFollowsRequest::builder</span>()
             .<span class="ident">to_id</span>(<span class="ident">to_id</span>)
             .<span class="ident">from_id</span>(<span class="ident">from_id</span>)
+            .<span class="ident">first</span>(<span class="number">100</span>)
             .<span class="ident">build</span>();
         <span class="ident">make_stream</span>(<span class="ident">req</span>, <span class="ident">token</span>, <span class="self">self</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
             <span class="ident">std::collections::VecDeque::from</span>(<span class="ident">s</span>.<span class="ident">follow_relationships</span>)
@@ -1436,5 +1440,5 @@
     .<span class="ident">boxed</span>()
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (c84f39e6c 2022-03-20)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (69a5d2481 2022-04-27)" ></div>
 </body></html>
