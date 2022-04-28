@@ -2,7 +2,7 @@ use super::*;
 /// Possible errors from [`Client::req()`] when using the [surf](https://crates.io/crates/surf) client
 ///
 /// Also returned by [`ClientDefault::default_client_with_name`]
-#[cfg_attr(nightly, doc(cfg(feature = "surf_client")))]
+#[cfg_attr(nightly, doc(cfg(feature = "surf")))]
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
 pub enum SurfError {
     /// surf failed to do the request: {0}
@@ -17,7 +17,7 @@ pub enum SurfError {
 
 use surf::Client as SurfClient;
 
-#[cfg_attr(nightly, doc(cfg(feature = "surf_client")))] // FIXME: This doc_cfg does nothing
+#[cfg_attr(nightly, doc(cfg(feature = "surf")))] // FIXME: This doc_cfg does nothing
 impl<'a> Client<'a> for SurfClient {
     type Error = SurfError;
 
@@ -92,7 +92,7 @@ impl<'a> Client<'a> for SurfClient {
 }
 
 /// Possible errors from [`ClientDefault::default_client_with_name`] for [surf](https://crates.io/crates/surf)
-#[cfg_attr(nightly, doc(cfg(feature = "surf_client")))]
+#[cfg_attr(nightly, doc(cfg(feature = "surf")))]
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
 pub enum SurfClientDefaultError {
     /// surf returned an error: {0}

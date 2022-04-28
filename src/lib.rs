@@ -277,7 +277,7 @@ pub enum DeserError {
 /// Parse a string as `T`, logging ignored fields and giving a more detailed error message on parse errors
 ///
 /// The log_ignored argument decides if a trace of ignored value should be emitted
-#[cfg(all(feature = "serde_json", feature = "serde_path_to_error"))]
+#[cfg(feature = "serde_json")]
 pub fn parse_json<'a, T: serde::Deserialize<'a>>(
     s: &'a str,
     #[allow(unused_variables)] log_ignored: bool,
@@ -313,7 +313,7 @@ pub fn parse_json<'a, T: serde::Deserialize<'a>>(
 }
 
 /// Parse a json Value as `T`, logging ignored fields and giving a more detailed error message on parse errors
-#[cfg(all(feature = "serde_json", feature = "serde_path_to_error"))]
+#[cfg(feature = "serde_json")]
 pub fn parse_json_value<'a, T: serde::Deserialize<'a>>(
     value: serde_json::Value,
     #[allow(unused_variables)] log_ignored: bool,

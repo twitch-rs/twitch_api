@@ -2,7 +2,7 @@ use super::*;
 
 use reqwest::Client as ReqwestClient;
 
-#[cfg_attr(nightly, doc(cfg(feature = "reqwest_client")))] // FIXME: This doc_cfg does nothing
+#[cfg_attr(nightly, doc(cfg(feature = "reqwest")))] // FIXME: This doc_cfg does nothing
 impl<'a> Client<'a> for ReqwestClient {
     type Error = reqwest::Error;
 

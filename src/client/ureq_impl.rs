@@ -5,7 +5,7 @@ use ureq::Agent as UreqAgent;
 /// Possible errors from [`Client::req()`] when using the [ureq](https://crates.io/crates/ureq) client
 ///
 /// Also returned by [`ClientDefault::default_client_with_name`]
-#[cfg_attr(nightly, doc(cfg(feature = "ureq_client")))]
+#[cfg_attr(nightly, doc(cfg(feature = "ureq")))]
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
 pub enum UreqError {
     /// Ureq failed to do the request
@@ -22,7 +22,7 @@ pub enum UreqError {
     UrlError(#[from] url::ParseError),
 }
 
-#[cfg_attr(nightly, doc(cfg(feature = "ureq_client")))] // FIXME: This doc_cfg does nothing
+#[cfg_attr(nightly, doc(cfg(feature = "ureq")))] // FIXME: This doc_cfg does nothing
 impl<'a> Client<'a> for UreqAgent {
     type Error = UreqError;
 
