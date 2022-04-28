@@ -63,7 +63,7 @@ pub struct GetVideosRequest {
     #[builder(default)]
     pub before: Option<helix::Cursor>,
     /// Number of values to be returned when getting videos by user or game ID. Limit: 100. Default: 20.
-    #[builder(default)]
+    #[builder(default, setter(into))]
     pub first: Option<usize>,
     /// Language of the video being queried. Limit: 1.
     #[builder(default, setter(into))]

@@ -99,13 +99,15 @@ impl CheckAutoModStatusBody {
 }
 
 impl helix::HelixRequestBody for Vec<CheckAutoModStatusBody> {
-    fn try_to_body(&self) -> Result<Vec<u8>, helix::BodyError> {
+    fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
             data: &'a Vec<CheckAutoModStatusBody>,
         }
 
-        serde_json::to_vec(&InnerBody { data: self }).map_err(Into::into)
+        serde_json::to_vec(&InnerBody { data: self })
+            .map_err(Into::into)
+            .map(Into::into)
     }
 }
 

@@ -15,26 +15,21 @@
 //!     .build();
 //!
 //! // Send it however you want
-//! // Create a [`http::Response<Vec<u8>>`] with RequestGet::create_request, which takes an access token and a client_id
+//! // Create a [`http::Response<hyper::body::Bytes>`] with RequestGet::create_request, which takes an access token and a client_id
 //! let response = send_http_request(request.create_request("accesstoken", "client_id")?)?;
 //!
 //! // then parse the response
 //! let uri = request.get_uri()?;
-//! let user: helix::Response<_, Vec<User>> = GetUsersRequest::parse_response(Some(request), &uri,response)?;
+//! let user: helix::Response<_, Vec<User>> = GetUsersRequest::parse_response(Some(request), &uri, response)?;
 //! println!("{:#?}", user);
 //! # Ok(())
 //! # }
-//! # fn send_http_request(_: http::Request<Vec<u8>>) -> Result<http::Response<Vec<u8>>,&'static str> {
-//! # Ok(http::Response::builder().body(r#"{"data":[{"id":"141981764","login":"twitchdev","display_name":"TwitchDev","type":"","broadcaster_type":"partner","description":"Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.","profile_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png","offline_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png","view_count":5980557,"email":"not-real@email.com","created_at":"2016-12-14T20:32:28.894263Z"}]}"#.as_bytes().to_owned()).unwrap())
+//! # fn send_http_request(_: http::Request<hyper::body::Bytes>) -> Result<http::Response<hyper::body::Bytes>,&'static str> {
+//! # Ok(http::Response::builder().body(r#"{"data":[{"id":"141981764","login":"twitchdev","display_name":"TwitchDev","type":"","broadcaster_type":"partner","description":"Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.","profile_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png","offline_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png","view_count":5980557,"email":"not-real@email.com","created_at":"2016-12-14T20:32:28.894263Z"}]}"#.as_bytes().to_owned().into()).unwrap())
 //! # }
 //! ```
 
-// fn send_http_request(_: http::Request<Vec<u8>>) -> Result<http::Response<Vec<u8>>, &'static str> {
-//     Ok(http::Response::builder().body(r#"{"data":[{"id":"141981764","login":"twitchdev","display_name":"TwitchDev","type":"","broadcaster_type":"partner","description":"Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.","profile_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png","offline_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png","view_count":5980557,"email":"not-real@email.com","created_at":"2016-12-14T20:32:28.894263Z"}]}"#.as_bytes().to_owned()).unwrap())
-// }
-
 use serde::Deserialize;
-use std::convert::TryInto;
 #[doc(no_inline)]
 #[cfg(feature = "twitch_oauth2")]
 pub use twitch_oauth2::Scope;
@@ -149,7 +144,7 @@ pub enum BodyError {
 /// Create a body. Used for specializing request bodies
 pub trait HelixRequestBody {
     /// Create the body
-    fn try_to_body(&self) -> Result<Vec<u8>, BodyError>;
+    fn try_to_body(&self) -> Result<hyper::body::Bytes, BodyError>;
 }
 
 /// An empty body.
@@ -159,15 +154,17 @@ pub trait HelixRequestBody {
 pub struct EmptyBody;
 
 impl HelixRequestBody for EmptyBody {
-    fn try_to_body(&self) -> Result<Vec<u8>, BodyError> { Ok(vec![]) }
+    fn try_to_body(&self) -> Result<hyper::body::Bytes, BodyError> { Ok(<_>::default()) }
 }
 
 // TODO: I would want specialization for this. For now, to override this behavior for a body, we specify a sealed trait
 impl<T> HelixRequestBody for T
 where T: serde::Serialize + private::SealedSerialize
 {
-    fn try_to_body(&self) -> Result<Vec<u8>, BodyError> {
-        serde_json::to_vec(&self).map_err(Into::into)
+    fn try_to_body(&self) -> Result<hyper::body::Bytes, BodyError> {
+        serde_json::to_vec(&self)
+            .map_err(Into::into)
+            .map(Into::into)
     }
 }
 

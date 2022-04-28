@@ -26,7 +26,7 @@ impl<'a> Client<'a> for ReqwestClient {
             std::mem::swap(headers, response.headers_mut());
             let result = result.version(response.version());
             Ok(result
-                .body(response.bytes().await?.to_vec())
+                .body(response.bytes().await?.into())
                 .expect("mismatch reqwest -> http conversion should not fail"))
         })
     }

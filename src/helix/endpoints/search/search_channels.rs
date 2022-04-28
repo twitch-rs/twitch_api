@@ -53,7 +53,7 @@ pub struct SearchChannelsRequest {
     #[builder(default)]
     pub after: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100 Default: 20
-    #[builder(default)] // FIXME: No setter because int
+    #[builder(default, setter(into))] // FIXME: No setter because int
     pub first: Option<usize>,
     /// Filter results for live streams only. Default: false
     #[builder(default, setter(into))]

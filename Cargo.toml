@@ -36,11 +36,12 @@ crypto_hmac = { package = "hmac", version = "0.11.0", optional = true }
 aliri_braid = "0.1.9"
 futures = { version = "0.3.16", optional = true }
 time = { version = "0.3.4", optional = true, default-features = false, features = ["parsing", "formatting"] }
+hyper = { version = "0.14.18", optional = true }
 
 [features]
 default = []
 
-client = ["twitch_oauth2", "futures"]
+client = ["twitch_oauth2", "futures", "hyper"]
 
 unsupported = ["serde_json/raw_value"]
 deny_unknown_fields = []
@@ -51,24 +52,26 @@ helix = [
     "serde_json",
     "serde_path_to_error",
     "typed-builder",
+    "hyper",
 ]
 
-tmi = ["serde_json", "serde_path_to_error"]
+tmi = ["serde_json", "serde_path_to_error", "hyper"]
 
 surf_client = [
     "surf",
     "http-types",
     "client",
     "twitch_oauth2/surf_client",
+    "hyper/stream",
 ]
 
 ureq_client = [
     "ureq",
     "client",
-    "twitch_oauth2/surf_client",
 ]
 
 reqwest_client = ["reqwest", "client", "twitch_oauth2/reqwest_client"]
+
 
 pubsub = ["serde_json", "serde_path_to_error"]
 
@@ -95,7 +98,7 @@ _all = [
     "surf_client",
     "reqwest_client",
     "ureq_client",
-    "twitch_oauth2/surf_client",
+    "twitch_oauth2/surf_client_curl",
     "twitch_oauth2/reqwest_client",
     "mock_api",
 ]
@@ -108,6 +111,7 @@ serde_cbor = "0.11.2"
 serde_json = "1.0.66"
 surf = "2.2.0"
 reqwest = "0.11.4"
+hyper = "0.14.18"
 
 
 [build-dependencies]
@@ -123,11 +127,6 @@ required-features = ["surf_client", "helix"]
 name = "get_channel_status"
 path = "examples/get_channel_status.rs"
 required-features = ["reqwest_client", "helix"]
-
-[[example]]
-name = "get_hosts"
-path = "examples/get_hosts.rs"
-required-features = ["surf_client", "tmi"]
 
 [[example]]
 name = "get_moderation"

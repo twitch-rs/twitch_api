@@ -80,9 +80,9 @@ impl<'a> Client<'a> for UreqAgent {
                 .into_reader()
                 .take(10_000_000)
                 .bytes()
-                .collect()
+                .collect::<Result<hyper::body::Bytes, _>>()
             {
-                Ok(v) => result.body(v).map_err(Into::into),
+                Ok(v) => result.body(v.into()).map_err(Into::into),
                 Err(e) => Err(e.into()),
             }
         })

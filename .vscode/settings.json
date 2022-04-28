@@ -1,6 +1,6 @@
 {
-    "rust-analyzer.checkOnSave.features": ["all", "unsupported", "twitch_oauth2/reqwest_client", "twitch_oauth2/surf_client", "deny_unknown_fields", "surf/curl-client"],
-    "rust-analyzer.checkOnSave.enable": true,
-    "rust-analyzer.cargo.features": ["all", "unsupported", "deny_unknown_fields"],
+    "rust-analyzer.cargo.features": ["_all", "unsupported", "twitch_oauth2/reqwest_client", "twitch_oauth2/surf_client", "deny_unknown_fields", "surf/curl-client"],
+    "rust-analyzer.checkOnSave.enable": false,
     "rust-analyzer.experimental.procAttrMacros": true,
+    "rust-analyzer.diagnostics.disabled": ["type-mismatch"], // Broken on dyn -> impl, https://github.com/rust-analyzer/rust-analyzer/issues/11815
 }

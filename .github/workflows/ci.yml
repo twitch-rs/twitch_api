@@ -94,39 +94,39 @@ jobs:
           key: ${{ runner.os }}-nightly-clippy-cargo-target-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-nightly-cargo-target-${{ hashFiles('**/Cargo.lock') }}
       - name: Run clippy --all-targets --no-default-features
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --no-default-features
       - name: Run clippy --all-targets --no-default-features --features "helix"
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --no-default-features --features "helix"
       - name: Run clippy --all-targets --no-default-features --features "tmi"
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --no-default-features --features "tmi"
       - name: Run clippy --all-targets --no-default-features --features "pubsub"
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --no-default-features --features "pubsub"
       - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
       - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} _all"
       - name: Run clippy --all-targets --all-features
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          command: clippy
           args: --locked --all-targets --all-features
   docs:
     name: Docs
