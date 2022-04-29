@@ -4,6 +4,8 @@
 
 ## [Unreleased] - ReleaseDate
 
+* No changes, only a fix for docs.rs output and some version bumps in Cargo.toml
+
 [Commits](https://github.com/Emilgardis/twitch_api2/compare/0.6.0...Unreleased)
 
 ## [v0.6.0] - 2022-04-28

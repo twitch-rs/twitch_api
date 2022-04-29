@@ -371,7 +371,7 @@ impl Event {
     #[must_use]
     pub fn verify_payload<B>(request: &http::Request<B>, secret: &[u8]) -> bool
     where B: AsRef<[u8]> {
-        use crypto_hmac::{Hmac, Mac, NewMac};
+        use crypto_hmac::{Hmac, Mac};
 
         fn message_and_signature<B>(request: &http::Request<B>) -> Option<(Vec<u8>, Vec<u8>)>
         where B: AsRef<[u8]> {
@@ -419,7 +419,8 @@ impl Event {
         if let Some((message, signature)) = message_and_signature(request) {
             let mut mac = Hmac::<sha2::Sha256>::new_from_slice(secret).expect("");
             mac.update(&message);
-            mac.verify(&signature).is_ok()
+            mac.verify(crypto_hmac::digest::generic_array::GenericArray::from_slice(&signature))
+                .is_ok()
         } else {
             false
         }
