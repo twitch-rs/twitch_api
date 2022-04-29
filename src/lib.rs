@@ -1,8 +1,8 @@
 #![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
-#![doc(html_root_url = "https://docs.rs/twitch_api2/0.6.0")]
-//! [![github]](https://github.com/emilgardis/twitch_api2)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api2/0.6.0/twitch_api2)
+#![doc(html_root_url = "https://docs.rs/twitch_api2/0.6.1")]
+//! [![github]](https://github.com/emilgardis/twitch_api2)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api2/0.6.1/twitch_api2)
 //!
 //! [github]: https://img.shields.io/badge/github-emilgardis/twitch__api2-8da0cb?style=for-the-badge&labelColor=555555&logo=github"
 //! [crates-io]: https://img.shields.io/crates/v/twitch_api2.svg?style=for-the-badge&color=fc8d62&logo=rust"

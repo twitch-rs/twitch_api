@@ -4,11 +4,17 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/Emilgardis/twitch_api2/compare/0.6.0...Unreleased)
+[Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.6.1...Unreleased)
+
+## [v0.6.1] - 2022-04-29
+
+* No changes, only a fix for docs.rs output and some version bumps in Cargo.toml
+
+[Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.6.0...v0.6.1)
 
 ## [v0.6.0] - 2022-04-28
 
-[Commits](https://github.com/Emilgardis/twitch_api2/compare/0.5.0...v0.6.0)
+[Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.5.0...v0.6.0)
 
 ### Added
 
