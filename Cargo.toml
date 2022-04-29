@@ -1,13 +1,13 @@
 [package]
 name = "twitch_api2"
-version = "0.6.0"
+version = "0.6.1"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/Emilgardis/twitch_api2"
 license = "MIT OR Apache-2.0"
 description = "Library for talking with the new Twitch API aka. \"Helix\", TMI and more!"
 keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
-documentation = "https://docs.rs/twitch_api2/0.6.0"
+documentation = "https://docs.rs/twitch_api2/0.6.1"
 readme = "README.md"
 resolver = "2"
 include = ["src/*", "./Cargo.toml", "examples/*", "./README.md", "CONTRIBUTING.md", "CHANGELOG.md", "LICENSE*"]
