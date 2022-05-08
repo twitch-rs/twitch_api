@@ -1445,6 +1445,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "rpassword"
+version = "5.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ffc936cf8a7ea60c58f030fd36a612a48f440610214dc54bc36431f9ea0c3efb"
+dependencies = [
+ "libc",
+ "winapi",
+]
+
+[[package]]
 name = "rustc_version"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2042,6 +2052,7 @@ dependencies = [
  "tokio",
  "tracing",
  "twitch_oauth2",
+ "twitch_types",
  "typed-builder",
  "ureq",
  "url",
@@ -2053,18 +2064,40 @@ name = "twitch_oauth2"
 version = "0.6.1"
 dependencies = [
  "aliri_braid",
+ "anyhow",
  "async-trait",
  "base64",
  "displaydoc",
+ "dotenv",
  "http",
  "http-types",
  "once_cell",
  "rand 0.8.5",
  "reqwest",
+ "rpassword",
  "serde",
  "serde_json",
  "surf",
  "thiserror",
+ "tokio",
+ "url",
+]
+
+[[package]]
+name = "twitch_types"
+version = "0.1.0"
+dependencies = [
+ "aliri_braid",
+ "displaydoc",
+ "http",
+ "once_cell",
+ "serde",
+ "serde_derive",
+ "serde_repr",
+ "thiserror",
+ "time 0.3.9",
+ "tracing",
+ "typed-builder",
  "url",
 ]
 

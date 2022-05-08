@@ -491,6 +491,7 @@ impl EmoteIdRef {
     pub fn url(&self) -> EmoteUrlBuilder<'_> { EmoteUrlBuilder::new(self) }
 }
 
+/// Emote url template
 pub(crate) static EMOTE_V2_URL_TEMPLATE: &str =
     "https://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}";
 

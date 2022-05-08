@@ -113,15 +113,7 @@ impl ChannelEmote {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn url(&self) -> types::EmoteUrlBuilder<'_> {
-        EmoteUrlBuilder {
-            id: std::borrow::Cow::Borrowed(&self.id),
-            animation_setting: <_>::default(),
-            theme_mode: <_>::default(),
-            scale: <_>::default(),
-            template: types::EMOTE_V2_URL_TEMPLATE.into(),
-        }
-    }
+    pub fn url(&self) -> types::EmoteUrlBuilder<'_> { EmoteUrlBuilder::new(&self.id) }
 }
 
 /// A chat emote

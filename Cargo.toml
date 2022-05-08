@@ -10,7 +10,15 @@ keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
 documentation = "https://docs.rs/twitch_api2/0.6.1"
 readme = "README.md"
 resolver = "2"
-include = ["src/*", "./Cargo.toml", "examples/*", "./README.md", "CONTRIBUTING.md", "CHANGELOG.md", "LICENSE*"]
+include = [
+    "src/*",
+    "./Cargo.toml",
+    "examples/*",
+    "./README.md",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md",
+    "LICENSE*",
+]
 
 [dependencies]
 thiserror = "1.0.26"
@@ -45,6 +53,7 @@ time = { version = "0.3.4", optional = true, default-features = false, features 
     "formatting",
 ] }
 hyper = { version = "0.14.18", optional = true }
+twitch_types = { version = "0.1.0", optional = true, path = "./twitch_types" }
 
 [features]
 default = []
@@ -56,7 +65,13 @@ deny_unknown_fields = []
 trace_unknown_fields = ["dep:serde_ignored", "tracing"]
 
 serde_json = ["dep:serde_json", "dep:serde_path_to_error"]
-helix = ["dep:async-trait", "serde_json", "dep:typed-builder", "dep:hyper"]
+helix = [
+    "dep:twitch_types",
+    "dep:async-trait",
+    "serde_json",
+    "dep:typed-builder",
+    "dep:hyper",
+]
 
 tmi = ["serde_json", "dep:serde_path_to_error", "dep:hyper"]
 
@@ -71,7 +86,6 @@ surf = [
 ureq = ["dep:ureq", "client"]
 
 reqwest = ["dep:reqwest", "client", "twitch_oauth2/reqwest_client"]
-
 
 pubsub = ["serde_json"]
 
@@ -115,6 +129,10 @@ hyper = "0.14.18"
 
 [build-dependencies]
 version_check = "0.9.3"
+
+[workspace]
+default-members = ["."]
+members = [".", ""]
 
 
 [[example]]
@@ -165,14 +183,13 @@ required-features = ["reqwest", "helix"]
 [[example]]
 name = "mock_api"
 path = "examples/mock_api.rs"
-required-features = [
-    "reqwest",
-    "helix",
-    "mock_api",
-    "twitch_oauth2/mock_api",
-]
+required-features = ["reqwest", "helix", "mock_api", "twitch_oauth2/mock_api"]
 
 [package.metadata.docs.rs]
 features = ["all", "unsupported", "_all"]
 rustc-args = ["--cfg", "nightly"]
 rustdoc-args = ["--cfg", "nightly"]
+
+#workaround for using different twitch_types
+[patch.'crates-io'.twitch_types]
+path = "./twitch_types"
