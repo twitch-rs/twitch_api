@@ -191,5 +191,5 @@ rustc-args = ["--cfg", "nightly"]
 rustdoc-args = ["--cfg", "nightly"]
 
 #workaround for using different twitch_types
-[patch.'crates-io'.twitch_types]
+[patch.crates-io.twitch_types]
 path = "./twitch_types"

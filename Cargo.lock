@@ -2080,6 +2080,7 @@ dependencies = [
  "surf",
  "thiserror",
  "tokio",
+ "twitch_types",
  "url",
 ]
 
@@ -2089,8 +2090,6 @@ version = "0.1.0"
 dependencies = [
  "aliri_braid",
  "displaydoc",
- "http",
- "once_cell",
  "serde",
  "serde_derive",
  "serde_repr",
@@ -2098,7 +2097,6 @@ dependencies = [
  "time 0.3.9",
  "tracing",
  "typed-builder",
- "url",
 ]
 
 [[package]]
