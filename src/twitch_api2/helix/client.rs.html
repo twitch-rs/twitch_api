@@ -324,7 +324,7 @@
     <span class="doccomment">/// #   use twitch_api2::helix::{HelixClient, channels};</span>
     <span class="doccomment">/// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(</span>
     <span class="doccomment">/// #       twitch_oauth2::AccessToken::new(&quot;totallyvalidtoken&quot;.to_string()), None,</span>
-    <span class="doccomment">/// #       twitch_oauth2::ClientId::new(&quot;validclientid&quot;.to_string()), None, &quot;justintv&quot;.to_string(), &quot;1337&quot;.to_string(), None, None));</span>
+    <span class="doccomment">/// #       twitch_oauth2::ClientId::new(&quot;validclientid&quot;.to_string()), None, &quot;justintv&quot;.into(), &quot;1337&quot;.into(), None, None));</span>
     <span class="doccomment">///     let req = channels::GetChannelInformationRequest::builder().broadcaster_id(&quot;123456&quot;).build();</span>
     <span class="doccomment">///     let client = HelixClient::new();</span>
     <span class="doccomment">/// # let _: &amp;HelixClient&lt;twitch_api2::DummyHttpClient&gt; = &amp;client;</span>
@@ -458,5 +458,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (e85edd9a8 2022-04-28)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (cb1219871 2022-05-08)" ></div>
 </body></html>
