@@ -3,12 +3,13 @@
 
 use super::*;
 /// [`channel.goal.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#progress-goals-event): progress is made towards the specified broadcaster’s goal.
-#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelGoalProgressV1 {
     /// The ID of the broadcaster to get notified about.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
 }
 

@@ -44,14 +44,15 @@ use helix::RequestPost;
 /// Query Parameters for [Add Channel Vip](super::add_channel_vip)
 ///
 /// [`add-channel-vip`](https://dev.twitch.tv/docs/api/reference#add-channel-vip)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct AddChannelVipRequest {
     /// The ID of the broadcaster that’s granting VIP status to the user.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of the user to add as a VIP in the broadcaster’s chat room.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub user_id: types::UserId,
 }
 

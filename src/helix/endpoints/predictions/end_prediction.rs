@@ -63,8 +63,9 @@ pub use types::{PredictionId, PredictionStatus};
 ///
 /// [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
 #[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+    PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default,
 )]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct EndPredictionRequest {}
 
@@ -76,14 +77,15 @@ impl EndPredictionRequest {
 /// Body Parameters for [End Prediction](super::end_prediction)
 ///
 /// [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct EndPredictionBody {
     /// The broadcaster running predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// ID of the prediction.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub id: PredictionId,
     /// The Prediction status to be set. Valid values:
     ///
@@ -92,7 +94,7 @@ pub struct EndPredictionBody {
     /// [`LOCKED`](types::PredictionStatus): The Prediction has been locked and viewers can no longer make predictions.
     pub status: PredictionStatus,
     /// ID of the winning outcome for the Prediction. This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub winning_outcome_id: Option<PredictionId>,
 }
 

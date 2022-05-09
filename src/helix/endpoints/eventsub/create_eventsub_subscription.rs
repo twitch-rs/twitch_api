@@ -5,10 +5,11 @@ use crate::eventsub::{EventSubscription, EventType, Status, Transport, Transport
 /// Query Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
 /// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreateEventSubSubscriptionRequest<E: EventSubscription> {
-    #[builder(setter(skip), default)]
+    #[cfg_attr(feature = "typed-builder", builder(setter(skip), default))]
     #[serde(skip)]
     phantom: std::marker::PhantomData<E>,
 }
@@ -36,7 +37,8 @@ impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<
 /// # Notes
 ///
 /// This body is quite different from the official body. If you want the true representation in text, see [`helix::HelixRequestBody::try_to_body`] on [`CreateEventSubSubscriptionRequest<E: EventSubscription>`](CreateEventSubSubscriptionRequest)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreateEventSubSubscriptionBody<E: EventSubscription> {
     /// Subscription that will be created

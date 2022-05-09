@@ -70,11 +70,12 @@ impl Default for StartCommercialRequest {
 /// Body Parameters for [Start Commercial](super::start_commercial)
 ///
 /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct StartCommercialBody {
     /// ID of the channel requesting a commercial
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Desired length of the commercial in seconds. Valid options are 30, 60, 90, 120, 150, 180.
     pub length: types::CommercialLength,

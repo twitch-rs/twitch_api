@@ -61,41 +61,43 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Channel Stream Schedule Segment](super::update_channel_stream_schedule_segment)
 ///
 /// [`update-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateChannelStreamScheduleSegmentRequest {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of the streaming segment to update.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub id: types::StreamSegmentId,
 }
 
 /// Body Parameters for [Update Channel Stream Schedule Segment](super::update_channel_stream_schedule_segment)
 ///
 /// [`update-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateChannelStreamScheduleSegmentBody {
     /// Start time for the scheduled broadcast specified in RFC3339 format.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub start_time: Option<String>,
     /// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub duration: Option<String>,
     /// Game/Category ID for the scheduled broadcast.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub category_id: Option<String>,
     /// Title for the scheduled broadcast. Maximum: 140 characters.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub title: Option<String>,
     /// Indicated if the scheduled broadcast is canceled.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_canceled: Option<bool>,
     // FIXME: Enum?
     /// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub timezone: Option<String>,
 }
 

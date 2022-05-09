@@ -2,12 +2,13 @@
 //! A user’s authorization has been granted to your client id.
 use super::*;
 /// [`user.authorization.grant`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationgrant): a user’s authorization has been granted to your client id.
-#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct UserAuthorizationGrantV1 {
     /// Your application’s client id. The provided client_id must match the client id in the application access token
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub client_id: types::UserId,
 }
 

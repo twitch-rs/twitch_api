@@ -3,12 +3,13 @@
 use super::*;
 
 /// [`channel.unban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban): a viewer is unbanned from the specified channel.
-#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelUnbanV1 {
     /// The broadcaster user ID for the channel you want to get unban notifications for.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
 }
 

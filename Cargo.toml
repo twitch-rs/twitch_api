@@ -70,7 +70,6 @@ helix = [
     "twitch_types/user",
     "dep:async-trait",
     "serde_json",
-    "dep:typed-builder",
     "dep:hyper",
 ]
 

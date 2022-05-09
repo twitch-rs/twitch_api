@@ -63,8 +63,9 @@ pub use types::PollStatus;
 ///
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
 #[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+    PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default,
 )]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct EndPollRequest {}
 
@@ -76,14 +77,15 @@ impl EndPollRequest {
 /// Body Parameters for [End Poll](super::end_poll)
 ///
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct EndPollBody {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: String,
     /// ID of the poll.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub id: types::PollId,
     /// The poll status to be set.
     ///

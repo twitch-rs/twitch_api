@@ -46,11 +46,12 @@ use helix::RequestGet;
 /// Query Parameters for [Get Bits Leaderboard](super::get_bits_leaderboard)
 ///
 /// [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetBitsLeaderboardRequest {
     /// Number of results to be returned. Maximum: 100. Default: 10.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub count: Option<i32>,
     // TODO: Enum
     /// Time period over which data is aggregated (PST time zone). This parameter interacts with started_at. Valid values follow. Default: "all".
@@ -60,13 +61,13 @@ pub struct GetBitsLeaderboardRequest {
     /// * "month" – 00:00:00 on the first day of the month specified in started_at, through 00:00:00 on the first day of the following month.
     /// * "year" – 00:00:00 on the first day of the year specified in started_at, through 00:00:00 on the first day of the following year.
     /// * "all" – The lifetime of the broadcaster's channel. If this is specified (or used by default), started_at is ignored.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub period: Option<String>,
     /// Timestamp for the period over which the returned data is aggregated. Must be in RFC 3339 format. If this is not provided, data is aggregated over the current period; e.g., the current day/week/month/year. This value is ignored if period is "all".
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub started_at: Option<types::Timestamp>,
     /// ID of the user whose results are returned; i.e., the person who paid for the Bits.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub user_id: Option<types::UserId>,
 }
 

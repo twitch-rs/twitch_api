@@ -46,23 +46,24 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Channel Stream Schedule](super::update_channel_stream_schedule)
 ///
 /// [`update-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateChannelStreamScheduleRequest {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Indicates if Vacation Mode is enabled. Set to true to add a vacation or false to remove vacation from the channel streaming schedule.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_vacation_enabled: Option<bool>,
     /// Start time for vacation specified in RFC3339 format. Required if is_vacation_enabled is set to true.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub vacation_start_time: Option<types::Timestamp>,
     /// End time for vacation specified in RFC3339 format. Required if is_vacation_enabled is set to true.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub vacation_end_time: Option<types::Timestamp>,
     /// The timezone for when the vacation is being scheduled using the IANA time zone database format. Required if is_vacation_enabled is set to true.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub timezone: Option<String>,
 }
 

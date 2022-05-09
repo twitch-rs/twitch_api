@@ -68,8 +68,9 @@ use helix::RequestPost;
 ///
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
 #[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+    PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default,
 )]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreatePredictionRequest {}
 
@@ -81,14 +82,15 @@ impl CreatePredictionRequest {
 /// Body Parameters for [Create Prediction](super::create_prediction)
 ///
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreatePredictionBody {
     /// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Title for the Prediction. Maximum: 45 characters.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub title: String,
     /// Array of outcome objects with titles for the Prediction. Array size must be 2.
     pub outcomes: (NewPredictionOutcome, NewPredictionOutcome),
@@ -99,7 +101,8 @@ pub struct CreatePredictionBody {
 impl helix::private::SealedSerialize for CreatePredictionBody {}
 
 /// Choice settings for a poll
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct NewPredictionOutcome {
     /// Text displayed for the choice. Maximum: 25 characters.

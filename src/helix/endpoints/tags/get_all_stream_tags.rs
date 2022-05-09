@@ -42,17 +42,18 @@ use helix::RequestGet;
 /// Query Parameters for [Get All Stream Tags](super::get_all_stream_tags)
 ///
 /// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetAllStreamTagsRequest {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// ID of a tag. Multiple IDs can be specified. If provided, only the specified tag(s) is(are) returned. Maximum of 100.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub tag_id: Vec<types::TagId>,
 }
 

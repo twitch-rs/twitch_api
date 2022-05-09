@@ -61,29 +61,31 @@ use helix::RequestPost;
 /// Query Parameters for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CheckAutoModStatusRequest {
     /// Must match the User ID in the Bearer token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
 }
 
 /// Body Parameters for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CheckAutoModStatusBody {
     /// Developer-generated identifier for mapping messages to results.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub msg_id: types::MsgId,
     /// Message text.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub msg_text: String,
     /// User ID of the sender.
     #[deprecated(since = "0.7.0", note = "user_id in automod check is no longer read")]
-    #[builder(setter(into, strip_option), default)]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into, strip_option), default))]
     pub user_id: Option<types::UserId>,
 }
 

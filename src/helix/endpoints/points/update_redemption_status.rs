@@ -72,30 +72,32 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Redemption Status](super::update_redemption_status)
 ///
 /// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateRedemptionStatusRequest {
     /// Provided broadcaster_id must match the user_id in the auth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
 
     /// ID of the Custom Reward the redemptions to be updated are for.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub reward_id: types::RewardId,
 
     /// ID of the Custom Reward Redemption to update, must match a Custom Reward Redemption on broadcaster_id’s channel
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub id: types::RedemptionId,
 }
 
 /// Body Parameters for [Update Redemption Status](super::update_redemption_status)
 ///
 /// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateRedemptionStatusBody {
     /// The new status to set redemptions to. Can be either FULFILLED or CANCELED. Updating to CANCELED will refund the user their points.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub status: CustomRewardRedemptionStatus,
 }
 

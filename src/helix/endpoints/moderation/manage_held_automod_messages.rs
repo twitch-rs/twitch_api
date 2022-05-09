@@ -58,7 +58,8 @@ use helix::RequestPost;
 /// Query Parameters for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct ManageHeldAutoModMessagesRequest {}
 
@@ -74,17 +75,18 @@ impl Default for ManageHeldAutoModMessagesRequest {
 /// Body Parameters for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct ManageHeldAutoModMessagesBody {
     /// The moderator who is approving or rejecting the held message. Must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub user_id: types::UserId,
     /// ID of the message to be allowed or denied. These message IDs are retrieved from IRC or PubSub. Only one message ID can be provided.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub msg_id: types::MsgId,
     /// The action to take for the message. Must be "ALLOW" or "DENY".
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub action: AutoModAction,
 }
 

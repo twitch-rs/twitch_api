@@ -49,22 +49,24 @@ use helix::RequestGet;
 /// Query Parameters for [Get Chatters](super::get_chatters)
 ///
 /// [`get-chatters`](https://dev.twitch.tv/docs/api/reference#get-chatters)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetChattersRequest {
     /// The ID of the broadcaster whose list of chatters you want to get.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of the moderator or the specified broadcaster that’s requesting the list of chatters. This ID must match the user ID associated with the user access token.
     ///
     /// The moderator must have permission to moderate the broadcaster’s chat room.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
     /// The maximum number of items to return per page in the response. The minimum page size is 1 item per page and the maximum is 1,000. The default is 100.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+
     pub first: Option<u32>,
     /// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
 }
 

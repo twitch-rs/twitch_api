@@ -58,11 +58,12 @@ use helix::RequestGet;
 /// Query Parameters for [Get Chat Settings](super::get_chat_settings)
 ///
 /// [`get-chat-settings`](https://dev.twitch.tv/docs/api/reference#get-chat-settings)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetChatSettingsRequest {
     /// The ID of the broadcaster whose chat settings you want to get.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Required only to access the [`non_moderator_chat_delay`](ChatSettings::non_moderator_chat_delay)
     /// or [`non_moderator_chat_delay_duration`](ChatSettings::non_moderator_chat_delay_duration) settings.
@@ -75,7 +76,8 @@ pub struct GetChatSettingsRequest {
     ///
     /// If the broadcaster wants to get their own settings (instead of having the moderator do it),
     /// set this parameter to the broadcaster’s ID, too.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+
     pub moderator_id: Option<types::UserId>,
 }
 

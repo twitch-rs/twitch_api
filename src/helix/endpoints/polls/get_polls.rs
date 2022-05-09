@@ -44,20 +44,21 @@ pub use types::{PollChoice, PollStatus};
 /// Query Parameters for [Get polls](super::get_polls)
 ///
 /// [`get-polls`](https://dev.twitch.tv/docs/api/reference#get-polls)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetPollsRequest {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// ID of a poll. Filters results to one or more specific polls. Not providing one or more IDs will return the full list of polls for the authenticated channel.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub id: Vec<types::PollId>,
     /// Cursor for forward pagination
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub after: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 20. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
 }
 

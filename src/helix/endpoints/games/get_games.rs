@@ -43,14 +43,15 @@ use helix::RequestGet;
 /// Query Parameters for [Get Games](super::get_games)
 ///
 /// [`get-games`](https://dev.twitch.tv/docs/api/reference#get-games)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetGamesRequest {
     /// Game ID. At most 100 id values can be specified.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub id: Vec<types::CategoryId>,
     /// Game name. The name must be an exact match. For instance, “Pokemon” will not return a list of Pokemon games; instead, query the specific Pokemon game(s) in which you are interested. At most 100 name values can be specified.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub name: Vec<String>,
 }
 

@@ -69,8 +69,9 @@ use helix::RequestPost;
 ///
 /// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
 #[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+    PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default,
 )]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreatePollRequest {}
 
@@ -82,14 +83,15 @@ impl CreatePollRequest {
 /// Body Parameters for [Create Poll](super::create_poll)
 ///
 /// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreatePollBody {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Question displayed for the poll. Maximum: 60 characters.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub title: String,
     /// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.
     pub duration: i64,
@@ -97,17 +99,17 @@ pub struct CreatePollBody {
     pub choices: Vec<NewPollChoice>,
     /// Indicates if Bits can be used for voting. Default: false
     #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub bits_voting_enabled: Option<bool>,
     /// Number of Bits required to vote once with Bits. Minimum: 0. Maximum: 10000.
     #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub bits_per_vote: Option<i64>,
     /// Indicates if Channel Points can be used for voting. Default: false
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub channel_points_voting_enabled: Option<bool>,
     /// Number of Channel Points required to vote once with Channel Points. Minimum: 0. Maximum: 1000000.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub channel_points_per_vote: Option<i64>,
 }
 
@@ -115,7 +117,8 @@ impl helix::private::SealedSerialize for CreatePollBody {}
 
 // FIXME: I'd prefer this to be a Vec<String> on CreatePollBody
 /// Choice settings for a poll
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct NewPollChoice {
     /// Text displayed for the choice. Maximum: 25 characters.

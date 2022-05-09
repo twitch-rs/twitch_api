@@ -47,14 +47,15 @@ use helix::RequestDelete;
 /// Query Parameters for [Delete Channel Stream Schedule Segment](super::delete_channel_stream_schedule_segment)
 ///
 /// [`delete-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#delete-channel-stream-schedule-segment)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct DeleteChannelStreamScheduleSegmentRequest {
     /// User ID of the follower
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub from_id: types::UserId,
     /// Channel to be unfollowed by the user
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub to_id: types::UserId,
 }
 /// Return Values for [Delete Channel Stream Schedule Segment](super::delete_channel_stream_schedule_segment)

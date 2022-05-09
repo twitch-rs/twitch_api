@@ -43,29 +43,30 @@ use helix::RequestGet;
 /// Query Parameters for [Get Streams](super::get_streams)
 ///
 /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetStreamsRequest {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub before: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Returns streams broadcasting a specified game ID. You can specify up to 10 IDs.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub game_id: Vec<types::CategoryId>,
     /// Stream language. You can specify up to 100 languages.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub language: Option<String>,
     /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub user_id: Vec<types::UserId>,
     /// Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub user_login: Vec<types::UserName>,
 }
 

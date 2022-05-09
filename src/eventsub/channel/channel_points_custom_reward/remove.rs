@@ -3,15 +3,16 @@
 
 use super::*;
 /// [`channel.channel_points_custom_reward.remove`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardremove): a custom channel points reward has been removed from the specified channel.
-#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPointsCustomRewardRemoveV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward remove notifications for.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
     /// Optional. Specify a reward id to only receive notifications for a specific reward.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub reward_id: Option<types::RewardId>,
 }
 

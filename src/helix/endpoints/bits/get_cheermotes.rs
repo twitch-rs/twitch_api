@@ -43,11 +43,12 @@ use helix::RequestGet;
 /// Query Parameters for [Get Cheermotes](super::get_cheermotes)
 ///
 /// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetCheermotesRequest {
     /// ID for the broadcaster who might own specialized Cheermotes.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub broadcaster_id: Option<types::UserId>,
 }
 
@@ -108,7 +109,7 @@ pub struct Tiers {
     pub id: String,
     /// Structure containing both animated and static image sets, sorted by light and dark.
     pub images: CheermoteImages,
-    /// Minimum number of bits needed to be used to hit the given tier of emote.  
+    /// Minimum number of bits needed to be used to hit the given tier of emote.
     pub min_bits: i64,
     /// Indicates whether or not we hide the emote from the bits card.
     pub show_in_bits_card: bool,

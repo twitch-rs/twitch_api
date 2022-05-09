@@ -3,13 +3,14 @@
 
 use super::*;
 /// [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainend): a hype train ends on the specified channel.
-#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelHypeTrainEndV1 {
     // FIXME: Twitch docs say "want to hype train"
     /// The broadcaster user ID for the channel you want hype train end notifications for.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
 }
 

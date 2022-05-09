@@ -50,24 +50,25 @@ use helix::RequestGet;
 /// Query Parameters for [Get Broadcaster Subscriptions Events](super::get_broadcaster_subscriptions_events)
 ///
 /// [`get-broadcaster-subscriptions-events`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions-events)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetBroadcasterSubscriptionsEventsRequest {
     /// Must match the User ID in the Bearer token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Filters the results and only returns a status object for users who have a subscribe event in this channel and have a matching user_id.
     /// Maximum: 100
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub user_id: Vec<types::UserId>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Retreive a single event by event ID
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub id: Option<String>,
 }
 

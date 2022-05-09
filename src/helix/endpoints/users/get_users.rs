@@ -43,14 +43,15 @@ use helix::RequestGet;
 /// Query Parameters for [Get Users](super::get_users)
 ///
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetUsersRequest {
     /// User ID. Multiple user IDs can be specified. Limit: 100.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub id: Vec<types::UserId>,
     /// User login name. Multiple login names can be specified. Limit: 100.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub login: Vec<types::UserName>,
 }
 

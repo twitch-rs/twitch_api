@@ -43,25 +43,26 @@ use helix::RequestGet;
 /// Query Parameters for [Get Banned Users](super::get_banned_users)
 ///
 /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetBannedUsersRequest {
     /// Must match the User ID in the Bearer token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.
     /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
     /// Maximum: 100
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub user_id: Vec<types::UserId>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub before: Option<helix::Cursor>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
-    #[builder(setter(into), default)]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
     pub first: Option<String>,
 }
 

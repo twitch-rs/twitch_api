@@ -43,20 +43,21 @@ use helix::RequestGet;
 /// Query Parameters for [Search Categories](super::search_categories)
 ///
 /// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct SearchCategoriesRequest {
     /// URI encoded search query
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub query: String,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub before: Option<helix::Cursor>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
-    #[builder(setter(into), default)]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
     pub first: Option<String>,
 }
 

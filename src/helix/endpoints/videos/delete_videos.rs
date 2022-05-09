@@ -44,11 +44,12 @@ use helix::RequestDelete;
 /// Query Parameters for [Delete Videos](super::delete_videos)
 ///
 /// [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct DeleteVideosRequest {
     /// ID of the video(s) to be deleted. Limit: 5.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub id: Vec<types::VideoId>,
 }
 // FIXME: Should return VideoIds

@@ -58,11 +58,12 @@ use helix::RequestPatch;
 /// Query Parameters for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct ModifyChannelInformationRequest {
     /// ID of the channel
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
 }
 
@@ -71,18 +72,19 @@ pub struct ModifyChannelInformationRequest {
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
 #[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+    PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default,
 )]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct ModifyChannelInformationBody {
     /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub game_id: Option<types::CategoryId>,
     /// Language of the channel
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub broadcaster_language: Option<String>,
     /// Title of the stream. Value must not be an empty string.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub title: Option<String>,
 }
 

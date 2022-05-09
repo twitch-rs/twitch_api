@@ -42,11 +42,12 @@ use helix::RequestDelete;
 /// Query Parameters for [Unblock User](super::unblock_user)
 ///
 /// [`unblock-user`](https://dev.twitch.tv/docs/api/reference#unblock-user)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UnblockUserRequest {
     /// User ID of the follower
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub target_user_id: types::UserId,
 }
 

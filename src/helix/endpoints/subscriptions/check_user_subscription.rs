@@ -42,14 +42,15 @@ use helix::RequestGet;
 /// Query Parameters for [Check User Subscription](super::check_user_subscription)
 ///
 /// [`check-user-subscription`](https://dev.twitch.tv/docs/api/reference#check-user-subscription)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CheckUserSubscriptionRequest {
     /// User ID of the broadcaster. Must match the User ID in the Bearer token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Unique identifier of account to get subscription status of. Accepts up to 100 values.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub user_id: Vec<types::UserId>,
 }
 

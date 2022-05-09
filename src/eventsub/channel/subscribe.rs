@@ -5,12 +5,13 @@
 use super::*;
 
 /// [`channel.subscribe`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscribe): a specified channel receives a subscriber. This does not include resubscribes.
-#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelSubscribeV1 {
     /// The broadcaster user ID for the channel you want to get subscribe notifications for.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
 }
 

@@ -40,14 +40,15 @@ use helix::RequestPost;
 /// Query Parameters for [Start A Raid](super::start_a_raid)
 ///
 /// [`start-a-raid`](https://dev.twitch.tv/docs/api/reference#start-a-raid)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct StartARaidRequest {
     /// The ID of the broadcaster that’s sending the raiding party.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     from_broadcaster_id: types::UserId,
     /// The ID of the broadcaster to raid.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     to_broadcaster_id: types::UserId,
 }
 

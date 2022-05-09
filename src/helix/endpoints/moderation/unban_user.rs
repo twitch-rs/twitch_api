@@ -48,17 +48,18 @@ use helix::RequestDelete;
 /// Query Parameters for [Unban User](super::unban_user)
 ///
 /// [`unban-user`](https://dev.twitch.tv/docs/api/reference#unban-user)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UnbanUserRequest {
     /// The ID of the broadcaster whose chat room the user is banned from chatting in.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
     /// The ID of the user to remove the ban or timeout from.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub user_id: types::UserId,
 }
 

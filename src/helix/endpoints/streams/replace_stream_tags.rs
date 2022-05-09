@@ -64,11 +64,12 @@ use helix::RequestPut;
 /// Query Parameters for [Replace Stream Tags](super::replace_stream_tags)
 ///
 /// [`replace-stream-tags`](https://dev.twitch.tv/docs/api/reference#replace-stream-tags)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct ReplaceStreamTagsRequest {
     /// ID of the stream for which tags are to be replaced.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
 }
 
@@ -79,11 +80,12 @@ pub struct ReplaceStreamTagsRequest {
 /// # Notes
 ///
 /// Up to five tags can be applied to a stream. If no `tag_ids` is provided, all tags are removed from the stream.
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct ReplaceStreamTagsBody {
     /// IDs of tags to be applied to the stream.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub tag_ids: Vec<types::TagId>,
 }
 /// Return Values for [Replace Stream Tags](super::replace_stream_tags)

@@ -7,28 +7,31 @@ use helix::RequestGet;
 /// Query Parameters for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
 /// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetEventSubSubscriptionsRequest {
     /// Include this parameter to filter subscriptions by their status.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub status: Option<eventsub::Status>,
     /// Filter subscriptions by [subscription type](eventsub::EventType) (e.g., [channel.update](eventsub::EventType::ChannelUpdate)).
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+
     pub type_: Option<eventsub::EventType>,
     /// Filter subscriptions by user ID.
     ///
     /// The response contains subscriptions where the user ID
     /// matches a user ID that you specified inthe Condition object when you created the subscription.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+
     pub user_id: Option<types::UserId>,
     // FIXME: https://github.com/twitchdev/issues/issues/272
     /// Cursor for forward pagination
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub after: Option<helix::Cursor>,
     // FIXME: https://github.com/twitchdev/issues/issues/271
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
 }
 

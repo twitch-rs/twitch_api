@@ -46,14 +46,15 @@ use helix::RequestPost;
 /// Query Parameters for [Add Channel Moderator](super::add_channel_moderator)
 ///
 /// [`add-channel-moderator`](https://dev.twitch.tv/docs/api/reference#add-channel-moderator)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct AddChannelModeratorRequest {
     /// The ID of the broadcaster that owns the chat room.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of the user to add as a moderator in the broadcaster’s chat room.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
 }
 

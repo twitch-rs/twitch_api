@@ -41,14 +41,15 @@ use helix::RequestGet;
 /// Query Parameters for [Get Teams](super::get_teams)
 ///
 /// [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetTeamsRequest {
     /// Team ID.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub id: Option<types::TeamId>,
     /// Team name.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub name: Option<String>,
 }
 

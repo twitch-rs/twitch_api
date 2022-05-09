@@ -44,11 +44,12 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Information](super::get_channel_information)
 ///
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetChannelInformationRequest {
     /// ID of the channel
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
 }
 

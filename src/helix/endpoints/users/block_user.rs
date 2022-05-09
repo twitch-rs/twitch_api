@@ -49,17 +49,18 @@ use helix::RequestPut;
 /// Query Parameters for [Block User](super::block_user)
 ///
 /// [`block-user`](https://dev.twitch.tv/docs/api/reference#block-user)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct BlockUserRequest {
     /// User ID of the follower
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub target_user_id: types::UserId,
     /// Source context for blocking the user. Valid values: "chat", "whisper".
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub source_context: Option<SourceContext>,
     /// Reason for blocking the user. Valid values: "spam", "harassment", or "other".
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub reason: Option<Reason>,
 }
 

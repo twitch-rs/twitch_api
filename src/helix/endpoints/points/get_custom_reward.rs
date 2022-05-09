@@ -46,17 +46,18 @@ use helix::RequestGet;
 /// Query Parameters for [Get Custom Reward](super::get_custom_reward)
 ///
 /// [`get-custom-reward`](https://dev.twitch.tv/docs/api/reference#get-custom-reward)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetCustomRewardRequest {
     /// Provided broadcaster_id must match the user_id in the auth token
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// When used, this parameter filters the results and only returns reward objects for the Custom Rewards with matching ID. Maximum: 50
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub id: Vec<types::RewardId>,
     /// When set to true, only returns custom rewards that the calling client_id can manage. Defaults false.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub only_manageable_rewards: Option<bool>,
 }
 

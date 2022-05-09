@@ -45,21 +45,22 @@ use helix::RequestGet;
 /// Query Parameters for [Get Blocked Terms](super::get_blocked_terms)
 ///
 /// [`get-blocked-terms`](https://dev.twitch.tv/docs/api/reference#get-blocked-terms)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetBlockedTerms {
     /// The ID of the broadcaster whose blocked terms you’re getting.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     /// If the broadcaster wants to get their own block terms (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
     /// The maximum number of blocked terms to return per page in the response. The minimum page size is 1 blocked term per page and the maximum is 100. The default is 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<u32>,
     /// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
 }
 
@@ -105,7 +106,7 @@ fn test_request() {
           "created_at": "2021-09-29T19:45:37Z",
           "updated_at": "2021-09-29T19:45:37Z",
           "expires_at": null
-        }    
+        }
       ],
       "pagination": {
         "cursor": "eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6I..."

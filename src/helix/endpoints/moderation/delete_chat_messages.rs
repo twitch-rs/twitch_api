@@ -46,16 +46,17 @@ use helix::RequestDelete;
 /// Query Parameters for [Delete Chat Messages](super::delete_chat_messages)
 ///
 /// [`delete-chat-messages`](https://dev.twitch.tv/docs/api/reference#delete-chat-messages)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct DeleteChatMessagesRequest {
     /// The ID of the broadcaster that owns the chat room to remove messages from.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     ///
     /// This ID must match the user ID in the OAuth token. If the broadcaster wants to remove messages themselves, set this parameter to the broadcaster’s ID, too.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
     /// The ID of the message to remove.
     ///
@@ -68,7 +69,7 @@ pub struct DeleteChatMessagesRequest {
     /// The message must not belong to another moderator.
     ///
     /// If not specified, the request removes all messages in the broadcaster’s chat room.
-    #[builder(setter(into), default)]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub message_id: Option<types::MsgId>,
 }
 

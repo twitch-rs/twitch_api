@@ -44,20 +44,22 @@ use helix::RequestGet;
 /// Query Parameters for [Get VIPs](super::get_vips)
 ///
 /// [`get-vips`](https://dev.twitch.tv/docs/api/reference#get-vips)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetVipsRequest {
     /// The ID of the broadcaster whose list of VIPs you want to get.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Filters the list for specific VIPs. To specify more than one user, include the user_id parameter for each user to get. For example, &user_id=1234&user_id=5678. The maximum number of IDs that you may specify is 100. Ignores those users in the list that aren’t VIPs.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub user_id: Vec<types::UserId>,
     /// The maximum number of items to return per page in the response. The minimum page size is 1 item per page and the maximum is 100. The default is 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+
     pub first: Option<usize>,
     /// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value. Read more.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
 }
 

@@ -73,37 +73,39 @@ use helix::RequestPost;
 /// Query Parameters for [Create Channel Stream Schedule Segment](super::create_channel_stream_schedule_segment)
 ///
 /// [`create-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreateChannelStreamScheduleSegmentRequest {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
 }
 
 /// Body Parameters for [Create Channel Stream Schedule Segment](super::create_channel_stream_schedule_segment)
 ///
 /// [`create-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreateChannelStreamScheduleSegmentBody {
     /// Start time for the scheduled broadcast specified in RFC3339 format.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub start_time: types::Timestamp,
     // FIXME: specific braid?
     /// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub timezone: String,
     /// Indicates if the scheduled broadcast is recurring weekly.
     pub is_recurring: bool,
     /// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub duration: Option<String>,
     /// Game/Category ID for the scheduled broadcast.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub category_id: Option<types::CategoryId>,
     /// Title for the scheduled broadcast. Maximum: 140 characters.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub title: Option<String>,
 }
 

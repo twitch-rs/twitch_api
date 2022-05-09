@@ -43,12 +43,13 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Emotes](super::get_emote_sets)
 ///
 /// [`get-emote-sets`](https://dev.twitch.tv/docs/api/reference#get-emote-sets)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetEmoteSetsRequest {
     // FIXME: twitch doc specifies maximum as 25, but it actually is 10
     /// The broadcaster whose emotes are being requested. Minimum: 1. Maximum: 10
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub emote_set_id: Vec<types::EmoteSetId>,
 }
 
