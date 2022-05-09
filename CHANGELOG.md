@@ -6,6 +6,10 @@
 
 [Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.6.1...Unreleased)
 
+### Breaking changes
+
+* All (most) types are now living in their own crate `twitch_types`
+
 ## [v0.6.1] - 2022-04-29
 
 * No changes, only a fix for docs.rs output and some version bumps in Cargo.toml

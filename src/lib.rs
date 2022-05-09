@@ -95,7 +95,7 @@
 #[doc(hidden)]
 pub struct ReadmeDoctests;
 
-pub mod types;
+pub use twitch_types as types;
 
 #[cfg(feature = "helix")]
 #[cfg_attr(nightly, doc(cfg(feature = "helix")))]
