@@ -82,6 +82,11 @@ pub struct User {
     /// User’s type: "staff", "admin", "global_mod", or "".
     #[serde(rename = "type")]
     pub type_: Option<types::UserType>,
+    #[deprecated(
+        since = "0.7.0",
+        note = "removed, see https://discuss.dev.twitch.tv/t/get-users-api-endpoint-view-count-deprecation/37777"
+    )]
+    #[serde(default)]
     /// Total number of views of the user’s channel.
     pub view_count: usize,
 }
