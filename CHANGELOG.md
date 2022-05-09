@@ -9,6 +9,8 @@
 ### Breaking changes
 
 * All (most) types are now living in their own crate `twitch_types`
+* Features for clients are now named after the client, e.g feature `reqwest_client` is now simply `reqwest`
+* MSRV: 1.60.0
 
 ### Changes
 
