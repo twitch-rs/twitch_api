@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CreatorGoalType","Type of creator goal"]],"struct":[["CreatorGoalId","A Creator Goal ID"],["CreatorGoalIdRef","A reference to a borrowed [`CreatorGoalId`]"]]});
