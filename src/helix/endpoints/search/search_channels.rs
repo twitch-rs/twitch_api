@@ -62,6 +62,30 @@ pub struct SearchChannelsRequest {
     pub live_only: Option<bool>,
 }
 
+impl SearchChannelsRequest {
+    /// Search channels with the following query.
+    pub fn query(query: impl Into<String>) -> Self {
+        Self {
+            query: query.into(),
+            after: None,
+            first: None,
+            live_only: None,
+        }
+    }
+
+    /// Get live streams only
+    pub fn live_only(mut self, live_only: bool) -> Self {
+        self.live_only = Some(live_only);
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
+}
+
 /// Return Values for [Search Channels](super::search_channels)
 ///
 /// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)

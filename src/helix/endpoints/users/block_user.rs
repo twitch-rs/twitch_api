@@ -64,6 +64,29 @@ pub struct BlockUserRequest {
     pub reason: Option<Reason>,
 }
 
+impl BlockUserRequest {
+    /// Block a user
+    pub fn block_user(target_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            target_user_id: target_user_id.into(),
+            source_context: None,
+            reason: None,
+        }
+    }
+
+    /// Set the source_context for this block.
+    pub fn source_context(mut self, source_context: impl Into<SourceContext>) -> Self {
+        self.source_context = Some(source_context.into());
+        self
+    }
+
+    /// Set the reason for this block.
+    pub fn reason(mut self, reason: impl Into<Reason>) -> Self {
+        self.reason = Some(reason.into());
+        self
+    }
+}
+
 /// Source context for blocking the user.
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]

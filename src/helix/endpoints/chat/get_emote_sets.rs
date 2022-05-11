@@ -53,6 +53,22 @@ pub struct GetEmoteSetsRequest {
     pub emote_set_id: Vec<types::EmoteSetId>,
 }
 
+impl GetEmoteSetsRequest {
+    /// Get emotes in this set
+    pub fn emote_set_id(emote_set_id: impl Into<types::EmoteSetId>) -> Self {
+        Self {
+            emote_set_id: vec![emote_set_id.into()],
+        }
+    }
+
+    /// Get emotes in these sets
+    pub fn emote_set_ids(emote_set_ids: impl IntoIterator<Item = types::EmoteSetId>) -> Self {
+        Self {
+            emote_set_id: emote_set_ids.into_iter().collect(),
+        }
+    }
+}
+
 /// Return Values for [Get Channel Emotes](super::get_emote_sets)
 ///
 /// [`get-emote-sets`](https://dev.twitch.tv/docs/api/reference#get-emote-sets)

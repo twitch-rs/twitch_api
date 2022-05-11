@@ -61,6 +61,28 @@ pub struct GetFollowedStreamsRequest {
     pub first: Option<usize>,
 }
 
+impl GetFollowedStreamsRequest {
+    /// Get a users followed streams.
+    /// 
+    /// Requires token with scope [`user:read:follows`](twitch_oauth2::Scope::UserReadFollows).
+    /// 
+    /// See also [`HelixClient::get_followed_streams`](crate::helix::HelixClient::get_followed_streams).
+    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: user_id.into(),
+            after: Default::default(),
+            before: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
+}
+
 /// Return Values for [Get Followed Streams](super::get_followed_streams)
 ///
 /// [`get-followed-streams`](https://dev.twitch.tv/docs/api/reference#get-followed-streams)

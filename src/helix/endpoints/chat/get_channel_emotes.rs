@@ -52,6 +52,13 @@ pub struct GetChannelEmotesRequest {
     pub broadcaster_id: types::UserId,
 }
 
+impl GetChannelEmotesRequest {
+  /// Get emotes in a specific broadcasters channel.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self { broadcaster_id: broadcaster_id.into() }
+    }
+}
+
 /// Return Values for [Get Channel Emotes](super::get_channel_emotes)
 ///
 /// [`get-channel-emotes`](https://dev.twitch.tv/docs/api/reference#get-channel-emotes)

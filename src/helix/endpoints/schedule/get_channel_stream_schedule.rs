@@ -68,6 +68,44 @@ pub struct GetChannelStreamScheduleRequest {
     pub first: Option<usize>,
 }
 
+impl GetChannelStreamScheduleRequest {
+    /// Get a broadcasters schedule
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: Default::default(),
+            start_time: Default::default(),
+            utc_offset: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// Set the id for the request.
+    pub fn id(mut self, id: impl Into<types::StreamSegmentId>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    /// Set the start_time for the request.
+    pub fn start_time(mut self, start_time: impl Into<types::Timestamp>) -> Self {
+        self.start_time = Some(start_time.into());
+        self
+    }
+
+    /// Set the utc_offset for the request.
+    pub fn utc_offset(mut self, utc_offset: impl Into<String>) -> Self {
+        self.utc_offset = Some(utc_offset.into());
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
+}
+
 /// Return Values for [Get Channel Stream Schedule](super::get_channel_stream_schedule)
 ///
 /// [`get-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule)

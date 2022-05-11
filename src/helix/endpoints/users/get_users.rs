@@ -55,6 +55,63 @@ pub struct GetUsersRequest {
     pub login: Vec<types::UserName>,
 }
 
+impl GetUsersRequest {
+    /// Get a single user by their [`UserName`](types::UserName)
+    pub fn login(login: impl Into<types::UserName>) -> Self {
+        Self {
+            id: Vec::default(),
+            login: vec![login.into()],
+        }
+    }
+
+    /// Get multiple user by their [`UserName`](types::UserName)
+    /// 
+    /// ```rust
+    /// use twitch_api2::helix::users::get_users::GetUsersRequest;
+    /// GetUsersRequest::logins(&["twitch".into(), "justintv".into()])
+    /// ```
+    pub fn logins(login: impl IntoIterator<Item = types::UserName>) -> Self {
+        Self {
+            id: Vec::default(),
+            login: login.into_iter().collect(),
+        }
+    }
+
+    /// Get a user by their [`UserId`](types::UserId)
+    pub fn id(id: impl Into<types::UserId>) -> Self {
+        Self {
+            id: vec![id.into()],
+            login: Vec::default(),
+        }
+    }
+
+    /// Get multiple user by their [`UserId`](types::UserId)
+    pub fn ids(id: impl IntoIterator<Item = types::UserId>) -> Self {
+        Self {
+            id: id.into_iter().collect(),
+            login: Vec::default(),
+        }
+    }
+
+    /// Returns an empty [`GetUsersRequest`]
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api2::helix::users::GetUsersRequest;
+    /// GetUsersRequest {
+    ///     id: vec!["1234".into()],
+    ///     ..GetUsersRequest::empty()
+    /// }
+    /// ```
+    pub fn empty() -> Self {
+        Self {
+            id: Vec::default(),
+            login: Vec::default(),
+        }
+    }
+}
+
 /// Return Values for [Get Users](super::get_users)
 ///
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)

@@ -53,6 +53,15 @@ pub struct GetChannelInformationRequest {
     pub broadcaster_id: types::UserId,
 }
 
+impl GetChannelInformationRequest {
+    /// Get channel information for a specific broadcaster.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
+}
+
 /// Return Values for [Get Channel Information](super::get_channel_information)
 ///
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)

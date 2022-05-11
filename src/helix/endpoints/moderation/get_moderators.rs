@@ -59,7 +59,31 @@ pub struct GetModeratorsRequest {
     pub after: Option<helix::Cursor>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
-    pub first: Option<String>,
+    pub first: Option<usize>,
+}
+
+impl GetModeratorsRequest {
+    /// Get moderators in a broadcasters channel.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// Filter the results for specific users.
+    pub fn user_ids(mut self, user_ids: impl IntoIterator<Item = types::UserId>) -> Self {
+        self.user_id = user_ids.into_iter().collect();
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Get Moderators](super::get_moderators)

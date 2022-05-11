@@ -46,6 +46,11 @@ use helix::RequestGet;
 #[non_exhaustive]
 pub struct GetGlobalEmotesRequest {}
 
+impl GetGlobalEmotesRequest {
+    /// Get global emotes
+    pub fn new() -> Self { Self {} }
+}
+
 /// Return Values for [Get Channel Emotes](super::get_global_emotes)
 ///
 /// [`get-global-emotes`](https://dev.twitch.tv/docs/api/reference#get-global-emotes)

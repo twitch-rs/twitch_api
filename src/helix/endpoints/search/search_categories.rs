@@ -58,7 +58,25 @@ pub struct SearchCategoriesRequest {
     pub before: Option<helix::Cursor>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
-    pub first: Option<String>,
+    pub first: Option<usize>,
+}
+
+impl SearchCategoriesRequest {
+    /// Search categories with the following query.
+    pub fn query(query: impl Into<String>) -> Self {
+        Self {
+            query: query.into(),
+            after: None,
+            before: None,
+            first: None,
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Search Categories](super::search_categories)

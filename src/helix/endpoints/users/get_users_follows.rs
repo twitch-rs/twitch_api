@@ -58,6 +58,56 @@ pub struct GetUsersFollowsRequest {
     pub to_id: Option<types::UserId>,
 }
 
+impl GetUsersFollowsRequest {
+    /// Get the broadcasters that `from_id` is following
+    pub fn following(from_id: impl Into<types::UserId>) -> Self {
+        Self {
+            from_id: Some(from_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// Get the followers of `to_id`
+    pub fn followers(to_id: impl Into<types::UserId>) -> Self {
+        Self {
+            to_id: Some(to_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// Check if user follows a specific broadcaster
+    pub fn follows(
+        user_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            from_id: Some(user_id.into()),
+            to_id: Some(broadcaster_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// Returns an empty [`GetUsersFollowsRequest`]
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api2::helix::users::GetUsersFollowsRequest;
+    /// GetUsersFollowsRequest {
+    ///     from_id: Some("1234".into()),
+    ///     ..GetUsersFollowsRequest::empty()
+    /// }
+    /// ```
+    pub fn empty() -> Self {
+        Self {
+            after: None,
+            first: None,
+            from_id: None,
+            to_id: None,
+        }
+    }
+}
+
 /// Return Values for [Get Users Follows](super::get_users_follows)
 ///
 /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)

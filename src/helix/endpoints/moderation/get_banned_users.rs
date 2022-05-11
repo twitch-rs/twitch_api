@@ -63,7 +63,26 @@ pub struct GetBannedUsersRequest {
     pub before: Option<helix::Cursor>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
-    pub first: Option<String>,
+    pub first: Option<usize>,
+}
+
+impl GetBannedUsersRequest {
+    /// Get banned users in a broadcasters channel.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: Default::default(),
+            after: Default::default(),
+            before: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Get Banned Users](super::get_banned_users)

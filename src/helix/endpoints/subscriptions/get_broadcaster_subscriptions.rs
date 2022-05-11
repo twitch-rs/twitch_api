@@ -57,7 +57,31 @@ pub struct GetBroadcasterSubscriptionsRequest {
     pub after: Option<helix::Cursor>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
-    pub first: Option<String>,
+    pub first: Option<usize>,
+}
+
+impl GetBroadcasterSubscriptionsRequest {
+    /// Get a broadcasters subscribers
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// check for specific users in broadcasters subscriptions
+    pub fn subscriber(mut self, user_ids: impl IntoIterator<Item = types::UserId>) -> Self {
+        self.user_id = user_ids.into_iter().collect();
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Get Broadcaster Subscriptions](super::get_broadcaster_subscriptions)

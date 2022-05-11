@@ -18,14 +18,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        self.req_get(
-            helix::users::GetUsersRequest::builder()
-                .login(vec![login.into()])
-                .build(),
-            token,
-        )
-        .await
-        .map(|response| response.first())
+        self.req_get(helix::users::GetUsersRequest::login(login), token)
+            .await
+            .map(|response| response.first())
     }
 
     /// Get [User](helix::users::User) from user id
@@ -37,14 +32,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        self.req_get(
-            helix::users::GetUsersRequest::builder()
-                .id(vec![id.into()])
-                .build(),
-            token,
-        )
-        .await
-        .map(|response| response.first())
+        self.req_get(helix::users::GetUsersRequest::id(id), token)
+            .await
+            .map(|response| response.first())
     }
 
     /// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters login
@@ -73,9 +63,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         T: TwitchToken + ?Sized,
     {
         self.req_get(
-            helix::channels::GetChannelInformationRequest::builder()
-                .broadcaster_id(id.into())
-                .build(),
+            helix::channels::GetChannelInformationRequest::broadcaster_id(id),
             token,
         )
         .await
@@ -148,9 +136,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::search::SearchCategoriesRequest::builder()
-            .query(query.into())
-            .build();
+        let req = helix::search::SearchCategoriesRequest::query(query).first(100);
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
@@ -182,10 +168,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::search::SearchChannelsRequest::builder()
-            .query(query.into())
-            .live_only(live_only)
-            .build();
+        let req = helix::search::SearchChannelsRequest::query(query.into()).live_only(live_only);
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
@@ -224,11 +207,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::users::GetUsersFollowsRequest::builder()
-            .to_id(to_id)
-            .from_id(from_id)
-            .first(100)
-            .build();
+        let mut req = helix::users::GetUsersFollowsRequest::empty();
+        req.to_id = to_id.into();
+        req.from_id = from_id.into();
+
         make_stream(req, token, self, |s| {
             std::collections::VecDeque::from(s.follow_relationships)
         })
@@ -236,6 +218,8 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
 
     /// Get authenticated users' followed [streams](helix::streams::Stream)
     ///
+    /// Requires token with scope [`user:read:follows`](twitch_oauth2::Scope::UserReadFollows).
+    /// 
     /// # Examples
     ///
     /// ```rust, no_run
@@ -269,9 +253,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
             Ok(t) => t,
             Err(e) => return futures::stream::once(async { Err(e) }).boxed(),
         };
-        let req = helix::streams::GetFollowedStreamsRequest::builder()
-            .user_id(user_id)
-            .build();
+        let req = helix::streams::GetFollowedStreamsRequest::user_id(user_id);
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
@@ -317,9 +299,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
             Ok(t) => t,
             Err(e) => return futures::stream::once(async { Err(e) }).boxed(),
         };
-        let req = helix::subscriptions::GetBroadcasterSubscriptionsRequest::builder()
-            .broadcaster_id(user_id)
-            .build();
+        let req = helix::subscriptions::GetBroadcasterSubscriptionsRequest::broadcaster_id(user_id);
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
@@ -353,9 +333,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::moderation::GetModeratorsRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .build();
+        let req = helix::moderation::GetModeratorsRequest::broadcaster_id(broadcaster_id);
 
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
@@ -390,9 +368,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::moderation::GetBannedUsersRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .build();
+        let req = helix::moderation::GetBannedUsersRequest::broadcaster_id(broadcaster_id);
 
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
@@ -430,9 +406,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     {
         let resp = self
             .req_get(
-                helix::users::GetUsersFollowsRequest::builder()
-                    .from_id(Some(to_id.into()))
-                    .build(),
+                helix::users::GetUsersFollowsRequest::followers(to_id),
                 token,
             )
             .await?;
@@ -443,23 +417,19 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// Get games by ID. Can only be at max 100 ids.
     pub async fn get_games_by_id<T>(
         &'a self,
-        ids: &[types::CategoryId],
+        ids: impl IntoIterator<Item = types::CategoryId>,
         token: &T,
     ) -> Result<std::collections::HashMap<types::CategoryId, helix::games::Game>, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
+        let ids: Vec<_> = ids.into_iter().take(101).collect();
         if ids.len() > 100 {
             return Err(ClientRequestError::Custom("too many IDs, max 100".into()));
         }
 
         let resp = self
-            .req_get(
-                helix::games::GetGamesRequest::builder()
-                    .id(ids.to_vec())
-                    .build(),
-                token,
-            )
+            .req_get(helix::games::GetGamesRequest::ids(ids), token)
             .await?;
 
         Ok(resp
@@ -480,9 +450,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     {
         Ok(self
             .req_put(
-                helix::users::BlockUserRequest::builder()
-                    .target_user_id(target_user_id)
-                    .build(),
+                helix::users::BlockUserRequest::block_user(target_user_id),
                 helix::EmptyBody,
                 token,
             )
@@ -501,9 +469,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     {
         Ok(self
             .req_delete(
-                helix::users::UnblockUserRequest::builder()
-                    .target_user_id(target_user_id)
-                    .build(),
+                helix::users::UnblockUserRequest::unblock_user(target_user_id),
                 token,
             )
             .await?
@@ -599,9 +565,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::schedule::GetChannelStreamScheduleRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .build();
+        let req = helix::schedule::GetChannelStreamScheduleRequest::broadcaster_id(broadcaster_id);
 
         make_stream(req, token, self, |broadcasts| broadcasts.segments.into())
     }
@@ -614,7 +578,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::chat::GetGlobalEmotesRequest::builder().build();
+        let req = helix::chat::GetGlobalEmotesRequest::new();
         Ok(self.req_get(req, token).await?.data)
     }
 
@@ -627,9 +591,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::chat::GetChannelEmotesRequest::builder()
-            .broadcaster_id(user_id)
-            .build();
+        let req = helix::chat::GetChannelEmotesRequest::broadcaster_id(user_id);
         Ok(self.req_get(req, token).await?.data)
     }
 
@@ -654,15 +616,13 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// Get emotes in emote set
     pub async fn get_emote_sets<T>(
         &'a self,
-        emote_sets: &[types::EmoteSetId],
+        emote_sets: impl IntoIterator<Item = types::EmoteSetId>,
         token: &T,
     ) -> Result<Vec<helix::chat::get_emote_sets::Emote>, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::chat::GetEmoteSetsRequest::builder()
-            .emote_set_id(emote_sets.to_owned())
-            .build();
+        let req = helix::chat::GetEmoteSetsRequest::emote_set_ids(emote_sets);
         Ok(self.req_get(req, token).await?.data)
     }
 
@@ -955,9 +915,7 @@ pub enum ClientExtError<'a, C: crate::HttpClient<'a>, E> {
 /// use twitch_api::helix;
 /// use futures::TryStreamExt;
 ///
-/// let req = helix::moderation::GetModeratorsRequest::builder()
-/// .broadcaster_id("1234")
-/// .build();
+/// let req = helix::moderation::GetModeratorsRequest::broadcaster_id("1234");
 ///
 /// helix::make_stream(req, &token, &client, std::collections::VecDeque::from).try_collect::<Vec<_>>().await?
 /// # ;

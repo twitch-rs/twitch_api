@@ -99,7 +99,6 @@ pubsub = [
 
 eventsub = [
     "serde_json",
-    "dep:typed-builder",
     "twitch_types/emote",
     "twitch_types/eventsub",
     "twitch_types/goal",

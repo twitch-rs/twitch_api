@@ -55,6 +55,58 @@ pub struct GetGamesRequest {
     pub name: Vec<String>,
 }
 
+impl GetGamesRequest {
+    /// Get game with specific exact name match.
+    pub fn name(name: impl Into<String>) -> Self {
+        Self {
+            name: vec![name.into()],
+            ..Self::empty()
+        }
+    }
+
+    /// Get games with specific exact name match.
+    pub fn names(names: impl IntoIterator<Item = String>) -> Self {
+        Self {
+            name: names.into_iter().collect(),
+            ..Self::empty()
+        }
+    }
+
+    /// Get game with specific exact id match.
+    pub fn id(id: impl Into<types::CategoryId>) -> Self {
+        Self {
+            id: vec![id.into()],
+            ..Self::empty()
+        }
+    }
+
+    /// Get games with specific exact id match.
+    pub fn ids(ids: impl IntoIterator<Item = types::CategoryId>) -> Self {
+        Self {
+            id: ids.into_iter().collect(),
+            ..Self::empty()
+        }
+    }
+
+    /// Returns an empty [`GetGamesRequest`]
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api2::helix::users::GetGamesRequest;
+    /// GetGamesRequest {
+    ///     from_id: Some("1234".into()),
+    ///     ..GetGamesRequest::empty()
+    /// }
+    /// ```
+    pub fn empty() -> Self {
+        Self {
+            id: Default::default(),
+            name: Default::default(),
+        }
+    }
+}
+
 /// Return Values for [Get Games](super::get_games)
 ///
 /// [`get-games`](https://dev.twitch.tv/docs/api/reference#get-games)

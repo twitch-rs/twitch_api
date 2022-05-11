@@ -51,6 +51,13 @@ pub struct UnblockUserRequest {
     pub target_user_id: types::UserId,
 }
 
+impl UnblockUserRequest {
+    /// Create a new unblock request
+    pub fn unblock_user(target_user_id: impl Into<types::UserId>) -> Self {
+        Self { target_user_id: target_user_id.into() }
+    }
+}
+
 /// Return Values for [Unblock User](super::unblock_user)
 ///
 /// [`unblock-user`](https://dev.twitch.tv/docs/api/reference#unblock-user)
