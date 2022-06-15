@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`UpdateChannelStreamScheduleSegmentRequest`] with the [`UpdateChannelStreamScheduleSegmentRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::schedule::update_channel_stream_schedule_segment;
+//! use twitch_api::helix::schedule::update_channel_stream_schedule_segment;
 //! let request = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentRequest::builder()
 //!     .broadcaster_id("141981764")
 //!     .id("eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=")
@@ -20,7 +20,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::schedule::update_channel_stream_schedule_segment;
+//! # use twitch_api::helix::schedule::update_channel_stream_schedule_segment;
 //! let body =
 //!     update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::builder()
 //!         .duration("120".to_string())
@@ -34,8 +34,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, schedule::update_channel_stream_schedule_segment};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, schedule::update_channel_stream_schedule_segment};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

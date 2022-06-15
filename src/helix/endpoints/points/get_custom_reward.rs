@@ -10,7 +10,7 @@
 //! To use this endpoint, construct a [`GetCustomRewardRequest`] with the [`GetCustomRewardRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::points::GetCustomRewardRequest;
+//! use twitch_api::helix::points::GetCustomRewardRequest;
 //! let request = GetCustomRewardRequest::builder()
 //!     .broadcaster_id("274637212".to_string())
 //!     .build();
@@ -21,9 +21,9 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix;
-//! use twitch_api2::helix::points::{CustomReward, GetCustomRewardRequest};
-//! # use twitch_api2::client;
+//! use twitch_api::helix;
+//! use twitch_api::helix::points::{CustomReward, GetCustomRewardRequest};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

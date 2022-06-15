@@ -22,7 +22,7 @@ impl<C: crate::HttpClient<'static> + crate::client::ClientDefault<'static>> Defa
 /// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
 ///
 /// ```rust,no_run
-/// # use twitch_api2::{HelixClient}; pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
+/// # use twitch_api::{HelixClient}; pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
 /// pub struct MyStruct {
 ///     twitch: HelixClient<'static, reqwest::Client>,
 ///     token: twitch_oauth2::AppAccessToken,
@@ -39,11 +39,11 @@ impl<C: crate::HttpClient<'static> + crate::client::ClientDefault<'static>> Defa
 /// ```rust,no_run
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-/// # pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
+/// # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
 /// let client: HelixClient<'static, reqwest::Client> = HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-/// use twitch_api2::helix::{users::User, HelixClient};
+/// use twitch_api::helix::{users::User, HelixClient};
 /// let user: Option<User> = client
 ///     .get_user_from_login("justintv".to_string(), &token)
 ///     .await
@@ -89,13 +89,13 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     /// ```rust,no_run
     /// # #[tokio::main]
     /// # async fn main() {
-    /// #   use twitch_api2::helix::{HelixClient, channels};
+    /// #   use twitch_api::helix::{HelixClient, channels};
     /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
     /// #       twitch_oauth2::AccessToken::new("totallyvalidtoken".to_string()), None,
     /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, "justintv".into(), "1337".into(), None, None));
     ///     let req = channels::GetChannelInformationRequest::builder().broadcaster_id("123456").build();
     ///     let client = HelixClient::new();
-    /// # let _: &HelixClient<twitch_api2::DummyHttpClient> = &client;
+    /// # let _: &HelixClient<twitch_api::DummyHttpClient> = &client;
     ///
     ///     let response = client.req_get(req, &token).await;
     /// # }

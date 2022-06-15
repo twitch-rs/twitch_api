@@ -266,7 +266,7 @@ pub enum ModerationActionCommand {
     /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
     #[deprecated(
         since = "0.5.1",
-        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2."
+        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api."
     )]
     AddPermittedTerm,
     /// Automod permitted term removed
@@ -276,7 +276,7 @@ pub enum ModerationActionCommand {
     /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
     #[deprecated(
         since = "0.5.1",
-        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2."
+        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api."
     )]
     DeletePermittedTerm,
     /// Automod blocked term added
@@ -286,7 +286,7 @@ pub enum ModerationActionCommand {
     /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
     #[deprecated(
         since = "0.5.1",
-        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2."
+        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api."
     )]
     AddBlockedTerm,
     /// Automod blocked term removed
@@ -296,7 +296,7 @@ pub enum ModerationActionCommand {
     /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
     #[deprecated(
         since = "0.5.1",
-        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api2."
+        note = "This is now returned by ChannelTermsAction, will be removed in future version of twitch_api."
     )]
     DeleteBlockedTerm,
     /// Automod message approved
@@ -347,7 +347,7 @@ pub enum ModerationActionCommand {
     /// This is now returned by the [`VipAdded`](ChatModeratorActionsReply::VipAdded) action. Strangely, /unvip is still valid
     #[deprecated(
         since = "0.5.1",
-        note = "This is now returned by VipAdded, will be removed in future version of twitch_api2."
+        note = "This is now returned by VipAdded, will be removed in future version of twitch_api."
     )]
     Vip,
     /// User removed as VIP

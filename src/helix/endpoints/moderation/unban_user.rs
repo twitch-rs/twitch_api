@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`UnbanUserRequest`] with the [`UnbanUserRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::moderation::unban_user;
+//! use twitch_api::helix::moderation::unban_user;
 //! let request = unban_user::UnbanUserRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
@@ -23,8 +23,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, moderation::unban_user};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, moderation::unban_user};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

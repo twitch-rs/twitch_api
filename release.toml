@@ -7,8 +7,8 @@ enable-features = ["all", "twitch_oauth2/all", "unsupported"]
 pre-release-replacements = [
   {file="CHANGELOG.md", search="Unreleased", replace="v{{version}}", prerelease=false},
   {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}", prerelease=false},
-  {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n\n## [Unreleased] - ReleaseDate\n\n[Commits](https://github.com/Emilgardis/twitch_api2/compare/v{{version}}...Unreleased)", prerelease=false},
-  {file="README.md", search="twitch_api2/[a-z0-9\\.-]+/twitch_api2", replace="{{crate_name}}/{{version}}/{{crate_name}}", prerelease=true},
-  {file="src/lib.rs", search="https://docs.rs/twitch_api2/[a-z0-9\\.-]+", replace="https://docs.rs/{{crate_name}}/{{version}}", prerelease=true},
-  {file="Cargo.toml", search="https://docs.rs/twitch_api2/[a-z0-9\\.-]+", replace="https://docs.rs/{{crate_name}}/{{version}}", prerelease=true},
+  {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n\n## [Unreleased] - ReleaseDate\n\n[Commits](https://github.com/twitch-rs/twitch_api/compare/v{{version}}...Unreleased)", prerelease=false},
+  {file="README.md", search="twitch_api/[a-z0-9\\.-]+/twitch_api", replace="{{crate_name}}/{{version}}/{{crate_name}}", prerelease=true},
+  {file="src/lib.rs", search="https://docs.rs/twitch_api/[a-z0-9\\.-]+", replace="https://docs.rs/{{crate_name}}/{{version}}", prerelease=true},
+  {file="Cargo.toml", search="https://docs.rs/twitch_api/[a-z0-9\\.-]+", replace="https://docs.rs/{{crate_name}}/{{version}}", prerelease=true},
 ]

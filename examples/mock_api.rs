@@ -1,7 +1,7 @@
 use futures::TryStreamExt;
-use twitch_api2::helix;
-use twitch_api2::types;
-use twitch_api2::HelixClient;
+use twitch_api::helix;
+use twitch_api::types;
+use twitch_api::HelixClient;
 use twitch_oauth2::Scope;
 fn main() {
     use std::error::Error;
@@ -101,12 +101,12 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     Ok(())
 }
 
-pub async fn moderation<'a, C: twitch_api2::HttpClient<'a> + Sync>(
-    client: &'a twitch_api2::HelixClient<'a, C>,
+pub async fn moderation<'a, C: twitch_api::HttpClient<'a> + Sync>(
+    client: &'a twitch_api::HelixClient<'a, C>,
     broadcaster_id: &'a types::UserIdRef,
     token: &'a twitch_oauth2::UserToken,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    use twitch_api2::helix::moderation::*;
+    use twitch_api::helix::moderation::*;
     println!("====Moderators====");
     println!(
         "{:?}",

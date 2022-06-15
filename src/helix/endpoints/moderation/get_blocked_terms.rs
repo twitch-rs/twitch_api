@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`GetBlockedTerms`] with the [`GetBlockedTerms::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::moderation::get_blocked_terms;
+//! use twitch_api::helix::moderation::get_blocked_terms;
 //! let request = get_blocked_terms::GetBlockedTerms::builder()
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
@@ -20,8 +20,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, moderation::get_blocked_terms};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, moderation::get_blocked_terms};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

@@ -1,4 +1,4 @@
-use twitch_api2::HelixClient;
+use twitch_api::HelixClient;
 use twitch_oauth2::{AccessToken, UserToken};
 
 fn main() {
@@ -33,10 +33,10 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     let broadcaster_id = token.user_id.as_str();
 
-    let req = twitch_api2::helix::moderation::CheckAutoModStatusRequest::builder()
+    let req = twitch_api::helix::moderation::CheckAutoModStatusRequest::builder()
         .broadcaster_id(broadcaster_id)
         .build();
-    let data = twitch_api2::helix::moderation::CheckAutoModStatusBody::builder()
+    let data = twitch_api::helix::moderation::CheckAutoModStatusBody::builder()
         .msg_id("123")
         .msg_text(args.collect::<String>())
         .user_id("1234")

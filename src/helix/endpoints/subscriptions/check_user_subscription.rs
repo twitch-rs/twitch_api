@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`CheckUserSubscriptionRequest`] with the [`CheckUserSubscriptionRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::subscriptions::check_user_subscription;
+//! use twitch_api::helix::subscriptions::check_user_subscription;
 //! let request = check_user_subscription::CheckUserSubscriptionRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
@@ -19,8 +19,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, subscriptions::check_user_subscription};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, subscriptions::check_user_subscription};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

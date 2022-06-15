@@ -1,6 +1,8 @@
 {
     "rust-analyzer.cargo.features": ["_all", "unsupported", "twitch_oauth2/reqwest", "twitch_oauth2/surf", "deny_unknown_fields", "surf/curl-client"],
     "rust-analyzer.checkOnSave.enable": false,
-    "rust-analyzer.experimental.procAttrMacros": true,
-    "rust-analyzer.diagnostics.disabled": ["type-mismatch"], // Broken on dyn -> impl, https://github.com/rust-analyzer/rust-analyzer/issues/11815
+    "rust-analyzer.diagnostics.disabled": [
+        "type-mismatch"
+    ],
+    "rust-analyzer.procMacro.attributes.enable": true, // Broken on dyn -> impl, https://github.com/rust-analyzer/rust-analyzer/issues/11815
 }

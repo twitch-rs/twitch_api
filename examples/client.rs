@@ -1,4 +1,4 @@
-use twitch_api2::{helix::streams::GetStreamsRequest, TwitchClient};
+use twitch_api::{helix::streams::GetStreamsRequest, TwitchClient};
 use twitch_oauth2::{AccessToken, UserToken};
 fn main() {
     use std::error::Error;

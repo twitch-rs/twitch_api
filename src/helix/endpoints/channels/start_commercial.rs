@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`StartCommercialRequest`] with the [`StartCommercialRequest::new()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::channels::start_commercial;
+//! use twitch_api::helix::channels::start_commercial;
 //! let request = start_commercial::StartCommercialRequest::new();
 //! ```
 //!
@@ -17,10 +17,10 @@
 //! We also need to provide a body to the request specifying length of commercial and where to start it.
 //!
 //! ```
-//! # use twitch_api2::helix::channels::start_commercial;
+//! # use twitch_api::helix::channels::start_commercial;
 //! let body = start_commercial::StartCommercialBody::builder()
 //!     .broadcaster_id("1234".to_string())
-//!     .length(twitch_api2::types::CommercialLength::Length90)
+//!     .length(twitch_api::types::CommercialLength::Length90)
 //!     .build();
 //! ```
 //!
@@ -29,8 +29,8 @@
 //! Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, channels::start_commercial};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, channels::start_commercial};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
@@ -39,7 +39,7 @@
 //! let request = start_commercial::StartCommercialRequest::new();
 //! let body = start_commercial::StartCommercialBody::builder()
 //!     .broadcaster_id("1234".to_string())
-//!     .length(twitch_api2::types::CommercialLength::Length90)
+//!     .length(twitch_api::types::CommercialLength::Length90)
 //!     .build();
 //! let response: Vec<start_commercial::StartCommercial> = client.req_post(request, body, &token).await?.data;
 //! # Ok(())

@@ -16,9 +16,9 @@
 //! To use that for requests we do the following.
 //!
 //! ```no_run
-//! use twitch_api2::client::{BoxedFuture, Request, RequestExt as _, Response};
+//! use twitch_api::client::{BoxedFuture, Request, RequestExt as _, Response};
 //! mod foo {
-//!     use twitch_api2::client::{BoxedFuture, Response};
+//!     use twitch_api::client::{BoxedFuture, Response};
 //!     pub struct Client;
 //!     impl Client {
 //!         pub fn call(
@@ -31,7 +31,7 @@
 //!     }
 //!     pub type ClientError = std::io::Error;
 //! }
-//! impl<'a> twitch_api2::HttpClient<'a> for foo::Client {
+//! impl<'a> twitch_api::HttpClient<'a> for foo::Client {
 //!     type Error = foo::ClientError;
 //!
 //!     fn req(&'a self, request: Request) -> BoxedFuture<'a, Result<Response, Self::Error>> {
@@ -51,7 +51,7 @@
 //!     }
 //! }
 //! // And for full usage
-//! use twitch_api2::TwitchClient;
+//! use twitch_api::TwitchClient;
 //! pub struct MyStruct {
 //!     twitch: TwitchClient<'static, foo::Client>,
 //!     token: twitch_oauth2::AppAccessToken,
@@ -85,7 +85,7 @@ mod reqwest_impl;
 pub use reqwest_impl::ReqwestClientDefaultError;
 
 /// The User-Agent `product` of this crate.
-pub static TWITCH_API2_USER_AGENT: &str =
+pub static TWITCH_API_USER_AGENT: &str =
     concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"),);
 
 /// A boxed future, mimics `futures::future::BoxFuture`
@@ -179,15 +179,15 @@ pub trait ClientDefault<'a>: Clone + Sized {
     /// Construct [`Self`] with sane defaults for API calls and oauth2.
     fn default_client() -> Self {
         Self::default_client_with_name(None)
-            .expect("a new twitch_api2 client without an extra product should never fail")
+            .expect("a new twitch_api client without an extra product should never fail")
     }
 
     /// Constructs [`Self`] with sane defaults for API calls and oauth2 and setting user-agent to include another product
     ///
     /// Specifically, one should
     ///
-    /// * Set User-Agent to `{product} twitch_api2/{version_of_twitch_api2}` (According to RFC7231)
-    ///   See [`TWITCH_API2_USER_AGENT`] for the product of this crate
+    /// * Set User-Agent to `{product} twitch_api/{version_of_twitch_api}` (According to RFC7231)
+    ///   See [`TWITCH_API_USER_AGENT`] for the product of this crate
     /// * Disallow redirects
     ///
     /// # Notes
@@ -241,7 +241,6 @@ where C: Client<'a>
     }
 }
 
-#[cfg(feature = "surf")]
 impl ClientDefault<'static> for DummyHttpClient
 where Self: Default
 {
@@ -353,7 +352,7 @@ impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::Twit
     }
 }
 
-/// Gives the User-Agent header value for a client annotated with an added `twitch_api2` product
+/// Gives the User-Agent header value for a client annotated with an added `twitch_api` product
 pub fn user_agent(
     product: Option<http::HeaderValue>,
 ) -> Result<http::HeaderValue, http::header::InvalidHeaderValue> {
@@ -362,9 +361,9 @@ pub fn user_agent(
     if let Some(product) = product {
         let mut user_agent = product.as_bytes().to_owned();
         user_agent.push(b' ');
-        user_agent.extend(TWITCH_API2_USER_AGENT.as_bytes());
+        user_agent.extend(TWITCH_API_USER_AGENT.as_bytes());
         user_agent.as_slice().try_into()
     } else {
-        http::HeaderValue::from_str(TWITCH_API2_USER_AGENT)
+        http::HeaderValue::from_str(TWITCH_API_USER_AGENT)
     }
 }

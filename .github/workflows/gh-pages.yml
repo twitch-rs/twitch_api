@@ -1,6 +1,6 @@
 name: github pages
 env:
-  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all twitch_oauth2/mock_api all unsupported deny_unknown_fields _all"
+  CI_TWITCH_API_FEATURES: "twitch_oauth2/all twitch_oauth2/mock_api all unsupported deny_unknown_fields _all"
   RUSTDOCFLAGS: "-Z unstable-options --cfg nightly"
   RUSTFLAGS: "--cfg nightly"
 on:
@@ -24,7 +24,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: doc
-          args: --no-deps --locked --features "${{ env.CI_TWITCH_API2_FEATURES }}" -p twitch_api2 -p twitch_oauth2 -p twitch_types -Zrustdoc-map
+          args: --no-deps --locked --features "${{ env.CI_TWITCH_API_FEATURES }}" -p twitch_api -p twitch_oauth2 -p twitch_types -Zrustdoc-map
       - name: move index.html
         run: cp ./docs/index.html ./target/doc/index.html
       - name: Deploy

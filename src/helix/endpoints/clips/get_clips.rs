@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`GetClipsRequest`] with the [`GetClipsRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::clips::get_clips;
+//! use twitch_api::helix::clips::get_clips;
 //! let request = get_clips::GetClipsRequest::builder()
 //!     .broadcaster_id(Some("1234".into()))
 //!     .build();
@@ -19,8 +19,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, clips::get_clips};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, clips::get_clips};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

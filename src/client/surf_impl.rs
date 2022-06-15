@@ -141,11 +141,11 @@ where Self: Default
         let user_agent = if let Some(product) = product {
             let mut user_agent = product.as_bytes().to_owned();
             user_agent.push(b' ');
-            user_agent.extend(TWITCH_API2_USER_AGENT.as_bytes());
+            user_agent.extend(TWITCH_API_USER_AGENT.as_bytes());
             surf::http::headers::HeaderValue::from_bytes(user_agent)
                 .map_err(SurfClientDefaultError::SurfError)?
         } else {
-            surf::http::headers::HeaderValue::from_str(TWITCH_API2_USER_AGENT)
+            surf::http::headers::HeaderValue::from_str(TWITCH_API_USER_AGENT)
                 .map_err(SurfClientDefaultError::SurfError)?
         };
         let middleware = SurfAgentMiddleware { user_agent };

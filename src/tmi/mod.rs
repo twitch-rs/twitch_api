@@ -7,11 +7,11 @@ use serde::{Deserialize, Serialize};
 /// # Examples
 ///
 /// ```rust,no_run
-/// # use twitch_api2::tmi::TmiClient; use std::error::Error;
+/// # use twitch_api::tmi::TmiClient; use std::error::Error;
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn Error>> {
 /// let client = TmiClient::new();
-/// # let _: &TmiClient<twitch_api2::DummyHttpClient> = &client;
+/// # let _: &TmiClient<twitch_api::DummyHttpClient> = &client;
 /// println!("{:?}", client.get_chatters("justinfan10".into()).await?);
 /// # Ok(())
 /// # }
@@ -20,7 +20,7 @@ use serde::{Deserialize, Serialize};
 /// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
 ///
 /// ```rust
-/// # use twitch_api2::{TmiClient}; pub mod surf {pub type Client = twitch_api2::client::DummyHttpClient;}
+/// # use twitch_api::{TmiClient}; pub mod surf {pub type Client = twitch_api::client::DummyHttpClient;}
 /// pub struct MyStruct {
 ///     twitch: TmiClient<'static, surf::Client>,
 ///     token: twitch_oauth2::AppAccessToken,

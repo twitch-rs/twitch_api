@@ -10,7 +10,7 @@
 //! To use this endpoint, construct a [`CreatePredictionRequest`] with the [`CreatePredictionRequest::new()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::predictions::create_prediction;
+//! use twitch_api::helix::predictions::create_prediction;
 //! let request = create_prediction::CreatePredictionRequest::new();
 //! ```
 //!
@@ -19,7 +19,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::predictions::create_prediction;
+//! # use twitch_api::helix::predictions::create_prediction;
 //! let body = create_prediction::CreatePredictionBody::builder()
 //!     .broadcaster_id("141981764")
 //!     .title("Any leeks in the stream?")
@@ -38,8 +38,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, predictions::create_prediction};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, predictions::create_prediction};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

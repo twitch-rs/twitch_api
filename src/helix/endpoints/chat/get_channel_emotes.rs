@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`GetChannelEmotesRequest`] with the [`GetChannelEmotesRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::chat::get_channel_emotes;
+//! use twitch_api::helix::chat::get_channel_emotes;
 //! let request = get_channel_emotes::GetChannelEmotesRequest::builder()
 //!     .broadcaster_id("1234".to_string())
 //!     .build();
@@ -19,8 +19,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, chat::get_channel_emotes};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, chat::get_channel_emotes};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

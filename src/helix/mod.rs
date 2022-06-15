@@ -5,7 +5,7 @@
 //! you can decide to use this library without any specific client implementation.
 //!
 //! ```rust
-//! use twitch_api2::helix::{self, Request, RequestGet, users::{GetUsersRequest, User}};
+//! use twitch_api::helix::{self, Request, RequestGet, users::{GetUsersRequest, User}};
 //!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {

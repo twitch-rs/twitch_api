@@ -6,7 +6,7 @@
 //! To use this endpoint, construct a [`GetUsersFollowsRequest`] with the [`GetUsersFollowsRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::users::get_users_follows;
+//! use twitch_api::helix::users::get_users_follows;
 //! let request = get_users_follows::GetUsersFollowsRequest::builder()
 //!     .to_id(Some("1234".into()))
 //!     .build();
@@ -17,8 +17,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, users::get_users_follows};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, users::get_users_follows};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

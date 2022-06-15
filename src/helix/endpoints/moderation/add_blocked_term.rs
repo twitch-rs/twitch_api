@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`AddBlockedTermRequest`] with the [`AddBlockedTermRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::moderation::add_blocked_term;
+//! use twitch_api::helix::moderation::add_blocked_term;
 //! let request = add_blocked_term::AddBlockedTermRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
@@ -20,7 +20,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::moderation::add_blocked_term;
+//! # use twitch_api::helix::moderation::add_blocked_term;
 //! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of".to_string());
 //! ```
 //!
@@ -31,8 +31,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, moderation::add_blocked_term};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, moderation::add_blocked_term};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

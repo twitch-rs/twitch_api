@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`GetStreamsRequest`] with the [`GetStreamsRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::streams::get_streams;
+//! use twitch_api::helix::streams::get_streams;
 //! let request = get_streams::GetStreamsRequest::builder()
 //!     .user_login(vec!["justintvfan".into()])
 //!     .build();
@@ -19,8 +19,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, streams::get_streams};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, streams::get_streams};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

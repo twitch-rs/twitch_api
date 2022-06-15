@@ -1,6 +1,6 @@
 [submodule "twitch_oauth2"]
 	path = twitch_oauth2
-	url = https://github.com/Emilgardis/twitch_oauth2
+	url = https://github.com/twitch-rs/twitch_oauth2
 [submodule "twitch_types"]
 	path = twitch_types
-	url = https://github.com/Emilgardis/twitch_types
+	url = https://github.com/twitch-rs/twitch_types

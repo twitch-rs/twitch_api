@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`GetCreatorGoalsRequest`] with the [`GetCreatorGoalsRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::goals::get_creator_goals;
+//! use twitch_api::helix::goals::get_creator_goals;
 //! let request = get_creator_goals::GetCreatorGoalsRequest::builder()
 //!     .broadcaster_id("4321".to_string())
 //!     .build();
@@ -19,8 +19,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, goals::get_creator_goals};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, goals::get_creator_goals};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

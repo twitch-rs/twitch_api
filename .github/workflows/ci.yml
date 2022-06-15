@@ -1,6 +1,6 @@
 name: CI
 env:
-  CI_TWITCH_API2_FEATURES: "twitch_oauth2/all all unsupported deny_unknown_fields ureq"
+  CI_TWITCH_API_FEATURES: "twitch_oauth2/all all unsupported deny_unknown_fields ureq"
 on:
   pull_request:
     types: [opened, reopened, synchronize]
@@ -32,11 +32,11 @@ jobs:
           toolchain: ${{ matrix.rust }}
           override: true
       - uses: Swatinem/rust-cache@v1
-      - name: Test twitch_api2
+      - name: Test twitch_api
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}"
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
@@ -89,16 +89,16 @@ jobs:
         with:
           command: clippy
           args: --locked --all-targets --no-default-features --features "pubsub"
-      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
+      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} trace_unknown_fields"
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} trace_unknown_fields"
-      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }}"
+          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} trace_unknown_fields"
+      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}"
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_API2_FEATURES }} _all"
+          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
       - name: Run clippy --all-targets --all-features
         uses: actions-rs/cargo@v1
         with:
@@ -121,15 +121,15 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --doc --features "${{ env.CI_TWITCH_API2_FEATURES }} _all"
-      - name: Check twitch_api2 docs
+          args: --doc --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
+      - name: Check twitch_api docs
         uses: actions-rs/cargo@v1
         env:
           RUSTDOCFLAGS: "--cfg nightly"
           RUSTFLAGS: "--cfg nightly"
         with:
           command: doc
-          args: --locked --no-deps --features "${{ env.CI_TWITCH_API2_FEATURES }} _all"
+          args: --locked --no-deps --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
   release:
     name: Release
     runs-on: ubuntu-latest

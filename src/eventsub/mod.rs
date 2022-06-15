@@ -8,11 +8,11 @@
 //! Subscribe to a channel's follow events:
 //!
 //! ```rust, no_run
-//! use twitch_api2::eventsub::{channel::ChannelFollowV1, Transport, TransportMethod};
-//! use twitch_api2::helix::{self, eventsub::{
+//! use twitch_api::eventsub::{channel::ChannelFollowV1, Transport, TransportMethod};
+//! use twitch_api::helix::{self, eventsub::{
 //!     CreateEventSubSubscriptionBody, CreateEventSubSubscriptionRequest,
 //! }};
-//! # use twitch_api2::client;
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
@@ -45,7 +45,7 @@
 //! After this, you'll get notifications
 //!
 //! ```rust
-//! use twitch_api2::eventsub::{Event, Payload, Message};
+//! use twitch_api::eventsub::{Event, Payload, Message};
 //! pub fn parse_request(
 //!     request: &http::Request<Vec<u8>>,
 //! ) -> Result<http::Response<Vec<u8>>, Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -236,9 +236,9 @@ impl<E: EventSubscription> Payload<E> {
     ///
     /// ```rust
     /// use http::Request;
-    /// use twitch_api2::eventsub::{Payload, channel::ChannelFollowV1};
+    /// use twitch_api::eventsub::{Payload, channel::ChannelFollowV1};
     /// # struct Body {} impl Body { fn new() -> Self {Body {}} fn to_bytes(&self) -> &[u8] { &[] } }
-    /// # fn a() -> Result<(), twitch_api2::eventsub::PayloadParseError> {
+    /// # fn a() -> Result<(), twitch_api::eventsub::PayloadParseError> {
     /// // Example of a request with a body that doesn't implement `AsRef<[u8]>`
     /// let original_request: Request<Body> = http::Request::new(Body::new());
     /// // Convert to a request with a body of `Vec<u8>`, which does implement `AsRef<[u8]>`
