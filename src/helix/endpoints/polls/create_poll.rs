@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`CreatePollRequest`] with the [`CreatePollRequest::new()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::polls::create_poll;
+//! use twitch_api::helix::polls::create_poll;
 //! let request = create_poll::CreatePollRequest::new();
 //! ```
 //!
@@ -17,7 +17,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::polls::create_poll;
+//! # use twitch_api::helix::polls::create_poll;
 //! let body = create_poll::CreatePollBody::builder()
 //!     .broadcaster_id("141981764")
 //!     .title("Heads or Tails?")
@@ -38,8 +38,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, polls::create_poll};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, polls::create_poll};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

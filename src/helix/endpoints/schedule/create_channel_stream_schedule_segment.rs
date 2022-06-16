@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`CreateChannelStreamScheduleSegmentRequest`] with the [`CreateChannelStreamScheduleSegmentRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::schedule::create_channel_stream_schedule_segment;
+//! use twitch_api::helix::schedule::create_channel_stream_schedule_segment;
 //! let request =
 //!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::builder(
 //!     )
@@ -21,10 +21,10 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::schedule::create_channel_stream_schedule_segment;
+//! # use twitch_api::helix::schedule::create_channel_stream_schedule_segment;
 //! let body =
 //!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!         .start_time(twitch_api2::types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
+//!         .start_time(twitch_api::types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
 //!         .timezone("America/New_York")
 //!         .is_recurring(false)
 //!         .duration("60".to_string())
@@ -40,8 +40,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, schedule::create_channel_stream_schedule_segment};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, schedule::create_channel_stream_schedule_segment};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
@@ -51,7 +51,7 @@
 //!     .broadcaster_id("141981764")
 //!     .build();
 //! let body = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!     .start_time(twitch_api2::types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
+//!     .start_time(twitch_api::types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
 //!     .timezone("America/New_York")
 //!     .is_recurring(false)
 //!     .duration("60".to_string())

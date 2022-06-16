@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`BlockUserRequest`] with the [`BlockUserRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::users::block_user::{self, Reason, SourceContext};
+//! use twitch_api::helix::users::block_user::{self, Reason, SourceContext};
 //! let request = block_user::BlockUserRequest::builder()
 //!     .target_user_id("1234")
 //!     .build();
@@ -25,8 +25,8 @@
 //! Send the request to receive the response with [`HelixClient::req_put()`](helix::HelixClient::req_put).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, users::block_user};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, users::block_user};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

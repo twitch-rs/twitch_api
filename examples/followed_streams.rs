@@ -1,5 +1,5 @@
 use futures::TryStreamExt;
-use twitch_api2::helix::HelixClient;
+use twitch_api::helix::HelixClient;
 use twitch_oauth2::{AccessToken, UserToken};
 
 fn main() {

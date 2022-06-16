@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`CheckAutoModStatusRequest`] with the [`CheckAutoModStatusRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::moderation::check_automod_status;
+//! use twitch_api::helix::moderation::check_automod_status;
 //! let request = check_automod_status::CheckAutoModStatusRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
@@ -19,7 +19,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::moderation::check_automod_status;
+//! # use twitch_api::helix::moderation::check_automod_status;
 //! let body = check_automod_status::CheckAutoModStatusBody::builder()
 //!     .msg_id("test1")
 //!     .msg_text("automod please approve this!")
@@ -34,8 +34,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, moderation::check_automod_status};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, moderation::check_automod_status};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

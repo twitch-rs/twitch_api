@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`ManageHeldAutoModMessagesRequest`] with the [`ManageHeldAutoModMessagesRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::moderation::manage_held_automod_messages;
+//! use twitch_api::helix::moderation::manage_held_automod_messages;
 //! let request = manage_held_automod_messages::ManageHeldAutoModMessagesRequest::new();
 //! ```
 //!
@@ -17,7 +17,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::moderation::manage_held_automod_messages;
+//! # use twitch_api::helix::moderation::manage_held_automod_messages;
 //! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::builder()
 //!     .action(true)
 //!     .user_id("9327994")
@@ -32,8 +32,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, moderation::manage_held_automod_messages};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, moderation::manage_held_automod_messages};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

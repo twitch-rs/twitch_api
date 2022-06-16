@@ -10,7 +10,7 @@
 //! To use this endpoint, construct an [`UpdateCustomRewardRequest`] with the [`UpdateCustomRewardRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::points::update_custom_reward;
+//! use twitch_api::helix::points::update_custom_reward;
 //! let request = update_custom_reward::UpdateCustomRewardRequest::builder()
 //!     .broadcaster_id("274637212")
 //!     .id("reward-id")
@@ -22,7 +22,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::points::update_custom_reward;
+//! # use twitch_api::helix::points::update_custom_reward;
 //! let body = update_custom_reward::UpdateCustomRewardBody::builder()
 //!     .cost(501)
 //!     .title("hydrate but differently now!".to_string())
@@ -36,8 +36,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, points::update_custom_reward};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, points::update_custom_reward};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

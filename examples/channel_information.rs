@@ -1,4 +1,4 @@
-use twitch_api2::HelixClient;
+use twitch_api::HelixClient;
 use twitch_oauth2::{AccessToken, UserToken};
 
 fn main() {

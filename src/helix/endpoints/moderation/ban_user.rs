@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`BanUserRequest`] with the [`BanUserRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::moderation::ban_user;
+//! use twitch_api::helix::moderation::ban_user;
 //! let request = ban_user::BanUserRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
@@ -20,7 +20,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::moderation::ban_user;
+//! # use twitch_api::helix::moderation::ban_user;
 //! let body = ban_user::BanUserBody::new("9876", "no reason".to_string(), 120);
 //! ```
 //!
@@ -31,8 +31,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, moderation::ban_user};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, moderation::ban_user};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

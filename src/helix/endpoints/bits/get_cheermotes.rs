@@ -9,7 +9,7 @@
 //! If you do not provide an ID, the request will only include global cheermotes as defined by twitch.
 //!
 //! ```rust
-//! use twitch_api2::helix::bits::get_cheermotes;
+//! use twitch_api::helix::bits::get_cheermotes;
 //! let request = get_cheermotes::GetCheermotesRequest::builder()
 //!     .broadcaster_id(Some("1234".into()))
 //!     .build();
@@ -22,8 +22,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, bits::get_cheermotes};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, bits::get_cheermotes};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

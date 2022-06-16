@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`UnblockUserRequest`] with the [`UnblockUserRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::users::unblock_user;
+//! use twitch_api::helix::users::unblock_user;
 //! let request = unblock_user::UnblockUserRequest::builder()
 //!     .target_user_id("1234")
 //!     .build();
@@ -19,8 +19,8 @@
 //! Send the request to receive the response with [`HelixClient::req_delete()`](helix::HelixClient::req_delete).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, users::unblock_user};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, users::unblock_user};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

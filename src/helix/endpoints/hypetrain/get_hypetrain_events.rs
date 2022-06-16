@@ -9,7 +9,7 @@
 //! To use this endpoint, construct a [`GetHypeTrainEventsRequest`] with the [`GetHypeTrainEventsRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::hypetrain::get_hypetrain_events;
+//! use twitch_api::helix::hypetrain::get_hypetrain_events;
 //! let request = get_hypetrain_events::GetHypeTrainEventsRequest::builder()
 //!     .broadcaster_id("4321".to_string())
 //!     .build();
@@ -20,8 +20,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, hypetrain::get_hypetrain_events};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, hypetrain::get_hypetrain_events};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

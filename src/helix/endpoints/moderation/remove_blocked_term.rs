@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`RemoveBlockedTermRequest`] with the [`RemoveBlockedTermRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::moderation::remove_blocked_term;
+//! use twitch_api::helix::moderation::remove_blocked_term;
 //! let request = remove_blocked_term::RemoveBlockedTermRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
@@ -21,8 +21,8 @@
 //! Send the request to receive the response with [`HelixClient::req_delete()`](helix::HelixClient::req_delete).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, moderation::remove_blocked_term};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, moderation::remove_blocked_term};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

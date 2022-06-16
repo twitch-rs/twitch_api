@@ -89,10 +89,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// ```rust, no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// use twitch_api2::helix;
+    /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
     /// let categories: Vec<helix::search::Category> = client.search_categories("Fortnite", &token).try_collect().await?;
@@ -122,10 +122,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// ```rust, no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// use twitch_api2::helix;
+    /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
     /// let channel: Vec<helix::search::Channel> = client.search_channels("twitchdev", false, &token).try_collect().await?;
@@ -159,10 +159,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// ```rust, no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// use twitch_api2::{types, helix};
+    /// use twitch_api::{types, helix};
     /// use futures::TryStreamExt;
     ///
     /// // Get the followers of channel "1234"
@@ -202,10 +202,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// ```rust, no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// use twitch_api2::helix;
+    /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
     /// let channels: Vec<helix::streams::Stream> = client.get_followed_streams(&token).try_collect().await?;
@@ -243,10 +243,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// ```rust, no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// use twitch_api2::helix;
+    /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
     /// let subs: Vec<helix::subscriptions::BroadcasterSubscription> = client.get_broadcaster_subscriptions(&token).try_collect().await?;
@@ -291,10 +291,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// ```rust, no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// use twitch_api2::helix;
+    /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
     /// let moderators: Vec<helix::moderation::Moderator> = client.get_moderators_in_channel_from_id("twitchdev", &token).try_collect().await?;
@@ -328,10 +328,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// ```rust, no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// use twitch_api2::helix;
+    /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
     /// let moderators: Vec<helix::moderation::BannedUser> = client.get_banned_users_in_channel_from_id("twitchdev", &token).try_collect().await?;
@@ -471,7 +471,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
             .data)
     }
 
-    // FIXME: Example should use https://github.com/Emilgardis/twitch_api2/issues/162
+    // FIXME: Example should use https://github.com/twitch-rs/twitch_api/issues/162
     /// Get all scheduled streams in a channel.
     ///
     /// # Notes
@@ -484,10 +484,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// ```rust, no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    /// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// use twitch_api2::helix;
+    /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
     /// let schedule: Vec<helix::schedule::Segment> = client
@@ -585,10 +585,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
 /// ```rust, no_run
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-/// # let client: helix::HelixClient<'static, twitch_api2::client::DummyHttpClient> = helix::HelixClient::default();
+/// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-/// use twitch_api2::helix;
+/// use twitch_api::helix;
 /// use futures::TryStreamExt;
 ///
 /// let req = helix::moderation::GetModeratorsRequest::builder()

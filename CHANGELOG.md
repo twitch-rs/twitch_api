@@ -4,10 +4,11 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.6.1...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_api/compare/v0.6.1...Unreleased)
 
 ### Breaking changes
 
+* Crate name changed: `twitch_api2` -> `twitch_api`, also changed to new org `twitch-rs`
 * All (most) types are now living in their own crate `twitch_types`
 * Features for clients are now named after the client, e.g feature `reqwest_client` is now simply `reqwest`
 * MSRV: 1.60.0
@@ -20,11 +21,11 @@
 
 * No changes, only a fix for docs.rs output and some version bumps in Cargo.toml
 
-[Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.6.0...v0.6.1)
+[Commits](https://github.com/twitch-rs/twitch_api/compare/v0.6.0...v0.6.1)
 
 ## [v0.6.0] - 2022-04-28
 
-[Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.5.0...v0.6.0)
+[Commits](https://github.com/twitch-rs/twitch_api/compare/v0.5.0...v0.6.0)
 
 ### Added
 
@@ -99,7 +100,7 @@
 
 ## [v0.5.0] - 2021-05-08
 
-[Commits](https://github.com/Emilgardis/twitch_api2/compare/v0.4.1...v0.5.0)
+[Commits](https://github.com/twitch-rs/twitch_api/compare/v0.4.1...v0.5.0)
 
 ### Added
 

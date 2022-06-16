@@ -1,11 +1,11 @@
 #![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
-#![doc(html_root_url = "https://docs.rs/twitch_api2/0.6.1")]
-//! [![github]](https://github.com/emilgardis/twitch_api2)&ensp;[![crates-io]](https://crates.io/crates/twitch_api2)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api2/0.6.1/twitch_api2)
+#![doc(html_root_url = "https://docs.rs/twitch_api/0.6.1")]
+//! [![github]](https://github.com/twitch-rs/twitch_api)&ensp;[![crates-io]](https://crates.io/crates/twitch_api)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.6.1/twitch_api)
 //!
-//! [github]: https://img.shields.io/badge/github-emilgardis/twitch__api2-8da0cb?style=for-the-badge&labelColor=555555&logo=github"
-//! [crates-io]: https://img.shields.io/crates/v/twitch_api2.svg?style=for-the-badge&color=fc8d62&logo=rust"
+//! [github]: https://img.shields.io/badge/github-twitch--rs/twitch__api-8da0cb?style=for-the-badge&labelColor=555555&logo=github"
+//! [crates-io]: https://img.shields.io/crates/v/twitch_api.svg?style=for-the-badge&color=fc8d62&logo=rust"
 //! [docs-rs-big]: https://img.shields.io/badge/docs.rs-twitch__api2-66c2a5?style=for-the-badge&labelColor=555555&logoColor=white&logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxwYXRoIGZpbGw9IiNmNWY1ZjUiIGQ9Ik00ODguNiAyNTAuMkwzOTIgMjE0VjEwNS41YzAtMTUtOS4zLTI4LjQtMjMuNC0zMy43bC0xMDAtMzcuNWMtOC4xLTMuMS0xNy4xLTMuMS0yNS4zIDBsLTEwMCAzNy41Yy0xNC4xIDUuMy0yMy40IDE4LjctMjMuNCAzMy43VjIxNGwtOTYuNiAzNi4yQzkuMyAyNTUuNSAwIDI2OC45IDAgMjgzLjlWMzk0YzAgMTMuNiA3LjcgMjYuMSAxOS45IDMyLjJsMTAwIDUwYzEwLjEgNS4xIDIyLjEgNS4xIDMyLjIgMGwxMDMuOS01MiAxMDMuOSA1MmMxMC4xIDUuMSAyMi4xIDUuMSAzMi4yIDBsMTAwLTUwYzEyLjItNi4xIDE5LjktMTguNiAxOS45LTMyLjJWMjgzLjljMC0xNS05LjMtMjguNC0yMy40LTMzLjd6TTM1OCAyMTQuOGwtODUgMzEuOXYtNjguMmw4NS0zN3Y3My4zek0xNTQgMTA0LjFsMTAyLTM4LjIgMTAyIDM4LjJ2LjZsLTEwMiA0MS40LTEwMi00MS40di0uNnptODQgMjkxLjFsLTg1IDQyLjV2LTc5LjFsODUtMzguOHY3NS40em0wLTExMmwtMTAyIDQxLjQtMTAyLTQxLjR2LS42bDEwMi0zOC4yIDEwMiAzOC4ydi42em0yNDAgMTEybC04NSA0Mi41di03OS4xbDg1LTM4Ljh2NzUuNHptMC0xMTJsLTEwMiA0MS40LTEwMi00MS40di0uNmwxMDItMzguMiAxMDIgMzguMnYuNnoiPjwvcGF0aD48L3N2Zz4K"
 //!
 //! <br>
@@ -17,9 +17,9 @@
 //! Get information about a channel with the [`Get Channel Information`](crate::helix::channels::get_channel_information) helix endpoint.
 //!
 //! ```rust,no_run
-//! use twitch_api2::{helix::channels::GetChannelInformationRequest, TwitchClient};
+//! use twitch_api::{helix::channels::GetChannelInformationRequest, TwitchClient};
 //! use twitch_oauth2::{tokens::errors::AppAccessTokenError, AppAccessToken, Scope, TwitchToken};
-//! # pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
+//! # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
 //!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -44,12 +44,12 @@
 //! There is also a convenience function for accessing channel information with a specified login name
 //!
 //! ```rust,no_run
-//! # use twitch_api2::{TwitchClient, helix::channels::GetChannelInformationRequest};
+//! # use twitch_api::{TwitchClient, helix::channels::GetChannelInformationRequest};
 //! # use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::AppAccessTokenError};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! let client = TwitchClient::default();
-//! # let _:&TwitchClient<twitch_api2::DummyHttpClient> = &client;
+//! # let _:&TwitchClient<twitch_api::DummyHttpClient> = &client;
 //! # let client_id = twitch_oauth2::ClientId::new("validclientid".to_string());
 //! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret".to_string());
 //! # let token =
@@ -183,7 +183,7 @@ pub static TWITCH_PUBSUB_URL: once_cell::sync::Lazy<url::Url> =
 /// Most [http clients][crate::HttpClient] will be able to use the `'static` lifetime
 ///
 /// ```rust,no_run
-/// # use twitch_api2::{TwitchClient}; pub mod reqwest {pub type Client = twitch_api2::client::DummyHttpClient;}
+/// # use twitch_api::{TwitchClient}; pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
 /// pub struct MyStruct {
 ///     twitch: TwitchClient<'static, reqwest::Client>,
 ///     token: twitch_oauth2::AppAccessToken,

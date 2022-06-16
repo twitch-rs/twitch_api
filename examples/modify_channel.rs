@@ -1,4 +1,4 @@
-use twitch_api2::HelixClient;
+use twitch_api::HelixClient;
 use twitch_oauth2::{AccessToken, TwitchToken, UserToken};
 
 fn main() {
@@ -32,11 +32,11 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     let broadcaster_id = token.validate_token(&client).await?.user_id.unwrap();
 
-    let req = twitch_api2::helix::channels::ModifyChannelInformationRequest::builder()
+    let req = twitch_api::helix::channels::ModifyChannelInformationRequest::builder()
         .broadcaster_id(&*broadcaster_id)
         .build();
 
-    let data = twitch_api2::helix::channels::ModifyChannelInformationBody::builder()
+    let data = twitch_api::helix::channels::ModifyChannelInformationBody::builder()
         .title("Hello World!".to_string())
         .build();
 

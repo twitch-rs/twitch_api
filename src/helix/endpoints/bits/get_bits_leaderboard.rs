@@ -10,7 +10,7 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::bits::get_bits_leaderboard;
+//! use twitch_api::helix::bits::get_bits_leaderboard;
 //! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder()
 //!     .period("day".to_string())
 //!     .build();
@@ -25,8 +25,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, bits::get_bits_leaderboard};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, bits::get_bits_leaderboard};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

@@ -244,7 +244,7 @@ struct ITopicSubscribe<'a> {
 /// Create a listen message for moderator actions
 ///
 /// ```rust
-/// # use twitch_api2::pubsub::{self, Topic as _};
+/// # use twitch_api::pubsub::{self, Topic as _};
 /// // We want to subscribe to moderator actions on channel with id 1234
 /// // as if we were a user with id 4321 that is moderator on the channel.
 /// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {
@@ -294,7 +294,7 @@ where
 /// Unlisten from moderator actions and follows
 ///
 /// ```rust
-/// # use twitch_api2::pubsub::{self, Topic as _};
+/// # use twitch_api::pubsub::{self, Topic as _};
 /// // These are the exact same topics as for the `listen_command`.
 /// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {
 ///     user_id: 4321,

@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`ModifyChannelInformationRequest`] with the [`ModifyChannelInformationRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::channels::modify_channel_information;
+//! use twitch_api::helix::channels::modify_channel_information;
 //! let request = modify_channel_information::ModifyChannelInformationRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
@@ -19,7 +19,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::channels::modify_channel_information;
+//! # use twitch_api::helix::channels::modify_channel_information;
 //! let body = modify_channel_information::ModifyChannelInformationBody::builder()
 //!     .title("Hello World!".to_string())
 //!     .build();
@@ -32,8 +32,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, channels::modify_channel_information};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, channels::modify_channel_information};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

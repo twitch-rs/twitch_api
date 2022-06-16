@@ -10,7 +10,7 @@
 //! To use this endpoint, construct a [`UpdateRedemptionStatusRequest`] with the [`UpdateRedemptionStatusRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::points::UpdateRedemptionStatusRequest;
+//! use twitch_api::helix::points::UpdateRedemptionStatusRequest;
 //! let request = UpdateRedemptionStatusRequest::builder()
 //!     .broadcaster_id("274637212".to_string())
 //!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
@@ -23,7 +23,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! use twitch_api2::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};
+//! use twitch_api::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};
 //! let body = UpdateRedemptionStatusBody::builder()
 //!     .status(CustomRewardRedemptionStatus::Canceled)
 //!     .build();
@@ -34,12 +34,12 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix;
-//! use twitch_api2::helix::points::{
+//! use twitch_api::helix;
+//! use twitch_api::helix::points::{
 //!     CustomRewardRedemptionStatus, UpdateRedemptionStatusBody,
 //!     UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,
 //! };
-//! # use twitch_api2::client;
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! let client: helix::HelixClient<'static, client::DummyHttpClient> =

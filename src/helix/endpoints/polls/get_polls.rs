@@ -6,7 +6,7 @@
 //! To use this endpoint, construct a [`GetPollsRequest`] with the [`GetPollsRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::polls::get_polls;
+//! use twitch_api::helix::polls::get_polls;
 //! let request = get_polls::GetPollsRequest::builder()
 //!     .id(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()])
 //!     .broadcaster_id("1234")
@@ -18,8 +18,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, polls::get_polls};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, polls::get_polls};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

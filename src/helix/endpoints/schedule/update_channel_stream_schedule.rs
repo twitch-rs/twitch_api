@@ -9,7 +9,7 @@
 //! To use this endpoint, construct an [`UpdateChannelStreamScheduleRequest`] with the [`UpdateChannelStreamScheduleRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::schedule::update_channel_stream_schedule;
+//! use twitch_api::helix::schedule::update_channel_stream_schedule;
 //! let request = update_channel_stream_schedule::UpdateChannelStreamScheduleRequest::builder()
 //!     .broadcaster_id("274637212")
 //!     .build();
@@ -22,8 +22,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, schedule::update_channel_stream_schedule};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, schedule::update_channel_stream_schedule};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

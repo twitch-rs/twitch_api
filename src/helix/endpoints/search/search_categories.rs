@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`SearchCategoriesRequest`] with the [`SearchCategoriesRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::search::search_categories;
+//! use twitch_api::helix::search::search_categories;
 //! let request = search_categories::SearchCategoriesRequest::builder()
 //!     .query("hello")
 //!     .build();
@@ -19,8 +19,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, search::search_categories};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, search::search_categories};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

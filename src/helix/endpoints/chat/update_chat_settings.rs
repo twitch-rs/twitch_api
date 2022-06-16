@@ -10,7 +10,7 @@
 //! To use this endpoint, construct an [`UpdateChatSettingsRequest`] with the [`UpdateChatSettingsRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::chat::update_chat_settings;
+//! use twitch_api::helix::chat::update_chat_settings;
 //! let request = update_chat_settings::UpdateChatSettingsRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
@@ -22,7 +22,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::chat::update_chat_settings;
+//! # use twitch_api::helix::chat::update_chat_settings;
 //! let body = update_chat_settings::UpdateChatSettingsBody::builder()
 //!     .slow_mode(true)
 //!     .slow_mode_wait_time(10)
@@ -36,8 +36,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, chat::update_chat_settings};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, chat::update_chat_settings};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

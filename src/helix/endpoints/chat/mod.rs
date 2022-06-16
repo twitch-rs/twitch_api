@@ -102,7 +102,7 @@ impl ChannelEmote {
     /// # Examples
     ///
     /// ```rust, no_run
-    /// # use twitch_api2::{client, helix};
+    /// # use twitch_api::{client, helix};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

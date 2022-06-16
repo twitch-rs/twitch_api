@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::channels::get_channel_information;
+//! use twitch_api::helix::channels::get_channel_information;
 //! let request = get_channel_information::GetChannelInformationRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
@@ -21,8 +21,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, channels::get_channel_information};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, channels::get_channel_information};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

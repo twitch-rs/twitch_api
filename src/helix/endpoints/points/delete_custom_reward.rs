@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`DeleteCustomRewardRequest`] with the [`DeleteCustomRewardRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::points::delete_custom_reward;
+//! use twitch_api::helix::points::delete_custom_reward;
 //! let request = delete_custom_reward::DeleteCustomRewardRequest::builder()
 //!     .broadcaster_id("274637212")
 //!     .id("1234")
@@ -20,8 +20,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, points::delete_custom_reward};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, points::delete_custom_reward};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

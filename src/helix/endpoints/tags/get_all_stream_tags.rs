@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`GetAllStreamTagsRequest`] with the [`GetAllStreamTagsRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::tags::get_all_stream_tags;
+//! use twitch_api::helix::tags::get_all_stream_tags;
 //! let request = get_all_stream_tags::GetAllStreamTagsRequest::builder()
 //!     .first(100)
 //!     .build();
@@ -19,8 +19,8 @@
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, tags::get_all_stream_tags};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, tags::get_all_stream_tags};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

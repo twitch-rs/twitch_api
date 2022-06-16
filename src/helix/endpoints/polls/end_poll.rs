@@ -9,7 +9,7 @@
 //! To use this endpoint, construct an [`EndPollRequest`] with the [`EndPollRequest::new()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::polls::end_poll;
+//! use twitch_api::helix::polls::end_poll;
 //! let request = end_poll::EndPollRequest::new();
 //! ```
 //!
@@ -18,7 +18,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::polls::end_poll;
+//! # use twitch_api::helix::polls::end_poll;
 //! let body = end_poll::EndPollBody::builder()
 //!     .broadcaster_id("274637212")
 //!     .id("92af127c-7326-4483-a52b-b0da0be61c01")
@@ -33,8 +33,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, polls::end_poll};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, polls::end_poll};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

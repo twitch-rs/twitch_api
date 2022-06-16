@@ -12,7 +12,7 @@
 //! To use this endpoint, construct a [`DeleteChannelStreamScheduleSegmentRequest`] with the [`DeleteChannelStreamScheduleSegmentRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::schedule::delete_channel_stream_schedule_segment;
+//! use twitch_api::helix::schedule::delete_channel_stream_schedule_segment;
 //! let request = delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegmentRequest::builder()
 //!     .from_id("1234").to_id("4321")
 //!     .build();
@@ -23,8 +23,8 @@
 //! Send the request to receive the response with [`HelixClient::req_delete()`](helix::HelixClient::req_delete).
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, schedule::delete_channel_stream_schedule_segment};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, schedule::delete_channel_stream_schedule_segment};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

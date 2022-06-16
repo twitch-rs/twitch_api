@@ -8,7 +8,7 @@
 //! To use this endpoint, construct a [`ReplaceStreamTagsRequest`] with the [`ReplaceStreamTagsRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::streams::replace_stream_tags;
+//! use twitch_api::helix::streams::replace_stream_tags;
 //! let request = replace_stream_tags::ReplaceStreamTagsRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
@@ -19,7 +19,7 @@
 //! We also need to provide a body to the request containing the tags we want to set.
 //!
 //! ```
-//! # use twitch_api2::helix::streams::replace_stream_tags;
+//! # use twitch_api::helix::streams::replace_stream_tags;
 //! let body = replace_stream_tags::ReplaceStreamTagsBody::builder()
 //!     .tag_ids(vec![
 //!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
@@ -35,8 +35,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, streams::replace_stream_tags};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, streams::replace_stream_tags};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

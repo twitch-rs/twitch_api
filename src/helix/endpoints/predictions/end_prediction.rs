@@ -9,7 +9,7 @@
 //! To use this endpoint, construct an [`EndPredictionRequest`] with the [`EndPredictionRequest::new()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::predictions::end_prediction;
+//! use twitch_api::helix::predictions::end_prediction;
 //! let request = end_prediction::EndPredictionRequest::new();
 //! ```
 //!
@@ -18,7 +18,7 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api2::helix::predictions::end_prediction;
+//! # use twitch_api::helix::predictions::end_prediction;
 //! let body = end_prediction::EndPredictionBody::builder()
 //!     .broadcaster_id("141981764")
 //!     .id("ed961efd-8a3f-4cf5-a9d0-e616c590cd2a")
@@ -33,8 +33,8 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api2::helix::{self, predictions::end_prediction};
-//! # use twitch_api2::client;
+//! use twitch_api::helix::{self, predictions::end_prediction};
+//! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
