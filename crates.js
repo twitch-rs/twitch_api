@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["twitch_api2","twitch_oauth2","twitch_types"];
+window.ALL_CRATES = ["twitch_api","twitch_oauth2","twitch_types"];

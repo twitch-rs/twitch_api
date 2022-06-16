@@ -3,7 +3,9 @@
         </a><h2 class="location"></h2>
     </nav>
     <nav class="sidebar"><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -159,6 +161,7 @@
 <span id="154">154</span>
 <span id="155">155</span>
 <span id="156">156</span>
+<span id="157">157</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Module for all possible scopes in twitch.</span>
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -247,6 +250,7 @@
     <span class="ident">ChannelManageExtensions</span>,        <span class="ident">scope</span>: <span class="string">&quot;channel:manage:extensions&quot;</span>,         <span class="ident">doc</span>: <span class="string">&quot;Manage a channel’s Extension configuration, including activating Extensions.&quot;</span>;
     <span class="ident">ChannelManagePolls</span>,             <span class="ident">scope</span>: <span class="string">&quot;channel:manage:polls&quot;</span>,              <span class="ident">doc</span>: <span class="string">&quot;Manage a channel’s polls.&quot;</span>;
     <span class="ident">ChannelManagePredictions</span>,       <span class="ident">scope</span>: <span class="string">&quot;channel:manage:predictions&quot;</span>,        <span class="ident">doc</span>: <span class="string">&quot;Manage of channel’s Channel Points Predictions&quot;</span>;
+    <span class="ident">ChannelManageRaids</span>,             <span class="ident">scope</span>: <span class="string">&quot;channel:manage:raids&quot;</span>,              <span class="ident">doc</span>: <span class="string">&quot;Manage a Channel’s raids.&quot;</span>;
     <span class="ident">ChannelManageRedemptions</span>,       <span class="ident">scope</span>: <span class="string">&quot;channel:manage:redemptions&quot;</span>,        <span class="ident">doc</span>: <span class="string">&quot;Manage Channel Points custom rewards and their redemptions on a channel.&quot;</span>;
     <span class="ident">ChannelManageSchedule</span>,          <span class="ident">scope</span>: <span class="string">&quot;channel:manage:schedule&quot;</span>,           <span class="ident">doc</span>: <span class="string">&quot;Manage a channel’s stream schedule.&quot;</span>;
     <span class="ident">ChannelManageVideos</span>,            <span class="ident">scope</span>: <span class="string">&quot;channel:manage:videos&quot;</span>,             <span class="ident">doc</span>: <span class="string">&quot;Manage a channel’s videos, including deleting videos.&quot;</span>;
@@ -316,5 +320,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (cb1219871 2022-05-08)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (b31f9cc22 2022-06-15)" ></div>
 </body></html>
