@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ChannelCheerV1","`channel.cheer`: a user cheers on the specified channel."],["ChannelCheerV1Payload","`channel.cheer` response payload."]]});
+window.SIDEBAR_ITEMS = {"struct":[["ChannelCheerV1","`channel.cheer`: a user cheers on the specified channel."],["ChannelCheerV1Payload","`channel.cheer` response payload."]]};

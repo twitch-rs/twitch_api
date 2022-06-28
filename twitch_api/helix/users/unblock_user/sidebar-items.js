@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["UnblockUser","Return Values for Unblock User"]],"struct":[["UnblockUserRequest","Query Parameters for Unblock User"]]});
+window.SIDEBAR_ITEMS = {"enum":[["UnblockUser","Return Values for Unblock User"]],"struct":[["UnblockUserRequest","Query Parameters for Unblock User"]]};

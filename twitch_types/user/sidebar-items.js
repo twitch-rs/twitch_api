@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["BroadcasterType","Broadcaster types: “partner”, “affiliate”, or “”."],["UserType","User types: “staff”, “admin”, “global_mod”, or “”."]],"struct":[["User","A user according to many endpoints"]]});
+window.SIDEBAR_ITEMS = {"enum":[["BroadcasterType","Broadcaster types: “partner”, “affiliate”, or “”."],["UserType","User types: “staff”, “admin”, “global_mod”, or “”."]],"struct":[["User","A user according to many endpoints"]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CreatorGoal","Return Values for Get Creator Goals"],["GetCreatorGoalsRequest","Query Parameters for Get Creator Goals"]]});
+window.SIDEBAR_ITEMS = {"struct":[["CreatorGoal","Return Values for Get Creator Goals"],["GetCreatorGoalsRequest","Query Parameters for Get Creator Goals"]]};

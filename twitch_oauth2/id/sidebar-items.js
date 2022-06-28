@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["TwitchTokenErrorResponse","Twitch’s representation of the oauth flow for errors"],["TwitchTokenResponse","Twitch’s representation of the oauth flow."]]});
+window.SIDEBAR_ITEMS = {"struct":[["TwitchTokenErrorResponse","Twitch’s representation of the oauth flow for errors"],["TwitchTokenResponse","Twitch’s representation of the oauth flow."]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ChannelHypeTrainProgressV1","`channel.hype_train.progress`: a hype train makes progress on the specified channel."],["ChannelHypeTrainProgressV1Payload","`channel.hype_train.progress` response payload."]]});
+window.SIDEBAR_ITEMS = {"struct":[["ChannelHypeTrainProgressV1","`channel.hype_train.progress`: a hype train makes progress on the specified channel."],["ChannelHypeTrainProgressV1Payload","`channel.hype_train.progress` response payload."]]};

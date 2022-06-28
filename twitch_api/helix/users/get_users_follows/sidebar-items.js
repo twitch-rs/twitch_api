@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["FollowRelationship","Describes a follow relationship"],["GetUsersFollowsRequest","Query Parameters for Get Users Follows"],["UsersFollows","Return Values for Get Users Follows"]]});
+window.SIDEBAR_ITEMS = {"struct":[["FollowRelationship","Describes a follow relationship"],["GetUsersFollowsRequest","Query Parameters for Get Users Follows"],["UsersFollows","Return Values for Get Users Follows"]]};

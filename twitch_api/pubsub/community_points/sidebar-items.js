@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CommunityPointsChannelV1","A user redeems an reward using channel points."]]});
+window.SIDEBAR_ITEMS = {"struct":[["CommunityPointsChannelV1","A user redeems an reward using channel points."]]};

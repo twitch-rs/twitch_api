@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["DeleteCustomReward","Return Values for Delete CustomReward"]],"struct":[["DeleteCustomRewardRequest","Query Parameters for Delete CustomReward"]]});
+window.SIDEBAR_ITEMS = {"enum":[["DeleteCustomReward","Return Values for Delete CustomReward"]],"struct":[["DeleteCustomRewardRequest","Query Parameters for Delete CustomReward"]]};

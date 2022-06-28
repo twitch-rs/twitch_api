@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["StartCommercial","Return Values for Start Commercial"],["StartCommercialBody","Body Parameters for Start Commercial"],["StartCommercialRequest","Query Parameters for Start Commercial"]]});
+window.SIDEBAR_ITEMS = {"struct":[["StartCommercial","Return Values for Start Commercial"],["StartCommercialBody","Body Parameters for Start Commercial"],["StartCommercialRequest","Query Parameters for Start Commercial"]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GetVideosRequest","Query Parameters for Get Videos"],["MutedSegment","muted segment in a video."],["Video","Return Values for Get Videos"]]});
+window.SIDEBAR_ITEMS = {"struct":[["GetVideosRequest","Query Parameters for Get Videos"],["MutedSegment","muted segment in a video."],["Video","Return Values for Get Videos"]]};

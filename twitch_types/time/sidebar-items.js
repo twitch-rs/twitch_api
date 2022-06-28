@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["TimestampParseError","Errors that can occur when parsing a timestamp."]],"struct":[["Timestamp","RFC3339 timestamp"],["TimestampRef","A reference to a borrowed [`Timestamp`]"]]});
+window.SIDEBAR_ITEMS = {"enum":[["TimestampParseError","Errors that can occur when parsing a timestamp."]],"struct":[["Timestamp","RFC3339 timestamp"],["TimestampRef","A reference to a borrowed [`Timestamp`]"]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GetStreamsRequest","Query Parameters for Get Streams"],["Stream","Return Values for Get Streams"]]});
+window.SIDEBAR_ITEMS = {"struct":[["GetStreamsRequest","Query Parameters for Get Streams"],["Stream","Return Values for Get Streams"]]};

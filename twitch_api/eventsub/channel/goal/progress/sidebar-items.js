@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ChannelGoalProgressV1","`channel.goal.progress`: progress is made towards the specified broadcaster’s goal."],["ChannelGoalProgressV1Payload","`channel.goal.progress` response payload."]]});
+window.SIDEBAR_ITEMS = {"struct":[["ChannelGoalProgressV1","`channel.goal.progress`: progress is made towards the specified broadcaster’s goal."],["ChannelGoalProgressV1Payload","`channel.goal.progress` response payload."]]};

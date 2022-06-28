@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["get_clips","Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only). `get-clips`"]],"struct":[["Clip","Return Values for Get Clips"],["GetClipsRequest","Query Parameters for Get Clips"]]});
+window.SIDEBAR_ITEMS = {"mod":[["get_clips","Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only). `get-clips`"]],"struct":[["Clip","Return Values for Get Clips"],["GetClipsRequest","Query Parameters for Get Clips"]]};

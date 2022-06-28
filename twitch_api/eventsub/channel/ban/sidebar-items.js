@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ChannelBanV1","`channel.ban`: a viewer is banned from the specified channel."],["ChannelBanV1Payload","`channel.ban` response payload."]]});
+window.SIDEBAR_ITEMS = {"struct":[["ChannelBanV1","`channel.ban`: a viewer is banned from the specified channel."],["ChannelBanV1Payload","`channel.ban` response payload."]]};

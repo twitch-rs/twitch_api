@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Following","A user follows the channel"],["FollowingReply","Reply from [Following]"]]});
+window.SIDEBAR_ITEMS = {"struct":[["Following","A user follows the channel"],["FollowingReply","Reply from [Following]"]]};

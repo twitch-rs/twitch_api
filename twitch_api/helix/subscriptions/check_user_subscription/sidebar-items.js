@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CheckUserSubscriptionRequest","Query Parameters for Check User Subscription"],["UserSubscription","Return Values for Check User Subscription"]]});
+window.SIDEBAR_ITEMS = {"struct":[["CheckUserSubscriptionRequest","Query Parameters for Check User Subscription"],["UserSubscription","Return Values for Check User Subscription"]]};

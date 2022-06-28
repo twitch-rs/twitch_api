@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ChannelPredictionLockV1","`channel.hype_train.lock`: an user responds to a prediction on the specified channel"],["ChannelPredictionLockV1Payload","`channel.hype_train.lock` response payload."]]});
+window.SIDEBAR_ITEMS = {"struct":[["ChannelPredictionLockV1","`channel.hype_train.lock`: an user responds to a prediction on the specified channel"],["ChannelPredictionLockV1Payload","`channel.hype_train.lock` response payload."]]};
