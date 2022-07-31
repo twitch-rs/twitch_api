@@ -59,7 +59,8 @@ macro_rules! make_event_type {
             $variant_name:ident => $event_name:literal,
         )*
     },
-        to_str: $to_str_docs:literal
+        to_str: $to_str_docs:literal,
+        from_str_error: $from_str_error:ident,
     ) => {
         #[doc = $enum_docs]
         #[derive(Copy, Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -84,13 +85,13 @@ macro_rules! make_event_type {
         }
 
         impl std::str::FromStr for $enum_name {
-            type Err = ();
+            type Err = $from_str_error;
 
             fn from_str(s: &str) -> Result<Self, Self::Err> {
                 use $enum_name::*;
                 match s {
                     $($event_name => Ok($variant_name),)*
-                    _ => Err(()),
+                    _ => Err($from_str_error),
                 }
             }
         }
@@ -102,6 +103,11 @@ macro_rules! make_event_type {
         }
     };
 }
+
+/// Error when parsing an event-type string.
+#[derive(thiserror::Error, Debug, Clone)]
+#[error("Unknown event type")]
+pub struct EventTypeParseError;
 
 make_event_type!("Event Types": pub enum EventType {
     "subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.":
@@ -178,7 +184,8 @@ fn main() {
     assert_eq!(EventType::ChannelUpdate.to_str(), "channel.update");
     assert_eq!(EventType::ChannelUnban.to_str(), "channel.unban");
 }
-```"#
+```"#,
+    from_str_error: EventTypeParseError,
 );
 
 /// A notification with an event payload. Enumerates all possible [`Payload`s](Payload)
