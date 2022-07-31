@@ -52,111 +52,128 @@ macro_rules! is_thing {
     };
 }
 
-/// Event types
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub enum EventType {
-    /// `channel.update` subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
-    #[serde(rename = "channel.update")]
-    ChannelUpdate,
-    /// `channel.follow`: a specified channel receives a follow.
-    #[serde(rename = "channel.follow")]
-    ChannelFollow,
-    /// `channel.subscribe`: a specified channel receives a subscriber. This does not include resubscribes.
-    #[serde(rename = "channel.subscribe")]
-    ChannelSubscribe,
-    /// `channel.cheer`: a user cheers on the specified channel.
-    #[serde(rename = "channel.cheer")]
-    ChannelCheer,
-    /// `channel.ban`: a viewer is banned from the specified channel.
-    #[serde(rename = "channel.ban")]
-    ChannelBan,
-    /// `channel.unban`: a viewer is unbanned from the specified channel.
-    #[serde(rename = "channel.unban")]
-    ChannelUnban,
-    /// `channel.channel_points_custom_reward.add`: a custom channel points reward has been created for the specified channel.
-    #[serde(rename = "channel.channel_points_custom_reward.add")]
-    ChannelPointsCustomRewardAdd,
-    /// `channel.channel_points_custom_reward.update`: a custom channel points reward has been updated for the specified channel.
-    #[serde(rename = "channel.channel_points_custom_reward.update")]
-    ChannelPointsCustomRewardUpdate,
-    /// `channel.channel_points_custom_reward.remove`: a custom channel points reward has been removed from the specified channel.
-    #[serde(rename = "channel.channel_points_custom_reward.remove")]
-    ChannelPointsCustomRewardRemove,
-    /// `channel.channel_points_custom_reward_redemption.add`: a viewer has redeemed a custom channel points reward on the specified channel.
-    #[serde(rename = "channel.channel_points_custom_reward_redemption.add")]
-    ChannelPointsCustomRewardRedemptionAdd,
-    /// `channel.channel_points_custom_reward_redemption.update`: a redemption of a channel points custom reward has been updated for the specified channel.
-    #[serde(rename = "channel.channel_points_custom_reward_redemption.update")]
-    ChannelPointsCustomRewardRedemptionUpdate,
-    /// `channel.poll.begin`: a poll begins on the specified channel.
-    #[serde(rename = "channel.poll.begin")]
-    ChannelPollBegin,
-    /// `channel.poll.progress`: a user responds to a poll on the specified channel.
-    #[serde(rename = "channel.poll.progress")]
-    ChannelPollProgress,
-    /// `channel.poll.end`: a poll ends on the specified channel.
-    #[serde(rename = "channel.poll.end")]
-    ChannelPollEnd,
-    /// `channel.prediction.begin`: a Prediction begins on the specified channel
-    #[serde(rename = "channel.prediction.begin")]
-    ChannelPredictionBegin,
-    /// `channel.prediction.progress`: a user participates in a Prediction on the specified channel.
-    #[serde(rename = "channel.prediction.progress")]
-    ChannelPredictionProgress,
-    /// `channel.prediction.lock`: a Prediction is locked on the specified channel.
-    #[serde(rename = "channel.prediction.lock")]
-    ChannelPredictionLock,
-    /// `channel.prediction.end`: a Prediction ends on the specified channel.
-    #[serde(rename = "channel.prediction.end")]
-    ChannelPredictionEnd,
-    /// `channel.raid`: a broadcaster raids another broadcaster’s channel.
-    #[serde(rename = "channel.raid")]
-    ChannelRaid,
-    /// `channel.subscription.end`: a subscription to the specified channel expires.
-    #[serde(rename = "channel.subscription.end")]
-    ChannelSubscriptionEnd,
-    /// `channel.subscription.gift`: a user gives one or more gifted subscriptions in a channel.
-    #[serde(rename = "channel.subscription.gift")]
-    ChannelSubscriptionGift,
-    /// `channel.subscription.gift`: a user sends a resubscription chat message in a specific channel
-    #[serde(rename = "channel.subscription.message")]
-    ChannelSubscriptionMessage,
-    /// `channel.goal.begin`: a goal begins on the specified channel.
-    #[serde(rename = "channel.goal.begin")]
-    ChannelGoalBegin,
-    /// `channel.goal.progress`: a goal makes progress on the specified channel.
-    #[serde(rename = "channel.goal.progress")]
-    ChannelGoalProgress,
-    /// `channel.goal.end`: a goal ends on the specified channel.
-    #[serde(rename = "channel.goal.end")]
-    ChannelGoalEnd,
-    /// `channel.hype_train.begin`: a hype train begins on the specified channel.
-    #[serde(rename = "channel.hype_train.begin")]
-    ChannelHypeTrainBegin,
-    /// `channel.hype_train.progress`: a hype train makes progress on the specified channel.
-    #[serde(rename = "channel.hype_train.progress")]
-    ChannelHypeTrainProgress,
-    /// `channel.hype_train.end`: a hype train ends on the specified channel.
-    #[serde(rename = "channel.hype_train.end")]
-    ChannelHypeTrainEnd,
-    /// `stream.online`: the specified broadcaster starts a stream.
-    #[serde(rename = "stream.online")]
-    StreamOnline,
-    /// `stream.online`: the specified broadcaster stops a stream.
-    #[serde(rename = "stream.offline")]
-    StreamOffline,
-    /// `user.update`: user updates their account.
-    #[serde(rename = "user.update")]
-    UserUpdate,
-    /// `user.authorization.revoke`: a user has revoked authorization for your client id. Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.
-    #[serde(rename = "user.authorization.revoke")]
-    UserAuthorizationRevoke,
-    /// `user.authorization.revoke`: a user’s authorization has been granted to your client id.
-    #[serde(rename = "user.authorization.grant")]
-    UserAuthorizationGrant,
+macro_rules! make_event_type {
+    ($enum_docs:literal: pub enum $enum_name:ident {
+        $(
+            $event_docs:literal:
+            $variant_name:ident => $event_name:literal,
+        )*
+    },
+        to_str: $to_str_docs:literal
+    ) => {
+        #[doc = $enum_docs]
+        #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+        #[non_exhaustive]
+        pub enum $enum_name {
+            $(
+                #[doc = concat!("`", $event_name, "`: ", $event_docs)]
+                #[serde(rename = $event_name)]
+                $variant_name,
+            )*
+        }
+
+        impl $enum_name {
+            #[doc = $to_str_docs]
+            pub const fn to_str(&self) -> &'static str {
+                use $enum_name::*;
+                match self {
+                    $($variant_name => $event_name,)*
+                }
+            }
+        }
+
+        impl std::str::FromStr for $enum_name {
+            type Err = ();
+
+            fn from_str(s: &str) -> Result<Self, Self::Err> {
+                use $enum_name::*;
+                match s {
+                    $($event_name => Ok($variant_name),)*
+                    _ => Err(()),
+                }
+            }
+        }
+    };
 }
+
+make_event_type!("Event Types": pub enum EventType {
+    "subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.":
+    ChannelUpdate => "channel.update",
+    "a specified channel receives a follow.":
+    ChannelFollow => "channel.follow",
+    "a specified channel receives a subscriber. This does not include resubscribes.":
+    ChannelSubscribe => "channel.subscribe",
+    "a user cheers on the specified channel.":
+    ChannelCheer => "channel.cheer",
+    "a viewer is banned from the specified channel.":
+    ChannelBan => "channel.ban",
+    "a viewer is unbanned from the specified channel.":
+    ChannelUnban => "channel.unban",
+    "a custom channel points reward has been created for the specified channel.":
+    ChannelPointsCustomRewardAdd => "channel.channel_points_custom_reward.add",
+    "a custom channel points reward has been updated for the specified channel.":
+    ChannelPointsCustomRewardUpdate => "channel.channel_points_custom_reward.update",
+    "a custom channel points reward has been removed from the specified channel.":
+    ChannelPointsCustomRewardRemove => "channel.channel_points_custom_reward.remove",
+    "a viewer has redeemed a custom channel points reward on the specified channel.":
+    ChannelPointsCustomRewardRedemptionAdd => "channel.channel_points_custom_reward_redemption.add",
+    "a redemption of a channel points custom reward has been updated for the specified channel.":
+    ChannelPointsCustomRewardRedemptionUpdate => "channel.channel_points_custom_reward_redemption.update",
+    "a poll begins on the specified channel.":
+    ChannelPollBegin => "channel.poll.begin",
+    "a user responds to a poll on the specified channel.":
+    ChannelPollProgress => "channel.poll.progress",
+    "a poll ends on the specified channel.":
+    ChannelPollEnd => "channel.poll.end",
+    "a Prediction begins on the specified channel":
+    ChannelPredictionBegin => "channel.prediction.begin",
+    "a user participates in a Prediction on the specified channel.":
+    ChannelPredictionProgress => "channel.prediction.progress",
+    "a Prediction is locked on the specified channel.":
+    ChannelPredictionLock => "channel.prediction.lock",
+    "a Prediction ends on the specified channel.":
+    ChannelPredictionEnd => "channel.prediction.end",
+    "a broadcaster raids another broadcaster’s channel.":
+    ChannelRaid => "channel.raid",
+    "a subscription to the specified channel expires.":
+    ChannelSubscriptionEnd => "channel.subscription.end",
+    "a user gives one or more gifted subscriptions in a channel.":
+    ChannelSubscriptionGift => "channel.subscription.gift",
+    "a user sends a resubscription chat message in a specific channel":
+    ChannelSubscriptionMessage => "channel.subscription.message",
+    "a goal begins on the specified channel.":
+    ChannelGoalBegin => "channel.goal.begin",
+    "a goal makes progress on the specified channel.":
+    ChannelGoalProgress => "channel.goal.progress",
+    "a goal ends on the specified channel.":
+    ChannelGoalEnd => "channel.goal.end",
+    "a hype train begins on the specified channel.":
+    ChannelHypeTrainBegin => "channel.hype_train.begin",
+    "a hype train makes progress on the specified channel.":
+    ChannelHypeTrainProgress => "channel.hype_train.progress",
+    "a hype train ends on the specified channel.":
+    ChannelHypeTrainEnd => "channel.hype_train.end",
+    "the specified broadcaster starts a stream.":
+    StreamOnline => "stream.online",
+    "the specified broadcaster stops a stream.":
+    StreamOffline => "stream.offline",
+    "user updates their account.":
+    UserUpdate => "user.update",
+    "a user has revoked authorization for your client id. Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.":
+    UserAuthorizationRevoke => "user.authorization.revoke",
+    "a user’s authorization has been granted to your client id.":
+    UserAuthorizationGrant => "user.authorization.grant",
+},
+    to_str: r#"Get the event string of this event.
+```
+# use twitch_api2::eventsub::EventType;
+fn main() {
+    assert_eq!(EventType::ChannelUpdate.to_str(), "channel.update");
+    assert_eq!(EventType::ChannelUnban.to_str(), "channel.unban");
+}
+```"#
+);
 
 /// A notification with an event payload. Enumerates all possible [`Payload`s](Payload)
 ///
