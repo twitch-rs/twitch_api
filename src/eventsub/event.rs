@@ -94,6 +94,12 @@ macro_rules! make_event_type {
                 }
             }
         }
+
+        impl std::fmt::Display for $enum_name {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                f.write_str(self.to_str())
+            }
+        }
     };
 }
 
