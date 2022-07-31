@@ -173,7 +173,7 @@ make_event_type!("Event Types": pub enum EventType {
 },
     to_str: r#"Get the event string of this event.
 ```
-# use twitch_api2::eventsub::EventType;
+# use twitch_api::eventsub::EventType;
 fn main() {
     assert_eq!(EventType::ChannelUpdate.to_str(), "channel.update");
     assert_eq!(EventType::ChannelUnban.to_str(), "channel.unban");
