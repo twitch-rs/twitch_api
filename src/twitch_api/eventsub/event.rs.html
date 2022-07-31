@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
-                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -591,6 +585,36 @@
 <span id="585">585</span>
 <span id="586">586</span>
 <span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
 </pre><pre class="rust"><code><span class="doccomment">//! EventSub events and their types</span>
 
 <span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
@@ -645,111 +669,141 @@
     };
 }
 
-<span class="doccomment">/// Event types</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EventType</span> {
-    <span class="doccomment">/// `channel.update` subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.update&quot;</span>)]</span>
-    <span class="ident">ChannelUpdate</span>,
-    <span class="doccomment">/// `channel.follow`: a specified channel receives a follow.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.follow&quot;</span>)]</span>
-    <span class="ident">ChannelFollow</span>,
-    <span class="doccomment">/// `channel.subscribe`: a specified channel receives a subscriber. This does not include resubscribes.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.subscribe&quot;</span>)]</span>
-    <span class="ident">ChannelSubscribe</span>,
-    <span class="doccomment">/// `channel.cheer`: a user cheers on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.cheer&quot;</span>)]</span>
-    <span class="ident">ChannelCheer</span>,
-    <span class="doccomment">/// `channel.ban`: a viewer is banned from the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.ban&quot;</span>)]</span>
-    <span class="ident">ChannelBan</span>,
-    <span class="doccomment">/// `channel.unban`: a viewer is unbanned from the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.unban&quot;</span>)]</span>
-    <span class="ident">ChannelUnban</span>,
-    <span class="doccomment">/// `channel.channel_points_custom_reward.add`: a custom channel points reward has been created for the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.channel_points_custom_reward.add&quot;</span>)]</span>
-    <span class="ident">ChannelPointsCustomRewardAdd</span>,
-    <span class="doccomment">/// `channel.channel_points_custom_reward.update`: a custom channel points reward has been updated for the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.channel_points_custom_reward.update&quot;</span>)]</span>
-    <span class="ident">ChannelPointsCustomRewardUpdate</span>,
-    <span class="doccomment">/// `channel.channel_points_custom_reward.remove`: a custom channel points reward has been removed from the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.channel_points_custom_reward.remove&quot;</span>)]</span>
-    <span class="ident">ChannelPointsCustomRewardRemove</span>,
-    <span class="doccomment">/// `channel.channel_points_custom_reward_redemption.add`: a viewer has redeemed a custom channel points reward on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.channel_points_custom_reward_redemption.add&quot;</span>)]</span>
-    <span class="ident">ChannelPointsCustomRewardRedemptionAdd</span>,
-    <span class="doccomment">/// `channel.channel_points_custom_reward_redemption.update`: a redemption of a channel points custom reward has been updated for the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.channel_points_custom_reward_redemption.update&quot;</span>)]</span>
-    <span class="ident">ChannelPointsCustomRewardRedemptionUpdate</span>,
-    <span class="doccomment">/// `channel.poll.begin`: a poll begins on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.poll.begin&quot;</span>)]</span>
-    <span class="ident">ChannelPollBegin</span>,
-    <span class="doccomment">/// `channel.poll.progress`: a user responds to a poll on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.poll.progress&quot;</span>)]</span>
-    <span class="ident">ChannelPollProgress</span>,
-    <span class="doccomment">/// `channel.poll.end`: a poll ends on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.poll.end&quot;</span>)]</span>
-    <span class="ident">ChannelPollEnd</span>,
-    <span class="doccomment">/// `channel.prediction.begin`: a Prediction begins on the specified channel</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.prediction.begin&quot;</span>)]</span>
-    <span class="ident">ChannelPredictionBegin</span>,
-    <span class="doccomment">/// `channel.prediction.progress`: a user participates in a Prediction on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.prediction.progress&quot;</span>)]</span>
-    <span class="ident">ChannelPredictionProgress</span>,
-    <span class="doccomment">/// `channel.prediction.lock`: a Prediction is locked on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.prediction.lock&quot;</span>)]</span>
-    <span class="ident">ChannelPredictionLock</span>,
-    <span class="doccomment">/// `channel.prediction.end`: a Prediction ends on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.prediction.end&quot;</span>)]</span>
-    <span class="ident">ChannelPredictionEnd</span>,
-    <span class="doccomment">/// `channel.raid`: a broadcaster raids another broadcaster’s channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.raid&quot;</span>)]</span>
-    <span class="ident">ChannelRaid</span>,
-    <span class="doccomment">/// `channel.subscription.end`: a subscription to the specified channel expires.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.subscription.end&quot;</span>)]</span>
-    <span class="ident">ChannelSubscriptionEnd</span>,
-    <span class="doccomment">/// `channel.subscription.gift`: a user gives one or more gifted subscriptions in a channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.subscription.gift&quot;</span>)]</span>
-    <span class="ident">ChannelSubscriptionGift</span>,
-    <span class="doccomment">/// `channel.subscription.gift`: a user sends a resubscription chat message in a specific channel</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.subscription.message&quot;</span>)]</span>
-    <span class="ident">ChannelSubscriptionMessage</span>,
-    <span class="doccomment">/// `channel.goal.begin`: a goal begins on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.goal.begin&quot;</span>)]</span>
-    <span class="ident">ChannelGoalBegin</span>,
-    <span class="doccomment">/// `channel.goal.progress`: a goal makes progress on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.goal.progress&quot;</span>)]</span>
-    <span class="ident">ChannelGoalProgress</span>,
-    <span class="doccomment">/// `channel.goal.end`: a goal ends on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.goal.end&quot;</span>)]</span>
-    <span class="ident">ChannelGoalEnd</span>,
-    <span class="doccomment">/// `channel.hype_train.begin`: a hype train begins on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.hype_train.begin&quot;</span>)]</span>
-    <span class="ident">ChannelHypeTrainBegin</span>,
-    <span class="doccomment">/// `channel.hype_train.progress`: a hype train makes progress on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.hype_train.progress&quot;</span>)]</span>
-    <span class="ident">ChannelHypeTrainProgress</span>,
-    <span class="doccomment">/// `channel.hype_train.end`: a hype train ends on the specified channel.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel.hype_train.end&quot;</span>)]</span>
-    <span class="ident">ChannelHypeTrainEnd</span>,
-    <span class="doccomment">/// `stream.online`: the specified broadcaster starts a stream.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;stream.online&quot;</span>)]</span>
-    <span class="ident">StreamOnline</span>,
-    <span class="doccomment">/// `stream.online`: the specified broadcaster stops a stream.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;stream.offline&quot;</span>)]</span>
-    <span class="ident">StreamOffline</span>,
-    <span class="doccomment">/// `user.update`: user updates their account.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;user.update&quot;</span>)]</span>
-    <span class="ident">UserUpdate</span>,
-    <span class="doccomment">/// `user.authorization.revoke`: a user has revoked authorization for your client id. Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;user.authorization.revoke&quot;</span>)]</span>
-    <span class="ident">UserAuthorizationRevoke</span>,
-    <span class="doccomment">/// `user.authorization.revoke`: a user’s authorization has been granted to your client id.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;user.authorization.grant&quot;</span>)]</span>
-    <span class="ident">UserAuthorizationGrant</span>,
+<span class="macro">macro_rules!</span> <span class="ident">make_event_type</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">enum_docs</span>:<span class="ident">literal</span>: <span class="kw">pub</span> <span class="kw">enum</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">enum_name</span>:<span class="ident">ident</span> {
+        $(
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_docs</span>:<span class="ident">literal</span>:
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">variant_name</span>:<span class="ident">ident</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span>:<span class="ident">literal</span>,
+        )<span class="op">*</span>
+    },
+        <span class="ident">to_str</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to_str_docs</span>:<span class="ident">literal</span>,
+        <span class="ident">from_str_error</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">from_str_error</span>:<span class="ident">ident</span>,
+    ) =&gt; {
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">enum_docs</span>]</span>
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
+        <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+        <span class="kw">pub</span> <span class="kw">enum</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">enum_name</span> {
+            $(
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;`&quot;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span>, <span class="string">&quot;`: &quot;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_docs</span>)]</span>
+                <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span>)]</span>
+                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">variant_name</span>,
+            )<span class="op">*</span>
+        }
+
+        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">enum_name</span> {
+            <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to_str_docs</span>]</span>
+            <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+                <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">enum_name</span>::<span class="kw-2">*</span>;
+                <span class="kw">match</span> <span class="self">self</span> {
+                    $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">variant_name</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span>,)<span class="op">*</span>
+                }
+            }
+        }
+
+        <span class="kw">impl</span> <span class="ident">std::str::FromStr</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">enum_name</span> {
+            <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">from_str_error</span>;
+
+            <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Err</span><span class="op">&gt;</span> {
+                <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">enum_name</span>::<span class="kw-2">*</span>;
+                <span class="kw">match</span> <span class="ident">s</span> {
+                    $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">event_name</span> =&gt; <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">variant_name</span>),)<span class="op">*</span>
+                    <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">from_str_error</span>),
+                }
+            }
+        }
+
+        <span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">enum_name</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
+                <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="self">self</span>.<span class="ident">to_str</span>())
+            }
+        }
+    };
 }
+
+<span class="doccomment">/// Error when parsing an event-type string.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror::Error</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Unknown event type&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EventTypeParseError</span>;
+
+<span class="macro">make_event_type!</span>(<span class="string">&quot;Event Types&quot;</span>: <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EventType</span> {
+    <span class="string">&quot;subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.&quot;</span>:
+    <span class="ident">ChannelUpdate</span> =&gt; <span class="string">&quot;channel.update&quot;</span>,
+    <span class="string">&quot;a specified channel receives a follow.&quot;</span>:
+    <span class="ident">ChannelFollow</span> =&gt; <span class="string">&quot;channel.follow&quot;</span>,
+    <span class="string">&quot;a specified channel receives a subscriber. This does not include resubscribes.&quot;</span>:
+    <span class="ident">ChannelSubscribe</span> =&gt; <span class="string">&quot;channel.subscribe&quot;</span>,
+    <span class="string">&quot;a user cheers on the specified channel.&quot;</span>:
+    <span class="ident">ChannelCheer</span> =&gt; <span class="string">&quot;channel.cheer&quot;</span>,
+    <span class="string">&quot;a viewer is banned from the specified channel.&quot;</span>:
+    <span class="ident">ChannelBan</span> =&gt; <span class="string">&quot;channel.ban&quot;</span>,
+    <span class="string">&quot;a viewer is unbanned from the specified channel.&quot;</span>:
+    <span class="ident">ChannelUnban</span> =&gt; <span class="string">&quot;channel.unban&quot;</span>,
+    <span class="string">&quot;a custom channel points reward has been created for the specified channel.&quot;</span>:
+    <span class="ident">ChannelPointsCustomRewardAdd</span> =&gt; <span class="string">&quot;channel.channel_points_custom_reward.add&quot;</span>,
+    <span class="string">&quot;a custom channel points reward has been updated for the specified channel.&quot;</span>:
+    <span class="ident">ChannelPointsCustomRewardUpdate</span> =&gt; <span class="string">&quot;channel.channel_points_custom_reward.update&quot;</span>,
+    <span class="string">&quot;a custom channel points reward has been removed from the specified channel.&quot;</span>:
+    <span class="ident">ChannelPointsCustomRewardRemove</span> =&gt; <span class="string">&quot;channel.channel_points_custom_reward.remove&quot;</span>,
+    <span class="string">&quot;a viewer has redeemed a custom channel points reward on the specified channel.&quot;</span>:
+    <span class="ident">ChannelPointsCustomRewardRedemptionAdd</span> =&gt; <span class="string">&quot;channel.channel_points_custom_reward_redemption.add&quot;</span>,
+    <span class="string">&quot;a redemption of a channel points custom reward has been updated for the specified channel.&quot;</span>:
+    <span class="ident">ChannelPointsCustomRewardRedemptionUpdate</span> =&gt; <span class="string">&quot;channel.channel_points_custom_reward_redemption.update&quot;</span>,
+    <span class="string">&quot;a poll begins on the specified channel.&quot;</span>:
+    <span class="ident">ChannelPollBegin</span> =&gt; <span class="string">&quot;channel.poll.begin&quot;</span>,
+    <span class="string">&quot;a user responds to a poll on the specified channel.&quot;</span>:
+    <span class="ident">ChannelPollProgress</span> =&gt; <span class="string">&quot;channel.poll.progress&quot;</span>,
+    <span class="string">&quot;a poll ends on the specified channel.&quot;</span>:
+    <span class="ident">ChannelPollEnd</span> =&gt; <span class="string">&quot;channel.poll.end&quot;</span>,
+    <span class="string">&quot;a Prediction begins on the specified channel&quot;</span>:
+    <span class="ident">ChannelPredictionBegin</span> =&gt; <span class="string">&quot;channel.prediction.begin&quot;</span>,
+    <span class="string">&quot;a user participates in a Prediction on the specified channel.&quot;</span>:
+    <span class="ident">ChannelPredictionProgress</span> =&gt; <span class="string">&quot;channel.prediction.progress&quot;</span>,
+    <span class="string">&quot;a Prediction is locked on the specified channel.&quot;</span>:
+    <span class="ident">ChannelPredictionLock</span> =&gt; <span class="string">&quot;channel.prediction.lock&quot;</span>,
+    <span class="string">&quot;a Prediction ends on the specified channel.&quot;</span>:
+    <span class="ident">ChannelPredictionEnd</span> =&gt; <span class="string">&quot;channel.prediction.end&quot;</span>,
+    <span class="string">&quot;a broadcaster raids another broadcaster’s channel.&quot;</span>:
+    <span class="ident">ChannelRaid</span> =&gt; <span class="string">&quot;channel.raid&quot;</span>,
+    <span class="string">&quot;a subscription to the specified channel expires.&quot;</span>:
+    <span class="ident">ChannelSubscriptionEnd</span> =&gt; <span class="string">&quot;channel.subscription.end&quot;</span>,
+    <span class="string">&quot;a user gives one or more gifted subscriptions in a channel.&quot;</span>:
+    <span class="ident">ChannelSubscriptionGift</span> =&gt; <span class="string">&quot;channel.subscription.gift&quot;</span>,
+    <span class="string">&quot;a user sends a resubscription chat message in a specific channel&quot;</span>:
+    <span class="ident">ChannelSubscriptionMessage</span> =&gt; <span class="string">&quot;channel.subscription.message&quot;</span>,
+    <span class="string">&quot;a goal begins on the specified channel.&quot;</span>:
+    <span class="ident">ChannelGoalBegin</span> =&gt; <span class="string">&quot;channel.goal.begin&quot;</span>,
+    <span class="string">&quot;a goal makes progress on the specified channel.&quot;</span>:
+    <span class="ident">ChannelGoalProgress</span> =&gt; <span class="string">&quot;channel.goal.progress&quot;</span>,
+    <span class="string">&quot;a goal ends on the specified channel.&quot;</span>:
+    <span class="ident">ChannelGoalEnd</span> =&gt; <span class="string">&quot;channel.goal.end&quot;</span>,
+    <span class="string">&quot;a hype train begins on the specified channel.&quot;</span>:
+    <span class="ident">ChannelHypeTrainBegin</span> =&gt; <span class="string">&quot;channel.hype_train.begin&quot;</span>,
+    <span class="string">&quot;a hype train makes progress on the specified channel.&quot;</span>:
+    <span class="ident">ChannelHypeTrainProgress</span> =&gt; <span class="string">&quot;channel.hype_train.progress&quot;</span>,
+    <span class="string">&quot;a hype train ends on the specified channel.&quot;</span>:
+    <span class="ident">ChannelHypeTrainEnd</span> =&gt; <span class="string">&quot;channel.hype_train.end&quot;</span>,
+    <span class="string">&quot;the specified broadcaster starts a stream.&quot;</span>:
+    <span class="ident">StreamOnline</span> =&gt; <span class="string">&quot;stream.online&quot;</span>,
+    <span class="string">&quot;the specified broadcaster stops a stream.&quot;</span>:
+    <span class="ident">StreamOffline</span> =&gt; <span class="string">&quot;stream.offline&quot;</span>,
+    <span class="string">&quot;user updates their account.&quot;</span>:
+    <span class="ident">UserUpdate</span> =&gt; <span class="string">&quot;user.update&quot;</span>,
+    <span class="string">&quot;a user has revoked authorization for your client id. Use this webhook to meet government requirements for handling user data, such as GDPR, LGPD, or CCPA.&quot;</span>:
+    <span class="ident">UserAuthorizationRevoke</span> =&gt; <span class="string">&quot;user.authorization.revoke&quot;</span>,
+    <span class="string">&quot;a user’s authorization has been granted to your client id.&quot;</span>:
+    <span class="ident">UserAuthorizationGrant</span> =&gt; <span class="string">&quot;user.authorization.grant&quot;</span>,
+},
+    <span class="ident">to_str</span>: <span class="string">r#&quot;Get the event string of this event.
+```
+# use twitch_api::eventsub::EventType;
+fn main() {
+    assert_eq!(EventType::ChannelUpdate.to_str(), &quot;channel.update&quot;);
+    assert_eq!(EventType::ChannelUnban.to_str(), &quot;channel.unban&quot;);
+}
+```&quot;#</span>,
+    <span class="ident">from_str_error</span>: <span class="ident">EventTypeParseError</span>,
+);
 
 <span class="doccomment">/// A notification with an event payload. Enumerates all possible [`Payload`s](Payload)</span>
 <span class="doccomment">///</span>
@@ -1179,5 +1233,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (2f3ddd9f5 2022-06-27)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
