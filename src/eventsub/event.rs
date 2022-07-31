@@ -62,7 +62,7 @@ macro_rules! make_event_type {
         to_str: $to_str_docs:literal
     ) => {
         #[doc = $enum_docs]
-        #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+        #[derive(Copy, Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         #[non_exhaustive]
         pub enum $enum_name {
