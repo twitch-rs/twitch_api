@@ -132,9 +132,7 @@ impl RequestGet for GetChannelInformationRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelInformationRequest::builder()
-        .broadcaster_id("44445592".to_string())
-        .build();
+    let req = GetChannelInformationRequest::broadcaster_id("44445592".to_string());
 
     // From twitch docs
     let data = br#"

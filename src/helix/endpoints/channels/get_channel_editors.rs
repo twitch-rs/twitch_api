@@ -53,6 +53,15 @@ pub struct GetChannelEditorsRequest {
     pub broadcaster_id: types::UserId,
 }
 
+impl GetChannelEditorsRequest {
+    /// Get specified broadcasters channel editors
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
+}
+
 /// Return Values for [Get Channel Editors](super::get_channel_editors)
 ///
 /// [`get-channel-editors`](https://dev.twitch.tv/docs/api/reference#get-channel-editors)
@@ -82,9 +91,7 @@ impl RequestGet for GetChannelEditorsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelEditorsRequest::builder()
-        .broadcaster_id("44445592".to_string())
-        .build();
+    let req = GetChannelEditorsRequest::broadcaster_id("44445592".to_string());
 
     // From twitch docs
     let data = br#"

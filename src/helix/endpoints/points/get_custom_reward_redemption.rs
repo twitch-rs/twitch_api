@@ -77,6 +77,26 @@ pub struct GetCustomRewardRedemptionRequest {
     pub first: Option<usize>,
 }
 
+impl GetCustomRewardRedemptionRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        reward_id: impl Into<types::RewardId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            reward_id: reward_id.into(),
+            status: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    pub fn status(mut self, status: impl Into<CustomRewardRedemptionStatus>) -> Self {
+        self.status = Some(status.into());
+        self
+    }
+}
+
 /// Return Values for [Get Custom Reward Redemption](super::get_custom_reward_redemption)
 ///
 /// [`get-custom-reward-redemption`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
@@ -155,11 +175,9 @@ impl helix::Paginated for GetCustomRewardRedemptionRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetCustomRewardRedemptionRequest::builder()
-        .broadcaster_id("274637212".to_string())
-        .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-        .status(CustomRewardRedemptionStatus::Canceled)
-        .build();
+    let req =
+        GetCustomRewardRedemptionRequest::new("274637212", "92af127c-7326-4483-a52b-b0da0be61c01")
+            .status(CustomRewardRedemptionStatus::Canceled);
 
     // From twitch docs
     let data = br##"

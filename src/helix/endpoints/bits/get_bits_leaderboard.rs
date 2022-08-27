@@ -71,6 +71,60 @@ pub struct GetBitsLeaderboardRequest {
     pub user_id: Option<types::UserId>,
 }
 
+impl GetBitsLeaderboardRequest {
+    /// Number of results to be returned. Maximum: 100. Default: 10.
+    pub fn count(count: i32) -> Self {
+        Self {
+            count: Some(count),
+            ..Self::empty()
+        }
+    }
+
+    /// Get loaderboard for this period. Valid values: `"day"`, `"week"`, `"month"`, `"year"`, `"all"`
+    pub fn period(period: String) -> Self {
+        Self {
+            period: Some(period),
+            ..Self::empty()
+        }
+    }
+
+    /// Get leaderboard starting at this timestamp
+    pub fn started_at(started_at: impl Into<types::Timestamp>) -> Self {
+        Self {
+            started_at: Some(started_at.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// Get leaderboard for this user
+    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: Some(user_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// Returns an empty [`GetBitsLeaderboardRequest`]
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api2::helix::bits::GetBitsLeaderboardRequest;
+    /// GetBitsLeaderboardRequest {
+    ///     period: Some("day".to_string()),
+    ///     ..GetBitsLeaderboardRequest::empty()
+    /// }
+    /// ```
+    pub fn empty() -> Self {
+        Self {
+            count: None,
+            period: None,
+            started_at: None,
+            user_id: None,
+        }
+    }
+}
+
 /// Return Values for [Get Bits Leaderboard](super::get_bits_leaderboard)
 ///
 /// [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)
@@ -165,7 +219,7 @@ impl RequestGet for GetBitsLeaderboardRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetBitsLeaderboardRequest::builder().build();
+    let req = GetBitsLeaderboardRequest::empty();
 
     // From api call
     let data = br##"

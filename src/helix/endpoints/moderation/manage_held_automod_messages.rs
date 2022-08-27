@@ -90,6 +90,29 @@ pub struct ManageHeldAutoModMessagesBody {
     pub action: AutoModAction,
 }
 
+impl ManageHeldAutoModMessagesBody {
+    /// Create a new [`ManageHeldAutoModMessagesBody`]
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api2::helix::moderation::ManageHeldAutoModMessagesBody;
+    ///
+    /// let body = ManageHeldAutoModMessagesBody::new("1234", "5678", true);
+    /// ```
+    pub fn new(
+        user_id: impl Into<types::UserId>,
+        msg_id: impl Into<types::MsgId>,
+        action: impl Into<AutoModAction>,
+    ) -> Self {
+        Self {
+            user_id: user_id.into(),
+            msg_id: msg_id.into(),
+            action: action.into(),
+        }
+    }
+}
+
 /// Action to take for a message.
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "UPPERCASE")]
@@ -167,11 +190,7 @@ fn test_request() {
     use helix::*;
     let req = ManageHeldAutoModMessagesRequest::new();
 
-    let body = ManageHeldAutoModMessagesBody::builder()
-        .action(true)
-        .user_id("9327994")
-        .msg_id("836013710")
-        .build();
+    let body = ManageHeldAutoModMessagesBody::new("9327994", "836013710", true);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

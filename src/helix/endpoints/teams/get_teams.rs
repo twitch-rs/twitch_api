@@ -53,6 +53,22 @@ pub struct GetTeamsRequest {
     pub name: Option<String>,
 }
 
+impl GetTeamsRequest {
+    pub fn id(id: impl Into<types::TeamId>) -> Self {
+        Self {
+            id: Some(id.into()),
+            name: None,
+        }
+    }
+
+    pub fn name(name: String) -> Self {
+        Self {
+            id: None,
+            name: Some(name.into()),
+        }
+    }
+}
+
 /// Return Values for [Get Teams](super::get_teams)
 ///
 /// [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
@@ -83,7 +99,7 @@ impl RequestGet for GetTeamsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetTeamsRequest::builder().id(Some("6358".into())).build();
+    let req = GetTeamsRequest::id("6358");
 
     // From twitch docs
     let data = br#"

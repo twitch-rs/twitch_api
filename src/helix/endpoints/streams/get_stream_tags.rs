@@ -53,6 +53,14 @@ pub struct GetStreamTagsRequest {
     pub broadcaster_id: types::UserId,
 }
 
+impl GetStreamTagsRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
+}
+
 /// Return Values for [Get Stream Tags](super::get_stream_tags)
 ///
 /// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
@@ -72,9 +80,7 @@ impl RequestGet for GetStreamTagsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetStreamTagsRequest::builder()
-        .broadcaster_id("198704263".to_string())
-        .build();
+    let req = GetStreamTagsRequest::broadcaster_id("198704263");
 
     // From twitch docs
     let data = "\

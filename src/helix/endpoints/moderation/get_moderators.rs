@@ -73,6 +73,12 @@ impl GetModeratorsRequest {
         }
     }
 
+    /// Check if supplied user is a moderator.
+    pub fn user_id(mut self, user_id: impl Into<types::UserId>) -> Self {
+        self.user_id = vec![user_id.into()];
+        self
+    }
+
     /// Filter the results for specific users.
     pub fn user_ids(mut self, user_ids: impl IntoIterator<Item = types::UserId>) -> Self {
         self.user_id = user_ids.into_iter().collect();
@@ -119,9 +125,7 @@ impl helix::Paginated for GetModeratorsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetModeratorsRequest::builder()
-        .broadcaster_id("198704263".to_string())
-        .build();
+    let req = GetModeratorsRequest::broadcaster_id("198704263");
 
     // From twitch docs
     let data = br#"

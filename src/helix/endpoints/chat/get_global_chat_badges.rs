@@ -47,7 +47,7 @@ use helix::RequestGet;
 pub struct GetGlobalChatBadgesRequest {}
 
 impl GetGlobalChatBadgesRequest {
-    /// Make a new [`Self`]
+    /// Get global chat badges
     pub fn new() -> Self { Self::default() }
 }
 

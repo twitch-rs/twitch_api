@@ -53,9 +53,11 @@ pub struct GetChannelEmotesRequest {
 }
 
 impl GetChannelEmotesRequest {
-  /// Get emotes in a specific broadcasters channel.
+    /// Get emotes in a specific broadcasters channel.
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
-        Self { broadcaster_id: broadcaster_id.into() }
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
     }
 }
 
@@ -78,9 +80,7 @@ impl RequestGet for GetChannelEmotesRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelEmotesRequest::builder()
-        .broadcaster_id("304456832")
-        .build();
+    let req = GetChannelEmotesRequest::broadcaster_id("304456832");
 
     // From twitch docs
     // FIXME: Example has ... and is malformed, uses [] in images

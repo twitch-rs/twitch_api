@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Streams](super::get_streams)
 ///
 /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetStreamsRequest {
@@ -68,6 +68,46 @@ pub struct GetStreamsRequest {
     /// Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub user_login: Vec<types::UserName>,
+}
+
+impl GetStreamsRequest {
+    /// Return stream for specified user id
+    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: vec![user_id.into()],
+            ..Self::default()
+        }
+    }
+
+    /// Return streams for specified user ids
+    pub fn user_ids(user_ids: impl IntoIterator<Item = types::UserId>) -> Self {
+        Self {
+            user_id: user_ids.into_iter().collect(),
+            ..Self::default()
+        }
+    }
+
+    /// Return stream for specified user by [nickname](types::UserName)
+    pub fn user_login(user_login: impl Into<types::UserName>) -> Self {
+        Self {
+            user_login: vec![user_login.into()],
+            ..Self::default()
+        }
+    }
+
+    /// Return streams for specified users by [nickname](types::UserName)
+    pub fn user_logins(user_logins: impl IntoIterator<Item = types::UserName>) -> Self {
+        Self {
+            user_login: user_logins.into_iter().collect(),
+            ..Self::default()
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Get Streams](super::get_streams)
@@ -127,7 +167,7 @@ impl helix::Paginated for GetStreamsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetStreamsRequest::builder().build();
+    let req = GetStreamsRequest::default();
 
     // From twitch docs, kinda. example 1 in https://dev.twitch.tv/docs/api/reference#get-streams is malformed
     let data = br#"
@@ -189,7 +229,7 @@ fn test_request() {
 #[test]
 fn test_request_null_tags_issue184() {
     use helix::*;
-    let req = GetStreamsRequest::builder().build();
+    let req = GetStreamsRequest::default();
 
     // From twitch docs, kinda. example 1 in https://dev.twitch.tv/docs/api/reference#get-streams is malformed
     let data = br#"

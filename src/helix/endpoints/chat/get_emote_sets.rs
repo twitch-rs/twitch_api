@@ -132,9 +132,7 @@ impl RequestGet for GetEmoteSetsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetEmoteSetsRequest::builder()
-        .emote_set_id(vec!["301590448".into()])
-        .build();
+    let req = GetEmoteSetsRequest::emote_set_id("301590448");
 
     // From twitch docs
     // FIXME: Example has ... and is malformed, uses [] in images

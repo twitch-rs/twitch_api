@@ -129,9 +129,7 @@ impl helix::Paginated for GetChannelStreamScheduleRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelStreamScheduleRequest::builder()
-        .broadcaster_id("141981764")
-        .build();
+    let req = GetChannelStreamScheduleRequest::broadcaster_id("141981764");
 
     // From twitch docs. FIXME: Docs has ...
     let data = br#"

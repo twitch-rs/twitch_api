@@ -93,7 +93,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         &'a self,
         broadcaster_id: impl Into<types::UserId>,
         moderator_id: impl Into<types::UserId>,
-        batch_size: impl Into<Option<u32>>,
+        batch_size: impl Into<Option<usize>>,
         token: &'a T,
     ) -> std::pin::Pin<
         Box<dyn futures::Stream<Item = Result<helix::chat::Chatter, ClientError<'a, C>>> + 'a>,
@@ -101,11 +101,11 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::chat::GetChattersRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .moderator_id(moderator_id)
-            .first(batch_size)
-            .build();
+        let req = helix::chat::GetChattersRequest {
+            first: batch_size.into(),
+            ..helix::chat::GetChattersRequest::new(broadcaster_id, moderator_id)
+        };
+
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
@@ -219,7 +219,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// Get authenticated users' followed [streams](helix::streams::Stream)
     ///
     /// Requires token with scope [`user:read:follows`](twitch_oauth2::Scope::UserReadFollows).
-    /// 
+    ///
     /// # Examples
     ///
     /// ```rust, no_run
@@ -491,10 +491,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     {
         Ok(self
             .req_post(
-                helix::moderation::BanUserRequest::builder()
-                    .broadcaster_id(broadcaster_id)
-                    .moderator_id(moderator_id)
-                    .build(),
+                helix::moderation::BanUserRequest::new(broadcaster_id, moderator_id),
                 helix::moderation::BanUserBody::new(target_user_id, reason.to_string(), duration),
                 token,
             )
@@ -515,11 +512,11 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     {
         Ok(self
             .req_delete(
-                helix::moderation::UnbanUserRequest::builder()
-                    .broadcaster_id(broadcaster_id)
-                    .moderator_id(moderator_id)
-                    .user_id(target_user_id)
-                    .build(),
+                helix::moderation::UnbanUserRequest::new(
+                    broadcaster_id,
+                    moderator_id,
+                    target_user_id,
+                ),
                 token,
             )
             .await?
@@ -626,7 +623,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         Ok(self.req_get(req, token).await?.data)
     }
 
-    /// Get a user's chat settings
+    /// Get a broadcaster's chat settings
     pub async fn get_chat_settings<T>(
         &'a self,
         broadcaster_id: impl Into<types::UserId>,
@@ -636,10 +633,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::chat::GetChatSettingsRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .moderator_id(moderator_id)
-            .build();
+        let mut req = helix::chat::GetChatSettingsRequest::new(broadcaster_id);
+        if let Some(moderator_id) = moderator_id.into() {
+            req = req.moderator_id(moderator_id);
+        }
         Ok(self.req_get(req, token).await?.data)
     }
 
@@ -655,10 +652,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::chat::SendChatAnnouncementRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .moderator_id(moderator_id)
-            .build();
+        let req = helix::chat::SendChatAnnouncementRequest::new(broadcaster_id, moderator_id);
         let body = helix::chat::SendChatAnnouncementBody::new(message.to_string(), color)?;
         Ok(self
             .req_post(req, body, token)
@@ -678,11 +672,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::moderation::DeleteChatMessagesRequest {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
-            message_id: Some(message_id.into()),
-        };
+        let req = helix::moderation::DeleteChatMessagesRequest::new(broadcaster_id, moderator_id)
+            .message_id(message_id);
+
         Ok(self.req_delete(req, token).await?.data)
     }
 
@@ -696,11 +688,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::moderation::DeleteChatMessagesRequest {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
-            message_id: None,
-        };
+        let req = helix::moderation::DeleteChatMessagesRequest::new(broadcaster_id, moderator_id);
         Ok(self.req_delete(req, token).await?.data)
     }
 
@@ -714,10 +702,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::raids::StartARaidRequest::builder()
-            .from_broadcaster_id(from_broadcaster_id)
-            .to_broadcaster_id(to_broadcaster_id)
-            .build();
+        let req = helix::raids::StartARaidRequest::new(from_broadcaster_id, to_broadcaster_id);
         Ok(self.req_post(req, helix::EmptyBody, token).await?.data)
     }
 
@@ -730,9 +715,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::raids::CancelARaidRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .build();
+        let req = helix::raids::CancelARaidRequest::new(broadcaster_id);
         Ok(self.req_delete(req, token).await?.data)
     }
 
@@ -833,9 +816,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::channels::GetVipsRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .build();
+        let req = helix::channels::GetVipsRequest::new(broadcaster_id);
 
         make_stream(req, token, self, std::collections::VecDeque::from)
     }

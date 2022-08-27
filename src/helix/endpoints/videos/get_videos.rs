@@ -44,7 +44,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Videos](super::get_videos)
 ///
 /// [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetVideosRequest {
@@ -79,6 +79,36 @@ pub struct GetVideosRequest {
     #[serde(rename = "type")]
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub type_: Option<VideoTypeFilter>,
+}
+
+impl GetVideosRequest {
+    pub fn id(id: impl Into<types::VideoId>) -> Self {
+        Self {
+            id: vec![id.into()],
+            ..Self::default()
+        }
+    }
+
+    pub fn ids(ids: impl IntoIterator<Item = types::VideoId>) -> Self {
+        Self {
+            id: ids.into_iter().collect(),
+            ..Self::default()
+        }
+    }
+
+    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: Some(user_id.into()),
+            ..Self::default()
+        }
+    }
+
+    pub fn game_id(game_id: impl Into<types::CategoryId>) -> Self {
+        Self {
+            game_id: Some(game_id.into()),
+            ..Self::default()
+        }
+    }
 }
 
 /// Return Values for [Get Videos](super::get_videos)
@@ -155,9 +185,7 @@ impl helix::Paginated for GetVideosRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetVideosRequest::builder()
-        .id(vec!["234482848".into()])
-        .build();
+    let req = GetVideosRequest::id("234482848");
 
     // From twitch docs
     let data = br#"

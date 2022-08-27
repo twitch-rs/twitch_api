@@ -98,6 +98,22 @@ pub struct CreatePredictionBody {
     pub prediction_window: i64,
 }
 
+impl CreatePredictionBody {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        title: String,
+        outcomes: (NewPredictionOutcome, NewPredictionOutcome),
+        prediction_window: i64,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            title,
+            outcomes,
+            prediction_window,
+        }
+    }
+}
+
 impl helix::private::SealedSerialize for CreatePredictionBody {}
 
 /// Choice settings for a poll
@@ -180,17 +196,14 @@ impl RequestPost for CreatePredictionRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = CreatePredictionRequest::builder().build();
+    let req = CreatePredictionRequest::new();
 
-    let body = CreatePredictionBody::builder()
-        .broadcaster_id("141981764")
-        .title("Any leeks in the stream?")
-        .outcomes(NewPredictionOutcome::new_tuple(
-            "Yes, give it time.",
-            "Definitely not.",
-        ))
-        .prediction_window(120)
-        .build();
+    let body = CreatePredictionBody::new(
+        "141981764",
+        "Any leeks in the stream?".to_owned(),
+        NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+        120,
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

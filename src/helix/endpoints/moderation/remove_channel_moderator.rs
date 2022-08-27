@@ -58,6 +58,18 @@ pub struct RemoveChannelModeratorRequest {
     pub moderator_id: types::UserId,
 }
 
+impl RemoveChannelModeratorRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
+}
+
 /// Return Values for [Remove Channel Moderator](super::remove_channel_moderator)
 ///
 /// [`remove-channel-moderator`](https://dev.twitch.tv/docs/api/reference#remove-channel-moderator)
@@ -109,10 +121,7 @@ impl RequestDelete for RemoveChannelModeratorRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = RemoveChannelModeratorRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = RemoveChannelModeratorRequest::new("1234", "5678");
 
     dbg!(req.create_request("token", "clientid").unwrap());
 

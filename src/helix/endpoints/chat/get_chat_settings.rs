@@ -77,8 +77,25 @@ pub struct GetChatSettingsRequest {
     /// If the broadcaster wants to get their own settings (instead of having the moderator do it),
     /// set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-
     pub moderator_id: Option<types::UserId>,
+}
+
+impl GetChatSettingsRequest {
+    pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: None,
+        }
+    }
+
+    /// The ID of a user that has permission to moderate the broadcaster’s chat room.
+    ///
+    /// Required only to access the [`non_moderator_chat_delay`](ChatSettings::non_moderator_chat_delay)
+    /// or [`non_moderator_chat_delay_duration`](ChatSettings::non_moderator_chat_delay_duration) settings.
+    pub fn moderator_id(mut self, moderator_id: impl Into<types::UserId>) -> Self {
+        self.moderator_id = Some(moderator_id.into());
+        self
+    }
 }
 
 impl Request for GetChatSettingsRequest {
@@ -139,14 +156,11 @@ impl RequestGet for GetChatSettingsRequest {
 #[test]
 fn test_request_as_mod() {
     use helix::*;
-    let req = GetChatSettingsRequest::builder()
-        .broadcaster_id("1234".to_owned())
-        // Twitch's example is wrong,
-        // they didn't include a moderator id in the request
-        // but received `non_moderator_chat_delay`.
-        .moderator_id(types::UserId::from("713936733"))
-        .build();
+    let req = GetChatSettingsRequest::new("1234").moderator_id("713936733");
 
+    // Twitch's example is wrong,
+    // they didn't include a moderator id in the request
+    // but received `non_moderator_chat_delay`.
     // From twitch docs
     let data = br#"
     {
@@ -183,9 +197,7 @@ fn test_request_as_mod() {
 #[test]
 fn test_request_as_user() {
     use helix::*;
-    let req = GetChatSettingsRequest::builder()
-        .broadcaster_id("11148817".to_owned())
-        .build();
+    let req = GetChatSettingsRequest::new("11148817");
 
     // From twitch docs
     let data = br#"

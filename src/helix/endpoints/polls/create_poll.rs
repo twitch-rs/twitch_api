@@ -113,9 +113,50 @@ pub struct CreatePollBody {
     pub channel_points_per_vote: Option<i64>,
 }
 
+impl CreatePollBody {
+    pub fn bits_voting_enabled(mut self, enabled: bool) -> Self {
+        self.bits_voting_enabled = Some(enabled);
+        self
+    }
+
+    pub fn bits_per_vote(mut self, bits: i64) -> Self {
+        self.bits_per_vote = Some(bits);
+        self
+    }
+
+    pub fn channel_points_voting_enabled(mut self, enabled: bool) -> Self {
+        self.channel_points_voting_enabled = Some(enabled);
+        self
+    }
+
+    pub fn channel_points_per_vote(mut self, points: i64) -> Self {
+        self.channel_points_per_vote = Some(points);
+        self
+    }
+}
+
+impl CreatePollBody {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        title: String,
+        duration: i64,
+        choices: impl IntoIterator<Item = impl Into<NewPollChoice>>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            title,
+            duration,
+            choices: choices.into_iter().map(|s| s.into()).collect(),
+            bits_voting_enabled: Default::default(),
+            bits_per_vote: Default::default(),
+            channel_points_voting_enabled: Default::default(),
+            channel_points_per_vote: Default::default(),
+        }
+    }
+}
+
 impl helix::private::SealedSerialize for CreatePollBody {}
 
-// FIXME: I'd prefer this to be a Vec<String> on CreatePollBody
 /// Choice settings for a poll
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
@@ -190,19 +231,16 @@ impl RequestPost for CreatePollRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = CreatePollRequest::builder().build();
+    let req = CreatePollRequest::new();
 
-    let body = CreatePollBody::builder()
-        .broadcaster_id("141981764")
-        .title("Heads or Tails?")
-        .choices(vec![
-            NewPollChoice::new("Heads"),
-            NewPollChoice::new("Tails"),
-        ])
-        .channel_points_voting_enabled(true)
-        .channel_points_per_vote(100)
-        .duration(1800)
-        .build();
+    let body = CreatePollBody::new(
+        "141981764",
+        "Heads or Tails?".to_owned(),
+        1800,
+        [NewPollChoice::new("Heads"), NewPollChoice::new("Tails")],
+    )
+    .channel_points_per_vote(100)
+    .channel_points_voting_enabled(true);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

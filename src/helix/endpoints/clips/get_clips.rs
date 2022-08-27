@@ -53,6 +53,7 @@ pub struct GetClipsRequest {
     /// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub game_id: Option<types::CategoryId>,
+    // FIXME: add types::ClipId
     /// ID of the clip being queried. Limit: 100.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub id: Vec<String>,
@@ -72,6 +73,65 @@ pub struct GetClipsRequest {
     /// Starting date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub started_at: Option<types::Timestamp>,
+}
+
+impl GetClipsRequest {
+    pub fn empty() -> Self {
+        Self {
+            broadcaster_id: Default::default(),
+            game_id: Default::default(),
+            id: Default::default(),
+            after: Default::default(),
+            before: Default::default(),
+            ended_at: Default::default(),
+            first: Default::default(),
+            started_at: Default::default(),
+        }
+    }
+
+    /// Broadcaster for whom clips are returned.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: Some(broadcaster_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// Game for which clips are returned.
+    pub fn game_id(game_id: impl Into<types::CategoryId>) -> Self {
+        Self {
+            game_id: Some(game_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// ID of clip being queried
+    pub fn clip_id(clip_id: String) -> Self {
+        Self {
+            id: vec![clip_id],
+            ..Self::empty()
+        }
+    }
+
+    /// IDs of clips being queried
+    pub fn clip_ids(clip_ids: impl IntoIterator<Item = String>) -> Self {
+        Self {
+            id: clip_ids.into_iter().collect(),
+            ..Self::empty()
+        }
+    }
+
+    /// Ending date/time for the returned clips
+    pub fn started_at(&mut self, started_at: impl Into<types::Timestamp>) -> &mut Self {
+        self.started_at = Some(started_at.into());
+        self
+    }
+
+    /// Ending date/time for the returned clips
+    pub fn ended_at(&mut self, ended_at: impl Into<types::Timestamp>) -> &mut Self {
+        self.ended_at = Some(ended_at.into());
+        self
+    }
 }
 
 /// Return Values for [Get Clips](super::get_clips)
@@ -135,9 +195,7 @@ impl helix::Paginated for GetClipsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetClipsRequest::builder()
-        .id(vec![String::from("AwkwardHelplessSalamanderSwiftRage")])
-        .build();
+    let req = GetClipsRequest::clip_id(String::from("AwkwardHelplessSalamanderSwiftRage"));
 
     // From twitch docs
     let data = br#"

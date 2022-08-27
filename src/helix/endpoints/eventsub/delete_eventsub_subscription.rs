@@ -15,6 +15,11 @@ pub struct DeleteEventSubSubscriptionRequest {
     pub id: types::EventSubId,
 }
 
+impl DeleteEventSubSubscriptionRequest {
+    /// Delete this eventsub subscription.
+    pub fn id(id: impl Into<types::EventSubId>) -> Self { Self { id: id.into() } }
+}
+
 impl Request for DeleteEventSubSubscriptionRequest {
     type Response = DeleteEventSubSubscription;
 
@@ -65,9 +70,7 @@ impl RequestDelete for DeleteEventSubSubscriptionRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req: DeleteEventSubSubscriptionRequest = DeleteEventSubSubscriptionRequest::builder()
-        .id("deadbeef")
-        .build();
+    let req: DeleteEventSubSubscriptionRequest = DeleteEventSubSubscriptionRequest::id("deadbeef");
 
     let data = vec![];
     let http_response = http::Response::builder().status(204).body(data).unwrap();

@@ -70,6 +70,15 @@ pub struct CheckAutoModStatusRequest {
     pub broadcaster_id: types::UserId,
 }
 
+impl CheckAutoModStatusRequest {
+    /// Check automod status in this broadcasters channel.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
+}
+
 /// Body Parameters for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
@@ -93,7 +102,7 @@ impl CheckAutoModStatusBody {
     /// Create a new [`CheckAutoModStatusBody`]
     pub fn new(msg_id: types::MsgId, msg_text: String) -> Self {
         Self {
-            msg_id,
+            msg_id: msg_id.into(),
             msg_text,
             user_id: None,
         }
@@ -142,9 +151,7 @@ impl RequestPost for CheckAutoModStatusRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = CheckAutoModStatusRequest::builder()
-        .broadcaster_id("198704263")
-        .build();
+    let req = CheckAutoModStatusRequest::broadcaster_id("198704263");
 
     let body = vec![
         CheckAutoModStatusBody::new("123".into(), "hello world".to_string()),

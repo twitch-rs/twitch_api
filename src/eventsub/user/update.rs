@@ -12,6 +12,14 @@ pub struct UserUpdateV1 {
     pub user_id: types::UserId,
 }
 
+impl UserUpdateV1 {
+    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for UserUpdateV1 {
     type Payload = UserUpdateV1Payload;
 

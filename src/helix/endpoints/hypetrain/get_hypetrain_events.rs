@@ -66,6 +66,18 @@ pub struct GetHypeTrainEventsRequest {
     pub id: Option<String>,
 }
 
+impl GetHypeTrainEventsRequest {
+    /// Get hypetrain evens
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            cursor: Default::default(),
+            first: Default::default(),
+            id: Default::default(),
+        }
+    }
+}
+
 /// Return Values for [Get Hype Train Events](super::get_hypetrain_events)
 ///
 /// [`get-hype-train-events`](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)
@@ -140,9 +152,7 @@ impl helix::Paginated for GetHypeTrainEventsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetHypeTrainEventsRequest::builder()
-        .broadcaster_id("270954519".to_string())
-        .build();
+    let req = GetHypeTrainEventsRequest::broadcaster_id("270954519");
 
     // From twitch docs
     let data = br#"

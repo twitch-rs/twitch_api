@@ -64,6 +64,27 @@ pub struct GetBlockedTerms {
     pub after: Option<helix::Cursor>,
 }
 
+impl GetBlockedTerms {
+    /// Get blocked terms in a broadcasters channel as specified moderator
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: u32) -> Self {
+        self.first = Some(first);
+        self
+    }
+}
+
 /// Return Values for [Get Blocked Terms](super::get_blocked_terms)
 ///
 /// [`get-blocked-terms`](https://dev.twitch.tv/docs/api/reference#get-blocked-terms)
@@ -88,11 +109,7 @@ impl helix::Paginated for GetBlockedTerms {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetBlockedTerms::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .first(10)
-        .build();
+    let req = GetBlockedTerms::new("1234", "5678").first(10);
 
     // From twitch docs, FIXME: has ... and a "bad" comma
     let data = br#"

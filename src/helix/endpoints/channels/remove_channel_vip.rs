@@ -57,6 +57,18 @@ pub struct RemoveChannelVipRequest {
     pub user_id: types::UserId,
 }
 
+impl RemoveChannelVipRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        user_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: user_id.into(),
+        }
+    }
+}
+
 /// Return Values for [Remove Channel VIP](super::remove_channel_vip)
 ///
 /// [`remove-channel-vip`](https://dev.twitch.tv/docs/api/reference#remove-channel-vip)
@@ -107,10 +119,7 @@ impl RequestDelete for RemoveChannelVipRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = RemoveChannelVipRequest::builder()
-        .broadcaster_id("123")
-        .user_id("456")
-        .build();
+    let req = RemoveChannelVipRequest::new("123", "456");
 
     dbg!(req.create_request("token", "clientid").unwrap());
 

@@ -82,6 +82,14 @@ pub struct CreateChannelStreamScheduleSegmentRequest {
     pub broadcaster_id: types::UserId,
 }
 
+impl CreateChannelStreamScheduleSegmentRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
+}
+
 /// Body Parameters for [Create Channel Stream Schedule Segment](super::create_channel_stream_schedule_segment)
 ///
 /// [`create-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment)
@@ -109,6 +117,23 @@ pub struct CreateChannelStreamScheduleSegmentBody {
     pub title: Option<String>,
 }
 
+impl CreateChannelStreamScheduleSegmentBody {
+    pub fn new(
+        start_time: impl Into<types::Timestamp>,
+        timezone: String,
+        is_recurring: bool,
+    ) -> Self {
+        Self {
+            start_time: start_time.into(),
+            timezone,
+            is_recurring,
+            duration: Default::default(),
+            category_id: Default::default(),
+            title: Default::default(),
+        }
+    }
+}
+
 impl helix::private::SealedSerialize for CreateChannelStreamScheduleSegmentBody {}
 
 /// Return Values for [Create Channel Stream Schedule Segment](super::create_channel_stream_schedule_segment)
@@ -131,20 +156,21 @@ impl RequestPost for CreateChannelStreamScheduleSegmentRequest {
 #[cfg(test)]
 #[test]
 fn test_request() {
-    use helix::*;
     use std::convert::TryFrom;
-    let req = CreateChannelStreamScheduleSegmentRequest::builder()
-        .broadcaster_id("141981764")
-        .build();
 
-    let body = CreateChannelStreamScheduleSegmentBody::builder()
-        .start_time(types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap())
-        .timezone("America/New_York")
-        .is_recurring(false)
-        .duration("60".to_string())
-        .category_id(Some("509670".into()))
-        .title("TwitchDev Monthly Update // July 1, 2021".to_string())
-        .build();
+    use helix::*;
+    let req = CreateChannelStreamScheduleSegmentRequest::broadcaster_id("141981764");
+
+    let body = CreateChannelStreamScheduleSegmentBody {
+        duration: Some("60".to_string()),
+        category_id: Some("509670".into()),
+        title: Some("TwitchDev Monthly Update // July 1, 2021".to_string()),
+        ..CreateChannelStreamScheduleSegmentBody::new(
+            types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap(),
+            "America/New_York".to_owned(),
+            false,
+        )
+    };
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

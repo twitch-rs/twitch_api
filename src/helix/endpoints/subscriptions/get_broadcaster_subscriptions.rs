@@ -171,9 +171,7 @@ pub enum BroadcasterSubscriptionPointsError {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetBroadcasterSubscriptionsRequest::builder()
-        .broadcaster_id("123".to_string())
-        .build();
+    let req = GetBroadcasterSubscriptionsRequest::broadcaster_id("123");
 
     // From twitch docs. Example has ...
     let data = br#"

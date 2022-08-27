@@ -58,6 +58,18 @@ pub struct AddChannelModeratorRequest {
     pub moderator_id: types::UserId,
 }
 
+impl AddChannelModeratorRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
+}
+
 /// Return Values for [Add Channel Moderator](super::add_channel_moderator)
 ///
 /// [`add-channel-moderator`](https://dev.twitch.tv/docs/api/reference#add-channel-moderator)
@@ -111,10 +123,7 @@ impl RequestPost for AddChannelModeratorRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = AddChannelModeratorRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = AddChannelModeratorRequest::new("1234", "5678");
 
     dbg!(req
         .create_request(helix::EmptyBody, "token", "clientid")

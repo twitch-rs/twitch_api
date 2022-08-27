@@ -73,6 +73,15 @@ pub struct ReplaceStreamTagsRequest {
     pub broadcaster_id: types::UserId,
 }
 
+impl ReplaceStreamTagsRequest {
+    /// ID of the stream for which tags are to be replaced.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
+}
+
 /// Body Parameters for [Replace Stream Tags](super::replace_stream_tags)
 ///
 /// [`replace-stream-tags`](https://dev.twitch.tv/docs/api/reference#replace-stream-tags)
@@ -80,13 +89,29 @@ pub struct ReplaceStreamTagsRequest {
 /// # Notes
 ///
 /// Up to five tags can be applied to a stream. If no `tag_ids` is provided, all tags are removed from the stream.
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct ReplaceStreamTagsBody {
     /// IDs of tags to be applied to the stream.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub tag_ids: Vec<types::TagId>,
+}
+
+impl ReplaceStreamTagsBody {
+    pub fn tag_ids(tag_ids: impl IntoIterator<Item = types::TagId>) -> Self {
+        Self {
+            tag_ids: tag_ids.into_iter().collect(),
+            ..Self::default()
+        }
+    }
+
+    pub fn tag_id(tag_id: impl Into<types::TagId>) -> Self {
+        Self {
+            tag_ids: vec![tag_id.into()],
+            ..Self::default()
+        }
+    }
 }
 /// Return Values for [Replace Stream Tags](super::replace_stream_tags)
 ///
@@ -142,16 +167,12 @@ impl RequestPut for ReplaceStreamTagsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = ReplaceStreamTagsRequest::builder()
-        .broadcaster_id("0")
-        .build();
+    let req = ReplaceStreamTagsRequest::broadcaster_id("0");
 
-    let body = ReplaceStreamTagsBody::builder()
-        .tag_ids(vec![
-            "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
-            "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
-        ])
-        .build();
+    let body = ReplaceStreamTagsBody::tag_ids([
+        "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
+        "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
+    ]);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
     // From twitch docs

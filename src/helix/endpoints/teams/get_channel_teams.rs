@@ -50,6 +50,14 @@ pub struct GetChannelTeamsRequest {
     pub broadcaster_id: types::UserId,
 }
 
+impl GetChannelTeamsRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
+}
+
 /// Return Values for [Get Channel Teams](super::get_channel_teams)
 ///
 /// [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
@@ -84,9 +92,7 @@ impl RequestGet for GetChannelTeamsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelTeamsRequest::builder()
-        .broadcaster_id("44322889".to_string())
-        .build();
+    let req = GetChannelTeamsRequest::broadcaster_id("44322889");
 
     // From twitch docs
     let data = br#"

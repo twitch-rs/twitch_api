@@ -67,6 +67,18 @@ pub struct UpdateChannelStreamScheduleRequest {
     pub timezone: Option<String>,
 }
 
+impl UpdateChannelStreamScheduleRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            is_vacation_enabled: Default::default(),
+            vacation_start_time: Default::default(),
+            vacation_end_time: Default::default(),
+            timezone: Default::default(),
+        }
+    }
+}
+
 /// Return Values for [Update Channel Stream Schedule](super::update_channel_stream_schedule)
 ///
 /// [`update-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule)
@@ -126,13 +138,13 @@ impl RequestPatch for UpdateChannelStreamScheduleRequest {
 fn test_request() {
     use helix::*;
     use std::convert::TryInto;
-    let req = UpdateChannelStreamScheduleRequest::builder()
-        .broadcaster_id("141981764")
-        .is_vacation_enabled(true)
-        .vacation_start_time(Some("2021-05-16T00:00:00Z".try_into().unwrap()))
-        .vacation_end_time(Some("2021-05-23T00:00:00Z".try_into().unwrap()))
-        .timezone("America/New_York".to_string())
-        .build();
+    let req = UpdateChannelStreamScheduleRequest {
+        is_vacation_enabled: Some(true),
+        vacation_start_time: Some("2021-05-16T00:00:00Z".try_into().unwrap()),
+        vacation_end_time: Some("2021-05-23T00:00:00Z".try_into().unwrap()),
+        timezone: Some("America/New_York".to_string()),
+        ..UpdateChannelStreamScheduleRequest::broadcaster_id("141981764")
+    };
 
     let body = helix::EmptyBody;
 

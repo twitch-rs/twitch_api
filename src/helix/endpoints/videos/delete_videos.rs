@@ -52,6 +52,20 @@ pub struct DeleteVideosRequest {
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub id: Vec<types::VideoId>,
 }
+
+impl DeleteVideosRequest {
+    pub fn id(id: impl Into<types::VideoId>) -> Self {
+        Self {
+            id: vec![id.into()],
+        }
+    }
+
+    pub fn ids(ids: impl IntoIterator<Item = types::VideoId>) -> Self {
+        Self {
+            id: ids.into_iter().collect(),
+        }
+    }
+}
 // FIXME: Should return VideoIds
 /// Return Values for [Delete Videos](super::delete_videos)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
@@ -103,9 +117,7 @@ impl RequestDelete for DeleteVideosRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = DeleteVideosRequest::builder()
-        .id(vec!["234482848".into()])
-        .build();
+    let req = DeleteVideosRequest::id("234482848");
 
     // From twitch docs
     let data = br#""#.to_vec();

@@ -73,6 +73,25 @@ pub struct DeleteChatMessagesRequest {
     pub message_id: Option<types::MsgId>,
 }
 
+impl DeleteChatMessagesRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            message_id: None,
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn message_id(mut self, message_id: impl Into<types::MsgId>) -> Self {
+        self.message_id = Some(message_id.into());
+        self
+    }
+}
+
 /// Return Values for [Delete Chat Messages](super::delete_chat_messages)
 ///
 /// [`delete-chat-messages`](https://dev.twitch.tv/docs/api/reference#delete-chat-messages)
@@ -126,10 +145,7 @@ impl RequestDelete for DeleteChatMessagesRequest {
 #[test]
 fn test_request_all() {
     use helix::*;
-    let req = DeleteChatMessagesRequest::builder()
-        .broadcaster_id("11111")
-        .moderator_id("44444")
-        .build();
+    let req = DeleteChatMessagesRequest::new("11111", "44444");
 
     // From twitch docs
     let data = br#""#.to_vec();
@@ -149,11 +165,7 @@ fn test_request_all() {
 #[test]
 fn test_request_specific() {
     use helix::*;
-    let req = DeleteChatMessagesRequest::builder()
-        .broadcaster_id("11111")
-        .moderator_id("44444")
-        .message_id(Some("abc-123-def".into()))
-        .build();
+    let req = DeleteChatMessagesRequest::new("11111", "44444").message_id("abc-123-def");
 
     // From twitch docs
     let data = br#""#.to_vec();

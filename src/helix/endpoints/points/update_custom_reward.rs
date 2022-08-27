@@ -78,10 +78,19 @@ pub struct UpdateCustomRewardRequest {
     pub id: types::RewardId,
 }
 
+impl UpdateCustomRewardRequest {
+    pub fn new(broadcaster_id: impl Into<types::UserId>, id: impl Into<types::RewardId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+        }
+    }
+}
+
 /// Body Parameters for [Update Custom Rewards](super::update_custom_reward)
 ///
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateCustomRewardBody {
@@ -206,12 +215,12 @@ impl RequestPatch for UpdateCustomRewardRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = UpdateCustomRewardRequest::builder()
-        .broadcaster_id("274637212")
-        .id("92af127c-7326-4483-a52b-b0da0be61c01")
-        .build();
+    let req = UpdateCustomRewardRequest::new("274637212", "92af127c-7326-4483-a52b-b0da0be61c01");
 
-    let body = UpdateCustomRewardBody::builder().is_enabled(false).build();
+    let body = UpdateCustomRewardBody {
+        is_enabled: Some(false),
+        ..Default::default()
+    };
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

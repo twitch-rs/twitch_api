@@ -42,7 +42,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get All Stream Tags](super::get_all_stream_tags)
 ///
 /// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetAllStreamTagsRequest {
@@ -55,6 +55,20 @@ pub struct GetAllStreamTagsRequest {
     /// ID of a tag. Multiple IDs can be specified. If provided, only the specified tag(s) is(are) returned. Maximum of 100.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub tag_id: Vec<types::TagId>,
+}
+
+impl GetAllStreamTagsRequest {
+    /// Filter the results for specific tag.
+    pub fn tag_ids(mut self, tag_ids: impl IntoIterator<Item = types::TagId>) -> Self {
+        self.tag_id = tag_ids.into_iter().collect();
+        self
+    }
+
+    /// Filter the results for specific tag.
+    pub fn tag_id(mut self, tag_id: impl Into<types::TagId>) -> Self {
+        self.tag_id = vec![tag_id.into()];
+        self
+    }
 }
 
 /// Return Values for [Get All Stream Tags](super::get_all_stream_tags)
@@ -80,7 +94,10 @@ impl helix::Paginated for GetAllStreamTagsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetAllStreamTagsRequest::builder().first(3).build();
+    let req = GetAllStreamTagsRequest {
+        first: Some(3),
+        ..GetAllStreamTagsRequest::default()
+    };
 
     // From twitch docs.
     let data = "\

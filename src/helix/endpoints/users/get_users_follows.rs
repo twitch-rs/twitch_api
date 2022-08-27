@@ -204,10 +204,7 @@ impl helix::Paginated for GetUsersFollowsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetUsersFollowsRequest::builder()
-        .to_id(Some("23161357".into()))
-        .build();
-
+    let req = GetUsersFollowsRequest::followers("23161357");
     // From twitch docs
     let data = br#"
 {

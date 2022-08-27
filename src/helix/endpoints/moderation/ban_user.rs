@@ -72,6 +72,18 @@ pub struct BanUserRequest {
     pub moderator_id: types::UserId,
 }
 
+impl BanUserRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
+}
+
 /// Body Parameters for [Ban User](super::ban_user)
 ///
 /// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
@@ -197,10 +209,7 @@ impl RequestPost for BanUserRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = BanUserRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = BanUserRequest::new("1234", "5678");
 
     let body = BanUserBody::new("9876", "no reason".to_string(), 300);
 
@@ -237,10 +246,7 @@ fn test_request() {
 #[test]
 fn test_request_error() {
     use helix::*;
-    let req = BanUserRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = BanUserRequest::new("1234", "5678");
 
     let body = BanUserBody::new("9876", "no reason".to_string(), 300);
 

@@ -165,9 +165,7 @@ impl RequestPut for BlockUserRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = BlockUserRequest::builder()
-        .target_user_id("41245071".to_string())
-        .build();
+    let req = BlockUserRequest::block_user("41245071");
 
     dbg!(req.create_request(EmptyBody, "token", "clientid").unwrap());
 

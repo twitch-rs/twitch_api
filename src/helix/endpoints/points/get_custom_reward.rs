@@ -61,6 +61,31 @@ pub struct GetCustomRewardRequest {
     pub only_manageable_rewards: Option<bool>,
 }
 
+impl GetCustomRewardRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: Default::default(),
+            only_manageable_rewards: Default::default(),
+        }
+    }
+
+    pub fn id(mut self, id: impl Into<types::RewardId>) -> Self {
+        self.id = vec![id.into()];
+        self
+    }
+
+    pub fn ids(mut self, id: impl IntoIterator<Item = types::RewardId>) -> Self {
+        self.id = id.into_iter().collect();
+        self
+    }
+
+    pub fn only_manageable_rewards(mut self, only_manageable_rewards: bool) -> Self {
+        self.only_manageable_rewards = Some(only_manageable_rewards);
+        self
+    }
+}
+
 /// Return Values for [Get Custom Reward](super::get_custom_reward)
 ///
 /// [`get-custom-reward`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
@@ -125,9 +150,7 @@ impl RequestGet for GetCustomRewardRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetCustomRewardRequest::builder()
-        .broadcaster_id("274637212".to_string())
-        .build();
+    let req = GetCustomRewardRequest::broadcaster_id("274637212".to_string());
 
     // From twitch docs
     let data = br##"

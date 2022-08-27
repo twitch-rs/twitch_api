@@ -187,10 +187,10 @@ fn test_request() {
     use crate::eventsub::{self, user::UserUpdateV1};
     use helix::*;
     let req: CreateEventSubSubscriptionRequest<UserUpdateV1> =
-        CreateEventSubSubscriptionRequest::builder().build();
+        CreateEventSubSubscriptionRequest::default();
 
     let body = CreateEventSubSubscriptionBody::new(
-        UserUpdateV1::builder().user_id("1234").build(),
+        UserUpdateV1::user_id("1234"),
         eventsub::Transport {
             method: eventsub::TransportMethod::Webhook,
             callback: "example.com".to_string(),

@@ -73,10 +73,22 @@ pub struct UpdateChannelStreamScheduleSegmentRequest {
     pub id: types::StreamSegmentId,
 }
 
+impl UpdateChannelStreamScheduleSegmentRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        id: impl Into<types::StreamSegmentId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+        }
+    }
+}
+
 /// Body Parameters for [Update Channel Stream Schedule Segment](super::update_channel_stream_schedule_segment)
 ///
 /// [`update-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateChannelStreamScheduleSegmentBody {
@@ -88,7 +100,7 @@ pub struct UpdateChannelStreamScheduleSegmentBody {
     pub duration: Option<String>,
     /// Game/Category ID for the scheduled broadcast.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub category_id: Option<String>,
+    pub category_id: Option<types::CategoryId>,
     /// Title for the scheduled broadcast. Maximum: 140 characters.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub title: Option<String>,
@@ -151,14 +163,14 @@ impl RequestPatch for UpdateChannelStreamScheduleSegmentRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = UpdateChannelStreamScheduleSegmentRequest::builder()
-        .broadcaster_id("141981764")
-        .id("eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=")
-        .build();
+    let req = UpdateChannelStreamScheduleSegmentRequest::new(
+        "141981764",
+        "eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=");
 
-    let body = UpdateChannelStreamScheduleSegmentBody::builder()
-        .duration("120".to_string())
-        .build();
+    let body = UpdateChannelStreamScheduleSegmentBody {
+        duration: Some("120".to_string()),
+        ..<_>::default()
+    };
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

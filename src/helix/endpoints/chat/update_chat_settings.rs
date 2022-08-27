@@ -79,10 +79,24 @@ pub struct UpdateChatSettingsRequest {
     pub moderator_id: types::UserId,
 }
 
+///FIXME: The moderator_id parameter is redundant, we should make this a client ext function
+impl UpdateChatSettingsRequest {
+    /// Update the chat settings for the specified broadcaster as the specified moderator
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
+}
+
 /// Body Parameters for [Update Chat Settings](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateChatSettingsBody {
@@ -216,15 +230,13 @@ impl RequestPatch for UpdateChatSettingsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = UpdateChatSettingsRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = UpdateChatSettingsRequest::new("1234", "5678");
 
-    let body = UpdateChatSettingsBody::builder()
-        .slow_mode(true)
-        .slow_mode_wait_time(10)
-        .build();
+    let body = UpdateChatSettingsBody {
+        slow_mode: Some(true),
+        slow_mode_wait_time: Some(10),
+        ..Default::default()
+    };
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

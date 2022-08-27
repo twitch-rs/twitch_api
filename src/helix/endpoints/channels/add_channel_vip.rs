@@ -56,6 +56,18 @@ pub struct AddChannelVipRequest {
     pub user_id: types::UserId,
 }
 
+impl AddChannelVipRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        user_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: user_id.into(),
+        }
+    }
+}
+
 /// Return Values for [Add Channel Vip](super::add_channel_vip)
 ///
 /// [`add-channel-vip`](https://dev.twitch.tv/docs/api/reference#add-channel-vip)
@@ -109,10 +121,7 @@ impl RequestPost for AddChannelVipRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = AddChannelVipRequest::builder()
-        .broadcaster_id("123")
-        .user_id("456")
-        .build();
+    let req = AddChannelVipRequest::new("123", "456");
 
     dbg!(req
         .create_request(helix::EmptyBody, "token", "clientid")

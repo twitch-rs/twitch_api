@@ -126,7 +126,7 @@ impl RequestGet for GetGamesRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetGamesRequest::builder().id(vec!["493057".into()]).build();
+    let req = GetGamesRequest::id("493057");
 
     // From twitch docs
     let data = br#"

@@ -59,6 +59,15 @@ pub struct UpdateUserChatColorRequest {
     pub color: types::NamedUserColor<'static>,
 }
 
+impl UpdateUserChatColorRequest {
+    pub fn new(user_id: impl Into<types::UserId>, color: types::NamedUserColor<'static>) -> Self {
+        Self {
+            user_id: user_id.into(),
+            color,
+        }
+    }
+}
+
 /// Return Values for [Update Chat Settings](super::update_user_chat_color)
 ///
 /// [`update-user-chat-color`](https://dev.twitch.tv/docs/api/reference#update-user-chat-color)
@@ -112,10 +121,7 @@ impl RequestPut for UpdateUserChatColorRequest {
 #[test]
 fn test_request_named() {
     use helix::*;
-    let req = UpdateUserChatColorRequest::builder()
-        .user_id("123")
-        .color(types::NamedUserColor::Blue)
-        .build();
+    let req = UpdateUserChatColorRequest::new("123", types::NamedUserColor::Blue);
 
     dbg!(req.create_request(EmptyBody, "token", "clientid").unwrap());
 
@@ -136,11 +142,10 @@ fn test_request_named() {
 #[cfg(test)]
 #[test]
 fn test_request_hex() {
+    use std::convert::TryInto;
+
     use helix::*;
-    let req = UpdateUserChatColorRequest::builder()
-        .user_id("123")
-        .color(twitch_types::HexColor::from("#9146FF"))
-        .build();
+    let req = UpdateUserChatColorRequest::new("123", "#9146FF".try_into().unwrap());
 
     dbg!(req.create_request(EmptyBody, "token", "clientid").unwrap());
 

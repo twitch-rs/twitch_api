@@ -65,6 +65,27 @@ pub struct GetPredictionsRequest {
     pub first: Option<usize>,
 }
 
+impl GetPredictionsRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    pub fn id(mut self, id: impl Into<types::PredictionId>) -> Self {
+        self.id = vec![id.into()];
+        self
+    }
+
+    pub fn ids(mut self, ids: impl IntoIterator<Item = types::PredictionId>) -> Self {
+        self.id = ids.into_iter().collect();
+        self
+    }
+}
+
 /// Return Values for [Get predictions](super::get_predictions)
 ///
 /// [`get-predictions`](https://dev.twitch.tv/docs/api/reference#get-predictions)
@@ -116,10 +137,8 @@ impl helix::Paginated for GetPredictionsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetPredictionsRequest::builder()
-        .broadcaster_id("55696719")
-        .id(vec!["d6676d5c-c86e-44d2-bfc4-100fb48f0656".into()])
-        .build();
+    let req = GetPredictionsRequest::broadcaster_id("55696719")
+        .id("d6676d5c-c86e-44d2-bfc4-100fb48f0656");
 
     // From twitch docs
     let data = br#"

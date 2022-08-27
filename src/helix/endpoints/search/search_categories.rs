@@ -129,7 +129,7 @@ impl helix::Paginated for SearchCategoriesRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = SearchCategoriesRequest::builder().query("fort").build();
+    let req = SearchCategoriesRequest::query("fort");
 
     // From twitch docs
     let data = br#"
@@ -168,9 +168,7 @@ fn test_request() {
 #[test]
 fn test_request_null() {
     use helix::*;
-    let req = SearchCategoriesRequest::builder()
-        .query("aaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        .build();
+    let req = SearchCategoriesRequest::query("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
     // From twitch docs
     let data = br#"

@@ -78,6 +78,18 @@ impl GetBannedUsersRequest {
         }
     }
 
+    /// Check if supplied user is banned.
+    pub fn user(mut self, user_id: impl Into<types::UserId>) -> Self {
+        self.user_id = vec![user_id.into()];
+        self
+    }
+
+    /// Check if supplied users are banned.
+    pub fn users(mut self, user_ids: impl IntoIterator<Item = types::UserId>) -> Self {
+        self.user_id = user_ids.into_iter().collect();
+        self
+    }
+
     /// Set amount of results returned per page.
     pub fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
@@ -130,9 +142,7 @@ impl helix::Paginated for GetBannedUsersRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetBannedUsersRequest::builder()
-        .broadcaster_id("198704263".to_string())
-        .build();
+    let req = GetBannedUsersRequest::broadcaster_id("198704263");
 
     // From twitch docs
     let data = br#"

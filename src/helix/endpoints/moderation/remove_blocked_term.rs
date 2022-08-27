@@ -62,6 +62,20 @@ pub struct RemoveBlockedTermRequest {
     pub id: types::BlockedTermId,
 }
 
+impl RemoveBlockedTermRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        id: impl Into<types::BlockedTermId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            id: id.into(),
+        }
+    }
+}
+
 /// Return Values for [Remove Blocked Terms](super::remove_blocked_term)
 ///
 /// [`remove-blocked-term`](https://dev.twitch.tv/docs/api/reference#remove-blocked-term)
@@ -115,11 +129,7 @@ impl RequestDelete for RemoveBlockedTermRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = RemoveBlockedTermRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .id("c9fc79b8-0f63-4ef7-9d38-efd811e74ac2")
-        .build();
+    let req = RemoveBlockedTermRequest::new("1234", "5678", "c9fc79b8-0f63-4ef7-9d38-efd811e74ac2");
 
     // From twitch docs
     let data = br#""#.to_vec();

@@ -63,6 +63,20 @@ pub struct UnbanUserRequest {
     pub user_id: types::UserId,
 }
 
+impl UnbanUserRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        user_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            user_id: user_id.into(),
+        }
+    }
+}
+
 /// Return Values for [Unban User](super::unban_user)
 ///
 /// [`unban-user`](https://dev.twitch.tv/docs/api/reference#unban-user)
@@ -114,11 +128,7 @@ impl RequestDelete for UnbanUserRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = UnbanUserRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .user_id("9876")
-        .build();
+    let req = UnbanUserRequest::new("1234", "5678", "9876");
 
     dbg!(req.create_request("token", "clientid").unwrap());
 

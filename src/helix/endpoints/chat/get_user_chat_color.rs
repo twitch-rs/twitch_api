@@ -51,6 +51,20 @@ pub struct GetUserChatColorRequest {
     pub user_id: Vec<types::UserId>,
 }
 
+impl GetUserChatColorRequest {
+    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: vec![user_id.into()],
+        }
+    }
+
+    pub fn user_ids(user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
+        Self {
+            user_id: user_ids.into_iter().map(Into::into).collect(),
+        }
+    }
+}
+
 /// Return Values for [Get Chatters](super::get_user_chat_color)
 ///
 /// [`get-user-chat-color`](https://dev.twitch.tv/docs/api/reference#get-user-chat-color)
@@ -88,9 +102,7 @@ impl RequestGet for GetUserChatColorRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetUserChatColorRequest::builder()
-        .user_id(vec!["11111".into(), "44444".into()])
-        .build();
+    let req = GetUserChatColorRequest::user_ids(["11111", "44444"]);
 
     // From twitch docs
     // FIXME: Example has ...

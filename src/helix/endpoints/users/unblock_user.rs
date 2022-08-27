@@ -54,7 +54,9 @@ pub struct UnblockUserRequest {
 impl UnblockUserRequest {
     /// Create a new unblock request
     pub fn unblock_user(target_user_id: impl Into<types::UserId>) -> Self {
-        Self { target_user_id: target_user_id.into() }
+        Self {
+            target_user_id: target_user_id.into(),
+        }
     }
 }
 
@@ -110,9 +112,7 @@ impl RequestDelete for UnblockUserRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = UnblockUserRequest::builder()
-        .target_user_id("41245071".to_string())
-        .build();
+    let req = UnblockUserRequest::unblock_user("41245071");
 
     // From twitch docs
     let data = br#""#.to_vec();

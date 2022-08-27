@@ -70,6 +70,18 @@ pub struct AddBlockedTermRequest {
     pub moderator_id: types::UserId,
 }
 
+impl AddBlockedTermRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
+}
+
 /// Body Parameters for [Add Blocked Term](super::add_blocked_term)
 ///
 /// [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
@@ -127,10 +139,7 @@ impl RequestPost for AddBlockedTermRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = AddBlockedTermRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = AddBlockedTermRequest::new("1234", "5678");
 
     let body = AddBlockedTermBody::new("A phrase I'm not fond of".to_string());
 

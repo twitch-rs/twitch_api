@@ -65,7 +65,7 @@ impl GetUsersRequest {
     }
 
     /// Get multiple user by their [`UserName`](types::UserName)
-    /// 
+    ///
     /// ```rust
     /// use twitch_api2::helix::users::get_users::GetUsersRequest;
     /// GetUsersRequest::logins(&["twitch".into(), "justintv".into()])
@@ -86,9 +86,9 @@ impl GetUsersRequest {
     }
 
     /// Get multiple user by their [`UserId`](types::UserId)
-    pub fn ids(id: impl IntoIterator<Item = types::UserId>) -> Self {
+    pub fn ids(ids: impl IntoIterator<Item = types::UserId>) -> Self {
         Self {
-            id: id.into_iter().collect(),
+            id: ids.into_iter().collect(),
             login: Vec::default(),
         }
     }
@@ -165,9 +165,7 @@ impl RequestGet for GetUsersRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetUsersRequest::builder()
-        .id(vec!["44322889".into()])
-        .build();
+    let req = GetUsersRequest::id("44322889");
 
     // From twitch docs
     // FIXME: This is not valid anymore. Twitch....

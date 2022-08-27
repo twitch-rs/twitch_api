@@ -163,10 +163,7 @@ impl RequestPost for SendWhisperRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = SendWhisperRequest::builder()
-        .to_user_id("456")
-        .from_user_id("123")
-        .build();
+    let req = SendWhisperRequest::new("123", "456");
 
     let body = SendWhisperBody::new("hello");
 

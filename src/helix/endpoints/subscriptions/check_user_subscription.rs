@@ -54,6 +54,27 @@ pub struct CheckUserSubscriptionRequest {
     pub user_id: Vec<types::UserId>,
 }
 
+impl CheckUserSubscriptionRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: Default::default(),
+        }
+    }
+
+    /// Filter the results for specific users.
+    pub fn user_ids(mut self, user_ids: impl IntoIterator<Item = types::UserId>) -> Self {
+        self.user_id = user_ids.into_iter().collect();
+        self
+    }
+
+    /// Filter the results for specific user.
+    pub fn user_id(mut self, user_id: impl Into<types::UserId>) -> Self {
+        self.user_id = vec![user_id.into()];
+        self
+    }
+}
+
 /// Return Values for [Check User Subscription](super::check_user_subscription)
 ///
 /// [`check-user-subscription`](https://dev.twitch.tv/docs/api/reference#check-user-subscription)
@@ -125,9 +146,7 @@ impl RequestGet for CheckUserSubscriptionRequest {
 #[test]
 fn test_request1() {
     use helix::*;
-    let req = CheckUserSubscriptionRequest::builder()
-        .broadcaster_id("123".to_string())
-        .build();
+    let req = CheckUserSubscriptionRequest::broadcaster_id("123");
 
     // From twitch docs.
     let data = br#"
@@ -160,9 +179,7 @@ fn test_request1() {
 #[test]
 fn test_request2() {
     use helix::*;
-    let req = CheckUserSubscriptionRequest::builder()
-        .broadcaster_id("123".to_string())
-        .build();
+    let req = CheckUserSubscriptionRequest::broadcaster_id("123");
 
     // From twitch docs.
     let data = br#"

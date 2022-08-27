@@ -140,7 +140,7 @@ impl helix::Paginated for SearchChannelsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = SearchChannelsRequest::builder().query("fort").build();
+    let req = SearchChannelsRequest::query("fort");
 
     // From twitch docs
     let data = br#"

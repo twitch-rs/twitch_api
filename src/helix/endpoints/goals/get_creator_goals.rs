@@ -61,6 +61,23 @@ pub struct GetCreatorGoalsRequest {
     pub id: Option<String>,
 }
 
+impl GetCreatorGoalsRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            cursor: Default::default(),
+            first: Default::default(),
+            id: Default::default(),
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
+}
+
 /// Return Values for [Get Creator Goals](super::get_creator_goals)
 ///
 /// [`get-creator-goals`](https://dev.twitch.tv/docs/api/reference#get-creator-goals)
@@ -103,9 +120,7 @@ impl RequestGet for GetCreatorGoalsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetCreatorGoalsRequest::builder()
-        .broadcaster_id("141981764".to_string())
-        .build();
+    let req = GetCreatorGoalsRequest::broadcaster_id("141981764");
 
     // From twitch docs
     let data = br#"

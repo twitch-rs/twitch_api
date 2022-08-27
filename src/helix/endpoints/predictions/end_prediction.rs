@@ -58,7 +58,6 @@ use crate::helix::{parse_json, HelixRequestPatchError};
 
 use super::*;
 use helix::RequestPatch;
-pub use types::{PredictionId, PredictionStatus};
 /// Query Parameters for [End Prediction](super::end_prediction)
 ///
 /// [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
@@ -86,16 +85,40 @@ pub struct EndPredictionBody {
     pub broadcaster_id: types::UserId,
     /// ID of the prediction.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub id: PredictionId,
+    pub id: types::PredictionId,
     /// The Prediction status to be set. Valid values:
     ///
     /// [`RESOLVED`](types::PredictionStatus): A winning outcome has been chosen and the Channel Points have been distributed to the users who predicted the correct outcome.
     /// [`CANCELED`](types::PredictionStatus): The Prediction has been canceled and the Channel Points have been refunded to participants.
     /// [`LOCKED`](types::PredictionStatus): The Prediction has been locked and viewers can no longer make predictions.
-    pub status: PredictionStatus,
+    pub status: types::PredictionStatus,
     /// ID of the winning outcome for the Prediction. This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub winning_outcome_id: Option<PredictionId>,
+    pub winning_outcome_id: Option<types::PredictionId>,
+}
+
+impl EndPredictionBody {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        id: impl Into<types::PredictionId>,
+        status: impl Into<types::PredictionStatus>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+            status: status.into(),
+            winning_outcome_id: None,
+        }
+    }
+
+    /// ID of the winning outcome for the Prediction
+    pub fn winning_outcome_id(
+        mut self,
+        winning_outcome_id: impl Into<types::PredictionId>,
+    ) -> Self {
+        self.winning_outcome_id = Some(winning_outcome_id.into());
+        self
+    }
 }
 
 impl helix::private::SealedSerialize for EndPredictionBody {}
@@ -182,13 +205,13 @@ impl RequestPatch for EndPredictionRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = EndPredictionRequest::builder().build();
+    let req = EndPredictionRequest::new();
 
-    let body = EndPredictionBody::builder()
-        .broadcaster_id("141981764")
-        .id("ed961efd-8a3f-4cf5-a9d0-e616c590cd2a")
-        .status(PredictionStatus::Resolved)
-        .build();
+    let body = EndPredictionBody::new(
+        "141981764",
+        "ed961efd-8a3f-4cf5-a9d0-e616c590cd2a",
+        types::PredictionStatus::Resolved,
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

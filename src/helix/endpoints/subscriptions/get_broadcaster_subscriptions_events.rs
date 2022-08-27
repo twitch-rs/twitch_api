@@ -72,6 +72,30 @@ pub struct GetBroadcasterSubscriptionsEventsRequest {
     pub id: Option<String>,
 }
 
+impl GetBroadcasterSubscriptionsEventsRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+            id: Default::default(),
+        }
+    }
+
+    /// Filter the results for specific users.
+    pub fn user_ids(mut self, user_ids: impl IntoIterator<Item = types::UserId>) -> Self {
+        self.user_id = user_ids.into_iter().collect();
+        self
+    }
+
+    /// Filter the results for specific user.
+    pub fn user_id(mut self, user_id: impl Into<types::UserId>) -> Self {
+        self.user_id = vec![user_id.into()];
+        self
+    }
+}
+
 /// Return Values for [Get Broadcaster Subscriptions Events](super::get_broadcaster_subscriptions_events)
 ///
 /// [`get-broadcaster-subscriptions-events`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions-events)
@@ -172,9 +196,7 @@ impl helix::Paginated for GetBroadcasterSubscriptionsEventsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetBroadcasterSubscriptionsEventsRequest::builder()
-        .broadcaster_id("1337".to_string())
-        .build();
+    let req = GetBroadcasterSubscriptionsEventsRequest::broadcaster_id("1337");
 
     // From twitch docs
     let data = br#"

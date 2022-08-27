@@ -6,6 +6,7 @@ use crate::{
 use serde::{Deserialize, Serialize};
 
 pub mod create_channel_stream_schedule_segment;
+pub mod delete_channel_stream_schedule_segment;
 pub mod get_channel_stream_schedule;
 pub mod update_channel_stream_schedule;
 pub mod update_channel_stream_schedule_segment;
@@ -13,6 +14,10 @@ pub mod update_channel_stream_schedule_segment;
 #[doc(inline)]
 pub use create_channel_stream_schedule_segment::{
     CreateChannelStreamScheduleSegmentBody, CreateChannelStreamScheduleSegmentRequest,
+};
+#[doc(inline)]
+pub use delete_channel_stream_schedule_segment::{
+    DeleteChannelStreamScheduleSegment, DeleteChannelStreamScheduleSegmentRequest,
 };
 #[doc(inline)]
 pub use get_channel_stream_schedule::GetChannelStreamScheduleRequest;

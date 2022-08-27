@@ -42,7 +42,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Top Games](super::get_games)
 ///
 /// [`get-top-games`](https://dev.twitch.tv/docs/api/reference#get-top-games)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetTopGamesRequest {
@@ -55,6 +55,14 @@ pub struct GetTopGamesRequest {
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
+}
+
+impl GetTopGamesRequest {
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Get Top Games](super::get_games)
@@ -80,7 +88,7 @@ impl helix::Paginated for GetTopGamesRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetTopGamesRequest::builder().build();
+    let req = GetTopGamesRequest::default();
 
     // From twitch docs
     let data = br#"

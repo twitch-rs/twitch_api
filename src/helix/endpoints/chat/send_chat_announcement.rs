@@ -74,6 +74,18 @@ pub struct SendChatAnnouncementRequest {
     pub moderator_id: types::UserId,
 }
 
+impl SendChatAnnouncementRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
+}
+
 /// Body Parameters for [Send Chat Announcement](super::send_chat_announcement)
 ///
 /// [`send-chat-announcement`](https://dev.twitch.tv/docs/api/reference#send-chat-announcement)
@@ -180,10 +192,7 @@ impl RequestPost for SendChatAnnouncementRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = SendChatAnnouncementRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = SendChatAnnouncementRequest::new("1234", "5678");
 
     let body = SendChatAnnouncementBody::new("hello chat!".to_owned(), "purple").unwrap();
 

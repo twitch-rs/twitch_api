@@ -21,7 +21,7 @@ async fn main() {
     .unwrap();
 
     let streams: Vec<String> = args.collect();
-    let req = GetStreamsRequest::builder().build();
+    let req = GetStreamsRequest::default();
 
     let response = client.helix.req_get(req, &token).await.unwrap();
 

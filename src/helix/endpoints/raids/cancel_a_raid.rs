@@ -51,6 +51,14 @@ pub struct CancelARaidRequest {
     pub broadcaster_id: types::UserId,
 }
 
+impl CancelARaidRequest {
+    pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
+}
+
 /// Return Values for [Cancel A Raid](super::cancel_a_raid)
 ///
 /// [`cancel-a-raid`](https://dev.twitch.tv/docs/api/reference#cancel-a-raid)
@@ -103,9 +111,7 @@ impl RequestDelete for CancelARaidRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = CancelARaidRequest::builder()
-        .broadcaster_id("12345678")
-        .build();
+    let req = CancelARaidRequest::new("12345678");
 
     // From twitch docs
     let data = br#""#.to_vec();

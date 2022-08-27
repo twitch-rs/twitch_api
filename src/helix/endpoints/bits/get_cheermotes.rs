@@ -52,6 +52,22 @@ pub struct GetCheermotesRequest {
     pub broadcaster_id: Option<types::UserId>,
 }
 
+impl GetCheermotesRequest {
+    /// Get available Cheermotes.
+    pub fn new() -> Self {
+        Self {
+            broadcaster_id: None,
+        }
+    }
+
+    /// Get Cheermotes in a specific broadcasters channel.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: Some(broadcaster_id.into()),
+        }
+    }
+}
+
 /// Return Values for [Get Cheermotes](super::get_cheermotes)
 ///
 /// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
@@ -180,9 +196,7 @@ impl RequestGet for GetCheermotesRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetCheermotesRequest::builder()
-        .broadcaster_id(Some("1234".into()))
-        .build();
+    let req = GetCheermotesRequest::broadcaster_id("1234");
 
     // From api call
     let data = br##"

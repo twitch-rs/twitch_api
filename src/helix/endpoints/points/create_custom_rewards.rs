@@ -69,6 +69,14 @@ pub struct CreateCustomRewardRequest {
     pub broadcaster_id: types::UserId,
 }
 
+impl CreateCustomRewardRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
+}
+
 /// Body Parameters for [Create Custom Rewards](super::create_custom_rewards)
 ///
 /// [`create-custom-rewards`](https://dev.twitch.tv/docs/api/reference#create-custom-rewards)
@@ -114,6 +122,26 @@ pub struct CreateCustomRewardBody {
     /// Should redemptions be set to FULFILLED status immediately when redeemed and skip the request queue instead of the normal UNFULFILLED status. Defaults false
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub should_redemptions_skip_request_queue: Option<bool>,
+}
+
+impl CreateCustomRewardBody {
+    pub fn new(title: String, cost: usize) -> Self {
+        Self {
+            title,
+            prompt: Default::default(),
+            cost,
+            is_enabled: Default::default(),
+            background_color: Default::default(),
+            is_user_input_required: Default::default(),
+            is_max_per_stream_enabled: Default::default(),
+            max_per_stream: Default::default(),
+            is_max_per_user_per_stream_enabled: Default::default(),
+            max_per_user_per_stream: Default::default(),
+            is_global_cooldown_enabled: Default::default(),
+            global_cooldown_seconds: Default::default(),
+            should_redemptions_skip_request_queue: Default::default(),
+        }
+    }
 }
 
 impl helix::private::SealedSerialize for CreateCustomRewardBody {}
@@ -175,14 +203,9 @@ impl RequestPost for CreateCustomRewardRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = CreateCustomRewardRequest::builder()
-        .broadcaster_id("274637212")
-        .build();
+    let req = CreateCustomRewardRequest::broadcaster_id("274637212");
 
-    let body = CreateCustomRewardBody::builder()
-        .cost(50000)
-        .title("game analysis 1v1")
-        .build();
+    let body = CreateCustomRewardBody::new("game analysis 1v1".to_owned(), 50000);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

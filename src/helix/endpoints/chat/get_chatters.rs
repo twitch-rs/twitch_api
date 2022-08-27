@@ -63,11 +63,30 @@ pub struct GetChattersRequest {
     pub moderator_id: types::UserId,
     /// The maximum number of items to return per page in the response. The minimum page size is 1 item per page and the maximum is 1,000. The default is 100.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-
-    pub first: Option<u32>,
+    pub first: Option<usize>,
     /// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
+}
+
+impl GetChattersRequest {
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            first: None,
+            after: None,
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 impl helix::Paginated for GetChattersRequest {
@@ -99,10 +118,7 @@ impl RequestGet for GetChattersRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChattersRequest::builder()
-        .broadcaster_id("123456")
-        .moderator_id("654321")
-        .build();
+    let req = GetChattersRequest::new("123456", "654321");
 
     // From twitch docs
     // FIXME: Example has ...

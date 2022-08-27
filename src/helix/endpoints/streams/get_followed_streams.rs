@@ -63,9 +63,9 @@ pub struct GetFollowedStreamsRequest {
 
 impl GetFollowedStreamsRequest {
     /// Get a users followed streams.
-    /// 
+    ///
     /// Requires token with scope [`user:read:follows`](twitch_oauth2::Scope::UserReadFollows).
-    /// 
+    ///
     /// See also [`HelixClient::get_followed_streams`](crate::helix::HelixClient::get_followed_streams).
     pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
         Self {
@@ -106,9 +106,7 @@ impl helix::Paginated for GetFollowedStreamsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetFollowedStreamsRequest::builder()
-        .user_id("141981764")
-        .build();
+    let req = GetFollowedStreamsRequest::user_id("141981764");
 
     // From twitch docs.
     let data = br#"

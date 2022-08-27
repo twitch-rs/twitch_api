@@ -62,6 +62,27 @@ pub struct GetPollsRequest {
     pub first: Option<usize>,
 }
 
+impl GetPollsRequest {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    pub fn id(mut self, id: impl Into<types::PollId>) -> Self {
+        self.id = vec![id.into()];
+        self
+    }
+
+    pub fn ids(mut self, id: impl IntoIterator<Item = types::PollId>) -> Self {
+        self.id = id.into_iter().collect();
+        self
+    }
+}
+
 /// Return Values for [Get polls](super::get_polls)
 ///
 /// [`get-polls`](https://dev.twitch.tv/docs/api/reference#get-polls)
@@ -119,10 +140,8 @@ impl helix::Paginated for GetPollsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetPollsRequest::builder()
-        .broadcaster_id("141981764")
-        .id(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()])
-        .build();
+    let req =
+        GetPollsRequest::broadcaster_id("141981764").id("ed961efd-8a3f-4cf5-a9d0-e616c590cd2a");
 
     // From twitch docs
     let data = br#"

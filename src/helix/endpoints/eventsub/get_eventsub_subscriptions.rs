@@ -7,7 +7,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
 /// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions)
-#[derive(PartialEq, Eq, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetEventSubSubscriptionsRequest {
@@ -33,6 +33,15 @@ pub struct GetEventSubSubscriptionsRequest {
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
+}
+
+impl GetEventSubSubscriptionsRequest {
+    pub fn status(status: impl Into<eventsub::Status>) -> Self {
+        Self {
+            status: Some(status.into()),
+            ..Self::default()
+        }
+    }
 }
 
 impl Request for GetEventSubSubscriptionsRequest {
@@ -114,7 +123,8 @@ impl helix::Paginated for GetEventSubSubscriptionsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req: GetEventSubSubscriptionsRequest = GetEventSubSubscriptionsRequest::builder().build();
+    let req: GetEventSubSubscriptionsRequest = GetEventSubSubscriptionsRequest::default();
+
     // From twitch docs.
     // FIXME: Twitch says in example that status is kebab-case, it's actually snake_case. also, users vs user and stream vs streams
     let data = br#"{
