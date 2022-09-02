@@ -11,54 +11,54 @@ type ClientError<'a, C> = ClientRequestError<<C as crate::HttpClient<'a>>::Error
 // TODO: Consider moving these into the specific modules where the request is defined. Preferably backed by a macro
 
 impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
-    /// Get [User](helix::users::User) from user login
-    pub async fn get_user_from_login<T>(
-        &'client self,
-        login: impl Into<&types::UserNameRef>,
-        token: &T,
-    ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
-    where
-        T: TwitchToken + ?Sized,
-    {
-        self.req_get(
-            helix::users::GetUsersRequest::logins(&[login.into()][..]),
-            token,
-        )
-        .await
-        .map(|response| response.first())
-    }
+    // /// Get [User](helix::users::User) from user login
+    // pub async fn get_user_from_login<T>(
+    //     &'client self,
+    //     login: impl Into<&types::UserNameRef>,
+    //     token: &T,
+    // ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
+    // where
+    //     T: TwitchToken + ?Sized,
+    // {
+    //     self.req_get(
+    //         helix::users::GetUsersRequest::logins(&[login.into()][..]),
+    //         token,
+    //     )
+    //     .await
+    //     .map(|response| response.first())
+    // }
 
-    /// Get [User](helix::users::User) from user id
-    pub async fn get_user_from_id<T>(
-        &'client self,
-        id: impl Into<&types::UserIdRef>,
-        token: &T,
-    ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
-    where
-        T: TwitchToken + ?Sized,
-    {
-        self.req_get(helix::users::GetUsersRequest::ids(&[id.into()][..]), token)
-            .await
-            .map(|response| response.first())
-    }
+    // /// Get [User](helix::users::User) from user id
+    // pub async fn get_user_from_id<T>(
+    //     &'client self,
+    //     id: impl Into<&types::UserIdRef>,
+    //     token: &T,
+    // ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
+    // where
+    //     T: TwitchToken + ?Sized,
+    // {
+    //     self.req_get(helix::users::GetUsersRequest::ids(&[id.into()][..]), token)
+    //         .await
+    //         .map(|response| response.first())
+    // }
 
-    /// Get multiple [User](helix::users::User)s from user ids.
-    pub async fn get_users_from_ids<T>(
-        &'client self,
-        ids: impl AsRef<[&types::UserIdRef]>,
-        token: &T,
-    ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
-    where
-        T: TwitchToken + ?Sized,
-    {
-        let ids = ids.as_ref();
-        if ids.len() > 100 {
-            return Err(ClientRequestError::Custom("too many IDs, max 100".into()));
-        }
-        self.req_get(helix::users::GetUsersRequest::ids(ids), token)
-            .await
-            .map(|response| response.first())
-    }
+    // /// Get multiple [User](helix::users::User)s from user ids.
+    // pub async fn get_users_from_ids<T>(
+    //     &'client self,
+    //     ids: impl AsRef<[&types::UserIdRef]>,
+    //     token: &T,
+    // ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
+    // where
+    //     T: TwitchToken + ?Sized,
+    // {
+    //     let ids = ids.as_ref();
+    //     if ids.len() > 100 {
+    //         return Err(ClientRequestError::Custom("too many IDs, max 100".into()));
+    //     }
+    //     self.req_get(helix::users::GetUsersRequest::ids(ids), token)
+    //         .await
+    //         .map(|response| response.first())
+    // }
 
     // /// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters login
     // pub async fn get_channel_from_login<T>(
@@ -1138,184 +1138,184 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
     // }
 }
 
-#[derive(Debug, thiserror::Error)]
-pub enum ClientExtError<'a, C: crate::HttpClient<'a>, E> {
-    #[error(transparent)]
-    ClientError(ClientError<'a, C>),
-    #[error(transparent)]
-    Other(#[from] E),
-}
+// #[derive(Debug, thiserror::Error)]
+// pub enum ClientExtError<'a, C: crate::HttpClient<'a>, E> {
+//     #[error(transparent)]
+//     ClientError(ClientError<'a, C>),
+//     #[error(transparent)]
+//     Other(#[from] E),
+// }
 
-/// Make a paginate-able request into a stream
-///
-/// # Examples
-///
-/// ```rust, no_run
-/// # #[tokio::main]
-/// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-/// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
-/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
-/// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-/// use twitch_api::helix;
-/// use futures::TryStreamExt;
-///
-/// let req = helix::moderation::GetModeratorsRequest::broadcaster_id("1234");
-///
-/// helix::make_stream(req, &token, &client, std::collections::VecDeque::from).try_collect::<Vec<_>>().await?
-/// # ;
-/// # Ok(())
-/// # }
-/// ```
-pub fn make_stream<
-    'a,
-    C: crate::HttpClient<'a> + Send + Sync,
-    T: TwitchToken + ?Sized + Send + Sync,
-    // FIXME: Why does this have to be clone and debug?
-    Req: super::Request
-        + super::RequestGet
-        + super::Paginated
-        + Clone
-        + std::fmt::Debug
-        + Send
-        + Sync
-        + 'a,
-    // FIXME: this 'a seems suspicious
-    Item: Send + 'a,
->(
-    req: Req,
-    token: &'a T,
-    client: &'a super::HelixClient<'a, C>,
-    fun: impl Fn(<Req as super::Request>::Response) -> std::collections::VecDeque<Item>
-        + Send
-        + Sync
-        + Copy
-        + 'static,
-) -> std::pin::Pin<Box<dyn futures::Stream<Item = Result<Item, ClientError<'a, C>>> + 'a + Send>>
-where
-    // FIXME: This clone is bad. I want to be able to return the data, but not in a way that limits the response to be Default
-    // I also want to keep allocations low, so std::mem::take is perfect, but that makes get_next not work optimally.
-    <Req as super::Request>::Response: Send + Sync + std::fmt::Debug + Clone,
-{
-    use futures::StreamExt;
-    enum StateMode<Req: super::Request + super::RequestGet, Item> {
-        /// A request needs to be done.
-        Req(Option<Req>),
-        /// We have made a request, now working through the data
-        Cont(
-            super::Response<Req, <Req as super::Request>::Response>,
-            std::collections::VecDeque<Item>,
-        ),
-        Next(Option<super::Response<Req, <Req as super::Request>::Response>>),
-        /// The operation failed, allowing no further processing
-        Failed,
-    }
+// /// Make a paginate-able request into a stream
+// ///
+// /// # Examples
+// ///
+// /// ```rust, no_run
+// /// # #[tokio::main]
+// /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+// /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+// /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+// /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+// /// use twitch_api::helix;
+// /// use futures::TryStreamExt;
+// ///
+// /// let req = helix::moderation::GetModeratorsRequest::broadcaster_id("1234");
+// ///
+// /// helix::make_stream(req, &token, &client, std::collections::VecDeque::from).try_collect::<Vec<_>>().await?
+// /// # ;
+// /// # Ok(())
+// /// # }
+// /// ```
+// pub fn make_stream<
+//     'a,
+//     C: crate::HttpClient<'a> + Send + Sync,
+//     T: TwitchToken + ?Sized + Send + Sync,
+//     // FIXME: Why does this have to be clone and debug?
+//     Req: super::Request
+//         + super::RequestGet
+//         + super::Paginated
+//         + Clone
+//         + std::fmt::Debug
+//         + Send
+//         + Sync
+//         + 'a,
+//     // FIXME: this 'a seems suspicious
+//     Item: Send + 'a,
+// >(
+//     req: Req,
+//     token: &'a T,
+//     client: &'a super::HelixClient<'a, C>,
+//     fun: impl Fn(<Req as super::Request>::Response) -> std::collections::VecDeque<Item>
+//         + Send
+//         + Sync
+//         + Copy
+//         + 'static,
+// ) -> std::pin::Pin<Box<dyn futures::Stream<Item = Result<Item, ClientError<'a, C>>> + 'a + Send>>
+// where
+//     // FIXME: This clone is bad. I want to be able to return the data, but not in a way that limits the response to be Default
+//     // I also want to keep allocations low, so std::mem::take is perfect, but that makes get_next not work optimally.
+//     <Req as super::Request>::Response: Send + Sync + std::fmt::Debug + Clone,
+// {
+//     use futures::StreamExt;
+//     enum StateMode<Req: super::Request + super::RequestGet, Item> {
+//         /// A request needs to be done.
+//         Req(Option<Req>),
+//         /// We have made a request, now working through the data
+//         Cont(
+//             super::Response<Req, <Req as super::Request>::Response>,
+//             std::collections::VecDeque<Item>,
+//         ),
+//         Next(Option<super::Response<Req, <Req as super::Request>::Response>>),
+//         /// The operation failed, allowing no further processing
+//         Failed,
+//     }
 
-    impl<Req: super::Request + super::RequestGet, Item> StateMode<Req, Item> {
-        fn take_initial(&mut self) -> Req {
-            match self {
-                StateMode::Req(ref mut r) if r.is_some() => std::mem::take(r).expect("oops"),
-                _ => todo!("hmmm"),
-            }
-        }
+//     impl<Req: super::Request + super::RequestGet, Item> StateMode<Req, Item> {
+//         fn take_initial(&mut self) -> Req {
+//             match self {
+//                 StateMode::Req(ref mut r) if r.is_some() => std::mem::take(r).expect("oops"),
+//                 _ => todo!("hmmm"),
+//             }
+//         }
 
-        fn take_next(&mut self) -> super::Response<Req, <Req as super::Request>::Response> {
-            match self {
-                StateMode::Next(ref mut r) if r.is_some() => std::mem::take(r).expect("oops"),
-                _ => todo!("hmmm"),
-            }
-        }
-    }
+//         fn take_next(&mut self) -> super::Response<Req, <Req as super::Request>::Response> {
+//             match self {
+//                 StateMode::Next(ref mut r) if r.is_some() => std::mem::take(r).expect("oops"),
+//                 _ => todo!("hmmm"),
+//             }
+//         }
+//     }
 
-    struct State<
-        'a,
-        C: crate::HttpClient<'a>,
-        T: TwitchToken + ?Sized,
-        Req: super::Request + super::RequestGet,
-        Item,
-    > {
-        mode: StateMode<Req, Item>,
-        client: &'a HelixClient<'a, C>,
-        token: &'a T,
-    }
+//     struct State<
+//         'a,
+//         C: crate::HttpClient<'a>,
+//         T: TwitchToken + ?Sized,
+//         Req: super::Request + super::RequestGet,
+//         Item,
+//     > {
+//         mode: StateMode<Req, Item>,
+//         client: &'a HelixClient<'a, C>,
+//         token: &'a T,
+//     }
 
-    impl<
-            'a,
-            C: crate::HttpClient<'a>,
-            T: TwitchToken + ?Sized,
-            Req: super::Request + super::RequestGet + super::Paginated,
-            Item,
-        > State<'a, C, T, Req, Item>
-    {
-        /// Process a request, with a given deq
-        fn process(
-            mut self,
-            r: super::Response<Req, <Req as super::Request>::Response>,
-            d: std::collections::VecDeque<Item>,
-        ) -> Self {
-            self.mode = StateMode::Cont(r, d);
-            self
-        }
+//     impl<
+//             'a,
+//             C: crate::HttpClient<'a>,
+//             T: TwitchToken + ?Sized,
+//             Req: super::Request + super::RequestGet + super::Paginated,
+//             Item,
+//         > State<'a, C, T, Req, Item>
+//     {
+//         /// Process a request, with a given deq
+//         fn process(
+//             mut self,
+//             r: super::Response<Req, <Req as super::Request>::Response>,
+//             d: std::collections::VecDeque<Item>,
+//         ) -> Self {
+//             self.mode = StateMode::Cont(r, d);
+//             self
+//         }
 
-        fn failed(mut self) -> Self {
-            self.mode = StateMode::Failed;
-            self
-        }
+//         fn failed(mut self) -> Self {
+//             self.mode = StateMode::Failed;
+//             self
+//         }
 
-        /// get the next
-        fn get_next(mut self) -> Self {
-            match self.mode {
-                StateMode::Cont(r, d) => {
-                    assert!(d.is_empty());
-                    self.mode = StateMode::Next(Some(r));
-                    self
-                }
-                _ => panic!("oops"),
-            }
-        }
-    }
-    let statemode = StateMode::Req(Some(req));
-    let state = State {
-        mode: statemode,
-        client,
-        token,
-    };
-    futures::stream::unfold(state, move |mut state: State<_, _, _, _>| async move {
-        match state.mode {
-            StateMode::Req(Some(_)) => {
-                let req = state.mode.take_initial();
-                let f = state.client.req_get(req, state.token);
-                let resp = match f.await {
-                    Ok(resp) => resp,
-                    Err(e) => return Some((Err(e), state.failed())),
-                };
-                let mut deq = fun(resp.data.clone());
-                deq.pop_front().map(|d| (Ok(d), state.process(resp, deq)))
-            }
-            StateMode::Cont(_, ref mut deq) => {
-                if let Some(d) = deq.pop_front() {
-                    if deq.is_empty() {
-                        Some((Ok(d), state.get_next()))
-                    } else {
-                        Some((Ok(d), state))
-                    }
-                } else {
-                    // New request returned empty.
-                    None
-                }
-            }
-            StateMode::Next(Some(_)) => {
-                let resp = state.mode.take_next();
-                let f = resp.get_next(state.client, state.token);
-                let resp = match f.await {
-                    Ok(Some(resp)) => resp,
-                    Ok(None) => return None,
-                    Err(e) => return Some((Err(e), state.failed())),
-                };
-                let mut deq = fun(resp.data.clone());
-                deq.pop_front().map(|d| (Ok(d), state.process(resp, deq)))
-            }
-            _ => todo!("failed to process request"),
-        }
-    })
-    .boxed()
-}
+//         /// get the next
+//         fn get_next(mut self) -> Self {
+//             match self.mode {
+//                 StateMode::Cont(r, d) => {
+//                     assert!(d.is_empty());
+//                     self.mode = StateMode::Next(Some(r));
+//                     self
+//                 }
+//                 _ => panic!("oops"),
+//             }
+//         }
+//     }
+//     let statemode = StateMode::Req(Some(req));
+//     let state = State {
+//         mode: statemode,
+//         client,
+//         token,
+//     };
+//     futures::stream::unfold(state, move |mut state: State<_, _, _, _>| async move {
+//         match state.mode {
+//             StateMode::Req(Some(_)) => {
+//                 let req = state.mode.take_initial();
+//                 let f = state.client.req_get(req, state.token);
+//                 let resp = match f.await {
+//                     Ok(resp) => resp,
+//                     Err(e) => return Some((Err(e), state.failed())),
+//                 };
+//                 let mut deq = fun(resp.data.clone());
+//                 deq.pop_front().map(|d| (Ok(d), state.process(resp, deq)))
+//             }
+//             StateMode::Cont(_, ref mut deq) => {
+//                 if let Some(d) = deq.pop_front() {
+//                     if deq.is_empty() {
+//                         Some((Ok(d), state.get_next()))
+//                     } else {
+//                         Some((Ok(d), state))
+//                     }
+//                 } else {
+//                     // New request returned empty.
+//                     None
+//                 }
+//             }
+//             StateMode::Next(Some(_)) => {
+//                 let resp = state.mode.take_next();
+//                 let f = resp.get_next(state.client, state.token);
+//                 let resp = match f.await {
+//                     Ok(Some(resp)) => resp,
+//                     Ok(None) => return None,
+//                     Err(e) => return Some((Err(e), state.failed())),
+//                 };
+//                 let mut deq = fun(resp.data.clone());
+//                 deq.pop_front().map(|d| (Ok(d), state.process(resp, deq)))
+//             }
+//             _ => todo!("failed to process request"),
+//         }
+//     })
+//     .boxed()
+// }

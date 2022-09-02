@@ -53,61 +53,61 @@ where
     }
 }
 
-impl<R, D, T> Response<R, D>
-where
-    R: Request,
-    D: IntoIterator<Item = T> + PartialEq + serde::de::DeserializeOwned,
-{
-    /// Get first result of this response.
-    pub fn first(self) -> Option<T> { self.data.into_iter().next() }
-}
-
-// impl<R, D, T> CustomResponse<'_, R, D>
+// impl<R, D, T> Response<R, D>
 // where
 //     R: Request,
-//     D: IntoIterator<Item = T>,
+//     D: IntoIterator<Item = T> + PartialEq + serde::de::DeserializeOwned,
 // {
 //     /// Get first result of this response.
-//     pub fn first(self) -> Option<T> { self.data().into_iter().next() }
+//     pub fn first(self) -> Option<T> { self.data.into_iter().next() }
 // }
 
-#[cfg(feature = "client")]
-impl<R, D> Response<R, D>
-where
-    R: Request<Response = D> + Clone + super::Paginated + super::RequestGet + std::fmt::Debug,
-    D: serde::de::DeserializeOwned + std::fmt::Debug + PartialEq,
-{
-    /// Get the next page in the responses.
-    pub async fn get_next<'a, C: crate::HttpClient<'a>>(
-        self,
-        client: &'a super::HelixClient<'a, C>,
-        token: &(impl super::TwitchToken + ?Sized),
-    ) -> Result<
-        Option<Response<R, D>>,
-        super::ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
-    > {
-        if let Some(mut req) = self.request.clone() {
-            if self.pagination.is_some() {
-                req.set_pagination(self.pagination);
-                let res = client.req_get(req, token).await.map(Some);
-                if let Ok(Some(r)) = res {
-                    // FIXME: Workaround for https://github.com/twitchdev/issues/issues/18
-                    if r.data == self.data {
-                        Ok(None)
-                    } else {
-                        Ok(Some(r))
-                    }
-                } else {
-                    res
-                }
-            } else {
-                Ok(None)
-            }
-        } else {
-            // TODO: Make into proper error
-            Err(super::ClientRequestError::Custom(
-                "no source request attached".into(),
-            ))
-        }
-    }
-}
+// // impl<R, D, T> CustomResponse<'_, R, D>
+// // where
+// //     R: Request,
+// //     D: IntoIterator<Item = T>,
+// // {
+// //     /// Get first result of this response.
+// //     pub fn first(self) -> Option<T> { self.data().into_iter().next() }
+// // }
+
+// #[cfg(feature = "client")]
+// impl<R, D> Response<R, D>
+// where
+//     R: Request<Response = D> + Clone + super::Paginated + super::RequestGet + std::fmt::Debug,
+//     D: serde::de::DeserializeOwned + std::fmt::Debug + PartialEq,
+// {
+//     /// Get the next page in the responses.
+//     pub async fn get_next<'a, C: crate::HttpClient<'a>>(
+//         self,
+//         client: &'a super::HelixClient<'a, C>,
+//         token: &(impl super::TwitchToken + ?Sized),
+//     ) -> Result<
+//         Option<Response<R, D>>,
+//         super::ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
+//     > {
+//         if let Some(mut req) = self.request.clone() {
+//             if self.pagination.is_some() {
+//                 req.set_pagination(self.pagination);
+//                 let res = client.req_get(req, token).await.map(Some);
+//                 if let Ok(Some(r)) = res {
+//                     // FIXME: Workaround for https://github.com/twitchdev/issues/issues/18
+//                     if r.data == self.data {
+//                         Ok(None)
+//                     } else {
+//                         Ok(Some(r))
+//                     }
+//                 } else {
+//                     res
+//                 }
+//             } else {
+//                 Ok(None)
+//             }
+//         } else {
+//             // TODO: Make into proper error
+//             Err(super::ClientRequestError::Custom(
+//                 "no source request attached".into(),
+//             ))
+//         }
+//     }
+// }

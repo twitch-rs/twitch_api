@@ -136,104 +136,104 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
-    /// Request on a valid [`RequestPost`] endpoint
-    pub async fn req_post<R, B, D, T>(
-        &'a self,
-        request: R,
-        body: B,
-        token: &T,
-    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
-    where
-        R: Request<Response = D> + Request + RequestPost<Body = B>,
-        B: HelixRequestBody,
-        D: serde::de::DeserializeOwned + PartialEq,
-        T: TwitchToken + ?Sized,
-    {
-        let req =
-            request.create_request(body, token.token().secret(), token.client_id().as_str())?;
-        let uri = req.uri().clone();
-        let response = self
-            .client
-            .req(req)
-            .await
-            .map_err(ClientRequestError::RequestError)?
-            .into_response_vec()
-            .await?;
-        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
-    }
+    // /// Request on a valid [`RequestPost`] endpoint
+    // pub async fn req_post<R, B, D, T>(
+    //     &'a self,
+    //     request: R,
+    //     body: B,
+    //     token: &T,
+    // ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    // where
+    //     R: Request<Response = D> + Request + RequestPost<Body = B>,
+    //     B: HelixRequestBody,
+    //     D: serde::de::DeserializeOwned + PartialEq,
+    //     T: TwitchToken + ?Sized,
+    // {
+    //     let req =
+    //         request.create_request(body, token.token().secret(), token.client_id().as_str())?;
+    //     let uri = req.uri().clone();
+    //     let response = self
+    //         .client
+    //         .req(req)
+    //         .await
+    //         .map_err(ClientRequestError::RequestError)?
+    //         .into_response_vec()
+    //         .await?;
+    //     <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
+    // }
 
-    /// Request on a valid [`RequestPatch`] endpoint
-    pub async fn req_patch<R, B, D, T>(
-        &'a self,
-        request: R,
-        body: B,
-        token: &T,
-    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
-    where
-        R: Request<Response = D> + Request + RequestPatch<Body = B>,
-        B: HelixRequestBody,
-        D: serde::de::DeserializeOwned + PartialEq,
-        T: TwitchToken + ?Sized,
-    {
-        let req =
-            request.create_request(body, token.token().secret(), token.client_id().as_str())?;
-        let uri = req.uri().clone();
-        let response = self
-            .client
-            .req(req)
-            .await
-            .map_err(ClientRequestError::RequestError)?
-            .into_response_vec()
-            .await?;
-        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
-    }
+    // /// Request on a valid [`RequestPatch`] endpoint
+    // pub async fn req_patch<R, B, D, T>(
+    //     &'a self,
+    //     request: R,
+    //     body: B,
+    //     token: &T,
+    // ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    // where
+    //     R: Request<Response = D> + Request + RequestPatch<Body = B>,
+    //     B: HelixRequestBody,
+    //     D: serde::de::DeserializeOwned + PartialEq,
+    //     T: TwitchToken + ?Sized,
+    // {
+    //     let req =
+    //         request.create_request(body, token.token().secret(), token.client_id().as_str())?;
+    //     let uri = req.uri().clone();
+    //     let response = self
+    //         .client
+    //         .req(req)
+    //         .await
+    //         .map_err(ClientRequestError::RequestError)?
+    //         .into_response_vec()
+    //         .await?;
+    //     <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
+    // }
 
-    /// Request on a valid [`RequestDelete`] endpoint
-    pub async fn req_delete<R, D, T>(
-        &'a self,
-        request: R,
-        token: &T,
-    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
-    where
-        R: Request<Response = D> + Request + RequestDelete,
-        D: serde::de::DeserializeOwned + PartialEq,
-        T: TwitchToken + ?Sized,
-    {
-        let req = request.create_request(token.token().secret(), token.client_id().as_str())?;
-        let uri = req.uri().clone();
-        let response = self
-            .client
-            .req(req)
-            .await
-            .map_err(ClientRequestError::RequestError)?
-            .into_response_vec()
-            .await?;
-        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
-    }
+    // /// Request on a valid [`RequestDelete`] endpoint
+    // pub async fn req_delete<R, D, T>(
+    //     &'a self,
+    //     request: R,
+    //     token: &T,
+    // ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    // where
+    //     R: Request<Response = D> + Request + RequestDelete,
+    //     D: serde::de::DeserializeOwned + PartialEq,
+    //     T: TwitchToken + ?Sized,
+    // {
+    //     let req = request.create_request(token.token().secret(), token.client_id().as_str())?;
+    //     let uri = req.uri().clone();
+    //     let response = self
+    //         .client
+    //         .req(req)
+    //         .await
+    //         .map_err(ClientRequestError::RequestError)?
+    //         .into_response_vec()
+    //         .await?;
+    //     <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
+    // }
 
-    /// Request on a valid [`RequestPut`] endpoint
-    pub async fn req_put<R, B, D, T>(
-        &'a self,
-        request: R,
-        body: B,
-        token: &T,
-    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
-    where
-        R: Request<Response = D> + Request + RequestPut<Body = B>,
-        B: HelixRequestBody,
-        D: serde::de::DeserializeOwned + PartialEq,
-        T: TwitchToken + ?Sized,
-    {
-        let req =
-            request.create_request(body, token.token().secret(), token.client_id().as_str())?;
-        let uri = req.uri().clone();
-        let response = self
-            .client
-            .req(req)
-            .await
-            .map_err(ClientRequestError::RequestError)?
-            .into_response_vec()
-            .await?;
-        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
-    }
+    // /// Request on a valid [`RequestPut`] endpoint
+    // pub async fn req_put<R, B, D, T>(
+    //     &'a self,
+    //     request: R,
+    //     body: B,
+    //     token: &T,
+    // ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    // where
+    //     R: Request<Response = D> + Request + RequestPut<Body = B>,
+    //     B: HelixRequestBody,
+    //     D: serde::de::DeserializeOwned + PartialEq,
+    //     T: TwitchToken + ?Sized,
+    // {
+    //     let req =
+    //         request.create_request(body, token.token().secret(), token.client_id().as_str())?;
+    //     let uri = req.uri().clone();
+    //     let response = self
+    //         .client
+    //         .req(req)
+    //         .await
+    //         .map_err(ClientRequestError::RequestError)?
+    //         .into_response_vec()
+    //         .await?;
+    //     <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
+    // }
 }
