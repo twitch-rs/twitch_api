@@ -106,10 +106,9 @@ impl helix::HelixRequestBody for BanUserBody {
     fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
-            data: &'a Vec<&'a BanUserBody>,
+            data: &'a BanUserBody,
         }
-        let v = vec![self];
-        serde_json::to_vec(&InnerBody { data: &v })
+        serde_json::to_vec(&InnerBody { data: self })
             .map_err(Into::into)
             .map(Into::into)
     }
@@ -124,6 +123,8 @@ impl helix::HelixRequestBody for BanUserBody {
 pub struct BanUser {
     /// The broadcaster whose chat room the user was banned from chatting in.
     pub broadcaster_id: types::UserId,
+    /// The UTC date and time (in RFC3999 format) when the ban was created.
+    pub created_at: types::Timestamp,
     /// The UTC date and time (in RFC3339 format) that the timeout will end. Is null if the user was banned instead of put in a timeout.
     pub end_time: Option<types::Timestamp>,
     /// The moderator that banned or put the user in the timeout.
@@ -203,6 +204,7 @@ fn test_request() {
             "broadcaster_id": "1234",
             "moderator_id": "5678",
             "user_id": "9876",
+            "created_at": "2021-09-28T19:27:31Z",
             "end_time": "2021-09-28T19:22:31Z"
           }
         ]
@@ -236,10 +238,10 @@ fn test_request_error() {
 
     // From twitch docs
     let data = br#"
-    { 
-        "error": "Bad Request", 
-        "status": 400, 
-        "message": "user is already banned" 
+    {
+        "error": "Bad Request",
+        "status": 400,
+        "message": "user is already banned"
     }
 "#
     .to_vec();
