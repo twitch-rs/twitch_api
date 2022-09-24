@@ -471,6 +471,56 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
             .data)
     }
 
+    /// Ban a user
+    pub async fn ban_user<T>(
+        &'a self,
+        target_user_id: impl Into<types::UserId>,
+        reason: impl std::fmt::Display,
+        duration: impl Into<Option<u32>>,
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<helix::moderation::BanUser, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        Ok(self
+            .req_post(
+                helix::moderation::BanUserRequest::builder()
+                    .broadcaster_id(broadcaster_id)
+                    .moderator_id(moderator_id)
+                    .build(),
+                helix::moderation::BanUserBody::new(target_user_id, reason.to_string(), duration),
+                token,
+            )
+            .await?
+            .data)
+    }
+
+    /// Unban a user
+    pub async fn unban_user<T>(
+        &'a self,
+        target_user_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<helix::moderation::UnbanUserResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        Ok(self
+            .req_delete(
+                helix::moderation::UnbanUserRequest::builder()
+                    .broadcaster_id(broadcaster_id)
+                    .moderator_id(moderator_id)
+                    .user_id(target_user_id)
+                    .build(),
+                token,
+            )
+            .await?
+            .data)
+    }
+
     // FIXME: Example should use https://github.com/twitch-rs/twitch_api/issues/162
     /// Get all scheduled streams in a channel.
     ///
