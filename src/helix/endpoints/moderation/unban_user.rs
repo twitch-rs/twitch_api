@@ -59,7 +59,7 @@ pub struct UnbanUserRequest {
     pub moderator_id: types::UserId,
     /// The ID of the user to remove the ban or timeout from.
     #[builder(setter(into))]
-    pub user_id: String,
+    pub user_id: types::UserId,
 }
 
 /// Return Values for [Unban User](super::unban_user)
