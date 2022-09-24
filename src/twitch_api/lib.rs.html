@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_api/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_api/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -371,378 +371,378 @@
 <span id="371">371</span>
 <span id="372">372</span>
 <span id="373">373</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>, <span class="ident">rustdoc::broken_intra_doc_links</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">feature</span>(<span class="ident">doc_cfg</span>))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">feature</span>(<span class="ident">doc_auto_cfg</span>))]</span>
-<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_root_url</span> <span class="op">=</span> <span class="string">&quot;https://docs.rs/twitch_api/0.6.1&quot;</span>)]</span>
-<span class="doccomment">//! [![github]](https://github.com/twitch-rs/twitch_api)&amp;ensp;[![crates-io]](https://crates.io/crates/twitch_api)&amp;ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.6.1/twitch_api)</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! [github]: https://img.shields.io/badge/github-twitch--rs/twitch__api-8da0cb?style=for-the-badge&amp;labelColor=555555&amp;logo=github&quot;</span>
-<span class="doccomment">//! [crates-io]: https://img.shields.io/crates/v/twitch_api.svg?style=for-the-badge&amp;color=fc8d62&amp;logo=rust&quot;</span>
-<span class="doccomment">//! [docs-rs-big]: https://img.shields.io/badge/docs.rs-twitch__api2-66c2a5?style=for-the-badge&amp;labelColor=555555&amp;logoColor=white&amp;logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxwYXRoIGZpbGw9IiNmNWY1ZjUiIGQ9Ik00ODguNiAyNTAuMkwzOTIgMjE0VjEwNS41YzAtMTUtOS4zLTI4LjQtMjMuNC0zMy43bC0xMDAtMzcuNWMtOC4xLTMuMS0xNy4xLTMuMS0yNS4zIDBsLTEwMCAzNy41Yy0xNC4xIDUuMy0yMy40IDE4LjctMjMuNCAzMy43VjIxNGwtOTYuNiAzNi4yQzkuMyAyNTUuNSAwIDI2OC45IDAgMjgzLjlWMzk0YzAgMTMuNiA3LjcgMjYuMSAxOS45IDMyLjJsMTAwIDUwYzEwLjEgNS4xIDIyLjEgNS4xIDMyLjIgMGwxMDMuOS01MiAxMDMuOSA1MmMxMC4xIDUuMSAyMi4xIDUuMSAzMi4yIDBsMTAwLTUwYzEyLjItNi4xIDE5LjktMTguNiAxOS45LTMyLjJWMjgzLjljMC0xNS05LjMtMjguNC0yMy40LTMzLjd6TTM1OCAyMTQuOGwtODUgMzEuOXYtNjguMmw4NS0zN3Y3My4zek0xNTQgMTA0LjFsMTAyLTM4LjIgMTAyIDM4LjJ2LjZsLTEwMiA0MS40LTEwMi00MS40di0uNnptODQgMjkxLjFsLTg1IDQyLjV2LTc5LjFsODUtMzguOHY3NS40em0wLTExMmwtMTAyIDQxLjQtMTAyLTQxLjR2LS42bDEwMi0zOC4yIDEwMiAzOC4ydi42em0yNDAgMTEybC04NSA0Mi41di03OS4xbDg1LTM4Ljh2NzUuNHptMC0xMTJsLTEwMiA0MS40LTEwMi00MS40di0uNmwxMDItMzguMiAxMDIgMzguMnYuNnoiPjwvcGF0aD48L3N2Zz4K&quot;</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! &lt;br&gt;</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! &lt;h5&gt;Rust library for talking with the new Twitch API aka. &quot;Helix&quot;, TMI and more! Use Twitch endpoints fearlessly!&lt;/h5&gt;</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Examples</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Get information about a channel with the [`Get Channel Information`](crate::helix::channels::get_channel_information) helix endpoint.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust,no_run</span>
-<span class="doccomment">//! use twitch_api::{helix::channels::GetChannelInformationRequest, TwitchClient};</span>
-<span class="doccomment">//! use twitch_oauth2::{tokens::errors::AppAccessTokenError, AppAccessToken, Scope, TwitchToken};</span>
-<span class="doccomment">//! # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # #[tokio::main]</span>
-<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-<span class="doccomment">//! # let client_id = twitch_oauth2::ClientId::new(&quot;validclientid&quot;);</span>
-<span class="doccomment">//! # let client_secret = twitch_oauth2::ClientSecret::new(&quot;validclientsecret&quot;);</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! let client: TwitchClient&lt;reqwest::Client&gt; = TwitchClient::default();</span>
-<span class="doccomment">//! let token =</span>
-<span class="doccomment">//!     AppAccessToken::get_app_access_token(&amp;client, client_id, client_secret, Scope::all())</span>
-<span class="doccomment">//!         .await?;</span>
-<span class="doccomment">//! let req = GetChannelInformationRequest::builder()</span>
-<span class="doccomment">//!     .broadcaster_id(&quot;27620241&quot;)</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! println!(</span>
-<span class="doccomment">//!     &quot;{:?}&quot;,</span>
-<span class="doccomment">//!     &amp;client.helix.req_get(req, &amp;token).await?.data.unwrap().title</span>
-<span class="doccomment">//! );</span>
-<span class="doccomment">//! # Ok(())</span>
-<span class="doccomment">//! # }</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! There is also a convenience function for accessing channel information with a specified login name</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust,no_run</span>
-<span class="doccomment">//! # use twitch_api::{TwitchClient, helix::channels::GetChannelInformationRequest};</span>
-<span class="doccomment">//! # use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::AppAccessTokenError};</span>
-<span class="doccomment">//! # #[tokio::main]</span>
-<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-<span class="doccomment">//! let client = TwitchClient::default();</span>
-<span class="doccomment">//! # let _:&amp;TwitchClient&lt;twitch_api::DummyHttpClient&gt; = &amp;client;</span>
-<span class="doccomment">//! # let client_id = twitch_oauth2::ClientId::new(&quot;validclientid&quot;.to_string());</span>
-<span class="doccomment">//! # let client_secret = twitch_oauth2::ClientSecret::new(&quot;validclientsecret&quot;.to_string());</span>
-<span class="doccomment">//! # let token =</span>
-<span class="doccomment">//! #   match AppAccessToken::get_app_access_token(&amp;client, client_id, client_secret, Scope::all()).await {</span>
-<span class="doccomment">//! #       Ok(t) =&gt; t,</span>
-<span class="doccomment">//! #       Err(AppAccessTokenError::Request(e)) =&gt; panic!(&quot;got error: {:?}&quot;, e),</span>
-<span class="doccomment">//! #       Err(e) =&gt; panic!(e),</span>
-<span class="doccomment">//! #   };</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! println!(&quot;{:?}&quot;, &amp;client.helix.get_channel_from_login(&quot;twitch&quot;.to_string(), &amp;token).await?.unwrap().title);</span>
-<span class="doccomment">//! # Ok(())</span>
-<span class="doccomment">//! # }</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Features</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! This crate provides almost no functionality by default, only exposing [`types`]. To enable more features, refer to below table.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! | Feature |         |</span>
-<span class="doccomment">//! | -------: | :------- |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;twitch_oauth2&lt;/code&gt;&lt;/span&gt; | Gives [scopes](twitch_oauth2::Scope) for endpoints and topics that are needed to call them. |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;client&lt;/code&gt;&lt;/span&gt; | Gives a [client abstraction](HttpClient) for endpoints. See for example [`TmiClient`] and [`HelixClient`] |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;helix&lt;/code&gt;&lt;/span&gt; | Enables [Helix](helix) endpoints |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;tmi&lt;/code&gt;&lt;/span&gt; | Enables [TMI](tmi) endpoints |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;eventsub&lt;/code&gt;&lt;/span&gt; | Enables deserializable structs for [EventSub](eventsub) |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;pubsub&lt;/code&gt;&lt;/span&gt; | Enables deserializable structs for [PubSub](pubsub) |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;hmac&lt;/code&gt;&lt;/span&gt; | Enable [message authentication](eventsub::Event::verify_payload) using HMAC on [EventSub](eventsub) |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;time&lt;/code&gt;&lt;/span&gt; | Enable time utilities on [Timestamp](types::Timestamp) |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;all&lt;/code&gt;&lt;/span&gt; | Enables all above features. Including reqwest and surf. Do not use this in production, it&#39;s better if you specify exactly what you need |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;ureq&lt;/code&gt;&lt;/span&gt; | Enables ureq for [`HttpClient`]. |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;surf&lt;/code&gt;&lt;/span&gt; | Enables surf for [`HttpClient`]. Note that this does not enable any default client backend, if you get a compile error, specify `surf` in your `Cargo.toml`. By default, `surf` uses feature `curl-client` |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;reqwest&lt;/code&gt;&lt;/span&gt; | Enables reqwest for [`HttpClient`]. Note that this does not enable any default TLS backend, if you get `invalid URL, scheme is not http`, specify `reqwest` in your Cargo.toml. By default, `reqwest` uses feature `default-tls` |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt; | Enables undocumented or experimental endpoints, topics or features. Breakage may occur, semver compatibility not guaranteed. |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;trace_unknown_fields&lt;/code&gt;&lt;/span&gt; | Logs ignored fields as `WARN` log messages where  applicable. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |</span>
-<span class="doccomment">//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;deny_unknown_fields&lt;/code&gt;&lt;/span&gt; | Adds `#[serde(deny_unknown_fields)]` on all applicable structs/enums. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |</span>
+</pre><pre class="rust"><code><span class="attribute">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
+#![cfg_attr(nightly, feature(doc_cfg))]
+#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![doc(html_root_url = <span class="string">&quot;https://docs.rs/twitch_api/0.6.1&quot;</span>)]
+</span><span class="doccomment">//! [![github]](https://github.com/twitch-rs/twitch_api)&amp;ensp;[![crates-io]](https://crates.io/crates/twitch_api)&amp;ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.6.1/twitch_api)
+//!
+//! [github]: https://img.shields.io/badge/github-twitch--rs/twitch__api-8da0cb?style=for-the-badge&amp;labelColor=555555&amp;logo=github&quot;
+//! [crates-io]: https://img.shields.io/crates/v/twitch_api.svg?style=for-the-badge&amp;color=fc8d62&amp;logo=rust&quot;
+//! [docs-rs-big]: https://img.shields.io/badge/docs.rs-twitch__api2-66c2a5?style=for-the-badge&amp;labelColor=555555&amp;logoColor=white&amp;logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxwYXRoIGZpbGw9IiNmNWY1ZjUiIGQ9Ik00ODguNiAyNTAuMkwzOTIgMjE0VjEwNS41YzAtMTUtOS4zLTI4LjQtMjMuNC0zMy43bC0xMDAtMzcuNWMtOC4xLTMuMS0xNy4xLTMuMS0yNS4zIDBsLTEwMCAzNy41Yy0xNC4xIDUuMy0yMy40IDE4LjctMjMuNCAzMy43VjIxNGwtOTYuNiAzNi4yQzkuMyAyNTUuNSAwIDI2OC45IDAgMjgzLjlWMzk0YzAgMTMuNiA3LjcgMjYuMSAxOS45IDMyLjJsMTAwIDUwYzEwLjEgNS4xIDIyLjEgNS4xIDMyLjIgMGwxMDMuOS01MiAxMDMuOSA1MmMxMC4xIDUuMSAyMi4xIDUuMSAzMi4yIDBsMTAwLTUwYzEyLjItNi4xIDE5LjktMTguNiAxOS45LTMyLjJWMjgzLjljMC0xNS05LjMtMjguNC0yMy40LTMzLjd6TTM1OCAyMTQuOGwtODUgMzEuOXYtNjguMmw4NS0zN3Y3My4zek0xNTQgMTA0LjFsMTAyLTM4LjIgMTAyIDM4LjJ2LjZsLTEwMiA0MS40LTEwMi00MS40di0uNnptODQgMjkxLjFsLTg1IDQyLjV2LTc5LjFsODUtMzguOHY3NS40em0wLTExMmwtMTAyIDQxLjQtMTAyLTQxLjR2LS42bDEwMi0zOC4yIDEwMiAzOC4ydi42em0yNDAgMTEybC04NSA0Mi41di03OS4xbDg1LTM4Ljh2NzUuNHptMC0xMTJsLTEwMiA0MS40LTEwMi00MS40di0uNmwxMDItMzguMiAxMDIgMzguMnYuNnoiPjwvcGF0aD48L3N2Zz4K&quot;
+//!
+//! &lt;br&gt;
+//!
+//! &lt;h5&gt;Rust library for talking with the new Twitch API aka. &quot;Helix&quot;, TMI and more! Use Twitch endpoints fearlessly!&lt;/h5&gt;
+//!
+//! # Examples
+//!
+//! Get information about a channel with the [`Get Channel Information`](crate::helix::channels::get_channel_information) helix endpoint.
+//!
+//! ```rust,no_run
+//! use twitch_api::{helix::channels::GetChannelInformationRequest, TwitchClient};
+//! use twitch_oauth2::{tokens::errors::AppAccessTokenError, AppAccessToken, Scope, TwitchToken};
+//! # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
+//!
+//! # #[tokio::main]
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+//! # let client_id = twitch_oauth2::ClientId::new(&quot;validclientid&quot;);
+//! # let client_secret = twitch_oauth2::ClientSecret::new(&quot;validclientsecret&quot;);
+//!
+//! let client: TwitchClient&lt;reqwest::Client&gt; = TwitchClient::default();
+//! let token =
+//!     AppAccessToken::get_app_access_token(&amp;client, client_id, client_secret, Scope::all())
+//!         .await?;
+//! let req = GetChannelInformationRequest::builder()
+//!     .broadcaster_id(&quot;27620241&quot;)
+//!     .build();
+//! println!(
+//!     &quot;{:?}&quot;,
+//!     &amp;client.helix.req_get(req, &amp;token).await?.data.unwrap().title
+//! );
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! There is also a convenience function for accessing channel information with a specified login name
+//!
+//! ```rust,no_run
+//! # use twitch_api::{TwitchClient, helix::channels::GetChannelInformationRequest};
+//! # use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::AppAccessTokenError};
+//! # #[tokio::main]
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+//! let client = TwitchClient::default();
+//! # let _:&amp;TwitchClient&lt;twitch_api::DummyHttpClient&gt; = &amp;client;
+//! # let client_id = twitch_oauth2::ClientId::new(&quot;validclientid&quot;.to_string());
+//! # let client_secret = twitch_oauth2::ClientSecret::new(&quot;validclientsecret&quot;.to_string());
+//! # let token =
+//! #   match AppAccessToken::get_app_access_token(&amp;client, client_id, client_secret, Scope::all()).await {
+//! #       Ok(t) =&gt; t,
+//! #       Err(AppAccessTokenError::Request(e)) =&gt; panic!(&quot;got error: {:?}&quot;, e),
+//! #       Err(e) =&gt; panic!(e),
+//! #   };
+//!
+//! println!(&quot;{:?}&quot;, &amp;client.helix.get_channel_from_login(&quot;twitch&quot;.to_string(), &amp;token).await?.unwrap().title);
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! # Features
+//!
+//! This crate provides almost no functionality by default, only exposing [`types`]. To enable more features, refer to below table.
+//!
+//! | Feature |         |
+//! | -------: | :------- |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;twitch_oauth2&lt;/code&gt;&lt;/span&gt; | Gives [scopes](twitch_oauth2::Scope) for endpoints and topics that are needed to call them. |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;client&lt;/code&gt;&lt;/span&gt; | Gives a [client abstraction](HttpClient) for endpoints. See for example [`TmiClient`] and [`HelixClient`] |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;helix&lt;/code&gt;&lt;/span&gt; | Enables [Helix](helix) endpoints |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;tmi&lt;/code&gt;&lt;/span&gt; | Enables [TMI](tmi) endpoints |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;eventsub&lt;/code&gt;&lt;/span&gt; | Enables deserializable structs for [EventSub](eventsub) |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;pubsub&lt;/code&gt;&lt;/span&gt; | Enables deserializable structs for [PubSub](pubsub) |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;hmac&lt;/code&gt;&lt;/span&gt; | Enable [message authentication](eventsub::Event::verify_payload) using HMAC on [EventSub](eventsub) |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;time&lt;/code&gt;&lt;/span&gt; | Enable time utilities on [Timestamp](types::Timestamp) |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;all&lt;/code&gt;&lt;/span&gt; | Enables all above features. Including reqwest and surf. Do not use this in production, it&#39;s better if you specify exactly what you need |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;ureq&lt;/code&gt;&lt;/span&gt; | Enables ureq for [`HttpClient`]. |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;surf&lt;/code&gt;&lt;/span&gt; | Enables surf for [`HttpClient`]. Note that this does not enable any default client backend, if you get a compile error, specify `surf` in your `Cargo.toml`. By default, `surf` uses feature `curl-client` |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;reqwest&lt;/code&gt;&lt;/span&gt; | Enables reqwest for [`HttpClient`]. Note that this does not enable any default TLS backend, if you get `invalid URL, scheme is not http`, specify `reqwest` in your Cargo.toml. By default, `reqwest` uses feature `default-tls` |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt; | Enables undocumented or experimental endpoints, topics or features. Breakage may occur, semver compatibility not guaranteed. |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;trace_unknown_fields&lt;/code&gt;&lt;/span&gt; | Logs ignored fields as `WARN` log messages where  applicable. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
+//! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;deny_unknown_fields&lt;/code&gt;&lt;/span&gt; | Adds `#[serde(deny_unknown_fields)]` on all applicable structs/enums. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
 
-<span class="comment">// FIXME: This is a hack to prevent early pass failing on</span>
-<span class="comment">// `arbitrary expressions in key-value attributes are unstable` on stable rust pre 1.54.</span>
-<span class="comment">// Remove when MSRV 1.54 (or when  hits stable)</span>
-<span class="comment">// https://github.com/rust-lang/rust/issues/82768</span>
-<span class="doccomment">/// Doc test for README</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">doctest</span>, <span class="ident">nightly</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;all&quot;</span>), <span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">doctest</span>, <span class="ident">nightly</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;all&quot;</span>), <span class="ident">doc</span> <span class="op">=</span> <span class="macro">include_str!</span>(<span class="string">&quot;../README.md&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReadmeDoctests</span>;
+</span><span class="comment">// FIXME: This is a hack to prevent early pass failing on
+// `arbitrary expressions in key-value attributes are unstable` on stable rust pre 1.54.
+// Remove when MSRV 1.54 (or when  hits stable)
+// https://github.com/rust-lang/rust/issues/82768
+</span><span class="doccomment">/// Doc test for README
+</span><span class="attribute">#[cfg_attr(all(doctest, nightly, feature = <span class="string">&quot;all&quot;</span>), cfg_attr(all(doctest, nightly, feature = <span class="string">&quot;all&quot;</span>), doc = <span class="macro">include_str!</span>(<span class="string">&quot;../README.md&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">pub struct </span>ReadmeDoctests;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">twitch_types</span> <span class="kw">as</span> <span class="ident">types</span>;
+<span class="kw">pub use </span>twitch_types <span class="kw">as </span>types;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">helix</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tmi</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;helix&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;helix&quot;</span>)))]
+</span><span class="kw">pub mod </span>helix;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;tmi&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;tmi&quot;</span>)))]
+</span><span class="kw">pub mod </span>tmi;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pubsub&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pubsub&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pubsub</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;pubsub&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;pubsub&quot;</span>)))]
+</span><span class="kw">pub mod </span>pubsub;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;eventsub&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;eventsub&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">eventsub</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;eventsub&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;eventsub&quot;</span>)))]
+</span><span class="kw">pub mod </span>eventsub;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::helix::HelixClient</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::tmi::TmiClient</span>;
+<span class="attribute">#[cfg(all(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;client&quot;</span>))]
+#[doc(inline)]
+</span><span class="kw">pub use </span><span class="kw">crate</span>::helix::HelixClient;
+<span class="attribute">#[cfg(all(feature = <span class="string">&quot;tmi&quot;</span>, feature = <span class="string">&quot;client&quot;</span>))]
+#[doc(inline)]
+</span><span class="kw">pub use </span><span class="kw">crate</span>::tmi::TmiClient;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>, <span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">no_inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">twitch_oauth2</span>;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;twitch_oauth2&quot;</span>, all(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;client&quot;</span>)))]
+#[doc(no_inline)]
+</span><span class="kw">pub use </span>twitch_oauth2;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">client</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">client::Client</span> <span class="kw">as</span> <span class="ident">HttpClient</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;client&quot;</span>)))]
+</span><span class="kw">pub mod </span>client;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;client&quot;</span>)))]
+</span><span class="kw">pub use </span>client::Client <span class="kw">as </span>HttpClient;
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">client::DummyHttpClient</span>;
+<span class="attribute">#[doc(hidden)]
+#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+</span><span class="kw">pub use </span>client::DummyHttpClient;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pubsub&quot;</span>))]</span>
-<span class="doccomment">/// Generate a url with a default if `mock_api` feature is disabled, or env var is not defined or is invalid utf8</span>
-<span class="macro">macro_rules!</span> <span class="ident">mock_env_url</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>:<span class="ident">literal</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">default</span>:<span class="ident">expr</span> $(,)<span class="question-mark">?</span>) =&gt; {
-        <span class="ident">once_cell::sync::Lazy::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mock_api&quot;</span>)]</span>
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">url</span>) <span class="op">=</span> <span class="ident">std::env::var</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>) {
-                <span class="kw">return</span> <span class="ident">url::Url::parse</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>).<span class="ident">expect</span>(<span class="macro">concat!</span>(
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>, feature = <span class="string">&quot;pubsub&quot;</span>))]
+</span><span class="doccomment">/// Generate a url with a default if `mock_api` feature is disabled, or env var is not defined or is invalid utf8
+</span><span class="macro">macro_rules! </span>mock_env_url {
+    (<span class="macro-nonterminal">$var</span>:literal, <span class="macro-nonterminal">$default</span>:expr $(,)<span class="question-mark">?</span>) =&gt; {
+        once_cell::sync::Lazy::new(<span class="kw">move </span>|| {
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;mock_api&quot;</span>)]
+            </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(url) = std::env::var(<span class="macro-nonterminal">$var</span>) {
+                <span class="kw">return </span>url::Url::parse(<span class="kw-2">&amp;</span>url).expect(<span class="macro">concat!</span>(
                     <span class="string">&quot;URL could not be made from `env:&quot;</span>,
-                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>,
-                    <span class="string">&quot;`.&quot;</span>
-                ));
+                    <span class="macro-nonterminal">$var</span>,
+                    <span class="string">&quot;`.&quot;
+                </span>));
             };
-            <span class="ident">url::Url::parse</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">default</span>).<span class="ident">unwrap</span>()
+            url::Url::parse(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$default</span>).unwrap()
         })
     };
 }
 
-<span class="doccomment">/// Location of Twitch Helix</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_HELIX_URL`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Set the environment variable `TWITCH_HELIX_URL` to `http://localhost:8080/mock/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">TWITCH_HELIX_URL</span>: <span class="ident">once_cell::sync::Lazy</span><span class="op">&lt;</span><span class="ident">url::Url</span><span class="op">&gt;</span> <span class="op">=</span>
+<span class="doccomment">/// Location of Twitch Helix
+///
+/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_HELIX_URL`.
+///
+/// # Examples
+///
+/// Set the environment variable `TWITCH_HELIX_URL` to `http://localhost:8080/mock/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.
+</span><span class="attribute">#[cfg(feature = <span class="string">&quot;helix&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;helix&quot;</span>)))]
+</span><span class="kw">pub static </span>TWITCH_HELIX_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
     <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_HELIX_URL&quot;</span>, <span class="string">&quot;https://api.twitch.tv/helix/&quot;</span>);
-<span class="doccomment">/// Location of Twitch TMI</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_TMI_URL`.</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">TWITCH_TMI_URL</span>: <span class="ident">once_cell::sync::Lazy</span><span class="op">&lt;</span><span class="ident">url::Url</span><span class="op">&gt;</span> <span class="op">=</span>
+<span class="doccomment">/// Location of Twitch TMI
+///
+/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_TMI_URL`.
+</span><span class="attribute">#[cfg(feature = <span class="string">&quot;tmi&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;tmi&quot;</span>)))]
+</span><span class="kw">pub static </span>TWITCH_TMI_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
     <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_TMI_URL&quot;</span>, <span class="string">&quot;https://tmi.twitch.tv/&quot;</span>);
-<span class="doccomment">/// Location to twitch PubSub</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_PUBSUB_URL`.</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pubsub&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pubsub&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">TWITCH_PUBSUB_URL</span>: <span class="ident">once_cell::sync::Lazy</span><span class="op">&lt;</span><span class="ident">url::Url</span><span class="op">&gt;</span> <span class="op">=</span>
+<span class="doccomment">/// Location to twitch PubSub
+///
+/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_PUBSUB_URL`.
+</span><span class="attribute">#[cfg(feature = <span class="string">&quot;pubsub&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;pubsub&quot;</span>)))]
+</span><span class="kw">pub static </span>TWITCH_PUBSUB_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
     <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_PUBSUB_URL&quot;</span>, <span class="string">&quot;wss://pubsub-edge.twitch.tv&quot;</span>);
 
-<span class="doccomment">/// Client for Twitch APIs.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Most [http clients][crate::HttpClient] will be able to use the `&#39;static` lifetime</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,no_run</span>
-<span class="doccomment">/// # use twitch_api::{TwitchClient}; pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}</span>
-<span class="doccomment">/// pub struct MyStruct {</span>
-<span class="doccomment">///     twitch: TwitchClient&lt;&#39;static, reqwest::Client&gt;,</span>
-<span class="doccomment">///     token: twitch_oauth2::AppAccessToken,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// // etc</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// See [`client`] for implemented clients, you can also define your own if needed.</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(
-    <span class="ident">nightly</span>,
-    <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>))))
-)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>
-<span class="kw">where</span> <span class="ident">C</span>: <span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Helix endpoint. See [`helix`]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">helix</span>: <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// TMI endpoint. See [`tmi`]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">tmi</span>: <span class="ident">TmiClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Client for Twitch APIs.
+///
+/// Most [http clients][crate::HttpClient] will be able to use the `&#39;static` lifetime
+///
+/// ```rust,no_run
+/// # use twitch_api::{TwitchClient}; pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
+/// pub struct MyStruct {
+///     twitch: TwitchClient&lt;&#39;static, reqwest::Client&gt;,
+///     token: twitch_oauth2::AppAccessToken,
+/// }
+/// // etc
+/// ```
+///
+/// See [`client`] for implemented clients, you can also define your own if needed.
+</span><span class="attribute">#[cfg(all(feature = <span class="string">&quot;client&quot;</span>, any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>)))]
+#[cfg_attr(
+    nightly,
+    doc(cfg(all(feature = <span class="string">&quot;client&quot;</span>, any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>))))
+)]
+#[derive(Clone)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>TwitchClient&lt;<span class="lifetime">&#39;a</span>, C&gt;
+<span class="kw">where </span>C: HttpClient&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// Helix endpoint. See [`helix`]
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;helix&quot;</span>)]
+    </span><span class="kw">pub </span>helix: HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt;,
+    <span class="doccomment">/// TMI endpoint. See [`tmi`]
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;tmi&quot;</span>)]
+    </span><span class="kw">pub </span>tmi: TmiClient&lt;<span class="lifetime">&#39;a</span>, C&gt;,
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)))]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">C</span>: <span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new [`TwitchClient`]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">C</span><span class="op">&gt;</span>
-    <span class="kw">where</span> <span class="ident">C</span>: <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">client::ClientDefault</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">C::default_client</span>();
-        <span class="ident"><span class="self">Self</span>::with_client</span>(<span class="ident">client</span>)
+<span class="attribute">#[cfg(all(feature = <span class="string">&quot;client&quot;</span>, any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>)))]
+</span><span class="kw">impl</span>&lt;C: HttpClient&lt;<span class="lifetime">&#39;static</span>&gt;&gt; TwitchClient&lt;<span class="lifetime">&#39;static</span>, C&gt; {
+    <span class="doccomment">/// Create a new [`TwitchClient`]
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>))]
+    </span><span class="kw">pub fn </span>new() -&gt; TwitchClient&lt;<span class="lifetime">&#39;static</span>, C&gt;
+    <span class="kw">where </span>C: Clone + client::ClientDefault&lt;<span class="lifetime">&#39;static</span>&gt; {
+        <span class="kw">let </span>client = C::default_client();
+        <span class="self">Self</span>::with_client(client)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)))]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">C</span>: <span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">client::ClientDefault</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> { <span class="ident"><span class="self">Self</span>::new</span>() }
+<span class="attribute">#[cfg(all(feature = <span class="string">&quot;client&quot;</span>, any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>)))]
+</span><span class="kw">impl</span>&lt;C: HttpClient&lt;<span class="lifetime">&#39;static</span>&gt; + client::ClientDefault&lt;<span class="lifetime">&#39;static</span>&gt;&gt; Default <span class="kw">for </span>TwitchClient&lt;<span class="lifetime">&#39;static</span>, C&gt; {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::new() }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)))]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident">HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new [`TwitchClient`] with an existing [`HttpClient`]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(
-        <span class="ident">nightly</span>,
-        <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>))))
-    )]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_client</span>(<span class="ident">client</span>: <span class="ident">C</span>) -&gt; <span class="ident">TwitchClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>
-    <span class="kw">where</span> <span class="ident">C</span>: <span class="ident">Clone</span> {
-        <span class="comment">// FIXME: This Clone is not used when only using one of the endpoints</span>
-        <span class="ident">TwitchClient</span> {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)]</span>
-            <span class="ident">tmi</span>: <span class="ident">TmiClient::with_client</span>(<span class="ident">client</span>.<span class="ident">clone</span>()),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>)]</span>
-            <span class="ident">helix</span>: <span class="ident">HelixClient::with_client</span>(<span class="ident">client</span>),
+<span class="attribute">#[cfg(all(feature = <span class="string">&quot;client&quot;</span>, any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>)))]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, C: HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt; TwitchClient&lt;<span class="lifetime">&#39;a</span>, C&gt; {
+    <span class="doccomment">/// Create a new [`TwitchClient`] with an existing [`HttpClient`]
+    </span><span class="attribute">#[cfg_attr(
+        nightly,
+        doc(cfg(all(feature = <span class="string">&quot;client&quot;</span>, any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>))))
+    )]
+    #[cfg(any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>))]
+    </span><span class="kw">pub fn </span>with_client(client: C) -&gt; TwitchClient&lt;<span class="lifetime">&#39;a</span>, C&gt;
+    <span class="kw">where </span>C: Clone {
+        <span class="comment">// FIXME: This Clone is not used when only using one of the endpoints
+        </span>TwitchClient {
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;tmi&quot;</span>)]
+            </span>tmi: TmiClient::with_client(client.clone()),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;helix&quot;</span>)]
+            </span>helix: HelixClient::with_client(client),
         }
     }
 
-    <span class="doccomment">/// Retrieve a reference of the [`HttpClient`][crate::HttpClient] inside this [`TwitchClient`]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_client</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">C</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>)]</span>
-        {
-            <span class="self">self</span>.<span class="ident">helix</span>.<span class="ident">get_client</span>()
+    <span class="doccomment">/// Retrieve a reference of the [`HttpClient`][crate::HttpClient] inside this [`TwitchClient`]
+    </span><span class="kw">pub fn </span>get_client(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>C {
+        <span class="attribute">#[cfg(feature = <span class="string">&quot;helix&quot;</span>)]
+        </span>{
+            <span class="self">self</span>.helix.get_client()
         }
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>))]</span>
-        {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tmi&quot;</span>)]</span>
-            {
-                <span class="self">self</span>.<span class="ident">tmi</span>.<span class="ident">get_client</span>()
+        <span class="attribute">#[cfg(not(feature = <span class="string">&quot;helix&quot;</span>))]
+        </span>{
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;tmi&quot;</span>)]
+            </span>{
+                <span class="self">self</span>.tmi.get_client()
             }
         }
     }
 }
 
-<span class="doccomment">/// A deserialization error</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde_json&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror::Error</span>, <span class="ident">displaydoc::Display</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DeserError</span> {
-    <span class="doccomment">/// could not deserialize, error on [{path}]. {error}</span>
-    <span class="ident">PathError</span> {
-        <span class="doccomment">/// Path to where the erroring key/value is</span>
-        <span class="ident">path</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// Error for the key/value</span>
-        <span class="attribute">#[<span class="ident">source</span>]</span>
-        <span class="ident">error</span>: <span class="ident">serde_json::Error</span>,
+<span class="doccomment">/// A deserialization error
+</span><span class="attribute">#[cfg(feature = <span class="string">&quot;serde_json&quot;</span>)]
+#[derive(Debug, thiserror::Error, displaydoc::Display)]
+</span><span class="kw">pub enum </span>DeserError {
+    <span class="doccomment">/// could not deserialize, error on [{path}]. {error}
+    </span>PathError {
+        <span class="doccomment">/// Path to where the erroring key/value is
+        </span>path: String,
+        <span class="doccomment">/// Error for the key/value
+        </span><span class="attribute">#[source]
+        </span>error: serde_json::Error,
     },
 }
 
-<span class="doccomment">/// Parse a string as `T`, logging ignored fields and giving a more detailed error message on parse errors</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The log_ignored argument decides if a trace of ignored value should be emitted</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde_json&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_json</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">serde::Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-    <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span> <span class="ident">log_ignored</span>: <span class="ident">bool</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">DeserError</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trace_unknown_fields&quot;</span>)]</span>
-    {
-        <span class="kw">let</span> <span class="ident">jd</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">serde_json::Deserializer::from_str</span>(<span class="ident">s</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">track</span> <span class="op">=</span> <span class="ident">serde_path_to_error::Track::new</span>();
-        <span class="kw">let</span> <span class="ident">pathd</span> <span class="op">=</span> <span class="ident">serde_path_to_error::Deserializer::new</span>(<span class="ident">jd</span>, <span class="kw-2">&amp;mut</span> <span class="ident">track</span>);
-        <span class="kw">if</span> <span class="ident">log_ignored</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fun</span> <span class="op">=</span> <span class="op">|</span><span class="ident">path</span>: <span class="ident">serde_ignored::Path</span><span class="op">|</span> {
-                <span class="macro">tracing::warn!</span>(<span class="ident">key</span><span class="op">=</span><span class="op">%</span><span class="ident">path</span>,<span class="string">&quot;Found ignored key&quot;</span>);
+<span class="doccomment">/// Parse a string as `T`, logging ignored fields and giving a more detailed error message on parse errors
+///
+/// The log_ignored argument decides if a trace of ignored value should be emitted
+</span><span class="attribute">#[cfg(feature = <span class="string">&quot;serde_json&quot;</span>)]
+</span><span class="kw">pub fn </span>parse_json&lt;<span class="lifetime">&#39;a</span>, T: serde::Deserialize&lt;<span class="lifetime">&#39;a</span>&gt;&gt;(
+    s: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    <span class="attribute">#[allow(unused_variables)] </span>log_ignored: bool,
+) -&gt; <span class="prelude-ty">Result</span>&lt;T, DeserError&gt; {
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;trace_unknown_fields&quot;</span>)]
+    </span>{
+        <span class="kw">let </span>jd = <span class="kw-2">&amp;mut </span>serde_json::Deserializer::from_str(s);
+        <span class="kw">let </span><span class="kw-2">mut </span>track = serde_path_to_error::Track::new();
+        <span class="kw">let </span>pathd = serde_path_to_error::Deserializer::new(jd, <span class="kw-2">&amp;mut </span>track);
+        <span class="kw">if </span>log_ignored {
+            <span class="kw">let </span><span class="kw-2">mut </span>fun = |path: serde_ignored::Path| {
+                <span class="macro">tracing::warn!</span>(key=%path,<span class="string">&quot;Found ignored key&quot;</span>);
             };
-            <span class="ident">serde_ignored::deserialize</span>(<span class="ident">pathd</span>, <span class="kw-2">&amp;mut</span> <span class="ident">fun</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">DeserError::PathError</span> {
-                <span class="ident">path</span>: <span class="ident">track</span>.<span class="ident">path</span>().<span class="ident">to_string</span>(),
-                <span class="ident">error</span>: <span class="ident">e</span>,
+            serde_ignored::deserialize(pathd, <span class="kw-2">&amp;mut </span>fun).map_err(|e| DeserError::PathError {
+                path: track.path().to_string(),
+                error: e,
             })
-        } <span class="kw">else</span> {
-            <span class="ident">T::deserialize</span>(<span class="ident">pathd</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">DeserError::PathError</span> {
-                <span class="ident">path</span>: <span class="ident">track</span>.<span class="ident">path</span>().<span class="ident">to_string</span>(),
-                <span class="ident">error</span>: <span class="ident">e</span>,
+        } <span class="kw">else </span>{
+            T::deserialize(pathd).map_err(|e| DeserError::PathError {
+                path: track.path().to_string(),
+                error: e,
             })
         }
     }
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trace_unknown_fields&quot;</span>))]</span>
-    {
-        <span class="kw">let</span> <span class="ident">jd</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">serde_json::Deserializer::from_str</span>(<span class="ident">s</span>);
-        <span class="ident">serde_path_to_error::deserialize</span>(<span class="ident">jd</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">DeserError::PathError</span> {
-            <span class="ident">path</span>: <span class="ident">e</span>.<span class="ident">path</span>().<span class="ident">to_string</span>(),
-            <span class="ident">error</span>: <span class="ident">e</span>.<span class="ident">into_inner</span>(),
+    <span class="attribute">#[cfg(not(feature = <span class="string">&quot;trace_unknown_fields&quot;</span>))]
+    </span>{
+        <span class="kw">let </span>jd = <span class="kw-2">&amp;mut </span>serde_json::Deserializer::from_str(s);
+        serde_path_to_error::deserialize(jd).map_err(|e| DeserError::PathError {
+            path: e.path().to_string(),
+            error: e.into_inner(),
         })
     }
 }
 
-<span class="doccomment">/// Parse a json Value as `T`, logging ignored fields and giving a more detailed error message on parse errors</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde_json&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_json_value</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">serde::Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-    <span class="ident">value</span>: <span class="ident">serde_json::Value</span>,
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span> <span class="ident">log_ignored</span>: <span class="ident">bool</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">DeserError</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trace_unknown_fields&quot;</span>)]</span>
-    {
-        <span class="kw">let</span> <span class="ident">de</span> <span class="op">=</span> <span class="ident">serde::de::IntoDeserializer::into_deserializer</span>(<span class="ident">value</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">track</span> <span class="op">=</span> <span class="ident">serde_path_to_error::Track::new</span>();
-        <span class="kw">let</span> <span class="ident">pathd</span> <span class="op">=</span> <span class="ident">serde_path_to_error::Deserializer::new</span>(<span class="ident">de</span>, <span class="kw-2">&amp;mut</span> <span class="ident">track</span>);
-        <span class="kw">if</span> <span class="ident">log_ignored</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fun</span> <span class="op">=</span> <span class="op">|</span><span class="ident">path</span>: <span class="ident">serde_ignored::Path</span><span class="op">|</span> {
-                <span class="macro">tracing::warn!</span>(<span class="ident">key</span><span class="op">=</span><span class="op">%</span><span class="ident">path</span>,<span class="string">&quot;Found ignored key&quot;</span>);
+<span class="doccomment">/// Parse a json Value as `T`, logging ignored fields and giving a more detailed error message on parse errors
+</span><span class="attribute">#[cfg(feature = <span class="string">&quot;serde_json&quot;</span>)]
+</span><span class="kw">pub fn </span>parse_json_value&lt;<span class="lifetime">&#39;a</span>, T: serde::Deserialize&lt;<span class="lifetime">&#39;a</span>&gt;&gt;(
+    value: serde_json::Value,
+    <span class="attribute">#[allow(unused_variables)] </span>log_ignored: bool,
+) -&gt; <span class="prelude-ty">Result</span>&lt;T, DeserError&gt; {
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;trace_unknown_fields&quot;</span>)]
+    </span>{
+        <span class="kw">let </span>de = serde::de::IntoDeserializer::into_deserializer(value);
+        <span class="kw">let </span><span class="kw-2">mut </span>track = serde_path_to_error::Track::new();
+        <span class="kw">let </span>pathd = serde_path_to_error::Deserializer::new(de, <span class="kw-2">&amp;mut </span>track);
+        <span class="kw">if </span>log_ignored {
+            <span class="kw">let </span><span class="kw-2">mut </span>fun = |path: serde_ignored::Path| {
+                <span class="macro">tracing::warn!</span>(key=%path,<span class="string">&quot;Found ignored key&quot;</span>);
             };
-            <span class="ident">serde_ignored::deserialize</span>(<span class="ident">pathd</span>, <span class="kw-2">&amp;mut</span> <span class="ident">fun</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">DeserError::PathError</span> {
-                <span class="ident">path</span>: <span class="ident">track</span>.<span class="ident">path</span>().<span class="ident">to_string</span>(),
-                <span class="ident">error</span>: <span class="ident">e</span>,
+            serde_ignored::deserialize(pathd, <span class="kw-2">&amp;mut </span>fun).map_err(|e| DeserError::PathError {
+                path: track.path().to_string(),
+                error: e,
             })
-        } <span class="kw">else</span> {
-            <span class="ident">T::deserialize</span>(<span class="ident">pathd</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">DeserError::PathError</span> {
-                <span class="ident">path</span>: <span class="ident">track</span>.<span class="ident">path</span>().<span class="ident">to_string</span>(),
-                <span class="ident">error</span>: <span class="ident">e</span>,
+        } <span class="kw">else </span>{
+            T::deserialize(pathd).map_err(|e| DeserError::PathError {
+                path: track.path().to_string(),
+                error: e,
             })
         }
     }
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trace_unknown_fields&quot;</span>))]</span>
-    {
-        <span class="kw">let</span> <span class="ident">de</span> <span class="op">=</span> <span class="ident">serde::de::IntoDeserializer::into_deserializer</span>(<span class="ident">value</span>);
-        <span class="ident">serde_path_to_error::deserialize</span>(<span class="ident">de</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">DeserError::PathError</span> {
-            <span class="ident">path</span>: <span class="ident">e</span>.<span class="ident">path</span>().<span class="ident">to_string</span>(),
-            <span class="ident">error</span>: <span class="ident">e</span>.<span class="ident">into_inner</span>(),
+    <span class="attribute">#[cfg(not(feature = <span class="string">&quot;trace_unknown_fields&quot;</span>))]
+    </span>{
+        <span class="kw">let </span>de = serde::de::IntoDeserializer::into_deserializer(value);
+        serde_path_to_error::deserialize(de).map_err(|e| DeserError::PathError {
+            path: e.path().to_string(),
+            error: e.into_inner(),
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pubsub&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;eventsub&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="doccomment">/// Deserialize &#39;null&#39; as &lt;T as Default&gt;::Default</span>
-<span class="kw">fn</span> <span class="ident">deserialize_default_from_null</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">D</span>: <span class="ident">serde::Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
-    <span class="ident">T</span>: <span class="ident">serde::Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Default</span>, {
-    <span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
-    <span class="prelude-val">Ok</span>(<span class="ident">Option::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>.<span class="ident">unwrap_or_default</span>())
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;pubsub&quot;</span>, feature = <span class="string">&quot;eventsub&quot;</span>))]
+#[allow(dead_code)]
+</span><span class="doccomment">/// Deserialize &#39;null&#39; as &lt;T as Default&gt;::Default
+</span><span class="kw">fn </span>deserialize_default_from_null&lt;<span class="lifetime">&#39;de</span>, D, T&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;T, D::Error&gt;
+<span class="kw">where
+    </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+    T: serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; + Default, {
+    <span class="kw">use </span>serde::Deserialize;
+    <span class="prelude-val">Ok</span>(Option::deserialize(deserializer)<span class="question-mark">?</span>.unwrap_or_default())
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">roundtrip</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">serde::de::DeserializeOwned</span> <span class="op">+</span> <span class="ident">serde::Serialize</span><span class="op">&gt;</span>(<span class="ident">val</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) {
-        <span class="ident">serde_json::from_slice</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">serde_json::to_vec</span>(<span class="ident">val</span>).<span class="ident">expect</span>(<span class="string">&quot;could not make into json&quot;</span>))
-            .<span class="ident">expect</span>(<span class="string">&quot;could not convert back from json&quot;</span>);
-        <span class="ident">serde_cbor::from_slice</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-            <span class="kw-2">&amp;</span><span class="ident">serde_cbor::to_vec</span>(<span class="ident">val</span>).<span class="ident">expect</span>(<span class="string">&quot;could not make into cbor bytes&quot;</span>),
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">pub mod </span>tests {
+    <span class="attribute">#[track_caller]
+    </span><span class="kw">pub fn </span>roundtrip&lt;T: serde::de::DeserializeOwned + serde::Serialize&gt;(val: <span class="kw-2">&amp;</span>T) {
+        serde_json::from_slice::&lt;T&gt;(<span class="kw-2">&amp;</span>serde_json::to_vec(val).expect(<span class="string">&quot;could not make into json&quot;</span>))
+            .expect(<span class="string">&quot;could not convert back from json&quot;</span>);
+        serde_cbor::from_slice::&lt;T&gt;(
+            <span class="kw-2">&amp;</span>serde_cbor::to_vec(val).expect(<span class="string">&quot;could not make into cbor bytes&quot;</span>),
         )
-        .<span class="ident">expect</span>(<span class="string">&quot;could not convert back from cbor&quot;</span>);
+        .expect(<span class="string">&quot;could not convert back from cbor&quot;</span>);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

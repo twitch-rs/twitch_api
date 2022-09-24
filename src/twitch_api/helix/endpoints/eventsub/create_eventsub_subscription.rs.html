@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/eventsub/create_eventsub_subscription.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>create_eventsub_subscription.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/eventsub/create_eventsub_subscription.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>create_eventsub_subscription.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -247,218 +247,218 @@
 <span id="247">247</span>
 <span id="248">248</span>
 <span id="249">249</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Creates an EventSub subscription.</span>
-<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::eventsub</span>::{<span class="ident">EventSubscription</span>, <span class="ident">EventType</span>, <span class="ident">Status</span>, <span class="ident">Transport</span>, <span class="ident">TransportResponse</span>};
+</pre><pre class="rust"><code><span class="doccomment">//! Creates an EventSub subscription.
+</span><span class="kw">use super</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::eventsub::{EventSubscription, EventType, Status, Transport, TransportResponse};
 
-<span class="doccomment">/// Query Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">typed_builder::TypedBuilder</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateEventSubSubscriptionRequest</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">EventSubscription</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">skip</span>), <span class="ident">default</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip</span>)]</span>
-    <span class="ident">phantom</span>: <span class="ident">std::marker::PhantomData</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Query Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
+///
+/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
+</span><span class="attribute">#[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>CreateEventSubSubscriptionRequest&lt;E: EventSubscription&gt; {
+    <span class="attribute">#[builder(setter(skip), default)]
+    #[serde(skip)]
+    </span>phantom: std::marker::PhantomData&lt;E&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">EventSubscription</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">CreateEventSubSubscriptionRequest</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">phantom</span>: <span class="ident">Default::default</span>(),
+<span class="kw">impl</span>&lt;E: EventSubscription&gt; Default <span class="kw">for </span>CreateEventSubSubscriptionRequest&lt;E&gt; {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            phantom: Default::default(),
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">EventSubscription</span><span class="op">&gt;</span> <span class="ident">helix::Request</span> <span class="kw">for</span> <span class="ident">CreateEventSubSubscriptionRequest</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">CreateEventSubSubscription</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>;
+<span class="kw">impl</span>&lt;E: EventSubscription&gt; helix::Request <span class="kw">for </span>CreateEventSubSubscriptionRequest&lt;E&gt; {
+    <span class="kw">type </span>Response = CreateEventSubSubscription&lt;E&gt;;
 
-    <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;eventsub/subscriptions&quot;</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-    <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[];
+    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;eventsub/subscriptions&quot;</span>;
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
 }
 
-<span class="doccomment">/// Body Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Notes</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This body is quite different from the official body. If you want the true representation in text, see [`helix::HelixRequestBody::try_to_body`] on [`CreateEventSubSubscriptionRequest&lt;E: EventSubscription&gt;`](CreateEventSubSubscriptionRequest)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">typed_builder::TypedBuilder</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateEventSubSubscriptionBody</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">EventSubscription</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Subscription that will be created</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">bound</span>(<span class="ident">deserialize</span> <span class="op">=</span> <span class="string">&quot;E: EventSubscription&quot;</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">subscription</span>: <span class="ident">E</span>,
-    <span class="doccomment">/// The notification delivery specific information</span>
-    <span class="kw">pub</span> <span class="ident">transport</span>: <span class="ident">Transport</span>,
+<span class="doccomment">/// Body Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
+///
+/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
+///
+/// # Notes
+///
+/// This body is quite different from the official body. If you want the true representation in text, see [`helix::HelixRequestBody::try_to_body`] on [`CreateEventSubSubscriptionRequest&lt;E: EventSubscription&gt;`](CreateEventSubSubscriptionRequest)
+</span><span class="attribute">#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Clone, Debug)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>CreateEventSubSubscriptionBody&lt;E: EventSubscription&gt; {
+    <span class="doccomment">/// Subscription that will be created
+    </span><span class="attribute">#[serde(bound(deserialize = <span class="string">&quot;E: EventSubscription&quot;</span>))]
+    </span><span class="kw">pub </span>subscription: E,
+    <span class="doccomment">/// The notification delivery specific information
+    </span><span class="kw">pub </span>transport: Transport,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">EventSubscription</span><span class="op">&gt;</span> <span class="ident">helix::HelixRequestBody</span> <span class="kw">for</span> <span class="ident">CreateEventSubSubscriptionBody</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">try_to_body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span>, <span class="ident">helix::BodyError</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">IEventSubRequestBody</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-            <span class="ident">r#type</span>: <span class="ident">EventType</span>,
-            <span class="ident">version</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-            <span class="ident">condition</span>: <span class="ident">serde_json::Value</span>,
-            <span class="ident">transport</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Transport</span>,
+<span class="kw">impl</span>&lt;E: EventSubscription&gt; helix::HelixRequestBody <span class="kw">for </span>CreateEventSubSubscriptionBody&lt;E&gt; {
+    <span class="kw">fn </span>try_to_body(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;hyper::body::Bytes, helix::BodyError&gt; {
+        <span class="attribute">#[derive(PartialEq, Serialize, Debug)]
+        </span><span class="kw">struct </span>IEventSubRequestBody&lt;<span class="lifetime">&#39;a</span>&gt; {
+            r#type: EventType,
+            version: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+            condition: serde_json::Value,
+            transport: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Transport,
         }
 
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">IEventSubRequestBody</span> {
-            <span class="ident">r#type</span>: <span class="ident">E::EVENT_TYPE</span>,
-            <span class="ident">version</span>: <span class="ident">E::VERSION</span>,
-            <span class="ident">condition</span>: <span class="self">self</span>.<span class="ident">subscription</span>.<span class="ident">condition</span>()<span class="question-mark">?</span>,
-            <span class="ident">transport</span>: <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">transport</span>,
+        <span class="kw">let </span>b = IEventSubRequestBody {
+            r#type: E::EVENT_TYPE,
+            version: E::VERSION,
+            condition: <span class="self">self</span>.subscription.condition()<span class="question-mark">?</span>,
+            transport: <span class="kw-2">&amp;</span><span class="self">self</span>.transport,
         };
-        <span class="ident">serde_json::to_vec</span>(<span class="kw-2">&amp;</span><span class="ident">b</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>).<span class="ident">map</span>(<span class="ident">Into::into</span>)
+        serde_json::to_vec(<span class="kw-2">&amp;</span>b).map_err(Into::into).map(Into::into)
     }
 }
 
-<span class="comment">// FIXME: Builder?</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">EventSubscription</span><span class="op">&gt;</span> <span class="ident">CreateEventSubSubscriptionBody</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new [`CreateEventSubSubscriptionBody`]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">subscription</span>: <span class="ident">E</span>, <span class="ident">transport</span>: <span class="ident">Transport</span>) -&gt; <span class="ident">CreateEventSubSubscriptionBody</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="ident">CreateEventSubSubscriptionBody</span> {
-            <span class="ident">subscription</span>,
-            <span class="ident">transport</span>,
+<span class="comment">// FIXME: Builder?
+</span><span class="kw">impl</span>&lt;E: EventSubscription&gt; CreateEventSubSubscriptionBody&lt;E&gt; {
+    <span class="doccomment">/// Create a new [`CreateEventSubSubscriptionBody`]
+    </span><span class="kw">pub fn </span>new(subscription: E, transport: Transport) -&gt; CreateEventSubSubscriptionBody&lt;E&gt; {
+        CreateEventSubSubscriptionBody {
+            subscription,
+            transport,
         }
     }
 }
 
-<span class="doccomment">/// Return Values for [Create EventSub Subscription](super::create_eventsub_subscription)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateEventSubSubscription</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">EventSubscription</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// ID of the subscription created.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">types::EventSubId</span>,
-    <span class="doccomment">/// Status of the subscription.</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">Status</span>,
-    <span class="doccomment">/// The category of the subscription that was created.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">type_</span>: <span class="ident">EventType</span>,
-    <span class="doccomment">/// The version of the subscription type that was created.</span>
-    <span class="kw">pub</span> <span class="ident">version</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// JSON object specifying custom parameters for the subscription.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">bound</span>(<span class="ident">deserialize</span> <span class="op">=</span> <span class="string">&quot;E: EventSubscription&quot;</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">condition</span>: <span class="ident">E</span>,
-    <span class="doccomment">/// RFC3339 timestamp indicating when the subscription was created.</span>
-    <span class="kw">pub</span> <span class="ident">created_at</span>: <span class="ident">types::Timestamp</span>,
-    <span class="doccomment">/// JSON object indicating the notification delivery specific information. Includes the transport method and callback URL.</span>
-    <span class="kw">pub</span> <span class="ident">transport</span>: <span class="ident">TransportResponse</span>,
-    <span class="attribute">#[<span class="ident">deprecated</span>(
-        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.0&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;on 2021-05-11, this will no longer be returned. Use max_total_cost instead&quot;</span>
-    )]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-    <span class="doccomment">/// Subscription limit for client id that made the subscription creation request.</span>
-    <span class="kw">pub</span> <span class="ident">limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Total number of subscriptions for the client ID that made the subscription creation request.</span>
-    <span class="kw">pub</span> <span class="ident">total</span>: <span class="ident">usize</span>,
-    <span class="doccomment">/// Total cost of all the subscriptions for the client ID that made the subscription creation request.</span>
-    <span class="kw">pub</span> <span class="ident">total_cost</span>: <span class="ident">usize</span>,
-    <span class="doccomment">/// The maximum total cost allowed for all of the subscriptions for the client ID that made the subscription creation request.</span>
-    <span class="kw">pub</span> <span class="ident">max_total_cost</span>: <span class="ident">usize</span>,
-    <span class="doccomment">/// How much the subscription counts against your limit.</span>
-    <span class="kw">pub</span> <span class="ident">cost</span>: <span class="ident">usize</span>,
+<span class="doccomment">/// Return Values for [Create EventSub Subscription](super::create_eventsub_subscription)
+///
+/// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>CreateEventSubSubscription&lt;E: EventSubscription&gt; {
+    <span class="doccomment">/// ID of the subscription created.
+    </span><span class="kw">pub </span>id: types::EventSubId,
+    <span class="doccomment">/// Status of the subscription.
+    </span><span class="kw">pub </span>status: Status,
+    <span class="doccomment">/// The category of the subscription that was created.
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="kw">pub </span>type_: EventType,
+    <span class="doccomment">/// The version of the subscription type that was created.
+    </span><span class="kw">pub </span>version: String,
+    <span class="doccomment">/// JSON object specifying custom parameters for the subscription.
+    </span><span class="attribute">#[serde(bound(deserialize = <span class="string">&quot;E: EventSubscription&quot;</span>))]
+    </span><span class="kw">pub </span>condition: E,
+    <span class="doccomment">/// RFC3339 timestamp indicating when the subscription was created.
+    </span><span class="kw">pub </span>created_at: types::Timestamp,
+    <span class="doccomment">/// JSON object indicating the notification delivery specific information. Includes the transport method and callback URL.
+    </span><span class="kw">pub </span>transport: TransportResponse,
+    <span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.5.0&quot;</span>,
+        note = <span class="string">&quot;on 2021-05-11, this will no longer be returned. Use max_total_cost instead&quot;
+    </span>)]
+    #[serde(default)]
+    </span><span class="doccomment">/// Subscription limit for client id that made the subscription creation request.
+    </span><span class="kw">pub </span>limit: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+    <span class="doccomment">/// Total number of subscriptions for the client ID that made the subscription creation request.
+    </span><span class="kw">pub </span>total: usize,
+    <span class="doccomment">/// Total cost of all the subscriptions for the client ID that made the subscription creation request.
+    </span><span class="kw">pub </span>total_cost: usize,
+    <span class="doccomment">/// The maximum total cost allowed for all of the subscriptions for the client ID that made the subscription creation request.
+    </span><span class="kw">pub </span>max_total_cost: usize,
+    <span class="doccomment">/// How much the subscription counts against your limit.
+    </span><span class="kw">pub </span>cost: usize,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">EventSubscription</span><span class="op">&gt;</span> <span class="ident">helix::RequestPost</span> <span class="kw">for</span> <span class="ident">CreateEventSubSubscriptionRequest</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Body</span> <span class="op">=</span> <span class="ident">CreateEventSubSubscriptionBody</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>;
+<span class="kw">impl</span>&lt;E: EventSubscription&gt; helix::RequestPost <span class="kw">for </span>CreateEventSubSubscriptionRequest&lt;E&gt; {
+    <span class="kw">type </span>Body = CreateEventSubSubscriptionBody&lt;E&gt;;
 
-    <span class="kw">fn</span> <span class="ident">parse_inner_response</span>(
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">status</span>: <span class="ident">http::StatusCode</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Response</span><span class="op">&gt;</span>, <span class="ident">helix::HelixRequestPostError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="kw">fn </span>parse_inner_response(
+        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        text: <span class="kw-2">&amp;</span>str,
+        status: http::StatusCode,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::Response&lt;<span class="self">Self</span>, <span class="self">Self</span>::Response&gt;, helix::HelixRequestPostError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
-        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-        <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InnerResponseData</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">EventSubscription</span><span class="op">&gt;</span> {
-            <span class="ident">cost</span>: <span class="ident">usize</span>,
-            <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">bound</span>(<span class="ident">deserialize</span> <span class="op">=</span> <span class="string">&quot;E: EventSubscription&quot;</span>))]</span>
-            <span class="ident">condition</span>: <span class="ident">E</span>,
-            <span class="ident">created_at</span>: <span class="ident">types::Timestamp</span>,
-            <span class="ident">id</span>: <span class="ident">types::EventSubId</span>,
-            <span class="ident">status</span>: <span class="ident">Status</span>,
-            <span class="ident">transport</span>: <span class="ident">TransportResponse</span>,
-            <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
-            <span class="ident">type_</span>: <span class="ident">EventType</span>,
-            <span class="ident">version</span>: <span class="ident">String</span>,
+        <span class="attribute">#[derive(PartialEq, Deserialize, Debug)]
+        #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+        </span><span class="kw">pub struct </span>InnerResponseData&lt;E: EventSubscription&gt; {
+            cost: usize,
+            <span class="attribute">#[serde(bound(deserialize = <span class="string">&quot;E: EventSubscription&quot;</span>))]
+            </span>condition: E,
+            created_at: types::Timestamp,
+            id: types::EventSubId,
+            status: Status,
+            transport: TransportResponse,
+            <span class="attribute">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+            </span>type_: EventType,
+            version: String,
         }
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
-        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-        <span class="kw">struct</span> <span class="ident">InnerResponse</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">EventSubscription</span><span class="op">&gt;</span> {
-            <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">bound</span>(<span class="ident">deserialize</span> <span class="op">=</span> <span class="string">&quot;E: EventSubscription&quot;</span>))]</span>
-            <span class="ident">data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">InnerResponseData</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-            <span class="ident">limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-            <span class="ident">total</span>: <span class="ident">usize</span>,
-            <span class="ident">total_cost</span>: <span class="ident">usize</span>,
-            <span class="ident">max_total_cost</span>: <span class="ident">usize</span>,
+        <span class="attribute">#[derive(PartialEq, Deserialize, Debug)]
+        #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+        </span><span class="kw">struct </span>InnerResponse&lt;E: EventSubscription&gt; {
+            <span class="attribute">#[serde(bound(deserialize = <span class="string">&quot;E: EventSubscription&quot;</span>))]
+            </span>data: Vec&lt;InnerResponseData&lt;E&gt;&gt;,
+            limit: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+            total: usize,
+            total_cost: usize,
+            max_total_cost: usize,
         }
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">InnerResponse</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">helix::parse_json</span>(<span class="ident">text</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="ident">helix::HelixRequestPostError::DeserializeError</span>(<span class="ident">text</span>.<span class="ident">to_string</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>(), <span class="ident">status</span>)
+        <span class="kw">let </span>response: InnerResponse&lt;E&gt; = helix::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+            helix::HelixRequestPostError::DeserializeError(text.to_string(), e, uri.clone(), status)
         })<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">data</span>.<span class="ident">into_iter</span>().<span class="ident">next</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-            <span class="ident">helix::HelixRequestPostError::InvalidResponse</span> {
-                <span class="ident">reason</span>: <span class="string">&quot;missing response data&quot;</span>,
-                <span class="ident">response</span>: <span class="ident">text</span>.<span class="ident">to_string</span>(),
-                <span class="ident">status</span>,
-                <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
+        <span class="kw">let </span>data = response.data.into_iter().next().ok_or_else(|| {
+            helix::HelixRequestPostError::InvalidResponse {
+                reason: <span class="string">&quot;missing response data&quot;</span>,
+                response: text.to_string(),
+                status,
+                uri: uri.clone(),
             }
         })<span class="question-mark">?</span>;
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-        <span class="prelude-val">Ok</span>(<span class="ident">helix::Response</span> {
-            <span class="ident">data</span>: <span class="ident">CreateEventSubSubscription</span> {
-                <span class="ident">limit</span>: <span class="ident">response</span>.<span class="ident">limit</span>,
-                <span class="ident">total</span>: <span class="ident">response</span>.<span class="ident">total</span>,
-                <span class="ident">total_cost</span>: <span class="ident">response</span>.<span class="ident">total_cost</span>,
-                <span class="ident">max_total_cost</span>: <span class="ident">response</span>.<span class="ident">max_total_cost</span>,
-                <span class="ident">cost</span>: <span class="ident">data</span>.<span class="ident">cost</span>,
-                <span class="ident">id</span>: <span class="ident">data</span>.<span class="ident">id</span>,
-                <span class="ident">status</span>: <span class="ident">data</span>.<span class="ident">status</span>,
-                <span class="ident">type_</span>: <span class="ident">data</span>.<span class="ident">type_</span>,
-                <span class="ident">version</span>: <span class="ident">data</span>.<span class="ident">version</span>,
-                <span class="ident">condition</span>: <span class="ident">data</span>.<span class="ident">condition</span>,
-                <span class="ident">created_at</span>: <span class="ident">data</span>.<span class="ident">created_at</span>,
-                <span class="ident">transport</span>: <span class="ident">data</span>.<span class="ident">transport</span>,
+        <span class="attribute">#[allow(deprecated)]
+        </span><span class="prelude-val">Ok</span>(helix::Response {
+            data: CreateEventSubSubscription {
+                limit: response.limit,
+                total: response.total,
+                total_cost: response.total_cost,
+                max_total_cost: response.max_total_cost,
+                cost: data.cost,
+                id: data.id,
+                status: data.status,
+                type_: data.type_,
+                version: data.version,
+                condition: data.condition,
+                created_at: data.created_at,
+                transport: data.transport,
             },
-            <span class="ident">pagination</span>: <span class="prelude-val">None</span>,
-            <span class="ident">request</span>,
-            <span class="comment">// helix::Response total is generally the total number of results, not what the total for this endpoint means. Thus, we set it to None.</span>
-            <span class="ident">total</span>: <span class="prelude-val">None</span>,
-            <span class="ident">other</span>: <span class="prelude-val">None</span>,
+            pagination: <span class="prelude-val">None</span>,
+            request,
+            <span class="comment">// helix::Response total is generally the total number of results, not what the total for this endpoint means. Thus, we set it to None.
+            </span>total: <span class="prelude-val">None</span>,
+            other: <span class="prelude-val">None</span>,
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_request</span>() {
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::eventsub</span>::{<span class="self">self</span>, <span class="ident">user::UserUpdateV1</span>};
-    <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
-    <span class="kw">let</span> <span class="ident">req</span>: <span class="ident">CreateEventSubSubscriptionRequest</span><span class="op">&lt;</span><span class="ident">UserUpdateV1</span><span class="op">&gt;</span> <span class="op">=</span>
-        <span class="ident">CreateEventSubSubscriptionRequest::builder</span>().<span class="ident">build</span>();
+<span class="attribute">#[cfg(test)]
+#[test]
+</span><span class="kw">fn </span>test_request() {
+    <span class="kw">use </span><span class="kw">crate</span>::eventsub::{<span class="self">self</span>, user::UserUpdateV1};
+    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+    <span class="kw">let </span>req: CreateEventSubSubscriptionRequest&lt;UserUpdateV1&gt; =
+        CreateEventSubSubscriptionRequest::builder().build();
 
-    <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">CreateEventSubSubscriptionBody::new</span>(
-        <span class="ident">UserUpdateV1::builder</span>().<span class="ident">user_id</span>(<span class="string">&quot;1234&quot;</span>).<span class="ident">build</span>(),
-        <span class="ident">eventsub::Transport</span> {
-            <span class="ident">method</span>: <span class="ident">eventsub::TransportMethod::Webhook</span>,
-            <span class="ident">callback</span>: <span class="string">&quot;example.com&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">secret</span>: <span class="string">&quot;heyhey13&quot;</span>.<span class="ident">to_string</span>(),
+    <span class="kw">let </span>body = CreateEventSubSubscriptionBody::new(
+        UserUpdateV1::builder().user_id(<span class="string">&quot;1234&quot;</span>).build(),
+        eventsub::Transport {
+            method: eventsub::TransportMethod::Webhook,
+            callback: <span class="string">&quot;example.com&quot;</span>.to_string(),
+            secret: <span class="string">&quot;heyhey13&quot;</span>.to_string(),
         },
     );
 
-    <span class="macro">dbg!</span>(<span class="ident">req</span>.<span class="ident">create_request</span>(<span class="ident">body</span>, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).<span class="ident">unwrap</span>());
+    <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
-    <span class="comment">// From twitch docs, FIXME: docs say `users.update` in example for Create EventSub Subscription, they also use kebab-case for status</span>
-    <span class="comment">// &quot;{&quot;type&quot;:&quot;users.update&quot;,&quot;version&quot;:&quot;1&quot;,&quot;condition&quot;:{&quot;user_id&quot;:&quot;1234&quot;},&quot;transport&quot;:{&quot;method&quot;:&quot;webhook&quot;,&quot;callback&quot;:&quot;https://this-is-a-callback.com&quot;,&quot;secret&quot;:&quot;s3cre7&quot;}}&quot;</span>
-    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">br#&quot;{
+    <span class="comment">// From twitch docs, FIXME: docs say `users.update` in example for Create EventSub Subscription, they also use kebab-case for status
+    // &quot;{&quot;type&quot;:&quot;users.update&quot;,&quot;version&quot;:&quot;1&quot;,&quot;condition&quot;:{&quot;user_id&quot;:&quot;1234&quot;},&quot;transport&quot;:{&quot;method&quot;:&quot;webhook&quot;,&quot;callback&quot;:&quot;https://this-is-a-callback.com&quot;,&quot;secret&quot;:&quot;s3cre7&quot;}}&quot;
+    </span><span class="kw">let </span>data = <span class="string">br#&quot;{
     &quot;data&quot;: [
         {
             &quot;id&quot;: &quot;26b1c993-bfcf-44d9-b876-379dacafe75a&quot;,
@@ -481,20 +481,20 @@
     &quot;total_cost&quot;: 1,
     &quot;max_total_cost&quot;: 10000
 }
-    &quot;#</span>
-    .<span class="ident">to_vec</span>();
-    <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http::Response::builder</span>().<span class="ident">status</span>(<span class="number">202</span>).<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
+    &quot;#
+    </span>.to_vec();
+    <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">202</span>).body(data).unwrap();
 
-    <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let </span>uri = req.get_uri().unwrap();
     <span class="macro">assert_eq!</span>(
-        <span class="ident">uri</span>.<span class="ident">to_string</span>(),
-        <span class="string">&quot;https://api.twitch.tv/helix/eventsub/subscriptions?&quot;</span>
-    );
+        uri.to_string(),
+        <span class="string">&quot;https://api.twitch.tv/helix/eventsub/subscriptions?&quot;
+    </span>);
 
     <span class="macro">dbg!</span>(
         <span class="string">&quot;{:#?}&quot;</span>,
-        <span class="ident">CreateEventSubSubscriptionRequest::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">req</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>()
+        CreateEventSubSubscriptionRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap()
     );
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

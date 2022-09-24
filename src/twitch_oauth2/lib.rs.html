@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -318,325 +318,325 @@
 <span id="318">318</span>
 <span id="319">319</span>
 <span id="320">320</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unknown_lints</span>, <span class="ident">renamed_and_removed_lints</span>)]</span>
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>, <span class="ident">broken_intra_doc_links</span>)]</span> <span class="comment">// This will be weird until 1.52, see https://github.com/rust-lang/rust/pull/80527</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">deny</span>(<span class="ident">rustdoc::broken_intra_doc_links</span>))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">feature</span>(<span class="ident">doc_cfg</span>))]</span>
-<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_root_url</span> <span class="op">=</span> <span class="string">&quot;https://docs.rs/twitch_oauth2/0.7.0&quot;</span>)]</span>
-<span class="doccomment">//! [![github]](https://github.com/twitch-rs/twitch_oauth2)&amp;ensp;[![crates-io]](https://crates.io/crates/twitch_oauth2)&amp;ensp;[![docs-rs]](https://docs.rs/twitch_oauth2/0.7.0/twitch_oauth2)</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! [github]: https://img.shields.io/badge/github-twitch--rs/twitch__oauth2-8da0cb?style=for-the-badge&amp;labelColor=555555&amp;logo=github&quot;</span>
-<span class="doccomment">//! [crates-io]: https://img.shields.io/crates/v/twitch_oauth2.svg?style=for-the-badge&amp;color=fc8d62&amp;logo=rust&quot;</span>
-<span class="doccomment">//! [docs-rs]: https://img.shields.io/badge/docs.rs-twitch__oauth2-66c2a5?style=for-the-badge&amp;labelColor=555555&amp;logoColor=white&amp;logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxwYXRoIGZpbGw9IiNmNWY1ZjUiIGQ9Ik00ODguNiAyNTAuMkwzOTIgMjE0VjEwNS41YzAtMTUtOS4zLTI4LjQtMjMuNC0zMy43bC0xMDAtMzcuNWMtOC4xLTMuMS0xNy4xLTMuMS0yNS4zIDBsLTEwMCAzNy41Yy0xNC4xIDUuMy0yMy40IDE4LjctMjMuNCAzMy43VjIxNGwtOTYuNiAzNi4yQzkuMyAyNTUuNSAwIDI2OC45IDAgMjgzLjlWMzk0YzAgMTMuNiA3LjcgMjYuMSAxOS45IDMyLjJsMTAwIDUwYzEwLjEgNS4xIDIyLjEgNS4xIDMyLjIgMGwxMDMuOS01MiAxMDMuOSA1MmMxMC4xIDUuMSAyMi4xIDUuMSAzMi4yIDBsMTAwLTUwYzEyLjItNi4xIDE5LjktMTguNiAxOS45LTMyLjJWMjgzLjljMC0xNS05LjMtMjguNC0yMy40LTMzLjd6TTM1OCAyMTQuOGwtODUgMzEuOXYtNjguMmw4NS0zN3Y3My4zek0xNTQgMTA0LjFsMTAyLTM4LjIgMTAyIDM4LjJ2LjZsLTEwMiA0MS40LTEwMi00MS40di0uNnptODQgMjkxLjFsLTg1IDQyLjV2LTc5LjFsODUtMzguOHY3NS40em0wLTExMmwtMTAyIDQxLjQtMTAyLTQxLjR2LS42bDEwMi0zOC4yIDEwMiAzOC4ydi42em0yNDAgMTEybC04NSA0Mi41di03OS4xbDg1LTM4Ljh2NzUuNHptMC0xMTJsLTEwMiA0MS40LTEwMi00MS40di0uNmwxMDItMzguMiAxMDIgMzguMnYuNnoiPjwvcGF0aD48L3N2Zz4K&quot;</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! &lt;br&gt;</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! &lt;h5&gt;OAuth2 for Twitch endpoints&lt;/h5&gt;</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust,no_run</span>
-<span class="doccomment">//! # use twitch_oauth2::{TwitchToken, UserToken, AccessToken, tokens::errors::ValidationError};</span>
-<span class="doccomment">//! # #[tokio::main]</span>
-<span class="doccomment">//! # async fn run() {</span>
-<span class="doccomment">//! # let reqwest_http_client = twitch_oauth2::client::DummyClient; // This is only here to fool doc tests</span>
-<span class="doccomment">//!     let token = AccessToken::new(&quot;sometokenherewhichisvalidornot&quot;.to_string());</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//!     match UserToken::from_existing(&amp;reqwest_http_client, token, None, None).await {</span>
-<span class="doccomment">//!         Ok(t) =&gt; println!(&quot;user_token: {}&quot;, t.token().secret()),</span>
-<span class="doccomment">//!         Err(e) =&gt; panic!(&quot;got error: {}&quot;, e),</span>
-<span class="doccomment">//!     }</span>
-<span class="doccomment">//! # }</span>
-<span class="doccomment">//! # fn main() {run()}</span>
-<span class="doccomment">//! ```</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">client</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">id</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">scopes</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tokens</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">types</span>;
+</pre><pre class="rust"><code><span class="attribute">#![allow(unknown_lints, renamed_and_removed_lints)]
+#![deny(missing_docs, broken_intra_doc_links)] </span><span class="comment">// This will be weird until 1.52, see https://github.com/rust-lang/rust/pull/80527
+</span><span class="attribute">#![cfg_attr(nightly, deny(rustdoc::broken_intra_doc_links))]
+#![cfg_attr(nightly, feature(doc_cfg))]
+#![doc(html_root_url = <span class="string">&quot;https://docs.rs/twitch_oauth2/0.7.0&quot;</span>)]
+</span><span class="doccomment">//! [![github]](https://github.com/twitch-rs/twitch_oauth2)&amp;ensp;[![crates-io]](https://crates.io/crates/twitch_oauth2)&amp;ensp;[![docs-rs]](https://docs.rs/twitch_oauth2/0.7.0/twitch_oauth2)
+//!
+//! [github]: https://img.shields.io/badge/github-twitch--rs/twitch__oauth2-8da0cb?style=for-the-badge&amp;labelColor=555555&amp;logo=github&quot;
+//! [crates-io]: https://img.shields.io/crates/v/twitch_oauth2.svg?style=for-the-badge&amp;color=fc8d62&amp;logo=rust&quot;
+//! [docs-rs]: https://img.shields.io/badge/docs.rs-twitch__oauth2-66c2a5?style=for-the-badge&amp;labelColor=555555&amp;logoColor=white&amp;logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxwYXRoIGZpbGw9IiNmNWY1ZjUiIGQ9Ik00ODguNiAyNTAuMkwzOTIgMjE0VjEwNS41YzAtMTUtOS4zLTI4LjQtMjMuNC0zMy43bC0xMDAtMzcuNWMtOC4xLTMuMS0xNy4xLTMuMS0yNS4zIDBsLTEwMCAzNy41Yy0xNC4xIDUuMy0yMy40IDE4LjctMjMuNCAzMy43VjIxNGwtOTYuNiAzNi4yQzkuMyAyNTUuNSAwIDI2OC45IDAgMjgzLjlWMzk0YzAgMTMuNiA3LjcgMjYuMSAxOS45IDMyLjJsMTAwIDUwYzEwLjEgNS4xIDIyLjEgNS4xIDMyLjIgMGwxMDMuOS01MiAxMDMuOSA1MmMxMC4xIDUuMSAyMi4xIDUuMSAzMi4yIDBsMTAwLTUwYzEyLjItNi4xIDE5LjktMTguNiAxOS45LTMyLjJWMjgzLjljMC0xNS05LjMtMjguNC0yMy40LTMzLjd6TTM1OCAyMTQuOGwtODUgMzEuOXYtNjguMmw4NS0zN3Y3My4zek0xNTQgMTA0LjFsMTAyLTM4LjIgMTAyIDM4LjJ2LjZsLTEwMiA0MS40LTEwMi00MS40di0uNnptODQgMjkxLjFsLTg1IDQyLjV2LTc5LjFsODUtMzguOHY3NS40em0wLTExMmwtMTAyIDQxLjQtMTAyLTQxLjR2LS42bDEwMi0zOC4yIDEwMiAzOC4ydi42em0yNDAgMTEybC04NSA0Mi41di03OS4xbDg1LTM4Ljh2NzUuNHptMC0xMTJsLTEwMiA0MS40LTEwMi00MS40di0uNmwxMDItMzguMiAxMDIgMzguMnYuNnoiPjwvcGF0aD48L3N2Zz4K&quot;
+//!
+//! &lt;br&gt;
+//!
+//! &lt;h5&gt;OAuth2 for Twitch endpoints&lt;/h5&gt;
+//!
+//! ```rust,no_run
+//! # use twitch_oauth2::{TwitchToken, UserToken, AccessToken, tokens::errors::ValidationError};
+//! # #[tokio::main]
+//! # async fn run() {
+//! # let reqwest_http_client = twitch_oauth2::client::DummyClient; // This is only here to fool doc tests
+//!     let token = AccessToken::new(&quot;sometokenherewhichisvalidornot&quot;.to_string());
+//!
+//!     match UserToken::from_existing(&amp;reqwest_http_client, token, None, None).await {
+//!         Ok(t) =&gt; println!(&quot;user_token: {}&quot;, t.token().secret()),
+//!         Err(e) =&gt; panic!(&quot;got error: {}&quot;, e),
+//!     }
+//! # }
+//! # fn main() {run()}
+//! ```
+</span><span class="kw">pub mod </span>client;
+<span class="kw">pub mod </span>id;
+<span class="kw">pub mod </span>scopes;
+<span class="kw">pub mod </span>tokens;
+<span class="kw">pub mod </span>types;
 
-<span class="kw">use</span> <span class="ident">http::StatusCode</span>;
-<span class="kw">use</span> <span class="ident">id::TwitchTokenErrorResponse</span>;
-<span class="kw">use</span> <span class="ident">tokens::errors</span>::{<span class="ident">RefreshTokenError</span>, <span class="ident">RevokeTokenError</span>, <span class="ident">ValidationError</span>};
+<span class="kw">use </span>http::StatusCode;
+<span class="kw">use </span>id::TwitchTokenErrorResponse;
+<span class="kw">use </span>tokens::errors::{RefreshTokenError, RevokeTokenError, ValidationError};
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">scopes::Scope</span>;
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tokens</span>::{<span class="ident">AppAccessToken</span>, <span class="ident">TwitchToken</span>, <span class="ident">UserToken</span>, <span class="ident">ValidatedToken</span>};
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>scopes::Scope;
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>tokens::{AppAccessToken, TwitchToken, UserToken, ValidatedToken};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">url</span>;
+<span class="kw">pub use </span>url;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">types</span>::{<span class="ident">AccessToken</span>, <span class="ident">ClientId</span>, <span class="ident">ClientSecret</span>, <span class="ident">CsrfToken</span>, <span class="ident">RefreshToken</span>};
+<span class="kw">pub use </span>types::{AccessToken, ClientId, ClientSecret, CsrfToken, RefreshToken};
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">types</span>::{<span class="ident">AccessTokenRef</span>, <span class="ident">ClientIdRef</span>, <span class="ident">ClientSecretRef</span>, <span class="ident">CsrfTokenRef</span>, <span class="ident">RefreshTokenRef</span>};
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">pub use </span>types::{AccessTokenRef, ClientIdRef, ClientSecretRef, CsrfTokenRef, RefreshTokenRef};
 
-<span class="kw">use</span> <span class="ident"><span class="self">self</span>::client::Client</span>;
+<span class="kw">use </span><span class="self">self</span>::client::Client;
 
-<span class="kw">type</span> <span class="ident">HttpRequest</span> <span class="op">=</span> <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-<span class="kw">type</span> <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+<span class="kw">type </span>HttpRequest = http::Request&lt;Vec&lt;u8&gt;&gt;;
+<span class="kw">type </span>HttpResponse = http::Response&lt;Vec&lt;u8&gt;&gt;;
 
-<span class="doccomment">/// Generate a url with a default if `mock_api` feature is disabled, or env var is not defined or is invalid utf8</span>
-<span class="macro">macro_rules!</span> <span class="ident">mock_env_url</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>:<span class="ident">literal</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">default</span>:<span class="ident">expr</span> $(,)<span class="question-mark">?</span>) =&gt; {
-        <span class="ident">once_cell::sync::Lazy::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mock_api&quot;</span>)]</span>
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">url</span>) <span class="op">=</span> <span class="ident">std::env::var</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>) {
-                <span class="kw">return</span> <span class="ident">url::Url::parse</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>).<span class="ident">expect</span>(<span class="macro">concat!</span>(
+<span class="doccomment">/// Generate a url with a default if `mock_api` feature is disabled, or env var is not defined or is invalid utf8
+</span><span class="macro">macro_rules! </span>mock_env_url {
+    (<span class="macro-nonterminal">$var</span>:literal, <span class="macro-nonterminal">$default</span>:expr $(,)<span class="question-mark">?</span>) =&gt; {
+        once_cell::sync::Lazy::new(<span class="kw">move </span>|| {
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;mock_api&quot;</span>)]
+            </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(url) = std::env::var(<span class="macro-nonterminal">$var</span>) {
+                <span class="kw">return </span>url::Url::parse(<span class="kw-2">&amp;</span>url).expect(<span class="macro">concat!</span>(
                     <span class="string">&quot;URL could not be made from `env:&quot;</span>,
-                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>,
-                    <span class="string">&quot;`.&quot;</span>
-                ));
+                    <span class="macro-nonterminal">$var</span>,
+                    <span class="string">&quot;`.&quot;
+                </span>));
             };
-            <span class="ident">url::Url::parse</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">default</span>).<span class="ident">unwrap</span>()
+            url::Url::parse(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$default</span>).unwrap()
         })
     };
 }
 
-<span class="doccomment">/// Defines the root path to twitch auth endpoints</span>
-<span class="kw">static</span> <span class="ident">TWITCH_OAUTH2_URL</span>: <span class="ident">once_cell::sync::Lazy</span><span class="op">&lt;</span><span class="ident">url::Url</span><span class="op">&gt;</span> <span class="op">=</span>
+<span class="doccomment">/// Defines the root path to twitch auth endpoints
+</span><span class="kw">static </span>TWITCH_OAUTH2_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
     <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_OAUTH2_URL&quot;</span>, <span class="string">&quot;https://id.twitch.tv/oauth2/&quot;</span>);
 
-<span class="doccomment">/// Authorization URL (`https://id.twitch.tv/oauth2/authorize`) for `id.twitch.tv`</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_OAUTH2_URL` to set the root path, or with `TWITCH_OAUTH2_AUTH_URL` to override the base (`https://id.twitch.tv/oauth2/`) url.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Set the environment variable `TWITCH_OAUTH2_URL` to `http://localhost:8080/auth/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">AUTH_URL</span>: <span class="ident">once_cell::sync::Lazy</span><span class="op">&lt;</span><span class="ident">url::Url</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_OAUTH2_AUTH_URL&quot;</span>, {
-    <span class="ident">TWITCH_OAUTH2_URL</span>.<span class="ident">to_string</span>() <span class="op">+</span> <span class="string">&quot;authorize&quot;</span>
-},);
-<span class="doccomment">/// Token URL (`https://id.twitch.tv/oauth2/token`) for `id.twitch.tv`</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_OAUTH2_URL` to set the root path, or with `TWITCH_OAUTH2_TOKEN_URL` to override the base (`https://id.twitch.tv/oauth2/`) url.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Set the environment variable `TWITCH_OAUTH2_URL` to `http://localhost:8080/auth/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">TOKEN_URL</span>: <span class="ident">once_cell::sync::Lazy</span><span class="op">&lt;</span><span class="ident">url::Url</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_OAUTH2_TOKEN_URL&quot;</span>, {
-    <span class="ident">TWITCH_OAUTH2_URL</span>.<span class="ident">to_string</span>() <span class="op">+</span> <span class="string">&quot;token&quot;</span>
-},);
-<span class="doccomment">/// Validation URL (`https://id.twitch.tv/oauth2/validate`) for `id.twitch.tv`</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_OAUTH2_URL` to set the root path, or with `TWITCH_OAUTH2_VALIDATE_URL` to override the base (`https://id.twitch.tv/oauth2/`) url.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Set the environment variable `TWITCH_OAUTH2_URL` to `http://localhost:8080/auth/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">VALIDATE_URL</span>: <span class="ident">once_cell::sync::Lazy</span><span class="op">&lt;</span><span class="ident">url::Url</span><span class="op">&gt;</span> <span class="op">=</span>
+<span class="doccomment">/// Authorization URL (`https://id.twitch.tv/oauth2/authorize`) for `id.twitch.tv`
+///
+/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_OAUTH2_URL` to set the root path, or with `TWITCH_OAUTH2_AUTH_URL` to override the base (`https://id.twitch.tv/oauth2/`) url.
+///
+/// # Examples
+///
+/// Set the environment variable `TWITCH_OAUTH2_URL` to `http://localhost:8080/auth/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.
+</span><span class="kw">pub static </span>AUTH_URL: once_cell::sync::Lazy&lt;url::Url&gt; = <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_OAUTH2_AUTH_URL&quot;</span>, {
+    TWITCH_OAUTH2_URL.to_string() + <span class="string">&quot;authorize&quot;
+</span>},);
+<span class="doccomment">/// Token URL (`https://id.twitch.tv/oauth2/token`) for `id.twitch.tv`
+///
+/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_OAUTH2_URL` to set the root path, or with `TWITCH_OAUTH2_TOKEN_URL` to override the base (`https://id.twitch.tv/oauth2/`) url.
+///
+/// # Examples
+///
+/// Set the environment variable `TWITCH_OAUTH2_URL` to `http://localhost:8080/auth/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.
+</span><span class="kw">pub static </span>TOKEN_URL: once_cell::sync::Lazy&lt;url::Url&gt; = <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_OAUTH2_TOKEN_URL&quot;</span>, {
+    TWITCH_OAUTH2_URL.to_string() + <span class="string">&quot;token&quot;
+</span>},);
+<span class="doccomment">/// Validation URL (`https://id.twitch.tv/oauth2/validate`) for `id.twitch.tv`
+///
+/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_OAUTH2_URL` to set the root path, or with `TWITCH_OAUTH2_VALIDATE_URL` to override the base (`https://id.twitch.tv/oauth2/`) url.
+///
+/// # Examples
+///
+/// Set the environment variable `TWITCH_OAUTH2_URL` to `http://localhost:8080/auth/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.
+</span><span class="kw">pub static </span>VALIDATE_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
     <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_OAUTH2_VALIDATE_URL&quot;</span>, {
-        <span class="ident">TWITCH_OAUTH2_URL</span>.<span class="ident">to_string</span>() <span class="op">+</span> <span class="string">&quot;validate&quot;</span>
-    },);
-<span class="doccomment">/// Revokation URL (`https://id.twitch.tv/oauth2/revoke`) for `id.twitch.tv`</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_OAUTH2_URL` to set the root path, or with `TWITCH_OAUTH2_REVOKE_URL` to override the base (`https://id.twitch.tv/oauth2/`) url.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Set the environment variable `TWITCH_OAUTH2_URL` to `http://localhost:8080/auth/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">REVOKE_URL</span>: <span class="ident">once_cell::sync::Lazy</span><span class="op">&lt;</span><span class="ident">url::Url</span><span class="op">&gt;</span> <span class="op">=</span>
+        TWITCH_OAUTH2_URL.to_string() + <span class="string">&quot;validate&quot;
+    </span>},);
+<span class="doccomment">/// Revokation URL (`https://id.twitch.tv/oauth2/revoke`) for `id.twitch.tv`
+///
+/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_OAUTH2_URL` to set the root path, or with `TWITCH_OAUTH2_REVOKE_URL` to override the base (`https://id.twitch.tv/oauth2/`) url.
+///
+/// # Examples
+///
+/// Set the environment variable `TWITCH_OAUTH2_URL` to `http://localhost:8080/auth/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.
+</span><span class="kw">pub static </span>REVOKE_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
     <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_OAUTH2_REVOKE_URL&quot;</span>, {
-        <span class="ident">TWITCH_OAUTH2_URL</span>.<span class="ident">to_string</span>() <span class="op">+</span> <span class="string">&quot;revoke&quot;</span>
-    },);
+        TWITCH_OAUTH2_URL.to_string() + <span class="string">&quot;revoke&quot;
+    </span>},);
 
-<span class="doccomment">/// Validate this token.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Should be checked on regularly, according to &lt;https://dev.twitch.tv/docs/authentication#validating-requests&gt;</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">validate_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
-    <span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">AccessTokenRef</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ValidatedToken</span>, <span class="ident">ValidationError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Validate this token.
+///
+/// Should be checked on regularly, according to &lt;https://dev.twitch.tv/docs/authentication#validating-requests&gt;
+</span><span class="kw">pub async fn </span>validate_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
+    client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>C,
+    token: <span class="kw-2">&amp;</span>AccessTokenRef,
+) -&gt; <span class="prelude-ty">Result</span>&lt;ValidatedToken, ValidationError&lt;&lt;C <span class="kw">as </span>Client&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+<span class="kw">where
+    </span>C: Client&lt;<span class="lifetime">&#39;a</span>&gt;,
 {
-    <span class="kw">use</span> <span class="ident">http</span>::{<span class="ident">header::AUTHORIZATION</span>, <span class="ident">HeaderMap</span>, <span class="ident">Method</span>};
+    <span class="kw">use </span>http::{header::AUTHORIZATION, HeaderMap, Method};
 
-    <span class="kw">let</span> <span class="ident">auth_header</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;OAuth {}&quot;</span>, <span class="ident">token</span>.<span class="ident">secret</span>());
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">HeaderMap::new</span>();
-    <span class="ident">headers</span>.<span class="ident">insert</span>(
-        <span class="ident">AUTHORIZATION</span>,
-        <span class="ident">auth_header</span>
-            .<span class="ident">parse</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;Failed to parse header for validation&quot;</span>),
+    <span class="kw">let </span>auth_header = <span class="macro">format!</span>(<span class="string">&quot;OAuth {}&quot;</span>, token.secret());
+    <span class="kw">let </span><span class="kw-2">mut </span>headers = HeaderMap::new();
+    headers.insert(
+        AUTHORIZATION,
+        auth_header
+            .parse()
+            .expect(<span class="string">&quot;Failed to parse header for validation&quot;</span>),
     );
 
-    <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::construct_request</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span>[(<span class="ident">String</span>, <span class="ident">String</span>)], <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::VALIDATE_URL</span>,
+    <span class="kw">let </span>req = <span class="kw">crate</span>::construct_request::&lt;<span class="kw-2">&amp;</span>[(String, String)], <span class="kw">_</span>, <span class="kw">_</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="kw">crate</span>::VALIDATE_URL,
         <span class="kw-2">&amp;</span>[],
-        <span class="ident">headers</span>,
-        <span class="ident">Method::GET</span>,
+        headers,
+        Method::GET,
         <span class="macro">vec!</span>[],
     );
 
-    <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">req</span>(<span class="ident">req</span>).<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">ValidationError::Request</span>)<span class="question-mark">?</span>;
-    <span class="kw">if</span> <span class="ident">resp</span>.<span class="ident">status</span>() <span class="op">==</span> <span class="ident">StatusCode::UNAUTHORIZED</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ValidationError::NotAuthorized</span>);
+    <span class="kw">let </span>resp = client.req(req).<span class="kw">await</span>.map_err(ValidationError::Request)<span class="question-mark">?</span>;
+    <span class="kw">if </span>resp.status() == StatusCode::UNAUTHORIZED {
+        <span class="kw">return </span><span class="prelude-val">Err</span>(ValidationError::NotAuthorized);
     }
-    <span class="kw">match</span> <span class="ident"><span class="kw">crate</span>::parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">resp</span>) {
-        <span class="prelude-val">Ok</span>(<span class="ident">ok</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">ok</span>),
-        <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">match</span> <span class="ident">err</span> {
-            <span class="ident">RequestParseError::TwitchError</span>(<span class="ident">TwitchTokenErrorResponse</span> { <span class="ident">status</span>, .. })
-                <span class="kw">if</span> <span class="ident">status</span> <span class="op">==</span> <span class="ident">StatusCode::UNAUTHORIZED</span> =&gt;
+    <span class="kw">match </span><span class="kw">crate</span>::parse_response(<span class="kw-2">&amp;</span>resp) {
+        <span class="prelude-val">Ok</span>(ok) =&gt; <span class="prelude-val">Ok</span>(ok),
+        <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">match </span>err {
+            RequestParseError::TwitchError(TwitchTokenErrorResponse { status, .. })
+                <span class="kw">if </span>status == StatusCode::UNAUTHORIZED =&gt;
             {
-                <span class="prelude-val">Err</span>(<span class="ident">ValidationError::NotAuthorized</span>)
+                <span class="prelude-val">Err</span>(ValidationError::NotAuthorized)
             }
-            <span class="ident">err</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">err</span>.<span class="ident">into</span>()),
+            err =&gt; <span class="prelude-val">Err</span>(err.into()),
         },
     }
 }
 
-<span class="doccomment">/// Revoke the token.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// See &lt;https://dev.twitch.tv/docs/authentication#revoking-access-tokens&gt;</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">revoke_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
-    <span class="ident">http_client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">AccessToken</span>,
-    <span class="ident">client_id</span>: <span class="kw-2">&amp;</span><span class="ident">ClientId</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RevokeTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Revoke the token.
+///
+/// See &lt;https://dev.twitch.tv/docs/authentication#revoking-access-tokens&gt;
+</span><span class="kw">pub async fn </span>revoke_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
+    http_client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>C,
+    token: <span class="kw-2">&amp;</span>AccessToken,
+    client_id: <span class="kw-2">&amp;</span>ClientId,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(), RevokeTokenError&lt;&lt;C <span class="kw">as </span>Client&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+<span class="kw">where
+    </span>C: Client&lt;<span class="lifetime">&#39;a</span>&gt;,
 {
-    <span class="kw">use</span> <span class="ident">http</span>::{<span class="ident">HeaderMap</span>, <span class="ident">Method</span>};
-    <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-    <span class="ident">params</span>.<span class="ident">insert</span>(<span class="string">&quot;client_id&quot;</span>, <span class="ident">client_id</span>.<span class="ident">as_str</span>());
-    <span class="ident">params</span>.<span class="ident">insert</span>(<span class="string">&quot;token&quot;</span>, <span class="ident">token</span>.<span class="ident">secret</span>());
+    <span class="kw">use </span>http::{HeaderMap, Method};
+    <span class="kw">use </span>std::collections::HashMap;
+    <span class="kw">let </span><span class="kw-2">mut </span>params = HashMap::new();
+    params.insert(<span class="string">&quot;client_id&quot;</span>, client_id.as_str());
+    params.insert(<span class="string">&quot;token&quot;</span>, token.secret());
 
-    <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">construct_request</span>(
-        <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::REVOKE_URL</span>,
-        <span class="kw-2">&amp;</span><span class="ident">params</span>,
-        <span class="ident">HeaderMap::new</span>(),
-        <span class="ident">Method::POST</span>,
+    <span class="kw">let </span>req = construct_request(
+        <span class="kw-2">&amp;</span><span class="kw">crate</span>::REVOKE_URL,
+        <span class="kw-2">&amp;</span>params,
+        HeaderMap::new(),
+        Method::POST,
         <span class="macro">vec!</span>[],
     );
 
-    <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">http_client</span>
-        .<span class="ident">req</span>(<span class="ident">req</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="ident">RevokeTokenError::RequestError</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span>resp = http_client
+        .req(req)
+        .<span class="kw">await
+        </span>.map_err(RevokeTokenError::RequestError)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">parse_token_response_raw</span>(<span class="kw-2">&amp;</span><span class="ident">resp</span>)<span class="question-mark">?</span>;
+    <span class="kw">let _ </span>= parse_token_response_raw(<span class="kw-2">&amp;</span>resp)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="doccomment">/// Refresh the token, call if it has expired.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// See &lt;https://dev.twitch.tv/docs/authentication#refreshing-access-tokens&gt;</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">refresh_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
-    <span class="ident">http_client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    <span class="ident">refresh_token</span>: <span class="kw-2">&amp;</span><span class="ident">RefreshTokenRef</span>,
-    <span class="ident">client_id</span>: <span class="kw-2">&amp;</span><span class="ident">ClientId</span>,
-    <span class="ident">client_secret</span>: <span class="kw-2">&amp;</span><span class="ident">ClientSecret</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-    (<span class="ident">AccessToken</span>, <span class="ident">std::time::Duration</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">RefreshToken</span><span class="op">&gt;</span>),
-    <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Refresh the token, call if it has expired.
+///
+/// See &lt;https://dev.twitch.tv/docs/authentication#refreshing-access-tokens&gt;
+</span><span class="kw">pub async fn </span>refresh_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
+    http_client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>C,
+    refresh_token: <span class="kw-2">&amp;</span>RefreshTokenRef,
+    client_id: <span class="kw-2">&amp;</span>ClientId,
+    client_secret: <span class="kw-2">&amp;</span>ClientSecret,
+) -&gt; <span class="prelude-ty">Result</span>&lt;
+    (AccessToken, std::time::Duration, <span class="prelude-ty">Option</span>&lt;RefreshToken&gt;),
+    RefreshTokenError&lt;&lt;C <span class="kw">as </span>Client&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;,
+&gt;
+<span class="kw">where
+    </span>C: Client&lt;<span class="lifetime">&#39;a</span>&gt;,
 {
-    <span class="kw">use</span> <span class="ident">http</span>::{<span class="ident">HeaderMap</span>, <span class="ident">Method</span>};
-    <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+    <span class="kw">use </span>http::{HeaderMap, Method};
+    <span class="kw">use </span>std::collections::HashMap;
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-    <span class="ident">params</span>.<span class="ident">insert</span>(<span class="string">&quot;client_id&quot;</span>, <span class="ident">client_id</span>.<span class="ident">as_str</span>());
-    <span class="ident">params</span>.<span class="ident">insert</span>(<span class="string">&quot;client_secret&quot;</span>, <span class="ident">client_secret</span>.<span class="ident">secret</span>());
-    <span class="ident">params</span>.<span class="ident">insert</span>(<span class="string">&quot;grant_type&quot;</span>, <span class="string">&quot;refresh_token&quot;</span>);
-    <span class="ident">params</span>.<span class="ident">insert</span>(<span class="string">&quot;refresh_token&quot;</span>, <span class="ident">refresh_token</span>.<span class="ident">secret</span>());
+    <span class="kw">let </span><span class="kw-2">mut </span>params = HashMap::new();
+    params.insert(<span class="string">&quot;client_id&quot;</span>, client_id.as_str());
+    params.insert(<span class="string">&quot;client_secret&quot;</span>, client_secret.secret());
+    params.insert(<span class="string">&quot;grant_type&quot;</span>, <span class="string">&quot;refresh_token&quot;</span>);
+    params.insert(<span class="string">&quot;refresh_token&quot;</span>, refresh_token.secret());
 
-    <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">construct_request</span>(
-        <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::TOKEN_URL</span>,
-        <span class="kw-2">&amp;</span><span class="ident">params</span>,
-        <span class="ident">HeaderMap::new</span>(),
-        <span class="ident">Method::POST</span>,
+    <span class="kw">let </span>req = construct_request(
+        <span class="kw-2">&amp;</span><span class="kw">crate</span>::TOKEN_URL,
+        <span class="kw-2">&amp;</span>params,
+        HeaderMap::new(),
+        Method::POST,
         <span class="macro">vec!</span>[],
     );
 
-    <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">http_client</span>
-        .<span class="ident">req</span>(<span class="ident">req</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="ident">RefreshTokenError::RequestError</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">id::TwitchTokenResponse</span> <span class="op">=</span> <span class="ident">parse_response</span>(<span class="kw-2">&amp;</span><span class="ident">resp</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span>resp = http_client
+        .req(req)
+        .<span class="kw">await
+        </span>.map_err(RefreshTokenError::RequestError)<span class="question-mark">?</span>;
+    <span class="kw">let </span>res: id::TwitchTokenResponse = parse_response(<span class="kw-2">&amp;</span>resp)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">expires_in</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">expires_in</span>().<span class="ident">ok_or</span>(<span class="ident">RefreshTokenError::NoExpiration</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">refresh_token</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">refresh_token</span>;
-    <span class="kw">let</span> <span class="ident">access_token</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">access_token</span>;
-    <span class="prelude-val">Ok</span>((<span class="ident">access_token</span>, <span class="ident">expires_in</span>, <span class="ident">refresh_token</span>))
+    <span class="kw">let </span>expires_in = res.expires_in().ok_or(RefreshTokenError::NoExpiration)<span class="question-mark">?</span>;
+    <span class="kw">let </span>refresh_token = res.refresh_token;
+    <span class="kw">let </span>access_token = res.access_token;
+    <span class="prelude-val">Ok</span>((access_token, expires_in, refresh_token))
 }
 
-<span class="doccomment">/// Construct a request that accepts `application/json` on default</span>
-<span class="kw">fn</span> <span class="ident">construct_request</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>(
-    <span class="ident">url</span>: <span class="kw-2">&amp;</span><span class="ident">url::Url</span>,
-    <span class="ident">params</span>: <span class="ident">I</span>,
-    <span class="ident">headers</span>: <span class="ident">http::HeaderMap</span>,
-    <span class="ident">method</span>: <span class="ident">http::Method</span>,
-    <span class="ident">body</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
-) -&gt; <span class="ident">HttpRequest</span>
-<span class="kw">where</span>
-    <span class="ident">I</span>: <span class="ident">std::iter::IntoIterator</span>,
-    <span class="ident">I::Item</span>: <span class="ident">std::borrow::Borrow</span><span class="op">&lt;</span>(<span class="ident">K</span>, <span class="ident">V</span>)<span class="op">&gt;</span>,
-    <span class="ident">K</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
-    <span class="ident">V</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Construct a request that accepts `application/json` on default
+</span><span class="kw">fn </span>construct_request&lt;I, K, V&gt;(
+    url: <span class="kw-2">&amp;</span>url::Url,
+    params: I,
+    headers: http::HeaderMap,
+    method: http::Method,
+    body: Vec&lt;u8&gt;,
+) -&gt; HttpRequest
+<span class="kw">where
+    </span>I: std::iter::IntoIterator,
+    I::Item: std::borrow::Borrow&lt;(K, V)&gt;,
+    K: AsRef&lt;str&gt;,
+    V: AsRef&lt;str&gt;,
 {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">url</span>.<span class="ident">clone</span>();
-    <span class="ident">url</span>.<span class="ident">query_pairs_mut</span>().<span class="ident">extend_pairs</span>(<span class="ident">params</span>);
-    <span class="kw">let</span> <span class="ident">url</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">url</span>.<span class="ident">into</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">http::Request::builder</span>().<span class="ident">method</span>(<span class="ident">method</span>).<span class="ident">uri</span>(<span class="ident">url</span>);
-    <span class="ident">req</span>.<span class="ident">headers_mut</span>()
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">h</span><span class="op">|</span> <span class="ident">h</span>.<span class="ident">extend</span>(<span class="ident">headers</span>.<span class="ident">into_iter</span>()))
-        .<span class="ident">unwrap</span>();
-    <span class="ident">req</span>.<span class="ident">headers_mut</span>()
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">h</span><span class="op">|</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">h</span>.<span class="ident">contains_key</span>(<span class="ident">http::header::ACCEPT</span>) {
-                <span class="ident">h</span>.<span class="ident">append</span>(<span class="ident">http::header::ACCEPT</span>, <span class="string">&quot;application/json&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
+    <span class="kw">let </span><span class="kw-2">mut </span>url = url.clone();
+    url.query_pairs_mut().extend_pairs(params);
+    <span class="kw">let </span>url: String = url.into();
+    <span class="kw">let </span><span class="kw-2">mut </span>req = http::Request::builder().method(method).uri(url);
+    req.headers_mut()
+        .map(|h| h.extend(headers.into_iter()))
+        .unwrap();
+    req.headers_mut()
+        .map(|h| {
+            <span class="kw">if </span>!h.contains_key(http::header::ACCEPT) {
+                h.append(http::header::ACCEPT, <span class="string">&quot;application/json&quot;</span>.parse().unwrap());
             }
         })
-        .<span class="ident">unwrap</span>();
-    <span class="ident">req</span>.<span class="ident">body</span>(<span class="ident">body</span>).<span class="ident">unwrap</span>()
+        .unwrap();
+    req.body(body).unwrap()
 }
 
-<span class="doccomment">/// Parses a response, validating it and returning the response if all ok.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">parse_token_response_raw</span>(
-    <span class="ident">resp</span>: <span class="kw-2">&amp;</span><span class="ident">HttpResponse</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">HttpResponse</span>, <span class="ident">RequestParseError</span><span class="op">&gt;</span> {
-    <span class="kw">match</span> <span class="ident">serde_json::from_slice</span>::<span class="op">&lt;</span><span class="ident">TwitchTokenErrorResponse</span><span class="op">&gt;</span>(<span class="ident">resp</span>.<span class="ident">body</span>()) {
-        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">match</span> <span class="ident">resp</span>.<span class="ident">status</span>() {
-            <span class="ident">StatusCode::OK</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">resp</span>),
-            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">RequestParseError::Other</span>(<span class="ident">resp</span>.<span class="ident">status</span>())),
+<span class="doccomment">/// Parses a response, validating it and returning the response if all ok.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>parse_token_response_raw(
+    resp: <span class="kw-2">&amp;</span>HttpResponse,
+) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>HttpResponse, RequestParseError&gt; {
+    <span class="kw">match </span>serde_json::from_slice::&lt;TwitchTokenErrorResponse&gt;(resp.body()) {
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">match </span>resp.status() {
+            StatusCode::OK =&gt; <span class="prelude-val">Ok</span>(resp),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(RequestParseError::Other(resp.status())),
         },
-        <span class="prelude-val">Ok</span>(<span class="ident">twitch_err</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">RequestParseError::TwitchError</span>(<span class="ident">twitch_err</span>)),
+        <span class="prelude-val">Ok</span>(twitch_err) =&gt; <span class="prelude-val">Err</span>(RequestParseError::TwitchError(twitch_err)),
     }
 }
 
-<span class="doccomment">/// Parses a response, validating it and returning json deserialized response</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">parse_response</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">serde::de::DeserializeOwned</span><span class="op">&gt;</span>(
-    <span class="ident">resp</span>: <span class="kw-2">&amp;</span><span class="ident">HttpResponse</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">RequestParseError</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">parse_token_response_raw</span>(<span class="ident">resp</span>)<span class="question-mark">?</span>.<span class="ident">body</span>();
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">_content</span>) <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">headers</span>().<span class="ident">get</span>(<span class="ident">http::header::CONTENT_TYPE</span>) {
-        <span class="comment">// TODO: Remove this cfg, see issue https://github.com/twitchdev/twitch-cli/issues/81</span>
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mock_api&quot;</span>))]</span>
-        <span class="kw">if</span> <span class="ident">_content</span> <span class="op">!</span><span class="op">=</span> <span class="string">&quot;application/json&quot;</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RequestParseError::NotJson</span> {
-                <span class="ident">found</span>: <span class="ident">String::from_utf8_lossy</span>(<span class="ident">_content</span>.<span class="ident">as_bytes</span>()).<span class="ident">into_owned</span>(),
+<span class="doccomment">/// Parses a response, validating it and returning json deserialized response
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>parse_response&lt;T: serde::de::DeserializeOwned&gt;(
+    resp: <span class="kw-2">&amp;</span>HttpResponse,
+) -&gt; <span class="prelude-ty">Result</span>&lt;T, RequestParseError&gt; {
+    <span class="kw">let </span>body = parse_token_response_raw(resp)<span class="question-mark">?</span>.body();
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(_content) = resp.headers().get(http::header::CONTENT_TYPE) {
+        <span class="comment">// TODO: Remove this cfg, see issue https://github.com/twitchdev/twitch-cli/issues/81
+        </span><span class="attribute">#[cfg(not(feature = <span class="string">&quot;mock_api&quot;</span>))]
+        </span><span class="kw">if </span>_content != <span class="string">&quot;application/json&quot; </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(RequestParseError::NotJson {
+                found: String::from_utf8_lossy(_content.as_bytes()).into_owned(),
             });
         }
     }
-    <span class="ident">serde_json::from_slice</span>(<span class="ident">body</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+    serde_json::from_slice(body).map_err(Into::into)
 }
 
-<span class="doccomment">/// Errors from parsing responses</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror::Error</span>, <span class="ident">displaydoc::Display</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RequestParseError</span> {
-    <span class="doccomment">/// deserialization failed</span>
-    <span class="ident">DeserializeError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">serde_json::Error</span>),
-    <span class="doccomment">/// twitch returned an error</span>
-    <span class="ident">TwitchError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">TwitchTokenErrorResponse</span>),
-    <span class="doccomment">/// returned content is not `application/json`, found `{found}`</span>
-    <span class="ident">NotJson</span> {
-        <span class="doccomment">/// Found `Content-Type` header</span>
-        <span class="ident">found</span>: <span class="ident">String</span>,
+<span class="doccomment">/// Errors from parsing responses
+</span><span class="attribute">#[derive(Debug, thiserror::Error, displaydoc::Display)]
+</span><span class="kw">pub enum </span>RequestParseError {
+    <span class="doccomment">/// deserialization failed
+    </span>DeserializeError(<span class="attribute">#[from] </span>serde_json::Error),
+    <span class="doccomment">/// twitch returned an error
+    </span>TwitchError(<span class="attribute">#[from] </span>TwitchTokenErrorResponse),
+    <span class="doccomment">/// returned content is not `application/json`, found `{found}`
+    </span>NotJson {
+        <span class="doccomment">/// Found `Content-Type` header
+        </span>found: String,
     },
-    <span class="doccomment">/// twitch returned an unexpected status code: {0}</span>
-    <span class="ident">Other</span>(<span class="ident">StatusCode</span>),
+    <span class="doccomment">/// twitch returned an unexpected status code: {0}
+    </span>Other(StatusCode),
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

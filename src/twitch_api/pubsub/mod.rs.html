@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -680,687 +680,687 @@
 <span id="680">680</span>
 <span id="681">681</span>
 <span id="682">682</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Holds serializable pubsub stuff</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Use [`listen_command()`] to send subscription listen and parse the responses with [`Response::parse`]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Undocumented features</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! This crate has some pubsub topics that are not documented by twitch. These may stop working at any time. To enable these, use feature</span>
-<span class="doccomment">//! &lt;span</span>
-<span class="doccomment">//!   class=&quot;module-item stab portability&quot;</span>
-<span class="doccomment">//!   style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;</span>
-<span class="doccomment">//! &gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt;</span>
-<span class="doccomment">//! to use them. Note that this crate doesn&#39;t try to keep changes to these pubsub topics semver compatible.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Holds serializable pubsub stuff
+//!
+//! Use [`listen_command()`] to send subscription listen and parse the responses with [`Response::parse`]
+//!
+//! # Undocumented features
+//!
+//! This crate has some pubsub topics that are not documented by twitch. These may stop working at any time. To enable these, use feature
+//! &lt;span
+//!   class=&quot;module-item stab portability&quot;
+//!   style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;
+//! &gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt;
+//! to use them. Note that this crate doesn&#39;t try to keep changes to these pubsub topics semver compatible.
 
-<span class="kw">static</span> <span class="ident">ERROR_TRYFROM</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;no match&quot;</span>;
+</span><span class="kw">static </span>ERROR_TRYFROM: <span class="kw-2">&amp;</span>str = <span class="string">&quot;no match&quot;</span>;
 
-<span class="doccomment">/// Implement `From&lt;$type&gt; for String` for serializing and `TryFrom&lt;String&gt; for $type` for deserializing.</span>
-<span class="macro">macro_rules!</span> <span class="ident">impl_de_ser</span> {
-    (@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) =&gt; {<span class="string">&quot;.{}&quot;</span>};
-    (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>:<span class="ident">literal</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span> $(<span class="question-mark">?</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span>) =&gt; {
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">String</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self</span> { <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>, $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),)<span class="op">+</span> $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>),)<span class="kw-2">*</span>), $(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>$(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_default</span>(),)<span class="kw-2">*</span>).<span class="ident">trim_end_matches</span>(<span class="string">&quot;.&quot;</span>).<span class="ident">to_owned</span>() }
+<span class="doccomment">/// Implement `From&lt;$type&gt; for String` for serializing and `TryFrom&lt;String&gt; for $type` for deserializing.
+</span><span class="macro">macro_rules! </span>impl_de_ser {
+    (@field <span class="macro-nonterminal">$e</span>:expr) =&gt; {<span class="string">&quot;.{}&quot;</span>};
+    (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$fmt</span>:literal, $(<span class="macro-nonterminal">$field</span>:ident),* $(,)<span class="question-mark">? </span>$(<span class="question-mark">?</span><span class="macro-nonterminal">$opt_field</span>:ident),* $(,)<span class="question-mark">?</span>) =&gt; {
+        <span class="kw">impl </span>From&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">String </span>{
+            <span class="kw">fn </span>from(t: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self </span>{ <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$fmt</span>, $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$field</span>),)+ $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$opt_field</span>),)<span class="kw-2">*</span>), $(t.<span class="macro-nonterminal">$field</span>,)<span class="kw-2">*</span>$(t.<span class="macro-nonterminal">$opt_field</span>.map(|f| f.to_string()).unwrap_or_default(),)<span class="kw-2">*</span>).trim_end_matches(<span class="string">&quot;.&quot;</span>).to_owned() }
         }
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">String</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self</span> { <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>, $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),)<span class="op">+</span> $(<span class="macro">impl_de_ser!</span>(@<span class="ident">field</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>),)<span class="kw-2">*</span>), $(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>$(<span class="ident">t</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_default</span>(),)<span class="kw-2">*</span>).<span class="ident">trim_end_matches</span>(<span class="string">&quot;.&quot;</span>).<span class="ident">to_owned</span>() }
+        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">String </span>{
+            <span class="kw">fn </span>from(t: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self </span>{ <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$fmt</span>, $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$field</span>),)+ $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$opt_field</span>),)<span class="kw-2">*</span>), $(t.<span class="macro-nonterminal">$field</span>,)<span class="kw-2">*</span>$(t.<span class="macro-nonterminal">$opt_field</span>.map(|f| f.to_string()).unwrap_or_default(),)<span class="kw-2">*</span>).trim_end_matches(<span class="string">&quot;.&quot;</span>).to_owned() }
         }
 
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">super::Topics</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self</span> {
-                <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Topic</span> <span class="kw">as</span> <span class="kw">_</span>;
-                <span class="ident">t</span>.<span class="ident">into_topic</span>()
+        <span class="kw">impl </span>From&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">super::Topics </span>{
+            <span class="kw">fn </span>from(t: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self </span>{
+                <span class="kw">use </span><span class="kw">super</span>::Topic <span class="kw">as _</span>;
+                t.into_topic()
             }
         }
 
-        <span class="kw">impl</span> <span class="ident">::std::fmt::Display</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">type</span> {
-            <span class="doccomment">///</span>
-            <span class="kw">fn</span> <span class="macro-nonterminal">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">::std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">::std::fmt::Result</span> {
-                <span class="kw">let</span> <span class="ident">s</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">::std::convert::TryInto::try_into</span>(<span class="self">self</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">::std::fmt::Error</span>)<span class="question-mark">?</span>;
-                <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>)
+        <span class="kw">impl </span>::std::fmt::Display <span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">type </span>{
+            <span class="doccomment">///
+            </span><span class="kw">fn </span><span class="macro-nonterminal">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; ::std::fmt::Result {
+                <span class="kw">let </span>s: String = ::std::convert::TryInto::try_into(<span class="self">self</span>).map_err(|<span class="kw">_</span>| ::std::fmt::Error)<span class="question-mark">?</span>;
+                f.write_str(<span class="kw-2">&amp;</span>s)
             }
         }
 
-        <span class="kw">impl</span> <span class="ident">::std::convert::TryFrom</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">type</span> {
-            <span class="kw">type</span> <span class="macro-nonterminal">Error</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
+        <span class="kw">impl </span>::std::convert::TryFrom&lt;String&gt; <span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">type </span>{
+            <span class="kw">type </span><span class="macro-nonterminal">Error </span>= <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str;
 
-            <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">s</span>: <span class="ident">String</span>) -&gt; <span class="ident">::std::result::Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">starts_with</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>) {
-                    <span class="kw">let</span> <span class="ident">sub_s</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">strip_prefix</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fmt</span>).<span class="ident">ok_or</span>(<span class="string">&quot;could not strip str, this should never be hit&quot;</span>)<span class="question-mark">?</span>;
-                    <span class="kw">match</span> <span class="ident">sub_s</span>.<span class="ident">split</span>(<span class="string">&#39;.&#39;</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>().<span class="ident">as_slice</span>() {
-                        [<span class="string">&quot;&quot;</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="op">*</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>,)<span class="kw-2">*</span>] =&gt; {
-                            <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="kw">type</span> {
+            <span class="kw">fn </span>try_from(s: String) -&gt; ::std::result::Result&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+                <span class="kw">if </span>s.starts_with(<span class="macro-nonterminal">$fmt</span>) {
+                    <span class="kw">let </span>sub_s = s.strip_prefix(<span class="macro-nonterminal">$fmt</span>).ok_or(<span class="string">&quot;could not strip str, this should never be hit&quot;</span>)<span class="question-mark">?</span>;
+                    <span class="kw">match </span>sub_s.split(<span class="string">&#39;.&#39;</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;().as_slice() {
+                        [<span class="string">&quot;&quot;</span>, $(<span class="macro-nonterminal">$field</span>,)* $(<span class="macro-nonterminal">$opt_field</span>,)<span class="kw-2">*</span>] =&gt; {
+                            <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="kw">type </span>{
                                 $(
-                                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>.<span class="ident">parse</span>()
-                                            .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">concat!</span>(<span class="string">&quot;could not parse field &lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>), <span class="string">&quot;&gt;&quot;</span>))<span class="question-mark">?</span>,
-                                )<span class="op">*</span>
+                                    <span class="macro-nonterminal">$field</span>: <span class="macro-nonterminal">$field</span>.parse()
+                                            .map_err(|<span class="kw">_</span>| <span class="macro">concat!</span>(<span class="string">&quot;could not parse field &lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$field</span>), <span class="string">&quot;&gt;&quot;</span>))<span class="question-mark">?</span>,
+                                )*
                                 $(
-                                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>: <span class="prelude-val">Some</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>.<span class="ident">parse</span>()
-                                            .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">concat!</span>(<span class="string">&quot;could not parse field &lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>), <span class="string">&quot;&gt;&quot;</span>))<span class="question-mark">?</span>),
-                                )<span class="op">*</span>
+                                    <span class="macro-nonterminal">$opt_field</span>: <span class="prelude-val">Some</span>(<span class="macro-nonterminal">$opt_field</span>.parse()
+                                            .map_err(|<span class="kw">_</span>| <span class="macro">concat!</span>(<span class="string">&quot;could not parse field &lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$opt_field</span>), <span class="string">&quot;&gt;&quot;</span>))<span class="question-mark">?</span>),
+                                )*
                             } )
                         }
-                        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_patterns</span>)]</span>
-                        [<span class="string">&quot;&quot;</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,)<span class="kw-2">*</span>] =&gt; {
-                            <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="kw">type</span> {
+                        <span class="attribute">#[allow(unreachable_patterns)]
+                        </span>[<span class="string">&quot;&quot;</span>, $(<span class="macro-nonterminal">$field</span>,)<span class="kw-2">*</span>] =&gt; {
+                            <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="kw">type </span>{
                                 $(
-                                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>.<span class="ident">parse</span>()
-                                            .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">concat!</span>(<span class="string">&quot;could not parse field &lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>), <span class="string">&quot;&gt;&quot;</span>))<span class="question-mark">?</span>,
-                                )<span class="op">*</span>
+                                    <span class="macro-nonterminal">$field</span>: <span class="macro-nonterminal">$field</span>.parse()
+                                            .map_err(|<span class="kw">_</span>| <span class="macro">concat!</span>(<span class="string">&quot;could not parse field &lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$field</span>), <span class="string">&quot;&gt;&quot;</span>))<span class="question-mark">?</span>,
+                                )*
                                 $(
-                                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">opt_field</span>: <span class="prelude-val">None</span>,
-                                )<span class="op">*</span>
+                                    <span class="macro-nonterminal">$opt_field</span>: <span class="prelude-val">None</span>,
+                                )*
                             } )
                         }
-                        <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::pubsub::ERROR_TRYFROM</span>)
+                        <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="kw">crate</span>::pubsub::ERROR_TRYFROM)
                     }
-                } <span class="kw">else</span> {
-                    <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::pubsub::ERROR_TRYFROM</span>)
+                } <span class="kw">else </span>{
+                    <span class="prelude-val">Err</span>(<span class="kw">crate</span>::pubsub::ERROR_TRYFROM)
                 }
             }
         }
     };
 }
 
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>, <span class="ident">Serialize</span>};
+<span class="kw">use </span>serde::{Deserialize, Deserializer, Serialize};
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">automod_queue</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">channel_bits</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">channel_bits_badge</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">channel_cheer</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">channel_points</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">channel_sub_gifts</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">channel_subscriptions</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">community_points</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">following</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">hypetrain</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">moderation</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">raid</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">user_moderation_notifications</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">video_playback</span>;
+<span class="kw">pub mod </span>automod_queue;
+<span class="kw">pub mod </span>channel_bits;
+<span class="kw">pub mod </span>channel_bits_badge;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+</span><span class="kw">pub mod </span>channel_cheer;
+<span class="kw">pub mod </span>channel_points;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+</span><span class="kw">pub mod </span>channel_sub_gifts;
+<span class="kw">pub mod </span>channel_subscriptions;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+</span><span class="kw">pub mod </span>community_points;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+</span><span class="kw">pub mod </span>following;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+</span><span class="kw">pub mod </span>hypetrain;
+<span class="kw">pub mod </span>moderation;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+</span><span class="kw">pub mod </span>raid;
+<span class="kw">pub mod </span>user_moderation_notifications;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+</span><span class="kw">pub mod </span>video_playback;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">parse_json</span>, <span class="ident">parse_json_value</span>};
+<span class="kw">use crate</span>::{parse_json, parse_json_value};
 
-<span class="doccomment">/// A logical partition of messages that clients may subscribe to, to get messages.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// also known as event</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Topic</span>: <span class="ident">Serialize</span> <span class="op">+</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Scopes needed by this topic</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This constant</span>
-    <span class="doccomment">/// &lt;span</span>
-    <span class="doccomment">///   class=&quot;module-item stab portability&quot;</span>
-    <span class="doccomment">///   style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;</span>
-    <span class="doccomment">/// &gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt;</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)))]</span>
-    <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>];
+<span class="doccomment">/// A logical partition of messages that clients may subscribe to, to get messages.
+///
+/// also known as event
+</span><span class="kw">pub trait </span>Topic: Serialize + Into&lt;String&gt; {
+    <span class="doccomment">/// Scopes needed by this topic
+    ///
+    /// This constant
+    /// &lt;span
+    ///   class=&quot;module-item stab portability&quot;
+    ///   style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;
+    /// &gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt;
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)))]
+    </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope];
 
-    <span class="doccomment">/// Convert this into a [`Topics`]</span>
-    <span class="kw">fn</span> <span class="ident">into_topic</span>(<span class="self">self</span>) -&gt; <span class="ident">Topics</span>;
+    <span class="doccomment">/// Convert this into a [`Topics`]
+    </span><span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; Topics;
 }
 
-<span class="doccomment">/// All possible topics</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Hash</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">untagged</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Topics</span> {
-    <span class="doccomment">/// AutoMod flags a message as potentially inappropriate, and when a moderator takes action on a message.</span>
-    <span class="ident">AutoModQueue</span>(<span class="ident">automod_queue::AutoModQueue</span>),
-    <span class="doccomment">/// A user redeems an reward using channel points.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">CommunityPointsChannelV1</span>(<span class="ident">community_points::CommunityPointsChannelV1</span>),
-    <span class="doccomment">/// Anyone cheers in a specified channel.</span>
-    <span class="ident">ChannelBitsEventsV2</span>(<span class="ident">channel_bits::ChannelBitsEventsV2</span>),
-    <span class="doccomment">/// Anyone shares a bit badge in a specified channel.</span>
-    <span class="ident">ChannelBitsBadgeUnlocks</span>(<span class="ident">channel_bits_badge::ChannelBitsBadgeUnlocks</span>),
-    <span class="doccomment">/// A user redeems a cheer with shared rewards.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">ChannelCheerEventsPublicV1</span>(<span class="ident">channel_cheer::ChannelCheerEventsPublicV1</span>),
-    <span class="doccomment">/// A user gifts subs.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">ChannelSubGiftsV1</span>(<span class="ident">channel_sub_gifts::ChannelSubGiftsV1</span>),
-    <span class="doccomment">/// A moderator performs an action in the channel.</span>
-    <span class="ident">ChatModeratorActions</span>(<span class="ident">moderation::ChatModeratorActions</span>),
-    <span class="doccomment">/// A user redeems an reward using channel points.</span>
-    <span class="ident">ChannelPointsChannelV1</span>(<span class="ident">channel_points::ChannelPointsChannelV1</span>),
-    <span class="doccomment">/// A subscription event happens in channel</span>
-    <span class="ident">ChannelSubscribeEventsV1</span>(<span class="ident">channel_subscriptions::ChannelSubscribeEventsV1</span>),
-    <span class="doccomment">/// Statistics about stream</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">VideoPlayback</span>(<span class="ident">video_playback::VideoPlayback</span>),
-    <span class="doccomment">/// Statistics about stream</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">VideoPlaybackById</span>(<span class="ident">video_playback::VideoPlaybackById</span>),
-    <span class="doccomment">/// A user redeems an reward using channel points.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">HypeTrainEventsV1</span>(<span class="ident">hypetrain::HypeTrainEventsV1</span>),
-    <span class="doccomment">/// A user redeems an reward using channel points.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">HypeTrainEventsV1Rewards</span>(<span class="ident">hypetrain::HypeTrainEventsV1Rewards</span>),
-    <span class="doccomment">/// A user follows the channel</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">Following</span>(<span class="ident">following::Following</span>),
-    <span class="doccomment">/// A user raids the channel</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">Raid</span>(<span class="ident">raid::Raid</span>),
-    <span class="doccomment">/// A user’s message held by AutoMod has been approved or denied.</span>
-    <span class="ident">UserModerationNotifications</span>(<span class="ident">user_moderation_notifications::UserModerationNotifications</span>),
+<span class="doccomment">/// All possible topics
+</span><span class="attribute">#[derive(Deserialize, Serialize, PartialEq, Eq, Debug, Clone, Hash)]
+#[serde(untagged)]
+#[non_exhaustive]
+</span><span class="kw">pub enum </span>Topics {
+    <span class="doccomment">/// AutoMod flags a message as potentially inappropriate, and when a moderator takes action on a message.
+    </span>AutoModQueue(automod_queue::AutoModQueue),
+    <span class="doccomment">/// A user redeems an reward using channel points.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>CommunityPointsChannelV1(community_points::CommunityPointsChannelV1),
+    <span class="doccomment">/// Anyone cheers in a specified channel.
+    </span>ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2),
+    <span class="doccomment">/// Anyone shares a bit badge in a specified channel.
+    </span>ChannelBitsBadgeUnlocks(channel_bits_badge::ChannelBitsBadgeUnlocks),
+    <span class="doccomment">/// A user redeems a cheer with shared rewards.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>ChannelCheerEventsPublicV1(channel_cheer::ChannelCheerEventsPublicV1),
+    <span class="doccomment">/// A user gifts subs.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>ChannelSubGiftsV1(channel_sub_gifts::ChannelSubGiftsV1),
+    <span class="doccomment">/// A moderator performs an action in the channel.
+    </span>ChatModeratorActions(moderation::ChatModeratorActions),
+    <span class="doccomment">/// A user redeems an reward using channel points.
+    </span>ChannelPointsChannelV1(channel_points::ChannelPointsChannelV1),
+    <span class="doccomment">/// A subscription event happens in channel
+    </span>ChannelSubscribeEventsV1(channel_subscriptions::ChannelSubscribeEventsV1),
+    <span class="doccomment">/// Statistics about stream
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>VideoPlayback(video_playback::VideoPlayback),
+    <span class="doccomment">/// Statistics about stream
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>VideoPlaybackById(video_playback::VideoPlaybackById),
+    <span class="doccomment">/// A user redeems an reward using channel points.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>HypeTrainEventsV1(hypetrain::HypeTrainEventsV1),
+    <span class="doccomment">/// A user redeems an reward using channel points.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>HypeTrainEventsV1Rewards(hypetrain::HypeTrainEventsV1Rewards),
+    <span class="doccomment">/// A user follows the channel
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>Following(following::Following),
+    <span class="doccomment">/// A user raids the channel
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>Raid(raid::Raid),
+    <span class="doccomment">/// A user’s message held by AutoMod has been approved or denied.
+    </span>UserModerationNotifications(user_moderation_notifications::UserModerationNotifications),
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">Topics</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="kw">use</span> <span class="ident"><span class="self">self</span>::Topics</span>::<span class="kw-2">*</span>;
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">AutoModQueue</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">CommunityPointsChannelV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelBitsEventsV2</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelBitsBadgeUnlocks</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ChannelCheerEventsPublicV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">ChannelSubGiftsV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChatModeratorActions</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelPointsChannelV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">ChannelSubscribeEventsV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">VideoPlayback</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">VideoPlaybackById</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">HypeTrainEventsV1</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">HypeTrainEventsV1Rewards</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Following</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Raid</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
-            <span class="ident">UserModerationNotifications</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>.<span class="ident">to_string</span>(),
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>Topics {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="kw">use </span><span class="self">self</span>::Topics::<span class="kw-2">*</span>;
+        <span class="kw">let </span>s = <span class="kw">match </span><span class="self">self </span>{
+            AutoModQueue(t) =&gt; t.to_string(),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>CommunityPointsChannelV1(t) =&gt; t.to_string(),
+            ChannelBitsEventsV2(t) =&gt; t.to_string(),
+            ChannelBitsBadgeUnlocks(t) =&gt; t.to_string(),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>ChannelCheerEventsPublicV1(t) =&gt; t.to_string(),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>ChannelSubGiftsV1(t) =&gt; t.to_string(),
+            ChatModeratorActions(t) =&gt; t.to_string(),
+            ChannelPointsChannelV1(t) =&gt; t.to_string(),
+            ChannelSubscribeEventsV1(t) =&gt; t.to_string(),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>VideoPlayback(t) =&gt; t.to_string(),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>VideoPlaybackById(t) =&gt; t.to_string(),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>HypeTrainEventsV1(t) =&gt; t.to_string(),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>HypeTrainEventsV1Rewards(t) =&gt; t.to_string(),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Following(t) =&gt; t.to_string(),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Raid(t) =&gt; t.to_string(),
+            UserModerationNotifications(t) =&gt; t.to_string(),
         };
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>)
+        f.write_str(<span class="kw-2">&amp;</span>s)
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">ITopicSubscribeData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">String</span>],
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-    <span class="ident">auth_token</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Serialize)]
+</span><span class="kw">struct </span>ITopicSubscribeData&lt;<span class="lifetime">&#39;a</span>&gt; {
+    topics: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[String],
+    <span class="attribute">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span>auth_token: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;,
 }
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">ITopicSubscribe</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
-    <span class="ident">_type</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-    <span class="ident">nonce</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>,
-    <span class="ident">data</span>: <span class="ident">ITopicSubscribeData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Serialize)]
+</span><span class="kw">struct </span>ITopicSubscribe&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="attribute">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span>_type: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+    nonce: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;,
+    data: ITopicSubscribeData&lt;<span class="lifetime">&#39;a</span>&gt;,
 }
 
-<span class="doccomment">/// Create a listen command.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Create a listen message for moderator actions</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// # use twitch_api::pubsub::{self, Topic as _};</span>
-<span class="doccomment">/// // We want to subscribe to moderator actions on channel with id 1234</span>
-<span class="doccomment">/// // as if we were a user with id 4321 that is moderator on the channel.</span>
-<span class="doccomment">/// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {</span>
-<span class="doccomment">///     user_id: 4321,</span>
-<span class="doccomment">///     channel_id: 1234,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// .into_topic();</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// // Listen to follows as well</span>
-<span class="doccomment">/// let follows = pubsub::following::Following { channel_id: 1234 }.into_topic();</span>
-<span class="doccomment">/// // Create the topic command to send to twitch</span>
-<span class="doccomment">/// let command = pubsub::listen_command(</span>
-<span class="doccomment">///     &amp;[chat_mod_actions, follows],</span>
-<span class="doccomment">///     &quot;authtoken&quot;,</span>
-<span class="doccomment">///     &quot;super se3re7 random string&quot;,</span>
-<span class="doccomment">/// )</span>
-<span class="doccomment">/// .expect(&quot;serializing failed&quot;);</span>
-<span class="doccomment">/// // Send the message with your favorite websocket client</span>
-<span class="doccomment">/// send_command(command).unwrap();</span>
-<span class="doccomment">/// // To parse the websocket messages, use pubsub::Response::parse</span>
-<span class="doccomment">/// # fn send_command(command: String) -&gt; Result&lt;(),()&gt; {Ok(())}</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">listen_command</span><span class="op">&lt;</span><span class="lifetime">&#39;t</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>(
-    <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> [<span class="ident">Topics</span>],
-    <span class="ident">auth_token</span>: <span class="ident">T</span>,
-    <span class="ident">nonce</span>: <span class="ident">N</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Error</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Create a listen command.
+///
+/// # Examples
+///
+/// Create a listen message for moderator actions
+///
+/// ```rust
+/// # use twitch_api::pubsub::{self, Topic as _};
+/// // We want to subscribe to moderator actions on channel with id 1234
+/// // as if we were a user with id 4321 that is moderator on the channel.
+/// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {
+///     user_id: 4321,
+///     channel_id: 1234,
+/// }
+/// .into_topic();
+///
+/// // Listen to follows as well
+/// let follows = pubsub::following::Following { channel_id: 1234 }.into_topic();
+/// // Create the topic command to send to twitch
+/// let command = pubsub::listen_command(
+///     &amp;[chat_mod_actions, follows],
+///     &quot;authtoken&quot;,
+///     &quot;super se3re7 random string&quot;,
+/// )
+/// .expect(&quot;serializing failed&quot;);
+/// // Send the message with your favorite websocket client
+/// send_command(command).unwrap();
+/// // To parse the websocket messages, use pubsub::Response::parse
+/// # fn send_command(command: String) -&gt; Result&lt;(),()&gt; {Ok(())}
+/// ```
+</span><span class="kw">pub fn </span>listen_command&lt;<span class="lifetime">&#39;t</span>, T, N&gt;(
+    topics: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t </span>[Topics],
+    auth_token: T,
+    nonce: N,
+) -&gt; <span class="prelude-ty">Result</span>&lt;String, serde_json::Error&gt;
+<span class="kw">where
+    </span>T: Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;t </span>str&gt;&gt;,
+    N: Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;t </span>str&gt;&gt;,
 {
-    <span class="kw">let</span> <span class="ident">topics</span> <span class="op">=</span> <span class="ident">topics</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">to_string</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-    <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">ITopicSubscribe</span> {
-        <span class="ident">_type</span>: <span class="string">&quot;LISTEN&quot;</span>,
-        <span class="ident">nonce</span>: <span class="ident">nonce</span>.<span class="ident">into</span>(),
-        <span class="ident">data</span>: <span class="ident">ITopicSubscribeData</span> {
-            <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="ident">topics</span>,
-            <span class="ident">auth_token</span>: <span class="ident">auth_token</span>.<span class="ident">into</span>(),
+    <span class="kw">let </span>topics = topics.iter().map(|t| t.to_string()).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+    serde_json::to_string(<span class="kw-2">&amp;</span>ITopicSubscribe {
+        _type: <span class="string">&quot;LISTEN&quot;</span>,
+        nonce: nonce.into(),
+        data: ITopicSubscribeData {
+            topics: <span class="kw-2">&amp;</span>topics,
+            auth_token: auth_token.into(),
         },
     })
 }
 
-<span class="doccomment">/// Create a unlisten command.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Unlisten from moderator actions and follows</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// # use twitch_api::pubsub::{self, Topic as _};</span>
-<span class="doccomment">/// // These are the exact same topics as for the `listen_command`.</span>
-<span class="doccomment">/// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {</span>
-<span class="doccomment">///     user_id: 4321,</span>
-<span class="doccomment">///     channel_id: 1234,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// .into_topic();</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let follows = pubsub::following::Following { channel_id: 1234 }.into_topic();</span>
-<span class="doccomment">/// // Create the command to send to twitch</span>
-<span class="doccomment">/// let command = pubsub::unlisten_command(</span>
-<span class="doccomment">///     &amp;[chat_mod_actions, follows],</span>
-<span class="doccomment">///     // This does not need to be the same nonce that was sent for listening.</span>
-<span class="doccomment">///     // The nonce is only there to identify the payload and the response.</span>
-<span class="doccomment">///     &quot;super se3re7 random string&quot;,</span>
-<span class="doccomment">/// )</span>
-<span class="doccomment">/// .expect(&quot;serializing failed&quot;);</span>
-<span class="doccomment">/// // Send the message with your favorite websocket client</span>
-<span class="doccomment">/// send_command(command).unwrap();</span>
-<span class="doccomment">/// // To parse the websocket messages, use pubsub::Response::parse</span>
-<span class="doccomment">/// # fn send_command(command: String) -&gt; Result&lt;(),()&gt; {Ok(())}</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unlisten_command</span><span class="op">&lt;</span><span class="lifetime">&#39;t</span>, <span class="ident">O</span><span class="op">&gt;</span>(
-    <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> [<span class="ident">Topics</span>],
-    <span class="ident">nonce</span>: <span class="ident">O</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Error</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Create a unlisten command.
+///
+/// # Examples
+///
+/// Unlisten from moderator actions and follows
+///
+/// ```rust
+/// # use twitch_api::pubsub::{self, Topic as _};
+/// // These are the exact same topics as for the `listen_command`.
+/// let chat_mod_actions = pubsub::moderation::ChatModeratorActions {
+///     user_id: 4321,
+///     channel_id: 1234,
+/// }
+/// .into_topic();
+///
+/// let follows = pubsub::following::Following { channel_id: 1234 }.into_topic();
+/// // Create the command to send to twitch
+/// let command = pubsub::unlisten_command(
+///     &amp;[chat_mod_actions, follows],
+///     // This does not need to be the same nonce that was sent for listening.
+///     // The nonce is only there to identify the payload and the response.
+///     &quot;super se3re7 random string&quot;,
+/// )
+/// .expect(&quot;serializing failed&quot;);
+/// // Send the message with your favorite websocket client
+/// send_command(command).unwrap();
+/// // To parse the websocket messages, use pubsub::Response::parse
+/// # fn send_command(command: String) -&gt; Result&lt;(),()&gt; {Ok(())}
+/// ```
+</span><span class="kw">pub fn </span>unlisten_command&lt;<span class="lifetime">&#39;t</span>, O&gt;(
+    topics: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t </span>[Topics],
+    nonce: O,
+) -&gt; <span class="prelude-ty">Result</span>&lt;String, serde_json::Error&gt;
+<span class="kw">where
+    </span>O: Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;t </span>str&gt;&gt;,
 {
-    <span class="kw">let</span> <span class="ident">topics</span> <span class="op">=</span> <span class="ident">topics</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">to_string</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-    <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">ITopicSubscribe</span> {
-        <span class="ident">_type</span>: <span class="string">&quot;UNLISTEN&quot;</span>,
-        <span class="ident">nonce</span>: <span class="ident">nonce</span>.<span class="ident">into</span>(),
-        <span class="ident">data</span>: <span class="ident">ITopicSubscribeData</span> {
-            <span class="ident">topics</span>: <span class="kw-2">&amp;</span><span class="ident">topics</span>,
-            <span class="ident">auth_token</span>: <span class="prelude-val">None</span>,
+    <span class="kw">let </span>topics = topics.iter().map(|t| t.to_string()).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+    serde_json::to_string(<span class="kw-2">&amp;</span>ITopicSubscribe {
+        _type: <span class="string">&quot;UNLISTEN&quot;</span>,
+        nonce: nonce.into(),
+        data: ITopicSubscribeData {
+            topics: <span class="kw-2">&amp;</span>topics,
+            auth_token: <span class="prelude-val">None</span>,
         },
     })
 }
 
-<span class="doccomment">/// Response from twitch PubSub</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TwitchResponse</span> {
-    <span class="doccomment">/// The nonce that was passed in the request, if one was provided there</span>
-    <span class="kw">pub</span> <span class="ident">nonce</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The error message associated with the request, or an empty string if there is no error</span>
-    <span class="kw">pub</span> <span class="ident">error</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Response from twitch PubSub
+</span><span class="attribute">#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>TwitchResponse {
+    <span class="doccomment">/// The nonce that was passed in the request, if one was provided there
+    </span><span class="kw">pub </span>nonce: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// The error message associated with the request, or an empty string if there is no error
+    </span><span class="kw">pub </span>error: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">TwitchResponse</span> {
-    <span class="doccomment">/// Whether response indicates success or not</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_successful</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> { <span class="self">self</span>.<span class="ident">error</span>.<span class="ident">as_ref</span>().<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">is_empty</span>()) }
+<span class="kw">impl </span>TwitchResponse {
+    <span class="doccomment">/// Whether response indicates success or not
+    </span><span class="kw">pub fn </span>is_successful(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool { <span class="self">self</span>.error.as_ref().map_or(<span class="bool-val">true</span>, |s| s.is_empty()) }
 }
 
-<span class="comment">// FIXME: Add example</span>
-<span class="doccomment">/// Message response from twitch PubSub.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// See [TwitchResponse]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Serialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TopicData</span> {
-    <span class="doccomment">/// Response from the [automod_queue::AutoModQueue] topic.</span>
-    <span class="ident">AutoModQueue</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">automod_queue::AutoModQueue</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">automod_queue::AutoModQueueReply</span><span class="op">&gt;</span>,
+<span class="comment">// FIXME: Add example
+</span><span class="doccomment">/// Message response from twitch PubSub.
+///
+/// See [TwitchResponse]
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Serialize)]
+</span><span class="kw">pub enum </span>TopicData {
+    <span class="doccomment">/// Response from the [automod_queue::AutoModQueue] topic.
+    </span>AutoModQueue {
+        <span class="doccomment">/// Topic message
+        </span>topic: automod_queue::AutoModQueue,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;automod_queue::AutoModQueueReply&gt;,
     },
-    <span class="doccomment">/// Response from the [channel_bits::ChannelBitsEventsV2] topic.</span>
-    <span class="ident">ChannelBitsEventsV2</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">channel_bits::ChannelBitsEventsV2</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">channel_bits::ChannelBitsEventsV2Reply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Response from the [channel_bits::ChannelBitsEventsV2] topic.
+    </span>ChannelBitsEventsV2 {
+        <span class="doccomment">/// Topic message
+        </span>topic: channel_bits::ChannelBitsEventsV2,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;channel_bits::ChannelBitsEventsV2Reply&gt;,
     },
-    <span class="doccomment">/// Response from the [channel_bits_badge::ChannelBitsBadgeUnlocks] topic.</span>
-    <span class="ident">ChannelBitsBadgeUnlocks</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">channel_bits_badge::ChannelBitsBadgeUnlocks</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">channel_bits_badge::ChannelBitsBadgeUnlocksReply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Response from the [channel_bits_badge::ChannelBitsBadgeUnlocks] topic.
+    </span>ChannelBitsBadgeUnlocks {
+        <span class="doccomment">/// Topic message
+        </span>topic: channel_bits_badge::ChannelBitsBadgeUnlocks,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;channel_bits_badge::ChannelBitsBadgeUnlocksReply&gt;,
     },
-    <span class="doccomment">/// Response from the [moderation::ChatModeratorActions] topic.</span>
-    <span class="ident">ChatModeratorActions</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">moderation::ChatModeratorActions</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">moderation::ChatModeratorActionsReply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Response from the [moderation::ChatModeratorActions] topic.
+    </span>ChatModeratorActions {
+        <span class="doccomment">/// Topic message
+        </span>topic: moderation::ChatModeratorActions,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;moderation::ChatModeratorActionsReply&gt;,
     },
-    <span class="doccomment">/// Response from the [channel_points::ChannelPointsChannelV1] topic.</span>
-    <span class="ident">ChannelPointsChannelV1</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">channel_points::ChannelPointsChannelV1</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">channel_points::ChannelPointsChannelV1Reply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Response from the [channel_points::ChannelPointsChannelV1] topic.
+    </span>ChannelPointsChannelV1 {
+        <span class="doccomment">/// Topic message
+        </span>topic: channel_points::ChannelPointsChannelV1,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;channel_points::ChannelPointsChannelV1Reply&gt;,
     },
-    <span class="doccomment">/// Response from the [channel_subscriptions::ChannelSubscribeEventsV1] topic.</span>
-    <span class="ident">ChannelSubscribeEventsV1</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">channel_subscriptions::ChannelSubscribeEventsV1</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">channel_subscriptions::ChannelSubscribeEventsV1Reply</span><span class="op">&gt;</span>, <span class="comment">// FIXME: :)</span>
+    <span class="doccomment">/// Response from the [channel_subscriptions::ChannelSubscribeEventsV1] topic.
+    </span>ChannelSubscribeEventsV1 {
+        <span class="doccomment">/// Topic message
+        </span>topic: channel_subscriptions::ChannelSubscribeEventsV1,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;channel_subscriptions::ChannelSubscribeEventsV1Reply&gt;, <span class="comment">// FIXME: :)
+    </span>},
+    <span class="doccomment">/// Response from the [community_points::CommunityPointsChannelV1] topic.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>CommunityPointsChannelV1 {
+        <span class="doccomment">/// Topic message
+        </span>topic: community_points::CommunityPointsChannelV1,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;channel_points::ChannelPointsChannelV1Reply&gt;,
     },
-    <span class="doccomment">/// Response from the [community_points::CommunityPointsChannelV1] topic.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">CommunityPointsChannelV1</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">community_points::CommunityPointsChannelV1</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">channel_points::ChannelPointsChannelV1Reply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Response from the [channel_cheer::ChannelCheerEventsPublicV1] topic.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>ChannelCheerEventsPublicV1 {
+        <span class="doccomment">/// Topic message
+        </span>topic: channel_cheer::ChannelCheerEventsPublicV1,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;channel_cheer::ChannelCheerEventsPublicV1Reply&gt;,
     },
-    <span class="doccomment">/// Response from the [channel_cheer::ChannelCheerEventsPublicV1] topic.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">ChannelCheerEventsPublicV1</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">channel_cheer::ChannelCheerEventsPublicV1</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">channel_cheer::ChannelCheerEventsPublicV1Reply</span><span class="op">&gt;</span>,
-    },
-    <span class="doccomment">/// Response from the [channel_sub_gifts::ChannelSubGiftsV1] topic.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">ChannelSubGiftsV1</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">channel_sub_gifts::ChannelSubGiftsV1</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">channel_sub_gifts::ChannelSubGiftsV1Reply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Response from the [channel_sub_gifts::ChannelSubGiftsV1] topic.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>ChannelSubGiftsV1 {
+        <span class="doccomment">/// Topic message
+        </span>topic: channel_sub_gifts::ChannelSubGiftsV1,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;channel_sub_gifts::ChannelSubGiftsV1Reply&gt;,
     },
 
-    <span class="doccomment">/// Response from the [video_playback::VideoPlayback] topic.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">VideoPlayback</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">video_playback::VideoPlayback</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">video_playback::VideoPlaybackReply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Response from the [video_playback::VideoPlayback] topic.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>VideoPlayback {
+        <span class="doccomment">/// Topic message
+        </span>topic: video_playback::VideoPlayback,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;video_playback::VideoPlaybackReply&gt;,
     },
-    <span class="doccomment">/// Response from the [video_playback::VideoPlaybackById] topic.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">VideoPlaybackById</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">video_playback::VideoPlaybackById</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">video_playback::VideoPlaybackReply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Response from the [video_playback::VideoPlaybackById] topic.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>VideoPlaybackById {
+        <span class="doccomment">/// Topic message
+        </span>topic: video_playback::VideoPlaybackById,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;video_playback::VideoPlaybackReply&gt;,
     },
-    <span class="doccomment">/// Response from the [hypetrain::HypeTrainEventsV1] topic.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">HypeTrainEventsV1</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">hypetrain::HypeTrainEventsV1</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">hypetrain::HypeTrainEventsV1Reply</span><span class="op">&gt;</span>, <span class="comment">// FIXME: May not be correct</span>
+    <span class="doccomment">/// Response from the [hypetrain::HypeTrainEventsV1] topic.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>HypeTrainEventsV1 {
+        <span class="doccomment">/// Topic message
+        </span>topic: hypetrain::HypeTrainEventsV1,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;hypetrain::HypeTrainEventsV1Reply&gt;, <span class="comment">// FIXME: May not be correct
+    </span>},
+    <span class="doccomment">/// Response from the [hypetrain::HypeTrainEventsV1Rewards] topic.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>HypeTrainEventsV1Rewards {
+        <span class="doccomment">/// Topic message
+        </span>topic: hypetrain::HypeTrainEventsV1Rewards,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;hypetrain::HypeTrainEventsV1Reply&gt;,
     },
-    <span class="doccomment">/// Response from the [hypetrain::HypeTrainEventsV1Rewards] topic.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">HypeTrainEventsV1Rewards</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">hypetrain::HypeTrainEventsV1Rewards</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">hypetrain::HypeTrainEventsV1Reply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Response from the [following::Following] topic.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>Following {
+        <span class="doccomment">/// Topic message
+        </span>topic: following::Following,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;following::FollowingReply&gt;,
     },
-    <span class="doccomment">/// Response from the [following::Following] topic.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">Following</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">following::Following</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">following::FollowingReply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Response from the [raid::Raid] topic.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+    </span>Raid {
+        <span class="doccomment">/// Topic message
+        </span>topic: raid::Raid,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;raid::RaidReply&gt;,
     },
-    <span class="doccomment">/// Response from the [raid::Raid] topic.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-    <span class="ident">Raid</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">raid::Raid</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">raid::RaidReply</span><span class="op">&gt;</span>,
-    },
-    <span class="doccomment">/// A user’s message held by AutoMod has been approved or denied.</span>
-    <span class="ident">UserModerationNotifications</span> {
-        <span class="doccomment">/// Topic message</span>
-        <span class="ident">topic</span>: <span class="ident">user_moderation_notifications::UserModerationNotifications</span>,
-        <span class="doccomment">/// Message reply from topic subscription</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;message&quot;</span>)]</span>
-        <span class="ident">reply</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">user_moderation_notifications::UserModerationNotificationsReply</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A user’s message held by AutoMod has been approved or denied.
+    </span>UserModerationNotifications {
+        <span class="doccomment">/// Topic message
+        </span>topic: user_moderation_notifications::UserModerationNotifications,
+        <span class="doccomment">/// Message reply from topic subscription
+        </span><span class="attribute">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span>reply: Box&lt;user_moderation_notifications::UserModerationNotificationsReply&gt;,
     },
 }
 
-<span class="comment">// This impl is here because otherwise we hide the errors from deser</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TopicData</span> {
-    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
-        <span class="comment">// FIXME: make into macro or actually upstream into serde..., untagged_force = &quot;field&quot;</span>
+<span class="comment">// This impl is here because otherwise we hide the errors from deser
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>TopicData {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="comment">// FIXME: make into macro or actually upstream into serde..., untagged_force = &quot;field&quot;
 
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">ITopicData</span> {
-            <span class="ident">topic</span>: <span class="ident">Topics</span>,
-            <span class="ident">message</span>: <span class="ident">String</span>,
+        </span><span class="attribute">#[derive(Deserialize, Debug)]
+        </span><span class="kw">struct </span>ITopicData {
+            topic: Topics,
+            message: String,
         }
-        <span class="kw">let</span> <span class="ident">reply</span> <span class="op">=</span> <span class="ident">ITopicData::deserialize</span>(<span class="ident">deserializer</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="ident">serde::de::Error::custom</span>(<span class="macro">format!</span>(<span class="string">&quot;could not deserialize topic reply: {}&quot;</span>, <span class="ident">e</span>))
+        <span class="kw">let </span>reply = ITopicData::deserialize(deserializer).map_err(|e| {
+            serde::de::Error::custom(<span class="macro">format!</span>(<span class="string">&quot;could not deserialize topic reply: {}&quot;</span>, e))
         })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">reply</span>.<span class="ident">topic</span> {
-            <span class="ident">Topics::AutoModQueue</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::AutoModQueue</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+        <span class="prelude-val">Ok</span>(<span class="kw">match </span>reply.topic {
+            Topics::AutoModQueue(topic) =&gt; TopicData::AutoModQueue {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::CommunityPointsChannelV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::CommunityPointsChannelV1</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Topics::CommunityPointsChannelV1(topic) =&gt; TopicData::CommunityPointsChannelV1 {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="ident">Topics::ChannelBitsEventsV2</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelBitsEventsV2</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            Topics::ChannelBitsEventsV2(topic) =&gt; TopicData::ChannelBitsEventsV2 {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="ident">Topics::ChannelBitsBadgeUnlocks</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelBitsBadgeUnlocks</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            Topics::ChannelBitsBadgeUnlocks(topic) =&gt; TopicData::ChannelBitsBadgeUnlocks {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::ChannelSubGiftsV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelSubGiftsV1</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Topics::ChannelSubGiftsV1(topic) =&gt; TopicData::ChannelSubGiftsV1 {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::ChannelCheerEventsPublicV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelCheerEventsPublicV1</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Topics::ChannelCheerEventsPublicV1(topic) =&gt; TopicData::ChannelCheerEventsPublicV1 {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="ident">Topics::ChatModeratorActions</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChatModeratorActions</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            Topics::ChatModeratorActions(topic) =&gt; TopicData::ChatModeratorActions {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="ident">Topics::ChannelPointsChannelV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelPointsChannelV1</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            Topics::ChannelPointsChannelV1(topic) =&gt; TopicData::ChannelPointsChannelV1 {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="ident">Topics::ChannelSubscribeEventsV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::ChannelSubscribeEventsV1</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            Topics::ChannelSubscribeEventsV1(topic) =&gt; TopicData::ChannelSubscribeEventsV1 {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::VideoPlayback</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::VideoPlayback</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Topics::VideoPlayback(topic) =&gt; TopicData::VideoPlayback {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::VideoPlaybackById</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::VideoPlaybackById</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Topics::VideoPlaybackById(topic) =&gt; TopicData::VideoPlaybackById {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::HypeTrainEventsV1</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::HypeTrainEventsV1</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Topics::HypeTrainEventsV1(topic) =&gt; TopicData::HypeTrainEventsV1 {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::HypeTrainEventsV1Rewards</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::HypeTrainEventsV1Rewards</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Topics::HypeTrainEventsV1Rewards(topic) =&gt; TopicData::HypeTrainEventsV1Rewards {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::Following</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::Following</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Topics::Following(topic) =&gt; TopicData::Following {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-            <span class="ident">Topics::Raid</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::Raid</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Topics::Raid(topic) =&gt; TopicData::Raid {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="ident">Topics::UserModerationNotifications</span>(<span class="ident">topic</span>) =&gt; <span class="ident">TopicData::UserModerationNotifications</span> {
-                <span class="ident">topic</span>,
-                <span class="ident">reply</span>: <span class="ident">parse_json</span>(<span class="kw-2">&amp;</span><span class="ident">reply</span>.<span class="ident">message</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>,
+            Topics::UserModerationNotifications(topic) =&gt; TopicData::UserModerationNotifications {
+                topic,
+                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
         })
     }
 }
 
-<span class="doccomment">/// Response from twitchs PubSub server.</span>
-<span class="doccomment">/// Either a response indicating status of something or a message from a topic</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Response</span> {
-    <span class="doccomment">/// Response from a subscription/unsubscription</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;RESPONSE&quot;</span>)]</span>
-    <span class="ident">Response</span>(<span class="ident">TwitchResponse</span>),
-    <span class="doccomment">/// Message received containing all applicable data</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;MESSAGE&quot;</span>)]</span>
-    <span class="ident">Message</span> {
-        <span class="doccomment">/// Data corresponding to [topic](Topic) message</span>
-        <span class="ident">data</span>: <span class="ident">TopicData</span>,
+<span class="doccomment">/// Response from twitchs PubSub server.
+/// Either a response indicating status of something or a message from a topic
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[serde(tag = <span class="string">&quot;type&quot;</span>)]
+</span><span class="kw">pub enum </span>Response {
+    <span class="doccomment">/// Response from a subscription/unsubscription
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;RESPONSE&quot;</span>)]
+    </span>Response(TwitchResponse),
+    <span class="doccomment">/// Message received containing all applicable data
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;MESSAGE&quot;</span>)]
+    </span>Message {
+        <span class="doccomment">/// Data corresponding to [topic](Topic) message
+        </span>data: TopicData,
     },
-    <span class="doccomment">/// Response from a ping</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;PONG&quot;</span>)]</span>
-    <span class="ident">Pong</span>,
-    <span class="doccomment">/// Request for the client to reconnect</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;RECONNECT&quot;</span>)]</span>
-    <span class="ident">Reconnect</span>,
+    <span class="doccomment">/// Response from a ping
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;PONG&quot;</span>)]
+    </span>Pong,
+    <span class="doccomment">/// Request for the client to reconnect
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;RECONNECT&quot;</span>)]
+    </span>Reconnect,
 }
 
-<span class="kw">impl</span> <span class="ident">Response</span> {
-    <span class="comment">// FIXME: Add example</span>
-    <span class="doccomment">/// Parse string slice as a response.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span>, <span class="ident"><span class="kw">crate</span>::DeserError</span><span class="op">&gt;</span> { <span class="ident">parse_json</span>(<span class="ident">source</span>, <span class="bool-val">true</span>) }
+<span class="kw">impl </span>Response {
+    <span class="comment">// FIXME: Add example
+    </span><span class="doccomment">/// Parse string slice as a response.
+    </span><span class="kw">pub fn </span>parse(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Response, <span class="kw">crate</span>::DeserError&gt; { parse_json(source, <span class="bool-val">true</span>) }
 }
 
-<span class="doccomment">/// Deserialize &#39;null&#39; as &lt;T as Default&gt;::Default</span>
-<span class="kw">fn</span> <span class="ident">deserialize_default_from_null</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
-    <span class="ident">T</span>: <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Default</span>, {
-    <span class="prelude-val">Ok</span>(<span class="ident">Option::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>.<span class="ident">unwrap_or_default</span>())
+<span class="doccomment">/// Deserialize &#39;null&#39; as &lt;T as Default&gt;::Default
+</span><span class="kw">fn </span>deserialize_default_from_null&lt;<span class="lifetime">&#39;de</span>, D, T&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;T, D::Error&gt;
+<span class="kw">where
+    </span>D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+    T: Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; + Default, {
+    <span class="prelude-val">Ok</span>(Option::deserialize(deserializer)<span class="question-mark">?</span>.unwrap_or_default())
 }
 
-<span class="doccomment">/// Deserialize &quot;&quot; as &lt;T as Default&gt;::Default</span>
-<span class="kw">fn</span> <span class="ident">deserialize_none_from_empty_string</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">D</span>: <span class="ident">serde::de::Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
-    <span class="ident">T</span>: <span class="ident">serde::de::DeserializeOwned</span>, {
-    <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">serde_json::Value::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>;
-    <span class="kw">match</span> <span class="ident">val</span> {
-        <span class="ident">serde_json::Value::String</span>(<span class="ident">string</span>) <span class="kw">if</span> <span class="ident">string</span>.<span class="ident">is_empty</span>() =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
-        <span class="ident">other</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">parse_json_value</span>(<span class="ident">other</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>),
+<span class="doccomment">/// Deserialize &quot;&quot; as &lt;T as Default&gt;::Default
+</span><span class="kw">fn </span>deserialize_none_from_empty_string&lt;<span class="lifetime">&#39;de</span>, D, T&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;T&gt;, D::Error&gt;
+<span class="kw">where
+    </span>D: serde::de::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+    T: serde::de::DeserializeOwned, {
+    <span class="kw">let </span>val = serde_json::Value::deserialize(deserializer)<span class="question-mark">?</span>;
+    <span class="kw">match </span>val {
+        serde_json::Value::String(string) <span class="kw">if </span>string.is_empty() =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+        other =&gt; <span class="prelude-val">Ok</span>(parse_json_value(other, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>),
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">error</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>error() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
 {
     &quot;type&quot;: &quot;RESPONSE&quot;,
     &quot;nonce&quot;: &quot;44h1k13746815ab1r2&quot;,
     &quot;error&quot;: &quot;&quot;
 }
 &quot;#</span>;
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">Response::Response</span>(<span class="ident">TwitchResponse</span> {
-            <span class="ident">nonce</span>: <span class="prelude-val">Some</span>(<span class="ident">String::from</span>(<span class="string">&quot;44h1k13746815ab1r2&quot;</span>)),
-            <span class="ident">error</span>: <span class="prelude-val">Some</span>(<span class="ident">String::new</span>()),
+        <span class="kw">let </span>expected = Response::Response(TwitchResponse {
+            nonce: <span class="prelude-val">Some</span>(String::from(<span class="string">&quot;44h1k13746815ab1r2&quot;</span>)),
+            error: <span class="prelude-val">Some</span>(String::new()),
         });
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>);
+        <span class="kw">let </span>actual = Response::parse(source).unwrap();
+        <span class="macro">assert_eq!</span>(expected, actual);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">listen</span>() {
-        <span class="kw">let</span> <span class="ident">topic</span> <span class="op">=</span>
-            <span class="ident">Topics::ChannelBitsEventsV2</span>(<span class="ident">channel_bits::ChannelBitsEventsV2</span> { <span class="ident">channel_id</span>: <span class="number">12345</span> });
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="string">r#&quot;{&quot;type&quot;:&quot;LISTEN&quot;,&quot;nonce&quot;:&quot;my nonce&quot;,&quot;data&quot;:{&quot;topics&quot;:[&quot;channel-bits-events-v2.12345&quot;],&quot;auth_token&quot;:&quot;my token&quot;}}&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">listen_command</span>(<span class="kw-2">&amp;</span>[<span class="ident">topic</span>], <span class="string">&quot;my token&quot;</span>, <span class="string">&quot;my nonce&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;should serialize&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>listen() {
+        <span class="kw">let </span>topic =
+            Topics::ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2 { channel_id: <span class="number">12345 </span>});
+        <span class="kw">let </span>expected = <span class="string">r#&quot;{&quot;type&quot;:&quot;LISTEN&quot;,&quot;nonce&quot;:&quot;my nonce&quot;,&quot;data&quot;:{&quot;topics&quot;:[&quot;channel-bits-events-v2.12345&quot;],&quot;auth_token&quot;:&quot;my token&quot;}}&quot;#</span>;
+        <span class="kw">let </span>actual = listen_command(<span class="kw-2">&amp;</span>[topic], <span class="string">&quot;my token&quot;</span>, <span class="string">&quot;my nonce&quot;</span>).expect(<span class="string">&quot;should serialize&quot;</span>);
+        <span class="macro">assert_eq!</span>(expected, actual);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">unlisten</span>() {
-        <span class="kw">let</span> <span class="ident">topic</span> <span class="op">=</span>
-            <span class="ident">Topics::ChannelBitsEventsV2</span>(<span class="ident">channel_bits::ChannelBitsEventsV2</span> { <span class="ident">channel_id</span>: <span class="number">12345</span> });
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="string">r#&quot;{&quot;type&quot;:&quot;UNLISTEN&quot;,&quot;nonce&quot;:&quot;my nonce&quot;,&quot;data&quot;:{&quot;topics&quot;:[&quot;channel-bits-events-v2.12345&quot;]}}&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">unlisten_command</span>(<span class="kw-2">&amp;</span>[<span class="ident">topic</span>], <span class="string">&quot;my nonce&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;should serialize&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>unlisten() {
+        <span class="kw">let </span>topic =
+            Topics::ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2 { channel_id: <span class="number">12345 </span>});
+        <span class="kw">let </span>expected = <span class="string">r#&quot;{&quot;type&quot;:&quot;UNLISTEN&quot;,&quot;nonce&quot;:&quot;my nonce&quot;,&quot;data&quot;:{&quot;topics&quot;:[&quot;channel-bits-events-v2.12345&quot;]}}&quot;#</span>;
+        <span class="kw">let </span>actual = unlisten_command(<span class="kw-2">&amp;</span>[topic], <span class="string">&quot;my nonce&quot;</span>).expect(<span class="string">&quot;should serialize&quot;</span>);
+        <span class="macro">assert_eq!</span>(expected, actual);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

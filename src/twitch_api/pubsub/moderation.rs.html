@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/moderation.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>moderation.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/moderation.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>moderation.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -677,417 +677,417 @@
 <span id="677">677</span>
 <span id="678">678</span>
 <span id="679">679</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;mod&quot;</span>)]</span>
-<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;chat_moderator_actions&quot;</span>)]</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="doccomment">//! PubSub messages for moderator actions</span>
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">pubsub</span>, <span class="ident">types</span>};
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+</pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;mod&quot;</span>)]
+#![doc(alias = <span class="string">&quot;chat_moderator_actions&quot;</span>)]
+#![allow(deprecated)]
+</span><span class="doccomment">//! PubSub messages for moderator actions
+</span><span class="kw">use crate</span>::{pubsub, types};
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="doccomment">/// A moderator performs an action in the channel.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Hash</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">into</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>, <span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChatModeratorActions</span> {
-    <span class="doccomment">/// The user_id to listen as. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint</span>
-    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The channel_id to listen to. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">u32</span>,
+<span class="doccomment">/// A moderator performs an action in the channel.
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
+#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+</span><span class="kw">pub struct </span>ChatModeratorActions {
+    <span class="doccomment">/// The user_id to listen as. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
+    </span><span class="kw">pub </span>user_id: u32,
+    <span class="doccomment">/// The channel_id to listen to. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
+    </span><span class="kw">pub </span>channel_id: u32,
 }
 
 <span class="macro">impl_de_ser!</span>(
-    <span class="ident">ChatModeratorActions</span>,
+    ChatModeratorActions,
     <span class="string">&quot;chat_moderator_actions&quot;</span>,
-    <span class="ident">user_id</span>,
-    <span class="ident">channel_id</span>
+    user_id,
+    channel_id
 );
 
-<span class="kw">impl</span> <span class="ident">pubsub::Topic</span> <span class="kw">for</span> <span class="ident">ChatModeratorActions</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-    <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="ident">twitch_oauth2::Scope::ChannelModerate</span>];
+<span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>ChatModeratorActions {
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ChannelModerate];
 
-    <span class="kw">fn</span> <span class="ident">into_topic</span>(<span class="self">self</span>) -&gt; <span class="ident">pubsub::Topics</span> { <span class="ident"><span class="kw">super</span>::Topics::ChatModeratorActions</span>(<span class="self">self</span>) }
+    <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::ChatModeratorActions(<span class="self">self</span>) }
 }
 
-<span class="doccomment">/// A moderation action. `moderation_action`</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ModerationAction</span> {
-    <span class="doccomment">/// Arguments for moderation_action</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_default_from_null&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// User that did moderation action</span>
-    <span class="attribute">#[<span class="ident">serde</span>(
-        <span class="ident">default</span>,
-        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="ident">created_by</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::UserName</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// ID of user that did moderation action</span>
-    <span class="attribute">#[<span class="ident">serde</span>(
-        <span class="ident">default</span>,
-        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="ident">created_by_user_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Moderation action is triggered from automod</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">from_automod</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Type of action</span>
-    <span class="kw">pub</span> <span class="ident">moderation_action</span>: <span class="ident">ModerationActionCommand</span>,
-    <span class="doccomment">/// ID of message associated with moderation action</span>
-    <span class="attribute">#[<span class="ident">serde</span>(
-        <span class="ident">default</span>,
-        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="ident">msg_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::MsgId</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Target of moderation action</span>
-    <span class="kw">pub</span> <span class="ident">target_user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Type of moderation</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">type_</span>: <span class="ident">ModerationType</span>,
-    <span class="comment">// FIXME: Never filled</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(
-        <span class="ident">default</span>,
-        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="ident">target_user_login</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="comment">// FIXME: Not sure what this does</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(
-        <span class="ident">default</span>,
-        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="ident">created_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::Timestamp</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A moderation action. `moderation_action`
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ModerationAction {
+    <span class="doccomment">/// Arguments for moderation_action
+    </span><span class="attribute">#[serde(deserialize_with = <span class="string">&quot;pubsub::deserialize_default_from_null&quot;</span>)]
+    </span><span class="kw">pub </span>args: Vec&lt;String&gt;,
+    <span class="doccomment">/// User that did moderation action
+    </span><span class="attribute">#[serde(
+        default,
+        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+    </span>)]
+    </span><span class="kw">pub </span>created_by: <span class="prelude-ty">Option</span>&lt;types::UserName&gt;,
+    <span class="doccomment">/// ID of user that did moderation action
+    </span><span class="attribute">#[serde(
+        default,
+        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+    </span>)]
+    </span><span class="kw">pub </span>created_by_user_id: <span class="prelude-ty">Option</span>&lt;types::UserId&gt;,
+    <span class="doccomment">/// Moderation action is triggered from automod
+    </span><span class="attribute">#[serde(default)]
+    </span><span class="kw">pub </span>from_automod: bool,
+    <span class="doccomment">/// Type of action
+    </span><span class="kw">pub </span>moderation_action: ModerationActionCommand,
+    <span class="doccomment">/// ID of message associated with moderation action
+    </span><span class="attribute">#[serde(
+        default,
+        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+    </span>)]
+    </span><span class="kw">pub </span>msg_id: <span class="prelude-ty">Option</span>&lt;types::MsgId&gt;,
+    <span class="doccomment">/// Target of moderation action
+    </span><span class="kw">pub </span>target_user_id: types::UserId,
+    <span class="doccomment">/// Type of moderation
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="kw">pub </span>type_: ModerationType,
+    <span class="comment">// FIXME: Never filled
+    </span><span class="attribute">#[doc(hidden)]
+    #[serde(
+        default,
+        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+    </span>)]
+    </span><span class="kw">pub </span>target_user_login: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="comment">// FIXME: Not sure what this does
+    </span><span class="attribute">#[doc(hidden)]
+    #[serde(
+        default,
+        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+    </span>)]
+    </span><span class="kw">pub </span>created_at: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
 }
 
-<span class="doccomment">/// A moderator was added. `moderator_added`</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ModeratorAdded</span> {
-    <span class="doccomment">/// ID of channel where moderator was added</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// ID of added moderator</span>
-    <span class="kw">pub</span> <span class="ident">target_user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Moderation action. Should be [`mod`](ModerationActionCommand::Mod)</span>
-    <span class="kw">pub</span> <span class="ident">moderation_action</span>: <span class="ident">ModerationActionCommand</span>,
-    <span class="doccomment">/// Username of added moderator</span>
-    <span class="kw">pub</span> <span class="ident">target_user_login</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// ID of user that added moderator</span>
-    <span class="kw">pub</span> <span class="ident">created_by_user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Username of user that added moderator</span>
-    <span class="kw">pub</span> <span class="ident">created_by</span>: <span class="ident">types::UserName</span>,
+<span class="doccomment">/// A moderator was added. `moderator_added`
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ModeratorAdded {
+    <span class="doccomment">/// ID of channel where moderator was added
+    </span><span class="kw">pub </span>channel_id: types::UserId,
+    <span class="doccomment">/// ID of added moderator
+    </span><span class="kw">pub </span>target_user_id: types::UserId,
+    <span class="doccomment">/// Moderation action. Should be [`mod`](ModerationActionCommand::Mod)
+    </span><span class="kw">pub </span>moderation_action: ModerationActionCommand,
+    <span class="doccomment">/// Username of added moderator
+    </span><span class="kw">pub </span>target_user_login: types::UserName,
+    <span class="doccomment">/// ID of user that added moderator
+    </span><span class="kw">pub </span>created_by_user_id: types::UserId,
+    <span class="doccomment">/// Username of user that added moderator
+    </span><span class="kw">pub </span>created_by: types::UserName,
 }
 
-<span class="doccomment">/// A moderator was removed. `moderator_removed`</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ModeratorRemoved</span> {
-    <span class="doccomment">/// ID of channel where moderator was added</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// ID of added moderator</span>
-    <span class="kw">pub</span> <span class="ident">target_user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Moderation action. Should be [`unmod`](ModerationActionCommand::Unmod)</span>
-    <span class="kw">pub</span> <span class="ident">moderation_action</span>: <span class="ident">ModerationActionCommand</span>,
-    <span class="doccomment">/// Username of added moderator</span>
-    <span class="kw">pub</span> <span class="ident">target_user_login</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// ID of user that added moderator</span>
-    <span class="kw">pub</span> <span class="ident">created_by_user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Username of user that added moderator</span>
-    <span class="kw">pub</span> <span class="ident">created_by</span>: <span class="ident">types::UserName</span>,
+<span class="doccomment">/// A moderator was removed. `moderator_removed`
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ModeratorRemoved {
+    <span class="doccomment">/// ID of channel where moderator was added
+    </span><span class="kw">pub </span>channel_id: types::UserId,
+    <span class="doccomment">/// ID of added moderator
+    </span><span class="kw">pub </span>target_user_id: types::UserId,
+    <span class="doccomment">/// Moderation action. Should be [`unmod`](ModerationActionCommand::Unmod)
+    </span><span class="kw">pub </span>moderation_action: ModerationActionCommand,
+    <span class="doccomment">/// Username of added moderator
+    </span><span class="kw">pub </span>target_user_login: types::UserName,
+    <span class="doccomment">/// ID of user that added moderator
+    </span><span class="kw">pub </span>created_by_user_id: types::UserId,
+    <span class="doccomment">/// Username of user that added moderator
+    </span><span class="kw">pub </span>created_by: types::UserName,
 }
 
-<span class="doccomment">/// Channel Term actions</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelTermsAction</span> {
-    <span class="doccomment">/// ID of channel where channel terms were changed</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// If the term added is temporary or not and if not, when it will expire.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(
-        <span class="ident">default</span>,
-        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="ident">expires_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::Timestamp</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// If the term was permitted/denied because of a previous automod message</span>
-    <span class="kw">pub</span> <span class="ident">from_automod</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Id of term</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">types::BlockedTermId</span>,
-    <span class="doccomment">/// User ID that caused the term</span>
-    <span class="kw">pub</span> <span class="ident">requester_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// User name that caused the term</span>
-    <span class="kw">pub</span> <span class="ident">requester_login</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Term definition</span>
-    <span class="kw">pub</span> <span class="ident">text</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Type of action done</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">type_</span>: <span class="ident">ChannelAction</span>,
-    <span class="doccomment">/// Defined if the term was updated, None if new.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(
-        <span class="ident">default</span>,
-        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="ident">updated_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::Timestamp</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Channel Term actions
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ChannelTermsAction {
+    <span class="doccomment">/// ID of channel where channel terms were changed
+    </span><span class="kw">pub </span>channel_id: types::UserId,
+    <span class="doccomment">/// If the term added is temporary or not and if not, when it will expire.
+    </span><span class="attribute">#[serde(
+        default,
+        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+    </span>)]
+    </span><span class="kw">pub </span>expires_at: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
+    <span class="doccomment">/// If the term was permitted/denied because of a previous automod message
+    </span><span class="kw">pub </span>from_automod: bool,
+    <span class="doccomment">/// Id of term
+    </span><span class="kw">pub </span>id: types::BlockedTermId,
+    <span class="doccomment">/// User ID that caused the term
+    </span><span class="kw">pub </span>requester_id: types::UserId,
+    <span class="doccomment">/// User name that caused the term
+    </span><span class="kw">pub </span>requester_login: types::UserName,
+    <span class="doccomment">/// Term definition
+    </span><span class="kw">pub </span>text: String,
+    <span class="doccomment">/// Type of action done
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="kw">pub </span>type_: ChannelAction,
+    <span class="doccomment">/// Defined if the term was updated, None if new.
+    </span><span class="attribute">#[serde(
+        default,
+        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+    </span>)]
+    </span><span class="kw">pub </span>updated_at: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
 }
 
-<span class="doccomment">/// Reply from [ChatModeratorActions]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>, <span class="ident">content</span> <span class="op">=</span> <span class="string">&quot;data&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ChatModeratorActionsReply</span> {
-    <span class="doccomment">/// A moderation action. `moderation_action`</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;moderation_action&quot;</span>)]</span>
-    <span class="ident">ModerationAction</span>(<span class="ident">ModerationAction</span>),
-    <span class="doccomment">/// A channel term was modified, added or removed</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;channel_terms_action&quot;</span>)]</span>
-    <span class="ident">ChannelTermsAction</span>(<span class="ident">ChannelTermsAction</span>),
-    <span class="doccomment">/// A moderator was added. `moderator_added`</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;moderator_added&quot;</span>)]</span>
-    <span class="ident">ModeratorAdded</span>(<span class="ident">ModeratorAdded</span>),
-    <span class="doccomment">/// A moderator was removed. `moderator_removed`</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;moderator_removed&quot;</span>)]</span>
-    <span class="ident">ModeratorRemoved</span>(<span class="ident">ModeratorRemoved</span>),
-    <span class="doccomment">/// Unban request denied</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;deny_unban_request&quot;</span>)]</span>
-    <span class="ident">DenyUnbanRequest</span>(<span class="ident">UnbanRequest</span>),
-    <span class="doccomment">/// Unban request approved</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;approve_unban_request&quot;</span>)]</span>
-    <span class="ident">ApproveUnbanRequest</span>(<span class="ident">UnbanRequest</span>),
-    <span class="doccomment">/// VIP Added</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;vip_added&quot;</span>)]</span>
-    <span class="ident">VipAdded</span>(<span class="ident">VipAdded</span>),
+<span class="doccomment">/// Reply from [ChatModeratorActions]
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[serde(tag = <span class="string">&quot;type&quot;</span>, content = <span class="string">&quot;data&quot;</span>)]
+#[non_exhaustive]
+</span><span class="kw">pub enum </span>ChatModeratorActionsReply {
+    <span class="doccomment">/// A moderation action. `moderation_action`
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;moderation_action&quot;</span>)]
+    </span>ModerationAction(ModerationAction),
+    <span class="doccomment">/// A channel term was modified, added or removed
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;channel_terms_action&quot;</span>)]
+    </span>ChannelTermsAction(ChannelTermsAction),
+    <span class="doccomment">/// A moderator was added. `moderator_added`
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;moderator_added&quot;</span>)]
+    </span>ModeratorAdded(ModeratorAdded),
+    <span class="doccomment">/// A moderator was removed. `moderator_removed`
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;moderator_removed&quot;</span>)]
+    </span>ModeratorRemoved(ModeratorRemoved),
+    <span class="doccomment">/// Unban request denied
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;deny_unban_request&quot;</span>)]
+    </span>DenyUnbanRequest(UnbanRequest),
+    <span class="doccomment">/// Unban request approved
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;approve_unban_request&quot;</span>)]
+    </span>ApproveUnbanRequest(UnbanRequest),
+    <span class="doccomment">/// VIP Added
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;vip_added&quot;</span>)]
+    </span>VipAdded(VipAdded),
 }
 
-<span class="doccomment">/// User added as VIP</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VipAdded</span> {
-    <span class="doccomment">/// Id of channel where VIP was added</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// User who made target VIP (usually broadcaster)</span>
-    <span class="kw">pub</span> <span class="ident">created_by</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// User ID of who made target VIP (usually broadcaster)</span>
-    <span class="kw">pub</span> <span class="ident">created_by_user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// User ID of who was made VIP</span>
-    <span class="kw">pub</span> <span class="ident">target_user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// User who was made VIP</span>
-    <span class="kw">pub</span> <span class="ident">target_user_login</span>: <span class="ident">types::UserName</span>,
+<span class="doccomment">/// User added as VIP
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+</span><span class="kw">pub struct </span>VipAdded {
+    <span class="doccomment">/// Id of channel where VIP was added
+    </span><span class="kw">pub </span>channel_id: types::UserId,
+    <span class="doccomment">/// User who made target VIP (usually broadcaster)
+    </span><span class="kw">pub </span>created_by: types::UserName,
+    <span class="doccomment">/// User ID of who made target VIP (usually broadcaster)
+    </span><span class="kw">pub </span>created_by_user_id: types::UserId,
+    <span class="doccomment">/// User ID of who was made VIP
+    </span><span class="kw">pub </span>target_user_id: types::UserId,
+    <span class="doccomment">/// User who was made VIP
+    </span><span class="kw">pub </span>target_user_login: types::UserName,
 }
 
-<span class="doccomment">/// Unban request</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UnbanRequest</span> {
-    <span class="doccomment">/// Unban response created by user with id</span>
-    <span class="kw">pub</span> <span class="ident">created_by_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Unban response created by user with login</span>
-    <span class="kw">pub</span> <span class="ident">created_by_login</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Action taken, should be [ModerationActionCommand::ApproveUnbanRequest] or [ModerationActionCommand::DenyUnbanRequest]</span>
-    <span class="kw">pub</span> <span class="ident">moderation_action</span>: <span class="ident">ModerationActionCommand</span>,
-    <span class="doccomment">/// Message attached to unban request response</span>
-    <span class="kw">pub</span> <span class="ident">moderator_message</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Target user ID of unban request, e.g the user that was banned</span>
-    <span class="kw">pub</span> <span class="ident">target_user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Target login of unban request, e.g the user that was banned</span>
-    <span class="kw">pub</span> <span class="ident">target_user_login</span>: <span class="ident">types::UserName</span>,
+<span class="doccomment">/// Unban request
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>UnbanRequest {
+    <span class="doccomment">/// Unban response created by user with id
+    </span><span class="kw">pub </span>created_by_id: types::UserId,
+    <span class="doccomment">/// Unban response created by user with login
+    </span><span class="kw">pub </span>created_by_login: types::UserName,
+    <span class="doccomment">/// Action taken, should be [ModerationActionCommand::ApproveUnbanRequest] or [ModerationActionCommand::DenyUnbanRequest]
+    </span><span class="kw">pub </span>moderation_action: ModerationActionCommand,
+    <span class="doccomment">/// Message attached to unban request response
+    </span><span class="kw">pub </span>moderator_message: String,
+    <span class="doccomment">/// Target user ID of unban request, e.g the user that was banned
+    </span><span class="kw">pub </span>target_user_id: types::UserId,
+    <span class="doccomment">/// Target login of unban request, e.g the user that was banned
+    </span><span class="kw">pub </span>target_user_login: types::UserName,
 }
 
-<span class="doccomment">/// A command</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;snake_case&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ModerationActionCommand</span> {
-    <span class="doccomment">/// Delete</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Given when a message is deleted with `/delete &lt;msg-id&gt;`</span>
-    <span class="ident">Delete</span>,
-    <span class="doccomment">/// Timeout</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Given when a user is timed-out with `/timeout &lt;user&gt; &lt;time&gt; &lt;reason&gt;`</span>
-    <span class="ident">Timeout</span>,
-    <span class="doccomment">/// Untimeout</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Given when a user is unbanned while under a timeout `/untimeout &lt;user&gt;` or `/unban &lt;user&gt;`</span>
-    <span class="ident">Untimeout</span>,
-    <span class="doccomment">/// Mod</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Given when a user is added as a moderator. `/mod &lt;user&gt;`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// See [ChatModeratorActionsReply::ModeratorAdded] where this is given</span>
-    <span class="ident">Mod</span>,
-    <span class="doccomment">/// Unmod</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Given when a user is removed as a moderator, `/unmod &lt;user&gt;`</span>
-    <span class="ident">Unmod</span>,
-    <span class="doccomment">/// Modified automod properties</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Given when automod config is changed. I.e filtering changed etc</span>
-    <span class="ident">ModifiedAutomodProperties</span>,
-    <span class="doccomment">/// Ban</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Given when a user is banned with `/timeout &lt;user&gt; &lt;reason&gt;`</span>
-    <span class="ident">Ban</span>,
-    <span class="doccomment">/// Unban</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Given when a user is unbanned with `/unban &lt;user&gt;` or `/untimeout &lt;user&gt;`</span>
-    <span class="ident">Unban</span>,
-    <span class="comment">// TODO: (2021-11-06) is this still returned?</span>
-    <span class="doccomment">/// Automod message rejected</span>
-    <span class="ident">AutomodRejected</span>,
-    <span class="doccomment">/// Automod permitted term added</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Deprecation</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(
-        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.1&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api.&quot;</span>
-    )]</span>
-    <span class="ident">AddPermittedTerm</span>,
-    <span class="doccomment">/// Automod permitted term removed</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Deprecation</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(
-        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.1&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api.&quot;</span>
-    )]</span>
-    <span class="ident">DeletePermittedTerm</span>,
-    <span class="doccomment">/// Automod blocked term added</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Deprecation</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(
-        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.1&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api.&quot;</span>
-    )]</span>
-    <span class="ident">AddBlockedTerm</span>,
-    <span class="doccomment">/// Automod blocked term removed</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Deprecation</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(
-        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.1&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api.&quot;</span>
-    )]</span>
-    <span class="ident">DeleteBlockedTerm</span>,
-    <span class="doccomment">/// Automod message approved</span>
-    <span class="ident">ApproveAutomodMessage</span>,
-    <span class="doccomment">/// Automod message denied</span>
-    <span class="ident">DeniedAutomodMessage</span>,
-    <span class="doccomment">/// Raid</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Given when editor/broadcaster does `/raid &lt;channel&gt;`</span>
-    <span class="ident">Raid</span>,
-    <span class="doccomment">/// Unraid</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Given when editor/broadcaster does `/unraid`</span>
-    <span class="ident">Unraid</span>,
-    <span class="doccomment">/// Slow-mode chat enabled</span>
-    <span class="ident">Slow</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;slowoff&quot;</span>)]</span>
-    <span class="doccomment">/// Slow-mode chat disabled</span>
-    <span class="ident">SlowOff</span>,
-    <span class="doccomment">/// Followers-only chat enabled</span>
-    <span class="ident">Followers</span>,
-    <span class="doccomment">/// Followers-only chat disabled</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;followersoff&quot;</span>)]</span>
-    <span class="ident">FollowersOff</span>,
-    <span class="doccomment">/// Subscriber-only chat enabled</span>
-    <span class="ident">Subscribers</span>,
-    <span class="doccomment">/// Subscriber-only chat disabled</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;subscribersoff&quot;</span>)]</span>
-    <span class="ident">SubscribersOff</span>,
-    <span class="doccomment">/// Emote-only chat enabled</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;emoteonly&quot;</span>)]</span>
-    <span class="ident">EmoteOnly</span>,
-    <span class="doccomment">/// Emote-only chat disabled</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;emoteonlyoff&quot;</span>)]</span>
-    <span class="ident">EmoteOnlyOff</span>,
-    <span class="doccomment">/// Chat cleared for all viewers</span>
-    <span class="ident">Clear</span>,
-    <span class="doccomment">/// Unique chat enabled</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;r9kbeta&quot;</span>)]</span>
-    <span class="ident">R9KBeta</span>,
-    <span class="doccomment">/// Unique chat disabled</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;r9kbetaoff&quot;</span>)]</span>
-    <span class="ident">R9KBetaOff</span>,
-    <span class="doccomment">/// User added as VIP</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Deprecation</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is now returned by the [`VipAdded`](ChatModeratorActionsReply::VipAdded) action. Strangely, /unvip is still valid</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(
-        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.5.1&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This is now returned by VipAdded, will be removed in future version of twitch_api.&quot;</span>
-    )]</span>
-    <span class="ident">Vip</span>,
-    <span class="doccomment">/// User removed as VIP</span>
-    <span class="ident">Unvip</span>,
-    <span class="doccomment">/// Channel host started</span>
-    <span class="ident">Host</span>,
-    <span class="doccomment">/// Channel host removed</span>
-    <span class="ident">Unhost</span>,
-    <span class="doccomment">/// Unban Request Approved</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;APPROVE_UNBAN_REQUEST&quot;</span>)]</span>
-    <span class="ident">ApproveUnbanRequest</span>,
-    <span class="doccomment">/// Unban Request Denied</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;DENY_UNBAN_REQUEST&quot;</span>)]</span>
-    <span class="ident">DenyUnbanRequest</span>,
-    <span class="doccomment">/// Users own message was deleted.</span>
-    <span class="ident">DeleteNotification</span>,
+<span class="doccomment">/// A command
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
+#[non_exhaustive]
+</span><span class="kw">pub enum </span>ModerationActionCommand {
+    <span class="doccomment">/// Delete
+    ///
+    /// Given when a message is deleted with `/delete &lt;msg-id&gt;`
+    </span>Delete,
+    <span class="doccomment">/// Timeout
+    ///
+    /// Given when a user is timed-out with `/timeout &lt;user&gt; &lt;time&gt; &lt;reason&gt;`
+    </span>Timeout,
+    <span class="doccomment">/// Untimeout
+    ///
+    /// Given when a user is unbanned while under a timeout `/untimeout &lt;user&gt;` or `/unban &lt;user&gt;`
+    </span>Untimeout,
+    <span class="doccomment">/// Mod
+    ///
+    /// Given when a user is added as a moderator. `/mod &lt;user&gt;`.
+    ///
+    /// See [ChatModeratorActionsReply::ModeratorAdded] where this is given
+    </span>Mod,
+    <span class="doccomment">/// Unmod
+    ///
+    /// Given when a user is removed as a moderator, `/unmod &lt;user&gt;`
+    </span>Unmod,
+    <span class="doccomment">/// Modified automod properties
+    ///
+    /// Given when automod config is changed. I.e filtering changed etc
+    </span>ModifiedAutomodProperties,
+    <span class="doccomment">/// Ban
+    ///
+    /// Given when a user is banned with `/timeout &lt;user&gt; &lt;reason&gt;`
+    </span>Ban,
+    <span class="doccomment">/// Unban
+    ///
+    /// Given when a user is unbanned with `/unban &lt;user&gt;` or `/untimeout &lt;user&gt;`
+    </span>Unban,
+    <span class="comment">// TODO: (2021-11-06) is this still returned?
+    </span><span class="doccomment">/// Automod message rejected
+    </span>AutomodRejected,
+    <span class="doccomment">/// Automod permitted term added
+    ///
+    /// # Deprecation
+    ///
+    /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
+    </span><span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.5.1&quot;</span>,
+        note = <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api.&quot;
+    </span>)]
+    </span>AddPermittedTerm,
+    <span class="doccomment">/// Automod permitted term removed
+    ///
+    /// # Deprecation
+    ///
+    /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
+    </span><span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.5.1&quot;</span>,
+        note = <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api.&quot;
+    </span>)]
+    </span>DeletePermittedTerm,
+    <span class="doccomment">/// Automod blocked term added
+    ///
+    /// # Deprecation
+    ///
+    /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
+    </span><span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.5.1&quot;</span>,
+        note = <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api.&quot;
+    </span>)]
+    </span>AddBlockedTerm,
+    <span class="doccomment">/// Automod blocked term removed
+    ///
+    /// # Deprecation
+    ///
+    /// This is now returned by the [`ChannelTermsAction`](ChatModeratorActionsReply::ChannelTermsAction) action.
+    </span><span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.5.1&quot;</span>,
+        note = <span class="string">&quot;This is now returned by ChannelTermsAction, will be removed in future version of twitch_api.&quot;
+    </span>)]
+    </span>DeleteBlockedTerm,
+    <span class="doccomment">/// Automod message approved
+    </span>ApproveAutomodMessage,
+    <span class="doccomment">/// Automod message denied
+    </span>DeniedAutomodMessage,
+    <span class="doccomment">/// Raid
+    ///
+    /// Given when editor/broadcaster does `/raid &lt;channel&gt;`
+    </span>Raid,
+    <span class="doccomment">/// Unraid
+    ///
+    /// Given when editor/broadcaster does `/unraid`
+    </span>Unraid,
+    <span class="doccomment">/// Slow-mode chat enabled
+    </span>Slow,
+    <span class="attribute">#[serde(rename = <span class="string">&quot;slowoff&quot;</span>)]
+    </span><span class="doccomment">/// Slow-mode chat disabled
+    </span>SlowOff,
+    <span class="doccomment">/// Followers-only chat enabled
+    </span>Followers,
+    <span class="doccomment">/// Followers-only chat disabled
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;followersoff&quot;</span>)]
+    </span>FollowersOff,
+    <span class="doccomment">/// Subscriber-only chat enabled
+    </span>Subscribers,
+    <span class="doccomment">/// Subscriber-only chat disabled
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;subscribersoff&quot;</span>)]
+    </span>SubscribersOff,
+    <span class="doccomment">/// Emote-only chat enabled
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;emoteonly&quot;</span>)]
+    </span>EmoteOnly,
+    <span class="doccomment">/// Emote-only chat disabled
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;emoteonlyoff&quot;</span>)]
+    </span>EmoteOnlyOff,
+    <span class="doccomment">/// Chat cleared for all viewers
+    </span>Clear,
+    <span class="doccomment">/// Unique chat enabled
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;r9kbeta&quot;</span>)]
+    </span>R9KBeta,
+    <span class="doccomment">/// Unique chat disabled
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;r9kbetaoff&quot;</span>)]
+    </span>R9KBetaOff,
+    <span class="doccomment">/// User added as VIP
+    ///
+    /// # Deprecation
+    ///
+    /// This is now returned by the [`VipAdded`](ChatModeratorActionsReply::VipAdded) action. Strangely, /unvip is still valid
+    </span><span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.5.1&quot;</span>,
+        note = <span class="string">&quot;This is now returned by VipAdded, will be removed in future version of twitch_api.&quot;
+    </span>)]
+    </span>Vip,
+    <span class="doccomment">/// User removed as VIP
+    </span>Unvip,
+    <span class="doccomment">/// Channel host started
+    </span>Host,
+    <span class="doccomment">/// Channel host removed
+    </span>Unhost,
+    <span class="doccomment">/// Unban Request Approved
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;APPROVE_UNBAN_REQUEST&quot;</span>)]
+    </span>ApproveUnbanRequest,
+    <span class="doccomment">/// Unban Request Denied
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;DENY_UNBAN_REQUEST&quot;</span>)]
+    </span>DenyUnbanRequest,
+    <span class="doccomment">/// Users own message was deleted.
+    </span>DeleteNotification,
 }
 
-<span class="doccomment">/// A command</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;snake_case&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ChannelAction</span> {
-    <span class="doccomment">/// Automod permitted term added</span>
-    <span class="ident">AddPermittedTerm</span>,
-    <span class="doccomment">/// Automod permitted term removed</span>
-    <span class="ident">DeletePermittedTerm</span>,
-    <span class="doccomment">/// Automod blocked term added</span>
-    <span class="ident">AddBlockedTerm</span>,
-    <span class="doccomment">/// Automod blocked term removed</span>
-    <span class="ident">DeleteBlockedTerm</span>,
+<span class="doccomment">/// A command
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
+#[non_exhaustive]
+</span><span class="kw">pub enum </span>ChannelAction {
+    <span class="doccomment">/// Automod permitted term added
+    </span>AddPermittedTerm,
+    <span class="doccomment">/// Automod permitted term removed
+    </span>DeletePermittedTerm,
+    <span class="doccomment">/// Automod blocked term added
+    </span>AddBlockedTerm,
+    <span class="doccomment">/// Automod blocked term removed
+    </span>DeleteBlockedTerm,
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">ModerationActionCommand</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> { <span class="self">self</span>.<span class="ident">serialize</span>(<span class="ident">f</span>) }
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>ModerationActionCommand {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result { <span class="self">self</span>.serialize(f) }
 }
 
-<span class="doccomment">/// Moderation type</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;snake_case&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ModerationType</span> {
-    <span class="doccomment">/// Chat moderated</span>
-    <span class="ident">ChatLoginModeration</span>,
-    <span class="doccomment">/// Channel moderated</span>
-    <span class="ident">ChatChannelModeration</span>,
-    <span class="doccomment">/// Chat targeted login moderation</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// These events are sent when the [user](ChatModeratorActions::user_id) in the event is targeted by a moderation command.</span>
-    <span class="ident">ChatTargetedLoginModeration</span>,
+<span class="doccomment">/// Moderation type
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
+#[non_exhaustive]
+</span><span class="kw">pub enum </span>ModerationType {
+    <span class="doccomment">/// Chat moderated
+    </span>ChatLoginModeration,
+    <span class="doccomment">/// Channel moderated
+    </span>ChatChannelModeration,
+    <span class="doccomment">/// Chat targeted login moderation
+    ///
+    /// These events are sent when the [user](ChatModeratorActions::user_id) in the event is targeted by a moderation command.
+    </span>ChatTargetedLoginModeration,
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
-    <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>::{<span class="ident">Response</span>, <span class="ident">TopicData</span>};
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="attribute">#[allow(unused_imports)]
+    </span><span class="kw">use </span><span class="kw">super</span>::<span class="kw">super</span>::{Response, TopicData};
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mod_action_delete</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mod_action_delete() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
 {
     &quot;type&quot;: &quot;MESSAGE&quot;,
     &quot;data&quot;: {
@@ -1095,98 +1095,98 @@
         &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;delete\&quot;,\&quot;args\&quot;:[\&quot;tmo\&quot;,\&quot;bop\&quot;,\&quot;e513c02d-dca5-4480-9af5-e6078d954e42\&quot;],\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;1234\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
     }
 }&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">check_deser</span>() {
-        <span class="kw">use</span> <span class="ident">std::convert::TryInto</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">&quot;chat_moderator_actions.1337.1234&quot;</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>check_deser() {
+        <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
+        <span class="kw">let </span>s = <span class="string">&quot;chat_moderator_actions.1337.1234&quot;</span>;
         <span class="macro">assert_eq!</span>(
-            <span class="ident">ChatModeratorActions</span> {
-                <span class="ident">user_id</span>: <span class="number">1337</span>,
-                <span class="ident">channel_id</span>: <span class="number">1234</span>,
+            ChatModeratorActions {
+                user_id: <span class="number">1337</span>,
+                channel_id: <span class="number">1234</span>,
             },
-            <span class="ident">s</span>.<span class="ident">to_string</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>()
+            s.to_string().try_into().unwrap()
         );
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">check_ser</span>() {
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">&quot;chat_moderator_actions.1337.1234&quot;</span>;
-        <span class="kw">let</span> <span class="ident">right</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">ChatModeratorActions</span> {
-            <span class="ident">user_id</span>: <span class="number">1337</span>,
-            <span class="ident">channel_id</span>: <span class="number">1234</span>,
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>check_ser() {
+        <span class="kw">let </span>s = <span class="string">&quot;chat_moderator_actions.1337.1234&quot;</span>;
+        <span class="kw">let </span>right: String = ChatModeratorActions {
+            user_id: <span class="number">1337</span>,
+            channel_id: <span class="number">1234</span>,
         }
-        .<span class="ident">into</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">s</span>.<span class="ident">to_string</span>(), <span class="ident">right</span>);
+        .into();
+        <span class="macro">assert_eq!</span>(s.to_string(), right);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mod_action_timeout</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.27620241&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;timeout\&quot;,\&quot;args\&quot;:[\&quot;tmo\&quot;,\&quot;1\&quot;,\&quot;\&quot;],\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;1234\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;}}&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mod_action_timeout() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.27620241&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;timeout\&quot;,\&quot;args\&quot;:[\&quot;tmo\&quot;,\&quot;1\&quot;,\&quot;\&quot;],\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;1234\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mod_add_moderator</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.27620241&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderator_added\&quot;,  \&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;27620241\&quot;,\&quot;target_user_id\&quot;:\&quot;19264788\&quot;,\&quot;moderation_action\&quot;:\&quot;mod\&quot;,\&quot;target_user_login\&quot;:\&quot;nightbot\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;created_by\&quot;:\&quot;emilgardis\&quot;}}&quot;}}&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mod_add_moderator() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.27620241&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderator_added\&quot;,  \&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;27620241\&quot;,\&quot;target_user_id\&quot;:\&quot;19264788\&quot;,\&quot;moderation_action\&quot;:\&quot;mod\&quot;,\&quot;target_user_login\&quot;:\&quot;nightbot\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;created_by\&quot;:\&quot;emilgardis\&quot;}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
-            }
-        ));
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mod_add_moderator_no_user_id</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.27620241&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderator_added\&quot;,  \&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;27620241\&quot;,\&quot;target_user_id\&quot;:\&quot;19264788\&quot;,\&quot;moderation_action\&quot;:\&quot;mod\&quot;,\&quot;target_user_login\&quot;:\&quot;nightbot\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;created_by\&quot;:\&quot;emilgardis\&quot;}}&quot;}}&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mod_remove_moderator</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.691109305.129546453&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderator_removed\&quot;,\&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;129546453\&quot;,\&quot;target_user_id\&quot;:\&quot;691109305\&quot;,\&quot;moderation_action\&quot;:\&quot;unmod\&quot;,\&quot;target_user_login\&quot;:\&quot;rewardmore\&quot;,\&quot;created_by_user_id\&quot;:\&quot;129546453\&quot;,\&quot;created_by\&quot;:\&quot;nerixyz\&quot;}}&quot;}}&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mod_add_moderator_no_user_id() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.27620241&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderator_added\&quot;,  \&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;27620241\&quot;,\&quot;target_user_id\&quot;:\&quot;19264788\&quot;,\&quot;moderation_action\&quot;:\&quot;mod\&quot;,\&quot;target_user_login\&quot;:\&quot;nightbot\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;created_by\&quot;:\&quot;emilgardis\&quot;}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mod_targeted_delete</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.80525799&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_targeted_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;delete_notification\&quot;,\&quot;args\&quot;:[\&quot;you have the moonpool no?\&quot;],\&quot;msg_id\&quot;:\&quot;b7ffbf8a-ca9f-497e-bc6f-ae0e606e99dc\&quot;,\&quot;target_user_id\&quot;:\&quot;27620241\&quot;,\&quot;target_user_login\&quot;:\&quot;emilgardis\&quot;}}&quot;}}&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mod_remove_moderator() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.691109305.129546453&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderator_removed\&quot;,\&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;129546453\&quot;,\&quot;target_user_id\&quot;:\&quot;691109305\&quot;,\&quot;moderation_action\&quot;:\&quot;unmod\&quot;,\&quot;target_user_login\&quot;:\&quot;rewardmore\&quot;,\&quot;created_by_user_id\&quot;:\&quot;129546453\&quot;,\&quot;created_by\&quot;:\&quot;nerixyz\&quot;}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mod_automod</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mod_targeted_delete() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.80525799&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_targeted_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;delete_notification\&quot;,\&quot;args\&quot;:[\&quot;you have the moonpool no?\&quot;],\&quot;msg_id\&quot;:\&quot;b7ffbf8a-ca9f-497e-bc6f-ae0e606e99dc\&quot;,\&quot;target_user_id\&quot;:\&quot;27620241\&quot;,\&quot;target_user_login\&quot;:\&quot;emilgardis\&quot;}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
+            }
+        ));
+    }
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mod_automod() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
 {
     &quot;type&quot;: &quot;MESSAGE&quot;,
     &quot;data&quot;: {
@@ -1194,18 +1194,18 @@
         &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_channel_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;modified_automod_properties\&quot;,\&quot;args\&quot;:null,\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
     }
 }&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mod_automod_delete_blocked_term</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mod_automod_delete_blocked_term() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
 {
     &quot;type&quot;: &quot;MESSAGE&quot;,
     &quot;data&quot;: {
@@ -1213,18 +1213,18 @@
         &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;channel_terms_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;delete_blocked_term\&quot;,\&quot;id\&quot;:\&quot;41a8f582-4c60-4ca1-aa10-91ec06161118\&quot;,\&quot;text\&quot;:\&quot;Hype\&quot;,\&quot;requester_id\&quot;:\&quot;27620241\&quot;,\&quot;requester_login\&quot;:\&quot;emilgardis\&quot;,\&quot;channel_id\&quot;:\&quot;27620241\&quot;,\&quot;expires_at\&quot;:\&quot;\&quot;,\&quot;updated_at\&quot;:\&quot;2021-05-10T21:35:28.745222679Z\&quot;,\&quot;from_automod\&quot;:false}}&quot;
     }
 }&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mod_slowmode</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mod_slowmode() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
 {
     &quot;type&quot;: &quot;MESSAGE&quot;,
     &quot;data&quot;: {
@@ -1232,19 +1232,19 @@
         &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_channel_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;slow\&quot;,\&quot;args\&quot;:[\&quot;5\&quot;],\&quot;created_by\&quot;:\&quot;tmo\&quot;,\&quot;created_by_user_id\&quot;:\&quot;1234\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
     }
 }&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">allow_unknown</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    #[cfg(not(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>))]
+    </span><span class="kw">fn </span>allow_unknown() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
 {
     &quot;type&quot;: &quot;MESSAGE&quot;,
     &quot;data&quot;: {
@@ -1252,18 +1252,18 @@
         &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_channel_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;slow\&quot;,\&quot;unknownfield\&quot;: 1,\&quot;args\&quot;:[\&quot;5\&quot;],\&quot;created_by\&quot;:\&quot;tmo\&quot;,\&quot;created_by_user_id\&quot;:\&quot;1234\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
     }
 }&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">deny_unban_request</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>deny_unban_request() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
 {
     &quot;type&quot;: &quot;MESSAGE&quot;,
     &quot;data&quot;: {
@@ -1271,18 +1271,18 @@
         &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;deny_unban_request\&quot;,\&quot;data\&quot;:{\&quot;moderation_action\&quot;:\&quot;DENY_UNBAN_REQUEST\&quot;,\&quot;created_by_id\&quot;:\&quot;27620241\&quot;,\&quot;created_by_login\&quot;:\&quot;emilgardis\&quot;,\&quot;moderator_message\&quot;:\&quot;ok\&quot;,\&quot;target_user_id\&quot;:\&quot;465894629\&quot;,\&quot;target_user_login\&quot;:\&quot;emil_the_impostor\&quot;}}&quot;
     }
 }&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">approve_unban_request</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>approve_unban_request() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
 {
     &quot;type&quot;: &quot;MESSAGE&quot;,
     &quot;data&quot;: {
@@ -1290,18 +1290,18 @@
         &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;approve_unban_request\&quot;,\&quot;data\&quot;:{\&quot;moderation_action\&quot;:\&quot;APPROVE_UNBAN_REQUEST\&quot;,\&quot;created_by_id\&quot;:\&quot;27620241\&quot;,\&quot;created_by_login\&quot;:\&quot;emilgardis\&quot;,\&quot;moderator_message\&quot;:\&quot;ok\&quot;,\&quot;target_user_id\&quot;:\&quot;465894629\&quot;,\&quot;target_user_login\&quot;:\&quot;emil_the_impostor\&quot;}}&quot;
     }
 }&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vip_added</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>vip_added() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
         {
             &quot;type&quot;: &quot;MESSAGE&quot;,
             &quot;data&quot;: {
@@ -1309,18 +1309,18 @@
                 &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;vip_added\&quot;,\&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;80525799\&quot;,\&quot;target_user_id\&quot;:\&quot;56345511\&quot;,\&quot;target_user_login\&quot;:\&quot;bossquest\&quot;,\&quot;created_by_user_id\&quot;:\&quot;80525799\&quot;,\&quot;created_by\&quot;:\&quot;sessis\&quot;}}&quot;
             }
         }&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vip_removed</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>vip_removed() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
         {
             &quot;type&quot;: &quot;MESSAGE&quot;,
             &quot;data&quot;: {
@@ -1328,18 +1328,18 @@
                 &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;unvip\&quot;,\&quot;args\&quot;:[\&quot;emil_the_impostor\&quot;],\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;created_at\&quot;:\&quot;2021-07-27T22:28:31.075027599Z\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;465894629\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
             }
         }&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">unraid</span>() {
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>unraid() {
+        <span class="kw">let </span>source = <span class="string">r#&quot;
         {
             &quot;type&quot;: &quot;MESSAGE&quot;,
             &quot;data&quot;: {
@@ -1347,14 +1347,14 @@
                 &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_channel_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;unraid\&quot;,\&quot;args\&quot;:[\&quot;emilgradis\&quot;],\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;created_at\&quot;:\&quot;\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
             }
         }&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChatModeratorActions</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
             }
         ));
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

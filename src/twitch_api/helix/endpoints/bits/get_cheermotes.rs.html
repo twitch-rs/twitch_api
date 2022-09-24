@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/bits/get_cheermotes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_cheermotes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/bits/get_cheermotes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_cheermotes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -416,193 +416,193 @@
 <span id="416">416</span>
 <span id="417">417</span>
 <span id="418">418</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Retrieves the list of available Cheermotes, animated emotes to which viewers can assign Bits, to cheer in chat.</span>
-<span class="doccomment">//! [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Accessing the endpoint</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Request: [GetCheermotesRequest]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! To use this endpoint, construct a [`GetCheermotesRequest`] with the [`GetCheermotesRequest::builder()`] method.</span>
-<span class="doccomment">//! If you do not provide an ID, the request will only include global cheermotes as defined by twitch.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! use twitch_api::helix::bits::get_cheermotes;</span>
-<span class="doccomment">//! let request = get_cheermotes::GetCheermotesRequest::builder()</span>
-<span class="doccomment">//!     .broadcaster_id(Some(&quot;1234&quot;.into()))</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! // Without broadcaster ID</span>
-<span class="doccomment">//! let request = get_cheermotes::GetCheermotesRequest::builder().build();</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Response: [Cheermote]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust, no_run</span>
-<span class="doccomment">//! use twitch_api::helix::{self, bits::get_cheermotes};</span>
-<span class="doccomment">//! # use twitch_api::client;</span>
-<span class="doccomment">//! # #[tokio::main]</span>
-<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-<span class="doccomment">//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-<span class="doccomment">//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-<span class="doccomment">//! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-<span class="doccomment">//! let request = get_cheermotes::GetCheermotesRequest::builder().build();</span>
-<span class="doccomment">//! let response: Vec&lt;get_cheermotes::Cheermote&gt; = client.req_get(request, &amp;token).await?.data;</span>
-<span class="doccomment">//! # Ok(())</span>
-<span class="doccomment">//! # }</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)</span>
-<span class="doccomment">//! and parse the [`http::Response`] with [`GetCheermotesRequest::parse_response(None, &amp;request.get_uri(), response)`](GetCheermotesRequest::parse_response)</span>
-<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">helix::RequestGet</span>;
+</pre><pre class="rust"><code><span class="doccomment">//! Retrieves the list of available Cheermotes, animated emotes to which viewers can assign Bits, to cheer in chat.
+//! [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
+//!
+//! # Accessing the endpoint
+//!
+//! ## Request: [GetCheermotesRequest]
+//!
+//! To use this endpoint, construct a [`GetCheermotesRequest`] with the [`GetCheermotesRequest::builder()`] method.
+//! If you do not provide an ID, the request will only include global cheermotes as defined by twitch.
+//!
+//! ```rust
+//! use twitch_api::helix::bits::get_cheermotes;
+//! let request = get_cheermotes::GetCheermotesRequest::builder()
+//!     .broadcaster_id(Some(&quot;1234&quot;.into()))
+//!     .build();
+//! // Without broadcaster ID
+//! let request = get_cheermotes::GetCheermotesRequest::builder().build();
+//! ```
+//!
+//! ## Response: [Cheermote]
+//!
+//! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+//!
+//! ```rust, no_run
+//! use twitch_api::helix::{self, bits::get_cheermotes};
+//! # use twitch_api::client;
+//! # #[tokio::main]
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+//! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+//! let request = get_cheermotes::GetCheermotesRequest::builder().build();
+//! let response: Vec&lt;get_cheermotes::Cheermote&gt; = client.req_get(request, &amp;token).await?.data;
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)
+//! and parse the [`http::Response`] with [`GetCheermotesRequest::parse_response(None, &amp;request.get_uri(), response)`](GetCheermotesRequest::parse_response)
+</span><span class="kw">use super</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span>helix::RequestGet;
 
-<span class="doccomment">/// Query Parameters for [Get Cheermotes](super::get_cheermotes)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">typed_builder::TypedBuilder</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetCheermotesRequest</span> {
-    <span class="doccomment">/// ID for the broadcaster who might own specialized Cheermotes.</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Query Parameters for [Get Cheermotes](super::get_cheermotes)
+///
+/// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
+</span><span class="attribute">#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>GetCheermotesRequest {
+    <span class="doccomment">/// ID for the broadcaster who might own specialized Cheermotes.
+    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="kw">pub </span>broadcaster_id: <span class="prelude-ty">Option</span>&lt;types::UserId&gt;,
 }
 
-<span class="doccomment">/// Return Values for [Get Cheermotes](super::get_cheermotes)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Cheermote</span> {
-    <span class="doccomment">/// Indicates whether or not this emote provides a charity contribution match during charity campaigns.</span>
-    <span class="kw">pub</span> <span class="ident">is_charitable</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// The data when this Cheermote was last updated.</span>
-    <span class="kw">pub</span> <span class="ident">last_updated</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Order of the emotes as shown in the bits card, in ascending order.</span>
-    <span class="kw">pub</span> <span class="ident">order</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// Prefix for cheermote</span>
-    <span class="kw">pub</span> <span class="ident">prefix</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// An array of Cheermotes with their metadata.</span>
-    <span class="kw">pub</span> <span class="ident">tiers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Tiers</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Shows whether the emote is `global_first_party`,  `global_third_party`, `channel_custom`, `display_only`, or `sponsored`.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">type_</span>: <span class="ident">CheermoteType</span>,
+<span class="doccomment">/// Return Values for [Get Cheermotes](super::get_cheermotes)
+///
+/// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>Cheermote {
+    <span class="doccomment">/// Indicates whether or not this emote provides a charity contribution match during charity campaigns.
+    </span><span class="kw">pub </span>is_charitable: bool,
+    <span class="doccomment">/// The data when this Cheermote was last updated.
+    </span><span class="kw">pub </span>last_updated: String,
+    <span class="doccomment">/// Order of the emotes as shown in the bits card, in ascending order.
+    </span><span class="kw">pub </span>order: i64,
+    <span class="doccomment">/// Prefix for cheermote
+    </span><span class="kw">pub </span>prefix: String,
+    <span class="doccomment">/// An array of Cheermotes with their metadata.
+    </span><span class="kw">pub </span>tiers: Vec&lt;Tiers&gt;,
+    <span class="doccomment">/// Shows whether the emote is `global_first_party`,  `global_third_party`, `channel_custom`, `display_only`, or `sponsored`.
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="kw">pub </span>type_: CheermoteType,
 }
 
-<span class="doccomment">/// Types of cheermotes</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;snake_case&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">CheermoteType</span> {
-    <span class="doccomment">/// Global cheermote</span>
-    <span class="ident">GlobalFirstParty</span>,
-    <span class="doccomment">/// Global third party cheermote</span>
-    <span class="ident">GlobalThirdParty</span>,
-    <span class="doccomment">/// Custom channel cheermote</span>
-    <span class="ident">ChannelCustom</span>,
-    <span class="doccomment">/// Display only</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Note</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Usage unknown</span>
-    <span class="ident">DisplayOnly</span>,
-    <span class="doccomment">/// Sponsored cheermote</span>
-    <span class="ident">Sponsored</span>,
+<span class="doccomment">/// Types of cheermotes
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
+#[non_exhaustive]
+</span><span class="kw">pub enum </span>CheermoteType {
+    <span class="doccomment">/// Global cheermote
+    </span>GlobalFirstParty,
+    <span class="doccomment">/// Global third party cheermote
+    </span>GlobalThirdParty,
+    <span class="doccomment">/// Custom channel cheermote
+    </span>ChannelCustom,
+    <span class="doccomment">/// Display only
+    ///
+    /// # Note
+    ///
+    /// Usage unknown
+    </span>DisplayOnly,
+    <span class="doccomment">/// Sponsored cheermote
+    </span>Sponsored,
 }
 
-<span class="doccomment">/// Information about tier of emote</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Tiers</span> {
-    <span class="doccomment">/// Indicates whether or not emote information is accessible to users.</span>
-    <span class="kw">pub</span> <span class="ident">can_cheer</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Hex code for the color associated with the bits of that tier. Grey, Purple, Teal, Blue, or Red color to match the base bit type.</span>
-    <span class="kw">pub</span> <span class="ident">color</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// ID of the emote tier. Possible tiers are: 1,100,500,1000,5000, 10k, or 100k.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Structure containing both animated and static image sets, sorted by light and dark.</span>
-    <span class="kw">pub</span> <span class="ident">images</span>: <span class="ident">CheermoteImages</span>,
-    <span class="doccomment">/// Minimum number of bits needed to be used to hit the given tier of emote.  </span>
-    <span class="kw">pub</span> <span class="ident">min_bits</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// Indicates whether or not we hide the emote from the bits card.</span>
-    <span class="kw">pub</span> <span class="ident">show_in_bits_card</span>: <span class="ident">bool</span>,
+<span class="doccomment">/// Information about tier of emote
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>Tiers {
+    <span class="doccomment">/// Indicates whether or not emote information is accessible to users.
+    </span><span class="kw">pub </span>can_cheer: bool,
+    <span class="doccomment">/// Hex code for the color associated with the bits of that tier. Grey, Purple, Teal, Blue, or Red color to match the base bit type.
+    </span><span class="kw">pub </span>color: String,
+    <span class="doccomment">/// ID of the emote tier. Possible tiers are: 1,100,500,1000,5000, 10k, or 100k.
+    </span><span class="kw">pub </span>id: String,
+    <span class="doccomment">/// Structure containing both animated and static image sets, sorted by light and dark.
+    </span><span class="kw">pub </span>images: CheermoteImages,
+    <span class="doccomment">/// Minimum number of bits needed to be used to hit the given tier of emote.  
+    </span><span class="kw">pub </span>min_bits: i64,
+    <span class="doccomment">/// Indicates whether or not we hide the emote from the bits card.
+    </span><span class="kw">pub </span>show_in_bits_card: bool,
 }
 
-<span class="doccomment">/// Images for different themes</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CheermoteImages</span> {
-    <span class="doccomment">/// Dark mode</span>
-    <span class="kw">pub</span> <span class="ident">dark</span>: <span class="ident">CheermoteImage</span>,
-    <span class="doccomment">/// Light mode</span>
-    <span class="kw">pub</span> <span class="ident">light</span>: <span class="ident">CheermoteImage</span>,
+<span class="doccomment">/// Images for different themes
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>CheermoteImages {
+    <span class="doccomment">/// Dark mode
+    </span><span class="kw">pub </span>dark: CheermoteImage,
+    <span class="doccomment">/// Light mode
+    </span><span class="kw">pub </span>light: CheermoteImage,
 }
 
-<span class="doccomment">/// URLs to the same image, animated or static.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CheermoteImage</span> {
-    <span class="doccomment">/// Animated GIFs</span>
-    <span class="kw">pub</span> <span class="ident">animated</span>: <span class="ident">CheermoteImageArray</span>,
-    <span class="doccomment">/// Static PNGs</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;static&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">static_</span>: <span class="ident">CheermoteImageArray</span>,
+<span class="doccomment">/// URLs to the same image, animated or static.
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>CheermoteImage {
+    <span class="doccomment">/// Animated GIFs
+    </span><span class="kw">pub </span>animated: CheermoteImageArray,
+    <span class="doccomment">/// Static PNGs
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;static&quot;</span>)]
+    </span><span class="kw">pub </span>static_: CheermoteImageArray,
 }
-<span class="doccomment">/// Images in sizes</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CheermoteImageArray</span> {
-    <span class="doccomment">/// URL to image in size 28 × 28</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">url_1x</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// URL to image in size 42 × 42</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;1.5&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">url_1_5x</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// URL to image in size 56 × 56</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">url_2x</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// URL to image in size 84 × 84</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">url_3x</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// URL to image in size 112 × 112</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">url_4x</span>: <span class="ident">String</span>,
-}
-
-<span class="doccomment">/// Level of cheermote image</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Represented as &quot;1&quot;, &quot;1.5&quot;, &quot;2&quot;, &quot;3&quot; or &quot;4&quot;</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Level</span>(<span class="kw">pub</span> <span class="ident">String</span>);
-
-<span class="kw">impl</span> <span class="ident">Request</span> <span class="kw">for</span> <span class="ident">GetCheermotesRequest</span> {
-    <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Cheermote</span><span class="op">&gt;</span>;
-
-    <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;bits/cheermotes&quot;</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-    <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[];
+<span class="doccomment">/// Images in sizes
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>CheermoteImageArray {
+    <span class="doccomment">/// URL to image in size 28 × 28
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;1&quot;</span>)]
+    </span><span class="kw">pub </span>url_1x: String,
+    <span class="doccomment">/// URL to image in size 42 × 42
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;1.5&quot;</span>)]
+    </span><span class="kw">pub </span>url_1_5x: String,
+    <span class="doccomment">/// URL to image in size 56 × 56
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;2&quot;</span>)]
+    </span><span class="kw">pub </span>url_2x: String,
+    <span class="doccomment">/// URL to image in size 84 × 84
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;3&quot;</span>)]
+    </span><span class="kw">pub </span>url_3x: String,
+    <span class="doccomment">/// URL to image in size 112 × 112
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;4&quot;</span>)]
+    </span><span class="kw">pub </span>url_4x: String,
 }
 
-<span class="kw">impl</span> <span class="ident">RequestGet</span> <span class="kw">for</span> <span class="ident">GetCheermotesRequest</span> {}
+<span class="doccomment">/// Level of cheermote image
+///
+/// Represented as &quot;1&quot;, &quot;1.5&quot;, &quot;2&quot;, &quot;3&quot; or &quot;4&quot;
+</span><span class="attribute">#[derive(PartialEq, Eq, Hash, Deserialize, Debug, Clone)]
+#[serde(transparent)]
+</span><span class="kw">pub struct </span>Level(<span class="kw">pub </span>String);
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_request</span>() {
-    <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
-    <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetCheermotesRequest::builder</span>()
-        .<span class="ident">broadcaster_id</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;1234&quot;</span>.<span class="ident">into</span>()))
-        .<span class="ident">build</span>();
+<span class="kw">impl </span>Request <span class="kw">for </span>GetCheermotesRequest {
+    <span class="kw">type </span>Response = Vec&lt;Cheermote&gt;;
 
-    <span class="comment">// From api call</span>
-    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">br##&quot;
+    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;bits/cheermotes&quot;</span>;
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
+}
+
+<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetCheermotesRequest {}
+
+<span class="attribute">#[cfg(test)]
+#[test]
+</span><span class="kw">fn </span>test_request() {
+    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+    <span class="kw">let </span>req = GetCheermotesRequest::builder()
+        .broadcaster_id(<span class="prelude-val">Some</span>(<span class="string">&quot;1234&quot;</span>.into()))
+        .build();
+
+    <span class="comment">// From api call
+    </span><span class="kw">let </span>data = <span class="string">br##&quot;
 {
 &quot;data&quot;: [
     {
@@ -821,18 +821,18 @@
     }
 ]
 }
-&quot;##</span>
-    .<span class="ident">to_vec</span>();
+&quot;##
+    </span>.to_vec();
 
-    <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http::Response::builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
+    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
 
-    <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let </span>uri = req.get_uri().unwrap();
     <span class="macro">assert_eq!</span>(
-        <span class="ident">uri</span>.<span class="ident">to_string</span>(),
-        <span class="string">&quot;https://api.twitch.tv/helix/bits/cheermotes?broadcaster_id=1234&quot;</span>
-    );
+        uri.to_string(),
+        <span class="string">&quot;https://api.twitch.tv/helix/bits/cheermotes?broadcaster_id=1234&quot;
+    </span>);
 
-    <span class="macro">dbg!</span>(<span class="ident">GetCheermotesRequest::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">req</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
+    <span class="macro">dbg!</span>(GetCheermotesRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

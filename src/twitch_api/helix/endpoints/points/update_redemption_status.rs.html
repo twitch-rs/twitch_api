@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/points/update_redemption_status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>update_redemption_status.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/points/update_redemption_status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>update_redemption_status.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -224,197 +224,197 @@
 <span id="224">224</span>
 <span id="225">225</span>
 <span id="226">226</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Updates the status of Custom Reward Redemption objects on a channel that are in the UNFULFILLED status.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Only redemptions for a reward created by the same client_id as attached to the access token can be updated.</span>
-<span class="doccomment">//! [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Accessing the endpoint</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Request: [UpdateRedemptionStatusRequest]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! To use this endpoint, construct a [`UpdateRedemptionStatusRequest`] with the [`UpdateRedemptionStatusRequest::builder()`] method.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! use twitch_api::helix::points::UpdateRedemptionStatusRequest;</span>
-<span class="doccomment">//! let request = UpdateRedemptionStatusRequest::builder()</span>
-<span class="doccomment">//!     .broadcaster_id(&quot;274637212&quot;.to_string())</span>
-<span class="doccomment">//!     .reward_id(&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;.to_string())</span>
-<span class="doccomment">//!     .id(&quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;.to_string())</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Body: [UpdateRedemptionStatusBody]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! We also need to provide a body to the request containing what we want to change.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! use twitch_api::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};</span>
-<span class="doccomment">//! let body = UpdateRedemptionStatusBody::builder()</span>
-<span class="doccomment">//!     .status(CustomRewardRedemptionStatus::Canceled)</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Response: [UpdateRedemptionStatusInformation]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust, no_run</span>
-<span class="doccomment">//! use twitch_api::helix;</span>
-<span class="doccomment">//! use twitch_api::helix::points::{</span>
-<span class="doccomment">//!     CustomRewardRedemptionStatus, UpdateRedemptionStatusBody,</span>
-<span class="doccomment">//!     UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,</span>
-<span class="doccomment">//! };</span>
-<span class="doccomment">//! # use twitch_api::client;</span>
-<span class="doccomment">//! # #[tokio::main]</span>
-<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-<span class="doccomment">//! let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; =</span>
-<span class="doccomment">//!     helix::HelixClient::default();</span>
-<span class="doccomment">//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-<span class="doccomment">//! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-<span class="doccomment">//! let request = UpdateRedemptionStatusRequest::builder()</span>
-<span class="doccomment">//!     .broadcaster_id(&quot;274637212&quot;.to_string())</span>
-<span class="doccomment">//!     .reward_id(&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;.to_string())</span>
-<span class="doccomment">//!     .id(&quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;.to_string())</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! let body = UpdateRedemptionStatusBody::builder()</span>
-<span class="doccomment">//!     .status(CustomRewardRedemptionStatus::Canceled)</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! let response: UpdateRedemptionStatusInformation =</span>
-<span class="doccomment">//!     client.req_patch(request, body, &amp;token).await?.data;</span>
-<span class="doccomment">//! # Ok(())</span>
-<span class="doccomment">//! # }</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! You can also get the [`http::Request`] with [`request.create_request(body, &amp;token, &amp;client_id)`](helix::RequestPatch::create_request)</span>
-<span class="doccomment">//! and parse the [`http::Response`] with [`UpdateRedemptionStatusRequest::parse_response(None, &amp;request.get_uri(), response)`](UpdateRedemptionStatusRequest::parse_response)</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Updates the status of Custom Reward Redemption objects on a channel that are in the UNFULFILLED status.
+//!
+//! Only redemptions for a reward created by the same client_id as attached to the access token can be updated.
+//! [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
+//!
+//! # Accessing the endpoint
+//!
+//! ## Request: [UpdateRedemptionStatusRequest]
+//!
+//! To use this endpoint, construct a [`UpdateRedemptionStatusRequest`] with the [`UpdateRedemptionStatusRequest::builder()`] method.
+//!
+//! ```rust
+//! use twitch_api::helix::points::UpdateRedemptionStatusRequest;
+//! let request = UpdateRedemptionStatusRequest::builder()
+//!     .broadcaster_id(&quot;274637212&quot;.to_string())
+//!     .reward_id(&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;.to_string())
+//!     .id(&quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;.to_string())
+//!     .build();
+//! ```
+//!
+//! ## Body: [UpdateRedemptionStatusBody]
+//!
+//! We also need to provide a body to the request containing what we want to change.
+//!
+//! ```
+//! use twitch_api::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};
+//! let body = UpdateRedemptionStatusBody::builder()
+//!     .status(CustomRewardRedemptionStatus::Canceled)
+//!     .build();
+//! ```
+//!
+//! ## Response: [UpdateRedemptionStatusInformation]
+//!
+//! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+//!
+//! ```rust, no_run
+//! use twitch_api::helix;
+//! use twitch_api::helix::points::{
+//!     CustomRewardRedemptionStatus, UpdateRedemptionStatusBody,
+//!     UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,
+//! };
+//! # use twitch_api::client;
+//! # #[tokio::main]
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+//! let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; =
+//!     helix::HelixClient::default();
+//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+//! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+//! let request = UpdateRedemptionStatusRequest::builder()
+//!     .broadcaster_id(&quot;274637212&quot;.to_string())
+//!     .reward_id(&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;.to_string())
+//!     .id(&quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;.to_string())
+//!     .build();
+//! let body = UpdateRedemptionStatusBody::builder()
+//!     .status(CustomRewardRedemptionStatus::Canceled)
+//!     .build();
+//! let response: UpdateRedemptionStatusInformation =
+//!     client.req_patch(request, body, &amp;token).await?.data;
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! You can also get the [`http::Request`] with [`request.create_request(body, &amp;token, &amp;client_id)`](helix::RequestPatch::create_request)
+//! and parse the [`http::Response`] with [`UpdateRedemptionStatusRequest::parse_response(None, &amp;request.get_uri(), response)`](UpdateRedemptionStatusRequest::parse_response)
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::helix</span>::{<span class="ident">parse_json</span>, <span class="ident">HelixRequestPatchError</span>};
+</span><span class="kw">use </span><span class="kw">crate</span>::helix::{parse_json, HelixRequestPatchError};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::CustomRewardRedemption</span>;
-<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">helix::RequestPatch</span>;
+<span class="kw">pub use </span><span class="kw">super</span>::CustomRewardRedemption;
+<span class="kw">use super</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span>helix::RequestPatch;
 
-<span class="doccomment">/// Query Parameters for [Update Redemption Status](super::update_redemption_status)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">typed_builder::TypedBuilder</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateRedemptionStatusRequest</span> {
-    <span class="doccomment">/// Provided broadcaster_id must match the user_id in the auth token.</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types::UserId</span>,
+<span class="doccomment">/// Query Parameters for [Update Redemption Status](super::update_redemption_status)
+///
+/// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
+</span><span class="attribute">#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>UpdateRedemptionStatusRequest {
+    <span class="doccomment">/// Provided broadcaster_id must match the user_id in the auth token.
+    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
 
-    <span class="doccomment">/// ID of the Custom Reward the redemptions to be updated are for.</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">reward_id</span>: <span class="ident">types::RewardId</span>,
+    <span class="doccomment">/// ID of the Custom Reward the redemptions to be updated are for.
+    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="kw">pub </span>reward_id: types::RewardId,
 
-    <span class="doccomment">/// ID of the Custom Reward Redemption to update, must match a Custom Reward Redemption on broadcaster_id’s channel</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">types::RedemptionId</span>,
+    <span class="doccomment">/// ID of the Custom Reward Redemption to update, must match a Custom Reward Redemption on broadcaster_id’s channel
+    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="kw">pub </span>id: types::RedemptionId,
 }
 
-<span class="doccomment">/// Body Parameters for [Update Redemption Status](super::update_redemption_status)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">typed_builder::TypedBuilder</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateRedemptionStatusBody</span> {
-    <span class="doccomment">/// The new status to set redemptions to. Can be either FULFILLED or CANCELED. Updating to CANCELED will refund the user their points.</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">CustomRewardRedemptionStatus</span>,
+<span class="doccomment">/// Body Parameters for [Update Redemption Status](super::update_redemption_status)
+///
+/// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
+</span><span class="attribute">#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>UpdateRedemptionStatusBody {
+    <span class="doccomment">/// The new status to set redemptions to. Can be either FULFILLED or CANCELED. Updating to CANCELED will refund the user their points.
+    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="kw">pub </span>status: CustomRewardRedemptionStatus,
 }
 
-<span class="doccomment">/// FIXME: Returns an object.</span>
-<span class="doccomment">/// Return Values for [Update Redemption Status](super::update_redemption_status)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UpdateRedemptionStatusInformation</span> {
-    <span class="doccomment">/// 200 - OK</span>
-    <span class="ident">Success</span>(<span class="ident">CustomRewardRedemption</span>),
+<span class="doccomment">/// FIXME: Returns an object.
+/// Return Values for [Update Redemption Status](super::update_redemption_status)
+///
+/// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[non_exhaustive]
+</span><span class="kw">pub enum </span>UpdateRedemptionStatusInformation {
+    <span class="doccomment">/// 200 - OK
+    </span>Success(CustomRewardRedemption),
 }
 
-<span class="kw">impl</span> <span class="ident">Request</span> <span class="kw">for</span> <span class="ident">UpdateRedemptionStatusRequest</span> {
-    <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">UpdateRedemptionStatusInformation</span>;
+<span class="kw">impl </span>Request <span class="kw">for </span>UpdateRedemptionStatusRequest {
+    <span class="kw">type </span>Response = UpdateRedemptionStatusInformation;
 
-    <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;channel_points/custom_rewards/redemptions&quot;</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-    <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>] <span class="op">=</span>
-        <span class="kw-2">&amp;</span>[<span class="ident">twitch_oauth2::scopes::Scope::ChannelManageBroadcast</span>];
+    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;channel_points/custom_rewards/redemptions&quot;</span>;
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] =
+        <span class="kw-2">&amp;</span>[twitch_oauth2::scopes::Scope::ChannelManageBroadcast];
 }
 
-<span class="kw">impl</span> <span class="ident">RequestPatch</span> <span class="kw">for</span> <span class="ident">UpdateRedemptionStatusRequest</span> {
-    <span class="kw">type</span> <span class="ident">Body</span> <span class="op">=</span> <span class="ident">UpdateRedemptionStatusBody</span>;
+<span class="kw">impl </span>RequestPatch <span class="kw">for </span>UpdateRedemptionStatusRequest {
+    <span class="kw">type </span>Body = UpdateRedemptionStatusBody;
 
-    <span class="kw">fn</span> <span class="ident">parse_inner_response</span>(
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">status</span>: <span class="ident">http::StatusCode</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Response</span><span class="op">&gt;</span>, <span class="ident">helix::HelixRequestPatchError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="kw">fn </span>parse_inner_response(
+        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: <span class="kw-2">&amp;</span>str,
+        status: http::StatusCode,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::Response&lt;<span class="self">Self</span>, <span class="self">Self</span>::Response&gt;, helix::HelixRequestPatchError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">status</span> {
-            <span class="ident">http::StatusCode::OK</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">helix::InnerResponse</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CustomRewardRedemption</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-                    <span class="ident">parse_json</span>(<span class="ident">response</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                        <span class="ident">HelixRequestPatchError::DeserializeError</span>(
-                            <span class="ident">response</span>.<span class="ident">to_string</span>(),
-                            <span class="ident">e</span>,
-                            <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                            <span class="ident">status</span>,
+        <span class="kw">let </span>resp = <span class="kw">match </span>status {
+            http::StatusCode::OK =&gt; {
+                <span class="kw">let </span>resp: helix::InnerResponse&lt;Vec&lt;CustomRewardRedemption&gt;&gt; =
+                    parse_json(response, <span class="bool-val">true</span>).map_err(|e| {
+                        HelixRequestPatchError::DeserializeError(
+                            response.to_string(),
+                            e,
+                            uri.clone(),
+                            status,
                         )
                     })<span class="question-mark">?</span>;
-                <span class="ident">UpdateRedemptionStatusInformation::Success</span>(<span class="ident">resp</span>.<span class="ident">data</span>.<span class="ident">into_iter</span>().<span class="ident">next</span>().<span class="ident">ok_or</span>(
-                    <span class="ident">helix::HelixRequestPatchError::InvalidResponse</span> {
-                        <span class="ident">reason</span>: <span class="string">&quot;expected at least one element in data&quot;</span>,
-                        <span class="ident">response</span>: <span class="ident">response</span>.<span class="ident">to_string</span>(),
-                        <span class="ident">status</span>,
-                        <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
+                UpdateRedemptionStatusInformation::Success(resp.data.into_iter().next().ok_or(
+                    helix::HelixRequestPatchError::InvalidResponse {
+                        reason: <span class="string">&quot;expected at least one element in data&quot;</span>,
+                        response: response.to_string(),
+                        status,
+                        uri: uri.clone(),
                     },
                 )<span class="question-mark">?</span>)
             }
-            <span class="kw">_</span> =&gt; {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">helix::HelixRequestPatchError::InvalidResponse</span> {
-                    <span class="ident">reason</span>: <span class="string">&quot;unexpected status code&quot;</span>,
-                    <span class="ident">response</span>: <span class="ident">response</span>.<span class="ident">to_string</span>(),
-                    <span class="ident">status</span>,
-                    <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
+            <span class="kw">_ </span>=&gt; {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(helix::HelixRequestPatchError::InvalidResponse {
+                    reason: <span class="string">&quot;unexpected status code&quot;</span>,
+                    response: response.to_string(),
+                    status,
+                    uri: uri.clone(),
                 })
             }
         };
-        <span class="prelude-val">Ok</span>(<span class="ident">helix::Response</span> {
-            <span class="ident">data</span>: <span class="ident">resp</span>,
-            <span class="ident">pagination</span>: <span class="prelude-val">None</span>,
-            <span class="ident">request</span>,
-            <span class="ident">total</span>: <span class="prelude-val">None</span>,
-            <span class="ident">other</span>: <span class="prelude-val">None</span>,
+        <span class="prelude-val">Ok</span>(helix::Response {
+            data: resp,
+            pagination: <span class="prelude-val">None</span>,
+            request,
+            total: <span class="prelude-val">None</span>,
+            other: <span class="prelude-val">None</span>,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">helix::private::SealedSerialize</span> <span class="kw">for</span> <span class="ident">UpdateRedemptionStatusBody</span> {}
+<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>UpdateRedemptionStatusBody {}
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_request</span>() {
-    <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
-    <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">UpdateRedemptionStatusRequest::builder</span>()
-        .<span class="ident">broadcaster_id</span>(<span class="string">&quot;274637212&quot;</span>.<span class="ident">to_string</span>())
-        .<span class="ident">reward_id</span>(<span class="string">&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;</span>.<span class="ident">to_string</span>())
-        .<span class="ident">id</span>(<span class="string">&quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;</span>.<span class="ident">to_string</span>())
-        .<span class="ident">build</span>();
+<span class="attribute">#[cfg(test)]
+#[test]
+</span><span class="kw">fn </span>test_request() {
+    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+    <span class="kw">let </span>req = UpdateRedemptionStatusRequest::builder()
+        .broadcaster_id(<span class="string">&quot;274637212&quot;</span>.to_string())
+        .reward_id(<span class="string">&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;</span>.to_string())
+        .id(<span class="string">&quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;</span>.to_string())
+        .build();
 
-    <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">UpdateRedemptionStatusBody::builder</span>()
-        .<span class="ident">status</span>(<span class="ident">CustomRewardRedemptionStatus::Unfulfilled</span>)
-        .<span class="ident">build</span>();
+    <span class="kw">let </span>body = UpdateRedemptionStatusBody::builder()
+        .status(CustomRewardRedemptionStatus::Unfulfilled)
+        .build();
 
-    <span class="macro">dbg!</span>(<span class="ident">req</span>.<span class="ident">create_request</span>(<span class="ident">body</span>, <span class="string">&quot;abcd&quot;</span>, <span class="string">&quot;client&quot;</span>).<span class="ident">unwrap</span>());
-    <span class="comment">// From twitch docs</span>
-    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">br##&quot;
+    <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;abcd&quot;</span>, <span class="string">&quot;client&quot;</span>).unwrap());
+    <span class="comment">// From twitch docs
+    </span><span class="kw">let </span>data = <span class="string">br##&quot;
 {
     &quot;data&quot;: [
         {
@@ -437,18 +437,18 @@
         }
     ]
 }
-&quot;##</span>
-    .<span class="ident">to_vec</span>();
+&quot;##
+    </span>.to_vec();
 
-    <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http::Response::builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
+    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
 
-    <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let </span>uri = req.get_uri().unwrap();
     <span class="macro">assert_eq!</span>(
-            <span class="ident">uri</span>.<span class="ident">to_string</span>(),
-            <span class="string">&quot;https://api.twitch.tv/helix/channel_points/custom_rewards/redemptions?broadcaster_id=274637212&amp;reward_id=92af127c-7326-4483-a52b-b0da0be61c01&amp;id=17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;</span>
-        );
+            uri.to_string(),
+            <span class="string">&quot;https://api.twitch.tv/helix/channel_points/custom_rewards/redemptions?broadcaster_id=274637212&amp;reward_id=92af127c-7326-4483-a52b-b0da0be61c01&amp;id=17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;
+        </span>);
 
-    <span class="macro">dbg!</span>(<span class="ident">UpdateRedemptionStatusRequest::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">req</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
+    <span class="macro">dbg!</span>(UpdateRedemptionStatusRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

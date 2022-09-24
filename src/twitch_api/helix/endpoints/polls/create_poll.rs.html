@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/polls/create_poll.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>create_poll.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/polls/create_poll.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>create_poll.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -246,209 +246,209 @@
 <span id="246">246</span>
 <span id="247">247</span>
 <span id="248">248</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Create a poll for a specific Twitch channel.</span>
-<span class="doccomment">//! [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Accessing the endpoint</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Request: [CreatePollRequest]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! To use this endpoint, construct a [`CreatePollRequest`] with the [`CreatePollRequest::new()`] method.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! use twitch_api::helix::polls::create_poll;</span>
-<span class="doccomment">//! let request = create_poll::CreatePollRequest::new();</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Body: [CreatePollBody]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! We also need to provide a body to the request containing what we want to change.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! # use twitch_api::helix::polls::create_poll;</span>
-<span class="doccomment">//! let body = create_poll::CreatePollBody::builder()</span>
-<span class="doccomment">//!     .broadcaster_id(&quot;141981764&quot;)</span>
-<span class="doccomment">//!     .title(&quot;Heads or Tails?&quot;)</span>
-<span class="doccomment">//!     .choices(vec![</span>
-<span class="doccomment">//!         create_poll::NewPollChoice::new(&quot;Heads&quot;),</span>
-<span class="doccomment">//!         create_poll::NewPollChoice::new(&quot;Tails&quot;),</span>
-<span class="doccomment">//!     ])</span>
-<span class="doccomment">//!     .channel_points_voting_enabled(true)</span>
-<span class="doccomment">//!     .channel_points_per_vote(100)</span>
-<span class="doccomment">//!     .duration(1800)</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Response: [CreatePollResponse]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust, no_run</span>
-<span class="doccomment">//! use twitch_api::helix::{self, polls::create_poll};</span>
-<span class="doccomment">//! # use twitch_api::client;</span>
-<span class="doccomment">//! # #[tokio::main]</span>
-<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-<span class="doccomment">//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-<span class="doccomment">//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-<span class="doccomment">//! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-<span class="doccomment">//! let request = create_poll::CreatePollRequest::builder()</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! let body = create_poll::CreatePollBody::builder()</span>
-<span class="doccomment">//!     .broadcaster_id(&quot;141981764&quot;)</span>
-<span class="doccomment">//!     .title(&quot;Heads or Tails?&quot;)</span>
-<span class="doccomment">//!     .choices(vec![create_poll::NewPollChoice::new(&quot;Heads&quot;), create_poll::NewPollChoice::new(&quot;Tails&quot;)])</span>
-<span class="doccomment">//!     .channel_points_voting_enabled(true)</span>
-<span class="doccomment">//!     .channel_points_per_vote(100)</span>
-<span class="doccomment">//!     .duration(1800)</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! let response: create_poll::CreatePollResponse = client.req_post(request, body, &amp;token).await?.data;</span>
-<span class="doccomment">//! # Ok(())</span>
-<span class="doccomment">//! # }</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestPost::create_request)</span>
-<span class="doccomment">//! and parse the [`http::Response`] with [`CreatePollRequest::parse_response(None, &amp;request.get_uri(), response)`](CreatePollRequest::parse_response)</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Create a poll for a specific Twitch channel.
+//! [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
+//!
+//! # Accessing the endpoint
+//!
+//! ## Request: [CreatePollRequest]
+//!
+//! To use this endpoint, construct a [`CreatePollRequest`] with the [`CreatePollRequest::new()`] method.
+//!
+//! ```rust
+//! use twitch_api::helix::polls::create_poll;
+//! let request = create_poll::CreatePollRequest::new();
+//! ```
+//!
+//! ## Body: [CreatePollBody]
+//!
+//! We also need to provide a body to the request containing what we want to change.
+//!
+//! ```
+//! # use twitch_api::helix::polls::create_poll;
+//! let body = create_poll::CreatePollBody::builder()
+//!     .broadcaster_id(&quot;141981764&quot;)
+//!     .title(&quot;Heads or Tails?&quot;)
+//!     .choices(vec![
+//!         create_poll::NewPollChoice::new(&quot;Heads&quot;),
+//!         create_poll::NewPollChoice::new(&quot;Tails&quot;),
+//!     ])
+//!     .channel_points_voting_enabled(true)
+//!     .channel_points_per_vote(100)
+//!     .duration(1800)
+//!     .build();
+//! ```
+//!
+//! ## Response: [CreatePollResponse]
+//!
+//!
+//! Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
+//!
+//!
+//! ```rust, no_run
+//! use twitch_api::helix::{self, polls::create_poll};
+//! # use twitch_api::client;
+//! # #[tokio::main]
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+//! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+//! let request = create_poll::CreatePollRequest::builder()
+//!     .build();
+//! let body = create_poll::CreatePollBody::builder()
+//!     .broadcaster_id(&quot;141981764&quot;)
+//!     .title(&quot;Heads or Tails?&quot;)
+//!     .choices(vec![create_poll::NewPollChoice::new(&quot;Heads&quot;), create_poll::NewPollChoice::new(&quot;Tails&quot;)])
+//!     .channel_points_voting_enabled(true)
+//!     .channel_points_per_vote(100)
+//!     .duration(1800)
+//!     .build();
+//! let response: create_poll::CreatePollResponse = client.req_post(request, body, &amp;token).await?.data;
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestPost::create_request)
+//! and parse the [`http::Response`] with [`CreatePollRequest::parse_response(None, &amp;request.get_uri(), response)`](CreatePollRequest::parse_response)
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">helix::RequestPost</span>;
-<span class="doccomment">/// Query Parameters for [Create Poll](super::create_poll)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">typed_builder::TypedBuilder</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreatePollRequest</span> {}
+</span><span class="kw">use super</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span>helix::RequestPost;
+<span class="doccomment">/// Query Parameters for [Create Poll](super::create_poll)
+///
+/// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
+</span><span class="attribute">#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>CreatePollRequest {}
 
-<span class="kw">impl</span> <span class="ident">CreatePollRequest</span> {
-    <span class="doccomment">/// Create a new [`CreatePollRequest`]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> { <span class="self">Self</span> {} }
+<span class="kw">impl </span>CreatePollRequest {
+    <span class="doccomment">/// Create a new [`CreatePollRequest`]
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ <span class="self">Self </span>{} }
 }
 
-<span class="doccomment">/// Body Parameters for [Create Poll](super::create_poll)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">typed_builder::TypedBuilder</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreatePollBody</span> {
-    <span class="doccomment">/// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Question displayed for the poll. Maximum: 60 characters.</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.</span>
-    <span class="kw">pub</span> <span class="ident">duration</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// Array of the poll choices. Minimum: 2 choices. Maximum: 5 choices.</span>
-    <span class="kw">pub</span> <span class="ident">choices</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NewPollChoice</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Indicates if Bits can be used for voting. Default: false</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">bits_voting_enabled</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Number of Bits required to vote once with Bits. Minimum: 0. Maximum: 10000.</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">bits_per_vote</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Indicates if Channel Points can be used for voting. Default: false</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">channel_points_voting_enabled</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Number of Channel Points required to vote once with Channel Points. Minimum: 0. Maximum: 1000000.</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">channel_points_per_vote</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Body Parameters for [Create Poll](super::create_poll)
+///
+/// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
+</span><span class="attribute">#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>CreatePollBody {
+    <span class="doccomment">/// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
+    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    <span class="doccomment">/// Question displayed for the poll. Maximum: 60 characters.
+    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="kw">pub </span>title: String,
+    <span class="doccomment">/// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.
+    </span><span class="kw">pub </span>duration: i64,
+    <span class="doccomment">/// Array of the poll choices. Minimum: 2 choices. Maximum: 5 choices.
+    </span><span class="kw">pub </span>choices: Vec&lt;NewPollChoice&gt;,
+    <span class="doccomment">/// Indicates if Bits can be used for voting. Default: false
+    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="kw">pub </span>bits_voting_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
+    <span class="doccomment">/// Number of Bits required to vote once with Bits. Minimum: 0. Maximum: 10000.
+    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="kw">pub </span>bits_per_vote: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// Indicates if Channel Points can be used for voting. Default: false
+    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="kw">pub </span>channel_points_voting_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
+    <span class="doccomment">/// Number of Channel Points required to vote once with Channel Points. Minimum: 0. Maximum: 1000000.
+    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="kw">pub </span>channel_points_per_vote: <span class="prelude-ty">Option</span>&lt;i64&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">helix::private::SealedSerialize</span> <span class="kw">for</span> <span class="ident">CreatePollBody</span> {}
+<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>CreatePollBody {}
 
-<span class="comment">// FIXME: I&#39;d prefer this to be a Vec&lt;String&gt; on CreatePollBody</span>
-<span class="doccomment">/// Choice settings for a poll</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">typed_builder::TypedBuilder</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NewPollChoice</span> {
-    <span class="doccomment">/// Text displayed for the choice. Maximum: 25 characters.</span>
-    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
+<span class="comment">// FIXME: I&#39;d prefer this to be a Vec&lt;String&gt; on CreatePollBody
+</span><span class="doccomment">/// Choice settings for a poll
+</span><span class="attribute">#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>NewPollChoice {
+    <span class="doccomment">/// Text displayed for the choice. Maximum: 25 characters.
+    </span><span class="kw">pub </span>title: String,
 }
 
-<span class="kw">impl</span> <span class="ident">NewPollChoice</span> {
-    <span class="doccomment">/// Create a new [`NewPollChoice`]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">title</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">title</span>: <span class="ident">title</span>.<span class="ident">into</span>(),
+<span class="kw">impl </span>NewPollChoice {
+    <span class="doccomment">/// Create a new [`NewPollChoice`]
+    </span><span class="kw">pub fn </span>new(title: <span class="kw">impl </span>Into&lt;String&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            title: title.into(),
         }
     }
 }
 
-<span class="doccomment">/// Return Values for [Create Poll](super::create_poll)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CreatePollResponse</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::Poll</span>;
+<span class="doccomment">/// Return Values for [Create Poll](super::create_poll)
+///
+/// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
+</span><span class="kw">pub type </span>CreatePollResponse = <span class="kw">super</span>::Poll;
 
-<span class="kw">impl</span> <span class="ident">Request</span> <span class="kw">for</span> <span class="ident">CreatePollRequest</span> {
-    <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">CreatePollResponse</span>;
+<span class="kw">impl </span>Request <span class="kw">for </span>CreatePollRequest {
+    <span class="kw">type </span>Response = CreatePollResponse;
 
-    <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;polls&quot;</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-    <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="ident">twitch_oauth2::Scope::ChannelManagePolls</span>];
+    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;polls&quot;</span>;
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ChannelManagePolls];
 }
 
-<span class="kw">impl</span> <span class="ident">RequestPost</span> <span class="kw">for</span> <span class="ident">CreatePollRequest</span> {
-    <span class="kw">type</span> <span class="ident">Body</span> <span class="op">=</span> <span class="ident">CreatePollBody</span>;
+<span class="kw">impl </span>RequestPost <span class="kw">for </span>CreatePollRequest {
+    <span class="kw">type </span>Body = CreatePollBody;
 
-    <span class="kw">fn</span> <span class="ident">parse_inner_response</span>(
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response_str</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">status</span>: <span class="ident">http::StatusCode</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Response</span><span class="op">&gt;</span>, <span class="ident">helix::HelixRequestPostError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="kw">fn </span>parse_inner_response(
+        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response_str: <span class="kw-2">&amp;</span>str,
+        status: http::StatusCode,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::Response&lt;<span class="self">Self</span>, <span class="self">Self</span>::Response&gt;, helix::HelixRequestPostError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">helix::InnerResponse</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Response</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">helix::parse_json</span>(<span class="ident">response_str</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">helix::HelixRequestPostError::DeserializeError</span>(
-                    <span class="ident">response_str</span>.<span class="ident">to_string</span>(),
-                    <span class="ident">e</span>,
-                    <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">status</span>,
+        <span class="kw">let </span>response: helix::InnerResponse&lt;Vec&lt;<span class="self">Self</span>::Response&gt;&gt; =
+            helix::parse_json(response_str, <span class="bool-val">true</span>).map_err(|e| {
+                helix::HelixRequestPostError::DeserializeError(
+                    response_str.to_string(),
+                    e,
+                    uri.clone(),
+                    status,
                 )
             })<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">data</span>.<span class="ident">into_iter</span>().<span class="ident">next</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-            <span class="ident">helix::HelixRequestPostError::InvalidResponse</span> {
-                <span class="ident">reason</span>: <span class="string">&quot;response included no data&quot;</span>,
-                <span class="ident">response</span>: <span class="ident">response_str</span>.<span class="ident">to_string</span>(),
-                <span class="ident">status</span>,
-                <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
+        <span class="kw">let </span>data = response.data.into_iter().next().ok_or_else(|| {
+            helix::HelixRequestPostError::InvalidResponse {
+                reason: <span class="string">&quot;response included no data&quot;</span>,
+                response: response_str.to_string(),
+                status,
+                uri: uri.clone(),
             }
         })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">helix::Response</span> {
-            <span class="ident">data</span>,
-            <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span>,
-            <span class="ident">request</span>,
-            <span class="ident">total</span>: <span class="prelude-val">None</span>,
-            <span class="ident">other</span>: <span class="prelude-val">None</span>,
+        <span class="prelude-val">Ok</span>(helix::Response {
+            data,
+            pagination: response.pagination.cursor,
+            request,
+            total: <span class="prelude-val">None</span>,
+            other: <span class="prelude-val">None</span>,
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_request</span>() {
-    <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
-    <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">CreatePollRequest::builder</span>().<span class="ident">build</span>();
+<span class="attribute">#[cfg(test)]
+#[test]
+</span><span class="kw">fn </span>test_request() {
+    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+    <span class="kw">let </span>req = CreatePollRequest::builder().build();
 
-    <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">CreatePollBody::builder</span>()
-        .<span class="ident">broadcaster_id</span>(<span class="string">&quot;141981764&quot;</span>)
-        .<span class="ident">title</span>(<span class="string">&quot;Heads or Tails?&quot;</span>)
-        .<span class="ident">choices</span>(<span class="macro">vec!</span>[
-            <span class="ident">NewPollChoice::new</span>(<span class="string">&quot;Heads&quot;</span>),
-            <span class="ident">NewPollChoice::new</span>(<span class="string">&quot;Tails&quot;</span>),
+    <span class="kw">let </span>body = CreatePollBody::builder()
+        .broadcaster_id(<span class="string">&quot;141981764&quot;</span>)
+        .title(<span class="string">&quot;Heads or Tails?&quot;</span>)
+        .choices(<span class="macro">vec!</span>[
+            NewPollChoice::new(<span class="string">&quot;Heads&quot;</span>),
+            NewPollChoice::new(<span class="string">&quot;Tails&quot;</span>),
         ])
-        .<span class="ident">channel_points_voting_enabled</span>(<span class="bool-val">true</span>)
-        .<span class="ident">channel_points_per_vote</span>(<span class="number">100</span>)
-        .<span class="ident">duration</span>(<span class="number">1800</span>)
-        .<span class="ident">build</span>();
+        .channel_points_voting_enabled(<span class="bool-val">true</span>)
+        .channel_points_per_vote(<span class="number">100</span>)
+        .duration(<span class="number">1800</span>)
+        .build();
 
-    <span class="macro">dbg!</span>(<span class="ident">req</span>.<span class="ident">create_request</span>(<span class="ident">body</span>, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).<span class="ident">unwrap</span>());
+    <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
-    <span class="comment">// From twitch docs</span>
-    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">br##&quot;
+    <span class="comment">// From twitch docs
+    </span><span class="kw">let </span>data = <span class="string">br##&quot;
 {
     &quot;data&quot;: [
         {
@@ -483,16 +483,16 @@
         }
     ]
 }
-    &quot;##</span>
-    .<span class="ident">to_vec</span>();
+    &quot;##
+    </span>.to_vec();
 
-    <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http::Response::builder</span>().<span class="ident">status</span>(<span class="number">200</span>).<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
-    <span class="comment">// This is marked as 204 in twitch docs, but in reality it&#39;s 200</span>
+    <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">200</span>).body(data).unwrap();
+    <span class="comment">// This is marked as 204 in twitch docs, but in reality it&#39;s 200
 
-    <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
-    <span class="macro">assert_eq!</span>(<span class="ident">uri</span>.<span class="ident">to_string</span>(), <span class="string">&quot;https://api.twitch.tv/helix/polls?&quot;</span>);
+    </span><span class="kw">let </span>uri = req.get_uri().unwrap();
+    <span class="macro">assert_eq!</span>(uri.to_string(), <span class="string">&quot;https://api.twitch.tv/helix/polls?&quot;</span>);
 
-    <span class="macro">dbg!</span>(<span class="ident">CreatePollRequest::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">req</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
+    <span class="macro">dbg!</span>(CreatePollRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

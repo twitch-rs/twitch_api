@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -225,232 +225,232 @@
 <span id="225">225</span>
 <span id="226">226</span>
 <span id="227">227</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Client for Helix endpoints</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client::ResponseExt</span>;
+</pre><pre class="rust"><code><span class="doccomment">//! Client for Helix endpoints
+</span><span class="kw">use </span><span class="kw">crate</span>::client::ResponseExt;
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+<span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">client_ext</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-<span class="kw">mod</span> <span class="ident">custom</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>client_ext;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+</span><span class="kw">mod </span>custom;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">C</span>: <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident"><span class="kw">crate</span>::client::ClientDefault</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Default</span>
-    <span class="kw">for</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">C</span><span class="op">&gt;</span>
+<span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+</span><span class="kw">impl</span>&lt;C: <span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;static</span>&gt; + <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">&#39;static</span>&gt;&gt; Default
+    <span class="kw">for </span>HelixClient&lt;<span class="lifetime">&#39;static</span>, C&gt;
 {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> { <span class="ident"><span class="self">Self</span>::new</span>() }
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::new() }
 }
 
-<span class="doccomment">/// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Provides [`HelixClient::req_get`] for requesting endpoints which uses [GET method][RequestGet].</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Most [clients][crate::HttpClient] will be able to use the `&#39;static` lifetime</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,no_run</span>
-<span class="doccomment">/// # use twitch_api::{HelixClient}; pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}</span>
-<span class="doccomment">/// pub struct MyStruct {</span>
-<span class="doccomment">///     twitch: HelixClient&lt;&#39;static, reqwest::Client&gt;,</span>
-<span class="doccomment">///     token: twitch_oauth2::AppAccessToken,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// // etc</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// See [`HttpClient`][crate::HttpClient] for implemented http clients, you can also define your own if needed.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Get a [user](users::User) from their login name.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,no_run</span>
-<span class="doccomment">/// # #[tokio::main]</span>
-<span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-<span class="doccomment">/// # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}</span>
-<span class="doccomment">/// let client: HelixClient&lt;&#39;static, reqwest::Client&gt; = HelixClient::default();</span>
-<span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-<span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-<span class="doccomment">/// use twitch_api::helix::{users::User, HelixClient};</span>
-<span class="doccomment">/// let user: Option&lt;User&gt; = client</span>
-<span class="doccomment">///     .get_user_from_login(&quot;justintv&quot;.to_string(), &amp;token)</span>
-<span class="doccomment">///     .await</span>
-<span class="doccomment">///     .unwrap();</span>
-<span class="doccomment">/// # Ok(()) }</span>
-<span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;helix&quot;</span>))]</span> <span class="comment">// this is needed due to a bug?</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>
-<span class="kw">where</span> <span class="ident">C</span>: <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">client</span>: <span class="ident">C</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">_pd</span>: <span class="ident">std::marker::PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> ()<span class="op">&gt;</span>, <span class="comment">// TODO: Implement rate limiter...</span>
-}
+<span class="doccomment">/// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
+///
+/// Provides [`HelixClient::req_get`] for requesting endpoints which uses [GET method][RequestGet].
+///
+///
+/// Most [clients][crate::HttpClient] will be able to use the `&#39;static` lifetime
+///
+/// ```rust,no_run
+/// # use twitch_api::{HelixClient}; pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
+/// pub struct MyStruct {
+///     twitch: HelixClient&lt;&#39;static, reqwest::Client&gt;,
+///     token: twitch_oauth2::AppAccessToken,
+/// }
+/// // etc
+/// ```
+///
+/// See [`HttpClient`][crate::HttpClient] for implemented http clients, you can also define your own if needed.
+///
+/// # Examples
+///
+/// Get a [user](users::User) from their login name.
+///
+/// ```rust,no_run
+/// # #[tokio::main]
+/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+/// # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
+/// let client: HelixClient&lt;&#39;static, reqwest::Client&gt; = HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+/// use twitch_api::helix::{users::User, HelixClient};
+/// let user: Option&lt;User&gt; = client
+///     .get_user_from_login(&quot;justintv&quot;.to_string(), &amp;token)
+///     .await
+///     .unwrap();
+/// # Ok(()) }
+/// ```
+</span><span class="attribute">#[derive(Clone)]
+#[cfg(all(feature = <span class="string">&quot;client&quot;</span>, feature = <span class="string">&quot;helix&quot;</span>))] </span><span class="comment">// this is needed due to a bug?
+</span><span class="kw">pub struct </span>HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt;
+<span class="kw">where </span>C: <span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) client: C,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) _pd: std::marker::PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>()&gt;, <span class="comment">// TODO: Implement rate limiter...
+</span>}
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new client with an existing client</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_client</span>(<span class="ident">client</span>: <span class="ident">C</span>) -&gt; <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-        <span class="ident">HelixClient</span> {
-            <span class="ident">client</span>,
-            <span class="ident">_pd</span>: <span class="ident">std::marker::PhantomData::default</span>(),
+<span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, C: <span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt; HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt; {
+    <span class="doccomment">/// Create a new client with an existing client
+    </span><span class="kw">pub fn </span>with_client(client: C) -&gt; HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt; {
+        HelixClient {
+            client,
+            _pd: std::marker::PhantomData::default(),
         }
     }
 
-    <span class="doccomment">/// Create a new [`HelixClient`] with a default [`HttpClient`][crate::HttpClient]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>
-    <span class="kw">where</span> <span class="ident">C</span>: <span class="ident"><span class="kw">crate</span>::client::ClientDefault</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">C::default_client</span>();
-        <span class="ident">HelixClient::with_client</span>(<span class="ident">client</span>)
+    <span class="doccomment">/// Create a new [`HelixClient`] with a default [`HttpClient`][crate::HttpClient]
+    </span><span class="kw">pub fn </span>new() -&gt; HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt;
+    <span class="kw">where </span>C: <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">&#39;a</span>&gt; {
+        <span class="kw">let </span>client = C::default_client();
+        HelixClient::with_client(client)
     }
 
-    <span class="doccomment">/// Retrieve a clone of the [`HttpClient`][crate::HttpClient] inside this [`HelixClient`]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_client</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">C</span>
-    <span class="kw">where</span> <span class="ident">C</span>: <span class="ident">Clone</span> {
-        <span class="self">self</span>.<span class="ident">client</span>.<span class="ident">clone</span>()
+    <span class="doccomment">/// Retrieve a clone of the [`HttpClient`][crate::HttpClient] inside this [`HelixClient`]
+    </span><span class="kw">pub fn </span>clone_client(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; C
+    <span class="kw">where </span>C: Clone {
+        <span class="self">self</span>.client.clone()
     }
 
-    <span class="doccomment">/// Retrieve a reference of the [`HttpClient`][crate::HttpClient] inside this [`HelixClient`]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_client</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">C</span> { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">client</span> }
+    <span class="doccomment">/// Retrieve a reference of the [`HttpClient`][crate::HttpClient] inside this [`HelixClient`]
+    </span><span class="kw">pub fn </span>get_client(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>C { <span class="kw-2">&amp;</span><span class="self">self</span>.client }
 
-    <span class="doccomment">/// Request on a valid [`RequestGet`] endpoint</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,no_run</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() {</span>
-    <span class="doccomment">/// #   use twitch_api::helix::{HelixClient, channels};</span>
-    <span class="doccomment">/// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(</span>
-    <span class="doccomment">/// #       twitch_oauth2::AccessToken::new(&quot;totallyvalidtoken&quot;.to_string()), None,</span>
-    <span class="doccomment">/// #       twitch_oauth2::ClientId::new(&quot;validclientid&quot;.to_string()), None, &quot;justintv&quot;.into(), &quot;1337&quot;.into(), None, None));</span>
-    <span class="doccomment">///     let req = channels::GetChannelInformationRequest::builder().broadcaster_id(&quot;123456&quot;).build();</span>
-    <span class="doccomment">///     let client = HelixClient::new();</span>
-    <span class="doccomment">/// # let _: &amp;HelixClient&lt;twitch_api::DummyHttpClient&gt; = &amp;client;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     let response = client.req_get(req, &amp;token).await;</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// # // fn main() {run()}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">req_get</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident">R</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestGet</span>,
-        <span class="ident">D</span>: <span class="ident">serde::de::DeserializeOwned</span> <span class="op">+</span> <span class="ident">PartialEq</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-        <span class="ident">C</span>: <span class="ident">Send</span>,
+    <span class="doccomment">/// Request on a valid [`RequestGet`] endpoint
+    ///
+    /// ```rust,no_run
+    /// # #[tokio::main]
+    /// # async fn main() {
+    /// #   use twitch_api::helix::{HelixClient, channels};
+    /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
+    /// #       twitch_oauth2::AccessToken::new(&quot;totallyvalidtoken&quot;.to_string()), None,
+    /// #       twitch_oauth2::ClientId::new(&quot;validclientid&quot;.to_string()), None, &quot;justintv&quot;.into(), &quot;1337&quot;.into(), None, None));
+    ///     let req = channels::GetChannelInformationRequest::builder().broadcaster_id(&quot;123456&quot;).build();
+    ///     let client = HelixClient::new();
+    /// # let _: &amp;HelixClient&lt;twitch_api::DummyHttpClient&gt; = &amp;client;
+    ///
+    ///     let response = client.req_get(req, &amp;token).await;
+    /// # }
+    /// # // fn main() {run()}
+    /// ```
+    </span><span class="kw">pub async fn </span>req_get&lt;R, D, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: R,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span>R: Request&lt;Response = D&gt; + Request + RequestGet,
+        D: serde::de::DeserializeOwned + PartialEq,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
+        C: Send,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">create_request</span>(<span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>(), <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">client</span>
-            .<span class="ident">req</span>(<span class="ident">req</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
-            .<span class="ident">into_response_vec</span>()
+        <span class="kw">let </span>req = request.create_request(token.token().secret(), token.client_id().as_str())<span class="question-mark">?</span>;
+        <span class="kw">let </span>uri = req.uri().clone();
+        <span class="kw">let </span>response = <span class="self">self
+            </span>.client
+            .req(req)
+            .<span class="kw">await
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
+            </span>.into_response_vec()
             .<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="ident">::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">request</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">response</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        &lt;R&gt;::parse_response(<span class="prelude-val">Some</span>(request), <span class="kw-2">&amp;</span>uri, response).map_err(Into::into)
     }
 
-    <span class="doccomment">/// Request on a valid [`RequestPost`] endpoint</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">req_post</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">B</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident">R</span>,
-        <span class="ident">body</span>: <span class="ident">B</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestPost</span><span class="op">&lt;</span><span class="ident">Body</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-        <span class="ident">B</span>: <span class="ident">HelixRequestBody</span>,
-        <span class="ident">D</span>: <span class="ident">serde::de::DeserializeOwned</span> <span class="op">+</span> <span class="ident">PartialEq</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Request on a valid [`RequestPost`] endpoint
+    </span><span class="kw">pub async fn </span>req_post&lt;R, B, D, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: R,
+        body: B,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span>R: Request&lt;Response = D&gt; + Request + RequestPost&lt;Body = B&gt;,
+        B: HelixRequestBody,
+        D: serde::de::DeserializeOwned + PartialEq,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span>
-            <span class="ident">request</span>.<span class="ident">create_request</span>(<span class="ident">body</span>, <span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>(), <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">client</span>
-            .<span class="ident">req</span>(<span class="ident">req</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
-            .<span class="ident">into_response_vec</span>()
+        <span class="kw">let </span>req =
+            request.create_request(body, token.token().secret(), token.client_id().as_str())<span class="question-mark">?</span>;
+        <span class="kw">let </span>uri = req.uri().clone();
+        <span class="kw">let </span>response = <span class="self">self
+            </span>.client
+            .req(req)
+            .<span class="kw">await
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
+            </span>.into_response_vec()
             .<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="ident">::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">request</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">response</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        &lt;R&gt;::parse_response(<span class="prelude-val">Some</span>(request), <span class="kw-2">&amp;</span>uri, response).map_err(Into::into)
     }
 
-    <span class="doccomment">/// Request on a valid [`RequestPatch`] endpoint</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">req_patch</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">B</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident">R</span>,
-        <span class="ident">body</span>: <span class="ident">B</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestPatch</span><span class="op">&lt;</span><span class="ident">Body</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-        <span class="ident">B</span>: <span class="ident">HelixRequestBody</span>,
-        <span class="ident">D</span>: <span class="ident">serde::de::DeserializeOwned</span> <span class="op">+</span> <span class="ident">PartialEq</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Request on a valid [`RequestPatch`] endpoint
+    </span><span class="kw">pub async fn </span>req_patch&lt;R, B, D, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: R,
+        body: B,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span>R: Request&lt;Response = D&gt; + Request + RequestPatch&lt;Body = B&gt;,
+        B: HelixRequestBody,
+        D: serde::de::DeserializeOwned + PartialEq,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span>
-            <span class="ident">request</span>.<span class="ident">create_request</span>(<span class="ident">body</span>, <span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>(), <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">client</span>
-            .<span class="ident">req</span>(<span class="ident">req</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
-            .<span class="ident">into_response_vec</span>()
+        <span class="kw">let </span>req =
+            request.create_request(body, token.token().secret(), token.client_id().as_str())<span class="question-mark">?</span>;
+        <span class="kw">let </span>uri = req.uri().clone();
+        <span class="kw">let </span>response = <span class="self">self
+            </span>.client
+            .req(req)
+            .<span class="kw">await
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
+            </span>.into_response_vec()
             .<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="ident">::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">request</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">response</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        &lt;R&gt;::parse_response(<span class="prelude-val">Some</span>(request), <span class="kw-2">&amp;</span>uri, response).map_err(Into::into)
     }
 
-    <span class="doccomment">/// Request on a valid [`RequestDelete`] endpoint</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">req_delete</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident">R</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestDelete</span>,
-        <span class="ident">D</span>: <span class="ident">serde::de::DeserializeOwned</span> <span class="op">+</span> <span class="ident">PartialEq</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Request on a valid [`RequestDelete`] endpoint
+    </span><span class="kw">pub async fn </span>req_delete&lt;R, D, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: R,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span>R: Request&lt;Response = D&gt; + Request + RequestDelete,
+        D: serde::de::DeserializeOwned + PartialEq,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">create_request</span>(<span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>(), <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">client</span>
-            .<span class="ident">req</span>(<span class="ident">req</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
-            .<span class="ident">into_response_vec</span>()
+        <span class="kw">let </span>req = request.create_request(token.token().secret(), token.client_id().as_str())<span class="question-mark">?</span>;
+        <span class="kw">let </span>uri = req.uri().clone();
+        <span class="kw">let </span>response = <span class="self">self
+            </span>.client
+            .req(req)
+            .<span class="kw">await
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
+            </span>.into_response_vec()
             .<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="ident">::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">request</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">response</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        &lt;R&gt;::parse_response(<span class="prelude-val">Some</span>(request), <span class="kw-2">&amp;</span>uri, response).map_err(Into::into)
     }
 
-    <span class="doccomment">/// Request on a valid [`RequestPut`] endpoint</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">req_put</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">B</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident">R</span>,
-        <span class="ident">body</span>: <span class="ident">B</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">Response</span> <span class="op">=</span> <span class="ident">D</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestPut</span><span class="op">&lt;</span><span class="ident">Body</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-        <span class="ident">B</span>: <span class="ident">HelixRequestBody</span>,
-        <span class="ident">D</span>: <span class="ident">serde::de::DeserializeOwned</span> <span class="op">+</span> <span class="ident">PartialEq</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Request on a valid [`RequestPut`] endpoint
+    </span><span class="kw">pub async fn </span>req_put&lt;R, B, D, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: R,
+        body: B,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span>R: Request&lt;Response = D&gt; + Request + RequestPut&lt;Body = B&gt;,
+        B: HelixRequestBody,
+        D: serde::de::DeserializeOwned + PartialEq,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span>
-            <span class="ident">request</span>.<span class="ident">create_request</span>(<span class="ident">body</span>, <span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>(), <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">client</span>
-            .<span class="ident">req</span>(<span class="ident">req</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
-            .<span class="ident">into_response_vec</span>()
+        <span class="kw">let </span>req =
+            request.create_request(body, token.token().secret(), token.client_id().as_str())<span class="question-mark">?</span>;
+        <span class="kw">let </span>uri = req.uri().clone();
+        <span class="kw">let </span>response = <span class="self">self
+            </span>.client
+            .req(req)
+            .<span class="kw">await
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
+            </span>.into_response_vec()
             .<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="ident">::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">request</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">response</span>).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        &lt;R&gt;::parse_response(<span class="prelude-val">Some</span>(request), <span class="kw-2">&amp;</span>uri, response).map_err(Into::into)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

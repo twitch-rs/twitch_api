@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -171,178 +171,178 @@
 <span id="171">171</span>
 <span id="172">172</span>
 <span id="173">173</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Aside from using [`HelixClient`] as described on [the crate documentation](crate),</span>
-<span class="doccomment">//! you can decide to use this library without any specific client implementation.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! use twitch_api::helix::{self, Request, RequestGet, users::{GetUsersRequest, User}};</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # #[tokio::main]</span>
-<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! let request = GetUsersRequest::builder()</span>
-<span class="doccomment">//!     .login(vec![&quot;justintv123&quot;.into()])</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! // Send it however you want</span>
-<span class="doccomment">//! // Create a [`http::Response&lt;hyper::body::Bytes&gt;`] with RequestGet::create_request, which takes an access token and a client_id</span>
-<span class="doccomment">//! let response = send_http_request(request.create_request(&quot;accesstoken&quot;, &quot;client_id&quot;)?)?;</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! // then parse the response</span>
-<span class="doccomment">//! let uri = request.get_uri()?;</span>
-<span class="doccomment">//! let user: helix::Response&lt;_, Vec&lt;User&gt;&gt; = GetUsersRequest::parse_response(Some(request), &amp;uri, response)?;</span>
-<span class="doccomment">//! println!(&quot;{:#?}&quot;, user);</span>
-<span class="doccomment">//! # Ok(())</span>
-<span class="doccomment">//! # }</span>
-<span class="doccomment">//! # fn send_http_request(_: http::Request&lt;hyper::body::Bytes&gt;) -&gt; Result&lt;http::Response&lt;hyper::body::Bytes&gt;,&amp;&#39;static str&gt; {</span>
-<span class="doccomment">//! # Ok(http::Response::builder().body(r#&quot;{&quot;data&quot;:[{&quot;id&quot;:&quot;141981764&quot;,&quot;login&quot;:&quot;twitchdev&quot;,&quot;display_name&quot;:&quot;TwitchDev&quot;,&quot;type&quot;:&quot;&quot;,&quot;broadcaster_type&quot;:&quot;partner&quot;,&quot;description&quot;:&quot;Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.&quot;,&quot;profile_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png&quot;,&quot;offline_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png&quot;,&quot;view_count&quot;:5980557,&quot;email&quot;:&quot;not-real@email.com&quot;,&quot;created_at&quot;:&quot;2016-12-14T20:32:28.894263Z&quot;}]}&quot;#.as_bytes().to_owned().into()).unwrap())</span>
-<span class="doccomment">//! # }</span>
-<span class="doccomment">//! ```</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
+//!
+//!
+//! Aside from using [`HelixClient`] as described on [the crate documentation](crate),
+//! you can decide to use this library without any specific client implementation.
+//!
+//! ```rust
+//! use twitch_api::helix::{self, Request, RequestGet, users::{GetUsersRequest, User}};
+//!
+//! # #[tokio::main]
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+//!
+//! let request = GetUsersRequest::builder()
+//!     .login(vec![&quot;justintv123&quot;.into()])
+//!     .build();
+//!
+//! // Send it however you want
+//! // Create a [`http::Response&lt;hyper::body::Bytes&gt;`] with RequestGet::create_request, which takes an access token and a client_id
+//! let response = send_http_request(request.create_request(&quot;accesstoken&quot;, &quot;client_id&quot;)?)?;
+//!
+//! // then parse the response
+//! let uri = request.get_uri()?;
+//! let user: helix::Response&lt;_, Vec&lt;User&gt;&gt; = GetUsersRequest::parse_response(Some(request), &amp;uri, response)?;
+//! println!(&quot;{:#?}&quot;, user);
+//! # Ok(())
+//! # }
+//! # fn send_http_request(_: http::Request&lt;hyper::body::Bytes&gt;) -&gt; Result&lt;http::Response&lt;hyper::body::Bytes&gt;,&amp;&#39;static str&gt; {
+//! # Ok(http::Response::builder().body(r#&quot;{&quot;data&quot;:[{&quot;id&quot;:&quot;141981764&quot;,&quot;login&quot;:&quot;twitchdev&quot;,&quot;display_name&quot;:&quot;TwitchDev&quot;,&quot;type&quot;:&quot;&quot;,&quot;broadcaster_type&quot;:&quot;partner&quot;,&quot;description&quot;:&quot;Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.&quot;,&quot;profile_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png&quot;,&quot;offline_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png&quot;,&quot;view_count&quot;:5980557,&quot;email&quot;:&quot;not-real@email.com&quot;,&quot;created_at&quot;:&quot;2016-12-14T20:32:28.894263Z&quot;}]}&quot;#.as_bytes().to_owned().into()).unwrap())
+//! # }
+//! ```
 
-<span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">no_inline</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">twitch_oauth2::Scope</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">twitch_oauth2::TwitchToken</span>;
+</span><span class="kw">use </span>serde::Deserialize;
+<span class="attribute">#[doc(no_inline)]
+#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+</span><span class="kw">pub use </span>twitch_oauth2::Scope;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+</span><span class="kw">use </span>twitch_oauth2::TwitchToken;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">client</span>;
-<span class="kw">mod</span> <span class="ident">endpoints</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">request</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">response</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+</span><span class="kw">pub mod </span>client;
+<span class="kw">mod </span>endpoints;
+<span class="kw">pub mod </span>request;
+<span class="kw">pub mod </span>response;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">client</span>::{<span class="ident">client_ext::make_stream</span>, <span class="kw-2">*</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">endpoints</span>::<span class="kw-2">*</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">request::errors::ClientRequestError</span>;
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">request::errors</span>::{
-    <span class="ident">CreateRequestError</span>, <span class="ident">HelixRequestDeleteError</span>, <span class="ident">HelixRequestGetError</span>, <span class="ident">HelixRequestPatchError</span>,
-    <span class="ident">HelixRequestPostError</span>, <span class="ident">HelixRequestPutError</span>, <span class="ident">InvalidUri</span>, <span class="ident">SerializeError</span>,
+<span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+#[doc(inline)]
+</span><span class="kw">pub use </span>client::{client_ext::make_stream, <span class="kw-2">*</span>};
+<span class="kw">pub use </span>endpoints::<span class="kw-2">*</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+#[doc(inline)]
+</span><span class="kw">pub use </span>request::errors::ClientRequestError;
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>request::errors::{
+    CreateRequestError, HelixRequestDeleteError, HelixRequestGetError, HelixRequestPatchError,
+    HelixRequestPostError, HelixRequestPutError, InvalidUri, SerializeError,
 };
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">request</span>::{<span class="ident">Request</span>, <span class="ident">RequestDelete</span>, <span class="ident">RequestGet</span>, <span class="ident">RequestPatch</span>, <span class="ident">RequestPost</span>, <span class="ident">RequestPut</span>};
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">response::Response</span>;
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>request::{Request, RequestDelete, RequestGet, RequestPatch, RequestPost, RequestPut};
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>response::Response;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">ser</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::deserialize_default_from_null</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">parse_json</span>, <span class="ident">parse_json_value</span>};
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>ser;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span><span class="kw">crate</span>::deserialize_default_from_null;
+<span class="kw">use crate</span>::{parse_json, parse_json_value};
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">struct</span> <span class="ident">InnerResponse</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span> {
-    <span class="ident">data</span>: <span class="ident">D</span>,
-    <span class="doccomment">/// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-    <span class="ident">pagination</span>: <span class="ident">Pagination</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-    <span class="ident">total</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>, <span class="ident">flatten</span>)]</span>
-    <span class="ident">other</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">serde_json::Map</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Value</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(PartialEq, Deserialize, Debug)]
+</span><span class="kw">struct </span>InnerResponse&lt;D&gt; {
+    data: D,
+    <span class="doccomment">/// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
+    </span><span class="attribute">#[serde(default)]
+    </span>pagination: Pagination,
+    <span class="attribute">#[serde(default)]
+    </span>total: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="attribute">#[serde(default, flatten)]
+    </span>other: <span class="prelude-ty">Option</span>&lt;serde_json::Map&lt;String, serde_json::Value&gt;&gt;,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unsupported&quot;</span>)))]</span>
-<span class="kw">struct</span> <span class="ident">CustomInnerResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">borrow</span>)]</span>
-    <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">serde_json::value::RawValue</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-    <span class="ident">pagination</span>: <span class="ident">Pagination</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-    <span class="ident">total</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="comment">// FIXME: There is an issue with RawValue on flatten maps. https://github.com/serde-rs/json/issues/599</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">flatten</span>, <span class="ident">default</span>)]</span>
-    <span class="ident">other</span>: <span class="ident">serde_json::Map</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Value</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Deserialize, Debug)]
+#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
+</span><span class="kw">struct </span>CustomInnerResponse&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="attribute">#[serde(borrow)]
+    </span>data: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>serde_json::value::RawValue,
+    <span class="attribute">#[serde(default)]
+    </span>pagination: Pagination,
+    <span class="attribute">#[serde(default)]
+    </span>total: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="comment">// FIXME: There is an issue with RawValue on flatten maps. https://github.com/serde-rs/json/issues/599
+    </span><span class="attribute">#[serde(flatten, default)]
+    </span>other: serde_json::Map&lt;String, serde_json::Value&gt;,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">struct</span> <span class="ident">HelixRequestError</span> {
-    <span class="ident">error</span>: <span class="ident">String</span>,
-    <span class="ident">status</span>: <span class="ident">u16</span>,
-    <span class="ident">message</span>: <span class="ident">String</span>,
+<span class="attribute">#[derive(Deserialize, Clone, Debug)]
+</span><span class="kw">struct </span>HelixRequestError {
+    error: String,
+    status: u16,
+    message: String,
 }
 
-<span class="doccomment">/// Deserialize &quot;&quot; as &lt;T as Default&gt;::Default</span>
-<span class="kw">fn</span> <span class="ident">deserialize_none_from_empty_string</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">D::Error</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">D</span>: <span class="ident">serde::de::Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
-    <span class="ident">T</span>: <span class="ident">serde::de::DeserializeOwned</span>, {
-    <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">serde_json::Value::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>;
-    <span class="kw">match</span> <span class="ident">val</span> {
-        <span class="ident">serde_json::Value::String</span>(<span class="ident">string</span>) <span class="kw">if</span> <span class="ident">string</span>.<span class="ident">is_empty</span>() =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
-        <span class="ident">other</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">parse_json_value</span>(<span class="ident">other</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="ident">serde::de::Error::custom</span>)<span class="question-mark">?</span>),
+<span class="doccomment">/// Deserialize &quot;&quot; as &lt;T as Default&gt;::Default
+</span><span class="kw">fn </span>deserialize_none_from_empty_string&lt;<span class="lifetime">&#39;de</span>, D, T&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;T&gt;, D::Error&gt;
+<span class="kw">where
+    </span>D: serde::de::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+    T: serde::de::DeserializeOwned, {
+    <span class="kw">let </span>val = serde_json::Value::deserialize(deserializer)<span class="question-mark">?</span>;
+    <span class="kw">match </span>val {
+        serde_json::Value::String(string) <span class="kw">if </span>string.is_empty() =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+        other =&gt; <span class="prelude-val">Ok</span>(parse_json_value(other, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>),
     }
 }
 
-<span class="doccomment">/// A request that can be paginated.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Paginated</span>: <span class="ident">Request</span> {
-    <span class="doccomment">/// Should returns the current pagination cursor.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Pass [`Option::None`] if no cursor is found.</span>
-    <span class="kw">fn</span> <span class="ident">set_pagination</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cursor</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Cursor</span><span class="op">&gt;</span>);
+<span class="doccomment">/// A request that can be paginated.
+</span><span class="kw">pub trait </span>Paginated: Request {
+    <span class="doccomment">/// Should returns the current pagination cursor.
+    ///
+    /// # Notes
+    ///
+    /// Pass [`Option::None`] if no cursor is found.
+    </span><span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;Cursor&gt;);
 }
 
-<span class="doccomment">/// A cursor for pagination. This is needed because of how pagination is represented in the [New Twitch API](https://dev.twitch.tv/docs/api)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Default</span>)]</span>
-<span class="kw">struct</span> <span class="ident">Pagination</span> {
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-    <span class="ident">cursor</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Cursor</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A cursor for pagination. This is needed because of how pagination is represented in the [New Twitch API](https://dev.twitch.tv/docs/api)
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Debug, Clone, Default)]
+</span><span class="kw">struct </span>Pagination {
+    <span class="attribute">#[serde(default)]
+    </span>cursor: <span class="prelude-ty">Option</span>&lt;Cursor&gt;,
 }
 
-<span class="doccomment">/// A cursor is a pointer to the current &quot;page&quot; in the twitch api pagination</span>
-<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Cursor</span>;
+<span class="doccomment">/// A cursor is a pointer to the current &quot;page&quot; in the twitch api pagination
+</span><span class="attribute">#[aliri_braid::braid(serde)]
+</span><span class="kw">pub struct </span>Cursor;
 
-<span class="doccomment">/// Errors that can happen when creating a body</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror::Error</span>, <span class="ident">Debug</span>, <span class="ident">displaydoc::Display</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BodyError</span> {
-    <span class="doccomment">/// could not serialize as json</span>
-    <span class="ident">JsonError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">serde_json::Error</span>),
-    <span class="doccomment">/// could not serialize to query</span>
-    <span class="ident">QuerySerializeError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">ser::Error</span>),
-    <span class="doccomment">/// uri is invalid</span>
-    <span class="ident">InvalidUri</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">InvalidUri</span>),
+<span class="doccomment">/// Errors that can happen when creating a body
+</span><span class="attribute">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+</span><span class="kw">pub enum </span>BodyError {
+    <span class="doccomment">/// could not serialize as json
+    </span>JsonError(<span class="attribute">#[from] </span>serde_json::Error),
+    <span class="doccomment">/// could not serialize to query
+    </span>QuerySerializeError(<span class="attribute">#[from] </span>ser::Error),
+    <span class="doccomment">/// uri is invalid
+    </span>InvalidUri(<span class="attribute">#[from] </span>InvalidUri),
 }
 
-<span class="doccomment">/// Create a body. Used for specializing request bodies</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">HelixRequestBody</span> {
-    <span class="doccomment">/// Create the body</span>
-    <span class="kw">fn</span> <span class="ident">try_to_body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span>, <span class="ident">BodyError</span><span class="op">&gt;</span>;
+<span class="doccomment">/// Create a body. Used for specializing request bodies
+</span><span class="kw">pub trait </span>HelixRequestBody {
+    <span class="doccomment">/// Create the body
+    </span><span class="kw">fn </span>try_to_body(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;hyper::body::Bytes, BodyError&gt;;
 }
 
-<span class="doccomment">/// An empty body.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Implements [`HelixRequestBody::try_to_body`], returning an empty vector</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EmptyBody</span>;
+<span class="doccomment">/// An empty body.
+///
+/// Implements [`HelixRequestBody::try_to_body`], returning an empty vector
+</span><span class="attribute">#[derive(Default, Clone, Copy)]
+</span><span class="kw">pub struct </span>EmptyBody;
 
-<span class="kw">impl</span> <span class="ident">HelixRequestBody</span> <span class="kw">for</span> <span class="ident">EmptyBody</span> {
-    <span class="kw">fn</span> <span class="ident">try_to_body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span>, <span class="ident">BodyError</span><span class="op">&gt;</span> { <span class="prelude-val">Ok</span>(<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::default</span>()) }
+<span class="kw">impl </span>HelixRequestBody <span class="kw">for </span>EmptyBody {
+    <span class="kw">fn </span>try_to_body(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;hyper::body::Bytes, BodyError&gt; { <span class="prelude-val">Ok</span>(&lt;<span class="kw">_</span>&gt;::default()) }
 }
 
-<span class="comment">// TODO: I would want specialization for this. For now, to override this behavior for a body, we specify a sealed trait</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">HelixRequestBody</span> <span class="kw">for</span> <span class="ident">T</span>
-<span class="kw">where</span> <span class="ident">T</span>: <span class="ident">serde::Serialize</span> <span class="op">+</span> <span class="ident">private::SealedSerialize</span>
+<span class="comment">// TODO: I would want specialization for this. For now, to override this behavior for a body, we specify a sealed trait
+</span><span class="kw">impl</span>&lt;T&gt; HelixRequestBody <span class="kw">for </span>T
+<span class="kw">where </span>T: serde::Serialize + private::SealedSerialize
 {
-    <span class="kw">fn</span> <span class="ident">try_to_body</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span>, <span class="ident">BodyError</span><span class="op">&gt;</span> {
-        <span class="ident">serde_json::to_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>)
-            .<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
-            .<span class="ident">map</span>(<span class="ident">Into::into</span>)
+    <span class="kw">fn </span>try_to_body(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;hyper::body::Bytes, BodyError&gt; {
+        serde_json::to_vec(<span class="kw-2">&amp;</span><span class="self">self</span>)
+            .map_err(Into::into)
+            .map(Into::into)
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">private</span> {
-    <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">SealedSerialize</span> {}
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>private {
+    <span class="kw">pub trait </span>SealedSerialize {}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

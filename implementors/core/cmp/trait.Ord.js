@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["twitch_api"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html\" title=\"trait core::cmp::Ord\">Ord</a> for <a class=\"struct\" href=\"twitch_api/pubsub/channel_subscriptions/struct.Emote.html\" title=\"struct twitch_api::pubsub::channel_subscriptions::Emote\">Emote</a>","synthetic":false,"types":["twitch_api::pubsub::channel_subscriptions::Emote"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"twitch_api":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html\" title=\"trait core::cmp::Ord\">Ord</a> for <a class=\"struct\" href=\"twitch_api/pubsub/channel_subscriptions/struct.Emote.html\" title=\"struct twitch_api::pubsub::channel_subscriptions::Emote\">Emote</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_subscriptions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>channel_subscriptions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_subscriptions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>channel_subscriptions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -590,296 +590,296 @@
 <span id="590">590</span>
 <span id="591">591</span>
 <span id="592">592</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;subscription&quot;</span>)]</span>
-<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;subscriptions&quot;</span>)]</span>
-<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;channel-subscribe-events-v1&quot;</span>)]</span>
-<span class="doccomment">//! PubSub messages for subscriptions</span>
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">pubsub</span>, <span class="ident">types</span>};
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+</pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;subscription&quot;</span>)]
+#![doc(alias = <span class="string">&quot;subscriptions&quot;</span>)]
+#![doc(alias = <span class="string">&quot;channel-subscribe-events-v1&quot;</span>)]
+</span><span class="doccomment">//! PubSub messages for subscriptions
+</span><span class="kw">use crate</span>::{pubsub, types};
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="doccomment">/// A subscription event happens in channel</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">into</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>, <span class="ident">try_from</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelSubscribeEventsV1</span> {
-    <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">u32</span>,
+<span class="doccomment">/// A subscription event happens in channel
+</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+</span><span class="kw">pub struct </span>ChannelSubscribeEventsV1 {
+    <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
+    </span><span class="kw">pub </span>channel_id: u32,
 }
 
 <span class="macro">impl_de_ser!</span>(
-    <span class="ident">ChannelSubscribeEventsV1</span>,
+    ChannelSubscribeEventsV1,
     <span class="string">&quot;channel-subscribe-events-v1&quot;</span>,
-    <span class="ident">channel_id</span> <span class="comment">// FIXME: add trailing comma</span>
-);
+    channel_id <span class="comment">// FIXME: add trailing comma
+</span>);
 
-<span class="kw">impl</span> <span class="ident">pubsub::Topic</span> <span class="kw">for</span> <span class="ident">ChannelSubscribeEventsV1</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-    <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="ident">twitch_oauth2::Scope::ChannelSubscriptions</span>];
+<span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>ChannelSubscribeEventsV1 {
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ChannelSubscriptions];
 
-    <span class="kw">fn</span> <span class="ident">into_topic</span>(<span class="self">self</span>) -&gt; <span class="ident">pubsub::Topics</span> { <span class="ident"><span class="kw">super</span>::Topics::ChannelSubscribeEventsV1</span>(<span class="self">self</span>) }
+    <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::ChannelSubscribeEventsV1(<span class="self">self</span>) }
 }
 
-<span class="doccomment">/// A subscription</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Sub</span> {
-    <span class="comment">// FIXME: Could be for month that subscription ends</span>
-    <span class="doccomment">/// Unknown</span>
-    <span class="kw">pub</span> <span class="ident">benefit_end_month</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
-    <span class="kw">pub</span> <span class="ident">channel_name</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Cumulative months that user has been subscribed</span>
-    <span class="kw">pub</span> <span class="ident">cumulative_months</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// Resubscription is a gift</span>
-    <span class="kw">pub</span> <span class="ident">is_gift</span>: <span class="ident">bool</span>,
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">months</span>: <span class="ident">i64</span>,
-    <span class="comment">// FIXME: should be a enum</span>
-    <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
-    <span class="kw">pub</span> <span class="ident">multi_month_duration</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// Message sent with this subscription</span>
-    <span class="kw">pub</span> <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
-    <span class="doccomment">/// Subscription plan</span>
-    <span class="kw">pub</span> <span class="ident">sub_plan</span>: <span class="ident">types::SubscriptionTier</span>,
-    <span class="doccomment">/// Name of subscription plan</span>
-    <span class="kw">pub</span> <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Time when pubsub message was sent</span>
-    <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">types::Timestamp</span>,
-    <span class="doccomment">/// ID of user that subscribed</span>
-    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Username of user that subscribed</span>
-    <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Display name of user that subscribed</span>
-    <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types::DisplayName</span>,
+<span class="doccomment">/// A subscription
+</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>Sub {
+    <span class="comment">// FIXME: Could be for month that subscription ends
+    </span><span class="doccomment">/// Unknown
+    </span><span class="kw">pub </span>benefit_end_month: i64,
+    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted
+    </span><span class="kw">pub </span>channel_id: types::UserId,
+    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted
+    </span><span class="kw">pub </span>channel_name: types::UserName,
+    <span class="doccomment">/// Cumulative months that user has been subscribed
+    </span><span class="kw">pub </span>cumulative_months: i64,
+    <span class="doccomment">/// Resubscription is a gift
+    </span><span class="kw">pub </span>is_gift: bool,
+    <span class="attribute">#[doc(hidden)]
+    </span><span class="kw">pub </span>months: i64,
+    <span class="comment">// FIXME: should be a enum
+    </span><span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6
+    </span><span class="kw">pub </span>multi_month_duration: i64,
+    <span class="doccomment">/// Message sent with this subscription
+    </span><span class="kw">pub </span>sub_message: SubMessage,
+    <span class="doccomment">/// Subscription plan
+    </span><span class="kw">pub </span>sub_plan: types::SubscriptionTier,
+    <span class="doccomment">/// Name of subscription plan
+    </span><span class="kw">pub </span>sub_plan_name: String,
+    <span class="doccomment">/// Time when pubsub message was sent
+    </span><span class="kw">pub </span>time: types::Timestamp,
+    <span class="doccomment">/// ID of user that subscribed
+    </span><span class="kw">pub </span>user_id: types::UserId,
+    <span class="doccomment">/// Username of user that subscribed
+    </span><span class="kw">pub </span>user_name: types::UserName,
+    <span class="doccomment">/// Display name of user that subscribed
+    </span><span class="kw">pub </span>display_name: types::DisplayName,
 }
 
-<span class="doccomment">/// A resubscription</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReSub</span> {
-    <span class="comment">// missing in documented example</span>
-    <span class="comment">// FIXME: Could be for month that subscription ends</span>
-    <span class="doccomment">/// Unknown</span>
-    <span class="kw">pub</span> <span class="ident">benefit_end_month</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
-    <span class="kw">pub</span> <span class="ident">channel_name</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Cumulative months that user has been subscribed</span>
-    <span class="kw">pub</span> <span class="ident">cumulative_months</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// Resubscription is a gift</span>
-    <span class="kw">pub</span> <span class="ident">is_gift</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Months the user has been subscribed for in a row.</span>
-    <span class="kw">pub</span> <span class="ident">streak_months</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">months</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
-    <span class="kw">pub</span> <span class="ident">multi_month_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Message sent with this subscription</span>
-    <span class="kw">pub</span> <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
-    <span class="doccomment">/// Subscription plan</span>
-    <span class="kw">pub</span> <span class="ident">sub_plan</span>: <span class="ident">types::SubscriptionTier</span>,
-    <span class="doccomment">/// Name of subscription plan</span>
-    <span class="kw">pub</span> <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Time when pubsub message was sent</span>
-    <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">types::Timestamp</span>,
-    <span class="doccomment">/// ID of user that subscribed</span>
-    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Username of user that subscribed</span>
-    <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Display name of user that subscribed</span>
-    <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types::DisplayName</span>,
+<span class="doccomment">/// A resubscription
+</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ReSub {
+    <span class="comment">// missing in documented example
+    // FIXME: Could be for month that subscription ends
+    </span><span class="doccomment">/// Unknown
+    </span><span class="kw">pub </span>benefit_end_month: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted
+    </span><span class="kw">pub </span>channel_id: types::UserId,
+    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted
+    </span><span class="kw">pub </span>channel_name: types::UserName,
+    <span class="doccomment">/// Cumulative months that user has been subscribed
+    </span><span class="kw">pub </span>cumulative_months: i64,
+    <span class="doccomment">/// Resubscription is a gift
+    </span><span class="kw">pub </span>is_gift: bool,
+    <span class="doccomment">/// Months the user has been subscribed for in a row.
+    </span><span class="kw">pub </span>streak_months: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="attribute">#[doc(hidden)]
+    </span><span class="kw">pub </span>months: i64,
+    <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6
+    </span><span class="kw">pub </span>multi_month_duration: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// Message sent with this subscription
+    </span><span class="kw">pub </span>sub_message: SubMessage,
+    <span class="doccomment">/// Subscription plan
+    </span><span class="kw">pub </span>sub_plan: types::SubscriptionTier,
+    <span class="doccomment">/// Name of subscription plan
+    </span><span class="kw">pub </span>sub_plan_name: String,
+    <span class="doccomment">/// Time when pubsub message was sent
+    </span><span class="kw">pub </span>time: types::Timestamp,
+    <span class="doccomment">/// ID of user that subscribed
+    </span><span class="kw">pub </span>user_id: types::UserId,
+    <span class="doccomment">/// Username of user that subscribed
+    </span><span class="kw">pub </span>user_name: types::UserName,
+    <span class="doccomment">/// Display name of user that subscribed
+    </span><span class="kw">pub </span>display_name: types::DisplayName,
 }
 
-<span class="doccomment">/// A gifted subscription happened</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SubGift</span> {
-    <span class="comment">// missing in documented example</span>
-    <span class="comment">// FIXME: Could be for month that subscription ends</span>
-    <span class="doccomment">/// Unknown</span>
-    <span class="kw">pub</span> <span class="ident">benefit_end_month</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
-    <span class="kw">pub</span> <span class="ident">channel_name</span>: <span class="ident">types::UserName</span>,
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">is_gift</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Months</span>
-    <span class="kw">pub</span> <span class="ident">months</span>: <span class="ident">i64</span>,
-    <span class="comment">// FIXME: should be a enum</span>
-    <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
-    <span class="kw">pub</span> <span class="ident">multi_month_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Display name of user that received gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">recipient_display_name</span>: <span class="ident">types::DisplayName</span>,
-    <span class="doccomment">/// Username of user that received gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">recipient_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Username of user that received gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">recipient_user_name</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Message sent with this subscription</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
-    <span class="doccomment">/// Subscription plan</span>
-    <span class="kw">pub</span> <span class="ident">sub_plan</span>: <span class="ident">types::SubscriptionTier</span>,
-    <span class="doccomment">/// Name of subscription plan</span>
-    <span class="kw">pub</span> <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Time when pubsub message was sent</span>
-    <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">types::Timestamp</span>,
-    <span class="doccomment">/// ID of user that purchased gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Username of user that purchased gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Display name of user that purchased gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types::DisplayName</span>,
+<span class="doccomment">/// A gifted subscription happened
+</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>SubGift {
+    <span class="comment">// missing in documented example
+    // FIXME: Could be for month that subscription ends
+    </span><span class="doccomment">/// Unknown
+    </span><span class="kw">pub </span>benefit_end_month: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted
+    </span><span class="kw">pub </span>channel_id: types::UserId,
+    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted
+    </span><span class="kw">pub </span>channel_name: types::UserName,
+    <span class="attribute">#[doc(hidden)]
+    </span><span class="kw">pub </span>is_gift: bool,
+    <span class="doccomment">/// Months
+    </span><span class="kw">pub </span>months: i64,
+    <span class="comment">// FIXME: should be a enum
+    </span><span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6
+    </span><span class="kw">pub </span>multi_month_duration: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// Display name of user that received gifted subscription
+    </span><span class="kw">pub </span>recipient_display_name: types::DisplayName,
+    <span class="doccomment">/// Username of user that received gifted subscription
+    </span><span class="kw">pub </span>recipient_id: types::UserId,
+    <span class="doccomment">/// Username of user that received gifted subscription
+    </span><span class="kw">pub </span>recipient_user_name: types::UserName,
+    <span class="doccomment">/// Message sent with this subscription
+    </span><span class="attribute">#[doc(hidden)]
+    </span><span class="kw">pub </span>sub_message: SubMessage,
+    <span class="doccomment">/// Subscription plan
+    </span><span class="kw">pub </span>sub_plan: types::SubscriptionTier,
+    <span class="doccomment">/// Name of subscription plan
+    </span><span class="kw">pub </span>sub_plan_name: String,
+    <span class="doccomment">/// Time when pubsub message was sent
+    </span><span class="kw">pub </span>time: types::Timestamp,
+    <span class="doccomment">/// ID of user that purchased gifted subscription
+    </span><span class="kw">pub </span>user_id: types::UserId,
+    <span class="doccomment">/// Username of user that purchased gifted subscription
+    </span><span class="kw">pub </span>user_name: types::UserName,
+    <span class="doccomment">/// Display name of user that purchased gifted subscription
+    </span><span class="kw">pub </span>display_name: types::DisplayName,
 }
 
-<span class="doccomment">/// Gifted resubscription with optional message</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResubGift</span> {
-    <span class="comment">// missing in documented example</span>
-    <span class="comment">// FIXME: Could be for month that subscription ends</span>
-    <span class="doccomment">/// Unknown</span>
-    <span class="kw">pub</span> <span class="ident">benefit_end_month</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
-    <span class="kw">pub</span> <span class="ident">channel_name</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Cumulative months that user has been subscribed</span>
-    <span class="kw">pub</span> <span class="ident">cumulative_months</span>: <span class="ident">i64</span>,
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">is_gift</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Months</span>
-    <span class="kw">pub</span> <span class="ident">months</span>: <span class="ident">i64</span>,
-    <span class="comment">// FIXME: should be a enum</span>
-    <span class="comment">// FIXME: Seems to always be zero on resubgift</span>
-    <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
-    <span class="kw">pub</span> <span class="ident">multi_month_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Display name of user that received gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">recipient_display_name</span>: <span class="ident">types::DisplayName</span>,
-    <span class="doccomment">/// Username of user that received gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">recipient_user_name</span>: <span class="ident">types::UserName</span>,
-    <span class="comment">// FIXME: Is this ever shared in a resubgift?</span>
-    <span class="doccomment">/// Months the recipient has been subscribed for in a row.</span>
-    <span class="kw">pub</span> <span class="ident">streak_months</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Message sent with this subscription</span>
-    <span class="kw">pub</span> <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
-    <span class="doccomment">/// Subscription plan</span>
-    <span class="kw">pub</span> <span class="ident">sub_plan</span>: <span class="ident">types::SubscriptionTier</span>,
-    <span class="doccomment">/// Name of subscription plan</span>
-    <span class="kw">pub</span> <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Time when pubsub message was sent</span>
-    <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">types::Timestamp</span>,
-    <span class="doccomment">/// ID of user that purchased gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Username of user that purchased gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Display name of user that purchased gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types::DisplayName</span>,
+<span class="doccomment">/// Gifted resubscription with optional message
+</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ResubGift {
+    <span class="comment">// missing in documented example
+    // FIXME: Could be for month that subscription ends
+    </span><span class="doccomment">/// Unknown
+    </span><span class="kw">pub </span>benefit_end_month: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted
+    </span><span class="kw">pub </span>channel_id: types::UserId,
+    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted
+    </span><span class="kw">pub </span>channel_name: types::UserName,
+    <span class="doccomment">/// Cumulative months that user has been subscribed
+    </span><span class="kw">pub </span>cumulative_months: i64,
+    <span class="attribute">#[doc(hidden)]
+    </span><span class="kw">pub </span>is_gift: bool,
+    <span class="doccomment">/// Months
+    </span><span class="kw">pub </span>months: i64,
+    <span class="comment">// FIXME: should be a enum
+    // FIXME: Seems to always be zero on resubgift
+    </span><span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6
+    </span><span class="kw">pub </span>multi_month_duration: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// Display name of user that received gifted subscription
+    </span><span class="kw">pub </span>recipient_display_name: types::DisplayName,
+    <span class="doccomment">/// Username of user that received gifted subscription
+    </span><span class="kw">pub </span>recipient_user_name: types::UserName,
+    <span class="comment">// FIXME: Is this ever shared in a resubgift?
+    </span><span class="doccomment">/// Months the recipient has been subscribed for in a row.
+    </span><span class="kw">pub </span>streak_months: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// Message sent with this subscription
+    </span><span class="kw">pub </span>sub_message: SubMessage,
+    <span class="doccomment">/// Subscription plan
+    </span><span class="kw">pub </span>sub_plan: types::SubscriptionTier,
+    <span class="doccomment">/// Name of subscription plan
+    </span><span class="kw">pub </span>sub_plan_name: String,
+    <span class="doccomment">/// Time when pubsub message was sent
+    </span><span class="kw">pub </span>time: types::Timestamp,
+    <span class="doccomment">/// ID of user that purchased gifted subscription
+    </span><span class="kw">pub </span>user_id: types::UserId,
+    <span class="doccomment">/// Username of user that purchased gifted subscription
+    </span><span class="kw">pub </span>user_name: types::UserName,
+    <span class="doccomment">/// Display name of user that purchased gifted subscription
+    </span><span class="kw">pub </span>display_name: types::DisplayName,
 }
 
-<span class="doccomment">/// User extends a (gifted) sub</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExtendSub</span> {
-    <span class="doccomment">/// Unknown</span>
-    <span class="kw">pub</span> <span class="ident">benefit_end_month</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted</span>
-    <span class="kw">pub</span> <span class="ident">channel_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted</span>
-    <span class="kw">pub</span> <span class="ident">channel_name</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Cumulative months that user has been subscribed</span>
-    <span class="kw">pub</span> <span class="ident">cumulative_months</span>: <span class="ident">i64</span>,
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">is_gift</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Months</span>
-    <span class="kw">pub</span> <span class="ident">months</span>: <span class="ident">i64</span>,
-    <span class="comment">// FIXME: should be a enum</span>
-    <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6</span>
-    <span class="kw">pub</span> <span class="ident">multi_month_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Message sent with this subscription</span>
-    <span class="kw">pub</span> <span class="ident">sub_message</span>: <span class="ident">SubMessage</span>,
-    <span class="doccomment">/// Subscription plan</span>
-    <span class="kw">pub</span> <span class="ident">sub_plan</span>: <span class="ident">types::SubscriptionTier</span>,
-    <span class="doccomment">/// Name of subscription plan</span>
-    <span class="kw">pub</span> <span class="ident">sub_plan_name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Time when pubsub message was sent</span>
-    <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">types::Timestamp</span>,
-    <span class="doccomment">/// ID of user that purchased gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Username of user that purchased gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">user_name</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Display name of user that purchased gifted subscription</span>
-    <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">types::DisplayName</span>,
+<span class="doccomment">/// User extends a (gifted) sub
+</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ExtendSub {
+    <span class="doccomment">/// Unknown
+    </span><span class="kw">pub </span>benefit_end_month: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// ID of the channel that has been subscribed or subgifted
+    </span><span class="kw">pub </span>channel_id: types::UserId,
+    <span class="doccomment">/// Name of the channel that has been subscribed or subgifted
+    </span><span class="kw">pub </span>channel_name: types::UserName,
+    <span class="doccomment">/// Cumulative months that user has been subscribed
+    </span><span class="kw">pub </span>cumulative_months: i64,
+    <span class="attribute">#[doc(hidden)]
+    </span><span class="kw">pub </span>is_gift: bool,
+    <span class="doccomment">/// Months
+    </span><span class="kw">pub </span>months: i64,
+    <span class="comment">// FIXME: should be a enum
+    </span><span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6
+    </span><span class="kw">pub </span>multi_month_duration: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// Message sent with this subscription
+    </span><span class="kw">pub </span>sub_message: SubMessage,
+    <span class="doccomment">/// Subscription plan
+    </span><span class="kw">pub </span>sub_plan: types::SubscriptionTier,
+    <span class="doccomment">/// Name of subscription plan
+    </span><span class="kw">pub </span>sub_plan_name: String,
+    <span class="doccomment">/// Time when pubsub message was sent
+    </span><span class="kw">pub </span>time: types::Timestamp,
+    <span class="doccomment">/// ID of user that purchased gifted subscription
+    </span><span class="kw">pub </span>user_id: types::UserId,
+    <span class="doccomment">/// Username of user that purchased gifted subscription
+    </span><span class="kw">pub </span>user_name: types::UserName,
+    <span class="doccomment">/// Display name of user that purchased gifted subscription
+    </span><span class="kw">pub </span>display_name: types::DisplayName,
 }
 
-<span class="comment">// FIXME: Missing anonsubgift and anonresubgift</span>
-<span class="comment">// Should probably share fields.</span>
-<span class="doccomment">/// Reply from [ChannelSubscribeEventsV1]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;context&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ChannelSubscribeEventsV1Reply</span> {
-    <span class="doccomment">/// A subscription</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;sub&quot;</span>)]</span>
-    <span class="ident">Sub</span>(<span class="ident">Sub</span>),
-    <span class="doccomment">/// A resubscription</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;resub&quot;</span>)]</span>
-    <span class="ident">ReSub</span>(<span class="ident">ReSub</span>),
-    <span class="doccomment">/// A gifted subscription happened</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;subgift&quot;</span>)]</span>
-    <span class="ident">SubGift</span>(<span class="ident">SubGift</span>),
-    <span class="doccomment">/// Gifted resubscription with optional message</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;resubgift&quot;</span>)]</span>
-    <span class="ident">ResubGift</span>(<span class="ident">ResubGift</span>),
-    <span class="doccomment">/// User extends sub through the month.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Message emited in web chat is something like: `User Extended their Tier 1 subscription through June!`</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;extendsub&quot;</span>)]</span>
-    <span class="ident">ExtendSub</span>(<span class="ident">ExtendSub</span>),
+<span class="comment">// FIXME: Missing anonsubgift and anonresubgift
+// Should probably share fields.
+</span><span class="doccomment">/// Reply from [ChannelSubscribeEventsV1]
+</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = <span class="string">&quot;context&quot;</span>)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub enum </span>ChannelSubscribeEventsV1Reply {
+    <span class="doccomment">/// A subscription
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;sub&quot;</span>)]
+    </span>Sub(Sub),
+    <span class="doccomment">/// A resubscription
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;resub&quot;</span>)]
+    </span>ReSub(ReSub),
+    <span class="doccomment">/// A gifted subscription happened
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;subgift&quot;</span>)]
+    </span>SubGift(SubGift),
+    <span class="doccomment">/// Gifted resubscription with optional message
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;resubgift&quot;</span>)]
+    </span>ResubGift(ResubGift),
+    <span class="doccomment">/// User extends sub through the month.
+    ///
+    /// Message emited in web chat is something like: `User Extended their Tier 1 subscription through June!`
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;extendsub&quot;</span>)]
+    </span>ExtendSub(ExtendSub),
 }
 
-<span class="doccomment">/// Described where in a message an emote is</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Eq</span>, <span class="ident">Ord</span>, <span class="ident">Hash</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Emote</span> {
-    <span class="comment">// FIXME: Mention how to get the emote picture</span>
-    <span class="doccomment">/// ID of emote</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Start index of emote in message</span>
-    <span class="kw">pub</span> <span class="ident">start</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// End index of emote in message</span>
-    <span class="kw">pub</span> <span class="ident">end</span>: <span class="ident">i64</span>,
+<span class="doccomment">/// Described where in a message an emote is
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>Emote {
+    <span class="comment">// FIXME: Mention how to get the emote picture
+    </span><span class="doccomment">/// ID of emote
+    </span><span class="kw">pub </span>id: String,
+    <span class="doccomment">/// Start index of emote in message
+    </span><span class="kw">pub </span>start: i64,
+    <span class="doccomment">/// End index of emote in message
+    </span><span class="kw">pub </span>end: i64,
 }
 
-<span class="doccomment">/// Message sent with subscription</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SubMessage</span> {
-    <span class="doccomment">/// Emotes in subscription message</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;pubsub::deserialize_default_from_null&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">emotes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Emote</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Message in subscription</span>
-    <span class="kw">pub</span> <span class="ident">message</span>: <span class="ident">String</span>,
+<span class="doccomment">/// Message sent with subscription
+</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>SubMessage {
+    <span class="doccomment">/// Emotes in subscription message
+    </span><span class="attribute">#[serde(deserialize_with = <span class="string">&quot;pubsub::deserialize_default_from_null&quot;</span>)]
+    </span><span class="kw">pub </span>emotes: Vec&lt;Emote&gt;,
+    <span class="doccomment">/// Message in subscription
+    </span><span class="kw">pub </span>message: String,
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>::{<span class="ident">Response</span>, <span class="ident">TopicData</span>};
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span><span class="kw">super</span>::<span class="kw">super</span>::{Response, TopicData};
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">subscription_doc_example_resub</span>() {
-        <span class="comment">// twitch docs broken as usual. /emotes/id  is a string and /months is missing</span>
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="string">r##&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>subscription_doc_example_resub() {
+        <span class="comment">// twitch docs broken as usual. /emotes/id  is a string and /months is missing
+        </span><span class="kw">let </span>message = <span class="string">r##&quot;
 {
     &quot;user_name&quot;: &quot;tww2&quot;,
     &quot;display_name&quot;: &quot;TWW2&quot;,
@@ -907,22 +907,22 @@
 }
 &quot;##</span>;
 
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="macro">format!</span>(
+        <span class="kw">let </span>source = <span class="macro">format!</span>(
             <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            <span class="ident">message</span>
+            message
         );
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="kw-2">&amp;</span><span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChannelSubscribeEventsV1</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChannelSubscribeEventsV1 { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">subscription_doc_example_subgift</span>() {
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="string">r##&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>subscription_doc_example_subgift() {
+        <span class="kw">let </span>message = <span class="string">r##&quot;
 {
     &quot;user_name&quot;: &quot;tww2&quot;,
     &quot;display_name&quot;: &quot;TWW2&quot;,
@@ -945,22 +945,22 @@
 }
 &quot;##</span>;
 
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="macro">format!</span>(
+        <span class="kw">let </span>source = <span class="macro">format!</span>(
             <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            <span class="ident">message</span>
+            message
         );
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="kw-2">&amp;</span><span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChannelSubscribeEventsV1</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChannelSubscribeEventsV1 { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">new_sub</span>() {
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="string">r##&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>new_sub() {
+        <span class="kw">let </span>message = <span class="string">r##&quot;
 {
     &quot;benefit_end_month&quot;: 11,
     &quot;user_name&quot;: &quot;tmi&quot;,
@@ -983,22 +983,22 @@
 }
 &quot;##</span>;
 
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="macro">format!</span>(
+        <span class="kw">let </span>source = <span class="macro">format!</span>(
             <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            <span class="ident">message</span>
+            message
         );
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="kw-2">&amp;</span><span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChannelSubscribeEventsV1</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChannelSubscribeEventsV1 { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">gifted_sub</span>() {
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="string">r##&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>gifted_sub() {
+        <span class="kw">let </span>message = <span class="string">r##&quot;
 {
     &quot;benefit_end_month&quot;: 0,
     &quot;user_name&quot;: &quot;tmi&quot;,
@@ -1023,22 +1023,22 @@
 }
 &quot;##</span>;
 
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="macro">format!</span>(
+        <span class="kw">let </span>source = <span class="macro">format!</span>(
             <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            <span class="ident">message</span>
+            message
         );
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="kw-2">&amp;</span><span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChannelSubscribeEventsV1</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChannelSubscribeEventsV1 { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">resub</span>() {
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="string">r##&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>resub() {
+        <span class="kw">let </span>message = <span class="string">r##&quot;
 {
     &quot;benefit_end_month&quot;: 0,
     &quot;user_name&quot;: &quot;tmi&quot;,
@@ -1068,22 +1068,22 @@
 }
 &quot;##</span>;
 
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="macro">format!</span>(
+        <span class="kw">let </span>source = <span class="macro">format!</span>(
             <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            <span class="ident">message</span>
+            message
         );
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="kw-2">&amp;</span><span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChannelSubscribeEventsV1</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChannelSubscribeEventsV1 { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">resub_gift</span>() {
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="string">r##&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>resub_gift() {
+        <span class="kw">let </span>message = <span class="string">r##&quot;
 {
     &quot;benefit_end_month&quot;: 0,
     &quot;user_name&quot;: &quot;emilgardis&quot;,
@@ -1114,22 +1114,22 @@
 }
 &quot;##</span>;
 
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="macro">format!</span>(
+        <span class="kw">let </span>source = <span class="macro">format!</span>(
             <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            <span class="ident">message</span>
+            message
         );
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="kw-2">&amp;</span><span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChannelSubscribeEventsV1</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChannelSubscribeEventsV1 { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">extendsub</span>() {
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="string">r##&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>extendsub() {
+        <span class="kw">let </span>message = <span class="string">r##&quot;
 {
     &quot;benefit_end_month&quot;: 6,
     &quot;user_name&quot;: &quot;user&quot;,
@@ -1152,35 +1152,35 @@
 }
 &quot;##</span>;
 
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="macro">format!</span>(
+        <span class="kw">let </span>source = <span class="macro">format!</span>(
             <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            <span class="ident">message</span>
+            message
         );
-        <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="macro">dbg!</span>(<span class="ident">Response::parse</span>(<span class="kw-2">&amp;</span><span class="ident">source</span>).<span class="ident">unwrap</span>());
+        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            <span class="ident">actual</span>,
-            <span class="ident">Response::Message</span> {
-                <span class="ident">data</span>: <span class="ident">TopicData::ChannelSubscribeEventsV1</span> { .. },
+            actual,
+            Response::Message {
+                data: TopicData::ChannelSubscribeEventsV1 { .. },
             }
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">check_deser</span>() {
-        <span class="kw">use</span> <span class="ident">std::convert::TryInto</span> <span class="kw">as</span> <span class="kw">_</span>;
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">&quot;channel-subscribe-events-v1.1234&quot;</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>check_deser() {
+        <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
+        <span class="kw">let </span>s = <span class="string">&quot;channel-subscribe-events-v1.1234&quot;</span>;
         <span class="macro">assert_eq!</span>(
-            <span class="ident">ChannelSubscribeEventsV1</span> { <span class="ident">channel_id</span>: <span class="number">1234</span> },
-            <span class="ident">s</span>.<span class="ident">to_string</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>()
+            ChannelSubscribeEventsV1 { channel_id: <span class="number">1234 </span>},
+            s.to_string().try_into().unwrap()
         );
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">check_ser</span>() {
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">&quot;channel-subscribe-events-v1.1234&quot;</span>;
-        <span class="kw">let</span> <span class="ident">right</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">ChannelSubscribeEventsV1</span> { <span class="ident">channel_id</span>: <span class="number">1234</span> }.<span class="ident">into</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">s</span>.<span class="ident">to_string</span>(), <span class="ident">right</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>check_ser() {
+        <span class="kw">let </span>s = <span class="string">&quot;channel-subscribe-events-v1.1234&quot;</span>;
+        <span class="kw">let </span>right: String = ChannelSubscribeEventsV1 { channel_id: <span class="number">1234 </span>}.into();
+        <span class="macro">assert_eq!</span>(s.to_string(), right);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

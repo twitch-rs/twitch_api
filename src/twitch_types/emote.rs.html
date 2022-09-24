@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/emote.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>emote.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_types/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_types/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_types/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/emote.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>emote.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_types/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_types/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_types/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -245,252 +245,252 @@
 <span id="245">245</span>
 <span id="246">246</span>
 <span id="247">247</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="doccomment">/// A Badge set ID</span>
-<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BadgeSetId</span>;
+<span class="doccomment">/// A Badge set ID
+</span><span class="attribute">#[aliri_braid::braid(serde)]
+</span><span class="kw">pub struct </span>BadgeSetId;
 
-<span class="doccomment">/// A channel chat badge ID</span>
-<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChatBadgeId</span>;
+<span class="doccomment">/// A channel chat badge ID
+</span><span class="attribute">#[aliri_braid::braid(serde)]
+</span><span class="kw">pub struct </span>ChatBadgeId;
 
-<span class="doccomment">/// A chat Emote ID</span>
-<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EmoteId</span>;
+<span class="doccomment">/// A chat Emote ID
+</span><span class="attribute">#[aliri_braid::braid(serde)]
+</span><span class="kw">pub struct </span>EmoteId;
 
-<span class="kw">impl</span> <span class="ident">EmoteIdRef</span> {
-    <span class="doccomment">/// Generates url for this emote.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Generated URL will be `&quot;https://static-cdn.jtvnw.net/emoticons/v2/{emote_id}/default/light/1.0&quot;`</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_render</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="ident">EmoteUrlBuilder</span> {
-            <span class="ident">id</span>: <span class="self">self</span>.<span class="ident">into</span>(),
-            <span class="ident">animation_setting</span>: <span class="prelude-val">None</span>,
-            <span class="ident">theme_mode</span>: <span class="ident">EmoteThemeMode::Light</span>,
-            <span class="ident">scale</span>: <span class="ident">EmoteScale::Size1_0</span>,
-            <span class="ident">template</span>: <span class="ident">EMOTE_V2_URL_TEMPLATE</span>.<span class="ident">into</span>(),
+<span class="kw">impl </span>EmoteIdRef {
+    <span class="doccomment">/// Generates url for this emote.
+    ///
+    /// Generated URL will be `&quot;https://static-cdn.jtvnw.net/emoticons/v2/{emote_id}/default/light/1.0&quot;`
+    </span><span class="kw">pub fn </span>default_render(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        EmoteUrlBuilder {
+            id: <span class="self">self</span>.into(),
+            animation_setting: <span class="prelude-val">None</span>,
+            theme_mode: EmoteThemeMode::Light,
+            scale: EmoteScale::Size1_0,
+            template: EMOTE_V2_URL_TEMPLATE.into(),
         }
-        .<span class="ident">render</span>()
+        .render()
     }
 
-    <span class="doccomment">/// Create a [`EmoteUrlBuilder`] for this emote</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">EmoteUrlBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> { <span class="ident">EmoteUrlBuilder::new</span>(<span class="self">self</span>) }
+    <span class="doccomment">/// Create a [`EmoteUrlBuilder`] for this emote
+    </span><span class="kw">pub fn </span>url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; EmoteUrlBuilder&lt;<span class="lifetime">&#39;_</span>&gt; { EmoteUrlBuilder::new(<span class="self">self</span>) }
 }
 
-<span class="doccomment">/// Emote url template</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static</span> <span class="ident">EMOTE_V2_URL_TEMPLATE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span>
+<span class="doccomment">/// Emote url template
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static </span>EMOTE_V2_URL_TEMPLATE: <span class="kw-2">&amp;</span>str =
     <span class="string">&quot;https://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}&quot;</span>;
 
-<span class="doccomment">/// Formats for an emote.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">serde::Deserialize</span>, <span class="ident">serde::Serialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;lowercase&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EmoteAnimationSetting</span> {
-    <span class="doccomment">/// Static</span>
-    <span class="ident">Static</span>,
-    <span class="doccomment">/// Animated</span>
-    <span class="ident">Animated</span>,
+<span class="doccomment">/// Formats for an emote.
+</span><span class="attribute">#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
+#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+</span><span class="kw">pub enum </span>EmoteAnimationSetting {
+    <span class="doccomment">/// Static
+    </span>Static,
+    <span class="doccomment">/// Animated
+    </span>Animated,
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">EmoteAnimationSetting</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> { <span class="self">self</span>.<span class="ident">serialize</span>(<span class="ident">f</span>) }
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>EmoteAnimationSetting {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result { <span class="self">self</span>.serialize(f) }
 }
 
-<span class="doccomment">/// Background themes available for an emote.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">serde::Deserialize</span>, <span class="ident">serde::Serialize</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;lowercase&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EmoteThemeMode</span> {
-    <span class="doccomment">/// Light</span>
-    <span class="ident">Light</span>,
-    <span class="doccomment">/// Dark</span>
-    <span class="ident">Dark</span>,
+<span class="doccomment">/// Background themes available for an emote.
+</span><span class="attribute">#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
+#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+</span><span class="kw">pub enum </span>EmoteThemeMode {
+    <span class="doccomment">/// Light
+    </span>Light,
+    <span class="doccomment">/// Dark
+    </span>Dark,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">EmoteThemeMode</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> { <span class="ident"><span class="self">Self</span>::Light</span> }
+<span class="kw">impl </span>Default <span class="kw">for </span>EmoteThemeMode {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::Light }
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">EmoteThemeMode</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> { <span class="self">self</span>.<span class="ident">serialize</span>(<span class="ident">f</span>) }
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>EmoteThemeMode {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result { <span class="self">self</span>.serialize(f) }
 }
 
-<span class="doccomment">/// Scales available for an emote.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">serde::Deserialize</span>, <span class="ident">serde::Serialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EmoteScale</span> {
-    <span class="doccomment">/// 1.0</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;1.0&quot;</span>)]</span>
-    <span class="ident">Size1_0</span>,
-    <span class="doccomment">/// 2.0</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;2.0&quot;</span>)]</span>
-    <span class="ident">Size2_0</span>,
-    <span class="doccomment">/// 3.0</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;3.0&quot;</span>)]</span>
-    <span class="ident">Size3_0</span>,
+<span class="doccomment">/// Scales available for an emote.
+</span><span class="attribute">#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
+</span><span class="kw">pub enum </span>EmoteScale {
+    <span class="doccomment">/// 1.0
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;1.0&quot;</span>)]
+    </span>Size1_0,
+    <span class="doccomment">/// 2.0
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;2.0&quot;</span>)]
+    </span>Size2_0,
+    <span class="doccomment">/// 3.0
+    </span><span class="attribute">#[serde(rename = <span class="string">&quot;3.0&quot;</span>)]
+    </span>Size3_0,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">EmoteScale</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> { <span class="ident"><span class="self">Self</span>::Size1_0</span> }
+<span class="kw">impl </span>Default <span class="kw">for </span>EmoteScale {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::Size1_0 }
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">EmoteScale</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> { <span class="self">self</span>.<span class="ident">serialize</span>(<span class="ident">f</span>) }
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>EmoteScale {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result { <span class="self">self</span>.serialize(f) }
 }
 
-<span class="doccomment">/// Builder for [emote URLs](https://dev.twitch.tv/docs/irc/emotes#emote-cdn-url-format).</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// # use twitch_types::EmoteId;</span>
-<span class="doccomment">/// let emote_id = EmoteId::from(&quot;emotesv2_dc24652ada1e4c84a5e3ceebae4de709&quot;);</span>
-<span class="doccomment">/// assert_eq!(emote_id.url().size_3x().dark_mode().render(), &quot;https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0&quot;)</span>
-<span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EmoteUrlBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">id</span>: <span class="ident">std::borrow::Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">EmoteIdRef</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">animation_setting</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">EmoteAnimationSetting</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">theme_mode</span>: <span class="ident">EmoteThemeMode</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">scale</span>: <span class="ident">EmoteScale</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">template</span>: <span class="ident">std::borrow::Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Builder for [emote URLs](https://dev.twitch.tv/docs/irc/emotes#emote-cdn-url-format).
+///
+/// # Examples
+///
+/// ```rust
+/// # use twitch_types::EmoteId;
+/// let emote_id = EmoteId::from(&quot;emotesv2_dc24652ada1e4c84a5e3ceebae4de709&quot;);
+/// assert_eq!(emote_id.url().size_3x().dark_mode().render(), &quot;https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0&quot;)
+/// ```
+</span><span class="attribute">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>EmoteUrlBuilder&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) id: std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, EmoteIdRef&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) animation_setting: <span class="prelude-ty">Option</span>&lt;EmoteAnimationSetting&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) theme_mode: EmoteThemeMode,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) scale: EmoteScale,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) template: std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">EmoteUrlBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="comment">// FIXME: AsRef</span>
-    <span class="doccomment">/// Construct a new [`EmoteUrlBuilder`] from a [`EmoteId`]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Defaults to `1.0` scale, `default` animation and `light` theme.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">EmoteIdRef</span>) -&gt; <span class="ident">EmoteUrlBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-        <span class="ident">EmoteUrlBuilder</span> {
-            <span class="ident">id</span>: <span class="ident">id</span>.<span class="ident">into</span>(),
-            <span class="ident">animation_setting</span>: <span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::default</span>(),
-            <span class="ident">theme_mode</span>: <span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::default</span>(),
-            <span class="ident">scale</span>: <span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::default</span>(),
-            <span class="ident">template</span>: <span class="ident">EMOTE_V2_URL_TEMPLATE</span>.<span class="ident">into</span>(),
+<span class="kw">impl </span>EmoteUrlBuilder&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="comment">// FIXME: AsRef
+    </span><span class="doccomment">/// Construct a new [`EmoteUrlBuilder`] from a [`EmoteId`]
+    ///
+    /// Defaults to `1.0` scale, `default` animation and `light` theme.
+    </span><span class="kw">pub fn </span>new(id: <span class="kw-2">&amp;</span>EmoteIdRef) -&gt; EmoteUrlBuilder&lt;<span class="lifetime">&#39;_</span>&gt; {
+        EmoteUrlBuilder {
+            id: id.into(),
+            animation_setting: &lt;<span class="kw">_</span>&gt;::default(),
+            theme_mode: &lt;<span class="kw">_</span>&gt;::default(),
+            scale: &lt;<span class="kw">_</span>&gt;::default(),
+            template: EMOTE_V2_URL_TEMPLATE.into(),
         }
     }
 
-    <span class="doccomment">/// Set size to 1.0</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size_1x</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">scale</span> <span class="op">=</span> <span class="ident">EmoteScale::Size1_0</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Set size to 1.0
+    </span><span class="kw">pub fn </span>size_1x(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.scale = EmoteScale::Size1_0;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Set size to 2.0</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size_2x</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">scale</span> <span class="op">=</span> <span class="ident">EmoteScale::Size2_0</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Set size to 2.0
+    </span><span class="kw">pub fn </span>size_2x(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.scale = EmoteScale::Size2_0;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Set size to 3.0</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size_3x</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">scale</span> <span class="op">=</span> <span class="ident">EmoteScale::Size3_0</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Set size to 3.0
+    </span><span class="kw">pub fn </span>size_3x(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.scale = EmoteScale::Size3_0;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Set theme to dark mode</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dark_mode</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">theme_mode</span> <span class="op">=</span> <span class="ident">EmoteThemeMode::Dark</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Set theme to dark mode
+    </span><span class="kw">pub fn </span>dark_mode(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.theme_mode = EmoteThemeMode::Dark;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Set theme to light mode</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">light_mode</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">theme_mode</span> <span class="op">=</span> <span class="ident">EmoteThemeMode::Light</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Set theme to light mode
+    </span><span class="kw">pub fn </span>light_mode(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.theme_mode = EmoteThemeMode::Light;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Set animation mode to default</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">animation_default</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">animation_setting</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Set animation mode to default
+    </span><span class="kw">pub fn </span>animation_default(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.animation_setting = <span class="prelude-val">None</span>;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Set animation mode to static</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">animation_static</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">animation_setting</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">EmoteAnimationSetting::Static</span>);
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Set animation mode to static
+    </span><span class="kw">pub fn </span>animation_static(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.animation_setting = <span class="prelude-val">Some</span>(EmoteAnimationSetting::Static);
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Set animation mode to animate</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">animation_animated</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">animation_setting</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">EmoteAnimationSetting::Animated</span>);
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Set animation mode to animate
+    </span><span class="kw">pub fn </span>animation_animated(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.animation_setting = <span class="prelude-val">Some</span>(EmoteAnimationSetting::Animated);
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Create the URL for this emote.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">render</span>(<span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">template</span> <span class="op">!</span><span class="op">=</span> <span class="string">&quot;https://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}&quot;</span> {
-            <span class="kw">let</span> <span class="ident">custom_template</span> <span class="op">=</span> <span class="op">|</span><span class="ident">builder</span>: <span class="kw-2">&amp;</span><span class="ident">EmoteUrlBuilder</span><span class="op">|</span> -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">template</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">template</span>.<span class="ident">clone</span>().<span class="ident">into_owned</span>();
-                <span class="kw">let</span> <span class="ident">emote_id_range</span> <span class="op">=</span> <span class="ident">template</span>.<span class="ident">find</span>(<span class="string">&quot;{{id}}&quot;</span>)<span class="question-mark">?</span>;
+    <span class="doccomment">/// Create the URL for this emote.
+    </span><span class="kw">pub fn </span>render(<span class="self">self</span>) -&gt; String {
+        <span class="kw">if </span><span class="self">self</span>.template != <span class="string">&quot;https://static-cdn.jtvnw.net/emoticons/v2/{{id}}/{{format}}/{{theme_mode}}/{{scale}}&quot; </span>{
+            <span class="kw">let </span>custom_template = |builder: <span class="kw-2">&amp;</span>EmoteUrlBuilder| -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+                <span class="kw">let </span><span class="kw-2">mut </span>template = <span class="self">self</span>.template.clone().into_owned();
+                <span class="kw">let </span>emote_id_range = template.find(<span class="string">&quot;{{id}}&quot;</span>)<span class="question-mark">?</span>;
                 <span class="macro">eprintln!</span>(<span class="string">&quot;id&quot;</span>);
-                <span class="ident">template</span>.<span class="ident">replace_range</span>(<span class="ident">emote_id_range</span>..<span class="ident">emote_id_range</span><span class="op">+</span><span class="string">&quot;{{id}}&quot;</span>.<span class="ident">len</span>(), <span class="ident">builder</span>.<span class="ident">id</span>.<span class="ident">as_str</span>());
+                template.replace_range(emote_id_range..emote_id_range+<span class="string">&quot;{{id}}&quot;</span>.len(), builder.id.as_str());
                 <span class="macro">eprintln!</span>(<span class="string">&quot;format&quot;</span>);
-                <span class="kw">let</span> <span class="ident">format_range</span> <span class="op">=</span> <span class="ident">template</span>.<span class="ident">find</span>(<span class="string">&quot;{{format}}&quot;</span>)<span class="question-mark">?</span>;
-                <span class="ident">template</span>.<span class="ident">replace_range</span>(<span class="ident">format_range</span>..<span class="ident">format_range</span><span class="op">+</span><span class="string">&quot;{{format}}&quot;</span>.<span class="ident">len</span>(), <span class="kw-2">&amp;</span><span class="ident">builder</span>.<span class="ident">animation_setting</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">String::from</span>(<span class="string">&quot;default&quot;</span>)));
+                <span class="kw">let </span>format_range = template.find(<span class="string">&quot;{{format}}&quot;</span>)<span class="question-mark">?</span>;
+                template.replace_range(format_range..format_range+<span class="string">&quot;{{format}}&quot;</span>.len(), <span class="kw-2">&amp;</span>builder.animation_setting.as_ref().map(|s| s.to_string()).unwrap_or_else(|| String::from(<span class="string">&quot;default&quot;</span>)));
                 <span class="macro">eprintln!</span>(<span class="string">&quot;theme_mode&quot;</span>);
-                <span class="kw">let</span> <span class="ident">theme_mode_range</span> <span class="op">=</span> <span class="ident">template</span>.<span class="ident">find</span>(<span class="string">&quot;{{theme_mode}}&quot;</span>)<span class="question-mark">?</span>;
-                <span class="ident">template</span>.<span class="ident">replace_range</span>(<span class="ident">theme_mode_range</span>..<span class="ident">theme_mode_range</span><span class="op">+</span><span class="string">&quot;{{theme_mode}}&quot;</span>.<span class="ident">len</span>(), <span class="kw-2">&amp;</span><span class="ident">builder</span>.<span class="ident">theme_mode</span>.<span class="ident">to_string</span>());
+                <span class="kw">let </span>theme_mode_range = template.find(<span class="string">&quot;{{theme_mode}}&quot;</span>)<span class="question-mark">?</span>;
+                template.replace_range(theme_mode_range..theme_mode_range+<span class="string">&quot;{{theme_mode}}&quot;</span>.len(), <span class="kw-2">&amp;</span>builder.theme_mode.to_string());
                 <span class="macro">eprintln!</span>(<span class="string">&quot;scale&quot;</span>);
-                <span class="kw">let</span> <span class="ident">scale_range</span> <span class="op">=</span> <span class="ident">template</span>.<span class="ident">find</span>(<span class="string">&quot;{{scale}}&quot;</span>)<span class="question-mark">?</span>;
-                <span class="ident">template</span>.<span class="ident">replace_range</span>(<span class="ident">scale_range</span>..<span class="ident">scale_range</span><span class="op">+</span><span class="string">&quot;{{scale}}&quot;</span>.<span class="ident">len</span>(), <span class="kw-2">&amp;</span><span class="ident">builder</span>.<span class="ident">scale</span>.<span class="ident">to_string</span>());
-                <span class="kw">if</span> <span class="ident">template</span>.<span class="ident">contains</span>(<span class="string">&quot;{{&quot;</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">template</span>.<span class="ident">contains</span>(<span class="string">&quot;}}&quot;</span>) {
-                    <span class="prelude-val">None</span>
-                } <span class="kw">else</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">template</span>)
+                <span class="kw">let </span>scale_range = template.find(<span class="string">&quot;{{scale}}&quot;</span>)<span class="question-mark">?</span>;
+                template.replace_range(scale_range..scale_range+<span class="string">&quot;{{scale}}&quot;</span>.len(), <span class="kw-2">&amp;</span>builder.scale.to_string());
+                <span class="kw">if </span>template.contains(<span class="string">&quot;{{&quot;</span>) || template.contains(<span class="string">&quot;}}&quot;</span>) {
+                    <span class="prelude-val">None
+                </span>} <span class="kw">else </span>{
+                    <span class="prelude-val">Some</span>(template)
                 }
             };
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">template</span>) <span class="op">=</span> <span class="ident">custom_template</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-                <span class="kw">return</span> <span class="ident">template</span>
-            } <span class="kw">else</span> {
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tracing&quot;</span>)]</span>
-                <span class="macro">tracing::warn!</span>(<span class="ident">template</span> <span class="op">=</span> <span class="op">%</span><span class="self">self</span>.<span class="ident">template</span>, <span class="string">&quot;emote builder was supplied an invalid or unknown template url, falling back to standard builder&quot;</span>);
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(template) = custom_template(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+                <span class="kw">return </span>template
+            } <span class="kw">else </span>{
+                <span class="attribute">#[cfg(feature = <span class="string">&quot;tracing&quot;</span>)]
+                </span><span class="macro">tracing::warn!</span>(template = %<span class="self">self</span>.template, <span class="string">&quot;emote builder was supplied an invalid or unknown template url, falling back to standard builder&quot;</span>);
             }
         }
-        <span class="comment">// fallback to known working template</span>
-        <span class="macro">format!</span>(<span class="string">&quot;https://static-cdn.jtvnw.net/emoticons/v2/{emote_id}/{animation_setting}/{theme_mode}/{scale}&quot;</span>,
-            <span class="ident">emote_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">id</span>,
-            <span class="ident">animation_setting</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">animation_setting</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string</span>()).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">String::from</span>(<span class="string">&quot;default&quot;</span>)),
-            <span class="ident">theme_mode</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">theme_mode</span>,
-            <span class="ident">scale</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">scale</span>,
+        <span class="comment">// fallback to known working template
+        </span><span class="macro">format!</span>(<span class="string">&quot;https://static-cdn.jtvnw.net/emoticons/v2/{emote_id}/{animation_setting}/{theme_mode}/{scale}&quot;</span>,
+            emote_id = <span class="self">self</span>.id,
+            animation_setting = <span class="self">self</span>.animation_setting.as_ref().map(|s| s.to_string()).unwrap_or_else(|| String::from(<span class="string">&quot;default&quot;</span>)),
+            theme_mode = <span class="self">self</span>.theme_mode,
+            scale = <span class="self">self</span>.scale,
         )
     }
 }
 
-<span class="doccomment">/// An Emote Set ID</span>
-<span class="attribute">#[<span class="ident">aliri_braid::braid</span>(<span class="ident">serde</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EmoteSetId</span>;
+<span class="doccomment">/// An Emote Set ID
+</span><span class="attribute">#[aliri_braid::braid(serde)]
+</span><span class="kw">pub struct </span>EmoteSetId;
 
-<span class="doccomment">/// An emote index as defined by eventsub, similar to IRC `emotes` twitch tag.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResubscriptionEmote</span> {
-    <span class="doccomment">/// The index of where the Emote starts in the text.</span>
-    <span class="kw">pub</span> <span class="ident">begin</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// The index of where the Emote ends in the text.</span>
-    <span class="kw">pub</span> <span class="ident">end</span>: <span class="ident">i64</span>,
-    <span class="doccomment">/// The emote ID.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">EmoteId</span>,
+<span class="doccomment">/// An emote index as defined by eventsub, similar to IRC `emotes` twitch tag.
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ResubscriptionEmote {
+    <span class="doccomment">/// The index of where the Emote starts in the text.
+    </span><span class="kw">pub </span>begin: i64,
+    <span class="doccomment">/// The index of where the Emote ends in the text.
+    </span><span class="kw">pub </span>end: i64,
+    <span class="doccomment">/// The emote ID.
+    </span><span class="kw">pub </span>id: EmoteId,
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">ResubscriptionEmote</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}:{}-{}&quot;</span>, <span class="self">self</span>.<span class="ident">id</span>, <span class="self">self</span>.<span class="ident">begin</span>, <span class="self">self</span>.<span class="ident">end</span>)
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>ResubscriptionEmote {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">&quot;{}:{}-{}&quot;</span>, <span class="self">self</span>.id, <span class="self">self</span>.begin, <span class="self">self</span>.end)
     }
 }
 
-<span class="doccomment">/// Links to the same image of different sizes</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Image</span> {
-    <span class="doccomment">/// URL to png of size 28x28</span>
-    <span class="kw">pub</span> <span class="ident">url_1x</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// URL to png of size 56x56</span>
-    <span class="kw">pub</span> <span class="ident">url_2x</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// URL to png of size 112x112</span>
-    <span class="kw">pub</span> <span class="ident">url_4x</span>: <span class="ident">String</span>,
+<span class="doccomment">/// Links to the same image of different sizes
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>Image {
+    <span class="doccomment">/// URL to png of size 28x28
+    </span><span class="kw">pub </span>url_1x: String,
+    <span class="doccomment">/// URL to png of size 56x56
+    </span><span class="kw">pub </span>url_2x: String,
+    <span class="doccomment">/// URL to png of size 112x112
+    </span><span class="kw">pub </span>url_4x: String,
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_types" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_types" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

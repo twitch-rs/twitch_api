@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/points/get_custom_reward.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_custom_reward.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/points/get_custom_reward.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_custom_reward.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -182,138 +182,138 @@
 <span id="182">182</span>
 <span id="183">183</span>
 <span id="184">184</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Returns a list of Custom Reward objects for the Custom Rewards on a channel.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Developers only have access to update and delete rewards that were created programmatically by the same/calling client_id.</span>
-<span class="doccomment">//! [`get-custom-reward-redemption`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Accessing the endpoint</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Request: [GetCustomRewardRequest]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! To use this endpoint, construct a [`GetCustomRewardRequest`] with the [`GetCustomRewardRequest::builder()`] method.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! use twitch_api::helix::points::GetCustomRewardRequest;</span>
-<span class="doccomment">//! let request = GetCustomRewardRequest::builder()</span>
-<span class="doccomment">//!     .broadcaster_id(&quot;274637212&quot;.to_string())</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Response: [CustomReward]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust, no_run</span>
-<span class="doccomment">//! use twitch_api::helix;</span>
-<span class="doccomment">//! use twitch_api::helix::points::{CustomReward, GetCustomRewardRequest};</span>
-<span class="doccomment">//! # use twitch_api::client;</span>
-<span class="doccomment">//! # #[tokio::main]</span>
-<span class="doccomment">//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-<span class="doccomment">//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-<span class="doccomment">//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-<span class="doccomment">//! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-<span class="doccomment">//! let request = GetCustomRewardRequest::builder()</span>
-<span class="doccomment">//!     .broadcaster_id(&quot;274637212&quot;.to_string())</span>
-<span class="doccomment">//!     .build();</span>
-<span class="doccomment">//! let response: Vec&lt;CustomReward&gt; = client.req_get(request, &amp;token).await?.data;</span>
-<span class="doccomment">//! # Ok(())</span>
-<span class="doccomment">//! # }</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)</span>
-<span class="doccomment">//! and parse the [`http::Response`] with [`GetCustomRewardRequest::parse_response(None, &amp;request.get_uri(), response)`](GetCustomRewardRequest::parse_response)</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Returns a list of Custom Reward objects for the Custom Rewards on a channel.
+//!
+//! Developers only have access to update and delete rewards that were created programmatically by the same/calling client_id.
+//! [`get-custom-reward-redemption`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
+//!
+//! # Accessing the endpoint
+//!
+//! ## Request: [GetCustomRewardRequest]
+//!
+//! To use this endpoint, construct a [`GetCustomRewardRequest`] with the [`GetCustomRewardRequest::builder()`] method.
+//!
+//! ```rust
+//! use twitch_api::helix::points::GetCustomRewardRequest;
+//! let request = GetCustomRewardRequest::builder()
+//!     .broadcaster_id(&quot;274637212&quot;.to_string())
+//!     .build();
+//! ```
+//!
+//! ## Response: [CustomReward]
+//!
+//! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+//!
+//! ```rust, no_run
+//! use twitch_api::helix;
+//! use twitch_api::helix::points::{CustomReward, GetCustomRewardRequest};
+//! # use twitch_api::client;
+//! # #[tokio::main]
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+//! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+//! let request = GetCustomRewardRequest::builder()
+//!     .broadcaster_id(&quot;274637212&quot;.to_string())
+//!     .build();
+//! let response: Vec&lt;CustomReward&gt; = client.req_get(request, &amp;token).await?.data;
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)
+//! and parse the [`http::Response`] with [`GetCustomRewardRequest::parse_response(None, &amp;request.get_uri(), response)`](GetCustomRewardRequest::parse_response)
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">helix::RequestGet</span>;
+</span><span class="kw">use super</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span>helix::RequestGet;
 
-<span class="doccomment">/// Query Parameters for [Get Custom Reward](super::get_custom_reward)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`get-custom-reward`](https://dev.twitch.tv/docs/api/reference#get-custom-reward)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">typed_builder::TypedBuilder</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetCustomRewardRequest</span> {
-    <span class="doccomment">/// Provided broadcaster_id must match the user_id in the auth token</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// When used, this parameter filters the results and only returns reward objects for the Custom Rewards with matching ID. Maximum: 50</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types::RewardId</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// When set to true, only returns custom rewards that the calling client_id can manage. Defaults false.</span>
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">only_manageable_rewards</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Query Parameters for [Get Custom Reward](super::get_custom_reward)
+///
+/// [`get-custom-reward`](https://dev.twitch.tv/docs/api/reference#get-custom-reward)
+</span><span class="attribute">#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>GetCustomRewardRequest {
+    <span class="doccomment">/// Provided broadcaster_id must match the user_id in the auth token
+    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    <span class="doccomment">/// When used, this parameter filters the results and only returns reward objects for the Custom Rewards with matching ID. Maximum: 50
+    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="kw">pub </span>id: Vec&lt;types::RewardId&gt;,
+    <span class="doccomment">/// When set to true, only returns custom rewards that the calling client_id can manage. Defaults false.
+    </span><span class="attribute">#[builder(default)]
+    </span><span class="kw">pub </span>only_manageable_rewards: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 }
 
-<span class="doccomment">/// Return Values for [Get Custom Reward](super::get_custom_reward)</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`get-custom-reward`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CustomReward</span> {
-    <span class="doccomment">/// ID of the channel the reward is for</span>
-    <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// Login of the channel the reward is for</span>
-    <span class="kw">pub</span> <span class="ident">broadcaster_login</span>: <span class="ident">types::UserName</span>,
-    <span class="doccomment">/// Display name of the channel the reward is for</span>
-    <span class="kw">pub</span> <span class="ident">broadcaster_name</span>: <span class="ident">types::DisplayName</span>,
-    <span class="doccomment">/// ID of the reward</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">types::RewardId</span>,
-    <span class="doccomment">/// The title of the reward</span>
-    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// The prompt for the viewer when they are redeeming the reward</span>
-    <span class="kw">pub</span> <span class="ident">prompt</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// The cost of the reward</span>
-    <span class="kw">pub</span> <span class="ident">cost</span>: <span class="ident">usize</span>,
-    <span class="doccomment">/// Set of custom images of 1x, 2x and 4x sizes for the reward { url_1x: string, url_2x: string, url_4x: string }, can be null if no images have been uploaded</span>
-    <span class="kw">pub</span> <span class="ident">image</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::Image</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Set of default images of 1x, 2x and 4x sizes for the reward { url_1x: string, url_2x: string, url_4x: string }</span>
-    <span class="kw">pub</span> <span class="ident">default_image</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::Image</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.</span>
-    <span class="kw">pub</span> <span class="ident">background_color</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Is the reward currently enabled, if false the reward won’t show up to viewers</span>
-    <span class="kw">pub</span> <span class="ident">is_enabled</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Does the user need to enter information when redeeming the reward</span>
-    <span class="kw">pub</span> <span class="ident">is_user_input_required</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Whether a maximum per stream is enabled and what the maximum is. { is_enabled: bool, max_per_stream: int }</span>
-    <span class="kw">pub</span> <span class="ident">max_per_stream_setting</span>: <span class="ident">types::Max</span>,
-    <span class="doccomment">/// Whether a maximum per user per stream is enabled and what the maximum is. { is_enabled: bool, max_per_user_per_stream: int }</span>
-    <span class="kw">pub</span> <span class="ident">max_per_user_per_stream_setting</span>: <span class="ident">types::Max</span>,
-    <span class="doccomment">/// Whether a cooldown is enabled and what the cooldown is. { is_enabled: bool, global_cooldown_seconds: int }</span>
-    <span class="kw">pub</span> <span class="ident">global_cooldown_setting</span>: <span class="ident">types::GlobalCooldown</span>,
-    <span class="doccomment">/// Is the reward currently paused, if true viewers can’t redeem</span>
-    <span class="kw">pub</span> <span class="ident">is_paused</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Is the reward currently in stock, if false viewers can’t redeem</span>
-    <span class="kw">pub</span> <span class="ident">is_in_stock</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Should redemptions be set to FULFILLED status immediately when redeemed and skip the request queue instead of the normal UNFULFILLED status.</span>
-    <span class="kw">pub</span> <span class="ident">should_redemptions_skip_request_queue</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// The number of redemptions redeemed during the current live stream. Counts against the max_per_stream_setting limit. Null if the broadcasters stream isn’t live or max_per_stream_setting isn’t enabled.</span>
-    <span class="kw">pub</span> <span class="ident">redemptions_redeemed_current_stream</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Timestamp of the cooldown expiration. Null if the reward isn’t on cooldown.</span>
-    <span class="kw">pub</span> <span class="ident">cooldown_expires_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::Timestamp</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Return Values for [Get Custom Reward](super::get_custom_reward)
+///
+/// [`get-custom-reward`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>CustomReward {
+    <span class="doccomment">/// ID of the channel the reward is for
+    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    <span class="doccomment">/// Login of the channel the reward is for
+    </span><span class="kw">pub </span>broadcaster_login: types::UserName,
+    <span class="doccomment">/// Display name of the channel the reward is for
+    </span><span class="kw">pub </span>broadcaster_name: types::DisplayName,
+    <span class="doccomment">/// ID of the reward
+    </span><span class="kw">pub </span>id: types::RewardId,
+    <span class="doccomment">/// The title of the reward
+    </span><span class="kw">pub </span>title: String,
+    <span class="doccomment">/// The prompt for the viewer when they are redeeming the reward
+    </span><span class="kw">pub </span>prompt: String,
+    <span class="doccomment">/// The cost of the reward
+    </span><span class="kw">pub </span>cost: usize,
+    <span class="doccomment">/// Set of custom images of 1x, 2x and 4x sizes for the reward { url_1x: string, url_2x: string, url_4x: string }, can be null if no images have been uploaded
+    </span><span class="kw">pub </span>image: <span class="prelude-ty">Option</span>&lt;types::Image&gt;,
+    <span class="doccomment">/// Set of default images of 1x, 2x and 4x sizes for the reward { url_1x: string, url_2x: string, url_4x: string }
+    </span><span class="kw">pub </span>default_image: <span class="prelude-ty">Option</span>&lt;types::Image&gt;,
+    <span class="doccomment">/// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
+    </span><span class="kw">pub </span>background_color: String,
+    <span class="doccomment">/// Is the reward currently enabled, if false the reward won’t show up to viewers
+    </span><span class="kw">pub </span>is_enabled: bool,
+    <span class="doccomment">/// Does the user need to enter information when redeeming the reward
+    </span><span class="kw">pub </span>is_user_input_required: bool,
+    <span class="doccomment">/// Whether a maximum per stream is enabled and what the maximum is. { is_enabled: bool, max_per_stream: int }
+    </span><span class="kw">pub </span>max_per_stream_setting: types::Max,
+    <span class="doccomment">/// Whether a maximum per user per stream is enabled and what the maximum is. { is_enabled: bool, max_per_user_per_stream: int }
+    </span><span class="kw">pub </span>max_per_user_per_stream_setting: types::Max,
+    <span class="doccomment">/// Whether a cooldown is enabled and what the cooldown is. { is_enabled: bool, global_cooldown_seconds: int }
+    </span><span class="kw">pub </span>global_cooldown_setting: types::GlobalCooldown,
+    <span class="doccomment">/// Is the reward currently paused, if true viewers can’t redeem
+    </span><span class="kw">pub </span>is_paused: bool,
+    <span class="doccomment">/// Is the reward currently in stock, if false viewers can’t redeem
+    </span><span class="kw">pub </span>is_in_stock: bool,
+    <span class="doccomment">/// Should redemptions be set to FULFILLED status immediately when redeemed and skip the request queue instead of the normal UNFULFILLED status.
+    </span><span class="kw">pub </span>should_redemptions_skip_request_queue: bool,
+    <span class="doccomment">/// The number of redemptions redeemed during the current live stream. Counts against the max_per_stream_setting limit. Null if the broadcasters stream isn’t live or max_per_stream_setting isn’t enabled.
+    </span><span class="kw">pub </span>redemptions_redeemed_current_stream: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+    <span class="doccomment">/// Timestamp of the cooldown expiration. Null if the reward isn’t on cooldown.
+    </span><span class="kw">pub </span>cooldown_expires_at: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">Request</span> <span class="kw">for</span> <span class="ident">GetCustomRewardRequest</span> {
-    <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CustomReward</span><span class="op">&gt;</span>;
+<span class="kw">impl </span>Request <span class="kw">for </span>GetCustomRewardRequest {
+    <span class="kw">type </span>Response = Vec&lt;CustomReward&gt;;
 
-    <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;channel_points/custom_rewards&quot;</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-    <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>] <span class="op">=</span>
-        <span class="kw-2">&amp;</span>[<span class="ident">twitch_oauth2::scopes::Scope::ChannelReadRedemptions</span>];
+    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;channel_points/custom_rewards&quot;</span>;
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] =
+        <span class="kw-2">&amp;</span>[twitch_oauth2::scopes::Scope::ChannelReadRedemptions];
 }
 
-<span class="kw">impl</span> <span class="ident">RequestGet</span> <span class="kw">for</span> <span class="ident">GetCustomRewardRequest</span> {}
+<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetCustomRewardRequest {}
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="attribute">#[<span class="ident">test</span>]</span>
-<span class="kw">fn</span> <span class="ident">test_request</span>() {
-    <span class="kw">use</span> <span class="ident">helix</span>::<span class="kw-2">*</span>;
-    <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">GetCustomRewardRequest::builder</span>()
-        .<span class="ident">broadcaster_id</span>(<span class="string">&quot;274637212&quot;</span>.<span class="ident">to_string</span>())
-        .<span class="ident">build</span>();
+<span class="attribute">#[cfg(test)]
+#[test]
+</span><span class="kw">fn </span>test_request() {
+    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+    <span class="kw">let </span>req = GetCustomRewardRequest::builder()
+        .broadcaster_id(<span class="string">&quot;274637212&quot;</span>.to_string())
+        .build();
 
-    <span class="comment">// From twitch docs</span>
-    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">br##&quot;
+    <span class="comment">// From twitch docs
+    </span><span class="kw">let </span>data = <span class="string">br##&quot;
 {
      &quot;data&quot;: [
          {
@@ -353,18 +353,18 @@
          }
      ]
 }
-&quot;##</span>
-    .<span class="ident">to_vec</span>();
+&quot;##
+    </span>.to_vec();
 
-    <span class="kw">let</span> <span class="ident">http_response</span> <span class="op">=</span> <span class="ident">http::Response::builder</span>().<span class="ident">body</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
+    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
 
-    <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">get_uri</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let </span>uri = req.get_uri().unwrap();
     <span class="macro">assert_eq!</span>(
-        <span class="ident">uri</span>.<span class="ident">to_string</span>(),
-        <span class="string">&quot;https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=274637212&quot;</span>
-    );
+        uri.to_string(),
+        <span class="string">&quot;https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=274637212&quot;
+    </span>);
 
-    <span class="macro">dbg!</span>(<span class="ident">GetCustomRewardRequest::parse_response</span>(<span class="prelude-val">Some</span>(<span class="ident">req</span>), <span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">http_response</span>).<span class="ident">unwrap</span>());
+    <span class="macro">dbg!</span>(GetCustomRewardRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/client_ext.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client_ext.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/client_ext.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client_ext.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -753,760 +753,860 @@
 <span id="753">753</span>
 <span id="754">754</span>
 <span id="755">755</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::helix</span>::{<span class="self">self</span>, <span class="ident">ClientRequestError</span>, <span class="ident">HelixClient</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>;
-<span class="kw">use</span> <span class="ident">twitch_oauth2::TwitchToken</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::helix::{<span class="self">self</span>, ClientRequestError, HelixClient};
+<span class="kw">use </span><span class="kw">crate</span>::types;
+<span class="kw">use </span>twitch_oauth2::TwitchToken;
 
-<span class="kw">type</span> <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span>;
+<span class="kw">type </span>ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt; = ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;;
 
-<span class="comment">// TODO: Consider moving these into the specific modules where the request is defined. Preferably backed by a macro</span>
+<span class="comment">// TODO: Consider moving these into the specific modules where the request is defined. Preferably backed by a macro
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Get [User](helix::users::User) from user login</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_user_from_login</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">login</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserName</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix::users::User</span><span class="op">&gt;</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, C: <span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt; + Sync&gt; HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt; {
+    <span class="doccomment">/// Get [User](helix::users::User) from user login
+    </span><span class="kw">pub async fn </span>get_user_from_login&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        login: <span class="kw">impl </span>Into&lt;types::UserName&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::users::User&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="self">self</span>.<span class="ident">req_get</span>(
-            <span class="ident">helix::users::GetUsersRequest::builder</span>()
-                .<span class="ident">login</span>(<span class="macro">vec!</span>[<span class="ident">login</span>.<span class="ident">into</span>()])
-                .<span class="ident">build</span>(),
-            <span class="ident">token</span>,
+        <span class="self">self</span>.req_get(
+            helix::users::GetUsersRequest::builder()
+                .login(<span class="macro">vec!</span>[login.into()])
+                .build(),
+            token,
         )
-        .<span class="kw">await</span>
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">response</span><span class="op">|</span> <span class="ident">response</span>.<span class="ident">first</span>())
+        .<span class="kw">await
+        </span>.map(|response| response.first())
     }
 
-    <span class="doccomment">/// Get [User](helix::users::User) from user id</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_user_from_id</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix::users::User</span><span class="op">&gt;</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get [User](helix::users::User) from user id
+    </span><span class="kw">pub async fn </span>get_user_from_id&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::users::User&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="self">self</span>.<span class="ident">req_get</span>(
-            <span class="ident">helix::users::GetUsersRequest::builder</span>()
-                .<span class="ident">id</span>(<span class="macro">vec!</span>[<span class="ident">id</span>.<span class="ident">into</span>()])
-                .<span class="ident">build</span>(),
-            <span class="ident">token</span>,
+        <span class="self">self</span>.req_get(
+            helix::users::GetUsersRequest::builder()
+                .id(<span class="macro">vec!</span>[id.into()])
+                .build(),
+            token,
         )
-        .<span class="kw">await</span>
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">response</span><span class="op">|</span> <span class="ident">response</span>.<span class="ident">first</span>())
+        .<span class="kw">await
+        </span>.map(|response| response.first())
     }
 
-    <span class="doccomment">/// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters login</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_channel_from_login</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">login</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserName</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix::channels::ChannelInformation</span><span class="op">&gt;</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters login
+    </span><span class="kw">pub async fn </span>get_channel_from_login&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        login: <span class="kw">impl </span>Into&lt;types::UserName&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::channels::ChannelInformation&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">user</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_user_from_login</span>(<span class="ident">login</span>, <span class="ident">token</span>).<span class="kw">await</span><span class="question-mark">?</span> {
-            <span class="self">self</span>.<span class="ident">get_channel_from_id</span>(<span class="ident">user</span>.<span class="ident">id</span>, <span class="ident">token</span>).<span class="kw">await</span>
-        } <span class="kw">else</span> {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(user) = <span class="self">self</span>.get_user_from_login(login, token).<span class="kw">await</span><span class="question-mark">? </span>{
+            <span class="self">self</span>.get_channel_from_id(user.id, token).<span class="kw">await
+        </span>} <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
         }
     }
 
-    <span class="doccomment">/// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters id</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_channel_from_id</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">helix::channels::ChannelInformation</span><span class="op">&gt;</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters id
+    </span><span class="kw">pub async fn </span>get_channel_from_id&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::channels::ChannelInformation&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="self">self</span>.<span class="ident">req_get</span>(
-            <span class="ident">helix::channels::GetChannelInformationRequest::builder</span>()
-                .<span class="ident">broadcaster_id</span>(<span class="ident">id</span>.<span class="ident">into</span>())
-                .<span class="ident">build</span>(),
-            <span class="ident">token</span>,
+        <span class="self">self</span>.req_get(
+            helix::channels::GetChannelInformationRequest::builder()
+                .broadcaster_id(id.into())
+                .build(),
+            token,
         )
-        .<span class="kw">await</span>
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">response</span><span class="op">|</span> <span class="ident">response</span>.<span class="ident">first</span>())
+        .<span class="kw">await
+        </span>.map(|response| response.first())
     }
 
-    <span class="doccomment">/// Search [Categories](helix::search::Category)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-    <span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-    <span class="doccomment">/// use twitch_api::helix;</span>
-    <span class="doccomment">/// use futures::TryStreamExt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let categories: Vec&lt;helix::search::Category&gt; = client.search_categories(&quot;Fortnite&quot;, &amp;token).try_collect().await?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Ok(()) }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">search_categories</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">query</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
-    ) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::search::Category</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Search [Categories](helix::search::Category)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let categories: Vec&lt;helix::search::Category&gt; = client.search_categories(&quot;Fortnite&quot;, &amp;token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>search_categories&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        query: <span class="kw">impl </span>Into&lt;String&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
+    ) -&gt; std::pin::Pin&lt;
+        Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::search::Category, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;&gt; + <span class="lifetime">&#39;a</span>&gt;,
+    &gt;
+    <span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::search::SearchCategoriesRequest::builder</span>()
-            .<span class="ident">query</span>(<span class="ident">query</span>.<span class="ident">into</span>())
-            .<span class="ident">build</span>();
-        <span class="ident">make_stream</span>(<span class="ident">req</span>, <span class="ident">token</span>, <span class="self">self</span>, <span class="ident">std::collections::VecDeque::from</span>)
+        <span class="kw">let </span>req = helix::search::SearchCategoriesRequest::builder()
+            .query(query.into())
+            .build();
+        make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
-    <span class="doccomment">/// Search [Channels](helix::search::Channel) via channel name or description</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-    <span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-    <span class="doccomment">/// use twitch_api::helix;</span>
-    <span class="doccomment">/// use futures::TryStreamExt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let channel: Vec&lt;helix::search::Channel&gt; = client.search_channels(&quot;twitchdev&quot;, false, &amp;token).try_collect().await?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Ok(()) }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">search_channels</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">query</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="ident">live_only</span>: <span class="ident">bool</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
-    ) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::search::Channel</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Search [Channels](helix::search::Channel) via channel name or description
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let channel: Vec&lt;helix::search::Channel&gt; = client.search_channels(&quot;twitchdev&quot;, false, &amp;token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>search_channels&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        query: <span class="kw">impl </span>Into&lt;String&gt;,
+        live_only: bool,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
+    ) -&gt; std::pin::Pin&lt;
+        Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::search::Channel, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;&gt; + <span class="lifetime">&#39;a</span>&gt;,
+    &gt;
+    <span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::search::SearchChannelsRequest::builder</span>()
-            .<span class="ident">query</span>(<span class="ident">query</span>.<span class="ident">into</span>())
-            .<span class="ident">live_only</span>(<span class="ident">live_only</span>)
-            .<span class="ident">build</span>();
-        <span class="ident">make_stream</span>(<span class="ident">req</span>, <span class="ident">token</span>, <span class="self">self</span>, <span class="ident">std::collections::VecDeque::from</span>)
+        <span class="kw">let </span>req = helix::search::SearchChannelsRequest::builder()
+            .query(query.into())
+            .live_only(live_only)
+            .build();
+        make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
-    <span class="doccomment">/// Get information on a [follow relationship](helix::users::FollowRelationship)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Can be used to see if X follows Y</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-    <span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-    <span class="doccomment">/// use twitch_api::{types, helix};</span>
-    <span class="doccomment">/// use futures::TryStreamExt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // Get the followers of channel &quot;1234&quot;</span>
-    <span class="doccomment">/// let followers: Vec&lt;helix::users::FollowRelationship&gt; = client.get_follow_relationships(types::UserId::new(&quot;1234&quot;), None, &amp;token).try_collect().await?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Ok(()) }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_follow_relationships</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">to_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">from_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
-    ) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::users::FollowRelationship</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-                <span class="op">+</span> <span class="ident">Send</span>
-                <span class="op">+</span> <span class="lifetime">&#39;a</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get information on a [follow relationship](helix::users::FollowRelationship)
+    ///
+    /// Can be used to see if X follows Y
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// // Get the followers of channel &quot;1234&quot;
+    /// let followers: Vec&lt;helix::users::FollowRelationship&gt; = client.get_follow_relationships(types::UserId::new(&quot;1234&quot;), None, &amp;token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_follow_relationships&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        to_id: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;types::UserId&gt;&gt;,
+        from_id: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;types::UserId&gt;&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
+    ) -&gt; std::pin::Pin&lt;
+        Box&lt;
+            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::users::FollowRelationship, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;&gt;
+                + Send
+                + <span class="lifetime">&#39;a</span>,
+        &gt;,
+    &gt;
+    <span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::users::GetUsersFollowsRequest::builder</span>()
-            .<span class="ident">to_id</span>(<span class="ident">to_id</span>)
-            .<span class="ident">from_id</span>(<span class="ident">from_id</span>)
-            .<span class="ident">first</span>(<span class="number">100</span>)
-            .<span class="ident">build</span>();
-        <span class="ident">make_stream</span>(<span class="ident">req</span>, <span class="ident">token</span>, <span class="self">self</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
-            <span class="ident">std::collections::VecDeque::from</span>(<span class="ident">s</span>.<span class="ident">follow_relationships</span>)
+        <span class="kw">let </span>req = helix::users::GetUsersFollowsRequest::builder()
+            .to_id(to_id)
+            .from_id(from_id)
+            .first(<span class="number">100</span>)
+            .build();
+        make_stream(req, token, <span class="self">self</span>, |s| {
+            std::collections::VecDeque::from(s.follow_relationships)
         })
     }
 
-    <span class="doccomment">/// Get authenticated users&#39; followed [streams](helix::streams::Stream)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-    <span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-    <span class="doccomment">/// use twitch_api::helix;</span>
-    <span class="doccomment">/// use futures::TryStreamExt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let channels: Vec&lt;helix::streams::Stream&gt; = client.get_followed_streams(&amp;token).try_collect().await?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Ok(()) }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_followed_streams</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
-    ) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::streams::Stream</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get authenticated users&#39; followed [streams](helix::streams::Stream)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let channels: Vec&lt;helix::streams::Stream&gt; = client.get_followed_streams(&amp;token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_followed_streams&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
+    ) -&gt; std::pin::Pin&lt;
+        Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::streams::Stream, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;&gt; + <span class="lifetime">&#39;a</span>&gt;,
+    &gt;
+    <span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">use</span> <span class="ident">futures::StreamExt</span>;
+        <span class="kw">use </span>futures::StreamExt;
 
-        <span class="kw">let</span> <span class="ident">user_id</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">token</span>
-            .<span class="ident">user_id</span>()
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ClientRequestError::Custom</span>(<span class="string">&quot;no user_id found on token&quot;</span>.<span class="ident">into</span>()))
+        <span class="kw">let </span>user_id = <span class="kw">match </span>token
+            .user_id()
+            .ok_or_else(|| ClientRequestError::Custom(<span class="string">&quot;no user_id found on token&quot;</span>.into()))
         {
-            <span class="prelude-val">Ok</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="kw">return</span> <span class="ident">futures::stream::once</span>(<span class="kw">async</span> { <span class="prelude-val">Err</span>(<span class="ident">e</span>) }).<span class="ident">boxed</span>(),
+            <span class="prelude-val">Ok</span>(t) =&gt; t,
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span>futures::stream::once(<span class="kw">async </span>{ <span class="prelude-val">Err</span>(e) }).boxed(),
         };
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::streams::GetFollowedStreamsRequest::builder</span>()
-            .<span class="ident">user_id</span>(<span class="ident">user_id</span>)
-            .<span class="ident">build</span>();
-        <span class="ident">make_stream</span>(<span class="ident">req</span>, <span class="ident">token</span>, <span class="self">self</span>, <span class="ident">std::collections::VecDeque::from</span>)
+        <span class="kw">let </span>req = helix::streams::GetFollowedStreamsRequest::builder()
+            .user_id(user_id)
+            .build();
+        make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
-    <span class="doccomment">/// Get authenticated broadcasters&#39; [subscribers](helix::subscriptions::BroadcasterSubscription)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-    <span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-    <span class="doccomment">/// use twitch_api::helix;</span>
-    <span class="doccomment">/// use futures::TryStreamExt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let subs: Vec&lt;helix::subscriptions::BroadcasterSubscription&gt; = client.get_broadcaster_subscriptions(&amp;token).try_collect().await?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Ok(()) }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_broadcaster_subscriptions</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
-    ) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span>
-                    <span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-                        <span class="ident">helix::subscriptions::BroadcasterSubscription</span>,
-                        <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>,
-                    <span class="op">&gt;</span>,
-                <span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get authenticated broadcasters&#39; [subscribers](helix::subscriptions::BroadcasterSubscription)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let subs: Vec&lt;helix::subscriptions::BroadcasterSubscription&gt; = client.get_broadcaster_subscriptions(&amp;token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_broadcaster_subscriptions&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
+    ) -&gt; std::pin::Pin&lt;
+        Box&lt;
+            <span class="kw">dyn </span>futures::Stream&lt;
+                    Item = <span class="prelude-ty">Result</span>&lt;
+                        helix::subscriptions::BroadcasterSubscription,
+                        ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;,
+                    &gt;,
+                &gt; + <span class="lifetime">&#39;a</span>,
+        &gt;,
+    &gt;
+    <span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">use</span> <span class="ident">futures::StreamExt</span>;
+        <span class="kw">use </span>futures::StreamExt;
 
-        <span class="kw">let</span> <span class="ident">user_id</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">token</span>
-            .<span class="ident">user_id</span>()
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ClientRequestError::Custom</span>(<span class="string">&quot;no user_id found on token&quot;</span>.<span class="ident">into</span>()))
+        <span class="kw">let </span>user_id = <span class="kw">match </span>token
+            .user_id()
+            .ok_or_else(|| ClientRequestError::Custom(<span class="string">&quot;no user_id found on token&quot;</span>.into()))
         {
-            <span class="prelude-val">Ok</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="kw">return</span> <span class="ident">futures::stream::once</span>(<span class="kw">async</span> { <span class="prelude-val">Err</span>(<span class="ident">e</span>) }).<span class="ident">boxed</span>(),
+            <span class="prelude-val">Ok</span>(t) =&gt; t,
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span>futures::stream::once(<span class="kw">async </span>{ <span class="prelude-val">Err</span>(e) }).boxed(),
         };
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::subscriptions::GetBroadcasterSubscriptionsRequest::builder</span>()
-            .<span class="ident">broadcaster_id</span>(<span class="ident">user_id</span>)
-            .<span class="ident">build</span>();
-        <span class="ident">make_stream</span>(<span class="ident">req</span>, <span class="ident">token</span>, <span class="self">self</span>, <span class="ident">std::collections::VecDeque::from</span>)
+        <span class="kw">let </span>req = helix::subscriptions::GetBroadcasterSubscriptionsRequest::builder()
+            .broadcaster_id(user_id)
+            .build();
+        make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
-    <span class="doccomment">/// Get all moderators in a channel [Get Moderators](helix::moderation::GetModeratorsRequest)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-    <span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-    <span class="doccomment">/// use twitch_api::helix;</span>
-    <span class="doccomment">/// use futures::TryStreamExt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let moderators: Vec&lt;helix::moderation::Moderator&gt; = client.get_moderators_in_channel_from_id(&quot;twitchdev&quot;, &amp;token).try_collect().await?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Ok(()) }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_moderators_in_channel_from_id</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">broadcaster_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
-    ) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::moderation::Moderator</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-                <span class="op">+</span> <span class="lifetime">&#39;a</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get all moderators in a channel [Get Moderators](helix::moderation::GetModeratorsRequest)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let moderators: Vec&lt;helix::moderation::Moderator&gt; = client.get_moderators_in_channel_from_id(&quot;twitchdev&quot;, &amp;token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_moderators_in_channel_from_id&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
+    ) -&gt; std::pin::Pin&lt;
+        Box&lt;
+            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::moderation::Moderator, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;&gt;
+                + <span class="lifetime">&#39;a</span>,
+        &gt;,
+    &gt;
+    <span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::moderation::GetModeratorsRequest::builder</span>()
-            .<span class="ident">broadcaster_id</span>(<span class="ident">broadcaster_id</span>)
-            .<span class="ident">build</span>();
+        <span class="kw">let </span>req = helix::moderation::GetModeratorsRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .build();
 
-        <span class="ident">make_stream</span>(<span class="ident">req</span>, <span class="ident">token</span>, <span class="self">self</span>, <span class="ident">std::collections::VecDeque::from</span>)
+        make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
-    <span class="doccomment">/// Get all banned users in a channel [Get Banned Users](helix::moderation::GetBannedUsersRequest)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-    <span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-    <span class="doccomment">/// use twitch_api::helix;</span>
-    <span class="doccomment">/// use futures::TryStreamExt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let moderators: Vec&lt;helix::moderation::BannedUser&gt; = client.get_banned_users_in_channel_from_id(&quot;twitchdev&quot;, &amp;token).try_collect().await?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Ok(()) }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_banned_users_in_channel_from_id</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">broadcaster_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
-    ) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::moderation::BannedUser</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-                <span class="op">+</span> <span class="lifetime">&#39;a</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get all banned users in a channel [Get Banned Users](helix::moderation::GetBannedUsersRequest)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let moderators: Vec&lt;helix::moderation::BannedUser&gt; = client.get_banned_users_in_channel_from_id(&quot;twitchdev&quot;, &amp;token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_banned_users_in_channel_from_id&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
+    ) -&gt; std::pin::Pin&lt;
+        Box&lt;
+            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::moderation::BannedUser, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;&gt;
+                + <span class="lifetime">&#39;a</span>,
+        &gt;,
+    &gt;
+    <span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::moderation::GetBannedUsersRequest::builder</span>()
-            .<span class="ident">broadcaster_id</span>(<span class="ident">broadcaster_id</span>)
-            .<span class="ident">build</span>();
+        <span class="kw">let </span>req = helix::moderation::GetBannedUsersRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .build();
 
-        <span class="ident">make_stream</span>(<span class="ident">req</span>, <span class="ident">token</span>, <span class="self">self</span>, <span class="ident">std::collections::VecDeque::from</span>)
+        make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
-    <span class="doccomment">/// Get a users, with login, follow count</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_total_followers_from_login</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">login</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserName</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get a users, with login, follow count
+    </span><span class="kw">pub async fn </span>get_total_followers_from_login&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        login: <span class="kw">impl </span>Into&lt;types::UserName&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;i64&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">user</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_user_from_login</span>(<span class="ident">login</span>, <span class="ident">token</span>).<span class="kw">await</span><span class="question-mark">?</span> {
-            <span class="self">self</span>.<span class="ident">get_total_followers_from_id</span>(<span class="ident">user</span>.<span class="ident">id</span>, <span class="ident">token</span>)
-                .<span class="kw">await</span>
-                .<span class="ident">map</span>(<span class="prelude-val">Some</span>)
-        } <span class="kw">else</span> {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(user) = <span class="self">self</span>.get_user_from_login(login, token).<span class="kw">await</span><span class="question-mark">? </span>{
+            <span class="self">self</span>.get_total_followers_from_id(user.id, token)
+                .<span class="kw">await
+                </span>.map(<span class="prelude-val">Some</span>)
+        } <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
         }
     }
 
-    <span class="doccomment">/// Get a users, with id, follow count</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This returns zero if the user doesn&#39;t exist</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_total_followers_from_id</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">to_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i64</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get a users, with id, follow count
+    ///
+    /// # Notes
+    ///
+    /// This returns zero if the user doesn&#39;t exist
+    </span><span class="kw">pub async fn </span>get_total_followers_from_id&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        to_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;i64, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">req_get</span>(
-                <span class="ident">helix::users::GetUsersFollowsRequest::builder</span>()
-                    .<span class="ident">from_id</span>(<span class="prelude-val">Some</span>(<span class="ident">to_id</span>.<span class="ident">into</span>()))
-                    .<span class="ident">build</span>(),
-                <span class="ident">token</span>,
+        <span class="kw">let </span>resp = <span class="self">self
+            </span>.req_get(
+                helix::users::GetUsersFollowsRequest::builder()
+                    .from_id(<span class="prelude-val">Some</span>(to_id.into()))
+                    .build(),
+                token,
             )
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">resp</span>.<span class="ident">data</span>.<span class="ident">total</span>)
+        <span class="prelude-val">Ok</span>(resp.data.total)
     }
 
-    <span class="doccomment">/// Get games by ID. Can only be at max 100 ids.</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_games_by_id</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">ids</span>: <span class="kw-2">&amp;</span>[<span class="ident">types::CategoryId</span>],
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">types::CategoryId</span>, <span class="ident">helix::games::Game</span><span class="op">&gt;</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get games by ID. Can only be at max 100 ids.
+    </span><span class="kw">pub async fn </span>get_games_by_id&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        ids: <span class="kw-2">&amp;</span>[types::CategoryId],
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;std::collections::HashMap&lt;types::CategoryId, helix::games::Game&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">if</span> <span class="ident">ids</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">100</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ClientRequestError::Custom</span>(<span class="string">&quot;too many IDs, max 100&quot;</span>.<span class="ident">into</span>()));
+        <span class="kw">if </span>ids.len() &gt; <span class="number">100 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(ClientRequestError::Custom(<span class="string">&quot;too many IDs, max 100&quot;</span>.into()));
         }
 
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">req_get</span>(
-                <span class="ident">helix::games::GetGamesRequest::builder</span>()
-                    .<span class="ident">id</span>(<span class="ident">ids</span>.<span class="ident">to_vec</span>())
-                    .<span class="ident">build</span>(),
-                <span class="ident">token</span>,
+        <span class="kw">let </span>resp = <span class="self">self
+            </span>.req_get(
+                helix::games::GetGamesRequest::builder()
+                    .id(ids.to_vec())
+                    .build(),
+                token,
             )
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">resp</span>
-            .<span class="ident">data</span>
-            .<span class="ident">into_iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">g</span>: <span class="ident">helix::games::Game</span><span class="op">|</span> (<span class="ident">g</span>.<span class="ident">id</span>.<span class="ident">clone</span>(), <span class="ident">g</span>))
-            .<span class="ident">collect</span>())
+        <span class="prelude-val">Ok</span>(resp
+            .data
+            .into_iter()
+            .map(|g: helix::games::Game| (g.id.clone(), g))
+            .collect())
     }
 
-    <span class="doccomment">/// Block a user</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">block_user</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">target_user_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::users::BlockUser</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Block a user
+    </span><span class="kw">pub async fn </span>block_user&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        target_user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::users::BlockUser, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>
-            .<span class="ident">req_put</span>(
-                <span class="ident">helix::users::BlockUserRequest::builder</span>()
-                    .<span class="ident">target_user_id</span>(<span class="ident">target_user_id</span>)
-                    .<span class="ident">build</span>(),
-                <span class="ident">helix::EmptyBody</span>,
-                <span class="ident">token</span>,
+        <span class="prelude-val">Ok</span>(<span class="self">self
+            </span>.req_put(
+                helix::users::BlockUserRequest::builder()
+                    .target_user_id(target_user_id)
+                    .build(),
+                helix::EmptyBody,
+                token,
             )
-            .<span class="kw">await</span><span class="question-mark">?</span>
-            .<span class="ident">data</span>)
+            .<span class="kw">await</span><span class="question-mark">?
+            </span>.data)
     }
 
-    <span class="doccomment">/// Unblock a user</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">unblock_user</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">target_user_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::users::UnblockUser</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Unblock a user
+    </span><span class="kw">pub async fn </span>unblock_user&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        target_user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::users::UnblockUser, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>
-            .<span class="ident">req_delete</span>(
-                <span class="ident">helix::users::UnblockUserRequest::builder</span>()
-                    .<span class="ident">target_user_id</span>(<span class="ident">target_user_id</span>)
-                    .<span class="ident">build</span>(),
-                <span class="ident">token</span>,
+        <span class="prelude-val">Ok</span>(<span class="self">self
+            </span>.req_delete(
+                helix::users::UnblockUserRequest::builder()
+                    .target_user_id(target_user_id)
+                    .build(),
+                token,
             )
-            .<span class="kw">await</span><span class="question-mark">?</span>
-            .<span class="ident">data</span>)
+            .<span class="kw">await</span><span class="question-mark">?
+            </span>.data)
     }
 
-    <span class="comment">// FIXME: Example should use https://github.com/twitch-rs/twitch_api/issues/162</span>
-    <span class="doccomment">/// Get all scheduled streams in a channel.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Make sure to limit the data here using [`try_take_while`](futures::stream::TryStreamExt::try_take_while), otherwise this will never end on recurring scheduled streams.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-    <span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-    <span class="doccomment">/// use twitch_api::helix;</span>
-    <span class="doccomment">/// use futures::TryStreamExt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let schedule: Vec&lt;helix::schedule::Segment&gt; = client</span>
-    <span class="doccomment">///     .get_channel_schedule(&quot;twitchdev&quot;, &amp;token)</span>
-    <span class="doccomment">///     .try_take_while(|s| {</span>
-    <span class="doccomment">///         futures::future::ready(Ok(!s.start_time.as_str().starts_with(&quot;2021-10&quot;)))</span>
-    <span class="doccomment">///     })</span>
-    <span class="doccomment">///     .try_collect()</span>
-    <span class="doccomment">///     .await?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Ok(()) }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_channel_schedule</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">broadcaster_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
-    ) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">helix::schedule::Segment</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    <span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Ban a user
+    </span><span class="kw">pub async fn </span>ban_user&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        target_user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        reason: <span class="kw">impl </span>std::fmt::Display,
+        duration: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;u32&gt;&gt;,
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::BanUser, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::schedule::GetChannelStreamScheduleRequest::builder</span>()
-            .<span class="ident">broadcaster_id</span>(<span class="ident">broadcaster_id</span>)
-            .<span class="ident">build</span>();
-
-        <span class="ident">make_stream</span>(<span class="ident">req</span>, <span class="ident">token</span>, <span class="self">self</span>, <span class="op">|</span><span class="ident">broadcasts</span><span class="op">|</span> <span class="ident">broadcasts</span>.<span class="ident">segments</span>.<span class="ident">into</span>())
+        <span class="prelude-val">Ok</span>(<span class="self">self
+            </span>.req_post(
+                helix::moderation::BanUserRequest::builder()
+                    .broadcaster_id(broadcaster_id)
+                    .moderator_id(moderator_id)
+                    .build(),
+                helix::moderation::BanUserBody::new(target_user_id, reason.to_string(), duration),
+                token,
+            )
+            .<span class="kw">await</span><span class="question-mark">?
+            </span>.data)
     }
 
-    <span class="doccomment">/// Get all global emotes</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_global_emotes</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">helix::chat::GlobalEmote</span><span class="op">&gt;</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Unban a user
+    </span><span class="kw">pub async fn </span>unban_user&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        target_user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::UnbanUserResponse, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::chat::GetGlobalEmotesRequest::builder</span>().<span class="ident">build</span>();
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">req_get</span>(<span class="ident">req</span>, <span class="ident">token</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="ident">data</span>)
+        <span class="prelude-val">Ok</span>(<span class="self">self
+            </span>.req_delete(
+                helix::moderation::UnbanUserRequest::builder()
+                    .broadcaster_id(broadcaster_id)
+                    .moderator_id(moderator_id)
+                    .user_id(target_user_id)
+                    .build(),
+                token,
+            )
+            .<span class="kw">await</span><span class="question-mark">?
+            </span>.data)
     }
 
-    <span class="doccomment">/// Get channel emotes in channel with user id</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_channel_emotes_from_id</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">user_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">helix::chat::ChannelEmote</span><span class="op">&gt;</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="comment">// FIXME: Example should use https://github.com/twitch-rs/twitch_api/issues/162
+    </span><span class="doccomment">/// Get all scheduled streams in a channel.
+    ///
+    /// # Notes
+    ///
+    /// Make sure to limit the data here using [`try_take_while`](futures::stream::TryStreamExt::try_take_while), otherwise this will never end on recurring scheduled streams.
+    ///
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let schedule: Vec&lt;helix::schedule::Segment&gt; = client
+    ///     .get_channel_schedule(&quot;twitchdev&quot;, &amp;token)
+    ///     .try_take_while(|s| {
+    ///         futures::future::ready(Ok(!s.start_time.as_str().starts_with(&quot;2021-10&quot;)))
+    ///     })
+    ///     .try_collect()
+    ///     .await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_channel_schedule&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
+    ) -&gt; std::pin::Pin&lt;
+        Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::schedule::Segment, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;&gt; + <span class="lifetime">&#39;a</span>&gt;,
+    &gt;
+    <span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::chat::GetChannelEmotesRequest::builder</span>()
-            .<span class="ident">broadcaster_id</span>(<span class="ident">user_id</span>)
-            .<span class="ident">build</span>();
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">req_get</span>(<span class="ident">req</span>, <span class="ident">token</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="ident">data</span>)
+        <span class="kw">let </span>req = helix::schedule::GetChannelStreamScheduleRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .build();
+
+        make_stream(req, token, <span class="self">self</span>, |broadcasts| broadcasts.segments.into())
     }
 
-    <span class="doccomment">/// Get channel emotes in channel with user login</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_channel_emotes_from_login</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">login</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">types::UserName</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">helix::chat::ChannelEmote</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get all global emotes
+    </span><span class="kw">pub async fn </span>get_global_emotes&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::GlobalEmote&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">user</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_user_from_login</span>(<span class="ident">login</span>, <span class="ident">token</span>).<span class="kw">await</span><span class="question-mark">?</span> {
-            <span class="self">self</span>.<span class="ident">get_channel_emotes_from_id</span>(<span class="ident">user</span>.<span class="ident">id</span>, <span class="ident">token</span>)
-                .<span class="kw">await</span>
-                .<span class="ident">map</span>(<span class="prelude-val">Some</span>)
-        } <span class="kw">else</span> {
+        <span class="kw">let </span>req = helix::chat::GetGlobalEmotesRequest::builder().build();
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
+    }
+
+    <span class="doccomment">/// Get channel emotes in channel with user id
+    </span><span class="kw">pub async fn </span>get_channel_emotes_from_id&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::ChannelEmote&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
+    {
+        <span class="kw">let </span>req = helix::chat::GetChannelEmotesRequest::builder()
+            .broadcaster_id(user_id)
+            .build();
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
+    }
+
+    <span class="doccomment">/// Get channel emotes in channel with user login
+    </span><span class="kw">pub async fn </span>get_channel_emotes_from_login&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        login: <span class="kw">impl </span>Into&lt;types::UserName&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;helix::chat::ChannelEmote&gt;&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
+    {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(user) = <span class="self">self</span>.get_user_from_login(login, token).<span class="kw">await</span><span class="question-mark">? </span>{
+            <span class="self">self</span>.get_channel_emotes_from_id(user.id, token)
+                .<span class="kw">await
+                </span>.map(<span class="prelude-val">Some</span>)
+        } <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
         }
     }
 
-    <span class="doccomment">/// Get emotes in emote set</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_emote_sets</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">emote_sets</span>: <span class="kw-2">&amp;</span>[<span class="ident">types::EmoteSetId</span>],
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">helix::chat::get_emote_sets::Emote</span><span class="op">&gt;</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
+    <span class="doccomment">/// Get emotes in emote set
+    </span><span class="kw">pub async fn </span>get_emote_sets&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        emote_sets: <span class="kw-2">&amp;</span>[types::EmoteSetId],
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::get_emote_sets::Emote&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">helix::chat::GetEmoteSetsRequest::builder</span>()
-            .<span class="ident">emote_set_id</span>(<span class="ident">emote_sets</span>.<span class="ident">to_owned</span>())
-            .<span class="ident">build</span>();
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">req_get</span>(<span class="ident">req</span>, <span class="ident">token</span>).<span class="kw">await</span><span class="question-mark">?</span>.<span class="ident">data</span>)
+        <span class="kw">let </span>req = helix::chat::GetEmoteSetsRequest::builder()
+            .emote_set_id(emote_sets.to_owned())
+            .build();
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 }
 
-<span class="doccomment">/// Make a paginate-able request into a stream</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust, no_run</span>
-<span class="doccomment">/// # #[tokio::main]</span>
-<span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-<span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-<span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-<span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-<span class="doccomment">/// use twitch_api::helix;</span>
-<span class="doccomment">/// use futures::TryStreamExt;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let req = helix::moderation::GetModeratorsRequest::builder()</span>
-<span class="doccomment">/// .broadcaster_id(&quot;1234&quot;)</span>
-<span class="doccomment">/// .build();</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// helix::make_stream(req, &amp;token, &amp;client, std::collections::VecDeque::from).try_collect::&lt;Vec&lt;_&gt;&gt;().await?</span>
-<span class="doccomment">/// # ;</span>
-<span class="doccomment">/// # Ok(())</span>
-<span class="doccomment">/// # }</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_stream</span><span class="op">&lt;</span>
+<span class="doccomment">/// Make a paginate-able request into a stream
+///
+/// # Examples
+///
+/// ```rust, no_run
+/// # #[tokio::main]
+/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+/// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+/// use twitch_api::helix;
+/// use futures::TryStreamExt;
+///
+/// let req = helix::moderation::GetModeratorsRequest::builder()
+/// .broadcaster_id(&quot;1234&quot;)
+/// .build();
+///
+/// helix::make_stream(req, &amp;token, &amp;client, std::collections::VecDeque::from).try_collect::&lt;Vec&lt;_&gt;&gt;().await?
+/// # ;
+/// # Ok(())
+/// # }
+/// ```
+</span><span class="kw">pub fn </span>make_stream&lt;
     <span class="lifetime">&#39;a</span>,
-    <span class="ident">C</span>: <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>,
-    <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>,
-    <span class="comment">// FIXME: Why does this have to be clone and debug?</span>
-    <span class="ident">Req</span>: <span class="ident"><span class="kw">super</span>::Request</span>
-        <span class="op">+</span> <span class="ident"><span class="kw">super</span>::RequestGet</span>
-        <span class="op">+</span> <span class="ident"><span class="kw">super</span>::Paginated</span>
-        <span class="op">+</span> <span class="ident">Clone</span>
-        <span class="op">+</span> <span class="ident">std::fmt::Debug</span>
-        <span class="op">+</span> <span class="ident">Send</span>
-        <span class="op">+</span> <span class="ident">Sync</span>
-        <span class="op">+</span> <span class="lifetime">&#39;a</span>,
-    <span class="comment">// FIXME: this &#39;a seems suspicious</span>
-    <span class="ident">Item</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
-<span class="op">&gt;</span>(
-    <span class="ident">req</span>: <span class="ident">Req</span>,
-    <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
-    <span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident"><span class="kw">super</span>::HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>,
-    <span class="ident">fun</span>: <span class="kw">impl</span> <span class="ident">Fn</span>(<span class="op">&lt;</span><span class="ident">Req</span> <span class="kw">as</span> <span class="ident"><span class="kw">super</span>::Request</span><span class="op">&gt;</span><span class="ident">::Response</span>) -&gt; <span class="ident">std::collections::VecDeque</span><span class="op">&lt;</span><span class="ident">Item</span><span class="op">&gt;</span>
-        <span class="op">+</span> <span class="ident">Send</span>
-        <span class="op">+</span> <span class="ident">Sync</span>
-        <span class="op">+</span> <span class="ident">Copy</span>
-        <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-) -&gt; <span class="ident">std::pin::Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">futures::Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Item</span>, <span class="ident">ClientError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="comment">// FIXME: This clone is bad. I want to be able to return the data, but not in a way that limits the response to be Default</span>
-    <span class="comment">// I also want to keep allocations low, so std::mem::take is perfect, but that makes get_next not work optimally.</span>
-    <span class="op">&lt;</span><span class="ident">Req</span> <span class="kw">as</span> <span class="ident"><span class="kw">super</span>::Request</span><span class="op">&gt;</span><span class="ident">::Response</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">std::fmt::Debug</span> <span class="op">+</span> <span class="ident">Clone</span>,
+    C: <span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt; + Send + Sync,
+    T: TwitchToken + <span class="question-mark">?</span>Sized + Send + Sync,
+    <span class="comment">// FIXME: Why does this have to be clone and debug?
+    </span>Req: <span class="kw">super</span>::Request
+        + <span class="kw">super</span>::RequestGet
+        + <span class="kw">super</span>::Paginated
+        + Clone
+        + std::fmt::Debug
+        + Send
+        + Sync
+        + <span class="lifetime">&#39;a</span>,
+    <span class="comment">// FIXME: this &#39;a seems suspicious
+    </span>Item: Send + <span class="lifetime">&#39;a</span>,
+&gt;(
+    req: Req,
+    token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
+    client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">super</span>::HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt;,
+    fun: <span class="kw">impl </span>Fn(&lt;Req <span class="kw">as </span><span class="kw">super</span>::Request&gt;::Response) -&gt; std::collections::VecDeque&lt;Item&gt;
+        + Send
+        + Sync
+        + Copy
+        + <span class="lifetime">&#39;static</span>,
+) -&gt; std::pin::Pin&lt;Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;Item, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;&gt; + <span class="lifetime">&#39;a </span>+ Send&gt;&gt;
+<span class="kw">where
+    </span><span class="comment">// FIXME: This clone is bad. I want to be able to return the data, but not in a way that limits the response to be Default
+    // I also want to keep allocations low, so std::mem::take is perfect, but that makes get_next not work optimally.
+    </span>&lt;Req <span class="kw">as </span><span class="kw">super</span>::Request&gt;::Response: Send + Sync + std::fmt::Debug + Clone,
 {
-    <span class="kw">use</span> <span class="ident">futures::StreamExt</span>;
-    <span class="kw">enum</span> <span class="ident">StateMode</span><span class="op">&lt;</span><span class="ident">Req</span>: <span class="ident"><span class="kw">super</span>::Request</span> <span class="op">+</span> <span class="ident"><span class="kw">super</span>::RequestGet</span>, <span class="ident">Item</span><span class="op">&gt;</span> {
-        <span class="doccomment">/// A request needs to be done.</span>
-        <span class="ident">Req</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Req</span><span class="op">&gt;</span>),
-        <span class="doccomment">/// We have made a request, now working through the data</span>
-        <span class="ident">Cont</span>(
-            <span class="ident"><span class="kw">super</span>::Response</span><span class="op">&lt;</span><span class="ident">Req</span>, <span class="op">&lt;</span><span class="ident">Req</span> <span class="kw">as</span> <span class="ident"><span class="kw">super</span>::Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>,
-            <span class="ident">std::collections::VecDeque</span><span class="op">&lt;</span><span class="ident">Item</span><span class="op">&gt;</span>,
+    <span class="kw">use </span>futures::StreamExt;
+    <span class="kw">enum </span>StateMode&lt;Req: <span class="kw">super</span>::Request + <span class="kw">super</span>::RequestGet, Item&gt; {
+        <span class="doccomment">/// A request needs to be done.
+        </span>Req(<span class="prelude-ty">Option</span>&lt;Req&gt;),
+        <span class="doccomment">/// We have made a request, now working through the data
+        </span>Cont(
+            <span class="kw">super</span>::Response&lt;Req, &lt;Req <span class="kw">as </span><span class="kw">super</span>::Request&gt;::Response&gt;,
+            std::collections::VecDeque&lt;Item&gt;,
         ),
-        <span class="ident">Next</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Response</span><span class="op">&lt;</span><span class="ident">Req</span>, <span class="op">&lt;</span><span class="ident">Req</span> <span class="kw">as</span> <span class="ident"><span class="kw">super</span>::Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span><span class="op">&gt;</span>),
-        <span class="doccomment">/// The operation failed, allowing no further processing</span>
-        <span class="ident">Failed</span>,
+        Next(<span class="prelude-ty">Option</span>&lt;<span class="kw">super</span>::Response&lt;Req, &lt;Req <span class="kw">as </span><span class="kw">super</span>::Request&gt;::Response&gt;&gt;),
+        <span class="doccomment">/// The operation failed, allowing no further processing
+        </span>Failed,
     }
 
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Req</span>: <span class="ident"><span class="kw">super</span>::Request</span> <span class="op">+</span> <span class="ident"><span class="kw">super</span>::RequestGet</span>, <span class="ident">Item</span><span class="op">&gt;</span> <span class="ident">StateMode</span><span class="op">&lt;</span><span class="ident">Req</span>, <span class="ident">Item</span><span class="op">&gt;</span> {
-        <span class="kw">fn</span> <span class="ident">take_initial</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">Req</span> {
-            <span class="kw">match</span> <span class="self">self</span> {
-                <span class="ident">StateMode::Req</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">r</span>) <span class="kw">if</span> <span class="ident">r</span>.<span class="ident">is_some</span>() =&gt; <span class="ident">std::mem::take</span>(<span class="ident">r</span>).<span class="ident">expect</span>(<span class="string">&quot;oops&quot;</span>),
-                <span class="kw">_</span> =&gt; <span class="macro">todo!</span>(<span class="string">&quot;hmmm&quot;</span>),
+    <span class="kw">impl</span>&lt;Req: <span class="kw">super</span>::Request + <span class="kw">super</span>::RequestGet, Item&gt; StateMode&lt;Req, Item&gt; {
+        <span class="kw">fn </span>take_initial(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Req {
+            <span class="kw">match </span><span class="self">self </span>{
+                StateMode::Req(<span class="kw-2">ref mut </span>r) <span class="kw">if </span>r.is_some() =&gt; std::mem::take(r).expect(<span class="string">&quot;oops&quot;</span>),
+                <span class="kw">_ </span>=&gt; <span class="macro">todo!</span>(<span class="string">&quot;hmmm&quot;</span>),
             }
         }
 
-        <span class="kw">fn</span> <span class="ident">take_next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident"><span class="kw">super</span>::Response</span><span class="op">&lt;</span><span class="ident">Req</span>, <span class="op">&lt;</span><span class="ident">Req</span> <span class="kw">as</span> <span class="ident"><span class="kw">super</span>::Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span> {
-            <span class="kw">match</span> <span class="self">self</span> {
-                <span class="ident">StateMode::Next</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">r</span>) <span class="kw">if</span> <span class="ident">r</span>.<span class="ident">is_some</span>() =&gt; <span class="ident">std::mem::take</span>(<span class="ident">r</span>).<span class="ident">expect</span>(<span class="string">&quot;oops&quot;</span>),
-                <span class="kw">_</span> =&gt; <span class="macro">todo!</span>(<span class="string">&quot;hmmm&quot;</span>),
+        <span class="kw">fn </span>take_next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw">super</span>::Response&lt;Req, &lt;Req <span class="kw">as </span><span class="kw">super</span>::Request&gt;::Response&gt; {
+            <span class="kw">match </span><span class="self">self </span>{
+                StateMode::Next(<span class="kw-2">ref mut </span>r) <span class="kw">if </span>r.is_some() =&gt; std::mem::take(r).expect(<span class="string">&quot;oops&quot;</span>),
+                <span class="kw">_ </span>=&gt; <span class="macro">todo!</span>(<span class="string">&quot;hmmm&quot;</span>),
             }
         }
     }
 
-    <span class="kw">struct</span> <span class="ident">State</span><span class="op">&lt;</span>
+    <span class="kw">struct </span>State&lt;
         <span class="lifetime">&#39;a</span>,
-        <span class="ident">C</span>: <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-        <span class="ident">Req</span>: <span class="ident"><span class="kw">super</span>::Request</span> <span class="op">+</span> <span class="ident"><span class="kw">super</span>::RequestGet</span>,
-        <span class="ident">Item</span>,
-    <span class="op">&gt;</span> {
-        <span class="ident">mode</span>: <span class="ident">StateMode</span><span class="op">&lt;</span><span class="ident">Req</span>, <span class="ident">Item</span><span class="op">&gt;</span>,
-        <span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>,
+        C: <span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
+        Req: <span class="kw">super</span>::Request + <span class="kw">super</span>::RequestGet,
+        Item,
+    &gt; {
+        mode: StateMode&lt;Req, Item&gt;,
+        client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
     }
 
-    <span class="kw">impl</span><span class="op">&lt;</span>
+    <span class="kw">impl</span>&lt;
             <span class="lifetime">&#39;a</span>,
-            <span class="ident">C</span>: <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-            <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-            <span class="ident">Req</span>: <span class="ident"><span class="kw">super</span>::Request</span> <span class="op">+</span> <span class="ident"><span class="kw">super</span>::RequestGet</span> <span class="op">+</span> <span class="ident"><span class="kw">super</span>::Paginated</span>,
-            <span class="ident">Item</span>,
-        <span class="op">&gt;</span> <span class="ident">State</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>, <span class="ident">T</span>, <span class="ident">Req</span>, <span class="ident">Item</span><span class="op">&gt;</span>
+            C: <span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;,
+            T: TwitchToken + <span class="question-mark">?</span>Sized,
+            Req: <span class="kw">super</span>::Request + <span class="kw">super</span>::RequestGet + <span class="kw">super</span>::Paginated,
+            Item,
+        &gt; State&lt;<span class="lifetime">&#39;a</span>, C, T, Req, Item&gt;
     {
-        <span class="doccomment">/// Process a request, with a given deq</span>
-        <span class="kw">fn</span> <span class="ident">process</span>(
-            <span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">r</span>: <span class="ident"><span class="kw">super</span>::Response</span><span class="op">&lt;</span><span class="ident">Req</span>, <span class="op">&lt;</span><span class="ident">Req</span> <span class="kw">as</span> <span class="ident"><span class="kw">super</span>::Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>,
-            <span class="ident">d</span>: <span class="ident">std::collections::VecDeque</span><span class="op">&lt;</span><span class="ident">Item</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="self">Self</span> {
-            <span class="self">self</span>.<span class="ident">mode</span> <span class="op">=</span> <span class="ident">StateMode::Cont</span>(<span class="ident">r</span>, <span class="ident">d</span>);
-            <span class="self">self</span>
-        }
+        <span class="doccomment">/// Process a request, with a given deq
+        </span><span class="kw">fn </span>process(
+            <span class="kw-2">mut </span><span class="self">self</span>,
+            r: <span class="kw">super</span>::Response&lt;Req, &lt;Req <span class="kw">as </span><span class="kw">super</span>::Request&gt;::Response&gt;,
+            d: std::collections::VecDeque&lt;Item&gt;,
+        ) -&gt; <span class="self">Self </span>{
+            <span class="self">self</span>.mode = StateMode::Cont(r, d);
+            <span class="self">self
+        </span>}
 
-        <span class="kw">fn</span> <span class="ident">failed</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
-            <span class="self">self</span>.<span class="ident">mode</span> <span class="op">=</span> <span class="ident">StateMode::Failed</span>;
-            <span class="self">self</span>
-        }
+        <span class="kw">fn </span>failed(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+            <span class="self">self</span>.mode = StateMode::Failed;
+            <span class="self">self
+        </span>}
 
-        <span class="doccomment">/// get the next</span>
-        <span class="kw">fn</span> <span class="ident">get_next</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
-            <span class="kw">match</span> <span class="self">self</span>.<span class="ident">mode</span> {
-                <span class="ident">StateMode::Cont</span>(<span class="ident">r</span>, <span class="ident">d</span>) =&gt; {
-                    <span class="macro">assert!</span>(<span class="ident">d</span>.<span class="ident">is_empty</span>());
-                    <span class="self">self</span>.<span class="ident">mode</span> <span class="op">=</span> <span class="ident">StateMode::Next</span>(<span class="prelude-val">Some</span>(<span class="ident">r</span>));
-                    <span class="self">self</span>
-                }
-                <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;oops&quot;</span>),
+        <span class="doccomment">/// get the next
+        </span><span class="kw">fn </span>get_next(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+            <span class="kw">match </span><span class="self">self</span>.mode {
+                StateMode::Cont(r, d) =&gt; {
+                    <span class="macro">assert!</span>(d.is_empty());
+                    <span class="self">self</span>.mode = StateMode::Next(<span class="prelude-val">Some</span>(r));
+                    <span class="self">self
+                </span>}
+                <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;oops&quot;</span>),
             }
         }
     }
-    <span class="kw">let</span> <span class="ident">statemode</span> <span class="op">=</span> <span class="ident">StateMode::Req</span>(<span class="prelude-val">Some</span>(<span class="ident">req</span>));
-    <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">State</span> {
-        <span class="ident">mode</span>: <span class="ident">statemode</span>,
-        <span class="ident">client</span>,
-        <span class="ident">token</span>,
+    <span class="kw">let </span>statemode = StateMode::Req(<span class="prelude-val">Some</span>(req));
+    <span class="kw">let </span>state = State {
+        mode: statemode,
+        client,
+        token,
     };
-    <span class="ident">futures::stream::unfold</span>(<span class="ident">state</span>, <span class="kw">move</span> <span class="op">|</span><span class="kw-2">mut</span> <span class="ident">state</span>: <span class="ident">State</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span><span class="op">|</span> <span class="kw">async</span> <span class="kw">move</span> {
-        <span class="kw">match</span> <span class="ident">state</span>.<span class="ident">mode</span> {
-            <span class="ident">StateMode::Req</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
-                <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">mode</span>.<span class="ident">take_initial</span>();
-                <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">client</span>.<span class="ident">req_get</span>(<span class="ident">req</span>, <span class="ident">state</span>.<span class="ident">token</span>);
-                <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">f</span>.<span class="kw">await</span> {
-                    <span class="prelude-val">Ok</span>(<span class="ident">resp</span>) =&gt; <span class="ident">resp</span>,
-                    <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="ident">state</span>.<span class="ident">failed</span>())),
+    futures::stream::unfold(state, <span class="kw">move </span>|<span class="kw-2">mut </span>state: State&lt;<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>&gt;| <span class="kw">async move </span>{
+        <span class="kw">match </span>state.mode {
+            StateMode::Req(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
+                <span class="kw">let </span>req = state.mode.take_initial();
+                <span class="kw">let </span>f = state.client.req_get(req, state.token);
+                <span class="kw">let </span>resp = <span class="kw">match </span>f.<span class="kw">await </span>{
+                    <span class="prelude-val">Ok</span>(resp) =&gt; resp,
+                    <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>((<span class="prelude-val">Err</span>(e), state.failed())),
                 };
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">deq</span> <span class="op">=</span> <span class="ident">fun</span>(<span class="ident">resp</span>.<span class="ident">data</span>.<span class="ident">clone</span>());
-                <span class="ident">deq</span>.<span class="ident">pop_front</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> (<span class="prelude-val">Ok</span>(<span class="ident">d</span>), <span class="ident">state</span>.<span class="ident">process</span>(<span class="ident">resp</span>, <span class="ident">deq</span>)))
+                <span class="kw">let </span><span class="kw-2">mut </span>deq = fun(resp.data.clone());
+                deq.pop_front().map(|d| (<span class="prelude-val">Ok</span>(d), state.process(resp, deq)))
             }
-            <span class="ident">StateMode::Cont</span>(<span class="kw">_</span>, <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">deq</span>) =&gt; {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">d</span>) <span class="op">=</span> <span class="ident">deq</span>.<span class="ident">pop_front</span>() {
-                    <span class="kw">if</span> <span class="ident">deq</span>.<span class="ident">is_empty</span>() {
-                        <span class="prelude-val">Some</span>((<span class="prelude-val">Ok</span>(<span class="ident">d</span>), <span class="ident">state</span>.<span class="ident">get_next</span>()))
-                    } <span class="kw">else</span> {
-                        <span class="prelude-val">Some</span>((<span class="prelude-val">Ok</span>(<span class="ident">d</span>), <span class="ident">state</span>))
+            StateMode::Cont(<span class="kw">_</span>, <span class="kw-2">ref mut </span>deq) =&gt; {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(d) = deq.pop_front() {
+                    <span class="kw">if </span>deq.is_empty() {
+                        <span class="prelude-val">Some</span>((<span class="prelude-val">Ok</span>(d), state.get_next()))
+                    } <span class="kw">else </span>{
+                        <span class="prelude-val">Some</span>((<span class="prelude-val">Ok</span>(d), state))
                     }
-                } <span class="kw">else</span> {
-                    <span class="comment">// New request returned empty.</span>
-                    <span class="prelude-val">None</span>
-                }
+                } <span class="kw">else </span>{
+                    <span class="comment">// New request returned empty.
+                    </span><span class="prelude-val">None
+                </span>}
             }
-            <span class="ident">StateMode::Next</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
-                <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">mode</span>.<span class="ident">take_next</span>();
-                <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">get_next</span>(<span class="ident">state</span>.<span class="ident">client</span>, <span class="ident">state</span>.<span class="ident">token</span>);
-                <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">f</span>.<span class="kw">await</span> {
-                    <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">resp</span>)) =&gt; <span class="ident">resp</span>,
-                    <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">None</span>,
-                    <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="ident">state</span>.<span class="ident">failed</span>())),
+            StateMode::Next(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
+                <span class="kw">let </span>resp = state.mode.take_next();
+                <span class="kw">let </span>f = resp.get_next(state.client, state.token);
+                <span class="kw">let </span>resp = <span class="kw">match </span>f.<span class="kw">await </span>{
+                    <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(resp)) =&gt; resp,
+                    <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
+                    <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>((<span class="prelude-val">Err</span>(e), state.failed())),
                 };
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">deq</span> <span class="op">=</span> <span class="ident">fun</span>(<span class="ident">resp</span>.<span class="ident">data</span>.<span class="ident">clone</span>());
-                <span class="ident">deq</span>.<span class="ident">pop_front</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> (<span class="prelude-val">Ok</span>(<span class="ident">d</span>), <span class="ident">state</span>.<span class="ident">process</span>(<span class="ident">resp</span>, <span class="ident">deq</span>)))
+                <span class="kw">let </span><span class="kw-2">mut </span>deq = fun(resp.data.clone());
+                deq.pop_front().map(|d| (<span class="prelude-val">Ok</span>(d), state.process(resp, deq)))
             }
-            <span class="kw">_</span> =&gt; <span class="macro">todo!</span>(<span class="string">&quot;failed to process request&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">todo!</span>(<span class="string">&quot;failed to process request&quot;</span>),
         }
     })
-    .<span class="ident">boxed</span>()
+    .boxed()
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/custom.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>custom.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/custom.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>custom.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -367,374 +367,374 @@
 <span id="367">367</span>
 <span id="368">368</span>
 <span id="369">369</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::convert::TryInto</span>;
+</pre><pre class="rust"><code><span class="kw">use super</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::convert::TryInto;
 
-<span class="doccomment">/// Custom response retrieved from endpoint, used for specializing responses</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CustomResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">R</span>: <span class="ident">Request</span>,
-    <span class="ident">D</span>: <span class="lifetime">&#39;d</span>, {
-    <span class="doccomment">/// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.</span>
-    <span class="kw">pub</span> <span class="ident">pagination</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Cursor</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The request that was sent, used for [pagination](Paginated).</span>
-    <span class="kw">pub</span> <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Response would return this many results if fully paginated. Sometimes this is not emmitted or correct for this purpose, in those cases, this value will be `None`.</span>
-    <span class="kw">pub</span> <span class="ident">total</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Other fields that are part of the response, but unknown.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Unfortunately, this [can&#39;t be borrowed](https://github.com/serde-rs/json/issues/599).</span>
-    <span class="kw">pub</span> <span class="ident">other</span>: <span class="ident">serde_json::Map</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">serde_json::Value</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The owned data. Use [`CustomResponse::data()`] to deserialize.</span>
-    <span class="kw">pub</span> <span class="ident">raw_data</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">serde_json::value::RawValue</span><span class="op">&gt;</span>,
-    <span class="ident">pd</span>: <span class="ident">std::marker::PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;d</span> <span class="ident">D</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Custom response retrieved from endpoint, used for specializing responses
+</span><span class="attribute">#[non_exhaustive]
+</span><span class="kw">pub struct </span>CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;
+<span class="kw">where
+    </span>R: Request,
+    D: <span class="lifetime">&#39;d</span>, {
+    <span class="doccomment">/// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
+    </span><span class="kw">pub </span>pagination: <span class="prelude-ty">Option</span>&lt;Cursor&gt;,
+    <span class="doccomment">/// The request that was sent, used for [pagination](Paginated).
+    </span><span class="kw">pub </span>request: <span class="prelude-ty">Option</span>&lt;R&gt;,
+    <span class="doccomment">/// Response would return this many results if fully paginated. Sometimes this is not emmitted or correct for this purpose, in those cases, this value will be `None`.
+    </span><span class="kw">pub </span>total: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+    <span class="doccomment">/// Other fields that are part of the response, but unknown.
+    ///
+    /// Unfortunately, this [can&#39;t be borrowed](https://github.com/serde-rs/json/issues/599).
+    </span><span class="kw">pub </span>other: serde_json::Map&lt;String, serde_json::Value&gt;,
+    <span class="doccomment">/// The owned data. Use [`CustomResponse::data()`] to deserialize.
+    </span><span class="kw">pub </span>raw_data: Box&lt;serde_json::value::RawValue&gt;,
+    pd: std::marker::PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;d </span>D&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span> <span class="ident">CustomResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">R</span>: <span class="ident">Request</span>,
-    <span class="ident">D</span>: <span class="lifetime">&#39;d</span> <span class="op">+</span> <span class="ident">serde::Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span><span class="op">&gt;</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;d</span>, R, D&gt; CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;
+<span class="kw">where
+    </span>R: Request,
+    D: <span class="lifetime">&#39;d </span>+ serde::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt;,
 {
-    <span class="doccomment">/// Deserialize the data</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;d</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">D</span>, <span class="ident">serde_json::Error</span><span class="op">&gt;</span> {
-        <span class="ident">serde_json::from_str</span>(<span class="self">self</span>.<span class="ident">raw_data</span>.<span class="ident">get</span>())
+    <span class="doccomment">/// Deserialize the data
+    </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;</span><span class="lifetime">&#39;d </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;D, serde_json::Error&gt; {
+        serde_json::from_str(<span class="self">self</span>.raw_data.get())
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">HelixClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Request on a valid [`RequestGet`] endpoint, with the ability to return borrowed data and specific fields.</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">req_get_custom</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident">R</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CustomResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestGet</span>,
-        <span class="ident">D</span>: <span class="ident">serde::de::Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;d</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-        <span class="ident">C</span>: <span class="ident">Send</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, C: <span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt; HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt; {
+    <span class="doccomment">/// Request on a valid [`RequestGet`] endpoint, with the ability to return borrowed data and specific fields.
+    </span><span class="kw">pub async fn </span>req_get_custom&lt;<span class="lifetime">&#39;d</span>, R, D, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: R,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span>R: Request + RequestGet,
+        D: serde::de::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt; + <span class="lifetime">&#39;d</span>,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
+        C: Send,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">create_request</span>(<span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>(), <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">client</span>
-            .<span class="ident">req</span>(<span class="ident">req</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
-            .<span class="ident">into_response_bytes</span>()
+        <span class="kw">let </span>req = request.create_request(token.token().secret(), token.client_id().as_str())<span class="question-mark">?</span>;
+        <span class="kw">let </span>uri = req.uri().clone();
+        <span class="kw">let </span>response = <span class="self">self
+            </span>.client
+            .req(req)
+            .<span class="kw">await
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
+            </span>.into_response_bytes()
             .<span class="kw">await</span><span class="question-mark">?</span>;
         {
-            <span class="kw">let</span> <span class="ident">request</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">request</span>);
-            <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">uri</span>;
-            <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std::str::from_utf8</span>(<span class="ident">response</span>.<span class="ident">body</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestGetError::Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+            <span class="kw">let </span>request = <span class="prelude-val">Some</span>(request);
+            <span class="kw">let </span>uri = <span class="kw-2">&amp;</span>uri;
+            <span class="kw">let </span>text = std::str::from_utf8(response.body()).map_err(|e| {
+                HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
             })<span class="question-mark">?</span>;
-            <span class="comment">//eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);</span>
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
-                <span class="ident">error</span>,
-                <span class="ident">status</span>,
-                <span class="ident">message</span>,
-            }) <span class="op">=</span> <span class="ident">parse_json</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="ident">text</span>, <span class="bool-val">false</span>)
+            <span class="comment">//eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);
+            </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
+                error,
+                status,
+                message,
+            }) = parse_json::&lt;HelixRequestError&gt;(text, <span class="bool-val">false</span>)
             {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HelixRequestGetError::Error</span> {
-                    <span class="ident">error</span>,
-                    <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http::StatusCode::BAD_REQUEST</span>),
-                    <span class="ident">message</span>,
-                    <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
+                <span class="kw">return </span><span class="prelude-val">Err</span>(HelixRequestGetError::Error {
+                    error,
+                    status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                    message,
+                    uri: uri.clone(),
                 }
-                .<span class="ident">into</span>());
+                .into());
             }
-            <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">CustomInnerResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::parse_json</span>(<span class="ident">text</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestGetError::DeserializeError</span>(
-                    <span class="ident">text</span>.<span class="ident">to_owned</span>(),
-                    <span class="ident">e</span>,
-                    <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">response</span>.<span class="ident">status</span>(),
+            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">&#39;_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+                HelixRequestGetError::DeserializeError(
+                    text.to_owned(),
+                    e,
+                    uri.clone(),
+                    response.status(),
                 )
             })<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">CustomResponse</span> {
-                <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span>,
-                <span class="ident">request</span>,
-                <span class="ident">total</span>: <span class="ident">response</span>.<span class="ident">total</span>,
-                <span class="ident">other</span>: <span class="ident">response</span>.<span class="ident">other</span>,
-                <span class="ident">raw_data</span>: <span class="ident">response</span>.<span class="ident">data</span>.<span class="ident">to_owned</span>(),
-                <span class="ident">pd</span>: <span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::default</span>(),
+            <span class="prelude-val">Ok</span>(CustomResponse {
+                pagination: response.pagination.cursor,
+                request,
+                total: response.total,
+                other: response.other,
+                raw_data: response.data.to_owned(),
+                pd: &lt;<span class="kw">_</span>&gt;::default(),
             })
         }
     }
 
-    <span class="doccomment">/// Request on a valid [`RequestPost`] endpoint, with the ability to return borrowed data and specific fields.</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">req_post_custom</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">B</span>, <span class="ident">D</span>, <span class="ident">T</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident">R</span>,
-        <span class="ident">body</span>: <span class="ident">B</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CustomResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestPost</span> <span class="op">+</span> <span class="ident">RequestPost</span><span class="op">&lt;</span><span class="ident">Body</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-        <span class="ident">B</span>: <span class="ident">HelixRequestBody</span>,
-        <span class="ident">D</span>: <span class="ident">serde::de::Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;d</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-        <span class="ident">C</span>: <span class="ident">Send</span>,
+    <span class="doccomment">/// Request on a valid [`RequestPost`] endpoint, with the ability to return borrowed data and specific fields.
+    </span><span class="kw">pub async fn </span>req_post_custom&lt;<span class="lifetime">&#39;d</span>, R, B, D, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: R,
+        body: B,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span>R: Request + RequestPost + RequestPost&lt;Body = B&gt;,
+        B: HelixRequestBody,
+        D: serde::de::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt; + <span class="lifetime">&#39;d</span>,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
+        C: Send,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span>
-            <span class="ident">request</span>.<span class="ident">create_request</span>(<span class="ident">body</span>, <span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>(), <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">client</span>
-            .<span class="ident">req</span>(<span class="ident">req</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
-            .<span class="ident">into_response_bytes</span>()
+        <span class="kw">let </span>req =
+            request.create_request(body, token.token().secret(), token.client_id().as_str())<span class="question-mark">?</span>;
+        <span class="kw">let </span>uri = req.uri().clone();
+        <span class="kw">let </span>response = <span class="self">self
+            </span>.client
+            .req(req)
+            .<span class="kw">await
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
+            </span>.into_response_bytes()
             .<span class="kw">await</span><span class="question-mark">?</span>;
         {
-            <span class="kw">let</span> <span class="ident">request</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">request</span>);
-            <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">uri</span>;
-            <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std::str::from_utf8</span>(<span class="ident">response</span>.<span class="ident">body</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestPostError::Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+            <span class="kw">let </span>request = <span class="prelude-val">Some</span>(request);
+            <span class="kw">let </span>uri = <span class="kw-2">&amp;</span>uri;
+            <span class="kw">let </span>text = std::str::from_utf8(response.body()).map_err(|e| {
+                HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
             })<span class="question-mark">?</span>;
-            <span class="comment">//eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);</span>
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
-                <span class="ident">error</span>,
-                <span class="ident">status</span>,
-                <span class="ident">message</span>,
-            }) <span class="op">=</span> <span class="ident">parse_json</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="ident">text</span>, <span class="bool-val">false</span>)
+            <span class="comment">//eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);
+            </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
+                error,
+                status,
+                message,
+            }) = parse_json::&lt;HelixRequestError&gt;(text, <span class="bool-val">false</span>)
             {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HelixRequestPostError::Error</span> {
-                    <span class="ident">error</span>,
-                    <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http::StatusCode::BAD_REQUEST</span>),
-                    <span class="ident">message</span>,
-                    <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(),
+                <span class="kw">return </span><span class="prelude-val">Err</span>(HelixRequestPostError::Error {
+                    error,
+                    status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                    message,
+                    uri: uri.clone(),
+                    body: response.body().clone(),
                 }
-                .<span class="ident">into</span>());
+                .into());
             }
-            <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">CustomInnerResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::parse_json</span>(<span class="ident">text</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestPostError::DeserializeError</span>(
-                    <span class="ident">text</span>.<span class="ident">to_owned</span>(),
-                    <span class="ident">e</span>,
-                    <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">response</span>.<span class="ident">status</span>(),
+            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">&#39;_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+                HelixRequestPostError::DeserializeError(
+                    text.to_owned(),
+                    e,
+                    uri.clone(),
+                    response.status(),
                 )
             })<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">CustomResponse</span> {
-                <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span>,
-                <span class="ident">request</span>,
-                <span class="ident">total</span>: <span class="ident">response</span>.<span class="ident">total</span>,
-                <span class="ident">other</span>: <span class="ident">response</span>.<span class="ident">other</span>,
-                <span class="ident">raw_data</span>: <span class="ident">response</span>.<span class="ident">data</span>.<span class="ident">to_owned</span>(),
-                <span class="ident">pd</span>: <span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::default</span>(),
+            <span class="prelude-val">Ok</span>(CustomResponse {
+                pagination: response.pagination.cursor,
+                request,
+                total: response.total,
+                other: response.other,
+                raw_data: response.data.to_owned(),
+                pd: &lt;<span class="kw">_</span>&gt;::default(),
             })
         }
     }
 
-    <span class="doccomment">/// Request on a valid [`RequestPatch`] endpoint, with the ability to return borrowed data and specific fields.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is probably not useful, as `PATCH` endpoints do not usually return json</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">req_patch_custom</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">B</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident">R</span>,
-        <span class="ident">body</span>: <span class="ident">B</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-        <span class="ident">function</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CustomResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestPatch</span> <span class="op">+</span> <span class="ident">RequestPatch</span><span class="op">&lt;</span><span class="ident">Body</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-        <span class="ident">B</span>: <span class="ident">HelixRequestBody</span>,
-        <span class="ident">D</span>: <span class="ident">serde::de::Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;d</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-        <span class="ident">C</span>: <span class="ident">Send</span>,
-        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">http::StatusCode</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">HelixRequestPatchError</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Request on a valid [`RequestPatch`] endpoint, with the ability to return borrowed data and specific fields.
+    ///
+    /// # Notes
+    ///
+    /// This is probably not useful, as `PATCH` endpoints do not usually return json
+    </span><span class="kw">pub async fn </span>req_patch_custom&lt;<span class="lifetime">&#39;d</span>, R, B, D, T, F&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: R,
+        body: B,
+        token: <span class="kw-2">&amp;</span>T,
+        function: F,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span>R: Request + RequestPatch + RequestPatch&lt;Body = B&gt;,
+        B: HelixRequestBody,
+        D: serde::de::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt; + <span class="lifetime">&#39;d</span>,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
+        C: Send,
+        F: Fn(<span class="kw-2">&amp;</span>R, <span class="kw-2">&amp;</span>http::Uri, <span class="kw-2">&amp;</span>str, http::StatusCode) -&gt; <span class="prelude-ty">Result</span>&lt;(), HelixRequestPatchError&gt;,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span>
-            <span class="ident">request</span>.<span class="ident">create_request</span>(<span class="ident">body</span>, <span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>(), <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">client</span>
-            .<span class="ident">req</span>(<span class="ident">req</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
-            .<span class="ident">into_response_bytes</span>()
+        <span class="kw">let </span>req =
+            request.create_request(body, token.token().secret(), token.client_id().as_str())<span class="question-mark">?</span>;
+        <span class="kw">let </span>uri = req.uri().clone();
+        <span class="kw">let </span>response = <span class="self">self
+            </span>.client
+            .req(req)
+            .<span class="kw">await
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
+            </span>.into_response_bytes()
             .<span class="kw">await</span><span class="question-mark">?</span>;
         {
-            <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">uri</span>;
-            <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std::str::from_utf8</span>(<span class="ident">response</span>.<span class="ident">body</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestPatchError::Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+            <span class="kw">let </span>uri = <span class="kw-2">&amp;</span>uri;
+            <span class="kw">let </span>text = std::str::from_utf8(response.body()).map_err(|e| {
+                HelixRequestPatchError::Utf8Error(response.body().clone(), e, uri.clone())
             })<span class="question-mark">?</span>;
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
-                <span class="ident">error</span>,
-                <span class="ident">status</span>,
-                <span class="ident">message</span>,
-            }) <span class="op">=</span> <span class="ident">parse_json</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="ident">text</span>, <span class="bool-val">false</span>)
+            <span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
+                error,
+                status,
+                message,
+            }) = parse_json::&lt;HelixRequestError&gt;(text, <span class="bool-val">false</span>)
             {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HelixRequestPatchError::Error</span> {
-                    <span class="ident">error</span>,
-                    <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http::StatusCode::BAD_REQUEST</span>),
-                    <span class="ident">message</span>,
-                    <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(),
+                <span class="kw">return </span><span class="prelude-val">Err</span>(HelixRequestPatchError::Error {
+                    error,
+                    status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                    message,
+                    uri: uri.clone(),
+                    body: response.body().clone(),
                 }
-                .<span class="ident">into</span>());
+                .into());
             }
-            <span class="ident">function</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>, <span class="ident">uri</span>, <span class="ident">text</span>, <span class="ident">response</span>.<span class="ident">status</span>())<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">CustomInnerResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::parse_json</span>(<span class="ident">text</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestPatchError::DeserializeError</span>(
-                    <span class="ident">text</span>.<span class="ident">to_owned</span>(),
-                    <span class="ident">e</span>,
-                    <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">response</span>.<span class="ident">status</span>(),
+            function(<span class="kw-2">&amp;</span>request, uri, text, response.status())<span class="question-mark">?</span>;
+            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">&#39;_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+                HelixRequestPatchError::DeserializeError(
+                    text.to_owned(),
+                    e,
+                    uri.clone(),
+                    response.status(),
                 )
             })<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">CustomResponse</span> {
-                <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span>,
-                <span class="ident">request</span>: <span class="prelude-val">Some</span>(<span class="ident">request</span>),
-                <span class="ident">total</span>: <span class="ident">response</span>.<span class="ident">total</span>,
-                <span class="ident">other</span>: <span class="ident">response</span>.<span class="ident">other</span>,
-                <span class="ident">raw_data</span>: <span class="ident">response</span>.<span class="ident">data</span>.<span class="ident">to_owned</span>(),
-                <span class="ident">pd</span>: <span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::default</span>(),
+            <span class="prelude-val">Ok</span>(CustomResponse {
+                pagination: response.pagination.cursor,
+                request: <span class="prelude-val">Some</span>(request),
+                total: response.total,
+                other: response.other,
+                raw_data: response.data.to_owned(),
+                pd: &lt;<span class="kw">_</span>&gt;::default(),
             })
         }
     }
 
-    <span class="doccomment">/// Request on a valid [`RequestDelete`] endpoint, with the ability to return borrowed data and specific fields.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is probably not useful, as `DELETE` endpoints do not usually return json</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">req_delete_custom</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident">R</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-        <span class="ident">function</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CustomResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestDelete</span>,
-        <span class="ident">D</span>: <span class="ident">serde::de::Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;d</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-        <span class="ident">C</span>: <span class="ident">Send</span>,
-        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">http::StatusCode</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">HelixRequestDeleteError</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Request on a valid [`RequestDelete`] endpoint, with the ability to return borrowed data and specific fields.
+    ///
+    /// # Notes
+    ///
+    /// This is probably not useful, as `DELETE` endpoints do not usually return json
+    </span><span class="kw">pub async fn </span>req_delete_custom&lt;<span class="lifetime">&#39;d</span>, R, D, T, F&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: R,
+        token: <span class="kw-2">&amp;</span>T,
+        function: F,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span>R: Request + RequestDelete,
+        D: serde::de::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt; + <span class="lifetime">&#39;d</span>,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
+        C: Send,
+        F: Fn(<span class="kw-2">&amp;</span>R, <span class="kw-2">&amp;</span>http::Uri, <span class="kw-2">&amp;</span>str, http::StatusCode) -&gt; <span class="prelude-ty">Result</span>&lt;(), HelixRequestDeleteError&gt;,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">create_request</span>(<span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>(), <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">client</span>
-            .<span class="ident">req</span>(<span class="ident">req</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
-            .<span class="ident">into_response_bytes</span>()
+        <span class="kw">let </span>req = request.create_request(token.token().secret(), token.client_id().as_str())<span class="question-mark">?</span>;
+        <span class="kw">let </span>uri = req.uri().clone();
+        <span class="kw">let </span>response = <span class="self">self
+            </span>.client
+            .req(req)
+            .<span class="kw">await
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
+            </span>.into_response_bytes()
             .<span class="kw">await</span><span class="question-mark">?</span>;
         {
-            <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">uri</span>;
-            <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std::str::from_utf8</span>(<span class="ident">response</span>.<span class="ident">body</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestDeleteError::Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+            <span class="kw">let </span>uri = <span class="kw-2">&amp;</span>uri;
+            <span class="kw">let </span>text = std::str::from_utf8(response.body()).map_err(|e| {
+                HelixRequestDeleteError::Utf8Error(response.body().clone(), e, uri.clone())
             })<span class="question-mark">?</span>;
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
-                <span class="ident">error</span>,
-                <span class="ident">status</span>,
-                <span class="ident">message</span>,
-            }) <span class="op">=</span> <span class="ident">parse_json</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="ident">text</span>, <span class="bool-val">false</span>)
+            <span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
+                error,
+                status,
+                message,
+            }) = parse_json::&lt;HelixRequestError&gt;(text, <span class="bool-val">false</span>)
             {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HelixRequestDeleteError::Error</span> {
-                    <span class="ident">error</span>,
-                    <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http::StatusCode::BAD_REQUEST</span>),
-                    <span class="ident">message</span>,
-                    <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(),
+                <span class="kw">return </span><span class="prelude-val">Err</span>(HelixRequestDeleteError::Error {
+                    error,
+                    status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                    message,
+                    uri: uri.clone(),
+                    body: response.body().clone(),
                 }
-                .<span class="ident">into</span>());
+                .into());
             }
-            <span class="ident">function</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>, <span class="ident">uri</span>, <span class="ident">text</span>, <span class="ident">response</span>.<span class="ident">status</span>())<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">CustomInnerResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::parse_json</span>(<span class="ident">text</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestPatchError::DeserializeError</span>(
-                    <span class="ident">text</span>.<span class="ident">to_owned</span>(),
-                    <span class="ident">e</span>,
-                    <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">response</span>.<span class="ident">status</span>(),
+            function(<span class="kw-2">&amp;</span>request, uri, text, response.status())<span class="question-mark">?</span>;
+            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">&#39;_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+                HelixRequestPatchError::DeserializeError(
+                    text.to_owned(),
+                    e,
+                    uri.clone(),
+                    response.status(),
                 )
             })<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">CustomResponse</span> {
-                <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span>,
-                <span class="ident">request</span>: <span class="prelude-val">Some</span>(<span class="ident">request</span>),
-                <span class="ident">total</span>: <span class="ident">response</span>.<span class="ident">total</span>,
-                <span class="ident">other</span>: <span class="ident">response</span>.<span class="ident">other</span>,
-                <span class="ident">raw_data</span>: <span class="ident">response</span>.<span class="ident">data</span>.<span class="ident">to_owned</span>(),
-                <span class="ident">pd</span>: <span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::default</span>(),
+            <span class="prelude-val">Ok</span>(CustomResponse {
+                pagination: response.pagination.cursor,
+                request: <span class="prelude-val">Some</span>(request),
+                total: response.total,
+                other: response.other,
+                raw_data: response.data.to_owned(),
+                pd: &lt;<span class="kw">_</span>&gt;::default(),
             })
         }
     }
 
-    <span class="doccomment">/// Request on a valid [`RequestPut`] endpoint, with the ability to return borrowed data and specific fields.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is probably not useful, as `PUT` endpoints do not usually return json</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">req_put_custom</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">B</span>, <span class="ident">D</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident">R</span>,
-        <span class="ident">body</span>: <span class="ident">B</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-        <span class="ident">function</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CustomResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span>, <span class="ident">R</span>, <span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">ClientRequestError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::HttpClient</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">Request</span> <span class="op">+</span> <span class="ident">RequestPut</span> <span class="op">+</span> <span class="ident">RequestPut</span><span class="op">&lt;</span><span class="ident">Body</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-        <span class="ident">B</span>: <span class="ident">HelixRequestBody</span>,
-        <span class="ident">D</span>: <span class="ident">serde::de::Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;d</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;d</span>,
-        <span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-        <span class="ident">C</span>: <span class="ident">Send</span>,
-        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">http::StatusCode</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">HelixRequestDeleteError</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Request on a valid [`RequestPut`] endpoint, with the ability to return borrowed data and specific fields.
+    ///
+    /// # Notes
+    ///
+    /// This is probably not useful, as `PUT` endpoints do not usually return json
+    </span><span class="kw">pub async fn </span>req_put_custom&lt;<span class="lifetime">&#39;d</span>, R, B, D, T, F&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: R,
+        body: B,
+        token: <span class="kw-2">&amp;</span>T,
+        function: F,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span>R: Request + RequestPut + RequestPut&lt;Body = B&gt;,
+        B: HelixRequestBody,
+        D: serde::de::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt; + <span class="lifetime">&#39;d</span>,
+        T: TwitchToken + <span class="question-mark">?</span>Sized,
+        C: Send,
+        F: Fn(<span class="kw-2">&amp;</span>R, <span class="kw-2">&amp;</span>http::Uri, <span class="kw-2">&amp;</span>str, http::StatusCode) -&gt; <span class="prelude-ty">Result</span>&lt;(), HelixRequestDeleteError&gt;,
     {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span>
-            <span class="ident">request</span>.<span class="ident">create_request</span>(<span class="ident">body</span>, <span class="ident">token</span>.<span class="ident">token</span>().<span class="ident">secret</span>(), <span class="ident">token</span>.<span class="ident">client_id</span>().<span class="ident">as_str</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">client</span>
-            .<span class="ident">req</span>(<span class="ident">req</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="ident">ClientRequestError::RequestError</span>)<span class="question-mark">?</span>
-            .<span class="ident">into_response_bytes</span>()
+        <span class="kw">let </span>req =
+            request.create_request(body, token.token().secret(), token.client_id().as_str())<span class="question-mark">?</span>;
+        <span class="kw">let </span>uri = req.uri().clone();
+        <span class="kw">let </span>response = <span class="self">self
+            </span>.client
+            .req(req)
+            .<span class="kw">await
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
+            </span>.into_response_bytes()
             .<span class="kw">await</span><span class="question-mark">?</span>;
         {
-            <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">uri</span>;
-            <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std::str::from_utf8</span>(<span class="ident">response</span>.<span class="ident">body</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestPutError::Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+            <span class="kw">let </span>uri = <span class="kw-2">&amp;</span>uri;
+            <span class="kw">let </span>text = std::str::from_utf8(response.body()).map_err(|e| {
+                HelixRequestPutError::Utf8Error(response.body().clone(), e, uri.clone())
             })<span class="question-mark">?</span>;
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
-                <span class="ident">error</span>,
-                <span class="ident">status</span>,
-                <span class="ident">message</span>,
-            }) <span class="op">=</span> <span class="ident">parse_json</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="ident">text</span>, <span class="bool-val">false</span>)
+            <span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
+                error,
+                status,
+                message,
+            }) = parse_json::&lt;HelixRequestError&gt;(text, <span class="bool-val">false</span>)
             {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HelixRequestPutError::Error</span> {
-                    <span class="ident">error</span>,
-                    <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http::StatusCode::BAD_REQUEST</span>),
-                    <span class="ident">message</span>,
-                    <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(),
+                <span class="kw">return </span><span class="prelude-val">Err</span>(HelixRequestPutError::Error {
+                    error,
+                    status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                    message,
+                    uri: uri.clone(),
+                    body: response.body().clone(),
                 }
-                .<span class="ident">into</span>());
+                .into());
             }
-            <span class="ident">function</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>, <span class="ident">uri</span>, <span class="ident">text</span>, <span class="ident">response</span>.<span class="ident">status</span>())<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">CustomInnerResponse</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::parse_json</span>(<span class="ident">text</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestPatchError::DeserializeError</span>(
-                    <span class="ident">text</span>.<span class="ident">to_owned</span>(),
-                    <span class="ident">e</span>,
-                    <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">response</span>.<span class="ident">status</span>(),
+            function(<span class="kw-2">&amp;</span>request, uri, text, response.status())<span class="question-mark">?</span>;
+            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">&#39;_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+                HelixRequestPatchError::DeserializeError(
+                    text.to_owned(),
+                    e,
+                    uri.clone(),
+                    response.status(),
                 )
             })<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">CustomResponse</span> {
-                <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span>,
-                <span class="ident">request</span>: <span class="prelude-val">Some</span>(<span class="ident">request</span>),
-                <span class="ident">total</span>: <span class="ident">response</span>.<span class="ident">total</span>,
-                <span class="ident">other</span>: <span class="ident">response</span>.<span class="ident">other</span>,
-                <span class="ident">raw_data</span>: <span class="ident">response</span>.<span class="ident">data</span>.<span class="ident">to_owned</span>(),
-                <span class="ident">pd</span>: <span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::default</span>(),
+            <span class="prelude-val">Ok</span>(CustomResponse {
+                pagination: response.pagination.cursor,
+                request: <span class="prelude-val">Some</span>(request),
+                total: response.total,
+                other: response.other,
+                raw_data: response.data.to_owned(),
+                pd: &lt;<span class="kw">_</span>&gt;::default(),
             })
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

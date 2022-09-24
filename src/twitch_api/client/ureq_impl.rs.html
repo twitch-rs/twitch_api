@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/client/ureq_impl.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ureq_impl.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/client/ureq_impl.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ureq_impl.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -88,95 +88,95 @@
 <span id="88">88</span>
 <span id="89">89</span>
 <span id="90">90</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+</pre><pre class="rust"><code><span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="ident">ureq::Agent</span> <span class="kw">as</span> <span class="ident">UreqAgent</span>;
+<span class="kw">use </span>ureq::Agent <span class="kw">as </span>UreqAgent;
 
-<span class="doccomment">/// Possible errors from [`Client::req()`] when using the [ureq](https://crates.io/crates/ureq) client</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Also returned by [`ClientDefault::default_client_with_name`]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ureq&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">displaydoc::Display</span>, <span class="ident">thiserror::Error</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UreqError</span> {
-    <span class="doccomment">/// Ureq failed to do the request</span>
-    <span class="ident">Ureq</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">ureq::Error</span>),
-    <span class="doccomment">/// Http failed</span>
-    <span class="ident">Http</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">http::Error</span>),
-    <span class="doccomment">/// The response could not be collected</span>
-    <span class="ident">Io</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std::io::Error</span>),
-    <span class="doccomment">/// could not construct header value</span>
-    <span class="ident">InvalidHeaderValue</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">http::header::InvalidHeaderValue</span>),
-    <span class="doccomment">/// could not construct header name</span>
-    <span class="ident">InvalidHeaderName</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">http::header::InvalidHeaderName</span>),
-    <span class="doccomment">/// uri could not be translated into an url.</span>
-    <span class="ident">UrlError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">url::ParseError</span>),
+<span class="doccomment">/// Possible errors from [`Client::req()`] when using the [ureq](https://crates.io/crates/ureq) client
+///
+/// Also returned by [`ClientDefault::default_client_with_name`]
+</span><span class="attribute">#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;ureq&quot;</span>)))]
+#[derive(Debug, displaydoc::Display, thiserror::Error)]
+</span><span class="kw">pub enum </span>UreqError {
+    <span class="doccomment">/// Ureq failed to do the request
+    </span>Ureq(<span class="attribute">#[from] </span>ureq::Error),
+    <span class="doccomment">/// Http failed
+    </span>Http(<span class="attribute">#[from] </span>http::Error),
+    <span class="doccomment">/// The response could not be collected
+    </span>Io(<span class="attribute">#[from] </span>std::io::Error),
+    <span class="doccomment">/// could not construct header value
+    </span>InvalidHeaderValue(<span class="attribute">#[from] </span>http::header::InvalidHeaderValue),
+    <span class="doccomment">/// could not construct header name
+    </span>InvalidHeaderName(<span class="attribute">#[from] </span>http::header::InvalidHeaderName),
+    <span class="doccomment">/// uri could not be translated into an url.
+    </span>UrlError(<span class="attribute">#[from] </span>url::ParseError),
 }
 
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">nightly</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ureq&quot;</span>)))]</span> <span class="comment">// FIXME: This doc_cfg does nothing</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">UreqAgent</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">UreqError</span>;
+<span class="attribute">#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;ureq&quot;</span>)))] </span><span class="comment">// FIXME: This doc_cfg does nothing
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Client&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>UreqAgent {
+    <span class="kw">type </span>Error = UreqError;
 
-    <span class="kw">fn</span> <span class="ident">req</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">request</span>: <span class="ident">Request</span>) -&gt; <span class="ident">BoxedFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="ident">std::io::Read</span>;
+    <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>, request: Request) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;static</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
+        <span class="kw">use </span>std::io::Read;
 
-        <span class="kw">let</span> <span class="ident">method</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">method</span>().<span class="ident">to_string</span>();
-        <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">uri</span>().<span class="ident">to_string</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">request</span>(<span class="kw-2">&amp;</span><span class="ident">method</span>, <span class="kw-2">&amp;</span><span class="ident">url</span>);
+        <span class="kw">let </span>method = request.method().to_string();
+        <span class="kw">let </span>url = request.uri().to_string();
+        <span class="kw">let </span><span class="kw-2">mut </span>req = <span class="self">self</span>.request(<span class="kw-2">&amp;</span>method, <span class="kw-2">&amp;</span>url);
 
-        <span class="kw">for</span> (<span class="ident">header</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="ident">request</span>.<span class="ident">headers</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value</span>.<span class="ident">to_str</span>() {
-                <span class="ident">req</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">set</span>(<span class="ident">header</span>.<span class="ident">as_str</span>(), <span class="ident">value</span>);
+        <span class="kw">for </span>(header, value) <span class="kw">in </span>request.headers() {
+            <span class="kw">if let </span><span class="prelude-val">Ok</span>(value) = value.to_str() {
+                req = req.set(header.as_str(), value);
             }
         }
-        <span class="ident">Box::pin</span>(<span class="kw">async</span> <span class="kw">move</span> {
-            <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">into_body</span>();
-            <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">req</span>.<span class="ident">send_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">body</span>).<span class="ident">map_err</span>(<span class="ident">UreqError::Ureq</span>) {
-                <span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>,
-                <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+        Box::pin(<span class="kw">async move </span>{
+            <span class="kw">let </span>body = request.into_body();
+            <span class="kw">let </span>response = <span class="kw">match </span>req.send_bytes(<span class="kw-2">&amp;</span>body).map_err(UreqError::Ureq) {
+                <span class="prelude-val">Ok</span>(val) =&gt; val,
+                <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(err),
             };
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">http::Response::builder</span>().<span class="ident">status</span>(<span class="ident">response</span>.<span class="ident">status</span>());
-            <span class="kw">let</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">result</span>
-                .<span class="ident">headers_mut</span>()
-                <span class="comment">// This should not fail, we just created the response.</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;expected to get headers mut when building response&quot;</span>);
-            <span class="kw">for</span> <span class="ident">name</span> <span class="kw">in</span> <span class="ident">response</span>.<span class="ident">headers_names</span>() {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">response</span>.<span class="ident">header</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>) {
-                    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">http::header::HeaderValue::from_bytes</span>(<span class="ident">value</span>.<span class="ident">as_bytes</span>())
-                        .<span class="ident">map_err</span>(<span class="ident">UreqError::InvalidHeaderValue</span>)
+            <span class="kw">let </span><span class="kw-2">mut </span>result = http::Response::builder().status(response.status());
+            <span class="kw">let </span>headers = result
+                .headers_mut()
+                <span class="comment">// This should not fail, we just created the response.
+                </span>.expect(<span class="string">&quot;expected to get headers mut when building response&quot;</span>);
+            <span class="kw">for </span>name <span class="kw">in </span>response.headers_names() {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = response.header(<span class="kw-2">&amp;</span>name) {
+                    <span class="kw">let </span>value = <span class="kw">match </span>http::header::HeaderValue::from_bytes(value.as_bytes())
+                        .map_err(UreqError::InvalidHeaderValue)
                     {
-                        <span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>,
-                        <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+                        <span class="prelude-val">Ok</span>(val) =&gt; val,
+                        <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(err),
                     };
-                    <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">http::header::HeaderName::from_bytes</span>(<span class="ident">name</span>.<span class="ident">as_bytes</span>())
-                        .<span class="ident">map_err</span>(<span class="ident">UreqError::InvalidHeaderName</span>)
+                    <span class="kw">let </span>header = <span class="kw">match </span>http::header::HeaderName::from_bytes(name.as_bytes())
+                        .map_err(UreqError::InvalidHeaderName)
                     {
-                        <span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>,
-                        <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+                        <span class="prelude-val">Ok</span>(val) =&gt; val,
+                        <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(err),
                     };
-                    <span class="ident">headers</span>.<span class="ident">append</span>(<span class="ident">header</span>, <span class="ident">value</span>);
+                    headers.append(header, value);
                 }
             }
-            <span class="ident">result</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">version</span>(<span class="kw">match</span> <span class="ident">response</span>.<span class="ident">http_version</span>() {
-                <span class="string">&quot;HTTP/0.9&quot;</span> =&gt; <span class="ident">http::Version::HTTP_09</span>,
-                <span class="string">&quot;HTTP/1.0&quot;</span> =&gt; <span class="ident">http::Version::HTTP_10</span>,
-                <span class="string">&quot;HTTP/1.1&quot;</span> =&gt; <span class="ident">http::Version::HTTP_11</span>,
-                <span class="string">&quot;HTTP/2.0&quot;</span> =&gt; <span class="ident">http::Version::HTTP_2</span>,
-                <span class="string">&quot;HTTP/3.0&quot;</span> =&gt; <span class="ident">http::Version::HTTP_3</span>,
-                <span class="comment">// TODO: Log this somewhere...</span>
-                <span class="kw">_</span> =&gt; <span class="ident">http::Version::HTTP_11</span>,
+            result = result.version(<span class="kw">match </span>response.http_version() {
+                <span class="string">&quot;HTTP/0.9&quot; </span>=&gt; http::Version::HTTP_09,
+                <span class="string">&quot;HTTP/1.0&quot; </span>=&gt; http::Version::HTTP_10,
+                <span class="string">&quot;HTTP/1.1&quot; </span>=&gt; http::Version::HTTP_11,
+                <span class="string">&quot;HTTP/2.0&quot; </span>=&gt; http::Version::HTTP_2,
+                <span class="string">&quot;HTTP/3.0&quot; </span>=&gt; http::Version::HTTP_3,
+                <span class="comment">// TODO: Log this somewhere...
+                </span><span class="kw">_ </span>=&gt; http::Version::HTTP_11,
             });
-            <span class="kw">match</span> <span class="ident">response</span>
-                .<span class="ident">into_reader</span>()
-                .<span class="ident">take</span>(<span class="number">10_000_000</span>)
-                .<span class="ident">bytes</span>()
-                .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span>, <span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>()
+            <span class="kw">match </span>response
+                .into_reader()
+                .take(<span class="number">10_000_000</span>)
+                .bytes()
+                .collect::&lt;<span class="prelude-ty">Result</span>&lt;hyper::body::Bytes, <span class="kw">_</span>&gt;&gt;()
             {
-                <span class="prelude-val">Ok</span>(<span class="ident">v</span>) =&gt; <span class="ident">result</span>.<span class="ident">body</span>(<span class="ident">v</span>.<span class="ident">into</span>()).<span class="ident">map_err</span>(<span class="ident">Into::into</span>),
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>()),
+                <span class="prelude-val">Ok</span>(v) =&gt; result.body(v.into()).map_err(Into::into),
+                <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
             }
         })
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/tokens.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tokens.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/tokens.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tokens.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -165,172 +165,172 @@
 <span id="165">165</span>
 <span id="166">166</span>
 <span id="167">167</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Twitch token types</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Twitch token types
 
-<span class="kw">mod</span> <span class="ident">app_access_token</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">errors</span>;
-<span class="kw">mod</span> <span class="ident">user_token</span>;
+</span><span class="kw">mod </span>app_access_token;
+<span class="kw">pub mod </span>errors;
+<span class="kw">mod </span>user_token;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">app_access_token::AppAccessToken</span>;
-<span class="kw">use</span> <span class="ident">twitch_types</span>::{<span class="ident">UserId</span>, <span class="ident">UserIdRef</span>, <span class="ident">UserName</span>, <span class="ident">UserNameRef</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">user_token</span>::{<span class="ident">ImplicitUserTokenBuilder</span>, <span class="ident">UserToken</span>, <span class="ident">UserTokenBuilder</span>};
+<span class="kw">pub use </span>app_access_token::AppAccessToken;
+<span class="kw">use </span>twitch_types::{UserId, UserIdRef, UserName, UserNameRef};
+<span class="kw">pub use </span>user_token::{ImplicitUserTokenBuilder, UserToken, UserTokenBuilder};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client::Client</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">scopes::Scope</span>, <span class="ident">validate_token</span>};
+<span class="kw">use </span><span class="kw">crate</span>::client::Client;
+<span class="kw">use crate</span>::{scopes::Scope, validate_token};
 
-<span class="kw">use</span> <span class="ident">errors</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span>errors::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">AccessToken</span>, <span class="ident">ClientId</span>};
-<span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
+<span class="kw">use </span><span class="kw">crate</span>::types::{AccessToken, ClientId};
+<span class="kw">use </span>serde::Deserialize;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="doccomment">/// Types of bearer tokens</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BearerTokenType</span> {
-    <span class="doccomment">/// Token for making requests in the context of an authenticated user.</span>
-    <span class="ident">UserToken</span>,
-    <span class="doccomment">/// Token for server-to-server requests.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In some contexts (i.e [EventSub](https://dev.twitch.tv/docs/eventsub)) an App Access Token can be used in the context of users that have authenticated</span>
-    <span class="doccomment">/// the specific Client ID</span>
-    <span class="ident">AppAccessToken</span>,
+<span class="attribute">#[derive(Clone, Debug, PartialEq, Eq)]
+</span><span class="doccomment">/// Types of bearer tokens
+</span><span class="kw">pub enum </span>BearerTokenType {
+    <span class="doccomment">/// Token for making requests in the context of an authenticated user.
+    </span>UserToken,
+    <span class="doccomment">/// Token for server-to-server requests.
+    ///
+    /// In some contexts (i.e [EventSub](https://dev.twitch.tv/docs/eventsub)) an App Access Token can be used in the context of users that have authenticated
+    /// the specific Client ID
+    </span>AppAccessToken,
 }
 
-<span class="doccomment">/// Trait for twitch tokens to get fields and generalize over [AppAccessToken] and [UserToken]</span>
-<span class="attribute">#[<span class="ident">async_trait::async_trait</span>]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TwitchToken</span> {
-    <span class="doccomment">/// Get the type of token.</span>
-    <span class="kw">fn</span> <span class="ident">token_type</span>() -&gt; <span class="ident">BearerTokenType</span>;
-    <span class="doccomment">/// Client ID associated with the token. Twitch requires this in all helix API calls</span>
-    <span class="kw">fn</span> <span class="ident">client_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">ClientId</span>;
-    <span class="doccomment">/// Get the [AccessToken] for authenticating</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Example</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # use twitch_oauth2::UserToken;</span>
-    <span class="doccomment">/// # fn t() -&gt; UserToken {todo!()}</span>
-    <span class="doccomment">/// # let user_token = t();</span>
-    <span class="doccomment">/// use twitch_oauth2::TwitchToken;</span>
-    <span class="doccomment">/// println!(&quot;token: {}&quot;, user_token.token().secret());</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">token</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">AccessToken</span>;
-    <span class="doccomment">/// Get the username associated to this token</span>
-    <span class="kw">fn</span> <span class="ident">login</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">UserNameRef</span><span class="op">&gt;</span>;
-    <span class="doccomment">/// Get the user id associated to this token</span>
-    <span class="kw">fn</span> <span class="ident">user_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">UserIdRef</span><span class="op">&gt;</span>;
-    <span class="doccomment">/// Refresh this token, changing the token to a newer one</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">refresh_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">http_client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
-        <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
-    <span class="doccomment">/// Get current lifetime of token.</span>
-    <span class="kw">fn</span> <span class="ident">expires_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">std::time::Duration</span>;
+<span class="doccomment">/// Trait for twitch tokens to get fields and generalize over [AppAccessToken] and [UserToken]
+</span><span class="attribute">#[async_trait::async_trait]
+</span><span class="kw">pub trait </span>TwitchToken {
+    <span class="doccomment">/// Get the type of token.
+    </span><span class="kw">fn </span>token_type() -&gt; BearerTokenType;
+    <span class="doccomment">/// Client ID associated with the token. Twitch requires this in all helix API calls
+    </span><span class="kw">fn </span>client_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>ClientId;
+    <span class="doccomment">/// Get the [AccessToken] for authenticating
+    ///
+    /// # Example
+    ///
+    /// ```rust, no_run
+    /// # use twitch_oauth2::UserToken;
+    /// # fn t() -&gt; UserToken {todo!()}
+    /// # let user_token = t();
+    /// use twitch_oauth2::TwitchToken;
+    /// println!(&quot;token: {}&quot;, user_token.token().secret());
+    /// ```
+    </span><span class="kw">fn </span>token(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>AccessToken;
+    <span class="doccomment">/// Get the username associated to this token
+    </span><span class="kw">fn </span>login(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>UserNameRef&gt;;
+    <span class="doccomment">/// Get the user id associated to this token
+    </span><span class="kw">fn </span>user_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>UserIdRef&gt;;
+    <span class="doccomment">/// Refresh this token, changing the token to a newer one
+    </span><span class="kw">async fn </span>refresh_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        http_client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>C,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), RefreshTokenError&lt;&lt;C <span class="kw">as </span>Client&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
+        C: Client&lt;<span class="lifetime">&#39;a</span>&gt;;
+    <span class="doccomment">/// Get current lifetime of token.
+    </span><span class="kw">fn </span>expires_in(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::time::Duration;
 
-    <span class="doccomment">/// Returns whether or not the token is expired.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # use twitch_oauth2::UserToken;</span>
-    <span class="doccomment">/// # fn t() -&gt; UserToken {todo!()}</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + &#39;static&gt;&gt;{</span>
-    <span class="doccomment">/// # let mut user_token = t();</span>
-    <span class="doccomment">/// use twitch_oauth2::{UserToken, TwitchToken};</span>
-    <span class="doccomment">/// if user_token.is_elapsed() {</span>
-    <span class="doccomment">///     user_token.refresh_token(&amp;reqwest::Client::builder().redirect(reqwest::redirect::Policy::none()).build()?).await?;</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// # Ok(()) }</span>
-    <span class="doccomment">/// # fn main() {run();}</span>
-    <span class="kw">fn</span> <span class="ident">is_elapsed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">exp</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">expires_in</span>();
-        <span class="ident">exp</span>.<span class="ident">as_secs</span>() <span class="op">==</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">exp</span>.<span class="ident">as_nanos</span>() <span class="op">==</span> <span class="number">0</span>
-    }
-    <span class="doccomment">/// Retrieve scopes attached to the token</span>
-    <span class="kw">fn</span> <span class="ident">scopes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">Scope</span>];
-    <span class="doccomment">/// Validate this token. Should be checked on regularly, according to &lt;https://dev.twitch.tv/docs/authentication#validating-requests&gt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Note</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This will not mutate any current data in the [TwitchToken]</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">validate_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Returns whether or not the token is expired.
+    ///
+    /// ```rust, no_run
+    /// # use twitch_oauth2::UserToken;
+    /// # fn t() -&gt; UserToken {todo!()}
+    /// # #[tokio::main]
+    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + &#39;static&gt;&gt;{
+    /// # let mut user_token = t();
+    /// use twitch_oauth2::{UserToken, TwitchToken};
+    /// if user_token.is_elapsed() {
+    ///     user_token.refresh_token(&amp;reqwest::Client::builder().redirect(reqwest::redirect::Policy::none()).build()?).await?;
+    /// }
+    /// # Ok(()) }
+    /// # fn main() {run();}
+    </span><span class="kw">fn </span>is_elapsed(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">let </span>exp = <span class="self">self</span>.expires_in();
+        exp.as_secs() == <span class="number">0 </span>&amp;&amp; exp.as_nanos() == <span class="number">0
+    </span>}
+    <span class="doccomment">/// Retrieve scopes attached to the token
+    </span><span class="kw">fn </span>scopes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[Scope];
+    <span class="doccomment">/// Validate this token. Should be checked on regularly, according to &lt;https://dev.twitch.tv/docs/authentication#validating-requests&gt;
+    ///
+    /// # Note
+    ///
+    /// This will not mutate any current data in the [TwitchToken]
+    </span><span class="kw">async fn </span>validate_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">http_client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ValidatedToken</span>, <span class="ident">ValidationError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
-        <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+        http_client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>C,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;ValidatedToken, ValidationError&lt;&lt;C <span class="kw">as </span>Client&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
+        C: Client&lt;<span class="lifetime">&#39;a</span>&gt;,
     {
-        <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">token</span>();
-        <span class="ident">validate_token</span>(<span class="ident">http_client</span>, <span class="ident">token</span>).<span class="kw">await</span>
-    }
+        <span class="kw">let </span>token = <span class="kw-2">&amp;</span><span class="self">self</span>.token();
+        validate_token(http_client, token).<span class="kw">await
+    </span>}
 
-    <span class="doccomment">/// Revoke the token. See &lt;https://dev.twitch.tv/docs/authentication#revoking-access-tokens&gt;</span>
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">revoke_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Revoke the token. See &lt;https://dev.twitch.tv/docs/authentication#revoking-access-tokens&gt;
+    </span><span class="kw">async fn </span>revoke_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
         <span class="self">self</span>,
-        <span class="ident">http_client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RevokeTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
-        <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+        http_client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>C,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), RevokeTokenError&lt;&lt;C <span class="kw">as </span>Client&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
+        C: Client&lt;<span class="lifetime">&#39;a</span>&gt;,
     {
-        <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">token</span>();
-        <span class="kw">let</span> <span class="ident">client_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">client_id</span>();
-        <span class="ident"><span class="kw">crate</span>::revoke_token</span>(<span class="ident">http_client</span>, <span class="ident">token</span>, <span class="ident">client_id</span>).<span class="kw">await</span>
-    }
+        <span class="kw">let </span>token = <span class="self">self</span>.token();
+        <span class="kw">let </span>client_id = <span class="self">self</span>.client_id();
+        <span class="kw">crate</span>::revoke_token(http_client, token, client_id).<span class="kw">await
+    </span>}
 }
 
-<span class="attribute">#[<span class="ident">async_trait::async_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">TwitchToken</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span> <span class="ident">TwitchToken</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">token_type</span>() -&gt; <span class="ident">BearerTokenType</span> { <span class="ident">T::token_type</span>() }
+<span class="attribute">#[async_trait::async_trait]
+</span><span class="kw">impl</span>&lt;T: TwitchToken + Send&gt; TwitchToken <span class="kw">for </span>Box&lt;T&gt; {
+    <span class="kw">fn </span>token_type() -&gt; BearerTokenType { T::token_type() }
 
-    <span class="kw">fn</span> <span class="ident">client_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">ClientId</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">client_id</span>() }
+    <span class="kw">fn </span>client_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>ClientId { (<span class="kw-2">**</span><span class="self">self</span>).client_id() }
 
-    <span class="kw">fn</span> <span class="ident">token</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">AccessToken</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">token</span>() }
+    <span class="kw">fn </span>token(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>AccessToken { (<span class="kw-2">**</span><span class="self">self</span>).token() }
 
-    <span class="kw">fn</span> <span class="ident">login</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">UserNameRef</span><span class="op">&gt;</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">login</span>() }
+    <span class="kw">fn </span>login(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>UserNameRef&gt; { (<span class="kw-2">**</span><span class="self">self</span>).login() }
 
-    <span class="kw">fn</span> <span class="ident">user_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">UserIdRef</span><span class="op">&gt;</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">user_id</span>() }
+    <span class="kw">fn </span>user_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>UserIdRef&gt; { (<span class="kw-2">**</span><span class="self">self</span>).user_id() }
 
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">refresh_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">http_client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RefreshTokenError</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
-        <span class="ident">C</span>: <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+    <span class="kw">async fn </span>refresh_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        http_client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>C,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), RefreshTokenError&lt;&lt;C <span class="kw">as </span>Client&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
+        C: Client&lt;<span class="lifetime">&#39;a</span>&gt;,
     {
-        (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">refresh_token</span>(<span class="ident">http_client</span>).<span class="kw">await</span>
-    }
+        (<span class="kw-2">**</span><span class="self">self</span>).refresh_token(http_client).<span class="kw">await
+    </span>}
 
-    <span class="kw">fn</span> <span class="ident">expires_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">std::time::Duration</span> { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">expires_in</span>() }
+    <span class="kw">fn </span>expires_in(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::time::Duration { (<span class="kw-2">**</span><span class="self">self</span>).expires_in() }
 
-    <span class="kw">fn</span> <span class="ident">scopes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">Scope</span>] { (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">scopes</span>() }
+    <span class="kw">fn </span>scopes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[Scope] { (<span class="kw-2">**</span><span class="self">self</span>).scopes() }
 }
 
-<span class="doccomment">/// Token validation returned from `https://id.twitch.tv/oauth2/validate`</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// See &lt;https://dev.twitch.tv/docs/authentication#validating-requests&gt;</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ValidatedToken</span> {
-    <span class="doccomment">/// Client ID associated with the token. Twitch requires this in all helix API calls</span>
-    <span class="kw">pub</span> <span class="ident">client_id</span>: <span class="ident">ClientId</span>,
-    <span class="doccomment">/// Username associated with the token</span>
-    <span class="kw">pub</span> <span class="ident">login</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">UserName</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// User ID associated with the token</span>
-    <span class="kw">pub</span> <span class="ident">user_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">UserId</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Scopes attached to the token.</span>
-    <span class="kw">pub</span> <span class="ident">scopes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Scope</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Lifetime of the token</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;seconds_to_duration&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">expires_in</span>: <span class="ident">std::time::Duration</span>,
+<span class="doccomment">/// Token validation returned from `https://id.twitch.tv/oauth2/validate`
+///
+/// See &lt;https://dev.twitch.tv/docs/authentication#validating-requests&gt;
+</span><span class="attribute">#[derive(Debug, Clone, Deserialize)]
+</span><span class="kw">pub struct </span>ValidatedToken {
+    <span class="doccomment">/// Client ID associated with the token. Twitch requires this in all helix API calls
+    </span><span class="kw">pub </span>client_id: ClientId,
+    <span class="doccomment">/// Username associated with the token
+    </span><span class="kw">pub </span>login: <span class="prelude-ty">Option</span>&lt;UserName&gt;,
+    <span class="doccomment">/// User ID associated with the token
+    </span><span class="kw">pub </span>user_id: <span class="prelude-ty">Option</span>&lt;UserId&gt;,
+    <span class="doccomment">/// Scopes attached to the token.
+    </span><span class="kw">pub </span>scopes: <span class="prelude-ty">Option</span>&lt;Vec&lt;Scope&gt;&gt;,
+    <span class="doccomment">/// Lifetime of the token
+    </span><span class="attribute">#[serde(deserialize_with = <span class="string">&quot;seconds_to_duration&quot;</span>)]
+    </span><span class="kw">pub </span>expires_in: std::time::Duration,
 }
 
-<span class="kw">fn</span> <span class="ident">seconds_to_duration</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">D</span>: <span class="ident">serde::de::Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-    <span class="ident">d</span>: <span class="ident">D</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">std::time::Duration</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
-    <span class="prelude-val">Ok</span>(<span class="ident">std::time::Duration::from_secs</span>(<span class="ident">u64::deserialize</span>(<span class="ident">d</span>)<span class="question-mark">?</span>))
+<span class="kw">fn </span>seconds_to_duration&lt;<span class="lifetime">&#39;a</span>, D: serde::de::Deserializer&lt;<span class="lifetime">&#39;a</span>&gt;&gt;(
+    d: D,
+) -&gt; <span class="prelude-ty">Result</span>&lt;std::time::Duration, D::Error&gt; {
+    <span class="prelude-val">Ok</span>(std::time::Duration::from_secs(u64::deserialize(d)<span class="question-mark">?</span>))
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

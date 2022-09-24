@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/client.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/client.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -162,169 +162,169 @@
 <span id="162">162</span>
 <span id="163">163</span>
 <span id="164">164</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Provides different http clients</span>
-<span class="doccomment">//!</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Provides different http clients
+//!
 
-<span class="comment">// This module is heavily inspired (read: copied) by twitch_api2::client.</span>
+</span><span class="comment">// This module is heavily inspired (read: copied) by twitch_api2::client.
 
-<span class="kw">use</span> <span class="ident">std::error::Error</span>;
-<span class="kw">use</span> <span class="ident">std::future::Future</span>;
+</span><span class="kw">use </span>std::error::Error;
+<span class="kw">use </span>std::future::Future;
 
-<span class="doccomment">/// The User-Agent `product` of this crate.</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">TWITCH_OAUTH2_USER_AGENT</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span>
+<span class="doccomment">/// The User-Agent `product` of this crate.
+</span><span class="kw">pub static </span>TWITCH_OAUTH2_USER_AGENT: <span class="kw-2">&amp;</span>str =
     <span class="macro">concat!</span>(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>), <span class="string">&quot;/&quot;</span>, <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>),);
 
-<span class="doccomment">/// A boxed future, mimics `futures::future::BoxFuture`</span>
-<span class="kw">type</span> <span class="ident">BoxedFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std::pin::Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+<span class="doccomment">/// A boxed future, mimics `futures::future::BoxFuture`
+</span><span class="kw">type </span>BoxedFuture&lt;<span class="lifetime">&#39;a</span>, T&gt; = std::pin::Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = T&gt; + Send + <span class="lifetime">&#39;a</span>&gt;&gt;;
 
-<span class="doccomment">/// A client that can do OAUTH2 requests</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>: <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span> {
-    <span class="doccomment">/// Error returned by the client</span>
-    <span class="kw">type</span> <span class="ident">Error</span>: <span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>;
-    <span class="doccomment">/// Send a request</span>
-    <span class="kw">fn</span> <span class="ident">req</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident"><span class="kw">crate</span>::HttpRequest</span>,
-    ) -&gt; <span class="ident">BoxedFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::HttpResponse</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Client</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+<span class="doccomment">/// A client that can do OAUTH2 requests
+</span><span class="kw">pub trait </span>Client&lt;<span class="lifetime">&#39;a</span>&gt;: Sync + Send + <span class="lifetime">&#39;a </span>{
+    <span class="doccomment">/// Error returned by the client
+    </span><span class="kw">type </span>Error: Error + Send + Sync + <span class="lifetime">&#39;static</span>;
+    <span class="doccomment">/// Send a request
+    </span><span class="kw">fn </span>req(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: <span class="kw">crate</span>::HttpRequest,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;<span class="kw">crate</span>::HttpResponse, &lt;<span class="self">Self </span><span class="kw">as </span>Client&gt;::Error&gt;&gt;;
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror::Error</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;this client does not do anything, only used for documentation test that only checks code integrity&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DummyClient</span>;
+<span class="attribute">#[doc(hidden)]
+#[derive(Debug, thiserror::Error, Clone)]
+#[error(<span class="string">&quot;this client does not do anything, only used for documentation test that only checks code integrity&quot;</span>)]
+</span><span class="kw">pub struct </span>DummyClient;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;reqwest&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DummyClient</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">DummyClient</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;reqwest&quot;</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Client&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>DummyClient {
+    <span class="kw">type </span>Error = DummyClient;
 
-    <span class="kw">fn</span> <span class="ident">req</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="kw">_</span>: <span class="ident"><span class="kw">crate</span>::HttpRequest</span>,
-    ) -&gt; <span class="ident">BoxedFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::HttpResponse</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="ident">Box::pin</span>(<span class="kw">async</span> <span class="kw">move</span> { <span class="prelude-val">Err</span>(<span class="self">self</span>.<span class="ident">clone</span>()) })
+    <span class="kw">fn </span>req(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        <span class="kw">_</span>: <span class="kw">crate</span>::HttpRequest,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;<span class="kw">crate</span>::HttpResponse, <span class="self">Self</span>::Error&gt;&gt; {
+        Box::pin(<span class="kw">async move </span>{ <span class="prelude-val">Err</span>(<span class="self">self</span>.clone()) })
     }
 }
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;reqwest&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">reqwest::Client</span> <span class="kw">as</span> <span class="ident">ReqwestClient</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;reqwest&quot;</span>)]
+</span><span class="kw">use </span>reqwest::Client <span class="kw">as </span>ReqwestClient;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;reqwest&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReqwestClient</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">reqwest::Error</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;reqwest&quot;</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Client&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>ReqwestClient {
+    <span class="kw">type </span>Error = reqwest::Error;
 
-    <span class="kw">fn</span> <span class="ident">req</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident"><span class="kw">crate</span>::HttpRequest</span>,
-    ) -&gt; <span class="ident">BoxedFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::HttpResponse</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="comment">// Reqwest plays really nice here and has a try_from on `http::Request` -&gt; `reqwest::Request`</span>
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">reqwest::Request::try_from</span>(<span class="ident">request</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">req</span>) =&gt; <span class="ident">req</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="kw">return</span> <span class="ident">Box::pin</span>(<span class="kw">async</span> { <span class="prelude-val">Err</span>(<span class="ident">e</span>) }),
+    <span class="kw">fn </span>req(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: <span class="kw">crate</span>::HttpRequest,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;<span class="kw">crate</span>::HttpResponse, <span class="self">Self</span>::Error&gt;&gt; {
+        <span class="comment">// Reqwest plays really nice here and has a try_from on `http::Request` -&gt; `reqwest::Request`
+        </span><span class="kw">let </span>req = <span class="kw">match </span>reqwest::Request::try_from(request) {
+            <span class="prelude-val">Ok</span>(req) =&gt; req,
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span>Box::pin(<span class="kw">async </span>{ <span class="prelude-val">Err</span>(e) }),
         };
-        <span class="comment">// We need to &quot;call&quot; the execute outside the async closure to not capture self.</span>
-        <span class="kw">let</span> <span class="ident">fut</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">execute</span>(<span class="ident">req</span>);
-        <span class="ident">Box::pin</span>(<span class="kw">async</span> <span class="kw">move</span> {
-            <span class="comment">// Await the request and translate to `http::Response`</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">fut</span>.<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">http::Response::builder</span>().<span class="ident">status</span>(<span class="ident">response</span>.<span class="ident">status</span>());
-            <span class="kw">let</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">result</span>
-                .<span class="ident">headers_mut</span>()
-                <span class="comment">// This should not fail, we just created the response.</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;expected to get headers mut when building response&quot;</span>);
-            <span class="ident">std::mem::swap</span>(<span class="ident">headers</span>, <span class="ident">response</span>.<span class="ident">headers_mut</span>());
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">version</span>(<span class="ident">response</span>.<span class="ident">version</span>());
-            <span class="prelude-val">Ok</span>(<span class="ident">result</span>
-                .<span class="ident">body</span>(<span class="ident">response</span>.<span class="ident">bytes</span>().<span class="kw">await</span><span class="question-mark">?</span>.<span class="ident">as_ref</span>().<span class="ident">to_vec</span>())
-                .<span class="ident">expect</span>(<span class="string">&quot;mismatch reqwest -&gt; http conversion should not fail&quot;</span>))
+        <span class="comment">// We need to &quot;call&quot; the execute outside the async closure to not capture self.
+        </span><span class="kw">let </span>fut = <span class="self">self</span>.execute(req);
+        Box::pin(<span class="kw">async move </span>{
+            <span class="comment">// Await the request and translate to `http::Response`
+            </span><span class="kw">let </span><span class="kw-2">mut </span>response = fut.<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="kw">let </span><span class="kw-2">mut </span>result = http::Response::builder().status(response.status());
+            <span class="kw">let </span>headers = result
+                .headers_mut()
+                <span class="comment">// This should not fail, we just created the response.
+                </span>.expect(<span class="string">&quot;expected to get headers mut when building response&quot;</span>);
+            std::mem::swap(headers, response.headers_mut());
+            <span class="kw">let </span>result = result.version(response.version());
+            <span class="prelude-val">Ok</span>(result
+                .body(response.bytes().<span class="kw">await</span><span class="question-mark">?</span>.as_ref().to_vec())
+                .expect(<span class="string">&quot;mismatch reqwest -&gt; http conversion should not fail&quot;</span>))
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">surf::Client</span> <span class="kw">as</span> <span class="ident">SurfClient</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;surf&quot;</span>)]
+</span><span class="kw">use </span>surf::Client <span class="kw">as </span>SurfClient;
 
-<span class="doccomment">/// Possible errors from [`Client::req()`] when using the [surf](https://crates.io/crates/surf) client</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">displaydoc::Display</span>, <span class="ident">thiserror::Error</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SurfError</span> {
-    <span class="doccomment">/// surf failed to do the request: {0}</span>
-    <span class="ident">Surf</span>(<span class="ident">surf::Error</span>),
-    <span class="doccomment">/// could not construct header value</span>
-    <span class="ident">InvalidHeaderValue</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">http::header::InvalidHeaderValue</span>),
-    <span class="doccomment">/// could not construct header name</span>
-    <span class="ident">InvalidHeaderName</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">http::header::InvalidHeaderName</span>),
-    <span class="doccomment">/// uri could not be translated into an url.</span>
-    <span class="ident">UrlError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">url::ParseError</span>),
+<span class="doccomment">/// Possible errors from [`Client::req()`] when using the [surf](https://crates.io/crates/surf) client
+</span><span class="attribute">#[cfg(feature = <span class="string">&quot;surf&quot;</span>)]
+#[derive(Debug, displaydoc::Display, thiserror::Error)]
+</span><span class="kw">pub enum </span>SurfError {
+    <span class="doccomment">/// surf failed to do the request: {0}
+    </span>Surf(surf::Error),
+    <span class="doccomment">/// could not construct header value
+    </span>InvalidHeaderValue(<span class="attribute">#[from] </span>http::header::InvalidHeaderValue),
+    <span class="doccomment">/// could not construct header name
+    </span>InvalidHeaderName(<span class="attribute">#[from] </span>http::header::InvalidHeaderName),
+    <span class="doccomment">/// uri could not be translated into an url.
+    </span>UrlError(<span class="attribute">#[from] </span>url::ParseError),
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;surf&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SurfClient</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">SurfError</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;surf&quot;</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Client&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>SurfClient {
+    <span class="kw">type </span>Error = SurfError;
 
-    <span class="kw">fn</span> <span class="ident">req</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">request</span>: <span class="ident"><span class="kw">crate</span>::HttpRequest</span>,
-    ) -&gt; <span class="ident">BoxedFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::HttpResponse</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="comment">// First we translate the `http::Request` method and uri into types that surf understands.</span>
+    <span class="kw">fn </span>req(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        request: <span class="kw">crate</span>::HttpRequest,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;<span class="kw">crate</span>::HttpResponse, <span class="self">Self</span>::Error&gt;&gt; {
+        <span class="comment">// First we translate the `http::Request` method and uri into types that surf understands.
 
-        <span class="kw">let</span> <span class="ident">method</span>: <span class="ident">surf::http::Method</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">method</span>().<span class="ident">clone</span>().<span class="ident">into</span>();
+        </span><span class="kw">let </span>method: surf::http::Method = request.method().clone().into();
 
-        <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">url::Url::parse</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>.<span class="ident">uri</span>().<span class="ident">to_string</span>()) {
-            <span class="prelude-val">Ok</span>(<span class="ident">url</span>) =&gt; <span class="ident">url</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> <span class="ident">Box::pin</span>(<span class="kw">async</span> <span class="kw">move</span> { <span class="prelude-val">Err</span>(<span class="ident">err</span>.<span class="ident">into</span>()) }),
+        <span class="kw">let </span>url = <span class="kw">match </span>url::Url::parse(<span class="kw-2">&amp;</span>request.uri().to_string()) {
+            <span class="prelude-val">Ok</span>(url) =&gt; url,
+            <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">return </span>Box::pin(<span class="kw">async move </span>{ <span class="prelude-val">Err</span>(err.into()) }),
         };
-        <span class="comment">// Construct the request</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">surf::Request::new</span>(<span class="ident">method</span>, <span class="ident">url</span>);
+        <span class="comment">// Construct the request
+        </span><span class="kw">let </span><span class="kw-2">mut </span>req = surf::Request::new(method, url);
 
-        <span class="comment">// move the headers into the surf request</span>
-        <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="ident">request</span>.<span class="ident">headers</span>().<span class="ident">iter</span>() {
-            <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span>
-                <span class="kw">match</span> <span class="ident">surf::http::headers::HeaderValue::from_bytes</span>(<span class="ident">value</span>.<span class="ident">as_bytes</span>().<span class="ident">to_vec</span>())
-                    .<span class="ident">map_err</span>(<span class="ident">SurfError::Surf</span>)
+        <span class="comment">// move the headers into the surf request
+        </span><span class="kw">for </span>(name, value) <span class="kw">in </span>request.headers().iter() {
+            <span class="kw">let </span>value =
+                <span class="kw">match </span>surf::http::headers::HeaderValue::from_bytes(value.as_bytes().to_vec())
+                    .map_err(SurfError::Surf)
                 {
-                    <span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>,
-                    <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> <span class="ident">Box::pin</span>(<span class="kw">async</span> { <span class="prelude-val">Err</span>(<span class="ident">err</span>) }),
+                    <span class="prelude-val">Ok</span>(val) =&gt; val,
+                    <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">return </span>Box::pin(<span class="kw">async </span>{ <span class="prelude-val">Err</span>(err) }),
                 };
-            <span class="ident">req</span>.<span class="ident">append_header</span>(<span class="ident">name</span>.<span class="ident">as_str</span>(), <span class="ident">value</span>);
+            req.append_header(name.as_str(), value);
         }
 
-        <span class="comment">// assembly the request, now we can send that to our `surf::Client`</span>
-        <span class="ident">req</span>.<span class="ident">body_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>.<span class="ident">body</span>());
+        <span class="comment">// assembly the request, now we can send that to our `surf::Client`
+        </span>req.body_bytes(<span class="kw-2">&amp;</span>request.body());
 
-        <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">clone</span>();
-        <span class="ident">Box::pin</span>(<span class="kw">async</span> <span class="kw">move</span> {
-            <span class="comment">// Send the request and translate the response into a `http::Response`</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">send</span>(<span class="ident">req</span>).<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">SurfError::Surf</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">http::Response::builder</span>().<span class="ident">status</span>(<span class="ident">response</span>.<span class="ident">status</span>());
+        <span class="kw">let </span>client = <span class="self">self</span>.clone();
+        Box::pin(<span class="kw">async move </span>{
+            <span class="comment">// Send the request and translate the response into a `http::Response`
+            </span><span class="kw">let </span><span class="kw-2">mut </span>response = client.send(req).<span class="kw">await</span>.map_err(SurfError::Surf)<span class="question-mark">?</span>;
+            <span class="kw">let </span><span class="kw-2">mut </span>result = http::Response::builder().status(response.status());
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response_headers</span>: <span class="ident">http::header::HeaderMap</span> <span class="op">=</span> <span class="ident">response</span>
-                .<span class="ident">iter</span>()
-                .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="ident">v</span>)<span class="op">|</span> {
+            <span class="kw">let </span><span class="kw-2">mut </span>response_headers: http::header::HeaderMap = response
+                .iter()
+                .map(|(k, v)| {
                     <span class="prelude-val">Ok</span>((
-                        <span class="ident">http::header::HeaderName::from_bytes</span>(<span class="ident">k</span>.<span class="ident">as_str</span>().<span class="ident">as_bytes</span>())<span class="question-mark">?</span>,
-                        <span class="ident">http::HeaderValue::from_str</span>(<span class="ident">v</span>.<span class="ident">as_str</span>())<span class="question-mark">?</span>,
+                        http::header::HeaderName::from_bytes(k.as_str().as_bytes())<span class="question-mark">?</span>,
+                        http::HeaderValue::from_str(v.as_str())<span class="question-mark">?</span>,
                     ))
                 })
-                .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">SurfError</span><span class="op">&gt;</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+                .collect::&lt;<span class="prelude-ty">Result</span>&lt;<span class="kw">_</span>, SurfError&gt;&gt;()<span class="question-mark">?</span>;
 
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">std::mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="ident">result</span>.<span class="ident">headers_mut</span>(), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut</span> <span class="ident">response_headers</span>));
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span> <span class="ident">response</span>.<span class="ident">version</span>() {
-                <span class="ident">result</span>.<span class="ident">version</span>(<span class="kw">match</span> <span class="ident">v</span> {
-                    <span class="ident">surf::http::Version::Http0_9</span> =&gt; <span class="ident">http::Version::HTTP_09</span>,
-                    <span class="ident">surf::http::Version::Http1_0</span> =&gt; <span class="ident">http::Version::HTTP_10</span>,
-                    <span class="ident">surf::http::Version::Http1_1</span> =&gt; <span class="ident">http::Version::HTTP_11</span>,
-                    <span class="ident">surf::http::Version::Http2_0</span> =&gt; <span class="ident">http::Version::HTTP_2</span>,
-                    <span class="ident">surf::http::Version::Http3_0</span> =&gt; <span class="ident">http::Version::HTTP_3</span>,
-                    <span class="comment">// TODO: Log this somewhere...</span>
-                    <span class="kw">_</span> =&gt; <span class="ident">http::Version::HTTP_3</span>,
+            <span class="kw">let _ </span>= std::mem::replace(<span class="kw-2">&amp;mut </span>result.headers_mut(), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span>response_headers));
+            <span class="kw">let </span>result = <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = response.version() {
+                result.version(<span class="kw">match </span>v {
+                    surf::http::Version::Http0_9 =&gt; http::Version::HTTP_09,
+                    surf::http::Version::Http1_0 =&gt; http::Version::HTTP_10,
+                    surf::http::Version::Http1_1 =&gt; http::Version::HTTP_11,
+                    surf::http::Version::Http2_0 =&gt; http::Version::HTTP_2,
+                    surf::http::Version::Http3_0 =&gt; http::Version::HTTP_3,
+                    <span class="comment">// TODO: Log this somewhere...
+                    </span><span class="kw">_ </span>=&gt; http::Version::HTTP_3,
                 })
-            } <span class="kw">else</span> {
-                <span class="ident">result</span>
+            } <span class="kw">else </span>{
+                result
             };
-            <span class="prelude-val">Ok</span>(<span class="ident">result</span>
-                .<span class="ident">body</span>(<span class="ident">response</span>.<span class="ident">body_bytes</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">SurfError::Surf</span>)<span class="question-mark">?</span>)
-                .<span class="ident">expect</span>(<span class="string">&quot;mismatch surf -&gt; http conversion should not fail&quot;</span>))
+            <span class="prelude-val">Ok</span>(result
+                .body(response.body_bytes().<span class="kw">await</span>.map_err(SurfError::Surf)<span class="question-mark">?</span>)
+                .expect(<span class="string">&quot;mismatch surf -&gt; http conversion should not fail&quot;</span>))
         })
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

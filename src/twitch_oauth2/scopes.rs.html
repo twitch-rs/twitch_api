@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/scopes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>scopes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/scopes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>scopes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_oauth2/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -155,78 +155,78 @@
 <span id="155">155</span>
 <span id="156">156</span>
 <span id="157">157</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Module for all possible scopes in twitch.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Module for all possible scopes in twitch.
 
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
+</span><span class="kw">use </span>serde::{Deserialize, Serialize};
+<span class="kw">use </span>std::borrow::Cow;
 
-<span class="macro">macro_rules!</span> <span class="ident">scope_impls</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span>:<span class="ident">ident</span>,<span class="ident">scope</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rename</span>:<span class="ident">literal</span>, <span class="ident">doc</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>:<span class="ident">literal</span>);<span class="op">*</span> $(;)<span class="question-mark">?</span> ) =&gt; {
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Scopes for twitch.&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&lt;https://dev.twitch.tv/docs/authentication/#scopes&gt;&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-        <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">from</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>)]</span>
-        <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">into</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Scope</span> {
+<span class="macro">macro_rules! </span>scope_impls {
+    ($(<span class="macro-nonterminal">$i</span>:ident,scope: <span class="macro-nonterminal">$rename</span>:literal, doc: <span class="macro-nonterminal">$doc</span>:literal);* $(;)<span class="question-mark">? </span>) =&gt; {
+        <span class="attribute">#[doc = <span class="string">&quot;Scopes for twitch.&quot;</span>]
+        #[doc = <span class="string">&quot;&quot;</span>]
+        #[doc = <span class="string">&quot;&lt;https://dev.twitch.tv/docs/authentication/#scopes&gt;&quot;</span>]
+        #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq)]
+        #[non_exhaustive]
+        #[serde(from = <span class="string">&quot;String&quot;</span>)]
+        #[serde(into = <span class="string">&quot;String&quot;</span>)]
+        </span><span class="kw">pub enum </span>Scope {
             $(
-                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>]</span>
-                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;\n\n&quot;</span>]</span>
-                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;`&quot;</span>]</span>
-                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rename</span>]</span>
-                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;`&quot;</span>]</span>
-                <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rename</span>)]</span> <span class="comment">// Is this even needed?</span>
-                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span>,
-            )<span class="op">*</span>
-            <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Other scope that is not implemented.&quot;</span>]</span>
-            <span class="ident">Other</span>(<span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span>),
+                <span class="attribute">#[doc = <span class="macro-nonterminal">$doc</span>]
+                #[doc = <span class="string">&quot;\n\n&quot;</span>]
+                #[doc = <span class="string">&quot;`&quot;</span>]
+                #[doc = <span class="macro-nonterminal">$rename</span>]
+                #[doc = <span class="string">&quot;`&quot;</span>]
+                #[serde(rename = <span class="macro-nonterminal">$rename</span>)] </span><span class="comment">// Is this even needed?
+                </span><span class="macro-nonterminal">$i</span>,
+            )*
+            <span class="attribute">#[doc = <span class="string">&quot;Other scope that is not implemented.&quot;</span>]
+            </span>Other(Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;),
         }
 
-        <span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">Scope</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-                <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw">match</span> <span class="self">self</span> {
-                    <span class="ident">Scope::Other</span>(<span class="ident">s</span>) =&gt; <span class="kw-2">&amp;</span><span class="ident">s</span>,
+        <span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>Scope {
+            <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+                f.write_str(<span class="kw">match </span><span class="self">self </span>{
+                    Scope::Other(s) =&gt; <span class="kw-2">&amp;</span>s,
                     $(
-                        <span class="ident">Scope</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rename</span>,
-                    )<span class="op">*</span>
+                        Scope::<span class="macro-nonterminal">$i </span>=&gt; <span class="macro-nonterminal">$rename</span>,
+                    )*
                 })
             }
         }
 
-        <span class="kw">impl</span> <span class="ident">Scope</span> {
-            <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Get a vec of all defined twitch [Scopes][Scope].&quot;</span>]</span>
-            <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;\n\n&quot;</span>]</span>
-            <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Please note that this may not work for you, as some auth flows and \&quot;apis\&quot; don&#39;t accept all scopes&quot;</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Scope</span><span class="op">&gt;</span> {
+        <span class="kw">impl </span>Scope {
+            <span class="attribute">#[doc = <span class="string">&quot;Get a vec of all defined twitch [Scopes][Scope].&quot;</span>]
+            #[doc = <span class="string">&quot;\n\n&quot;</span>]
+            #[doc = <span class="string">&quot;Please note that this may not work for you, as some auth flows and \&quot;apis\&quot; don&#39;t accept all scopes&quot;</span>]
+            </span><span class="kw">pub fn </span>all() -&gt; Vec&lt;Scope&gt; {
                 <span class="macro">vec!</span>[
-                    $(<span class="ident">Scope</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span>,)<span class="op">*</span>
+                    $(Scope::<span class="macro-nonterminal">$i</span>,)*
                 ]
             }
 
-            <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Get a description for the token&quot;</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">description</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
-                <span class="kw">match</span> <span class="self">self</span> {
-                    $(<span class="self">Self</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>,)<span class="op">*</span>
-                    <span class="kw">_</span> =&gt; <span class="string">&quot;unknown scope&quot;</span>
+            <span class="attribute">#[doc = <span class="string">&quot;Get a description for the token&quot;</span>]
+            </span><span class="kw">pub fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+                <span class="kw">match </span><span class="self">self </span>{
+                    $(<span class="self">Self</span>::<span class="macro-nonterminal">$i </span>=&gt; <span class="macro-nonterminal">$doc</span>,)*
+                    <span class="kw">_ </span>=&gt; <span class="string">&quot;unknown scope&quot;
+                </span>}
+            }
+
+            <span class="attribute">#[doc = <span class="string">&quot;Make a scope from a cow string&quot;</span>]
+            </span><span class="kw">pub fn </span>parse&lt;C&gt;(s: C) -&gt; Scope <span class="kw">where </span>C: Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt; {
+                <span class="kw">use </span>std::borrow::Borrow;
+                <span class="kw">let </span>s = s.into();
+                <span class="kw">match </span>s.borrow() {
+                    $(<span class="macro-nonterminal">$rename </span>=&gt; {Scope::<span class="macro-nonterminal">$i</span>})<span class="kw-2">*</span>,
+                    <span class="kw">_ </span>=&gt; Scope::Other(s)
                 }
             }
 
-            <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Make a scope from a cow string&quot;</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="ident">C</span>) -&gt; <span class="ident">Scope</span> <span class="kw">where</span> <span class="ident">C</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-                <span class="kw">use</span> <span class="ident">std::borrow::Borrow</span>;
-                <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">into</span>();
-                <span class="kw">match</span> <span class="ident">s</span>.<span class="ident">borrow</span>() {
-                    $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rename</span> =&gt; {<span class="ident">Scope</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span>})<span class="kw-2">*</span>,
-                    <span class="kw">_</span> =&gt; <span class="ident">Scope::Other</span>(<span class="ident">s</span>)
-                }
-            }
-
-            <span class="doccomment">/// Get the scope as a borrowed string.</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-                <span class="kw">match</span> <span class="self">self</span> {
-                    $(<span class="ident">Scope</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rename</span>,)<span class="op">*</span>
-                    <span class="ident"><span class="self">Self</span>::Other</span>(<span class="ident">c</span>) =&gt;  <span class="ident">c</span>.<span class="ident">as_ref</span>()
+            <span class="doccomment">/// Get the scope as a borrowed string.
+            </span><span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+                <span class="kw">match </span><span class="self">self </span>{
+                    $(Scope::<span class="macro-nonterminal">$i </span>=&gt; <span class="macro-nonterminal">$rename</span>,)*
+                    <span class="self">Self</span>::Other(c) =&gt;  c.as_ref()
                 }
             }
         }
@@ -235,82 +235,82 @@
 }
 
 <span class="macro">scope_impls!</span>(
-    <span class="ident">AnalyticsReadExtensions</span>,        <span class="ident">scope</span>: <span class="string">&quot;analytics:read:extensions&quot;</span>,         <span class="ident">doc</span>: <span class="string">&quot;View analytics data for the Twitch Extensions owned by the authenticated account.&quot;</span>;
-    <span class="ident">AnalyticsReadGames</span>,             <span class="ident">scope</span>: <span class="string">&quot;analytics:read:games&quot;</span>,              <span class="ident">doc</span>: <span class="string">&quot;View analytics data for the games owned by the authenticated account.&quot;</span>;
-    <span class="ident">BitsRead</span>,                       <span class="ident">scope</span>: <span class="string">&quot;bits:read&quot;</span>,                         <span class="ident">doc</span>: <span class="string">&quot;View Bits information for a channel.&quot;</span>;
-    <span class="ident">ChannelEditCommercial</span>,          <span class="ident">scope</span>: <span class="string">&quot;channel:edit:commercial&quot;</span>,           <span class="ident">doc</span>: <span class="string">&quot;Run commercials on a channel.&quot;</span>;
-    <span class="ident">ChannelManageBroadcast</span>,         <span class="ident">scope</span>: <span class="string">&quot;channel:manage:broadcast&quot;</span>,          <span class="ident">doc</span>: <span class="string">&quot;Manage a channel’s broadcast configuration, including updating channel configuration and managing stream markers and stream tags.&quot;</span>;
-    <span class="ident">ChannelManageExtensions</span>,        <span class="ident">scope</span>: <span class="string">&quot;channel:manage:extensions&quot;</span>,         <span class="ident">doc</span>: <span class="string">&quot;Manage a channel’s Extension configuration, including activating Extensions.&quot;</span>;
-    <span class="ident">ChannelManagePolls</span>,             <span class="ident">scope</span>: <span class="string">&quot;channel:manage:polls&quot;</span>,              <span class="ident">doc</span>: <span class="string">&quot;Manage a channel’s polls.&quot;</span>;
-    <span class="ident">ChannelManagePredictions</span>,       <span class="ident">scope</span>: <span class="string">&quot;channel:manage:predictions&quot;</span>,        <span class="ident">doc</span>: <span class="string">&quot;Manage of channel’s Channel Points Predictions&quot;</span>;
-    <span class="ident">ChannelManageRaids</span>,             <span class="ident">scope</span>: <span class="string">&quot;channel:manage:raids&quot;</span>,              <span class="ident">doc</span>: <span class="string">&quot;Manage a Channel’s raids.&quot;</span>;
-    <span class="ident">ChannelManageRedemptions</span>,       <span class="ident">scope</span>: <span class="string">&quot;channel:manage:redemptions&quot;</span>,        <span class="ident">doc</span>: <span class="string">&quot;Manage Channel Points custom rewards and their redemptions on a channel.&quot;</span>;
-    <span class="ident">ChannelManageSchedule</span>,          <span class="ident">scope</span>: <span class="string">&quot;channel:manage:schedule&quot;</span>,           <span class="ident">doc</span>: <span class="string">&quot;Manage a channel’s stream schedule.&quot;</span>;
-    <span class="ident">ChannelManageVideos</span>,            <span class="ident">scope</span>: <span class="string">&quot;channel:manage:videos&quot;</span>,             <span class="ident">doc</span>: <span class="string">&quot;Manage a channel’s videos, including deleting videos.&quot;</span>;
-    <span class="ident">ChannelModerate</span>,                <span class="ident">scope</span>: <span class="string">&quot;channel:moderate&quot;</span>,                  <span class="ident">doc</span>: <span class="string">&quot;Perform moderation actions in a channel. The user requesting the scope must be a moderator in the channel.&quot;</span>;
-    <span class="ident">ChannelReadEditors</span>,             <span class="ident">scope</span>: <span class="string">&quot;channel:read:editors&quot;</span>,              <span class="ident">doc</span>: <span class="string">&quot;View a list of users with the editor role for a channel.&quot;</span>;
-    <span class="ident">ChannelReadGoals</span>,               <span class="ident">scope</span>: <span class="string">&quot;channel:read:goals&quot;</span>,                <span class="ident">doc</span>: <span class="string">&quot;View Creator Goals for a channel.&quot;</span>;
-    <span class="ident">ChannelReadHypeTrain</span>,           <span class="ident">scope</span>: <span class="string">&quot;channel:read:hype_train&quot;</span>,           <span class="ident">doc</span>: <span class="string">&quot;View Hype Train information for a channel.&quot;</span>;
-    <span class="ident">ChannelReadPolls</span>,               <span class="ident">scope</span>: <span class="string">&quot;channel:read:polls&quot;</span>,                <span class="ident">doc</span>: <span class="string">&quot;View a channel’s polls.&quot;</span>;
-    <span class="ident">ChannelReadPredictions</span>,         <span class="ident">scope</span>: <span class="string">&quot;channel:read:predictions&quot;</span>,          <span class="ident">doc</span>: <span class="string">&quot;View a channel’s Channel Points Predictions.&quot;</span>;
-    <span class="ident">ChannelReadRedemptions</span>,         <span class="ident">scope</span>: <span class="string">&quot;channel:read:redemptions&quot;</span>,          <span class="ident">doc</span>: <span class="string">&quot;View Channel Points custom rewards and their redemptions on a channel.&quot;</span>;
-    <span class="ident">ChannelReadStreamKey</span>,           <span class="ident">scope</span>: <span class="string">&quot;channel:read:stream_key&quot;</span>,           <span class="ident">doc</span>: <span class="string">&quot;View an authorized user’s stream key.&quot;</span>;
-    <span class="ident">ChannelReadSubscriptions</span>,       <span class="ident">scope</span>: <span class="string">&quot;channel:read:subscriptions&quot;</span>,        <span class="ident">doc</span>: <span class="string">&quot;View a list of all subscribers to a channel and check if a user is subscribed to a channel.&quot;</span>;
-    <span class="ident">ChannelSubscriptions</span>,           <span class="ident">scope</span>: <span class="string">&quot;channel_subscriptions&quot;</span>,             <span class="ident">doc</span>: <span class="string">&quot;\\[DEPRECATED\\] Read all subscribers to your channel.&quot;</span>;
-    <span class="ident">ChatEdit</span>,                       <span class="ident">scope</span>: <span class="string">&quot;chat:edit&quot;</span>,                         <span class="ident">doc</span>: <span class="string">&quot;Send live stream chat and rooms messages.&quot;</span>;
-    <span class="ident">ChatRead</span>,                       <span class="ident">scope</span>: <span class="string">&quot;chat:read&quot;</span>,                         <span class="ident">doc</span>: <span class="string">&quot;View live stream chat and rooms messages.&quot;</span>;
-    <span class="ident">ClipsEdit</span>,                      <span class="ident">scope</span>: <span class="string">&quot;clips:edit&quot;</span>,                        <span class="ident">doc</span>: <span class="string">&quot;Manage Clips for a channel.&quot;</span>;
-    <span class="ident">ModerationRead</span>,                 <span class="ident">scope</span>: <span class="string">&quot;moderation:read&quot;</span>,                   <span class="ident">doc</span>: <span class="string">&quot;View a channel’s moderation data including Moderators, Bans, Timeouts, and Automod settings.&quot;</span>;
-    <span class="ident">ModeratorManageAutoMod</span>,         <span class="ident">scope</span>: <span class="string">&quot;moderator:manage:automod&quot;</span>,          <span class="ident">doc</span>: <span class="string">&quot;Manage messages held for review by AutoMod in channels where you are a moderator.&quot;</span>;
-    <span class="ident">ModeratorManageAutomodSettings</span>, <span class="ident">scope</span>: <span class="string">&quot;moderator:manage:automod_settings&quot;</span>, <span class="ident">doc</span>: <span class="string">&quot;Manage a broadcaster’s AutoMod settings&quot;</span>;
-    <span class="ident">ModeratorManageBannedUsers</span>,     <span class="ident">scope</span>: <span class="string">&quot;moderator:manage:banned_users&quot;</span>,     <span class="ident">doc</span>: <span class="string">&quot;Ban and unban users.&quot;</span>;
-    <span class="ident">ModeratorManageBlockedTerms</span>,    <span class="ident">scope</span>: <span class="string">&quot;moderator:manage:blocked_terms&quot;</span>,    <span class="ident">doc</span>: <span class="string">&quot;Manage a broadcaster’s list of blocked terms.&quot;</span>;
-    <span class="ident">ModeratorManageChatSettings</span>,    <span class="ident">scope</span>: <span class="string">&quot;moderator:manage:chat_settings&quot;</span>,    <span class="ident">doc</span>: <span class="string">&quot;View a broadcaster’s chat room settings.&quot;</span>;
-    <span class="ident">ModeratorReadAutomodSettings</span>,   <span class="ident">scope</span>: <span class="string">&quot;moderator:read:automod_settings&quot;</span>,   <span class="ident">doc</span>: <span class="string">&quot;View a broadcaster’s AutoMod settings.&quot;</span>;
-    <span class="ident">ModeratorReadBlockedTerms</span>,      <span class="ident">scope</span>: <span class="string">&quot;moderator:read:blocked_terms&quot;</span>,      <span class="ident">doc</span>: <span class="string">&quot;View a broadcaster’s list of blocked terms.&quot;</span>;
-    <span class="ident">ModeratorReadChatSettings</span>,      <span class="ident">scope</span>: <span class="string">&quot;moderator:read:chat_settings&quot;</span>,      <span class="ident">doc</span>: <span class="string">&quot;View a broadcaster’s chat room settings.&quot;</span>;
-    <span class="ident">UserEdit</span>,                       <span class="ident">scope</span>: <span class="string">&quot;user:edit&quot;</span>,                         <span class="ident">doc</span>: <span class="string">&quot;Manage a user object.&quot;</span>;
-    <span class="ident">UserEditBroadcast</span>,              <span class="ident">scope</span>: <span class="string">&quot;user:edit:broadcast&quot;</span>,               <span class="ident">doc</span>: <span class="string">&quot;Edit your channel&#39;s broadcast configuration, including extension configuration. (This scope implies user:read:broadcast capability.)&quot;</span>;
-    <span class="ident">UserEditFollows</span>,                <span class="ident">scope</span>: <span class="string">&quot;user:edit:follows&quot;</span>,                 <span class="ident">doc</span>: <span class="string">&quot;Edit a user’s follows.&quot;</span>;
-    <span class="ident">UserManageBlockedUsers</span>,         <span class="ident">scope</span>: <span class="string">&quot;user:manage:blocked_users&quot;</span>,         <span class="ident">doc</span>: <span class="string">&quot;Manage the block list of a user.&quot;</span>;
-    <span class="ident">UserReadBlockedUsers</span>,           <span class="ident">scope</span>: <span class="string">&quot;user:read:blocked_users&quot;</span>,           <span class="ident">doc</span>: <span class="string">&quot;View the block list of a user.&quot;</span>;
-    <span class="ident">UserReadBroadcast</span>,              <span class="ident">scope</span>: <span class="string">&quot;user:read:broadcast&quot;</span>,               <span class="ident">doc</span>: <span class="string">&quot;View a user’s broadcasting configuration, including Extension configurations.&quot;</span>;
-    <span class="ident">UserReadEmail</span>,                  <span class="ident">scope</span>: <span class="string">&quot;user:read:email&quot;</span>,                   <span class="ident">doc</span>: <span class="string">&quot;Read an authorized user’s email address.&quot;</span>;
-    <span class="ident">UserReadFollows</span>,                <span class="ident">scope</span>: <span class="string">&quot;user:read:follows&quot;</span>,                 <span class="ident">doc</span>: <span class="string">&quot;View the list of channels a user follows.&quot;</span>;
-    <span class="ident">UserReadSubscriptions</span>,          <span class="ident">scope</span>: <span class="string">&quot;user:read:subscriptions&quot;</span>,           <span class="ident">doc</span>: <span class="string">&quot;View if an authorized user is subscribed to specific channels.&quot;</span>;
-    <span class="ident">WhispersEdit</span>,                   <span class="ident">scope</span>: <span class="string">&quot;whispers:edit&quot;</span>,                     <span class="ident">doc</span>: <span class="string">&quot;Send whisper messages.&quot;</span>;
-    <span class="ident">WhispersRead</span>,                   <span class="ident">scope</span>: <span class="string">&quot;whispers:read&quot;</span>,                     <span class="ident">doc</span>: <span class="string">&quot;View your whisper messages.&quot;</span>;
+    AnalyticsReadExtensions,        scope: <span class="string">&quot;analytics:read:extensions&quot;</span>,         doc: <span class="string">&quot;View analytics data for the Twitch Extensions owned by the authenticated account.&quot;</span>;
+    AnalyticsReadGames,             scope: <span class="string">&quot;analytics:read:games&quot;</span>,              doc: <span class="string">&quot;View analytics data for the games owned by the authenticated account.&quot;</span>;
+    BitsRead,                       scope: <span class="string">&quot;bits:read&quot;</span>,                         doc: <span class="string">&quot;View Bits information for a channel.&quot;</span>;
+    ChannelEditCommercial,          scope: <span class="string">&quot;channel:edit:commercial&quot;</span>,           doc: <span class="string">&quot;Run commercials on a channel.&quot;</span>;
+    ChannelManageBroadcast,         scope: <span class="string">&quot;channel:manage:broadcast&quot;</span>,          doc: <span class="string">&quot;Manage a channel’s broadcast configuration, including updating channel configuration and managing stream markers and stream tags.&quot;</span>;
+    ChannelManageExtensions,        scope: <span class="string">&quot;channel:manage:extensions&quot;</span>,         doc: <span class="string">&quot;Manage a channel’s Extension configuration, including activating Extensions.&quot;</span>;
+    ChannelManagePolls,             scope: <span class="string">&quot;channel:manage:polls&quot;</span>,              doc: <span class="string">&quot;Manage a channel’s polls.&quot;</span>;
+    ChannelManagePredictions,       scope: <span class="string">&quot;channel:manage:predictions&quot;</span>,        doc: <span class="string">&quot;Manage of channel’s Channel Points Predictions&quot;</span>;
+    ChannelManageRaids,             scope: <span class="string">&quot;channel:manage:raids&quot;</span>,              doc: <span class="string">&quot;Manage a Channel’s raids.&quot;</span>;
+    ChannelManageRedemptions,       scope: <span class="string">&quot;channel:manage:redemptions&quot;</span>,        doc: <span class="string">&quot;Manage Channel Points custom rewards and their redemptions on a channel.&quot;</span>;
+    ChannelManageSchedule,          scope: <span class="string">&quot;channel:manage:schedule&quot;</span>,           doc: <span class="string">&quot;Manage a channel’s stream schedule.&quot;</span>;
+    ChannelManageVideos,            scope: <span class="string">&quot;channel:manage:videos&quot;</span>,             doc: <span class="string">&quot;Manage a channel’s videos, including deleting videos.&quot;</span>;
+    ChannelModerate,                scope: <span class="string">&quot;channel:moderate&quot;</span>,                  doc: <span class="string">&quot;Perform moderation actions in a channel. The user requesting the scope must be a moderator in the channel.&quot;</span>;
+    ChannelReadEditors,             scope: <span class="string">&quot;channel:read:editors&quot;</span>,              doc: <span class="string">&quot;View a list of users with the editor role for a channel.&quot;</span>;
+    ChannelReadGoals,               scope: <span class="string">&quot;channel:read:goals&quot;</span>,                doc: <span class="string">&quot;View Creator Goals for a channel.&quot;</span>;
+    ChannelReadHypeTrain,           scope: <span class="string">&quot;channel:read:hype_train&quot;</span>,           doc: <span class="string">&quot;View Hype Train information for a channel.&quot;</span>;
+    ChannelReadPolls,               scope: <span class="string">&quot;channel:read:polls&quot;</span>,                doc: <span class="string">&quot;View a channel’s polls.&quot;</span>;
+    ChannelReadPredictions,         scope: <span class="string">&quot;channel:read:predictions&quot;</span>,          doc: <span class="string">&quot;View a channel’s Channel Points Predictions.&quot;</span>;
+    ChannelReadRedemptions,         scope: <span class="string">&quot;channel:read:redemptions&quot;</span>,          doc: <span class="string">&quot;View Channel Points custom rewards and their redemptions on a channel.&quot;</span>;
+    ChannelReadStreamKey,           scope: <span class="string">&quot;channel:read:stream_key&quot;</span>,           doc: <span class="string">&quot;View an authorized user’s stream key.&quot;</span>;
+    ChannelReadSubscriptions,       scope: <span class="string">&quot;channel:read:subscriptions&quot;</span>,        doc: <span class="string">&quot;View a list of all subscribers to a channel and check if a user is subscribed to a channel.&quot;</span>;
+    ChannelSubscriptions,           scope: <span class="string">&quot;channel_subscriptions&quot;</span>,             doc: <span class="string">&quot;\\[DEPRECATED\\] Read all subscribers to your channel.&quot;</span>;
+    ChatEdit,                       scope: <span class="string">&quot;chat:edit&quot;</span>,                         doc: <span class="string">&quot;Send live stream chat and rooms messages.&quot;</span>;
+    ChatRead,                       scope: <span class="string">&quot;chat:read&quot;</span>,                         doc: <span class="string">&quot;View live stream chat and rooms messages.&quot;</span>;
+    ClipsEdit,                      scope: <span class="string">&quot;clips:edit&quot;</span>,                        doc: <span class="string">&quot;Manage Clips for a channel.&quot;</span>;
+    ModerationRead,                 scope: <span class="string">&quot;moderation:read&quot;</span>,                   doc: <span class="string">&quot;View a channel’s moderation data including Moderators, Bans, Timeouts, and Automod settings.&quot;</span>;
+    ModeratorManageAutoMod,         scope: <span class="string">&quot;moderator:manage:automod&quot;</span>,          doc: <span class="string">&quot;Manage messages held for review by AutoMod in channels where you are a moderator.&quot;</span>;
+    ModeratorManageAutomodSettings, scope: <span class="string">&quot;moderator:manage:automod_settings&quot;</span>, doc: <span class="string">&quot;Manage a broadcaster’s AutoMod settings&quot;</span>;
+    ModeratorManageBannedUsers,     scope: <span class="string">&quot;moderator:manage:banned_users&quot;</span>,     doc: <span class="string">&quot;Ban and unban users.&quot;</span>;
+    ModeratorManageBlockedTerms,    scope: <span class="string">&quot;moderator:manage:blocked_terms&quot;</span>,    doc: <span class="string">&quot;Manage a broadcaster’s list of blocked terms.&quot;</span>;
+    ModeratorManageChatSettings,    scope: <span class="string">&quot;moderator:manage:chat_settings&quot;</span>,    doc: <span class="string">&quot;View a broadcaster’s chat room settings.&quot;</span>;
+    ModeratorReadAutomodSettings,   scope: <span class="string">&quot;moderator:read:automod_settings&quot;</span>,   doc: <span class="string">&quot;View a broadcaster’s AutoMod settings.&quot;</span>;
+    ModeratorReadBlockedTerms,      scope: <span class="string">&quot;moderator:read:blocked_terms&quot;</span>,      doc: <span class="string">&quot;View a broadcaster’s list of blocked terms.&quot;</span>;
+    ModeratorReadChatSettings,      scope: <span class="string">&quot;moderator:read:chat_settings&quot;</span>,      doc: <span class="string">&quot;View a broadcaster’s chat room settings.&quot;</span>;
+    UserEdit,                       scope: <span class="string">&quot;user:edit&quot;</span>,                         doc: <span class="string">&quot;Manage a user object.&quot;</span>;
+    UserEditBroadcast,              scope: <span class="string">&quot;user:edit:broadcast&quot;</span>,               doc: <span class="string">&quot;Edit your channel&#39;s broadcast configuration, including extension configuration. (This scope implies user:read:broadcast capability.)&quot;</span>;
+    UserEditFollows,                scope: <span class="string">&quot;user:edit:follows&quot;</span>,                 doc: <span class="string">&quot;Edit a user’s follows.&quot;</span>;
+    UserManageBlockedUsers,         scope: <span class="string">&quot;user:manage:blocked_users&quot;</span>,         doc: <span class="string">&quot;Manage the block list of a user.&quot;</span>;
+    UserReadBlockedUsers,           scope: <span class="string">&quot;user:read:blocked_users&quot;</span>,           doc: <span class="string">&quot;View the block list of a user.&quot;</span>;
+    UserReadBroadcast,              scope: <span class="string">&quot;user:read:broadcast&quot;</span>,               doc: <span class="string">&quot;View a user’s broadcasting configuration, including Extension configurations.&quot;</span>;
+    UserReadEmail,                  scope: <span class="string">&quot;user:read:email&quot;</span>,                   doc: <span class="string">&quot;Read an authorized user’s email address.&quot;</span>;
+    UserReadFollows,                scope: <span class="string">&quot;user:read:follows&quot;</span>,                 doc: <span class="string">&quot;View the list of channels a user follows.&quot;</span>;
+    UserReadSubscriptions,          scope: <span class="string">&quot;user:read:subscriptions&quot;</span>,           doc: <span class="string">&quot;View if an authorized user is subscribed to specific channels.&quot;</span>;
+    WhispersEdit,                   scope: <span class="string">&quot;whispers:edit&quot;</span>,                     doc: <span class="string">&quot;Send whisper messages.&quot;</span>;
+    WhispersRead,                   scope: <span class="string">&quot;whispers:read&quot;</span>,                     doc: <span class="string">&quot;View your whisper messages.&quot;</span>;
 );
 
-<span class="kw">impl</span> <span class="ident">std::borrow::Borrow</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Scope</span> {
-    <span class="kw">fn</span> <span class="ident">borrow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> { <span class="self">self</span>.<span class="ident">as_str</span>() }
+<span class="kw">impl </span>std::borrow::Borrow&lt;str&gt; <span class="kw">for </span>Scope {
+    <span class="kw">fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="self">self</span>.as_str() }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Scope</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">String</span>) -&gt; <span class="self">Self</span> { <span class="ident">Scope::parse</span>(<span class="ident">s</span>) }
+<span class="kw">impl </span>From&lt;String&gt; <span class="kw">for </span>Scope {
+    <span class="kw">fn </span>from(s: String) -&gt; <span class="self">Self </span>{ Scope::parse(s) }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Scope</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Scope</span>) -&gt; <span class="self">Self</span> { <span class="ident">s</span>.<span class="ident">to_string</span>() }
+<span class="kw">impl </span>From&lt;Scope&gt; <span class="kw">for </span>String {
+    <span class="kw">fn </span>from(s: Scope) -&gt; <span class="self">Self </span>{ s.to_string() }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">custom_scope</span>() {
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>custom_scope() {
         <span class="macro">assert_eq!</span>(
-            <span class="ident">Scope::Other</span>(<span class="ident">Cow::from</span>(<span class="string">&quot;custom_scope&quot;</span>)),
-            <span class="ident">Scope::parse</span>(<span class="string">&quot;custom_scope&quot;</span>)
+            Scope::Other(Cow::from(<span class="string">&quot;custom_scope&quot;</span>)),
+            Scope::parse(<span class="string">&quot;custom_scope&quot;</span>)
         )
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">roundabout</span>() {
-        <span class="kw">for</span> <span class="ident">scope</span> <span class="kw">in</span> <span class="ident">Scope::all</span>() {
-            <span class="macro">assert_eq!</span>(<span class="ident">scope</span>, <span class="ident">Scope::parse</span>(<span class="ident">scope</span>.<span class="ident">to_string</span>()))
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>roundabout() {
+        <span class="kw">for </span>scope <span class="kw">in </span>Scope::all() {
+            <span class="macro">assert_eq!</span>(scope, Scope::parse(scope.to_string()))
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_oauth2" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

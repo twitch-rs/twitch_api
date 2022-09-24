@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/chat/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/chat/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -186,193 +186,193 @@
 <span id="186">186</span>
 <span id="187">187</span>
 <span id="188">188</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding chat</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding chat
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">helix</span>::{<span class="self">self</span>, <span class="ident">Request</span>},
-    <span class="ident">types</span>::{<span class="self">self</span>, <span class="ident">EmoteUrlBuilder</span>},
+</span><span class="kw">use crate</span>::{
+    helix::{<span class="self">self</span>, Request},
+    types::{<span class="self">self</span>, EmoteUrlBuilder},
 };
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_channel_chat_badges</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_channel_emotes</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_emote_sets</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_global_chat_badges</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">get_global_emotes</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">update_chat_settings</span>;
+<span class="kw">pub mod </span>get_channel_chat_badges;
+<span class="kw">pub mod </span>get_channel_emotes;
+<span class="kw">pub mod </span>get_emote_sets;
+<span class="kw">pub mod </span>get_global_chat_badges;
+<span class="kw">pub mod </span>get_global_emotes;
+<span class="kw">pub mod </span>update_chat_settings;
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_channel_chat_badges::GetChannelChatBadgesRequest</span>;
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>get_channel_chat_badges::GetChannelChatBadgesRequest;
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_global_chat_badges::GetGlobalChatBadgesRequest</span>;
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>get_global_chat_badges::GetGlobalChatBadgesRequest;
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_channel_emotes::GetChannelEmotesRequest</span>;
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>get_channel_emotes::GetChannelEmotesRequest;
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_global_emotes::GetGlobalEmotesRequest</span>;
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>get_global_emotes::GetGlobalEmotesRequest;
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">get_emote_sets::GetEmoteSetsRequest</span>;
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>get_emote_sets::GetEmoteSetsRequest;
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">update_chat_settings</span>::{<span class="ident">UpdateChatSettingsBody</span>, <span class="ident">UpdateChatSettingsRequest</span>};
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};
 
-<span class="doccomment">/// A set of badges</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BadgeSet</span> {
-    <span class="doccomment">/// ID for the chat badge set.</span>
-    <span class="kw">pub</span> <span class="ident">set_id</span>: <span class="ident">types::BadgeSetId</span>,
-    <span class="doccomment">/// Contains chat badge objects for the set.</span>
-    <span class="kw">pub</span> <span class="ident">versions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ChatBadge</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A set of badges
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>BadgeSet {
+    <span class="doccomment">/// ID for the chat badge set.
+    </span><span class="kw">pub </span>set_id: types::BadgeSetId,
+    <span class="doccomment">/// Contains chat badge objects for the set.
+    </span><span class="kw">pub </span>versions: Vec&lt;ChatBadge&gt;,
 }
 
-<span class="doccomment">/// A chat Badge</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChatBadge</span> {
-    <span class="doccomment">/// ID of the chat badge version.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">types::ChatBadgeId</span>,
-    <span class="comment">// FIXME: Use types::Image, see https://github.com/serde-rs/serde/issues/1504</span>
-    <span class="doccomment">/// URL to png of size 28x28</span>
-    <span class="kw">pub</span> <span class="ident">image_url_1x</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// URL to png of size 56x56</span>
-    <span class="kw">pub</span> <span class="ident">image_url_2x</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// URL to png of size 112x112</span>
-    <span class="kw">pub</span> <span class="ident">image_url_4x</span>: <span class="ident">String</span>,
+<span class="doccomment">/// A chat Badge
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ChatBadge {
+    <span class="doccomment">/// ID of the chat badge version.
+    </span><span class="kw">pub </span>id: types::ChatBadgeId,
+    <span class="comment">// FIXME: Use types::Image, see https://github.com/serde-rs/serde/issues/1504
+    </span><span class="doccomment">/// URL to png of size 28x28
+    </span><span class="kw">pub </span>image_url_1x: String,
+    <span class="doccomment">/// URL to png of size 56x56
+    </span><span class="kw">pub </span>image_url_2x: String,
+    <span class="doccomment">/// URL to png of size 112x112
+    </span><span class="kw">pub </span>image_url_4x: String,
 }
 
-<span class="doccomment">/// A chat emote</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelEmote</span> {
-    <span class="doccomment">/// ID of the emote.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">types::EmoteId</span>,
-    <span class="doccomment">/// Name of the emote a viewer types into Twitch chat for the image to appear.</span>
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Object of image URLs for the emote.</span>
-    <span class="kw">pub</span> <span class="ident">images</span>: <span class="ident">types::Image</span>,
-    <span class="doccomment">/// If the emote_type is &quot;subscriptions&quot;, this indicates the subscriber tier at which the emote is unlocked. Set to an empty string otherwise.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(
-        <span class="ident">default</span>,
-        <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;helix::deserialize_none_from_empty_string&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="ident">tier</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::SubscriptionTier</span><span class="op">&gt;</span>,
-    <span class="comment">// FIXME: Enumify?</span>
-    <span class="doccomment">/// The type of emote.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The most common values for custom channel emotes are</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `subscriptions`: Indicates a custom subscriber emote.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `bitstier`: Indicates a custom Bits tier emote.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `follower`: Indicates a custom follower emote.</span>
-    <span class="kw">pub</span> <span class="ident">emote_type</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// ID of the emote set the emote belongs to.</span>
-    <span class="kw">pub</span> <span class="ident">emote_set_id</span>: <span class="ident">types::EmoteSetId</span>,
-    <span class="doccomment">/// The formats that the emote is available in.</span>
-    <span class="kw">pub</span> <span class="ident">format</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types::EmoteAnimationSetting</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The sizes that the emote is available in.</span>
-    <span class="kw">pub</span> <span class="ident">scale</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types::EmoteScale</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The background themes that the emote is available in.</span>
-    <span class="kw">pub</span> <span class="ident">theme_mode</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types::EmoteThemeMode</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A chat emote
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ChannelEmote {
+    <span class="doccomment">/// ID of the emote.
+    </span><span class="kw">pub </span>id: types::EmoteId,
+    <span class="doccomment">/// Name of the emote a viewer types into Twitch chat for the image to appear.
+    </span><span class="kw">pub </span>name: String,
+    <span class="doccomment">/// Object of image URLs for the emote.
+    </span><span class="kw">pub </span>images: types::Image,
+    <span class="doccomment">/// If the emote_type is &quot;subscriptions&quot;, this indicates the subscriber tier at which the emote is unlocked. Set to an empty string otherwise.
+    </span><span class="attribute">#[serde(
+        default,
+        deserialize_with = <span class="string">&quot;helix::deserialize_none_from_empty_string&quot;
+    </span>)]
+    </span><span class="kw">pub </span>tier: <span class="prelude-ty">Option</span>&lt;types::SubscriptionTier&gt;,
+    <span class="comment">// FIXME: Enumify?
+    </span><span class="doccomment">/// The type of emote.
+    ///
+    /// The most common values for custom channel emotes are
+    ///
+    /// `subscriptions`: Indicates a custom subscriber emote.
+    ///
+    /// `bitstier`: Indicates a custom Bits tier emote.
+    ///
+    /// `follower`: Indicates a custom follower emote.
+    </span><span class="kw">pub </span>emote_type: String,
+    <span class="doccomment">/// ID of the emote set the emote belongs to.
+    </span><span class="kw">pub </span>emote_set_id: types::EmoteSetId,
+    <span class="doccomment">/// The formats that the emote is available in.
+    </span><span class="kw">pub </span>format: Vec&lt;types::EmoteAnimationSetting&gt;,
+    <span class="doccomment">/// The sizes that the emote is available in.
+    </span><span class="kw">pub </span>scale: Vec&lt;types::EmoteScale&gt;,
+    <span class="doccomment">/// The background themes that the emote is available in.
+    </span><span class="kw">pub </span>theme_mode: Vec&lt;types::EmoteThemeMode&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">ChannelEmote</span> {
-    <span class="doccomment">/// Create an emote builder for this emote.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust, no_run</span>
-    <span class="doccomment">/// # use twitch_api::{client, helix};</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {</span>
-    <span class="doccomment">/// # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());</span>
-    <span class="doccomment">/// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;</span>
-    <span class="doccomment">/// let emotes = client.get_channel_emotes_from_login(&quot;twitchdev&quot;, &amp;token).await?.expect(&quot;user not found&quot;);</span>
-    <span class="doccomment">/// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), &quot;https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0&quot;);</span>
-    <span class="doccomment">/// # Ok(())</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">types::EmoteUrlBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> { <span class="ident">EmoteUrlBuilder::new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">id</span>) }
+<span class="kw">impl </span>ChannelEmote {
+    <span class="doccomment">/// Create an emote builder for this emote.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # use twitch_api::{client, helix};
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// let emotes = client.get_channel_emotes_from_login(&quot;twitchdev&quot;, &amp;token).await?.expect(&quot;user not found&quot;);
+    /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), &quot;https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0&quot;);
+    /// # Ok(())
+    /// # }
+    /// ```
+    </span><span class="kw">pub fn </span>url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; types::EmoteUrlBuilder&lt;<span class="lifetime">&#39;_</span>&gt; { EmoteUrlBuilder::new(<span class="kw-2">&amp;</span><span class="self">self</span>.id) }
 }
 
-<span class="doccomment">/// A chat emote</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GlobalEmote</span> {
-    <span class="doccomment">/// ID of the emote.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">types::EmoteId</span>,
-    <span class="doccomment">/// Name of the emote a viewer types into Twitch chat for the image to appear.</span>
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Object of image URLs for the emote.</span>
-    <span class="kw">pub</span> <span class="ident">images</span>: <span class="ident">types::Image</span>,
-    <span class="doccomment">/// The formats that the emote is available in.</span>
-    <span class="kw">pub</span> <span class="ident">format</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types::EmoteAnimationSetting</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The sizes that the emote is available in.</span>
-    <span class="kw">pub</span> <span class="ident">scale</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types::EmoteScale</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The background themes that the emote is available in.</span>
-    <span class="kw">pub</span> <span class="ident">theme_mode</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">types::EmoteThemeMode</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A chat emote
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>GlobalEmote {
+    <span class="doccomment">/// ID of the emote.
+    </span><span class="kw">pub </span>id: types::EmoteId,
+    <span class="doccomment">/// Name of the emote a viewer types into Twitch chat for the image to appear.
+    </span><span class="kw">pub </span>name: String,
+    <span class="doccomment">/// Object of image URLs for the emote.
+    </span><span class="kw">pub </span>images: types::Image,
+    <span class="doccomment">/// The formats that the emote is available in.
+    </span><span class="kw">pub </span>format: Vec&lt;types::EmoteAnimationSetting&gt;,
+    <span class="doccomment">/// The sizes that the emote is available in.
+    </span><span class="kw">pub </span>scale: Vec&lt;types::EmoteScale&gt;,
+    <span class="doccomment">/// The background themes that the emote is available in.
+    </span><span class="kw">pub </span>theme_mode: Vec&lt;types::EmoteThemeMode&gt;,
 }
 
-<span class="doccomment">/// Chat settings</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deny_unknown_fields&quot;</span>, <span class="ident">serde</span>(<span class="ident">deny_unknown_fields</span>))]</span>
-<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChatSettings</span> {
-    <span class="doccomment">/// The ID of the broadcaster specified in the request.</span>
-    <span class="kw">pub</span> <span class="ident">broadcaster_id</span>: <span class="ident">types::UserId</span>,
-    <span class="doccomment">/// A Boolean value that determines whether chat messages must contain only emotes. Is true, if only messages that are 100% emotes are allowed; otherwise, false.</span>
-    <span class="kw">pub</span> <span class="ident">emote_mode</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// A Boolean value that determines whether the broadcaster restricts the chat room to followers only, based on how long they’ve followed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Is true, if the broadcaster restricts the chat room to followers only; otherwise, false.</span>
-    <span class="doccomment">/// See [`follower_mode_duration`](Self::follower_mode_duration) for how long the followers must have followed the broadcaster to participate in the chat room.</span>
-    <span class="kw">pub</span> <span class="ident">follower_mode</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// The length of time, in minutes, that the followers must have followed the broadcaster to participate in the chat room. See [`follower_mode`](Self::follower_mode).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Is null if [`follower_mode`](Self::follower_mode) is false.</span>
-    <span class="kw">pub</span> <span class="ident">follower_mode_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The ID of the moderator specified in the request for chat settings.</span>
-    <span class="kw">pub</span> <span class="ident">moderator_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">types::UserId</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A Boolean value that determines whether the broadcaster adds a short delay before chat messages appear in the chat room. This gives chat moderators and bots a chance to remove them before viewers can see the message.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Is true, if the broadcaster applies a delay; otherwise, false.</span>
-    <span class="doccomment">/// See [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) for the length of the delay.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This field and [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) are not received when the request is made without a specified `moderator_id`.</span>
-    <span class="kw">pub</span> <span class="ident">non_moderator_chat_delay</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The amount of time, in seconds, that messages are delayed from appearing in chat. See [`non_moderator_chat_delay`](Self::non_moderator_chat_delay).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Is null if [`non_moderator_chat_delay`](Self::non_moderator_chat_delay) is false.</span>
-    <span class="kw">pub</span> <span class="ident">non_moderator_chat_delay_duration</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A Boolean value that determines whether the broadcaster limits how often users in the chat room are allowed to send messages.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Is true, if the broadcaster applies a delay; otherwise, false.</span>
-    <span class="doccomment">/// See [`slow_mode_wait_time`](Self::slow_mode_wait_time) for the delay.</span>
-    <span class="kw">pub</span> <span class="ident">slow_mode</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// The amount of time, in seconds, that users need to wait between sending messages. See slow_mode.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Is null if slow_mode is false.</span>
-    <span class="kw">pub</span> <span class="ident">slow_mode_wait_time</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A Boolean value that determines whether only users that subscribe to the broadcaster’s channel can talk in the chat room.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Is true, if the broadcaster restricts the chat room to subscribers only; otherwise, false.</span>
-    <span class="kw">pub</span> <span class="ident">subscriber_mode</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// A Boolean value that determines whether the broadcaster requires users to post only unique messages in the chat room.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Is true, if the broadcaster requires unique messages only; otherwise, false.</span>
-    <span class="kw">pub</span> <span class="ident">unique_chat_mode</span>: <span class="ident">bool</span>,
+<span class="doccomment">/// Chat settings
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ChatSettings {
+    <span class="doccomment">/// The ID of the broadcaster specified in the request.
+    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    <span class="doccomment">/// A Boolean value that determines whether chat messages must contain only emotes. Is true, if only messages that are 100% emotes are allowed; otherwise, false.
+    </span><span class="kw">pub </span>emote_mode: bool,
+    <span class="doccomment">/// A Boolean value that determines whether the broadcaster restricts the chat room to followers only, based on how long they’ve followed.
+    ///
+    /// Is true, if the broadcaster restricts the chat room to followers only; otherwise, false.
+    /// See [`follower_mode_duration`](Self::follower_mode_duration) for how long the followers must have followed the broadcaster to participate in the chat room.
+    </span><span class="kw">pub </span>follower_mode: bool,
+    <span class="doccomment">/// The length of time, in minutes, that the followers must have followed the broadcaster to participate in the chat room. See [`follower_mode`](Self::follower_mode).
+    ///
+    /// Is null if [`follower_mode`](Self::follower_mode) is false.
+    </span><span class="kw">pub </span>follower_mode_duration: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+    <span class="doccomment">/// The ID of the moderator specified in the request for chat settings.
+    </span><span class="kw">pub </span>moderator_id: <span class="prelude-ty">Option</span>&lt;types::UserId&gt;,
+    <span class="doccomment">/// A Boolean value that determines whether the broadcaster adds a short delay before chat messages appear in the chat room. This gives chat moderators and bots a chance to remove them before viewers can see the message.
+    ///
+    /// Is true, if the broadcaster applies a delay; otherwise, false.
+    /// See [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) for the length of the delay.
+    ///
+    /// # Notes
+    ///
+    /// This field and [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) are not received when the request is made without a specified `moderator_id`.
+    </span><span class="kw">pub </span>non_moderator_chat_delay: <span class="prelude-ty">Option</span>&lt;bool&gt;,
+    <span class="doccomment">/// The amount of time, in seconds, that messages are delayed from appearing in chat. See [`non_moderator_chat_delay`](Self::non_moderator_chat_delay).
+    ///
+    /// Is null if [`non_moderator_chat_delay`](Self::non_moderator_chat_delay) is false.
+    </span><span class="kw">pub </span>non_moderator_chat_delay_duration: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+    <span class="doccomment">/// A Boolean value that determines whether the broadcaster limits how often users in the chat room are allowed to send messages.
+    ///
+    /// Is true, if the broadcaster applies a delay; otherwise, false.
+    /// See [`slow_mode_wait_time`](Self::slow_mode_wait_time) for the delay.
+    </span><span class="kw">pub </span>slow_mode: bool,
+    <span class="doccomment">/// The amount of time, in seconds, that users need to wait between sending messages. See slow_mode.
+    ///
+    /// Is null if slow_mode is false.
+    </span><span class="kw">pub </span>slow_mode_wait_time: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+    <span class="doccomment">/// A Boolean value that determines whether only users that subscribe to the broadcaster’s channel can talk in the chat room.
+    ///
+    /// Is true, if the broadcaster restricts the chat room to subscribers only; otherwise, false.
+    </span><span class="kw">pub </span>subscriber_mode: bool,
+    <span class="doccomment">/// A Boolean value that determines whether the broadcaster requires users to post only unique messages in the chat room.
+    ///
+    /// Is true, if the broadcaster requires unique messages only; otherwise, false.
+    </span><span class="kw">pub </span>unique_chat_mode: bool,
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/request.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>request.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/request.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>request.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -441,448 +441,448 @@
 <span id="441">441</span>
 <span id="442">442</span>
 <span id="443">443</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Requests for driving the API</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">errors</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryInto</span>, <span class="ident">str::FromStr</span>};
+</pre><pre class="rust"><code><span class="doccomment">//! Requests for driving the API
+</span><span class="kw">pub mod </span>errors;
+<span class="kw">use </span>std::{convert::TryInto, str::FromStr};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::parse_json</span>;
+<span class="kw">use </span><span class="kw">crate</span>::parse_json;
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">ser</span>, <span class="ident">HelixRequestBody</span>, <span class="ident">HelixRequestError</span>, <span class="ident">InnerResponse</span>, <span class="ident">Response</span>};
-<span class="kw">use</span> <span class="ident">errors</span>::<span class="kw-2">*</span>;
-<span class="doccomment">/// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference</span>
-<span class="attribute">#[<span class="ident">async_trait::async_trait</span>]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Request</span>: <span class="ident">serde::Serialize</span> {
-    <span class="doccomment">/// The path to the endpoint relative to the helix root. eg. `channels` for [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information)</span>
-    <span class="kw">const</span> <span class="ident">PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
-    <span class="doccomment">/// Scopes needed by this endpoint</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-    <span class="kw">const</span> <span class="ident">SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>];
-    <span class="doccomment">/// Optional scopes needed by this endpoint</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;twitch_oauth2&quot;</span>)]</span>
-    <span class="kw">const</span> <span class="ident">OPT_SCOPE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">twitch_oauth2::Scope</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[];
-    <span class="doccomment">/// Response type. twitch&#39;s response will  deserialize to this.</span>
-    <span class="kw">type</span> <span class="ident">Response</span>: <span class="ident">serde::de::DeserializeOwned</span> <span class="op">+</span> <span class="ident">PartialEq</span>;
-    <span class="doccomment">/// Defines layout of the url parameters.</span>
-    <span class="kw">fn</span> <span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">errors::SerializeError</span><span class="op">&gt;</span> { <span class="ident">ser::to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) }
-    <span class="doccomment">/// Returns full URI for the request, including query parameters.</span>
-    <span class="kw">fn</span> <span class="ident">get_uri</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">http::Uri</span>, <span class="ident">InvalidUri</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">query</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">query</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::TWITCH_HELIX_URL</span>
-            .<span class="ident">join</span>(<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::PATH</span>)
-            .<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">u</span><span class="op">|</span> {
-                <span class="ident">u</span>.<span class="ident">set_query</span>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>));
-                <span class="ident">u</span>
+<span class="kw">use super</span>::{ser, HelixRequestBody, HelixRequestError, InnerResponse, Response};
+<span class="kw">use </span>errors::<span class="kw-2">*</span>;
+<span class="doccomment">/// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
+</span><span class="attribute">#[async_trait::async_trait]
+</span><span class="kw">pub trait </span>Request: serde::Serialize {
+    <span class="doccomment">/// The path to the endpoint relative to the helix root. eg. `channels` for [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information)
+    </span><span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str;
+    <span class="doccomment">/// Scopes needed by this endpoint
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope];
+    <span class="doccomment">/// Optional scopes needed by this endpoint
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="kw">const </span>OPT_SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
+    <span class="doccomment">/// Response type. twitch&#39;s response will  deserialize to this.
+    </span><span class="kw">type </span>Response: serde::de::DeserializeOwned + PartialEq;
+    <span class="doccomment">/// Defines layout of the url parameters.
+    </span><span class="kw">fn </span>query(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;String, errors::SerializeError&gt; { ser::to_string(<span class="kw-2">&amp;</span><span class="self">self</span>) }
+    <span class="doccomment">/// Returns full URI for the request, including query parameters.
+    </span><span class="kw">fn </span>get_uri(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;http::Uri, InvalidUri&gt; {
+        <span class="kw">let </span>query = <span class="self">self</span>.query()<span class="question-mark">?</span>;
+        <span class="kw">let </span>url = <span class="kw">crate</span>::TWITCH_HELIX_URL
+            .join(&lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::PATH)
+            .map(|<span class="kw-2">mut </span>u| {
+                u.set_query(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>query));
+                u
             })<span class="question-mark">?</span>;
-        <span class="ident">http::Uri::from_str</span>(<span class="ident">url</span>.<span class="ident">as_str</span>()).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        http::Uri::from_str(url.as_str()).map_err(Into::into)
     }
-    <span class="doccomment">/// Returns bare URI for the request, NOT including query parameters.</span>
-    <span class="kw">fn</span> <span class="ident">get_bare_uri</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">http::Uri</span>, <span class="ident">InvalidUri</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::TWITCH_HELIX_URL</span>.<span class="ident">join</span>(<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::PATH</span>)<span class="question-mark">?</span>;
-        <span class="ident">http::Uri::from_str</span>(<span class="ident">url</span>.<span class="ident">as_str</span>()).<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+    <span class="doccomment">/// Returns bare URI for the request, NOT including query parameters.
+    </span><span class="kw">fn </span>get_bare_uri() -&gt; <span class="prelude-ty">Result</span>&lt;http::Uri, InvalidUri&gt; {
+        <span class="kw">let </span>url = <span class="kw">crate</span>::TWITCH_HELIX_URL.join(&lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::PATH)<span class="question-mark">?</span>;
+        http::Uri::from_str(url.as_str()).map_err(Into::into)
     }
 }
 
-<span class="doccomment">/// Helix endpoint POSTs information</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestPost</span>: <span class="ident">Request</span> {
-    <span class="doccomment">/// Body parameters</span>
-    <span class="kw">type</span> <span class="ident">Body</span>: <span class="ident">HelixRequestBody</span>;
+<span class="doccomment">/// Helix endpoint POSTs information
+</span><span class="kw">pub trait </span>RequestPost: Request {
+    <span class="doccomment">/// Body parameters
+    </span><span class="kw">type </span>Body: HelixRequestBody;
 
-    <span class="doccomment">/// Create a [`http::Request`] from this [`Request`] in your client</span>
-    <span class="kw">fn</span> <span class="ident">create_request</span>(
+    <span class="doccomment">/// Create a [`http::Request`] from this [`Request`] in your client
+    </span><span class="kw">fn </span>create_request(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">body</span>: <span class="ident"><span class="self">Self</span>::Body</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">client_id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span>, <span class="ident">CreateRequestError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_uri</span>()<span class="question-mark">?</span>;
+        body: <span class="self">Self</span>::Body,
+        token: <span class="kw-2">&amp;</span>str,
+        client_id: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;http::Request&lt;hyper::body::Bytes&gt;, CreateRequestError&gt; {
+        <span class="kw">let </span>uri = <span class="self">self</span>.get_uri()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">body</span>.<span class="ident">try_to_body</span>()<span class="question-mark">?</span>;
-        <span class="comment">//eprintln!(&quot;\n\nbody is ------------ {} ------------&quot;, body);</span>
+        <span class="kw">let </span>body = body.try_to_body()<span class="question-mark">?</span>;
+        <span class="comment">//eprintln!(&quot;\n\nbody is ------------ {} ------------&quot;, body);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bearer</span> <span class="op">=</span>
-            <span class="ident">http::HeaderValue::from_str</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, <span class="ident">token</span>)).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-                <span class="ident">CreateRequestError::Custom</span>(<span class="string">&quot;Could not make token into headervalue&quot;</span>.<span class="ident">into</span>())
+        </span><span class="kw">let </span><span class="kw-2">mut </span>bearer =
+            http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, token)).map_err(|<span class="kw">_</span>| {
+                CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
             })<span class="question-mark">?</span>;
-        <span class="ident">bearer</span>.<span class="ident">set_sensitive</span>(<span class="bool-val">true</span>);
-        <span class="ident">http::Request::builder</span>()
-            .<span class="ident">method</span>(<span class="ident">http::Method::POST</span>)
-            .<span class="ident">uri</span>(<span class="ident">uri</span>)
-            .<span class="ident">header</span>(<span class="string">&quot;Client-ID&quot;</span>, <span class="ident">client_id</span>)
-            .<span class="ident">header</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
-            .<span class="ident">header</span>(<span class="ident">http::header::AUTHORIZATION</span>, <span class="ident">bearer</span>)
-            .<span class="ident">body</span>(<span class="ident">body</span>)
-            .<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        bearer.set_sensitive(<span class="bool-val">true</span>);
+        http::Request::builder()
+            .method(http::Method::POST)
+            .uri(uri)
+            .header(<span class="string">&quot;Client-ID&quot;</span>, client_id)
+            .header(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(body)
+            .map_err(Into::into)
     }
 
-    <span class="doccomment">/// Parse response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Pass in the request to enable [pagination](Response::get_next) if supported.</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="comment">// FIXME: Is this really needed? Its currently only used for error reporting.</span>
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">HelixRequestPostError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Parse response.
+    ///
+    /// # Notes
+    ///
+    /// Pass in the request to enable [pagination](Response::get_next) if supported.
+    </span><span class="kw">fn </span>parse_response&lt;B: Into&lt;hyper::body::Bytes&gt;&gt;(
+        <span class="comment">// FIXME: Is this really needed? Its currently only used for error reporting.
+        </span>request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: http::Response&lt;B&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, HelixRequestPostError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="ident">b</span>.<span class="ident">into</span>());
-        <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std::str::from_utf8</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">as_ref</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="ident">HelixRequestPostError::Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+        <span class="kw">let </span>response: http::Response&lt;hyper::body::Bytes&gt; = response.map(|b| b.into());
+        <span class="kw">let </span>text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
+            HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
         })<span class="question-mark">?</span>;
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
-            <span class="ident">error</span>,
-            <span class="ident">status</span>,
-            <span class="ident">message</span>,
-        }) <span class="op">=</span> <span class="ident">parse_json</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="ident">text</span>, <span class="bool-val">false</span>)
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = parse_json::&lt;HelixRequestError&gt;(text, <span class="bool-val">false</span>)
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HelixRequestPostError::Error</span> {
-                <span class="ident">error</span>,
-                <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http::StatusCode::BAD_REQUEST</span>),
-                <span class="ident">message</span>,
-                <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(),
+            <span class="kw">return </span><span class="prelude-val">Err</span>(HelixRequestPostError::Error {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                uri: uri.clone(),
+                body: response.body().clone(),
             });
         }
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">RequestPost</span><span class="op">&gt;</span><span class="ident">::parse_inner_response</span>(<span class="ident">request</span>, <span class="ident">uri</span>, <span class="ident">text</span>, <span class="ident">response</span>.<span class="ident">status</span>())
+        &lt;<span class="self">Self </span><span class="kw">as </span>RequestPost&gt;::parse_inner_response(request, uri, text, response.status())
     }
 
-    <span class="doccomment">/// Parse a response string into the response.</span>
-    <span class="kw">fn</span> <span class="ident">parse_inner_response</span>(
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">status</span>: <span class="ident">http::StatusCode</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">HelixRequestPostError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Parse a response string into the response.
+    </span><span class="kw">fn </span>parse_inner_response(
+        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: <span class="kw-2">&amp;</span>str,
+        status: http::StatusCode,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, HelixRequestPostError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">InnerResponse</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">parse_json</span>(<span class="ident">response</span>, <span class="bool-val">true</span>)
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-                <span class="ident">HelixRequestPostError::DeserializeError</span>(
-                    <span class="ident">response</span>.<span class="ident">to_string</span>(),
-                    <span class="ident">e</span>,
-                    <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                    <span class="ident">status</span>,
+        <span class="kw">let </span>response: InnerResponse&lt;&lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt; = parse_json(response, <span class="bool-val">true</span>)
+            .map_err(|e| {
+                HelixRequestPostError::DeserializeError(
+                    response.to_string(),
+                    e,
+                    uri.clone(),
+                    status,
                 )
             })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">Response</span> {
-            <span class="ident">data</span>: <span class="ident">response</span>.<span class="ident">data</span>,
-            <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span>,
-            <span class="ident">request</span>,
-            <span class="ident">total</span>: <span class="ident">response</span>.<span class="ident">total</span>,
-            <span class="ident">other</span>: <span class="prelude-val">None</span>,
+        <span class="prelude-val">Ok</span>(Response {
+            data: response.data,
+            pagination: response.pagination.cursor,
+            request,
+            total: response.total,
+            other: <span class="prelude-val">None</span>,
         })
     }
 }
 
-<span class="doccomment">/// Helix endpoint PATCHs information</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestPatch</span>: <span class="ident">Request</span> {
-    <span class="doccomment">/// Body parameters</span>
-    <span class="kw">type</span> <span class="ident">Body</span>: <span class="ident">HelixRequestBody</span>;
+<span class="doccomment">/// Helix endpoint PATCHs information
+</span><span class="kw">pub trait </span>RequestPatch: Request {
+    <span class="doccomment">/// Body parameters
+    </span><span class="kw">type </span>Body: HelixRequestBody;
 
-    <span class="doccomment">/// Create a [`http::Request`] from this [`Request`] in your client</span>
-    <span class="kw">fn</span> <span class="ident">create_request</span>(
+    <span class="doccomment">/// Create a [`http::Request`] from this [`Request`] in your client
+    </span><span class="kw">fn </span>create_request(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">body</span>: <span class="ident"><span class="self">Self</span>::Body</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">client_id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span>, <span class="ident">CreateRequestError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_uri</span>()<span class="question-mark">?</span>;
+        body: <span class="self">Self</span>::Body,
+        token: <span class="kw-2">&amp;</span>str,
+        client_id: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;http::Request&lt;hyper::body::Bytes&gt;, CreateRequestError&gt; {
+        <span class="kw">let </span>uri = <span class="self">self</span>.get_uri()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">body</span>.<span class="ident">try_to_body</span>()<span class="question-mark">?</span>;
-        <span class="comment">// eprintln!(&quot;\n\nbody is ------------ {} ------------&quot;, body);</span>
+        <span class="kw">let </span>body = body.try_to_body()<span class="question-mark">?</span>;
+        <span class="comment">// eprintln!(&quot;\n\nbody is ------------ {} ------------&quot;, body);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bearer</span> <span class="op">=</span>
-            <span class="ident">http::HeaderValue::from_str</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, <span class="ident">token</span>)).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-                <span class="ident">CreateRequestError::Custom</span>(<span class="string">&quot;Could not make token into headervalue&quot;</span>.<span class="ident">into</span>())
+        </span><span class="kw">let </span><span class="kw-2">mut </span>bearer =
+            http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, token)).map_err(|<span class="kw">_</span>| {
+                CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
             })<span class="question-mark">?</span>;
-        <span class="ident">bearer</span>.<span class="ident">set_sensitive</span>(<span class="bool-val">true</span>);
-        <span class="ident">http::Request::builder</span>()
-            .<span class="ident">method</span>(<span class="ident">http::Method::PATCH</span>)
-            .<span class="ident">uri</span>(<span class="ident">uri</span>)
-            .<span class="ident">header</span>(<span class="string">&quot;Client-ID&quot;</span>, <span class="ident">client_id</span>)
-            .<span class="ident">header</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
-            .<span class="ident">header</span>(<span class="ident">http::header::AUTHORIZATION</span>, <span class="ident">bearer</span>)
-            .<span class="ident">body</span>(<span class="ident">body</span>)
-            .<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        bearer.set_sensitive(<span class="bool-val">true</span>);
+        http::Request::builder()
+            .method(http::Method::PATCH)
+            .uri(uri)
+            .header(<span class="string">&quot;Client-ID&quot;</span>, client_id)
+            .header(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(body)
+            .map_err(Into::into)
     }
 
-    <span class="doccomment">/// Parse response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Pass in the request to enable [pagination](Response::get_next) if supported.</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="comment">// FIXME: Is this really needed? Its currently only used for error reporting.</span>
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">HelixRequestPatchError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Parse response.
+    ///
+    /// # Notes
+    ///
+    /// Pass in the request to enable [pagination](Response::get_next) if supported.
+    </span><span class="kw">fn </span>parse_response&lt;B: Into&lt;hyper::body::Bytes&gt;&gt;(
+        <span class="comment">// FIXME: Is this really needed? Its currently only used for error reporting.
+        </span>request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: http::Response&lt;B&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, HelixRequestPatchError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="ident">b</span>.<span class="ident">into</span>());
-        <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std::str::from_utf8</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">as_ref</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="ident">HelixRequestPatchError::Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+        <span class="kw">let </span>response: http::Response&lt;hyper::body::Bytes&gt; = response.map(|b| b.into());
+        <span class="kw">let </span>text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
+            HelixRequestPatchError::Utf8Error(response.body().clone(), e, uri.clone())
         })<span class="question-mark">?</span>;
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
-            <span class="ident">error</span>,
-            <span class="ident">status</span>,
-            <span class="ident">message</span>,
-        }) <span class="op">=</span> <span class="ident">parse_json</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="ident">text</span>, <span class="bool-val">false</span>)
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = parse_json::&lt;HelixRequestError&gt;(text, <span class="bool-val">false</span>)
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HelixRequestPatchError::Error</span> {
-                <span class="ident">error</span>,
-                <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http::StatusCode::BAD_REQUEST</span>),
-                <span class="ident">message</span>,
-                <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(),
+            <span class="kw">return </span><span class="prelude-val">Err</span>(HelixRequestPatchError::Error {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                uri: uri.clone(),
+                body: response.body().clone(),
             });
         }
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">RequestPatch</span><span class="op">&gt;</span><span class="ident">::parse_inner_response</span>(<span class="ident">request</span>, <span class="ident">uri</span>, <span class="ident">text</span>, <span class="ident">response</span>.<span class="ident">status</span>())
+        &lt;<span class="self">Self </span><span class="kw">as </span>RequestPatch&gt;::parse_inner_response(request, uri, text, response.status())
     }
 
-    <span class="doccomment">/// Parse a response string into the response.</span>
-    <span class="kw">fn</span> <span class="ident">parse_inner_response</span>(
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">status</span>: <span class="ident">http::StatusCode</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">HelixRequestPatchError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>;
+    <span class="doccomment">/// Parse a response string into the response.
+    </span><span class="kw">fn </span>parse_inner_response(
+        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: <span class="kw-2">&amp;</span>str,
+        status: http::StatusCode,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, HelixRequestPatchError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized;
 }
 
-<span class="doccomment">/// Helix endpoint DELETEs information</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestDelete</span>: <span class="ident">Request</span> {
-    <span class="doccomment">/// Create a [`http::Request`] from this [`Request`] in your client</span>
-    <span class="kw">fn</span> <span class="ident">create_request</span>(
+<span class="doccomment">/// Helix endpoint DELETEs information
+</span><span class="kw">pub trait </span>RequestDelete: Request {
+    <span class="doccomment">/// Create a [`http::Request`] from this [`Request`] in your client
+    </span><span class="kw">fn </span>create_request(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">client_id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span>, <span class="ident">CreateRequestError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_uri</span>()<span class="question-mark">?</span>;
+        token: <span class="kw-2">&amp;</span>str,
+        client_id: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;http::Request&lt;hyper::body::Bytes&gt;, CreateRequestError&gt; {
+        <span class="kw">let </span>uri = <span class="self">self</span>.get_uri()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bearer</span> <span class="op">=</span>
-            <span class="ident">http::HeaderValue::from_str</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, <span class="ident">token</span>)).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-                <span class="ident">CreateRequestError::Custom</span>(<span class="string">&quot;Could not make token into headervalue&quot;</span>.<span class="ident">into</span>())
+        <span class="kw">let </span><span class="kw-2">mut </span>bearer =
+            http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, token)).map_err(|<span class="kw">_</span>| {
+                CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
             })<span class="question-mark">?</span>;
-        <span class="ident">bearer</span>.<span class="ident">set_sensitive</span>(<span class="bool-val">true</span>);
-        <span class="ident">http::Request::builder</span>()
-            .<span class="ident">method</span>(<span class="ident">http::Method::DELETE</span>)
-            .<span class="ident">uri</span>(<span class="ident">uri</span>)
-            .<span class="ident">header</span>(<span class="string">&quot;Client-ID&quot;</span>, <span class="ident">client_id</span>)
-            .<span class="ident">header</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
-            .<span class="ident">header</span>(<span class="ident">http::header::AUTHORIZATION</span>, <span class="ident">bearer</span>)
-            .<span class="ident">body</span>(<span class="ident">Vec::with_capacity</span>(<span class="number">0</span>).<span class="ident">into</span>())
-            .<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        bearer.set_sensitive(<span class="bool-val">true</span>);
+        http::Request::builder()
+            .method(http::Method::DELETE)
+            .uri(uri)
+            .header(<span class="string">&quot;Client-ID&quot;</span>, client_id)
+            .header(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(Vec::with_capacity(<span class="number">0</span>).into())
+            .map_err(Into::into)
     }
-    <span class="doccomment">/// Parse response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Pass in the request to enable [pagination](Response::get_next) if supported.</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="comment">// FIXME: Is this really needed? Its currently only used for error reporting.</span>
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">HelixRequestDeleteError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Parse response.
+    ///
+    /// # Notes
+    ///
+    /// Pass in the request to enable [pagination](Response::get_next) if supported.
+    </span><span class="kw">fn </span>parse_response&lt;B: Into&lt;hyper::body::Bytes&gt;&gt;(
+        <span class="comment">// FIXME: Is this really needed? Its currently only used for error reporting.
+        </span>request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: http::Response&lt;B&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, HelixRequestDeleteError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="ident">b</span>.<span class="ident">into</span>());
-        <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std::str::from_utf8</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">as_ref</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="ident">HelixRequestDeleteError::Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+        <span class="kw">let </span>response: http::Response&lt;hyper::body::Bytes&gt; = response.map(|b| b.into());
+        <span class="kw">let </span>text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
+            HelixRequestDeleteError::Utf8Error(response.body().clone(), e, uri.clone())
         })<span class="question-mark">?</span>;
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
-            <span class="ident">error</span>,
-            <span class="ident">status</span>,
-            <span class="ident">message</span>,
-        }) <span class="op">=</span> <span class="ident">parse_json</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="ident">text</span>, <span class="bool-val">false</span>)
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = parse_json::&lt;HelixRequestError&gt;(text, <span class="bool-val">false</span>)
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HelixRequestDeleteError::Error</span> {
-                <span class="ident">error</span>,
-                <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http::StatusCode::BAD_REQUEST</span>),
-                <span class="ident">message</span>,
-                <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(),
+            <span class="kw">return </span><span class="prelude-val">Err</span>(HelixRequestDeleteError::Error {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                uri: uri.clone(),
+                body: response.body().clone(),
             });
         }
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">RequestDelete</span><span class="op">&gt;</span><span class="ident">::parse_inner_response</span>(<span class="ident">request</span>, <span class="ident">uri</span>, <span class="ident">text</span>, <span class="ident">response</span>.<span class="ident">status</span>())
+        &lt;<span class="self">Self </span><span class="kw">as </span>RequestDelete&gt;::parse_inner_response(request, uri, text, response.status())
     }
-    <span class="doccomment">/// Parse a response string into the response.</span>
-    <span class="kw">fn</span> <span class="ident">parse_inner_response</span>(
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">status</span>: <span class="ident">http::StatusCode</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">HelixRequestDeleteError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>;
+    <span class="doccomment">/// Parse a response string into the response.
+    </span><span class="kw">fn </span>parse_inner_response(
+        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: <span class="kw-2">&amp;</span>str,
+        status: http::StatusCode,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, HelixRequestDeleteError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized;
 }
 
-<span class="doccomment">/// Helix endpoint PUTs information</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestPut</span>: <span class="ident">Request</span> {
-    <span class="doccomment">/// Body parameters</span>
-    <span class="kw">type</span> <span class="ident">Body</span>: <span class="ident">HelixRequestBody</span>;
+<span class="doccomment">/// Helix endpoint PUTs information
+</span><span class="kw">pub trait </span>RequestPut: Request {
+    <span class="doccomment">/// Body parameters
+    </span><span class="kw">type </span>Body: HelixRequestBody;
 
-    <span class="doccomment">/// Create a [`http::Request`] from this [`Request`] in your client</span>
-    <span class="kw">fn</span> <span class="ident">create_request</span>(
+    <span class="doccomment">/// Create a [`http::Request`] from this [`Request`] in your client
+    </span><span class="kw">fn </span>create_request(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">body</span>: <span class="ident"><span class="self">Self</span>::Body</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">client_id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span>, <span class="ident">CreateRequestError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_uri</span>()<span class="question-mark">?</span>;
+        body: <span class="self">Self</span>::Body,
+        token: <span class="kw-2">&amp;</span>str,
+        client_id: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;http::Request&lt;hyper::body::Bytes&gt;, CreateRequestError&gt; {
+        <span class="kw">let </span>uri = <span class="self">self</span>.get_uri()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">body</span>.<span class="ident">try_to_body</span>()<span class="question-mark">?</span>;
-        <span class="comment">// eprintln!(&quot;\n\nbody is ------------ {} ------------&quot;, body);</span>
+        <span class="kw">let </span>body = body.try_to_body()<span class="question-mark">?</span>;
+        <span class="comment">// eprintln!(&quot;\n\nbody is ------------ {} ------------&quot;, body);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bearer</span> <span class="op">=</span>
-            <span class="ident">http::HeaderValue::from_str</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, <span class="ident">token</span>)).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-                <span class="ident">CreateRequestError::Custom</span>(<span class="string">&quot;Could not make token into headervalue&quot;</span>.<span class="ident">into</span>())
+        </span><span class="kw">let </span><span class="kw-2">mut </span>bearer =
+            http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, token)).map_err(|<span class="kw">_</span>| {
+                CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
             })<span class="question-mark">?</span>;
-        <span class="ident">bearer</span>.<span class="ident">set_sensitive</span>(<span class="bool-val">true</span>);
-        <span class="ident">http::Request::builder</span>()
-            .<span class="ident">method</span>(<span class="ident">http::Method::PUT</span>)
-            .<span class="ident">uri</span>(<span class="ident">uri</span>)
-            .<span class="ident">header</span>(<span class="string">&quot;Client-ID&quot;</span>, <span class="ident">client_id</span>)
-            .<span class="ident">header</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
-            .<span class="ident">header</span>(<span class="ident">http::header::AUTHORIZATION</span>, <span class="ident">bearer</span>)
-            .<span class="ident">body</span>(<span class="ident">body</span>)
-            .<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        bearer.set_sensitive(<span class="bool-val">true</span>);
+        http::Request::builder()
+            .method(http::Method::PUT)
+            .uri(uri)
+            .header(<span class="string">&quot;Client-ID&quot;</span>, client_id)
+            .header(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(body)
+            .map_err(Into::into)
     }
 
-    <span class="doccomment">/// Parse response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Pass in the request to enable [pagination](Response::get_next) if supported.</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="comment">// FIXME: Is this really needed? Its currently only used for error reporting.</span>
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">HelixRequestPutError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Parse response.
+    ///
+    /// # Notes
+    ///
+    /// Pass in the request to enable [pagination](Response::get_next) if supported.
+    </span><span class="kw">fn </span>parse_response&lt;B: Into&lt;hyper::body::Bytes&gt;&gt;(
+        <span class="comment">// FIXME: Is this really needed? Its currently only used for error reporting.
+        </span>request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: http::Response&lt;B&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, HelixRequestPutError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="ident">b</span>.<span class="ident">into</span>());
-        <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std::str::from_utf8</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">as_ref</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="ident">HelixRequestPutError::Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+        <span class="kw">let </span>response: http::Response&lt;hyper::body::Bytes&gt; = response.map(|b| b.into());
+        <span class="kw">let </span>text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
+            HelixRequestPutError::Utf8Error(response.body().clone(), e, uri.clone())
         })<span class="question-mark">?</span>;
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
-            <span class="ident">error</span>,
-            <span class="ident">status</span>,
-            <span class="ident">message</span>,
-        }) <span class="op">=</span> <span class="ident">parse_json</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="ident">text</span>, <span class="bool-val">false</span>)
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = parse_json::&lt;HelixRequestError&gt;(text, <span class="bool-val">false</span>)
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HelixRequestPutError::Error</span> {
-                <span class="ident">error</span>,
-                <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http::StatusCode::BAD_REQUEST</span>),
-                <span class="ident">message</span>,
-                <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
-                <span class="ident">body</span>: <span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(),
+            <span class="kw">return </span><span class="prelude-val">Err</span>(HelixRequestPutError::Error {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                uri: uri.clone(),
+                body: response.body().clone(),
             });
         }
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">RequestPut</span><span class="op">&gt;</span><span class="ident">::parse_inner_response</span>(<span class="ident">request</span>, <span class="ident">uri</span>, <span class="ident">text</span>, <span class="ident">response</span>.<span class="ident">status</span>())
+        &lt;<span class="self">Self </span><span class="kw">as </span>RequestPut&gt;::parse_inner_response(request, uri, text, response.status())
     }
 
-    <span class="doccomment">/// Parse a response string into the response.</span>
-    <span class="kw">fn</span> <span class="ident">parse_inner_response</span>(
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">status</span>: <span class="ident">http::StatusCode</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">HelixRequestPutError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>;
+    <span class="doccomment">/// Parse a response string into the response.
+    </span><span class="kw">fn </span>parse_inner_response(
+        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: <span class="kw-2">&amp;</span>str,
+        status: http::StatusCode,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, HelixRequestPutError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized;
 }
 
-<span class="doccomment">/// Helix endpoint GETs information</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RequestGet</span>: <span class="ident">Request</span> {
-    <span class="doccomment">/// Create a [`http::Request`] from this [`Request`] in your client</span>
-    <span class="kw">fn</span> <span class="ident">create_request</span>(
+<span class="doccomment">/// Helix endpoint GETs information
+</span><span class="kw">pub trait </span>RequestGet: Request {
+    <span class="doccomment">/// Create a [`http::Request`] from this [`Request`] in your client
+    </span><span class="kw">fn </span>create_request(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">client_id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span>, <span class="ident">CreateRequestError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_uri</span>()<span class="question-mark">?</span>;
+        token: <span class="kw-2">&amp;</span>str,
+        client_id: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;http::Request&lt;hyper::body::Bytes&gt;, CreateRequestError&gt; {
+        <span class="kw">let </span>uri = <span class="self">self</span>.get_uri()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bearer</span> <span class="op">=</span>
-            <span class="ident">http::HeaderValue::from_str</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, <span class="ident">token</span>)).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-                <span class="ident">CreateRequestError::Custom</span>(<span class="string">&quot;Could not make token into headervalue&quot;</span>.<span class="ident">into</span>())
+        <span class="kw">let </span><span class="kw-2">mut </span>bearer =
+            http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, token)).map_err(|<span class="kw">_</span>| {
+                CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
             })<span class="question-mark">?</span>;
-        <span class="ident">bearer</span>.<span class="ident">set_sensitive</span>(<span class="bool-val">true</span>);
-        <span class="ident">http::Request::builder</span>()
-            .<span class="ident">method</span>(<span class="ident">http::Method::GET</span>)
-            .<span class="ident">uri</span>(<span class="ident">uri</span>)
-            .<span class="ident">header</span>(<span class="string">&quot;Client-ID&quot;</span>, <span class="ident">client_id</span>)
-            .<span class="ident">header</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
-            .<span class="ident">header</span>(<span class="ident">http::header::AUTHORIZATION</span>, <span class="ident">bearer</span>)
-            .<span class="ident">body</span>(<span class="ident">Vec::with_capacity</span>(<span class="number">0</span>).<span class="ident">into</span>())
-            .<span class="ident">map_err</span>(<span class="ident">Into::into</span>)
+        bearer.set_sensitive(<span class="bool-val">true</span>);
+        http::Request::builder()
+            .method(http::Method::GET)
+            .uri(uri)
+            .header(<span class="string">&quot;Client-ID&quot;</span>, client_id)
+            .header(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)
+            .header(http::header::AUTHORIZATION, bearer)
+            .body(Vec::with_capacity(<span class="number">0</span>).into())
+            .map_err(Into::into)
     }
 
-    <span class="doccomment">/// Parse response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Notes</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Pass in the request to enable [pagination](Response::get_next) if supported.</span>
-    <span class="kw">fn</span> <span class="ident">parse_response</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">HelixRequestGetError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Parse response.
+    ///
+    /// # Notes
+    ///
+    /// Pass in the request to enable [pagination](Response::get_next) if supported.
+    </span><span class="kw">fn </span>parse_response&lt;B: Into&lt;hyper::body::Bytes&gt;&gt;(
+        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: http::Response&lt;B&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, HelixRequestGetError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">hyper::body::Bytes</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="ident">b</span>.<span class="ident">into</span>());
-        <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="ident">std::str::from_utf8</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">as_ref</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="ident">HelixRequestGetError::Utf8Error</span>(<span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">clone</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>())
+        <span class="kw">let </span>response: http::Response&lt;hyper::body::Bytes&gt; = response.map(|b| b.into());
+        <span class="kw">let </span>text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
+            HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
         })<span class="question-mark">?</span>;
-        <span class="comment">//eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);</span>
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">HelixRequestError</span> {
-            <span class="ident">error</span>,
-            <span class="ident">status</span>,
-            <span class="ident">message</span>,
-        }) <span class="op">=</span> <span class="ident">parse_json</span>::<span class="op">&lt;</span><span class="ident">HelixRequestError</span><span class="op">&gt;</span>(<span class="ident">text</span>, <span class="bool-val">false</span>)
+        <span class="comment">//eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);
+        </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
+            error,
+            status,
+            message,
+        }) = parse_json::&lt;HelixRequestError&gt;(text, <span class="bool-val">false</span>)
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">HelixRequestGetError::Error</span> {
-                <span class="ident">error</span>,
-                <span class="ident">status</span>: <span class="ident">status</span>.<span class="ident">try_into</span>().<span class="ident">unwrap_or</span>(<span class="ident">http::StatusCode::BAD_REQUEST</span>),
-                <span class="ident">message</span>,
-                <span class="ident">uri</span>: <span class="ident">uri</span>.<span class="ident">clone</span>(),
+            <span class="kw">return </span><span class="prelude-val">Err</span>(HelixRequestGetError::Error {
+                error,
+                status: status.try_into().unwrap_or(http::StatusCode::BAD_REQUEST),
+                message,
+                uri: uri.clone(),
             });
         }
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">RequestGet</span><span class="op">&gt;</span><span class="ident">::parse_inner_response</span>(<span class="ident">request</span>, <span class="ident">uri</span>, <span class="ident">text</span>, <span class="ident">response</span>.<span class="ident">status</span>())
+        &lt;<span class="self">Self </span><span class="kw">as </span>RequestGet&gt;::parse_inner_response(request, uri, text, response.status())
     }
 
-    <span class="doccomment">/// Parse a response string into the response.</span>
-    <span class="kw">fn</span> <span class="ident">parse_inner_response</span>(
-        <span class="ident">request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">http::Uri</span>,
-        <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">status</span>: <span class="ident">http::StatusCode</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::Response</span><span class="op">&gt;</span>, <span class="ident">HelixRequestGetError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Parse a response string into the response.
+    </span><span class="kw">fn </span>parse_inner_response(
+        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+        uri: <span class="kw-2">&amp;</span>http::Uri,
+        response: <span class="kw-2">&amp;</span>str,
+        status: http::StatusCode,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, HelixRequestGetError&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="kw">let</span> <span class="ident">response</span>: <span class="ident">InnerResponse</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">parse_json</span>(<span class="ident">response</span>, <span class="bool-val">true</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="ident">HelixRequestGetError::DeserializeError</span>(<span class="ident">response</span>.<span class="ident">to_string</span>(), <span class="ident">e</span>, <span class="ident">uri</span>.<span class="ident">clone</span>(), <span class="ident">status</span>)
+        <span class="kw">let </span>response: InnerResponse&lt;<span class="kw">_</span>&gt; = parse_json(response, <span class="bool-val">true</span>).map_err(|e| {
+            HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone(), status)
         })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">Response</span> {
-            <span class="ident">data</span>: <span class="ident">response</span>.<span class="ident">data</span>,
-            <span class="ident">pagination</span>: <span class="ident">response</span>.<span class="ident">pagination</span>.<span class="ident">cursor</span>,
-            <span class="ident">request</span>,
-            <span class="ident">total</span>: <span class="ident">response</span>.<span class="ident">total</span>,
-            <span class="ident">other</span>: <span class="ident">response</span>.<span class="ident">other</span>,
+        <span class="prelude-val">Ok</span>(Response {
+            data: response.data,
+            pagination: response.pagination.cursor,
+            request,
+            total: response.total,
+            other: response.other,
         })
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (4a1467723 2022-09-23)" ></div></body></html>
