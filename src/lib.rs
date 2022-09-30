@@ -23,8 +23,8 @@
 //!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-//! # let client_id = twitch_oauth2::ClientId::new("validclientid");
-//! # let client_secret = twitch_oauth2::ClientSecret::new("validclientsecret");
+//! # let client_id = twitch_oauth2::ClientId::from("validclientid");
+//! # let client_secret = twitch_oauth2::ClientSecret::from("validclientsecret");
 //!
 //! let client: TwitchClient<reqwest::Client> = TwitchClient::default();
 //! let token =

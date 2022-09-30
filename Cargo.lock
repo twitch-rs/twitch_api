@@ -58,18 +58,18 @@ dependencies = [
 
 [[package]]
 name = "aliri_braid"
-version = "0.1.10"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b321b715087f4b23fdfe778cb5a60988ebddc6ef61fbbf78bb9294dcd855df78"
+checksum = "c8fd6ab55f1ff5293c7dc9e0e65511cc6a1d0e2e625f2b3c32da83748ceb5f65"
 dependencies = [
  "aliri_braid_impl",
 ]
 
 [[package]]
 name = "aliri_braid_impl"
-version = "0.1.10"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f9afe97decc070be1864d96ab118383abed1c58fc09696663666049431110c5"
+checksum = "c0856c8aaba3fca9cc15c723e0cab5dd352cd236e9fedd96759e56874abef6cb"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2054,7 +2054,7 @@ dependencies = [
 
 [[package]]
 name = "twitch_oauth2"
-version = "0.7.0"
+version = "0.8.0"
 dependencies = [
  "aliri_braid",
  "anyhow",
@@ -2079,7 +2079,7 @@ dependencies = [
 
 [[package]]
 name = "twitch_types"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "aliri_braid",
  "displaydoc",

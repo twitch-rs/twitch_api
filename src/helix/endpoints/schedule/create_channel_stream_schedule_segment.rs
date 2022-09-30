@@ -21,10 +21,11 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
+//! # use std::convert::TryFrom;
 //! # use twitch_api::helix::schedule::create_channel_stream_schedule_segment;
 //! let body =
 //!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!         .start_time(twitch_api::types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
+//!         .start_time(twitch_api::types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap())
 //!         .timezone("America/New_York")
 //!         .is_recurring(false)
 //!         .duration("60".to_string())
@@ -42,6 +43,7 @@
 //! ```rust, no_run
 //! use twitch_api::helix::{self, schedule::create_channel_stream_schedule_segment};
 //! # use twitch_api::client;
+//! # use std::convert::TryFrom;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
@@ -51,7 +53,7 @@
 //!     .broadcaster_id("141981764")
 //!     .build();
 //! let body = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!     .start_time(twitch_api::types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
+//!     .start_time(twitch_api::types::Timestamp::try_from("2021-07-01T18:00:00Z")?)
 //!     .timezone("America/New_York")
 //!     .is_recurring(false)
 //!     .duration("60".to_string())
@@ -128,12 +130,13 @@ impl RequestPost for CreateChannelStreamScheduleSegmentRequest {
 #[test]
 fn test_request() {
     use helix::*;
+    use std::convert::TryFrom;
     let req = CreateChannelStreamScheduleSegmentRequest::builder()
         .broadcaster_id("141981764")
         .build();
 
     let body = CreateChannelStreamScheduleSegmentBody::builder()
-        .start_time(types::Timestamp::new("2021-07-01T18:00:00Z").unwrap())
+        .start_time(types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap())
         .timezone("America/New_York")
         .is_recurring(false)
         .duration("60".to_string())

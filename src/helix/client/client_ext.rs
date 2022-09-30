@@ -166,7 +166,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// use futures::TryStreamExt;
     ///
     /// // Get the followers of channel "1234"
-    /// let followers: Vec<helix::users::FollowRelationship> = client.get_follow_relationships(types::UserId::new("1234"), None, &token).try_collect().await?;
+    /// let followers: Vec<helix::users::FollowRelationship> = client.get_follow_relationships(types::UserId::from("1234"), None, &token).try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
