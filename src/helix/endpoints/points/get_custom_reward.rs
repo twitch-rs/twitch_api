@@ -46,7 +46,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Custom Reward](super::get_custom_reward)
 ///
 /// [`get-custom-reward`](https://dev.twitch.tv/docs/api/reference#get-custom-reward)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetCustomRewardRequest {
     /// Provided broadcaster_id must match the user_id in the auth token
@@ -63,7 +63,7 @@ pub struct GetCustomRewardRequest {
 /// Return Values for [Get Custom Reward](super::get_custom_reward)
 ///
 /// [`get-custom-reward`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CustomReward {

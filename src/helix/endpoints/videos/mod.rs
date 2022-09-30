@@ -30,7 +30,7 @@ pub mod get_videos;
 pub use get_videos::{GetVideosRequest, Video};
 
 /// Sort order of the videos
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum Sort {
     /// Sort by time
@@ -42,7 +42,7 @@ pub enum Sort {
 }
 
 /// Period during which the video was created
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum VideoPeriod {
     /// Filter by all. Effectively a no-op
@@ -56,7 +56,7 @@ pub enum VideoPeriod {
 }
 
 /// Type of video.
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum VideoTypeFilter {
     /// All video types

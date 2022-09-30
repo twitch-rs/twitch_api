@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Games](super::get_games)
 ///
 /// [`get-games`](https://dev.twitch.tv/docs/api/reference#get-games)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetGamesRequest {
     /// Game ID. At most 100 id values can be specified.

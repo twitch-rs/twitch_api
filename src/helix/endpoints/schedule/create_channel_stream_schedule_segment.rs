@@ -73,7 +73,7 @@ use helix::RequestPost;
 /// Query Parameters for [Create Channel Stream Schedule Segment](super::create_channel_stream_schedule_segment)
 ///
 /// [`create-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreateChannelStreamScheduleSegmentRequest {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
@@ -84,7 +84,7 @@ pub struct CreateChannelStreamScheduleSegmentRequest {
 /// Body Parameters for [Create Channel Stream Schedule Segment](super::create_channel_stream_schedule_segment)
 ///
 /// [`create-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreateChannelStreamScheduleSegmentBody {
     /// Start time for the scheduled broadcast specified in RFC3339 format.

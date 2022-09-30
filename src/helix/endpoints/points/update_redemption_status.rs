@@ -72,7 +72,7 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Redemption Status](super::update_redemption_status)
 ///
 /// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UpdateRedemptionStatusRequest {
     /// Provided broadcaster_id must match the user_id in the auth token.
@@ -91,7 +91,7 @@ pub struct UpdateRedemptionStatusRequest {
 /// Body Parameters for [Update Redemption Status](super::update_redemption_status)
 ///
 /// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UpdateRedemptionStatusBody {
     /// The new status to set redemptions to. Can be either FULFILLED or CANCELED. Updating to CANCELED will refund the user their points.
@@ -103,7 +103,7 @@ pub struct UpdateRedemptionStatusBody {
 /// Return Values for [Update Redemption Status](super::update_redemption_status)
 ///
 /// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum UpdateRedemptionStatusInformation {
     /// 200 - OK

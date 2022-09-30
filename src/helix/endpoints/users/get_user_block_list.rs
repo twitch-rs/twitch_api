@@ -41,7 +41,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Users Block List](super::get_user_block_list)
 ///
 /// [`get-user-block-list`](https://dev.twitch.tv/docs/api/reference#get-user-block-list)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetUserBlockListRequest {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
@@ -58,7 +58,7 @@ pub struct GetUserBlockListRequest {
 /// Return Values for [Get Users Block List](super::get_user_block_list)
 ///
 /// [`get-user-block-list`](https://dev.twitch.tv/docs/api/reference#get-user-block-list)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct UserBlock {

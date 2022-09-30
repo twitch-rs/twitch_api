@@ -32,7 +32,7 @@ pub use get_emote_sets::GetEmoteSetsRequest;
 pub use update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};
 
 /// A set of badges
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BadgeSet {
@@ -43,7 +43,7 @@ pub struct BadgeSet {
 }
 
 /// A chat Badge
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChatBadge {
@@ -59,7 +59,7 @@ pub struct ChatBadge {
 }
 
 /// A chat emote
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelEmote {
@@ -117,7 +117,7 @@ impl ChannelEmote {
 }
 
 /// A chat emote
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct GlobalEmote {
@@ -136,7 +136,7 @@ pub struct GlobalEmote {
 }
 
 /// Chat settings
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChatSettings {

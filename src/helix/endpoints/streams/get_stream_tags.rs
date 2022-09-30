@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Stream Tags](super::get_stream_tags)
 ///
 /// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetStreamTagsRequest {
     // FIXME: twitch docs sucks

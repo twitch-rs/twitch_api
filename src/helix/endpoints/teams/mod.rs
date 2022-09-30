@@ -10,7 +10,7 @@ pub mod get_channel_teams;
 pub mod get_teams;
 
 /// Information about a team. Get team members with [`GetChannelTeamsRequest`](get_channel_teams::GetChannelTeamsRequest)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TeamInformation {

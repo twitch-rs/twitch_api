@@ -22,7 +22,7 @@ pub use update_channel_stream_schedule::{
 };
 
 /// Scheduled broadcasts for a specific channel given by [Get Channel Stream Schedule](self)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ScheduledBroadcasts {
@@ -39,7 +39,7 @@ pub struct ScheduledBroadcasts {
 }
 
 /// Scheduled broadcast for a stream schedule.
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Segment {
@@ -61,7 +61,7 @@ pub struct Segment {
 
 // FIXME: Similar to types::TwitchCategory, missing box_art
 /// The category for a scheduled broadcast.
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Category {
@@ -72,7 +72,7 @@ pub struct Category {
 }
 
 /// Information on Vacation Mode
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Vacation {

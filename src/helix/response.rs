@@ -2,7 +2,7 @@
 use super::{Cursor, Request};
 
 /// Response retrieved from endpoint. Data is the type in [`Request::Response`]
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Eq, Debug)]
 #[non_exhaustive]
 pub struct Response<R, D>
 where

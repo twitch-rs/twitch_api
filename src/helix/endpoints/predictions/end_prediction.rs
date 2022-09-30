@@ -62,7 +62,9 @@ pub use types::{PredictionId, PredictionStatus};
 /// Query Parameters for [End Prediction](super::end_prediction)
 ///
 /// [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+#[derive(
+    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+)]
 #[non_exhaustive]
 pub struct EndPredictionRequest {}
 
@@ -74,7 +76,7 @@ impl EndPredictionRequest {
 /// Body Parameters for [End Prediction](super::end_prediction)
 ///
 /// [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct EndPredictionBody {
     /// The broadcaster running predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
@@ -99,7 +101,7 @@ impl helix::private::SealedSerialize for EndPredictionBody {}
 /// Return Values for [Update CustomReward](super::end_prediction)
 ///
 /// [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 #[allow(clippy::large_enum_variant)]

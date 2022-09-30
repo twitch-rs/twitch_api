@@ -22,7 +22,7 @@ impl EventSubscription for ChannelPredictionLockV1 {
 }
 
 /// [`channel.hype_train.lock`](ChannelPredictionLockV1) response payload.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPredictionLockV1Payload {

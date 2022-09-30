@@ -56,7 +56,7 @@ use helix::RequestPost;
 /// Query Parameters for [Ban User](super::ban_user)
 ///
 /// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct BanUserRequest {
     /// The ID of the broadcaster whose chat room the user is being banned from.
@@ -70,7 +70,7 @@ pub struct BanUserRequest {
 /// Body Parameters for [Ban User](super::ban_user)
 ///
 /// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct BanUserBody {
     /// Duration of the (optional) timeout in seconds.
@@ -117,7 +117,7 @@ impl helix::HelixRequestBody for BanUserBody {
 /// Return Values for [Ban User](super::ban_user)
 ///
 /// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BanUser {

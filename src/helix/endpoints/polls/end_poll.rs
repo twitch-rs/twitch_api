@@ -62,7 +62,9 @@ pub use types::PollStatus;
 /// Query Parameters for [End Poll](super::end_poll)
 ///
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+#[derive(
+    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+)]
 #[non_exhaustive]
 pub struct EndPollRequest {}
 
@@ -74,7 +76,7 @@ impl EndPollRequest {
 /// Body Parameters for [End Poll](super::end_poll)
 ///
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct EndPollBody {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
@@ -96,7 +98,7 @@ impl helix::private::SealedSerialize for EndPollBody {}
 /// Return Values for [Update CustomReward](super::end_poll)
 ///
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 #[allow(clippy::large_enum_variant)]

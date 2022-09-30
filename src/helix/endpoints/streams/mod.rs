@@ -41,7 +41,7 @@ pub mod get_streams;
 pub mod replace_stream_tags;
 
 /// Gotten from [`Stream.type_`](get_streams::Stream#structfield.type_)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum StreamType {
     /// Stream is live.

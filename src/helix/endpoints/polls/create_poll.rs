@@ -68,7 +68,9 @@ use helix::RequestPost;
 /// Query Parameters for [Create Poll](super::create_poll)
 ///
 /// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+#[derive(
+    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+)]
 #[non_exhaustive]
 pub struct CreatePollRequest {}
 
@@ -80,7 +82,7 @@ impl CreatePollRequest {
 /// Body Parameters for [Create Poll](super::create_poll)
 ///
 /// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreatePollBody {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
@@ -111,7 +113,7 @@ impl helix::private::SealedSerialize for CreatePollBody {}
 
 // FIXME: I'd prefer this to be a Vec<String> on CreatePollBody
 /// Choice settings for a poll
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct NewPollChoice {
     /// Text displayed for the choice. Maximum: 25 characters.

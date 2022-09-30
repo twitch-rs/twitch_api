@@ -66,7 +66,7 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Chat Settingss](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UpdateChatSettingsRequest {
     // FIXME: Wrong documentation by twitch?
@@ -81,7 +81,7 @@ pub struct UpdateChatSettingsRequest {
 /// Body Parameters for [Update Chat Settingss](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UpdateChatSettingsBody {
     /// A Boolean value that determines whether chat messages must contain only emotes.

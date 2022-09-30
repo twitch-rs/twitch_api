@@ -66,7 +66,7 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Custom Rewards](super::update_custom_reward)
 ///
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UpdateCustomRewardRequest {
     /// Provided broadcaster_id must match the user_id in the auth token
@@ -80,7 +80,7 @@ pub struct UpdateCustomRewardRequest {
 /// Body Parameters for [Update Custom Rewards](super::update_custom_reward)
 ///
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UpdateCustomRewardBody {
     /// The title of the reward
@@ -132,7 +132,7 @@ impl helix::private::SealedSerialize for UpdateCustomRewardBody {}
 /// Return Values for [Update CustomReward](super::update_custom_reward)
 ///
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum UpdateCustomReward {

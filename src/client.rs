@@ -305,7 +305,7 @@ impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::TmiC
     > {
         let client = self.get_client();
         {
-            let request = request.map(|b| Bytes::from(b));
+            let request = request.map(Bytes::from);
             let resp = client.req(request);
             Box::pin(async {
                 let resp = resp.await?;
@@ -335,7 +335,7 @@ impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::Twit
     > {
         let client = self.get_client();
         {
-            let request = request.map(|b| Bytes::from(b));
+            let request = request.map(Bytes::from);
             let resp = client.req(request);
             Box::pin(async {
                 let resp = resp.await?;

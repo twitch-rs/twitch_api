@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Search Channels](super::search_channels)
 ///
 /// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct SearchChannelsRequest {
     /// URL encoded search query
@@ -63,7 +63,7 @@ pub struct SearchChannelsRequest {
 /// Return Values for [Search Channels](super::search_channels)
 ///
 /// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Channel {

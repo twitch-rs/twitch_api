@@ -44,7 +44,7 @@ pub use types::{PredictionOutcome, PredictionOutcomeId, PredictionStatus};
 /// Query Parameters for [Get predictions](super::get_predictions)
 ///
 /// [`get-predictions`](https://dev.twitch.tv/docs/api/reference#get-predictions)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetPredictionsRequest {
     /// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
@@ -67,7 +67,7 @@ pub struct GetPredictionsRequest {
 /// Return Values for [Get predictions](super::get_predictions)
 ///
 /// [`get-predictions`](https://dev.twitch.tv/docs/api/reference#get-predictions)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Prediction {

@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Search Categories](super::search_categories)
 ///
 /// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct SearchCategoriesRequest {
     /// URI encoded search query

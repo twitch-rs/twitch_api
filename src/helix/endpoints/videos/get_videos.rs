@@ -44,7 +44,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Videos](super::get_videos)
 ///
 /// [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetVideosRequest {
     /// ID of the video being queried. Limit: 100. If this is specified, you cannot use any of the optional query parameters below.
@@ -83,7 +83,7 @@ pub struct GetVideosRequest {
 /// Return Values for [Get Videos](super::get_videos)
 ///
 /// [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Video {
@@ -126,7 +126,7 @@ pub struct Video {
 }
 
 /// muted segment in a video.
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct MutedSegment {

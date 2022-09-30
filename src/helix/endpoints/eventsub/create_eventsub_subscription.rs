@@ -5,7 +5,7 @@ use crate::eventsub::{EventSubscription, EventType, Status, Transport, Transport
 /// Query Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
 /// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
-#[derive(PartialEq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreateEventSubSubscriptionRequest<E: EventSubscription> {
     #[builder(setter(skip), default)]
@@ -36,7 +36,7 @@ impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<
 /// # Notes
 ///
 /// This body is quite different from the official body. If you want the true representation in text, see [`helix::HelixRequestBody::try_to_body`] on [`CreateEventSubSubscriptionRequest<E: EventSubscription>`](CreateEventSubSubscriptionRequest)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreateEventSubSubscriptionBody<E: EventSubscription> {
     /// Subscription that will be created
@@ -80,7 +80,7 @@ impl<E: EventSubscription> CreateEventSubSubscriptionBody<E> {
 /// Return Values for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
 /// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub struct CreateEventSubSubscription<E: EventSubscription> {
     /// ID of the subscription created.
@@ -128,7 +128,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
     where
         Self: Sized,
     {
-        #[derive(PartialEq, Deserialize, Debug)]
+        #[derive(PartialEq, Eq, Deserialize, Debug)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         pub struct InnerResponseData<E: EventSubscription> {
             cost: usize,

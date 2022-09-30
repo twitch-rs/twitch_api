@@ -64,7 +64,7 @@ use helix::RequestPut;
 /// Query Parameters for [Replace Stream Tags](super::replace_stream_tags)
 ///
 /// [`replace-stream-tags`](https://dev.twitch.tv/docs/api/reference#replace-stream-tags)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct ReplaceStreamTagsRequest {
     /// ID of the stream for which tags are to be replaced.
@@ -79,7 +79,7 @@ pub struct ReplaceStreamTagsRequest {
 /// # Notes
 ///
 /// Up to five tags can be applied to a stream. If no `tag_ids` is provided, all tags are removed from the stream.
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct ReplaceStreamTagsBody {
     /// IDs of tags to be applied to the stream.
@@ -89,7 +89,7 @@ pub struct ReplaceStreamTagsBody {
 /// Return Values for [Replace Stream Tags](super::replace_stream_tags)
 ///
 /// [`replace-stream-tags`](https://dev.twitch.tv/docs/api/reference#replace-stream-tags)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum ReplaceStreamTags {
     /// 204 - Stream Tags replaced successfully

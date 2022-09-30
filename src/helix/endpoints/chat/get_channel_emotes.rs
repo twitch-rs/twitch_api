@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Emotes](super::get_channel_emotes)
 ///
 /// [`get-channel-emotes`](https://dev.twitch.tv/docs/api/reference#get-channel-emotes)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetChannelEmotesRequest {
     /// The broadcaster whose emotes are being requested.

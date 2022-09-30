@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Emotes](super::get_emote_sets)
 ///
 /// [`get-emote-sets`](https://dev.twitch.tv/docs/api/reference#get-emote-sets)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetEmoteSetsRequest {
     // FIXME: twitch doc specifies maximum as 25, but it actually is 10
@@ -55,7 +55,7 @@ pub struct GetEmoteSetsRequest {
 /// Return Values for [Get Channel Emotes](super::get_emote_sets)
 ///
 /// [`get-emote-sets`](https://dev.twitch.tv/docs/api/reference#get-emote-sets)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Emote {

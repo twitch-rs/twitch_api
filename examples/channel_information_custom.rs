@@ -45,7 +45,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 /// Return Values for [Get Channel Information](super::get_channel_information)
 ///
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
-#[derive(PartialEq, serde::Deserialize, serde::Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct CustomChannelInformation<'a> {
     /// Twitch User ID of this channel owner
     pub broadcaster_id: &'a types::UserIdRef,

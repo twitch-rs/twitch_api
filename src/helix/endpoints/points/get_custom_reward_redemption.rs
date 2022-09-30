@@ -52,7 +52,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Custom Reward Redemption](super::get_custom_reward_redemption)
 ///
 /// [`get-custom-reward-redemption`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetCustomRewardRedemptionRequest {
     /// Provided broadcaster_id must match the user_id in the auth token
@@ -79,7 +79,7 @@ pub struct GetCustomRewardRedemptionRequest {
 /// Return Values for [Get Custom Reward Redemption](super::get_custom_reward_redemption)
 ///
 /// [`get-custom-reward-redemption`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CustomRewardRedemption {
@@ -118,7 +118,7 @@ pub struct CustomRewardRedemption {
 }
 
 /// Information about the reward involved
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Reward {
