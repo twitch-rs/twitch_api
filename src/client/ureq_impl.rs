@@ -9,7 +9,7 @@ use ureq::Agent as UreqAgent;
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
 pub enum UreqError {
     /// Ureq failed to do the request
-    Ureq(#[from] ureq::Error),
+    Ureq(#[from] Box<ureq::Error>),
     /// Http failed
     Http(#[from] http::Error),
     /// The response could not be collected
@@ -40,7 +40,10 @@ impl<'a> Client<'a> for UreqAgent {
         }
         Box::pin(async move {
             let body = request.into_body();
-            let response = match req.send_bytes(&body).map_err(UreqError::Ureq) {
+            let response = match req
+                .send_bytes(&body)
+                .map_err(|err| UreqError::Ureq(Box::new(err)))
+            {
                 Ok(val) => val,
                 Err(err) => return Err(err),
             };
