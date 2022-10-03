@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["AutomodStatus","Status of a message that is or was in AutoMod queue"]],"struct":[["BlockedTermId","A blocked term ID"],["BlockedTermIdRef","A reference to a borrowed [`BlockedTermId`]"],["MsgId","A message ID"],["MsgIdRef","A reference to a borrowed [`MsgId`]"]]};
+window.SIDEBAR_ITEMS = {"enum":[["AutomodStatus","Status of a message that is or was in AutoMod queue"]],"struct":[["BlockedTermId","A blocked term ID"],["BlockedTermIdRef","A blocked term ID"],["MsgId","A message ID"],["MsgIdRef","A message ID"]]};
