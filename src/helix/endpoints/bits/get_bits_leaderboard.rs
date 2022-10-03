@@ -46,7 +46,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Bits Leaderboard](super::get_bits_leaderboard)
 ///
 /// [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetBitsLeaderboardRequest {
     /// Number of results to be returned. Maximum: 100. Default: 10.
@@ -73,7 +73,7 @@ pub struct GetBitsLeaderboardRequest {
 /// Return Values for [Get Bits Leaderboard](super::get_bits_leaderboard)
 ///
 /// [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BitsLeaderboard {
@@ -86,7 +86,7 @@ pub struct BitsLeaderboard {
 }
 
 /// Period over which the returned data is aggregated.
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct DateRange {
@@ -97,7 +97,7 @@ pub struct DateRange {
 }
 
 /// Information about user in leaderboard
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct LeaderboardUser {

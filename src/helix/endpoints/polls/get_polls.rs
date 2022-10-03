@@ -44,7 +44,7 @@ pub use types::{PollChoice, PollStatus};
 /// Query Parameters for [Get polls](super::get_polls)
 ///
 /// [`get-polls`](https://dev.twitch.tv/docs/api/reference#get-polls)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetPollsRequest {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
@@ -64,7 +64,7 @@ pub struct GetPollsRequest {
 /// Return Values for [Get polls](super::get_polls)
 ///
 /// [`get-polls`](https://dev.twitch.tv/docs/api/reference#get-polls)
-#[derive(PartialEq, Deserialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Poll {

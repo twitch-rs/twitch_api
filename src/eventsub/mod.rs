@@ -117,7 +117,7 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq + Clone {
 }
 
 /// Verification Request
-#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct VerificationRequest {
@@ -322,7 +322,7 @@ impl<E: EventSubscription + Clone> Payload<E> {
 }
 
 /// Metadata about the subscription.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct EventSubscriptionInformation<E: EventSubscription> {
@@ -420,7 +420,7 @@ pub enum Status {
 /// General information about an EventSub subscription.
 ///
 /// See also [`EventSubscriptionInformation`]
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 #[cfg(feature = "eventsub")]
 #[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
@@ -492,7 +492,7 @@ mod test {
         let mut request = http::Request::builder();
         let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
         let request = request.body(body.as_bytes().to_vec()).unwrap();
-        let payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
+        let _payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
         let payload = dbg!(crate::eventsub::Event::parse(
             std::str::from_utf8(request.body()).unwrap()
         )
@@ -527,7 +527,7 @@ mod test {
         let mut request = http::Request::builder();
         let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
         let request = request.body(body.as_bytes().to_vec()).unwrap();
-        let payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
+        let _payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
         let payload = dbg!(crate::eventsub::Event::parse(
             std::str::from_utf8(request.body()).unwrap()
         )
@@ -597,7 +597,7 @@ mod test {
         let mut request = http::Request::builder();
         let _ = std::mem::replace(request.headers_mut().unwrap(), headers);
         let request = request.body(body.as_bytes().to_vec()).unwrap();
-        let payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
+        let _payload = dbg!(crate::eventsub::Event::parse_http(&request).unwrap());
         assert!(crate::eventsub::Event::verify_payload(&request, secret));
     }
 }

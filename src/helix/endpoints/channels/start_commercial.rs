@@ -59,7 +59,7 @@ impl StartCommercialRequest {
 /// Query Parameters for [Start Commercial](super::start_commercial)
 ///
 /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct StartCommercialRequest {}
 
@@ -70,7 +70,7 @@ impl Default for StartCommercialRequest {
 /// Body Parameters for [Start Commercial](super::start_commercial)
 ///
 /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct StartCommercialBody {
     /// ID of the channel requesting a commercial
@@ -83,7 +83,7 @@ pub struct StartCommercialBody {
 /// Return Values for [Start Commercial](super::start_commercial)
 ///
 /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct StartCommercial {

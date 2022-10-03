@@ -41,7 +41,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Teams](super::get_channel_teams)
 ///
 /// [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetChannelTeamsRequest {
     /// Team ID.
@@ -52,7 +52,7 @@ pub struct GetChannelTeamsRequest {
 /// Return Values for [Get Channel Teams](super::get_channel_teams)
 ///
 /// [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BroadcasterTeam {

@@ -22,7 +22,7 @@ impl EventSubscription for ChannelPredictionEndV1 {
 }
 
 /// [`channel.hype_train.end`](ChannelPredictionEndV1) response payload.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPredictionEndV1Payload {

@@ -48,7 +48,7 @@ use helix::RequestDelete;
 /// Query Parameters for [Unban User](super::unban_user)
 ///
 /// [`unban-user`](https://dev.twitch.tv/docs/api/reference#unban-user)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UnbanUserRequest {
     /// The ID of the broadcaster whose chat room the user is banned from chatting in.
@@ -65,7 +65,7 @@ pub struct UnbanUserRequest {
 /// Return Values for [Unban User](super::unban_user)
 ///
 /// [`unban-user`](https://dev.twitch.tv/docs/api/reference#unban-user)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 pub enum UnbanUserResponse {
     /// Unban was successful

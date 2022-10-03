@@ -56,7 +56,7 @@ use helix::RequestPost;
 /// Query Parameters for [Add Blocked Term](super::add_blocked_term)
 ///
 /// [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct AddBlockedTermRequest {
     /// The ID of the broadcaster that owns the list of blocked terms.
@@ -72,7 +72,7 @@ pub struct AddBlockedTermRequest {
 /// Body Parameters for [Add Blocked Term](super::add_blocked_term)
 ///
 /// [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct AddBlockedTermBody {
     ///The word or phrase to block from being used in the broadcaster’s chat room.

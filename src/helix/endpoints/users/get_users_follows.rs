@@ -40,7 +40,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Users Follows](super::get_users_follows)
 ///
 /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetUsersFollowsRequest {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
@@ -60,7 +60,7 @@ pub struct GetUsersFollowsRequest {
 /// Return Values for [Get Users Follows](super::get_users_follows)
 ///
 /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct UsersFollows {
@@ -76,7 +76,7 @@ pub struct UsersFollows {
 /// Describes a follow relationship
 ///
 /// Used in [UsersFollows]
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct FollowRelationship {

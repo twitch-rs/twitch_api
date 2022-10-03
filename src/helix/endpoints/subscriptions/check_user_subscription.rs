@@ -42,7 +42,7 @@ use helix::RequestGet;
 /// Query Parameters for [Check User Subscription](super::check_user_subscription)
 ///
 /// [`check-user-subscription`](https://dev.twitch.tv/docs/api/reference#check-user-subscription)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CheckUserSubscriptionRequest {
     /// User ID of the broadcaster. Must match the User ID in the Bearer token.
@@ -56,7 +56,7 @@ pub struct CheckUserSubscriptionRequest {
 /// Return Values for [Check User Subscription](super::check_user_subscription)
 ///
 /// [`check-user-subscription`](https://dev.twitch.tv/docs/api/reference#check-user-subscription)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct UserSubscription {

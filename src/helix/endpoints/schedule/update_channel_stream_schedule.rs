@@ -46,7 +46,7 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Channel Stream Schedule](super::update_channel_stream_schedule)
 ///
 /// [`update-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UpdateChannelStreamScheduleRequest {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
@@ -69,7 +69,7 @@ pub struct UpdateChannelStreamScheduleRequest {
 /// Return Values for [Update Channel Stream Schedule](super::update_channel_stream_schedule)
 ///
 /// [`update-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum UpdateChannelStreamSchedule {

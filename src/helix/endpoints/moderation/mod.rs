@@ -40,7 +40,7 @@ pub use remove_blocked_term::{RemoveBlockedTerm, RemoveBlockedTermRequest};
 pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
 
 /// A blocked term in automod
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BlockedTerm {

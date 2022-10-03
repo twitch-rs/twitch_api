@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Clips](super::get_clips)
 ///
 /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetClipsRequest {
     /// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.

@@ -44,7 +44,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Moderators](super::get_moderators)
 ///
 /// [`get-moderators`](https://dev.twitch.tv/docs/api/reference#get-moderators)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetModeratorsRequest {
     /// Must match the User ID in the Bearer token.
@@ -64,7 +64,7 @@ pub struct GetModeratorsRequest {
 /// Return Values for [Get Moderators](super::get_moderators)
 ///
 /// [`get-moderators`](https://dev.twitch.tv/docs/api/reference#get-moderators)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Moderator {

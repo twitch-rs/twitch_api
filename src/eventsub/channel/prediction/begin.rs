@@ -22,7 +22,7 @@ impl EventSubscription for ChannelPredictionBeginV1 {
 }
 
 /// [`channel.prediction.begin`](ChannelPredictionBeginV1) response payload.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPredictionBeginV1Payload {

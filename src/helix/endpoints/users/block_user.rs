@@ -49,7 +49,7 @@ use helix::RequestPut;
 /// Query Parameters for [Block User](super::block_user)
 ///
 /// [`block-user`](https://dev.twitch.tv/docs/api/reference#block-user)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct BlockUserRequest {
     /// User ID of the follower
@@ -64,7 +64,7 @@ pub struct BlockUserRequest {
 }
 
 /// Source context for blocking the user.
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 #[non_exhaustive]
 pub enum SourceContext {
@@ -75,7 +75,7 @@ pub enum SourceContext {
 }
 
 /// Reason for blocking the user.
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 #[non_exhaustive]
 pub enum Reason {
@@ -90,7 +90,7 @@ pub enum Reason {
 /// Return Values for [Block User](super::block_user)
 ///
 /// [`block-user`](https://dev.twitch.tv/docs/api/reference#block-user)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum BlockUser {
     /// 204 - User blocked successfully.

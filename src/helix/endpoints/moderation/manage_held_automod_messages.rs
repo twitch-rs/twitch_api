@@ -58,7 +58,7 @@ use helix::RequestPost;
 /// Query Parameters for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct ManageHeldAutoModMessagesRequest {}
 
@@ -74,7 +74,7 @@ impl Default for ManageHeldAutoModMessagesRequest {
 /// Body Parameters for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct ManageHeldAutoModMessagesBody {
     /// The moderator who is approving or rejecting the held message. Must match the user_id in the user OAuth token.
@@ -89,7 +89,7 @@ pub struct ManageHeldAutoModMessagesBody {
 }
 
 /// Action to take for a message.
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "UPPERCASE")]
 #[non_exhaustive]
 pub enum AutoModAction {
@@ -113,7 +113,7 @@ impl helix::private::SealedSerialize for ManageHeldAutoModMessagesBody {}
 /// Return Values for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum ManageHeldAutoModMessages {

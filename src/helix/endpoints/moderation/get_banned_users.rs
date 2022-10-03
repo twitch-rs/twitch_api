@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Banned Users](super::get_banned_users)
 ///
 /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetBannedUsersRequest {
     /// Must match the User ID in the Bearer token.
@@ -68,7 +68,7 @@ pub struct GetBannedUsersRequest {
 /// Return Values for [Get Banned Users](super::get_banned_users)
 ///
 /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct BannedUser {

@@ -44,7 +44,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Editors](super::get_channel_editors)
 ///
 /// [`get-channel-editors`](https://dev.twitch.tv/docs/api/reference#get-channel-editors)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetChannelEditorsRequest {
     /// Broadcaster’s user ID associated with the channel.
@@ -55,7 +55,7 @@ pub struct GetChannelEditorsRequest {
 /// Return Values for [Get Channel Editors](super::get_channel_editors)
 ///
 /// [`get-channel-editors`](https://dev.twitch.tv/docs/api/reference#get-channel-editors)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Editor {

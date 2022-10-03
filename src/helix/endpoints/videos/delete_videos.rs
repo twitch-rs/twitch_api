@@ -44,7 +44,7 @@ use helix::RequestDelete;
 /// Query Parameters for [Delete Videos](super::delete_videos)
 ///
 /// [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct DeleteVideosRequest {
     /// ID of the video(s) to be deleted. Limit: 5.
@@ -53,7 +53,7 @@ pub struct DeleteVideosRequest {
 }
 // FIXME: Should return VideoIds
 /// Return Values for [Delete Videos](super::delete_videos)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 /// [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]

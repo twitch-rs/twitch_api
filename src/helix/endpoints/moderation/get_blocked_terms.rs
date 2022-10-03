@@ -45,7 +45,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Blocked Terms](super::get_blocked_terms)
 ///
 /// [`get-blocked-terms`](https://dev.twitch.tv/docs/api/reference#get-blocked-terms)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetBlockedTerms {
     /// The ID of the broadcaster whose blocked terms you’re getting.

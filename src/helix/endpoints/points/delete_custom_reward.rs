@@ -45,7 +45,7 @@ use helix::RequestDelete;
 /// Query Parameters for [Delete CustomReward](super::delete_custom_reward)
 ///
 /// [`delete-custom-reward`](https://dev.twitch.tv/docs/api/reference#delete-custom-reward)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct DeleteCustomRewardRequest {
     /// Provided broadcaster_id must match the user_id in the auth token
@@ -59,7 +59,7 @@ pub struct DeleteCustomRewardRequest {
 /// Return Values for [Delete CustomReward](super::delete_custom_reward)
 ///
 /// [`delete-custom-reward`](https://dev.twitch.tv/docs/api/reference#delete-custom-reward)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum DeleteCustomReward {

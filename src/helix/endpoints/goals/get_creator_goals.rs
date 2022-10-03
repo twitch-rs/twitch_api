@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Creator Goals](super::get_creator_goals)
 ///
 /// [`get-creator-goals`](https://dev.twitch.tv/docs/api/reference#get-creator-goals)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct GetCreatorGoalsRequest {
     /// Must match the User ID in the Bearer token.
@@ -63,7 +63,7 @@ pub struct GetCreatorGoalsRequest {
 /// Return Values for [Get Creator Goals](super::get_creator_goals)
 ///
 /// [`get-creator-goals`](https://dev.twitch.tv/docs/api/reference#get-creator-goals)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CreatorGoal {

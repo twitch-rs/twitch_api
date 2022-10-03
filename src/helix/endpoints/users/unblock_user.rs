@@ -42,7 +42,7 @@ use helix::RequestDelete;
 /// Query Parameters for [Unblock User](super::unblock_user)
 ///
 /// [`unblock-user`](https://dev.twitch.tv/docs/api/reference#unblock-user)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UnblockUserRequest {
     /// User ID of the follower
@@ -53,7 +53,7 @@ pub struct UnblockUserRequest {
 /// Return Values for [Unblock User](super::unblock_user)
 ///
 /// [`unblock-user`](https://dev.twitch.tv/docs/api/reference#unblock-user)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum UnblockUser {
     /// 204 - User unblocked successfully.

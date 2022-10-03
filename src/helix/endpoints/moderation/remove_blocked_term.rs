@@ -46,7 +46,7 @@ use helix::RequestDelete;
 /// Query Parameters for [Remove Blocked Terms](super::remove_blocked_term)
 ///
 /// [`remove-blocked-term`](https://dev.twitch.tv/docs/api/reference#remove-blocked-term)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct RemoveBlockedTermRequest {
     /// The ID of the broadcaster that owns the list of blocked terms.
@@ -64,7 +64,7 @@ pub struct RemoveBlockedTermRequest {
 /// Return Values for [Remove Blocked Terms](super::remove_blocked_term)
 ///
 /// [`remove-blocked-term`](https://dev.twitch.tv/docs/api/reference#remove-blocked-term)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum RemoveBlockedTerm {
     /// 204 - Term removed successfully.

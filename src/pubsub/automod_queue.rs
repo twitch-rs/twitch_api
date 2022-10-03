@@ -27,7 +27,7 @@ impl pubsub::Topic for AutoModQueue {
 }
 
 /// Reply from [AutoModQueue]
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(tag = "type", content = "data")]
 #[non_exhaustive]

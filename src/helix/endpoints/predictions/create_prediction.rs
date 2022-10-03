@@ -67,7 +67,9 @@ use helix::RequestPost;
 /// Query Parameters for [Create Prediction](super::create_prediction)
 ///
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+#[derive(
+    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+)]
 #[non_exhaustive]
 pub struct CreatePredictionRequest {}
 
@@ -79,7 +81,7 @@ impl CreatePredictionRequest {
 /// Body Parameters for [Create Prediction](super::create_prediction)
 ///
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct CreatePredictionBody {
     /// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
@@ -97,7 +99,7 @@ pub struct CreatePredictionBody {
 impl helix::private::SealedSerialize for CreatePredictionBody {}
 
 /// Choice settings for a poll
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct NewPredictionOutcome {
     /// Text displayed for the choice. Maximum: 25 characters.

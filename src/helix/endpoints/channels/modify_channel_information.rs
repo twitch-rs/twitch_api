@@ -58,7 +58,7 @@ use helix::RequestPatch;
 /// Query Parameters for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct ModifyChannelInformationRequest {
     /// ID of the channel
@@ -70,7 +70,9 @@ pub struct ModifyChannelInformationRequest {
 /// Body Parameters for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default)]
+#[derive(
+    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
+)]
 #[non_exhaustive]
 pub struct ModifyChannelInformationBody {
     /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
@@ -88,7 +90,7 @@ impl helix::private::SealedSerialize for ModifyChannelInformationBody {}
 /// Return Values for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum ModifyChannelInformation {
     /// 204 - Channel/Stream updated successfully
