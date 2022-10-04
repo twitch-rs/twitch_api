@@ -17,6 +17,11 @@
 
 * Deprecate `Get User` `view_count`
 
+### Added
+
+* Added `Get Chatters` endpoint
+* Added `Ban User` and `Unban User`
+
 ## [v0.6.1] - 2022-04-29
 
 * No changes, only a fix for docs.rs output and some version bumps in Cargo.toml
@@ -79,7 +84,7 @@
 * Removed some derived impls and fixed builders that assumed a default wrongly.
 * `HelixClient::new`, `TmiClient::new` and `TwitchClient::new` now give a more specified client.
 * Added total and gifter information to helix `Get Broadcaster Subscriptions`
-* `HelixClient` methods `search_categories`, `search_channels`, `get_followed_streams` and `get_moderators_in_channel_from_id` now use streams to provide paginated response. 
+* `HelixClient` methods `search_categories`, `search_channels`, `get_followed_streams` and `get_moderators_in_channel_from_id` now use streams to provide paginated response.
 * Renamed `BroadcasterType::Affiliated` -> `BroadcasterType::Affiliate`
 * Client extension methods that are paginated are now paginated lazily using a stream.
 * `pubsub::listen_command` now accepts `Into<Option<&str>>` as the `auth_token`.
@@ -191,6 +196,6 @@
 * Renamed some helix endpoint replies. [#18]
 * `twitch_oauth2` dependency is now gated behind its feature flag.
 
-## [End of Changelog] 
+## [End of Changelog]
 
 Changelog starts on v0.5.0

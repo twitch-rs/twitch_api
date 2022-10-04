@@ -82,6 +82,45 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         .map(|response| response.first())
     }
 
+    /// Get chatters in a stream [Chatter][helix::chat::Chatter]
+    ///
+    /// `batch_size` sets the amount of chatters to retrieve per api call, max 1000, defaults to 100.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let chatters: Vec<helix::chat::Chatter> = client.get_chatters("1234", "4321", 1000, &token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub fn get_chatters<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        batch_size: impl Into<Option<u32>>,
+        token: &'a T,
+    ) -> std::pin::Pin<
+        Box<dyn futures::Stream<Item = Result<helix::chat::Chatter, ClientError<'a, C>>> + 'a>,
+    >
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::chat::GetChattersRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .moderator_id(moderator_id)
+            .first(batch_size)
+            .build();
+        make_stream(req, token, self, std::collections::VecDeque::from)
+    }
+
     /// Search [Categories](helix::search::Category)
     ///
     /// # Examples

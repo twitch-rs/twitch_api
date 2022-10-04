@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 
 pub mod get_channel_chat_badges;
 pub mod get_channel_emotes;
+pub mod get_chatters;
 pub mod get_emote_sets;
 pub mod get_global_chat_badges;
 pub mod get_global_emotes;
@@ -30,6 +31,9 @@ pub use get_emote_sets::GetEmoteSetsRequest;
 
 #[doc(inline)]
 pub use update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};
+
+#[doc(inline)]
+pub use get_chatters::{Chatter, GetChattersRequest};
 
 /// A set of badges
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
