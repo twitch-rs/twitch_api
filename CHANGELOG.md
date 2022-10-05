@@ -21,6 +21,7 @@
 
 * Added `Get Chatters` endpoint
 * Added `Ban User` and `Unban User`
+* Added `Get Chat Settings` endpoint
 
 ## [v0.6.1] - 2022-04-29
 
