@@ -63,22 +63,24 @@ use crate::helix::{parse_json, HelixRequestPatchError};
 
 use super::*;
 use helix::RequestPatch;
-/// Query Parameters for [Update Chat Settingss](super::update_chat_settings)
+/// Query Parameters for [Update Chat Settings](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
 #[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct UpdateChatSettingsRequest {
-    // FIXME: Wrong documentation by twitch?
-    /// The ID of the broadcaster whose chat settings you want to update. This ID must match the user ID associated with the user OAuth token.
+    /// The ID of the broadcaster whose chat settings you want to update.
     #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
-    /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
+    /// The ID of a user that has permission to moderate the broadcaster’s chat room.
+    /// This ID must match the user ID associated with the user OAuth token.
+    ///
+    /// If the broadcaster is making the update, also set this parameter to the broadcaster’s ID.
     #[builder(setter(into))]
     pub moderator_id: types::UserId,
 }
 
-/// Body Parameters for [Update Chat Settingss](super::update_chat_settings)
+/// Body Parameters for [Update Chat Settings](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
 #[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
