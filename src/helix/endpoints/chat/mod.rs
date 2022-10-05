@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 
 pub mod get_channel_chat_badges;
 pub mod get_channel_emotes;
+pub mod get_chat_settings;
 pub mod get_chatters;
 pub mod get_emote_sets;
 pub mod get_global_chat_badges;
@@ -28,6 +29,9 @@ pub use get_global_emotes::GetGlobalEmotesRequest;
 
 #[doc(inline)]
 pub use get_emote_sets::GetEmoteSetsRequest;
+
+#[doc(inline)]
+pub use get_chat_settings::GetChatSettingsRequest;
 
 #[doc(inline)]
 pub use update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};

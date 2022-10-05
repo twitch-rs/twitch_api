@@ -665,6 +665,23 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
             .build();
         Ok(self.req_get(req, token).await?.data)
     }
+
+    /// Get a user's chat settings
+    pub async fn get_chat_settings<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<Option<types::UserId>>,
+        token: &T,
+    ) -> Result<helix::chat::ChatSettings, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::chat::GetChatSettingsRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .moderator_id(moderator_id)
+            .build();
+        Ok(self.req_get(req, token).await?.data)
+    }
 }
 
 /// Make a paginate-able request into a stream
