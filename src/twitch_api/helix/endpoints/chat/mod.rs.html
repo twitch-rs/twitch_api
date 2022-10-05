@@ -190,6 +190,10 @@
 <span id="190">190</span>
 <span id="191">191</span>
 <span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding chat
 
 </span><span class="kw">use crate</span>::{
@@ -200,6 +204,7 @@
 
 <span class="kw">pub mod </span>get_channel_chat_badges;
 <span class="kw">pub mod </span>get_channel_emotes;
+<span class="kw">pub mod </span>get_chat_settings;
 <span class="kw">pub mod </span>get_chatters;
 <span class="kw">pub mod </span>get_emote_sets;
 <span class="kw">pub mod </span>get_global_chat_badges;
@@ -220,6 +225,9 @@
 
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>get_emote_sets::GetEmoteSetsRequest;
+
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>get_chat_settings::GetChatSettingsRequest;
 
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};

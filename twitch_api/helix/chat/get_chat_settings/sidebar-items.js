@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["GetChatSettingsRequest","Query Parameters for Get Chat Settings"]]};

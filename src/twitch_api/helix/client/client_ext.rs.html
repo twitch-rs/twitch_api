@@ -842,6 +842,23 @@
 <span id="842">842</span>
 <span id="843">843</span>
 <span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]
 
 </span><span class="kw">use </span><span class="kw">crate</span>::helix::{<span class="self">self</span>, ClientRequestError, HelixClient};
@@ -1506,6 +1523,23 @@
     {
         <span class="kw">let </span>req = helix::chat::GetEmoteSetsRequest::builder()
             .emote_set_id(emote_sets.to_owned())
+            .build();
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
+    }
+
+    <span class="doccomment">/// Get a user&#39;s chat settings
+    </span><span class="kw">pub async fn </span>get_chat_settings&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        moderator_id: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;types::UserId&gt;&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::chat::ChatSettings, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
+    {
+        <span class="kw">let </span>req = helix::chat::GetChatSettingsRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .moderator_id(moderator_id)
             .build();
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
