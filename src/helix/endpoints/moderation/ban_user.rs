@@ -87,6 +87,7 @@ pub struct BanUserBody {
     #[builder(default, setter(into))]
     pub duration: Option<u32>,
     /// The reason the user is being banned or put in a timeout. The text is user defined and limited to a maximum of 500 characters.
+    #[builder(setter(into))]
     pub reason: String,
     /// The ID of the user to ban or put in a timeout.
     #[builder(setter(into))]
