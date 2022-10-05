@@ -80,10 +80,12 @@ pub struct BanUserBody {
     /// To put a user in a timeout, include this field and specify the timeout period, in seconds.
     /// The minimum timeout is 1 second and the maximum is 1,209,600 seconds (2 weeks).
     /// To end a user’s timeout early, set this field to 1, or send an Unban user request.
+    #[builder(default, setter(into))]
     pub duration: Option<u32>,
     /// The reason the user is being banned or put in a timeout. The text is user defined and limited to a maximum of 500 characters.
     pub reason: String,
     /// The ID of the user to ban or put in a timeout.
+    #[builder(setter(into))]
     pub user_id: types::UserId,
 }
 
