@@ -62,7 +62,11 @@ pub struct BanUserRequest {
     /// The ID of the broadcaster whose chat room the user is being banned from.
     #[builder(setter(into))]
     pub broadcaster_id: types::UserId,
-    /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
+    /// The ID of a user that has permission to moderate the broadcaster’s chat room.
+    /// This ID must match the user ID associated with the user OAuth token.
+    ///
+    /// If the broadcaster wants to ban the user (instead of having the moderator do it),
+    /// set this parameter to the broadcaster’s ID, too.
     #[builder(setter(into))]
     pub moderator_id: types::UserId,
 }
