@@ -186,6 +186,10 @@
 <span id="186">186</span>
 <span id="187">187</span>
 <span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding chat
 
 </span><span class="kw">use crate</span>::{
@@ -196,6 +200,7 @@
 
 <span class="kw">pub mod </span>get_channel_chat_badges;
 <span class="kw">pub mod </span>get_channel_emotes;
+<span class="kw">pub mod </span>get_chatters;
 <span class="kw">pub mod </span>get_emote_sets;
 <span class="kw">pub mod </span>get_global_chat_badges;
 <span class="kw">pub mod </span>get_global_emotes;
@@ -218,6 +223,9 @@
 
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};
+
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>get_chatters::{Chatter, GetChattersRequest};
 
 <span class="doccomment">/// A set of badges
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
@@ -375,4 +383,4 @@
     </span><span class="kw">pub </span>unique_chat_mode: bool,
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (57f097ea2 2022-10-01)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (01af5040f 2022-10-04)" ></div></body></html>

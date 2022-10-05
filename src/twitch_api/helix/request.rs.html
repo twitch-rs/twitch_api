@@ -463,7 +463,7 @@
     <span class="doccomment">/// Response type. twitch&#39;s response will  deserialize to this.
     </span><span class="kw">type </span>Response: serde::de::DeserializeOwned + PartialEq;
     <span class="doccomment">/// Defines layout of the url parameters.
-    </span><span class="kw">fn </span>query(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;String, errors::SerializeError&gt; { ser::to_string(<span class="kw-2">&amp;</span><span class="self">self</span>) }
+    </span><span class="kw">fn </span>query(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;String, errors::SerializeError&gt; { ser::to_string(<span class="self">self</span>) }
     <span class="doccomment">/// Returns full URI for the request, including query parameters.
     </span><span class="kw">fn </span>get_uri(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;http::Uri, InvalidUri&gt; {
         <span class="kw">let </span>query = <span class="self">self</span>.query()<span class="question-mark">?</span>;
@@ -885,4 +885,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (57f097ea2 2022-10-01)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (01af5040f 2022-10-04)" ></div></body></html>
