@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["UpdateChatSettingsBody","Body Parameters for Update Chat Settingss"],["UpdateChatSettingsRequest","Query Parameters for Update Chat Settingss"]],"type":[["UpdateChatSettingsResponse","Return Values for Update Chat Settings"]]};
+window.SIDEBAR_ITEMS = {"struct":[["UpdateChatSettingsBody","Body Parameters for Update Chat Settings"],["UpdateChatSettingsRequest","Query Parameters for Update Chat Settings"]],"type":[["UpdateChatSettingsResponse","Return Values for Update Chat Settings"]]};

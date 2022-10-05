@@ -257,6 +257,8 @@
 <span id="257">257</span>
 <span id="258">258</span>
 <span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Updates the broadcaster’s chat settings.
 //!
 //! Only rewards created programmatically by the same client_id can be updated.
@@ -322,22 +324,24 @@
 
 <span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span>helix::RequestPatch;
-<span class="doccomment">/// Query Parameters for [Update Chat Settingss](super::update_chat_settings)
+<span class="doccomment">/// Query Parameters for [Update Chat Settings](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
 </span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateChatSettingsRequest {
-    <span class="comment">// FIXME: Wrong documentation by twitch?
-    </span><span class="doccomment">/// The ID of the broadcaster whose chat settings you want to update. This ID must match the user ID associated with the user OAuth token.
+    <span class="doccomment">/// The ID of the broadcaster whose chat settings you want to update.
     </span><span class="attribute">#[builder(setter(into))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
-    <span class="doccomment">/// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
+    <span class="doccomment">/// The ID of a user that has permission to moderate the broadcaster’s chat room.
+    /// This ID must match the user ID associated with the user OAuth token.
+    ///
+    /// If the broadcaster is making the update, also set this parameter to the broadcaster’s ID.
     </span><span class="attribute">#[builder(setter(into))]
     </span><span class="kw">pub </span>moderator_id: types::UserId,
 }
 
-<span class="doccomment">/// Body Parameters for [Update Chat Settingss](super::update_chat_settings)
+<span class="doccomment">/// Body Parameters for [Update Chat Settings](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
 </span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
