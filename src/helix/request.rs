@@ -20,7 +20,7 @@ pub trait Request: serde::Serialize {
     /// Response type. twitch's response will  deserialize to this.
     type Response: serde::de::DeserializeOwned + PartialEq;
     /// Defines layout of the url parameters.
-    fn query(&self) -> Result<String, errors::SerializeError> { ser::to_string(&self) }
+    fn query(&self) -> Result<String, errors::SerializeError> { ser::to_string(self) }
     /// Returns full URI for the request, including query parameters.
     fn get_uri(&self) -> Result<http::Uri, InvalidUri> {
         let query = self.query()?;
