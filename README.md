@@ -16,7 +16,7 @@ See [examples](./examples) for examples.
 [local-docs]: https://img.shields.io/github/workflow/status/twitch-rs/twitch_api/github%20pages/master?label=master%20docs&style=flat-square&event=push
 
 ```rust ,no_run
-use twitch_api::helix::HelixClient;
+use twitch_api2::helix::HelixClient;
 use twitch_oauth2::{AccessToken, UserToken};
 use reqwest::Client as ReqwestClient;
 
