@@ -96,9 +96,11 @@ pub struct CreatePollBody {
     /// Array of the poll choices. Minimum: 2 choices. Maximum: 5 choices.
     pub choices: Vec<NewPollChoice>,
     /// Indicates if Bits can be used for voting. Default: false
+    #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
     #[builder(default, setter(into))]
     pub bits_voting_enabled: Option<bool>,
     /// Number of Bits required to vote once with Bits. Minimum: 0. Maximum: 10000.
+    #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
     #[builder(default, setter(into))]
     pub bits_per_vote: Option<i64>,
     /// Indicates if Channel Points can be used for voting. Default: false
