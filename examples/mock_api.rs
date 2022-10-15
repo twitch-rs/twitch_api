@@ -1,5 +1,4 @@
 use futures::TryStreamExt;
-use twitch_api::helix;
 use twitch_api::types;
 use twitch_api::HelixClient;
 use twitch_oauth2::Scope;
