@@ -17,12 +17,14 @@
 
 * Deprecate `Get User` `view_count`
 * Deprecate `Check AutoMod status` `user_id`
+* Removed deprecated `limit` on `GetEventSubSubscriptionsRequest` response
 
 ### Added
 
 * Added `Get Chatters` endpoint
 * Added `Ban User` and `Unban User`
 * Added `Get Chat Settings` endpoint
+* Added `type` and `user_id` query params to `GetEventSubSubscriptionsRequest`
 
 ## [v0.6.1] - 2022-04-29
 
