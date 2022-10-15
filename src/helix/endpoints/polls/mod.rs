@@ -1,4 +1,5 @@
 //! Helix endpoints regarding channel polls
+#![allow(deprecated, deprecated_in_future)]
 
 use crate::{
     helix::{self, Request},
