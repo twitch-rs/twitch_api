@@ -29,6 +29,7 @@
 * Added `Get Chat Settings` endpoint
 * Added `type` and `user_id` query params to `GetEventSubSubscriptionsRequest`
 * Added `vod_offset` to `Clip`s
+* Added `Start A Raid` and `Cancel A Raid` endpoints
 
 ## [v0.6.1] - 2022-04-29
 

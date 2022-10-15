@@ -12,6 +12,7 @@ pub mod moderation;
 pub mod points;
 pub mod polls;
 pub mod predictions;
+pub mod raids;
 pub mod schedule;
 pub mod search;
 pub mod streams;
