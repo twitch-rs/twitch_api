@@ -9,11 +9,26 @@ on:
 jobs:
   ci:
     name: CI
-    needs: [test, fmt, clippy, docs]
+    needs: [test, fmt, clippy, docs, release]
     runs-on: ubuntu-latest
     steps:
       - name: Done
         run: exit 0
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: [test, fmt, clippy, docs]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0 # fetch tags for publish
+          # ssh-key: "${{ secrets.COMMIT_KEY }}" # use deploy key to trigger workflow on tag
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo xtask release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
   test:
     name: Tests
     strategy:
@@ -23,7 +38,7 @@ jobs:
         rust: [1.60.0, nightly]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: Install rust
@@ -31,7 +46,7 @@ jobs:
         with:
           toolchain: ${{ matrix.rust }}
           override: true
-      - uses: Swatinem/rust-cache@v1
+      - uses: Swatinem/rust-cache@v2
       - name: Test twitch_api
         uses: actions-rs/cargo@v1
         with:
@@ -41,7 +56,7 @@ jobs:
     name: Rustfmt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - uses: actions-rs/toolchain@v1
@@ -60,7 +75,7 @@ jobs:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - uses: actions-rs/toolchain@v1
@@ -68,7 +83,7 @@ jobs:
           toolchain: nightly
           override: true
           components: clippy
-      - uses: Swatinem/rust-cache@v1
+      - uses: Swatinem/rust-cache@v2
       - name: Run clippy --all-targets --no-default-features
         uses: actions-rs/cargo@v1
         with:
@@ -99,23 +114,23 @@ jobs:
         with:
           command: clippy
           args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
-      - name: Run clippy --all-targets --all-features
+      - name: Run clippy --all-targets --all-features --workspace
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --locked --all-targets --all-features
+          args: --locked --all-targets --all-features --workspace
   docs:
     name: Docs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
           override: true
-      - uses: Swatinem/rust-cache@v1
+      - uses: Swatinem/rust-cache@v2
       # We do the following to make sure docs.rs can document properly without anything broken, and that docs are working.
       - name: Run doc tests
         uses: actions-rs/cargo@v1
@@ -130,21 +145,3 @@ jobs:
         with:
           command: doc
           args: --locked --no-deps --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    if: startsWith(github.head_ref, 'release-') || startsWith(github.ref, 'release-')
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: nightly
-          override: true
-      - name: Run dry run publish
-        uses: actions-rs/cargo@v1
-        with:
-          command: publish
-          args: --dry-run --features "${{ env.CI_TWITCH_OAUTH2_FEATURES }}"
