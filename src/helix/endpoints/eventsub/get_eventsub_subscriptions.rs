@@ -1,4 +1,3 @@
-#![allow(deprecated_in_future, deprecated)]
 //! Get a list of your EventSub subscriptions.
 
 use super::*;

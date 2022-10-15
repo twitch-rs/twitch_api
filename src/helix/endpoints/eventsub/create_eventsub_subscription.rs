@@ -99,13 +99,6 @@ pub struct CreateEventSubSubscription<E: EventSubscription> {
     pub created_at: types::Timestamp,
     /// JSON object indicating the notification delivery specific information. Includes the transport method and callback URL.
     pub transport: TransportResponse,
-    #[deprecated(
-        since = "0.5.0",
-        note = "on 2021-05-11, this will no longer be returned. Use max_total_cost instead"
-    )]
-    #[serde(default)]
-    /// Subscription limit for client id that made the subscription creation request.
-    pub limit: Option<usize>,
     /// Total number of subscriptions for the client ID that made the subscription creation request.
     pub total: usize,
     /// Total cost of all the subscriptions for the client ID that made the subscription creation request.
@@ -163,10 +156,8 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
                 uri: uri.clone(),
             }
         })?;
-        #[allow(deprecated)]
         Ok(helix::Response {
             data: CreateEventSubSubscription {
-                limit: response.limit,
                 total: response.total,
                 total_cost: response.total_cost,
                 max_total_cost: response.max_total_cost,
@@ -219,7 +210,7 @@ fn test_request() {
             "condition": {
                 "user_id": "1234"
             },
-            "created_at": "2020-11-10T20:29:44Z",
+            "created_at": "2020-11-10T14:32:18.730260295Z",
             "transport": {
                 "method": "webhook",
                 "callback": "https://this-is-a-callback.com"
@@ -227,7 +218,6 @@ fn test_request() {
             "cost": 1
         }
     ],
-    "limit": 10000,
     "total": 1,
     "total_cost": 1,
     "max_total_cost": 10000

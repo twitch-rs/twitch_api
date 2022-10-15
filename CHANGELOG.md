@@ -19,6 +19,8 @@
 * Deprecate `Check AutoMod status` `user_id`
 * Removed deprecated `limit` on `GetEventSubSubscriptionsRequest` response
 * Deprecate `bits_voting_enabled`, `bits_per_vote` and `bits_votes` on `Create Poll` and `Poll`
+* Removed deprecated `limit` on `CreateEventSubSubscription`
+* Removed deprecated `AddBlockedTerm`, `DeleteBlockedTerm`, `DeletePermittedTerm` and `AddPermittedTerm` on `ModerationActionCommand`
 
 ### Added
 
