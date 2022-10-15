@@ -5,9 +5,22 @@ use once_cell::sync::OnceCell;
 use serde::Deserialize;
 use xshell::{cmd, Shell};
 
+static RUSTDOCFLAGS: &[&str] = &["--cfg", "nightly"];
+static RUSTFLAGS: &[&str] = &["--cfg", "nightly"];
+static TWITCH_API_FEATURES: &str =
+    "twitch_oauth2/all twitch_oauth2/mock_api all unsupported deny_unknown_fields _all";
+
 #[derive(Debug, Parser)]
 pub enum Args {
     Release,
+    Doc {
+        /// Set the target dir, this will by default be a subdirectory inside `target` to
+        /// save on compilation, as the rust flags will be changed, thus needing a new compilation
+        #[clap(long, default_value = "target/extra")]
+        target_dir: String,
+        #[clap(last = true)]
+        last: Option<String>,
+    },
 }
 
 fn main() -> color_eyre::Result<()> {
@@ -65,8 +78,25 @@ fn main() -> color_eyre::Result<()> {
                 eprintln!("tag exists already, no action needed");
             }
         }
+        Args::Doc { target_dir, last } => {
+            let _rustdocflags =
+                sh.push_env("CARGO_ENCODED_RUSTDOCFLAGS", RUSTDOCFLAGS.join("\u{1f}"));
+            let _rustflags = sh.push_env("CARGO_ENCODED_RUSTFLAGS", RUSTFLAGS.join("\u{1f}"));
+            if !cargo_ver(&sh)?.contains("nightly") {
+                color_eyre::eyre::bail!("Not running with a nightly cargo, use `cargo +nightly`");
+            }
+            cmd!(
+                sh,
+                "cargo doc --target-dir {target_dir} --no-deps --features {TWITCH_API_FEATURES} -Zunstable-options -Zrustdoc-scrape-examples=examples -p twitch_api -p twitch_oauth2 -p twitch_types -Zrustdoc-map {last...}"
+            )
+            .run()?;
+        }
     }
     Ok(())
+}
+
+fn cargo_ver(sh: &Shell) -> Result<String, color_eyre::Report> {
+    cmd!(sh, "cargo -V").read().map_err(Into::into)
 }
 
 #[track_caller]

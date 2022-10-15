@@ -42,7 +42,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     Ok(())
 }
 
-/// Return Values for [Get Channel Information](super::get_channel_information)
+/// Return Values for Get Channel Information
 ///
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
 #[derive(PartialEq, Eq, serde::Deserialize, serde::Serialize, Debug, Clone)]

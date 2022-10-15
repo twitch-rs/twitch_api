@@ -51,7 +51,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}"
+          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}" --workspace
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
@@ -138,10 +138,4 @@ jobs:
           command: test
           args: --doc --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
       - name: Check twitch_api docs
-        uses: actions-rs/cargo@v1
-        env:
-          RUSTDOCFLAGS: "--cfg nightly"
-          RUSTFLAGS: "--cfg nightly"
-        with:
-          command: doc
-          args: --locked --no-deps --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
+        run: cargo xtask doc
