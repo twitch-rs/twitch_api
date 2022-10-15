@@ -3,9 +3,9 @@
 use super::*;
 use helix::RequestDelete;
 
-/// Query Parameters for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
+/// Query Parameters for [Delete EventSub Subscriptions](super::delete_eventsub_subscription)
 ///
-/// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription)
+/// [`delete-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription)
 #[derive(PartialEq, Eq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
 #[non_exhaustive]
 pub struct DeleteEventSubSubscriptionRequest {
@@ -22,9 +22,9 @@ impl Request for DeleteEventSubSubscriptionRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-/// Return Values for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
+/// Return Values for [Delete EventSub Subscriptions](super::delete_eventsub_subscription)
 ///
-/// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription)
+/// [`delete-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 pub enum DeleteEventSubSubscription {

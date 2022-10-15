@@ -69,11 +69,11 @@
 //!         }) => {
 //!             // make sure you save the `Twitch-Eventsub-Message-Id` headers value,
 //!             // twitch may resend notifications, and in those cases you should just return 200 OK.
-//!             
+//!
 //!             // Do whatever you need to do with the event. Preferably send the event to a channel.
 //!             println!("user {:?} followed {:?}", notif.user_name, notif.broadcaster_user_name);
 //!             Ok(http::Response::builder().status(200).body(vec![])?)
-//!         }   
+//!         }
 //!         _ => Ok(http::Response::builder().status(200).body(vec![])?),
 //!     }
 //! }

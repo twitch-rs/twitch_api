@@ -7,6 +7,7 @@ use ureq::Agent as UreqAgent;
 /// Also returned by [`ClientDefault::default_client_with_name`]
 #[cfg_attr(nightly, doc(cfg(feature = "ureq")))]
 #[derive(Debug, displaydoc::Display, thiserror::Error)]
+#[allow(clippy::large_enum_variant)]
 pub enum UreqError {
     /// Ureq failed to do the request
     Ureq(#[from] Box<ureq::Error>),

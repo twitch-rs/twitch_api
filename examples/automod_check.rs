@@ -39,7 +39,6 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     let data = twitch_api::helix::moderation::CheckAutoModStatusBody::builder()
         .msg_id("123")
         .msg_text(args.collect::<String>())
-        .user_id("1234")
         .build();
     println!("data: {:?}", data);
     let response = client.req_post(req, vec![data], &token).await?;

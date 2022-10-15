@@ -1,6 +1,8 @@
 {
     "rust-analyzer.cargo.features": ["_all", "unsupported", "twitch_oauth2/reqwest", "twitch_oauth2/surf", "deny_unknown_fields", "surf/curl-client"],
-    "rust-analyzer.checkOnSave.enable": false,
+    "rust-analyzer.checkOnSave.enable": true,
+    "rust-analyzer.checkOnSave.command": "clippy",
+    "rust-analyzer.checkOnSave.extraArgs": [],
     "rust-analyzer.diagnostics.disabled": [
         "type-mismatch"
     ],

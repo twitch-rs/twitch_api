@@ -16,6 +16,7 @@
 ### Changes
 
 * Deprecate `Get User` `view_count`
+* Deprecate `Check AutoMod status` `user_id`
 
 ### Added
 
