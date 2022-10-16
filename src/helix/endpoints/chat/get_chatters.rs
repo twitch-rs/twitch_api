@@ -79,7 +79,8 @@ impl helix::Paginated for GetChattersRequest {
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Chatter {
-    user_login: types::UserName,
+    /// The login name of a user that’s connected to the broadcaster’s chat room.
+    pub user_login: types::UserName,
 }
 
 impl Request for GetChattersRequest {
