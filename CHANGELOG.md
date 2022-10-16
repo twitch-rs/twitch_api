@@ -21,7 +21,6 @@
 * Deprecate `bits_voting_enabled`, `bits_per_vote` and `bits_votes` on `Create Poll` and `Poll`
 * Removed deprecated `limit` on `CreateEventSubSubscription`
 * Removed deprecated `AddBlockedTerm`, `DeleteBlockedTerm`, `DeletePermittedTerm` and `AddPermittedTerm` on `ModerationActionCommand`
-
 ### Added
 
 * Added `Get Chatters` endpoint
@@ -30,6 +29,7 @@
 * Added `type` and `user_id` query params to `GetEventSubSubscriptionsRequest`
 * Added `vod_offset` to `Clip`s
 * Added `Start A Raid` and `Cancel A Raid` endpoints
+* Added `Send Chat Announcement` endpoint
 
 ## [v0.6.1] - 2022-04-29
 

@@ -13,31 +13,29 @@ pub mod get_chatters;
 pub mod get_emote_sets;
 pub mod get_global_chat_badges;
 pub mod get_global_emotes;
+pub mod send_chat_announcement;
 pub mod update_chat_settings;
 
 #[doc(inline)]
 pub use get_channel_chat_badges::GetChannelChatBadgesRequest;
-
-#[doc(inline)]
-pub use get_global_chat_badges::GetGlobalChatBadgesRequest;
-
 #[doc(inline)]
 pub use get_channel_emotes::GetChannelEmotesRequest;
-
-#[doc(inline)]
-pub use get_global_emotes::GetGlobalEmotesRequest;
-
-#[doc(inline)]
-pub use get_emote_sets::GetEmoteSetsRequest;
-
 #[doc(inline)]
 pub use get_chat_settings::GetChatSettingsRequest;
-
-#[doc(inline)]
-pub use update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};
-
 #[doc(inline)]
 pub use get_chatters::{Chatter, GetChattersRequest};
+#[doc(inline)]
+pub use get_emote_sets::GetEmoteSetsRequest;
+#[doc(inline)]
+pub use get_global_chat_badges::GetGlobalChatBadgesRequest;
+#[doc(inline)]
+pub use get_global_emotes::GetGlobalEmotesRequest;
+#[doc(inline)]
+pub use send_chat_announcement::{
+    SendChatAnnouncementBody, SendChatAnnouncementRequest, SendChatAnnouncementResponse,
+};
+#[doc(inline)]
+pub use update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};
 
 /// A set of badges
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
