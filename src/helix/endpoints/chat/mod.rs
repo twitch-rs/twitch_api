@@ -13,8 +13,10 @@ pub mod get_chatters;
 pub mod get_emote_sets;
 pub mod get_global_chat_badges;
 pub mod get_global_emotes;
+pub mod get_user_chat_color;
 pub mod send_chat_announcement;
 pub mod update_chat_settings;
+pub mod update_user_chat_color;
 
 #[doc(inline)]
 pub use get_channel_chat_badges::GetChannelChatBadgesRequest;
@@ -31,11 +33,15 @@ pub use get_global_chat_badges::GetGlobalChatBadgesRequest;
 #[doc(inline)]
 pub use get_global_emotes::GetGlobalEmotesRequest;
 #[doc(inline)]
+pub use get_user_chat_color::{GetUserChatColorRequest, UserChatColor};
+#[doc(inline)]
 pub use send_chat_announcement::{
     SendChatAnnouncementBody, SendChatAnnouncementRequest, SendChatAnnouncementResponse,
 };
 #[doc(inline)]
 pub use update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};
+#[doc(inline)]
+pub use update_user_chat_color::{UpdateUserChatColorRequest, UpdateUserChatColorResponse};
 
 /// A set of badges
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]

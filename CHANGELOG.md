@@ -32,6 +32,7 @@
 * Added `Start A Raid` and `Cancel A Raid` endpoints
 * Added `Send Chat Announcement` endpoint
 * Added `Delete Chat Messages` endpoint
+* Added `Get User Chat Color` and `Update User Chat Colors` endpoint
 
 ## [v0.6.1] - 2022-04-29
 

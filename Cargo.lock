@@ -2309,7 +2309,7 @@ dependencies = [
 
 [[package]]
 name = "twitch_types"
-version = "0.3.2"
+version = "0.3.4"
 dependencies = [
  "aliri_braid",
  "displaydoc",
