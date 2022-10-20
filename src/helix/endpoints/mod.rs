@@ -21,3 +21,4 @@ pub mod tags;
 pub mod teams;
 pub mod users;
 pub mod videos;
+pub mod whispers;
