@@ -27,15 +27,22 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
+pub mod add_channel_vip;
 pub mod get_channel_editors;
 pub mod get_channel_information;
+pub mod get_vips;
 pub mod modify_channel_information;
+pub mod remove_channel_vip;
 pub mod start_commercial;
 
+#[doc(inline)]
+pub use add_channel_vip::{AddChannelVipRequest, AddChannelVipResponse};
 #[doc(inline)]
 pub use get_channel_editors::{Editor, GetChannelEditorsRequest};
 #[doc(inline)]
 pub use get_channel_information::{ChannelInformation, GetChannelInformationRequest};
+#[doc(inline)]
+pub use get_vips::{GetVipsRequest, Vip};
 #[doc(inline)]
 pub use modify_channel_information::{
     ModifyChannelInformation, ModifyChannelInformationBody, ModifyChannelInformationRequest,
