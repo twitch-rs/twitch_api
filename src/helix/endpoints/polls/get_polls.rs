@@ -81,8 +81,10 @@ pub struct Poll {
     /// Array of the poll choices.
     pub choices: Vec<PollChoice>,
     /// Indicates if Bits can be used for voting.
+    #[deprecated(since = "0.7.0", note = "the bits options for polls has been removed")]
     pub bits_voting_enabled: bool,
     /// Number of Bits required to vote once with Bits.
+    #[deprecated(since = "0.7.0", note = "the bits options for polls has been removed")]
     pub bits_per_vote: i64,
     /// Indicates if Channel Points can be used for voting.
     pub channel_points_voting_enabled: bool,

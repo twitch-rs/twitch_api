@@ -110,6 +110,10 @@ pub struct Clip {
     pub video_id: types::VideoId,
     /// Number of times the clip has been viewed.
     pub view_count: i64,
+    /// The zero-based offset, in seconds, to where the clip starts in the video (VOD).
+    ///
+    /// Is none if the video is not available or hasn’t been created yet from the live stream. See [video_id](Clip::video_id).
+    pub vod_offset: Option<i64>,
 }
 
 impl Request for GetClipsRequest {
@@ -139,23 +143,27 @@ fn test_request() {
 {
     "data": [
       {
-        "id": "AwkwardHelplessSalamanderSwiftRage",
+        "id": "RandomClip1",
         "url": "https://clips.twitch.tv/AwkwardHelplessSalamanderSwiftRage",
-        "embed_url": "https://clips.twitch.tv/embed?clip=AwkwardHelplessSalamanderSwiftRage",
-        "broadcaster_id": "67955580",
-        "broadcaster_name": "ChewieMelodies",
-        "creator_id": "53834192",
-        "creator_name": "BlackNova03",
-        "video_id": "205586603",
-        "game_id": "488191",
+        "embed_url": "https://clips.twitch.tv/embed?clip=RandomClip1",
+        "broadcaster_id": "1234",
+        "broadcaster_name": "JJ",
+        "creator_id": "123456",
+        "creator_name": "MrMarshall",
+        "video_id": "",
+        "game_id": "33103",
         "language": "en",
-        "title": "babymetal",
+        "title": "random1",
         "view_count": 10,
         "created_at": "2017-11-30T22:34:18Z",
         "thumbnail_url": "https://clips-media-assets.twitch.tv/157589949-preview-480x272.jpg",
-        "duration": 60
+        "duration": 12.9,
+        "vod_offset": 1957
       }
-    ]
+    ],
+    "pagination": {
+        "cursor": "eyJiIjpudWxsLCJhIjoiIn0"
+    }
 }
 "#
     .to_vec();

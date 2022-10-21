@@ -1,6 +1,4 @@
 //! Updates the broadcaster’s chat settings.
-//!
-//! Only rewards created programmatically by the same client_id can be updated.
 //! [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
 //!
 //! # Accessing the endpoint
@@ -249,7 +247,7 @@ fn test_request() {
     }"##
     .to_vec();
 
-    let http_response = http::Response::builder().status(200).body(data).unwrap();
+    let http_response = http::Response::builder().body(data).unwrap();
 
     let uri = req.get_uri().unwrap();
     assert_eq!(

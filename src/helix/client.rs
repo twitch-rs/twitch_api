@@ -16,8 +16,19 @@ impl<C: crate::HttpClient<'static> + crate::client::ClientDefault<'static>> Defa
 
 /// Client for Helix or the [New Twitch API](https://dev.twitch.tv/docs/api)
 ///
-/// Provides [`HelixClient::req_get`] for requesting endpoints which uses [GET method][RequestGet].
+/// Use [`HelixClient::new`] or [`HelixClient::with_client`] to create a new client.
 ///
+/// ```rust
+/// use twitch_api::HelixClient;
+/// # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
+/// let helix: HelixClient<reqwest::Client> = HelixClient::new();
+/// ```
+///
+/// See [`req_get`](HelixClient::req_get) for [`GET`](RequestGet),
+/// [`req_put`](HelixClient::req_put) for [`PUT`](RequestPut),
+/// [`req_post`](HelixClient::req_post) for [`POST`](RequestPost),
+/// [`req_patch`](HelixClient::req_patch) for [`PATCH`](RequestPatch) and
+/// [`req_delete`](HelixClient::req_delete) for [`DELETE`](RequestDelete)
 ///
 /// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
 ///
@@ -40,12 +51,12 @@ impl<C: crate::HttpClient<'static> + crate::client::ClientDefault<'static>> Defa
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 /// # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
+/// use twitch_api::helix::{users::User, HelixClient};
 /// let client: HelixClient<'static, reqwest::Client> = HelixClient::default();
 /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-/// use twitch_api::helix::{users::User, HelixClient};
 /// let user: Option<User> = client
-///     .get_user_from_login("justintv".to_string(), &token)
+///     .get_user_from_login("justintv", &token)
 ///     .await
 ///     .unwrap();
 /// # Ok(()) }

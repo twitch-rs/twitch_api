@@ -427,7 +427,7 @@ impl Event {
                 .get("Twitch-Eventsub-Message-Signature")?
                 .to_str()
                 .ok()?;
-            if !signature.starts_with(&SHA_HEADER) {
+            if !signature.starts_with(SHA_HEADER) {
                 return None;
             }
             let signature = signature.split_at(SHA_HEADER.len()).1;

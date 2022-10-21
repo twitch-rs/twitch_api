@@ -13,6 +13,15 @@ pub struct GetEventSubSubscriptionsRequest {
     /// Include this parameter to filter subscriptions by their status.
     #[builder(default, setter(into))]
     pub status: Option<eventsub::Status>,
+    /// Filter subscriptions by [subscription type](eventsub::EventType) (e.g., [channel.update](eventsub::EventType::ChannelUpdate)).
+    #[builder(default, setter(into))]
+    pub type_: Option<eventsub::EventType>,
+    /// Filter subscriptions by user ID.
+    ///
+    /// The response contains subscriptions where the user ID
+    /// matches a user ID that you specified inthe Condition object when you created the subscription.
+    #[builder(default, setter(into))]
+    pub user_id: Option<types::UserId>,
     // FIXME: https://github.com/twitchdev/issues/issues/272
     /// Cursor for forward pagination
     #[builder(default, setter(into))]
@@ -44,13 +53,6 @@ pub struct EventSubSubscriptions {
     pub total_cost: usize,
     /// The maximum total cost allowed for all of the subscriptions for the client ID that made the subscription creation request.
     pub max_total_cost: usize,
-    #[deprecated(
-        since = "0.5.0",
-        note = "on 2021-05-11, this will no longer be returned. Use max_total_cost instead"
-    )]
-    #[serde(default)]
-    /// Subscription limit for client id that made the subscription creation request.
-    pub limit: Option<usize>,
     /// Array containing subscriptions.
     pub subscriptions: Vec<eventsub::EventSubSubscription>,
 }
@@ -75,7 +77,6 @@ impl RequestGet for GetEventSubSubscriptionsRequest {
             total: i64,
             total_cost: usize,
             max_total_cost: usize,
-            limit: Option<usize>,
         }
 
         let response: InnerResponse = helix::parse_json(response, true).map_err(|e| {
@@ -86,14 +87,12 @@ impl RequestGet for GetEventSubSubscriptionsRequest {
                 status,
             )
         })?;
-        #[allow(deprecated)]
         Ok(helix::Response {
             data: EventSubSubscriptions {
                 // FIXME: This should probably be i64
                 total: response.total as usize,
                 total_cost: response.total_cost,
                 max_total_cost: response.max_total_cost,
-                limit: response.limit,
                 subscriptions: response.data,
             },
             pagination: response.pagination.cursor,
@@ -126,7 +125,7 @@ fn test_request() {
                 "condition": {
                     "broadcaster_user_id": "1234"
                 },
-                "created_at": "2020-11-10T20:08:33Z",
+                "created_at": "2020-11-10T20:08:33.12345678Z",
                 "transport": {
                     "method": "webhook",
                     "callback": "https://this-is-a-callback.com"
@@ -141,7 +140,7 @@ fn test_request() {
                 "condition": {
                     "user_id": "1234"
                 },
-                "created_at": "2020-11-10T20:31:52Z",
+                "created_at": "2020-11-10T14:32:18.730260295Z",
                 "transport": {
                     "method": "webhook",
                     "callback": "https://this-is-a-callback.com"
@@ -149,7 +148,6 @@ fn test_request() {
                 "cost": 0
             }
         ],
-        "limit": 10000,
         "total_cost": 1,
         "max_total_cost": 10000,
         "pagination": {}

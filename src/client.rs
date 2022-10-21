@@ -257,7 +257,7 @@ pub enum CompatError<E> {
     /// An error occurrec when assembling the body
     #[error("could not get the body of the response")]
     BodyError(#[source] hyper::Error),
-    /// An error occured
+    /// An error occurred
     #[error(transparent)]
     Other(#[from] E),
 }

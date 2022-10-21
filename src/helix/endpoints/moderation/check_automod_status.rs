@@ -1,3 +1,4 @@
+#![allow(deprecated_in_future, deprecated)]
 //! Determines whether a string message meets the channel’s AutoMod requirements.
 //! [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
 //!
@@ -23,7 +24,6 @@
 //! let body = check_automod_status::CheckAutoModStatusBody::builder()
 //!     .msg_id("test1")
 //!     .msg_text("automod please approve this!")
-//!     .user_id("1234")
 //!     .build();
 //! ```
 //!
@@ -47,7 +47,6 @@
 //! let body = vec![check_automod_status::CheckAutoModStatusBody::builder()
 //!     .msg_id("test1")
 //!     .msg_text("automod please approve this!")
-//!     .user_id("1234")
 //!     .build()];
 //! let response: Vec<check_automod_status::CheckAutoModStatus> = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
@@ -83,17 +82,18 @@ pub struct CheckAutoModStatusBody {
     #[builder(setter(into))]
     pub msg_text: String,
     /// User ID of the sender.
-    #[builder(setter(into))]
-    pub user_id: types::UserId,
+    #[deprecated(since = "0.7.0", note = "user_id in automod check is no longer read")]
+    #[builder(setter(into, strip_option), default)]
+    pub user_id: Option<types::UserId>,
 }
 
 impl CheckAutoModStatusBody {
     /// Create a new [`CheckAutoModStatusBody`]
-    pub fn new(msg_id: types::MsgId, msg_text: String, user_id: types::UserId) -> Self {
+    pub fn new(msg_id: types::MsgId, msg_text: String) -> Self {
         Self {
             msg_id,
             msg_text,
-            user_id,
+            user_id: None,
         }
     }
 }
@@ -145,8 +145,8 @@ fn test_request() {
         .build();
 
     let body = vec![
-        CheckAutoModStatusBody::new("123".into(), "hello world".to_string(), "1234".into()),
-        CheckAutoModStatusBody::new("393".into(), "automoded word".to_string(), "1234".into()),
+        CheckAutoModStatusBody::new("123".into(), "hello world".to_string()),
+        CheckAutoModStatusBody::new("393".into(), "automoded word".to_string()),
     ];
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
