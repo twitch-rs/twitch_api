@@ -32,7 +32,7 @@ use serde::Deserialize;
 #[doc(no_inline)]
 #[cfg(feature = "twitch_oauth2")]
 pub use twitch_oauth2::Scope;
-#[cfg(feature = "twitch_oauth2")]
+#[cfg(feature = "client")]
 use twitch_oauth2::TwitchToken;
 
 #[cfg(feature = "client")]
@@ -75,7 +75,7 @@ struct InnerResponse<D> {
 }
 
 #[derive(Deserialize, Debug)]
-#[cfg(feature = "unsupported")]
+#[cfg(all(feature = "unsupported", feature = "client"))]
 #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 struct CustomInnerResponse<'a> {
     #[serde(borrow)]
