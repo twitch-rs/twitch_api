@@ -17,19 +17,20 @@ static TWITCH_API_DOC_FEATURES: &str =
 static FEATURE_SETS: &[&[&str]] = &[
     &["helix"],
     &["tmi"],
-    &["helix", "tmi"],
-    &["helix", "eventsub"],
-    &["pubsub", "eventsub", "hmac"],
+    &["helix", "pubsub", "eventsub", "hmac"],
 ];
 static OPT_FEATURES: &[&[&str]] = &[
     &["unsupported"],
     &["twitch_oauth2"],
-    &["client", "trace_unknown_fields"],
-    &["client", "unsupported"],
-    &["deny_unknown_fields", "unsupported", "deser_borrow"],
-    &["trace_unknown_fields", "deny_unknown_fields"],
+    &["client", "deny_unknown_fields"],
+    &["client", "deny_unknown_fields", "unsupported"],
 ];
-static EXTRA_FEATURES: &[&[&str]] = &[&["pubsub", "twitch_types/time", "deny_unknown_fields"]];
+static EXTRA_FEATURES: &[&[&str]] = &[
+    &["pubsub", "twitch_types/time", "deny_unknown_fields"],
+    &["trace_unknown_fields", "deny_unknown_fields", "helix"],
+    &["helix", "tmi"],
+    &["helix", "eventsub"],
+];
 
 #[derive(Debug, Parser)]
 pub enum Args {
