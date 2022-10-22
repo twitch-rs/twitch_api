@@ -8,3 +8,6 @@ use crate::{
 use serde::{Deserialize, Serialize};
 
 pub mod send_whisper;
+
+#[doc(inline)]
+pub use send_whisper::{SendWhisperBody, SendWhisperRequest, SendWhisperResponse};

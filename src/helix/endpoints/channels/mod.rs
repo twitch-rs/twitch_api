@@ -48,4 +48,6 @@ pub use modify_channel_information::{
     ModifyChannelInformation, ModifyChannelInformationBody, ModifyChannelInformationRequest,
 };
 #[doc(inline)]
+pub use remove_channel_vip::{RemoveChannelVipRequest, RemoveChannelVipResponse};
+#[doc(inline)]
 pub use start_commercial::{StartCommercial, StartCommercialBody, StartCommercialRequest};

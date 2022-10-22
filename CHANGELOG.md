@@ -33,7 +33,7 @@
 - Added `Send Chat Announcement` endpoint
 - Added `Delete Chat Messages` endpoint
 - Added `Get User Chat Color` and `Update User Chat Colors` endpoint
-- Added `Add Channel Moderator` endpoint
+- Added `Add Channel Moderator` and `Remove Channel Moderator` endpoint
 - Added `Get VIPs`, `Add Channel VIP` and `Remove Channel VIP` endpoint
 - Added `Send Whisper` endpoint
 

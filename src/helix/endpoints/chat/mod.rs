@@ -198,3 +198,44 @@ pub struct ChatSettings {
     /// Is true, if the broadcaster requires unique messages only; otherwise, false.
     pub unique_chat_mode: bool,
 }
+
+/// Valid colors for announcements
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "lowercase")]
+#[non_exhaustive]
+pub enum AnnouncementColor {
+    /// The color blue
+    Blue,
+    /// The color green
+    Green,
+    /// The color orange
+    Orange,
+    /// The color purple
+    Purple,
+    /// The primary color for the broadcaster
+    Primary,
+}
+
+impl Default for AnnouncementColor {
+    fn default() -> Self { Self::Primary }
+}
+
+/// An error for an invalid [AnnouncementColor]
+#[derive(Debug, Clone, thiserror::Error)]
+#[error("invalid color")]
+pub struct AnnouncementColorError;
+
+impl std::convert::TryFrom<&str> for AnnouncementColor {
+    type Error = AnnouncementColorError;
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        Ok(match value {
+            "blue" => AnnouncementColor::Blue,
+            "green" => AnnouncementColor::Green,
+            "orange" => AnnouncementColor::Orange,
+            "purple" => AnnouncementColor::Purple,
+            "primary" => AnnouncementColor::Primary,
+            _ => return Err(AnnouncementColorError),
+        })
+    }
+}

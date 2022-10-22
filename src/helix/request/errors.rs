@@ -10,7 +10,7 @@ use crate::helix::BodyError;
 pub enum ClientRequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// Request failed from reqwests side
     #[error("request failed")]
-    RequestError(RE),
+    RequestError(#[source] RE),
     /// Request failed from reqwests side
     #[error("body conversion failed")]
     HyperError(#[from] hyper::Error),

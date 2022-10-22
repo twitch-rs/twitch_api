@@ -100,9 +100,9 @@ impl From<String> for SendWhisperBody {
 
 impl SendWhisperBody {
     /// Create a new message
-    pub fn new(message: impl Into<String>) -> Self {
+    pub fn new(message: impl std::fmt::Display) -> Self {
         Self {
-            message: message.into(),
+            message: message.to_string(),
         }
     }
 }
