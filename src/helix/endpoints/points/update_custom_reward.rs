@@ -79,6 +79,7 @@ pub struct UpdateCustomRewardRequest {
 }
 
 impl UpdateCustomRewardRequest {
+    /// Update a Custom Reward created on the broadcaster's channel
     pub fn new(broadcaster_id: impl Into<types::UserId>, id: impl Into<types::RewardId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

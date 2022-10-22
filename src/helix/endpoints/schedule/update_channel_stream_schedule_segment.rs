@@ -74,6 +74,7 @@ pub struct UpdateChannelStreamScheduleSegmentRequest {
 }
 
 impl UpdateChannelStreamScheduleSegmentRequest {
+    /// Update a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         id: impl Into<types::StreamSegmentId>,

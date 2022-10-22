@@ -51,6 +51,7 @@ pub struct GetChannelTeamsRequest {
 }
 
 impl GetChannelTeamsRequest {
+    /// Get the team of this specific broadcaster
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

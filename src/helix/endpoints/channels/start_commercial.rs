@@ -83,6 +83,7 @@ pub struct StartCommercialBody {
 }
 
 impl StartCommercialBody {
+    /// Start a commercial in this broadcasters channel
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         length: impl Into<types::CommercialLength>,

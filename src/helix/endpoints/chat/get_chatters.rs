@@ -70,6 +70,11 @@ pub struct GetChattersRequest {
 }
 
 impl GetChattersRequest {
+    /// Get chatters in broadcasters channel
+    ///
+    /// # Notes
+    ///
+    /// The moderator has to be the token owner and can moderate the chat
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         moderator_id: impl Into<types::UserId>,

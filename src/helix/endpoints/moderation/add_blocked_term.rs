@@ -71,6 +71,7 @@ pub struct AddBlockedTermRequest {
 }
 
 impl AddBlockedTermRequest {
+    /// Where to add blocked term
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         moderator_id: impl Into<types::UserId>,

@@ -76,6 +76,11 @@ pub struct GetClipsRequest {
 }
 
 impl GetClipsRequest {
+    /// An empty request
+    ///
+    /// # Notes
+    ///
+    /// This is not a valid request and needs to be filled out with other fields
     pub fn empty() -> Self {
         Self {
             broadcaster_id: Default::default(),

@@ -63,6 +63,7 @@ pub struct RemoveBlockedTermRequest {
 }
 
 impl RemoveBlockedTermRequest {
+    /// Remove blocked term
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         moderator_id: impl Into<types::UserId>,

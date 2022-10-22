@@ -62,6 +62,7 @@ pub struct GetCustomRewardRequest {
 }
 
 impl GetCustomRewardRequest {
+    /// Rewards on this broadcasters channel
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -70,16 +71,19 @@ impl GetCustomRewardRequest {
         }
     }
 
+    /// Get reward with this id
     pub fn id(mut self, id: impl Into<types::RewardId>) -> Self {
         self.id = vec![id.into()];
         self
     }
 
+    /// Get rewards with these ids
     pub fn ids(mut self, id: impl IntoIterator<Item = impl Into<types::RewardId>>) -> Self {
         self.id = id.into_iter().map(Into::into).collect();
         self
     }
 
+    /// Only return rewards that this application/client id can edit
     pub fn only_manageable_rewards(mut self, only_manageable_rewards: bool) -> Self {
         self.only_manageable_rewards = Some(only_manageable_rewards);
         self

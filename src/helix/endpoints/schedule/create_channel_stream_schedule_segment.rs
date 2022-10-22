@@ -83,6 +83,7 @@ pub struct CreateChannelStreamScheduleSegmentRequest {
 }
 
 impl CreateChannelStreamScheduleSegmentRequest {
+    /// Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -118,6 +119,7 @@ pub struct CreateChannelStreamScheduleSegmentBody {
 }
 
 impl CreateChannelStreamScheduleSegmentBody {
+    /// Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     pub fn new(
         start_time: impl Into<types::Timestamp>,
         timezone: String,

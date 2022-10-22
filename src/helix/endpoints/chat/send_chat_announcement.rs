@@ -75,6 +75,7 @@ pub struct SendChatAnnouncementRequest {
 }
 
 impl SendChatAnnouncementRequest {
+    /// Send announcement in channel as this moderator
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         moderator_id: impl Into<types::UserId>,

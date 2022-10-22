@@ -96,6 +96,7 @@ pub struct EndPredictionBody {
 }
 
 impl EndPredictionBody {
+    /// End given prediction that is currently active.
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         id: impl Into<types::PredictionId>,
@@ -110,6 +111,8 @@ impl EndPredictionBody {
     }
 
     /// ID of the winning outcome for the Prediction
+    ///
+    /// This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
     pub fn winning_outcome_id(
         mut self,
         winning_outcome_id: impl Into<types::PredictionId>,

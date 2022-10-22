@@ -1,4 +1,4 @@
-//! Get information about all Channel Points Predictions or specific Channel Points Predictions for a Twitch channel.
+//! Create a Channel Points Prediction for a specific Twitch channel.
 //!
 //! Results are ordered by most recent, so it can be assumed that the currently active or locked Prediction will be the first item.
 //! [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
@@ -97,6 +97,7 @@ pub struct CreatePredictionBody {
 }
 
 impl CreatePredictionBody {
+    /// Create a Channel Points Prediction for a specific Twitch channel.
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         title: String,

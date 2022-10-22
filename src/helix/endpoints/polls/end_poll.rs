@@ -94,6 +94,7 @@ pub struct EndPollBody {
 }
 
 impl EndPollBody {
+    /// End a poll that is currently active.
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         id: impl Into<types::PollId>,

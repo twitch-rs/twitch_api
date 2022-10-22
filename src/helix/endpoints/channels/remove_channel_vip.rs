@@ -58,6 +58,7 @@ pub struct RemoveChannelVipRequest {
 }
 
 impl RemoveChannelVipRequest {
+    /// Remove channel VIP
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         user_id: impl Into<types::UserId>,

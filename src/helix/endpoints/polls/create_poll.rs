@@ -112,28 +112,19 @@ pub struct CreatePollBody {
 }
 
 impl CreatePollBody {
-    pub fn bits_voting_enabled(mut self, enabled: bool) -> Self {
-        self.bits_voting_enabled = Some(enabled);
-        self
-    }
-
-    pub fn bits_per_vote(mut self, bits: i64) -> Self {
-        self.bits_per_vote = Some(bits);
-        self
-    }
-
+    /// Set if Channel Points voting is enabled
     pub fn channel_points_voting_enabled(mut self, enabled: bool) -> Self {
         self.channel_points_voting_enabled = Some(enabled);
         self
     }
 
+    /// Channel points per vote
     pub fn channel_points_per_vote(mut self, points: i64) -> Self {
         self.channel_points_per_vote = Some(points);
         self
     }
-}
 
-impl CreatePollBody {
+    /// Poll settings
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         title: String,

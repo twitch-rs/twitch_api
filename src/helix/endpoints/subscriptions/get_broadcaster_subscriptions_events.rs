@@ -73,6 +73,7 @@ pub struct GetBroadcasterSubscriptionsEventsRequest {
 }
 
 impl GetBroadcasterSubscriptionsEventsRequest {
+    /// Get events for this broadcaster
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

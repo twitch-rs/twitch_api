@@ -96,7 +96,7 @@ impl ManageHeldAutoModMessagesBody {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api2::helix::moderation::ManageHeldAutoModMessagesBody;
+    /// use twitch_api::helix::moderation::ManageHeldAutoModMessagesBody;
     ///
     /// let body = ManageHeldAutoModMessagesBody::new("1234", "5678", true);
     /// ```

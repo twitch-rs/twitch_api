@@ -60,6 +60,7 @@ pub struct UpdateUserChatColorRequest {
 }
 
 impl UpdateUserChatColorRequest {
+    /// Update the users chat color
     pub fn new(user_id: impl Into<types::UserId>, color: types::NamedUserColor<'static>) -> Self {
         Self {
             user_id: user_id.into(),

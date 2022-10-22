@@ -62,7 +62,7 @@ pub struct GetCustomRewardRedemptionRequest {
 
     /// When ID is not provided, this parameter returns paginated Custom Reward Redemption objects for redemptions of the Custom Reward with ID reward_id
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub reward_id: types::RewardId,
+    pub reward_id: Option<types::RewardId>,
 
     /// When id is not provided, this param is required and filters the paginated Custom Reward Redemption objects for redemptions with the matching status. Can be one of UNFULFILLED, FULFILLED or CANCELED
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -78,19 +78,24 @@ pub struct GetCustomRewardRedemptionRequest {
 }
 
 impl GetCustomRewardRedemptionRequest {
-    pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        reward_id: impl Into<types::RewardId>,
-    ) -> Self {
+    /// Reward to fetch
+    pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
-            reward_id: reward_id.into(),
+            reward_id: None,
             status: Default::default(),
             after: Default::default(),
             first: Default::default(),
         }
     }
 
+    /// Specific reward to query
+    pub fn reward_id(mut self, reward_id: impl Into<types::RewardId>) -> Self {
+        self.reward_id = Some(reward_id.into());
+        self
+    }
+
+    /// Status of rewards to return
     pub fn status(mut self, status: impl Into<CustomRewardRedemptionStatus>) -> Self {
         self.status = Some(status.into());
         self
@@ -175,9 +180,9 @@ impl helix::Paginated for GetCustomRewardRedemptionRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req =
-        GetCustomRewardRedemptionRequest::new("274637212", "92af127c-7326-4483-a52b-b0da0be61c01")
-            .status(CustomRewardRedemptionStatus::Canceled);
+    let req = GetCustomRewardRedemptionRequest::new("274637212")
+        .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
+        .status(CustomRewardRedemptionStatus::Canceled);
 
     // From twitch docs
     let data = br##"

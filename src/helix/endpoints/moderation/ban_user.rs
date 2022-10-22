@@ -73,6 +73,7 @@ pub struct BanUserRequest {
 }
 
 impl BanUserRequest {
+    /// Ban a user on this channel
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         moderator_id: impl Into<types::UserId>,

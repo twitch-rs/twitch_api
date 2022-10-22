@@ -52,6 +52,7 @@ pub struct CancelARaidRequest {
 }
 
 impl CancelARaidRequest {
+    /// Cancel a pending raid on this broadcasters channel
     pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

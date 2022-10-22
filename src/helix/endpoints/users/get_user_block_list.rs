@@ -45,7 +45,7 @@ use helix::RequestGet;
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetUserBlockListRequest {
-    ///  User ID for a Twitch user.
+    /// User ID for a Twitch user.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
@@ -57,6 +57,7 @@ pub struct GetUserBlockListRequest {
 }
 
 impl GetUserBlockListRequest {
+    /// Get a specified user’s block list
     pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

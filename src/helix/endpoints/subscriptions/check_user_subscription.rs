@@ -55,6 +55,7 @@ pub struct CheckUserSubscriptionRequest {
 }
 
 impl CheckUserSubscriptionRequest {
+    /// Checks subscribed users to this specific channel.
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

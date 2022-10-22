@@ -63,6 +63,7 @@ pub struct GetVipsRequest {
 }
 
 impl GetVipsRequest {
+    /// Get channel VIPs in channel
     pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -78,6 +79,7 @@ impl GetVipsRequest {
         self
     }
 
+    /// Filter response with this ID
     pub fn user_id(self, user_id: impl Into<types::UserId>) -> Self {
         Self {
             user_id: vec![user_id.into()],
@@ -85,6 +87,7 @@ impl GetVipsRequest {
         }
     }
 
+    /// Filter response with these IDs
     pub fn user_ids(self, user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
         Self {
             user_id: user_ids.into_iter().map(Into::into).collect(),

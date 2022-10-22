@@ -109,7 +109,7 @@ impl GetBitsLeaderboardRequest {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api2::helix::bits::GetBitsLeaderboardRequest;
+    /// use twitch_api::helix::bits::GetBitsLeaderboardRequest;
     /// GetBitsLeaderboardRequest {
     ///     period: Some("day".to_string()),
     ///     ..GetBitsLeaderboardRequest::empty()

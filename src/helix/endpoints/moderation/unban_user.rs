@@ -64,6 +64,7 @@ pub struct UnbanUserRequest {
 }
 
 impl UnbanUserRequest {
+    /// Remove the ban or timeout that was placed on the specified user.
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         moderator_id: impl Into<types::UserId>,

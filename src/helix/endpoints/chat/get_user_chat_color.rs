@@ -52,12 +52,14 @@ pub struct GetUserChatColorRequest {
 }
 
 impl GetUserChatColorRequest {
+    /// Get chat color of specified user
     pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
         Self {
             user_id: vec![user_id.into()],
         }
     }
 
+    /// Get chat colors of specified users
     pub fn user_ids(user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
         Self {
             user_id: user_ids.into_iter().map(Into::into).collect(),

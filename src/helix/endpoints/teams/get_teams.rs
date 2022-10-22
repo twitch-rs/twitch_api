@@ -54,6 +54,7 @@ pub struct GetTeamsRequest {
 }
 
 impl GetTeamsRequest {
+    /// Get team with this [`TeamId`](types::TeamId)
     pub fn id(id: impl Into<types::TeamId>) -> Self {
         Self {
             id: Some(id.into()),
@@ -61,10 +62,11 @@ impl GetTeamsRequest {
         }
     }
 
+    /// Get team with this name
     pub fn name(name: String) -> Self {
         Self {
             id: None,
-            name: Some(name.into()),
+            name: Some(name),
         }
     }
 }

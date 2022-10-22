@@ -10,7 +10,7 @@
 //! To use this endpoint, construct a [`DeleteChannelStreamScheduleSegmentRequest`] with the [`DeleteChannelStreamScheduleSegmentRequest::builder()`] method.
 //!
 //! ```rust
-//! use twitch_api2::helix::schedule::delete_channel_stream_schedule_segment;
+//! use twitch_api::helix::schedule::delete_channel_stream_schedule_segment;
 //! let request =
 //!     delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegmentRequest::builder(
 //!     )
@@ -62,6 +62,7 @@ pub struct DeleteChannelStreamScheduleSegmentRequest {
 }
 
 impl DeleteChannelStreamScheduleSegmentRequest {
+    /// Delete a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         id: impl Into<types::StreamSegmentId>,

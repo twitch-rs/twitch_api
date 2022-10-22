@@ -74,6 +74,7 @@ pub struct DeleteChatMessagesRequest {
 }
 
 impl DeleteChatMessagesRequest {
+    /// Remove chat message(s)
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         moderator_id: impl Into<types::UserId>,
@@ -85,7 +86,7 @@ impl DeleteChatMessagesRequest {
         }
     }
 
-    /// Set amount of results returned per page.
+    /// A specific message to remove
     pub fn message_id(mut self, message_id: impl Into<types::MsgId>) -> Self {
         self.message_id = Some(message_id.into());
         self

@@ -99,6 +99,7 @@ pub struct ReplaceStreamTagsBody {
 }
 
 impl ReplaceStreamTagsBody {
+    /// IDs of tags to be applied to the stream.
     pub fn tag_ids(tag_ids: impl IntoIterator<Item = impl Into<types::TagId>>) -> Self {
         Self {
             tag_ids: tag_ids.into_iter().map(Into::into).collect(),
@@ -106,6 +107,7 @@ impl ReplaceStreamTagsBody {
         }
     }
 
+    /// ID of tag to be applied to the stream.
     pub fn tag_id(tag_id: impl Into<types::TagId>) -> Self {
         Self {
             tag_ids: vec![tag_id.into()],
@@ -170,8 +172,8 @@ fn test_request() {
     let req = ReplaceStreamTagsRequest::broadcaster_id("0");
 
     let body = ReplaceStreamTagsBody::tag_ids([
-        "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
-        "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
+        "621fb5bf-5498-4d8f-b4ac-db4d40d401bf",
+        "79977fb9-f106-4a87-a386-f1b0f99783dd",
     ]);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());

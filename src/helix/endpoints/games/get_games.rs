@@ -93,7 +93,7 @@ impl GetGamesRequest {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api2::helix::users::GetGamesRequest;
+    /// use twitch_api::helix::users::GetGamesRequest;
     /// GetGamesRequest {
     ///     from_id: Some("1234".into()),
     ///     ..GetGamesRequest::empty()

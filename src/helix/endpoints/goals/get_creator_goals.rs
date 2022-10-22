@@ -62,6 +62,7 @@ pub struct GetCreatorGoalsRequest {
 }
 
 impl GetCreatorGoalsRequest {
+    /// Gets the broadcaster’s list of active goals.
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

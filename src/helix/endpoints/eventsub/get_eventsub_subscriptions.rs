@@ -20,7 +20,7 @@ pub struct GetEventSubSubscriptionsRequest {
     /// Filter subscriptions by user ID.
     ///
     /// The response contains subscriptions where the user ID
-    /// matches a user ID that you specified inthe Condition object when you created the subscription.
+    /// matches a user ID that you specified in the Condition object when you created the subscription.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub user_id: Option<types::UserId>,
     // FIXME: https://github.com/twitchdev/issues/issues/272
@@ -34,9 +34,18 @@ pub struct GetEventSubSubscriptionsRequest {
 }
 
 impl GetEventSubSubscriptionsRequest {
+    /// Get eventsub subscriptions by this status
     pub fn status(status: impl Into<eventsub::Status>) -> Self {
         Self {
             status: Some(status.into()),
+            ..Self::default()
+        }
+    }
+
+    /// Get eventsub subscriptions by this type
+    pub fn eventsub_type(r#type: impl Into<eventsub::EventType>) -> Self {
+        Self {
+            type_: Some(r#type.into()),
             ..Self::default()
         }
     }

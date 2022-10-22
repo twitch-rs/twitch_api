@@ -59,6 +59,7 @@ pub struct AddChannelModeratorRequest {
 }
 
 impl AddChannelModeratorRequest {
+    /// Add moderator on channel
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         moderator_id: impl Into<types::UserId>,

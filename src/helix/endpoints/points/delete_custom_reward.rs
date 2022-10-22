@@ -58,6 +58,7 @@ pub struct DeleteCustomRewardRequest {
 }
 
 impl DeleteCustomRewardRequest {
+    /// Reward to delete
     pub fn new(broadcaster_id: impl Into<types::UserId>, id: impl Into<types::RewardId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

@@ -57,6 +57,7 @@ pub struct AddChannelVipRequest {
 }
 
 impl AddChannelVipRequest {
+    /// Add a channel VIP
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         user_id: impl Into<types::UserId>,

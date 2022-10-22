@@ -54,6 +54,7 @@ pub struct GetStreamTagsRequest {
 }
 
 impl GetStreamTagsRequest {
+    /// ID of the stream whose tags are going to be fetched
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

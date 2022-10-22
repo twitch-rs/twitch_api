@@ -15,6 +15,7 @@
 - Fixed wrong type on `UserAuthorizationGrantV1::client_id`
 - Deprecate `bits_voting_enabled`, `bits_per_vote` and `bits_votes` on `Create Poll` and `Poll` and made the fields optional
 - `Get Clips` takes and returns `ClipId` instead of a string
+- Made `GetCustomRewardRedemptionRequest::reward_id` optional
 
 ### Changes
 

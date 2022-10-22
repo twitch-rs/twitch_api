@@ -68,6 +68,7 @@ pub struct UpdateChannelStreamScheduleRequest {
 }
 
 impl UpdateChannelStreamScheduleRequest {
+    /// Update the settings for a channel’s stream schedule.
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

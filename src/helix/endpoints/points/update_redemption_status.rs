@@ -90,6 +90,7 @@ pub struct UpdateRedemptionStatusRequest {
 }
 
 impl UpdateRedemptionStatusRequest {
+    /// Update the status of Custom Reward Redemption object on a channel that are in the UNFULFILLED status.
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         reward_id: impl Into<types::RewardId>,
@@ -116,6 +117,7 @@ pub struct UpdateRedemptionStatusBody {
 }
 
 impl UpdateRedemptionStatusBody {
+    /// The new status to set
     pub fn status(status: CustomRewardRedemptionStatus) -> Self { Self { status } }
 }
 

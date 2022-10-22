@@ -59,6 +59,7 @@ pub struct RemoveChannelModeratorRequest {
 }
 
 impl RemoveChannelModeratorRequest {
+    /// Remove moderator
     pub fn new(
         broadcaster_id: impl Into<types::UserId>,
         moderator_id: impl Into<types::UserId>,

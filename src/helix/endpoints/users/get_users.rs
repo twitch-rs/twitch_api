@@ -67,7 +67,7 @@ impl GetUsersRequest {
     /// Get multiple user by their [`UserName`](types::UserName)
     ///
     /// ```rust
-    /// use twitch_api2::helix::users::get_users::GetUsersRequest;
+    /// use twitch_api::helix::users::get_users::GetUsersRequest;
     /// GetUsersRequest::logins(&["twitch".into(), "justintv".into()])
     /// ```
     pub fn logins(login: impl IntoIterator<Item = impl Into<types::UserName>>) -> Self {
@@ -98,7 +98,7 @@ impl GetUsersRequest {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api2::helix::users::GetUsersRequest;
+    /// use twitch_api::helix::users::GetUsersRequest;
     /// GetUsersRequest {
     ///     id: vec!["1234".into()],
     ///     ..GetUsersRequest::empty()

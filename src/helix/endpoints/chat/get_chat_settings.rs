@@ -81,6 +81,7 @@ pub struct GetChatSettingsRequest {
 }
 
 impl GetChatSettingsRequest {
+    /// Get chat settings for broadcasters channel
     pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),

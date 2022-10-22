@@ -70,6 +70,7 @@ pub struct CreateCustomRewardRequest {
 }
 
 impl CreateCustomRewardRequest {
+    /// Channel to create reward on
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -125,6 +126,8 @@ pub struct CreateCustomRewardBody {
 }
 
 impl CreateCustomRewardBody {
+    // FIXME: need to add more here
+    /// Reward to create with title.
     pub fn new(title: String, cost: usize) -> Self {
         Self {
             title,

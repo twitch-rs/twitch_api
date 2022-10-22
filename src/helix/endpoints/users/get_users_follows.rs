@@ -89,15 +89,9 @@ impl GetUsersFollowsRequest {
 
     /// Returns an empty [`GetUsersFollowsRequest`]
     ///
-    /// # Examples
+    /// # Notes
     ///
-    /// ```rust
-    /// use twitch_api2::helix::users::GetUsersFollowsRequest;
-    /// GetUsersFollowsRequest {
-    ///     from_id: Some("1234".into()),
-    ///     ..GetUsersFollowsRequest::empty()
-    /// }
-    /// ```
+    /// This is not a valid request, it needs to be filled with other fields
     pub fn empty() -> Self {
         Self {
             after: None,

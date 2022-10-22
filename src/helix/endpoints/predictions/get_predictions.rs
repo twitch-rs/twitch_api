@@ -66,6 +66,7 @@ pub struct GetPredictionsRequest {
 }
 
 impl GetPredictionsRequest {
+    /// Get information about predictions for this broadcasters channel.
     pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -75,11 +76,13 @@ impl GetPredictionsRequest {
         }
     }
 
+    /// ID of a Prediction.
     pub fn id(mut self, id: impl Into<types::PredictionId>) -> Self {
         self.id = vec![id.into()];
         self
     }
 
+    /// IDs of a Predictions.
     pub fn ids(mut self, ids: impl IntoIterator<Item = impl Into<types::PredictionId>>) -> Self {
         self.id = ids.into_iter().map(Into::into).collect();
         self
