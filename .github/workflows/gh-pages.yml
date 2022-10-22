@@ -17,10 +17,7 @@ jobs:
           override: true
       - uses: Swatinem/rust-cache@v1
       - name: build docs
-        uses: actions-rs/cargo@v1
-        with:
-          command: doc
-          args: --no-deps --locked --features "${{ env.CI_TWITCH_API_FEATURES }}"
+        run: cargo xtask doc
       - name: move index.html
         run: cp ./docs/index.html ./target/extra/doc/index.html
       - name: Deploy
