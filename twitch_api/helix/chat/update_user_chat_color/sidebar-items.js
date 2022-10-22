@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["UpdateUserChatColorResponse","Return Values for Update Chat Settings"]],"struct":[["UpdateUserChatColorRequest","Query Parameters for Update Chat Settings"]]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["GetVipsRequest","Query Parameters for Get VIPs"],["Vip","Return Values for Get VIPs"]]};

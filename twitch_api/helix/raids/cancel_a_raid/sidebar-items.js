@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["CancelARaidResponse","Return Values for Cancel A Raid"]],"struct":[["CancelARaidRequest","Query Parameters for Cancel A Raid"]]};

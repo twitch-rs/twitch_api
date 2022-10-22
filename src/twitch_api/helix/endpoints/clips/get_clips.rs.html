@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/clips/get_clips.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_clips.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/clips/get_clips.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_clips.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><a class="sidebar-logo" href="../../../../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -170,6 +170,14 @@
 <span id="170">170</span>
 <span id="171">171</span>
 <span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).
 //! [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
 //!
@@ -282,6 +290,10 @@
     </span><span class="kw">pub </span>video_id: types::VideoId,
     <span class="doccomment">/// Number of times the clip has been viewed.
     </span><span class="kw">pub </span>view_count: i64,
+    <span class="doccomment">/// The zero-based offset, in seconds, to where the clip starts in the video (VOD).
+    ///
+    /// Is none if the video is not available or hasn’t been created yet from the live stream. See [video_id](Clip::video_id).
+    </span><span class="kw">pub </span>vod_offset: <span class="prelude-ty">Option</span>&lt;i64&gt;,
 }
 
 <span class="kw">impl </span>Request <span class="kw">for </span>GetClipsRequest {
@@ -311,23 +323,27 @@
 {
     &quot;data&quot;: [
       {
-        &quot;id&quot;: &quot;AwkwardHelplessSalamanderSwiftRage&quot;,
+        &quot;id&quot;: &quot;RandomClip1&quot;,
         &quot;url&quot;: &quot;https://clips.twitch.tv/AwkwardHelplessSalamanderSwiftRage&quot;,
-        &quot;embed_url&quot;: &quot;https://clips.twitch.tv/embed?clip=AwkwardHelplessSalamanderSwiftRage&quot;,
-        &quot;broadcaster_id&quot;: &quot;67955580&quot;,
-        &quot;broadcaster_name&quot;: &quot;ChewieMelodies&quot;,
-        &quot;creator_id&quot;: &quot;53834192&quot;,
-        &quot;creator_name&quot;: &quot;BlackNova03&quot;,
-        &quot;video_id&quot;: &quot;205586603&quot;,
-        &quot;game_id&quot;: &quot;488191&quot;,
+        &quot;embed_url&quot;: &quot;https://clips.twitch.tv/embed?clip=RandomClip1&quot;,
+        &quot;broadcaster_id&quot;: &quot;1234&quot;,
+        &quot;broadcaster_name&quot;: &quot;JJ&quot;,
+        &quot;creator_id&quot;: &quot;123456&quot;,
+        &quot;creator_name&quot;: &quot;MrMarshall&quot;,
+        &quot;video_id&quot;: &quot;&quot;,
+        &quot;game_id&quot;: &quot;33103&quot;,
         &quot;language&quot;: &quot;en&quot;,
-        &quot;title&quot;: &quot;babymetal&quot;,
+        &quot;title&quot;: &quot;random1&quot;,
         &quot;view_count&quot;: 10,
         &quot;created_at&quot;: &quot;2017-11-30T22:34:18Z&quot;,
         &quot;thumbnail_url&quot;: &quot;https://clips-media-assets.twitch.tv/157589949-preview-480x272.jpg&quot;,
-        &quot;duration&quot;: 60
+        &quot;duration&quot;: 12.9,
+        &quot;vod_offset&quot;: 1957
       }
-    ]
+    ],
+    &quot;pagination&quot;: {
+        &quot;cursor&quot;: &quot;eyJiIjpudWxsLCJhIjoiIn0&quot;
+    }
 }
 &quot;#
     </span>.to_vec();
@@ -343,4 +359,4 @@
     <span class="macro">dbg!</span>(GetClipsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (01af5040f 2022-10-04)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5c8bff74b 2022-10-21)" ></div></body></html>

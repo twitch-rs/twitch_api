@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["NamedUserColor","Colors a user can have"]],"struct":[["HexColor","A color in hex"],["HexColorRef","A color in hex"]]};

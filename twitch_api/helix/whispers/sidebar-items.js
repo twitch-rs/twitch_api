@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":[["send_whisper","Sends a whisper message to the specified user. `send-whisper`"]]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["DeleteChatMessagesResponse","Return Values for Delete Chat Messages"]],"struct":[["DeleteChatMessagesRequest","Query Parameters for Delete Chat Messages"]]};
