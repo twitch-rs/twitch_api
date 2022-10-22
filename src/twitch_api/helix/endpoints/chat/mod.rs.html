@@ -198,6 +198,47 @@
 <span id="198">198</span>
 <span id="199">199</span>
 <span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding chat
 
 </span><span class="kw">use crate</span>::{
@@ -397,6 +438,47 @@
     ///
     /// Is true, if the broadcaster requires unique messages only; otherwise, false.
     </span><span class="kw">pub </span>unique_chat_mode: bool,
+}
+
+<span class="doccomment">/// Valid colors for announcements
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[non_exhaustive]
+</span><span class="kw">pub enum </span>AnnouncementColor {
+    <span class="doccomment">/// The color blue
+    </span>Blue,
+    <span class="doccomment">/// The color green
+    </span>Green,
+    <span class="doccomment">/// The color orange
+    </span>Orange,
+    <span class="doccomment">/// The color purple
+    </span>Purple,
+    <span class="doccomment">/// The primary color for the broadcaster
+    </span>Primary,
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>AnnouncementColor {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::Primary }
+}
+
+<span class="doccomment">/// An error for an invalid [AnnouncementColor]
+</span><span class="attribute">#[derive(Debug, Clone, thiserror::Error)]
+#[error(<span class="string">&quot;invalid color&quot;</span>)]
+</span><span class="kw">pub struct </span>AnnouncementColorError;
+
+<span class="kw">impl </span>std::convert::TryFrom&lt;<span class="kw-2">&amp;</span>str&gt; <span class="kw">for </span>AnnouncementColor {
+    <span class="kw">type </span>Error = AnnouncementColorError;
+
+    <span class="kw">fn </span>try_from(value: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="prelude-val">Ok</span>(<span class="kw">match </span>value {
+            <span class="string">&quot;blue&quot; </span>=&gt; AnnouncementColor::Blue,
+            <span class="string">&quot;green&quot; </span>=&gt; AnnouncementColor::Green,
+            <span class="string">&quot;orange&quot; </span>=&gt; AnnouncementColor::Orange,
+            <span class="string">&quot;purple&quot; </span>=&gt; AnnouncementColor::Purple,
+            <span class="string">&quot;primary&quot; </span>=&gt; AnnouncementColor::Primary,
+            <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(AnnouncementColorError),
+        })
+    }
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5c8bff74b 2022-10-21)" ></div></body></html>

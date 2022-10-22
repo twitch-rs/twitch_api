@@ -286,9 +286,9 @@
 
 <span class="kw">impl </span>SendWhisperBody {
     <span class="doccomment">/// Create a new message
-    </span><span class="kw">pub fn </span>new(message: <span class="kw">impl </span>Into&lt;String&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(message: <span class="kw">impl </span>std::fmt::Display) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            message: message.into(),
+            message: message.to_string(),
         }
     }
 }

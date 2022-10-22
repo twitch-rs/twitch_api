@@ -255,7 +255,7 @@
 </span><span class="kw">pub enum </span>ClientRequestError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
     <span class="doccomment">/// Request failed from reqwests side
     </span><span class="attribute">#[error(<span class="string">&quot;request failed&quot;</span>)]
-    </span>RequestError(RE),
+    </span>RequestError(<span class="attribute">#[source] </span>RE),
     <span class="doccomment">/// Request failed from reqwests side
     </span><span class="attribute">#[error(<span class="string">&quot;body conversion failed&quot;</span>)]
     </span>HyperError(<span class="attribute">#[from] </span>hyper::Error),

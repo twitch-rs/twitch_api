@@ -49,6 +49,8 @@
 <span id="49">49</span>
 <span id="50">50</span>
 <span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
 </pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;channel&quot;</span>)]
 </span><span class="doccomment">//! Helix endpoints regarding channels
 //!
@@ -98,6 +100,8 @@
 </span><span class="kw">pub use </span>modify_channel_information::{
     ModifyChannelInformation, ModifyChannelInformationBody, ModifyChannelInformationRequest,
 };
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>remove_channel_vip::{RemoveChannelVipRequest, RemoveChannelVipResponse};
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>start_commercial::{StartCommercial, StartCommercialBody, StartCommercialRequest};
 </code></pre></div>

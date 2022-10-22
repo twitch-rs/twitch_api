@@ -193,6 +193,13 @@
 <span id="193">193</span>
 <span id="194">194</span>
 <span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Sends an announcement to the broadcaster’s chat room.
 //! [`send-chat-announcement`](https://dev.twitch.tv/docs/api/reference#send-chat-announcement)
 //!
@@ -216,10 +223,9 @@
 //!
 //! ```
 //! # use twitch_api::helix::chat::send_chat_announcement;
-//! let body = send_chat_announcement::SendChatAnnouncementBody::new(
-//!     &quot;Hello chat!&quot;.to_owned(),
-//!     &quot;purple&quot;.to_owned(),
-//! );
+//! let body =
+//!     send_chat_announcement::SendChatAnnouncementBody::new(&quot;Hello chat!&quot;.to_owned(), &quot;purple&quot;)
+//!         .unwrap();
 //! ```
 //!
 //! ## Response: [SendChatAnnouncementResponse]
@@ -241,8 +247,8 @@
 //!     .build();
 //! let body = send_chat_announcement::SendChatAnnouncementBody::new(
 //!     &quot;Hello chat!&quot;.to_owned(),
-//!     &quot;purple&quot;.to_owned(),
-//! );
+//!     &quot;purple&quot;,
+//! ).unwrap();
 //! let response: helix::chat::SendChatAnnouncementResponse = client.req_post(request, body, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -288,12 +294,20 @@
     ///
     /// If color is set to primary or is not set, the channel’s accent color is used to highlight the announcement (see Profile Accent Color under [profile settings](https://www.twitch.tv/settings/profile), Channel and Videos, and Brand).
     </span><span class="attribute">#[builder(setter(into))]
-    </span><span class="kw">pub </span>color: String,
+    </span><span class="kw">pub </span>color: AnnouncementColor,
 }
 
 <span class="kw">impl </span>SendChatAnnouncementBody {
     <span class="doccomment">/// Create a new announcement with specified color
-    </span><span class="kw">pub fn </span>new(message: String, color: String) -&gt; <span class="self">Self </span>{ <span class="self">Self </span>{ message, color } }
+    </span><span class="kw">pub fn </span>new&lt;E&gt;(
+        message: String,
+        color: <span class="kw">impl </span>std::convert::TryInto&lt;AnnouncementColor, Error = E&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, E&gt; {
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            message,
+            color: color.try_into()<span class="question-mark">?</span>,
+        })
+    }
 }
 
 <span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>SendChatAnnouncementBody {}
@@ -371,7 +385,7 @@
         .moderator_id(<span class="string">&quot;5678&quot;</span>)
         .build();
 
-    <span class="kw">let </span>body = SendChatAnnouncementBody::new(<span class="string">&quot;hello chat!&quot;</span>.to_owned(), <span class="string">&quot;purple&quot;</span>.to_owned());
+    <span class="kw">let </span>body = SendChatAnnouncementBody::new(<span class="string">&quot;hello chat!&quot;</span>.to_owned(), <span class="string">&quot;purple&quot;</span>).unwrap();
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
