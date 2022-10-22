@@ -72,11 +72,13 @@ impl GetPollsRequest {
             first: Default::default(),
         }
     }
+
     /// ID of a poll to query.
     pub fn id(mut self, id: impl Into<types::PollId>) -> Self {
         self.id = vec![id.into()];
         self
     }
+
     /// IDs of the polls to query.
     pub fn ids(mut self, id: impl IntoIterator<Item = impl Into<types::PollId>>) -> Self {
         self.id = id.into_iter().map(Into::into).collect();

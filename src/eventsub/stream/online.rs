@@ -15,7 +15,7 @@ pub struct StreamOnlineV1 {
 
 impl StreamOnlineV1 {
     /// The broadcaster user ID you want to get stream online notifications for.
-    pub fn broadcaster_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_user_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_user_id: broadcaster_user_id.into(),
         }

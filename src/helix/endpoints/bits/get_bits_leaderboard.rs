@@ -5,24 +5,21 @@
 //!
 //! ## Request: [GetBitsLeaderboardRequest]
 //!
-//! To use this endpoint, construct a [`GetBitsLeaderboardRequest`] with the [`GetBitsLeaderboardRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetBitsLeaderboardRequest`] with the [`GetBitsLeaderboardRequest::new()`] or [`GetBitsLeaderboardRequest::builder()`] method.
 //! Provide [`started_at`](GetBitsLeaderboardRequest::started_at) and [`period`](GetBitsLeaderboardRequest::period) to get a different leaderboard than default
-//!
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::bits::get_bits_leaderboard;
-//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder()
+//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new()
 //!     .period("day".to_string())
 //!     .build();
 //! // Get leaderbord for the lifetime of the channel
-//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder().build();
+//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new();
 //! ```
 //!
 //! ## Response: [BitsLeaderboard]
 //!
-//!
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
-//!
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, bits::get_bits_leaderboard};
@@ -32,7 +29,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder().build();
+//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new();
 //! let response: get_bits_leaderboard::BitsLeaderboard = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -73,49 +70,39 @@ pub struct GetBitsLeaderboardRequest {
 
 impl GetBitsLeaderboardRequest {
     /// Number of results to be returned. Maximum: 100. Default: 10.
-    pub fn count(count: i32) -> Self {
+    pub fn count(self, count: i32) -> Self {
         Self {
             count: Some(count),
-            ..Self::empty()
+            ..self
         }
     }
 
     /// Get loaderboard for this period. Valid values: `"day"`, `"week"`, `"month"`, `"year"`, `"all"`
-    pub fn period(period: String) -> Self {
+    pub fn period(self, period: String) -> Self {
         Self {
             period: Some(period),
-            ..Self::empty()
+            ..self
         }
     }
 
     /// Get leaderboard starting at this timestamp
-    pub fn started_at(started_at: impl Into<types::Timestamp>) -> Self {
+    pub fn started_at(self, started_at: impl Into<types::Timestamp>) -> Self {
         Self {
             started_at: Some(started_at.into()),
-            ..Self::empty()
+            ..self
         }
     }
 
-    /// Get leaderboard for this user
-    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+    /// Get leaderboard where this user is included (if they are on the leaderboard)
+    pub fn user_id(self, user_id: impl Into<types::UserId>) -> Self {
         Self {
             user_id: Some(user_id.into()),
-            ..Self::empty()
+            ..self
         }
     }
 
-    /// Returns an empty [`GetBitsLeaderboardRequest`]
-    ///
-    /// # Examples
-    ///
-    /// ```rust
-    /// use twitch_api::helix::bits::GetBitsLeaderboardRequest;
-    /// GetBitsLeaderboardRequest {
-    ///     period: Some("day".to_string()),
-    ///     ..GetBitsLeaderboardRequest::empty()
-    /// }
-    /// ```
-    pub fn empty() -> Self {
+    /// Returns an new [`GetBitsLeaderboardRequest`]
+    pub fn new() -> Self {
         Self {
             count: None,
             period: None,
@@ -219,7 +206,7 @@ impl RequestGet for GetBitsLeaderboardRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetBitsLeaderboardRequest::empty();
+    let req = GetBitsLeaderboardRequest::new();
 
     // From api call
     let data = br##"

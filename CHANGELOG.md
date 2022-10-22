@@ -16,6 +16,7 @@
 - Deprecate `bits_voting_enabled`, `bits_per_vote` and `bits_votes` on `Create Poll` and `Poll` and made the fields optional
 - `Get Clips` takes and returns `ClipId` instead of a string
 - Made `GetCustomRewardRedemptionRequest::reward_id` optional
+- `typed-builder` is now optional and not enabled by default, enable feature `typed-builder` to use the `::builder()` methods
 
 ### Changes
 

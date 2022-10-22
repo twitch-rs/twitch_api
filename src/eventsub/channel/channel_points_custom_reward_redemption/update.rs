@@ -18,7 +18,7 @@ pub struct ChannelPointsCustomRewardRedemptionUpdateV1 {
 
 impl ChannelPointsCustomRewardRedemptionUpdateV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward update notifications for.
-    pub fn broadcaster_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_user_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_user_id: broadcaster_user_id.into(),
             reward_id: None,

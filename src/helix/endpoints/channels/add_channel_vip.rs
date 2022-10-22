@@ -5,14 +5,11 @@
 //!
 //! ## Request: [AddChannelVipRequest]
 //!
-//! To use this endpoint, construct a [`AddChannelVipRequest`] with the [`AddChannelVipRequest::builder()`] method.
+//! To use this endpoint, construct a [`AddChannelVipRequest`] with the [`AddChannelVipRequest::new()`] or[`AddChannelVipRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::add_channel_vip;
-//! let request = add_channel_vip::AddChannelVipRequest::builder()
-//!     .broadcaster_id("123")
-//!     .user_id("456")
-//!     .build();
+//! let request = add_channel_vip::AddChannelVipRequest::new("123", "456");
 //! ```
 //!
 //! ## Response: [AddChannelVipResponse]
@@ -27,10 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = add_channel_vip::AddChannelVipRequest::builder()
-//!     .broadcaster_id("123")
-//!     .user_id("456")
-//!     .build();
+//! let request = add_channel_vip::AddChannelVipRequest::new("123", "456");
 //! let response: add_channel_vip::AddChannelVipResponse = client.req_post(request, helix::EmptyBody, &token).await?.data;
 //! # Ok(())
 //! # }

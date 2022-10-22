@@ -116,9 +116,7 @@ pub async fn moderation<'a, C: twitch_api::HttpClient<'a> + Sync>(
     );
 
     println!("====Banned users====");
-    let banned_users_req = GetBannedUsersRequest::builder()
-        .broadcaster_id(broadcaster_id)
-        .build();
+    let banned_users_req = GetBannedUsersRequest::broadcaster_id(broadcaster_id);
     let mut response = client.req_get(banned_users_req, token).await?;
     println!(
         "{:?}",

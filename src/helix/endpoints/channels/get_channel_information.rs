@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetChannelInformationRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::broadcaster_id()`] or [`GetChannelInformationRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::get_channel_information;
-//! let request = get_channel_information::GetChannelInformationRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [ChannelInformation]
@@ -28,9 +26,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_information::GetChannelInformationRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_id("1234");
 //! let response: Option<get_channel_information::ChannelInformation> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

@@ -30,9 +30,7 @@
 //! let token =
 //!     AppAccessToken::get_app_access_token(&client, client_id, client_secret, Scope::all())
 //!         .await?;
-//! let req = GetChannelInformationRequest::builder()
-//!     .broadcaster_id("27620241")
-//!     .build();
+//! let req = GetChannelInformationRequest::broadcaster_id("27620241");
 //! println!(
 //!     "{:?}",
 //!     &client.helix.req_get(req, &token).await?.data.unwrap().title

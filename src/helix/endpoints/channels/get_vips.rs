@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetVipsRequest]
 //!
-//! To use this endpoint, construct a [`GetVipsRequest`] with the [`GetVipsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetVipsRequest`] with the [`GetVipsRequest::broadcaster_id()`] or [`GetVipsRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::get_vips;
-//! let request = get_vips::GetVipsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_vips::GetVipsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [Vip]
@@ -28,9 +26,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_vips::GetVipsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_vips::GetVipsRequest::broadcaster_id("1234"):
 //! let response: Vec<get_vips::Vip> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

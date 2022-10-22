@@ -15,7 +15,7 @@ pub struct ChannelGoalBeginV1 {
 
 impl ChannelGoalBeginV1 {
     /// The ID of the broadcaster to get notified about.
-    pub fn broadcaster_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_user_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_user_id: broadcaster_user_id.into(),
         }

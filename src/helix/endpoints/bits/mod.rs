@@ -10,9 +10,7 @@
 //! # let _: &HelixClient<twitch_api::DummyHttpClient> = &client;
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let req = GetCheermotesRequest::builder()
-//!     .broadcaster_id(Some("1234".into()))
-//!     .build();
+//! let req = GetCheermotesRequest::new().broadcaster_id("1234");
 //!
 //! println!("{:?}", &client.req_get(req, &token).await?.data);
 //! # Ok(())

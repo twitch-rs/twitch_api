@@ -15,7 +15,7 @@ pub struct ChannelPollProgressV1 {
 
 impl ChannelPollProgressV1 {
     /// The broadcaster user ID of the channel for which “poll progress” notifications will be received.
-    pub fn broadcaster_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_user_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_user_id: broadcaster_user_id.into(),
         }
