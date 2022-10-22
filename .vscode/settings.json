@@ -2,7 +2,6 @@
     "rust-analyzer.cargo.features": "all",
     "rust-analyzer.checkOnSave.enable": true,
     "rust-analyzer.checkOnSave.command": "clippy",
-    "rust-analyzer.checkOnSave.extraArgs": [],
     "rust-analyzer.diagnostics.disabled": [
         "type-mismatch"
     ],

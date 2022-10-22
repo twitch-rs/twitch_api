@@ -86,29 +86,22 @@ pub mod automod_queue;
 pub mod channel_bits;
 pub mod channel_bits_badge;
 #[cfg(feature = "unsupported")]
-#[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod channel_cheer;
 pub mod channel_points;
 #[cfg(feature = "unsupported")]
-#[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod channel_sub_gifts;
 pub mod channel_subscriptions;
 #[cfg(feature = "unsupported")]
-#[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod community_points;
 #[cfg(feature = "unsupported")]
-#[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod following;
 #[cfg(feature = "unsupported")]
-#[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod hypetrain;
 pub mod moderation;
 #[cfg(feature = "unsupported")]
-#[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod raid;
 pub mod user_moderation_notifications;
 #[cfg(feature = "unsupported")]
-#[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
 pub mod video_playback;
 
 use crate::{parse_json, parse_json_value};
@@ -141,7 +134,6 @@ pub enum Topics {
     AutoModQueue(automod_queue::AutoModQueue),
     /// A user redeems an reward using channel points.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     CommunityPointsChannelV1(community_points::CommunityPointsChannelV1),
     /// Anyone cheers in a specified channel.
     ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2),
@@ -149,11 +141,9 @@ pub enum Topics {
     ChannelBitsBadgeUnlocks(channel_bits_badge::ChannelBitsBadgeUnlocks),
     /// A user redeems a cheer with shared rewards.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     ChannelCheerEventsPublicV1(channel_cheer::ChannelCheerEventsPublicV1),
     /// A user gifts subs.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     ChannelSubGiftsV1(channel_sub_gifts::ChannelSubGiftsV1),
     /// A moderator performs an action in the channel.
     ChatModeratorActions(moderation::ChatModeratorActions),
@@ -163,27 +153,21 @@ pub enum Topics {
     ChannelSubscribeEventsV1(channel_subscriptions::ChannelSubscribeEventsV1),
     /// Statistics about stream
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     VideoPlayback(video_playback::VideoPlayback),
     /// Statistics about stream
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     VideoPlaybackById(video_playback::VideoPlaybackById),
     /// A user redeems an reward using channel points.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     HypeTrainEventsV1(hypetrain::HypeTrainEventsV1),
     /// A user redeems an reward using channel points.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     HypeTrainEventsV1Rewards(hypetrain::HypeTrainEventsV1Rewards),
     /// A user follows the channel
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     Following(following::Following),
     /// A user raids the channel
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     Raid(raid::Raid),
     /// A user’s message held by AutoMod has been approved or denied.
     UserModerationNotifications(user_moderation_notifications::UserModerationNotifications),
@@ -404,7 +388,6 @@ pub enum TopicData {
     },
     /// Response from the [community_points::CommunityPointsChannelV1] topic.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     CommunityPointsChannelV1 {
         /// Topic message
         topic: community_points::CommunityPointsChannelV1,
@@ -414,7 +397,6 @@ pub enum TopicData {
     },
     /// Response from the [channel_cheer::ChannelCheerEventsPublicV1] topic.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     ChannelCheerEventsPublicV1 {
         /// Topic message
         topic: channel_cheer::ChannelCheerEventsPublicV1,
@@ -424,7 +406,6 @@ pub enum TopicData {
     },
     /// Response from the [channel_sub_gifts::ChannelSubGiftsV1] topic.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     ChannelSubGiftsV1 {
         /// Topic message
         topic: channel_sub_gifts::ChannelSubGiftsV1,
@@ -435,7 +416,6 @@ pub enum TopicData {
 
     /// Response from the [video_playback::VideoPlayback] topic.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     VideoPlayback {
         /// Topic message
         topic: video_playback::VideoPlayback,
@@ -445,7 +425,6 @@ pub enum TopicData {
     },
     /// Response from the [video_playback::VideoPlaybackById] topic.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     VideoPlaybackById {
         /// Topic message
         topic: video_playback::VideoPlaybackById,
@@ -455,7 +434,6 @@ pub enum TopicData {
     },
     /// Response from the [hypetrain::HypeTrainEventsV1] topic.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     HypeTrainEventsV1 {
         /// Topic message
         topic: hypetrain::HypeTrainEventsV1,
@@ -465,7 +443,6 @@ pub enum TopicData {
     },
     /// Response from the [hypetrain::HypeTrainEventsV1Rewards] topic.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     HypeTrainEventsV1Rewards {
         /// Topic message
         topic: hypetrain::HypeTrainEventsV1Rewards,
@@ -475,7 +452,6 @@ pub enum TopicData {
     },
     /// Response from the [following::Following] topic.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     Following {
         /// Topic message
         topic: following::Following,
@@ -485,7 +461,6 @@ pub enum TopicData {
     },
     /// Response from the [raid::Raid] topic.
     #[cfg(feature = "unsupported")]
-    #[cfg_attr(nightly, doc(cfg(feature = "unsupported")))]
     Raid {
         /// Topic message
         topic: raid::Raid,

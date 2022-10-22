@@ -3,13 +3,23 @@
 use super::*;
 
 /// [`stream.offline`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamoffline): the specified broadcaster stops a stream.
-#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct StreamOfflineV1 {
     /// The broadcaster user ID you want to get stream offline notifications for.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
+}
+
+impl StreamOfflineV1 {
+    /// The broadcaster user ID you want to get stream offline notifications for.
+    pub fn broadcaster_user_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
 }
 
 impl EventSubscription for StreamOfflineV1 {

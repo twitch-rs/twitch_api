@@ -62,9 +62,8 @@ pub use types::PollStatus;
 /// Query Parameters for [End Poll](super::end_poll)
 ///
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
-#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct EndPollRequest {}
 
@@ -76,14 +75,15 @@ impl EndPollRequest {
 /// Body Parameters for [End Poll](super::end_poll)
 ///
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct EndPollBody {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
-    pub broadcaster_id: String,
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    pub broadcaster_id: types::UserId,
     /// ID of the poll.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub id: types::PollId,
     /// The poll status to be set.
     ///
@@ -91,6 +91,21 @@ pub struct EndPollBody {
     /// [`TERMINATED`](types::PollStatus::Terminated): End the poll manually, but allow it to be viewed publicly.
     /// [`ARCHIVED`](types::PollStatus::Archived): End the poll manually and do not allow it to be viewed publicly.
     pub status: PollStatus,
+}
+
+impl EndPollBody {
+    /// End a poll that is currently active.
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        id: impl Into<types::PollId>,
+        status: PollStatus,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+            status,
+        }
+    }
 }
 
 impl helix::private::SealedSerialize for EndPollBody {}
@@ -176,13 +191,13 @@ impl RequestPatch for EndPollRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = EndPollRequest::builder().build();
+    let req = EndPollRequest::new();
 
-    let body = EndPollBody::builder()
-        .broadcaster_id("274637212")
-        .id("92af127c-7326-4483-a52b-b0da0be61c01")
-        .status(PollStatus::Terminated)
-        .build();
+    let body = EndPollBody::new(
+        "274637212",
+        "92af127c-7326-4483-a52b-b0da0be61c01",
+        PollStatus::Terminated,
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

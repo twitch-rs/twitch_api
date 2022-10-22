@@ -18,12 +18,12 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api::helix::predictions::end_prediction;
-//! let body = end_prediction::EndPredictionBody::builder()
-//!     .broadcaster_id("141981764")
-//!     .id("ed961efd-8a3f-4cf5-a9d0-e616c590cd2a")
-//!     .status(end_prediction::PredictionStatus::Resolved)
-//!     .build();
+//! use twitch_api::helix::predictions::{self, end_prediction};
+//! let body = end_prediction::EndPredictionBody::new(
+//!     "141981764",
+//!     "ed961efd-8a3f-4cf5-a9d0-e616c590cd2a",
+//!     twitch_types::PredictionStatus::Resolved,
+//! );
 //! ```
 //!
 //! ## Response: [EndPrediction]
@@ -33,7 +33,7 @@
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api::helix::{self, predictions::end_prediction};
+//! use twitch_api::helix::{self, predictions::{self, end_prediction}};
 //! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -41,11 +41,11 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = end_prediction::EndPredictionRequest::new();
-//! let body = end_prediction::EndPredictionBody::builder()
-//!     .broadcaster_id("141981764")
-//!     .id("ed961efd-8a3f-4cf5-a9d0-e616c590cd2a")
-//!     .status(end_prediction::PredictionStatus::Resolved)
-//!     .build();
+//! let body = end_prediction::EndPredictionBody::new(
+//!     "141981764",
+//!     "ed961efd-8a3f-4cf5-a9d0-e616c590cd2a",
+//!     twitch_types::PredictionStatus::Resolved
+//! );
 //! let response: end_prediction::EndPrediction = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -58,13 +58,11 @@ use crate::helix::{parse_json, HelixRequestPatchError};
 
 use super::*;
 use helix::RequestPatch;
-pub use types::{PredictionId, PredictionStatus};
 /// Query Parameters for [End Prediction](super::end_prediction)
 ///
 /// [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
-#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct EndPredictionRequest {}
 
@@ -76,24 +74,52 @@ impl EndPredictionRequest {
 /// Body Parameters for [End Prediction](super::end_prediction)
 ///
 /// [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct EndPredictionBody {
     /// The broadcaster running predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// ID of the prediction.
-    #[builder(setter(into))]
-    pub id: PredictionId,
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    pub id: types::PredictionId,
     /// The Prediction status to be set. Valid values:
     ///
     /// [`RESOLVED`](types::PredictionStatus): A winning outcome has been chosen and the Channel Points have been distributed to the users who predicted the correct outcome.
     /// [`CANCELED`](types::PredictionStatus): The Prediction has been canceled and the Channel Points have been refunded to participants.
     /// [`LOCKED`](types::PredictionStatus): The Prediction has been locked and viewers can no longer make predictions.
-    pub status: PredictionStatus,
+    pub status: types::PredictionStatus,
     /// ID of the winning outcome for the Prediction. This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
-    #[builder(default, setter(into))]
-    pub winning_outcome_id: Option<PredictionId>,
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    pub winning_outcome_id: Option<types::PredictionId>,
+}
+
+impl EndPredictionBody {
+    /// End given prediction that is currently active.
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        id: impl Into<types::PredictionId>,
+        status: impl Into<types::PredictionStatus>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+            status: status.into(),
+            winning_outcome_id: None,
+        }
+    }
+
+    /// ID of the winning outcome for the Prediction
+    ///
+    /// This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
+    pub fn winning_outcome_id(
+        mut self,
+        winning_outcome_id: impl Into<types::PredictionId>,
+    ) -> Self {
+        self.winning_outcome_id = Some(winning_outcome_id.into());
+        self
+    }
 }
 
 impl helix::private::SealedSerialize for EndPredictionBody {}
@@ -180,13 +206,13 @@ impl RequestPatch for EndPredictionRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = EndPredictionRequest::builder().build();
+    let req = EndPredictionRequest::new();
 
-    let body = EndPredictionBody::builder()
-        .broadcaster_id("141981764")
-        .id("ed961efd-8a3f-4cf5-a9d0-e616c590cd2a")
-        .status(PredictionStatus::Resolved)
-        .build();
+    let body = EndPredictionBody::new(
+        "141981764",
+        "ed961efd-8a3f-4cf5-a9d0-e616c590cd2a",
+        types::PredictionStatus::Resolved,
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

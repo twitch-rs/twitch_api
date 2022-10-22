@@ -58,35 +58,76 @@ use helix::RequestPatch;
 /// Query Parameters for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct ModifyChannelInformationRequest {
     /// ID of the channel
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
+}
+
+impl ModifyChannelInformationRequest {
+    /// Modify specified broadcasters channel
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        ModifyChannelInformationRequest {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 // FIXME: Twitch docs sucks...
 /// Body Parameters for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct ModifyChannelInformationBody {
     /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub game_id: Option<types::CategoryId>,
     /// Language of the channel
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub broadcaster_language: Option<String>,
     /// Title of the stream. Value must not be an empty string.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub title: Option<String>,
 }
 
+impl ModifyChannelInformationBody {
+    /// Data to set on the stream.
+    ///
+    ///  # Examples
+    ///
+    /// ```rust
+    /// # use twitch_api::helix::channels::modify_channel_information::ModifyChannelInformationBody;
+    ///
+    /// let body = ModifyChannelInformationBody::new().game_id("123");
+    /// ```
+    pub fn new() -> Self { Default::default() }
+
+    /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
+    pub fn game_id(&mut self, game_id: impl Into<types::CategoryId>) -> &mut Self {
+        self.game_id = Some(game_id.into());
+        self
+    }
+
+    /// Language of the channel
+    pub fn broadcaster_language(&mut self, broadcaster_language: impl Into<String>) -> &mut Self {
+        self.broadcaster_language = Some(broadcaster_language.into());
+        self
+    }
+
+    /// Title of the stream. Value must not be an empty string.
+    pub fn title(&mut self, title: impl Into<String>) -> &mut ModifyChannelInformationBody {
+        self.title = Some(title.into());
+        self
+    }
+}
+
 impl helix::private::SealedSerialize for ModifyChannelInformationBody {}
+
 /// Return Values for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
@@ -143,13 +184,12 @@ impl RequestPatch for ModifyChannelInformationRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = ModifyChannelInformationRequest::builder()
-        .broadcaster_id(String::from("0"))
-        .build();
+    let req = ModifyChannelInformationRequest::broadcaster_id("0");
 
-    let body = ModifyChannelInformationBody::builder()
-        .title("Hello World!".to_string())
-        .build();
+    let body = ModifyChannelInformationBody {
+        title: Some("Hello World!".to_string()),
+        ..Default::default()
+    };
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

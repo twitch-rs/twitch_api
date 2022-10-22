@@ -43,21 +43,44 @@ use helix::RequestGet;
 /// Query Parameters for [Get Followed Streams](super::get_followed_streams)
 ///
 /// [`get-followed-streams`](https://dev.twitch.tv/docs/api/reference#get-followed-streams)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetFollowedStreamsRequest {
     /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub user_id: types::UserId,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub before: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
+}
+
+impl GetFollowedStreamsRequest {
+    /// Get a users followed streams.
+    ///
+    /// Requires token with scope [`user:read:follows`](twitch_oauth2::Scope::UserReadFollows).
+    ///
+    /// See also [`HelixClient::get_followed_streams`](crate::helix::HelixClient::get_followed_streams).
+    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: user_id.into(),
+            after: Default::default(),
+            before: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Get Followed Streams](super::get_followed_streams)
@@ -83,9 +106,7 @@ impl helix::Paginated for GetFollowedStreamsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetFollowedStreamsRequest::builder()
-        .user_id("141981764")
-        .build();
+    let req = GetFollowedStreamsRequest::user_id("141981764");
 
     // From twitch docs.
     let data = br#"

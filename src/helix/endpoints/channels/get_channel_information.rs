@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetChannelInformationRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::broadcaster_id()`] or [`GetChannelInformationRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::get_channel_information;
-//! let request = get_channel_information::GetChannelInformationRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [ChannelInformation]
@@ -28,9 +26,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_information::GetChannelInformationRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_id("1234");
 //! let response: Option<get_channel_information::ChannelInformation> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -44,12 +40,22 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Information](super::get_channel_information)
 ///
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetChannelInformationRequest {
     /// ID of the channel
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
+}
+
+impl GetChannelInformationRequest {
+    /// Get channel information for a specific broadcaster.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 /// Return Values for [Get Channel Information](super::get_channel_information)
@@ -122,9 +128,7 @@ impl RequestGet for GetChannelInformationRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelInformationRequest::builder()
-        .broadcaster_id("44445592".to_string())
-        .build();
+    let req = GetChannelInformationRequest::broadcaster_id("44445592".to_string());
 
     // From twitch docs
     let data = br#"

@@ -43,21 +43,47 @@ use helix::RequestGet;
 /// Query Parameters for [Search Channels](super::search_channels)
 ///
 /// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct SearchChannelsRequest {
     /// URL encoded search query
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub query: String,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100 Default: 20
-    #[builder(default, setter(into))] // FIXME: No setter because int
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    // FIXME: No setter because int
     pub first: Option<usize>,
     /// Filter results for live streams only. Default: false
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub live_only: Option<bool>,
+}
+
+impl SearchChannelsRequest {
+    /// Search channels with the following query.
+    pub fn query(query: impl Into<String>) -> Self {
+        Self {
+            query: query.into(),
+            after: None,
+            first: None,
+            live_only: None,
+        }
+    }
+
+    /// Get live streams only
+    pub fn live_only(mut self, live_only: bool) -> Self {
+        self.live_only = Some(live_only);
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Search Channels](super::search_channels)
@@ -114,7 +140,7 @@ impl helix::Paginated for SearchChannelsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = SearchChannelsRequest::builder().query("fort").build();
+    let req = SearchChannelsRequest::query("fort");
 
     // From twitch docs
     let data = br#"

@@ -43,11 +43,28 @@ use helix::RequestGet;
 /// Query Parameters for [Get Chatters](super::get_user_chat_color)
 ///
 /// [`get-user-chat-color`](https://dev.twitch.tv/docs/api/reference#get-user-chat-color)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetUserChatColorRequest {
     /// The ID of the user whose color you want to get.
     pub user_id: Vec<types::UserId>,
+}
+
+impl GetUserChatColorRequest {
+    /// Get chat color of specified user
+    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: vec![user_id.into()],
+        }
+    }
+
+    /// Get chat colors of specified users
+    pub fn user_ids(user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
+        Self {
+            user_id: user_ids.into_iter().map(Into::into).collect(),
+        }
+    }
 }
 
 /// Return Values for [Get Chatters](super::get_user_chat_color)
@@ -87,9 +104,7 @@ impl RequestGet for GetUserChatColorRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetUserChatColorRequest::builder()
-        .user_id(vec!["11111".into(), "44444".into()])
-        .build();
+    let req = GetUserChatColorRequest::user_ids(["11111", "44444"]);
 
     // From twitch docs
     // FIXME: Example has ...

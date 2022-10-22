@@ -7,29 +7,48 @@ use helix::RequestGet;
 /// Query Parameters for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
 /// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetEventSubSubscriptionsRequest {
     /// Include this parameter to filter subscriptions by their status.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub status: Option<eventsub::Status>,
     /// Filter subscriptions by [subscription type](eventsub::EventType) (e.g., [channel.update](eventsub::EventType::ChannelUpdate)).
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub type_: Option<eventsub::EventType>,
     /// Filter subscriptions by user ID.
     ///
     /// The response contains subscriptions where the user ID
-    /// matches a user ID that you specified inthe Condition object when you created the subscription.
-    #[builder(default, setter(into))]
+    /// matches a user ID that you specified in the Condition object when you created the subscription.
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub user_id: Option<types::UserId>,
     // FIXME: https://github.com/twitchdev/issues/issues/272
     /// Cursor for forward pagination
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub after: Option<helix::Cursor>,
     // FIXME: https://github.com/twitchdev/issues/issues/271
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
+}
+
+impl GetEventSubSubscriptionsRequest {
+    /// Get eventsub subscriptions by this status
+    pub fn status(status: impl Into<eventsub::Status>) -> Self {
+        Self {
+            status: Some(status.into()),
+            ..Self::default()
+        }
+    }
+
+    /// Get eventsub subscriptions by this type
+    pub fn eventsub_type(r#type: impl Into<eventsub::EventType>) -> Self {
+        Self {
+            type_: Some(r#type.into()),
+            ..Self::default()
+        }
+    }
 }
 
 impl Request for GetEventSubSubscriptionsRequest {
@@ -111,7 +130,8 @@ impl helix::Paginated for GetEventSubSubscriptionsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req: GetEventSubSubscriptionsRequest = GetEventSubSubscriptionsRequest::builder().build();
+    let req: GetEventSubSubscriptionsRequest = GetEventSubSubscriptionsRequest::default();
+
     // From twitch docs.
     // FIXME: Twitch says in example that status is kebab-case, it's actually snake_case. also, users vs user and stream vs streams
     let data = br#"{

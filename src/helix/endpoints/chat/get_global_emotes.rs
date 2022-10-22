@@ -39,11 +39,15 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Emotes](super::get_global_emotes)
 ///
 /// [`get-global-emotes`](https://dev.twitch.tv/docs/api/reference#get-global-emotes)
-#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetGlobalEmotesRequest {}
+
+impl GetGlobalEmotesRequest {
+    /// Get global emotes
+    pub fn new() -> Self { Self {} }
+}
 
 /// Return Values for [Get Channel Emotes](super::get_global_emotes)
 ///

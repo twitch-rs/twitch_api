@@ -49,18 +49,42 @@ use helix::RequestPut;
 /// Query Parameters for [Block User](super::block_user)
 ///
 /// [`block-user`](https://dev.twitch.tv/docs/api/reference#block-user)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct BlockUserRequest {
     /// User ID of the follower
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub target_user_id: types::UserId,
     /// Source context for blocking the user. Valid values: "chat", "whisper".
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub source_context: Option<SourceContext>,
     /// Reason for blocking the user. Valid values: "spam", "harassment", or "other".
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub reason: Option<Reason>,
+}
+
+impl BlockUserRequest {
+    /// Block a user
+    pub fn block_user(target_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            target_user_id: target_user_id.into(),
+            source_context: None,
+            reason: None,
+        }
+    }
+
+    /// Set the source_context for this block.
+    pub fn source_context(mut self, source_context: impl Into<SourceContext>) -> Self {
+        self.source_context = Some(source_context.into());
+        self
+    }
+
+    /// Set the reason for this block.
+    pub fn reason(mut self, reason: impl Into<Reason>) -> Self {
+        self.reason = Some(reason.into());
+        self
+    }
 }
 
 /// Source context for blocking the user.
@@ -141,9 +165,7 @@ impl RequestPut for BlockUserRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = BlockUserRequest::builder()
-        .target_user_id("41245071".to_string())
-        .build();
+    let req = BlockUserRequest::block_user("41245071");
 
     dbg!(req.create_request(EmptyBody, "token", "clientid").unwrap());
 

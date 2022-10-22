@@ -60,23 +60,38 @@ use helix::RequestPost;
 /// Query Parameters for [Send Chat Announcement](super::send_chat_announcement)
 ///
 /// [`send-chat-announcement`](https://dev.twitch.tv/docs/api/reference#send-chat-announcement)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct SendChatAnnouncementRequest {
     /// The ID of the broadcaster that owns the chat room to send the announcement to.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of a user who has permission to moderate the broadcaster’s chat room.
     ///
     /// This ID must match the user ID in the OAuth token, which can be a moderator or the broadcaster.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
+}
+
+impl SendChatAnnouncementRequest {
+    /// Send announcement in channel as this moderator
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
 }
 
 /// Body Parameters for [Send Chat Announcement](super::send_chat_announcement)
 ///
 /// [`send-chat-announcement`](https://dev.twitch.tv/docs/api/reference#send-chat-announcement)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct SendChatAnnouncementBody {
     /// The announcement to make in the broadcaster’s chat room. Announcements are limited to a maximum of 500 characters; announcements longer than 500 characters are truncated.
@@ -91,7 +106,7 @@ pub struct SendChatAnnouncementBody {
     /// * primary (default)
     ///
     /// If color is set to primary or is not set, the channel’s accent color is used to highlight the announcement (see Profile Accent Color under [profile settings](https://www.twitch.tv/settings/profile), Channel and Videos, and Brand).
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub color: AnnouncementColor,
 }
 
@@ -178,10 +193,7 @@ impl RequestPost for SendChatAnnouncementRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = SendChatAnnouncementRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = SendChatAnnouncementRequest::new("1234", "5678");
 
     let body = SendChatAnnouncementBody::new("hello chat!".to_owned(), "purple").unwrap();
 

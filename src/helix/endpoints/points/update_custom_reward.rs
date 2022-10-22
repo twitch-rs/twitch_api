@@ -66,64 +66,76 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Custom Rewards](super::update_custom_reward)
 ///
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateCustomRewardRequest {
     /// Provided broadcaster_id must match the user_id in the auth token
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// ID of the Custom Reward to update, must match a Custom Reward on broadcaster_id’s channel.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub id: types::RewardId,
+}
+
+impl UpdateCustomRewardRequest {
+    /// Update a Custom Reward created on the broadcaster's channel
+    pub fn new(broadcaster_id: impl Into<types::UserId>, id: impl Into<types::RewardId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+        }
+    }
 }
 
 /// Body Parameters for [Update Custom Rewards](super::update_custom_reward)
 ///
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateCustomRewardBody {
     /// The title of the reward
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub title: Option<String>,
     /// The prompt for the viewer when they are redeeming the reward
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub prompt: Option<String>,
     /// The cost of the reward
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub cost: Option<usize>,
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub background_color: Option<String>,
     /// Is the reward currently enabled, if false the reward won’t show up to viewers
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_enabled: Option<bool>,
     /// Does the user need to enter information when redeeming the reward.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_user_input_required: Option<bool>,
     /// Whether a maximum per stream is enabled
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_max_per_stream_enabled: Option<bool>,
     /// The maximum number per stream if enabled
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub max_per_stream: Option<usize>,
     /// Whether a maximum per user per stream is enabled. Defaults to false.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_max_per_user_per_stream_enabled: Option<bool>,
     /// The maximum number per user per stream if enabled
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub max_per_user_per_stream: Option<usize>,
     /// Whether a cooldown is enabled. Defaults to false.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_global_cooldown_enabled: Option<bool>,
     /// The cooldown in seconds if enabled
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub global_cooldown_seconds: Option<usize>,
     /// Is the reward currently paused, if true viewers can’t redeem
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_paused: Option<bool>,
     /// Should redemptions be set to FULFILLED status immediately when redeemed and skip the request queue instead of the normal UNFULFILLED status.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub should_redemptions_skip_request_queue: Option<bool>,
 }
 
@@ -204,12 +216,12 @@ impl RequestPatch for UpdateCustomRewardRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = UpdateCustomRewardRequest::builder()
-        .broadcaster_id("274637212")
-        .id("92af127c-7326-4483-a52b-b0da0be61c01")
-        .build();
+    let req = UpdateCustomRewardRequest::new("274637212", "92af127c-7326-4483-a52b-b0da0be61c01");
 
-    let body = UpdateCustomRewardBody::builder().is_enabled(false).build();
+    let body = UpdateCustomRewardBody {
+        is_enabled: Some(false),
+        ..Default::default()
+    };
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

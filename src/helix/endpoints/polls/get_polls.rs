@@ -44,21 +44,46 @@ pub use types::{PollChoice, PollStatus};
 /// Query Parameters for [Get polls](super::get_polls)
 ///
 /// [`get-polls`](https://dev.twitch.tv/docs/api/reference#get-polls)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetPollsRequest {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// ID of a poll. Filters results to one or more specific polls. Not providing one or more IDs will return the full list of polls for the authenticated channel.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub id: Vec<types::PollId>,
     /// Cursor for forward pagination
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub after: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 20. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
+}
+
+impl GetPollsRequest {
+    /// The broadcaster running polls.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// ID of a poll to query.
+    pub fn id(mut self, id: impl Into<types::PollId>) -> Self {
+        self.id = vec![id.into()];
+        self
+    }
+
+    /// IDs of the polls to query.
+    pub fn ids(mut self, id: impl IntoIterator<Item = impl Into<types::PollId>>) -> Self {
+        self.id = id.into_iter().map(Into::into).collect();
+        self
+    }
 }
 
 /// Return Values for [Get polls](super::get_polls)
@@ -118,10 +143,8 @@ impl helix::Paginated for GetPollsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetPollsRequest::builder()
-        .broadcaster_id("141981764")
-        .id(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()])
-        .build();
+    let req =
+        GetPollsRequest::broadcaster_id("141981764").id("ed961efd-8a3f-4cf5-a9d0-e616c590cd2a");
 
     // From twitch docs
     let data = br#"

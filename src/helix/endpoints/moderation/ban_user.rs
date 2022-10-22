@@ -56,25 +56,40 @@ use helix::RequestPost;
 /// Query Parameters for [Ban User](super::ban_user)
 ///
 /// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct BanUserRequest {
     /// The ID of the broadcaster whose chat room the user is being banned from.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     /// This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster wants to ban the user (instead of having the moderator do it),
     /// set this parameter to the broadcaster’s ID, too.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
+}
+
+impl BanUserRequest {
+    /// Ban a user on this channel
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
 }
 
 /// Body Parameters for [Ban User](super::ban_user)
 ///
 /// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct BanUserBody {
     /// Duration of the (optional) timeout in seconds.
@@ -84,13 +99,13 @@ pub struct BanUserBody {
     /// To put a user in a timeout, include this field and specify the timeout period, in seconds.
     /// The minimum timeout is 1 second and the maximum is 1,209,600 seconds (2 weeks).
     /// To end a user’s timeout early, set this field to 1, or send an Unban user request.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub duration: Option<u32>,
     /// The reason the user is being banned or put in a timeout. The text is user defined and limited to a maximum of 500 characters.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub reason: String,
     /// The ID of the user to ban or put in a timeout.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub user_id: types::UserId,
 }
 
@@ -194,10 +209,7 @@ impl RequestPost for BanUserRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = BanUserRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = BanUserRequest::new("1234", "5678");
 
     let body = BanUserBody::new("9876", "no reason".to_string(), 300);
 
@@ -234,10 +246,7 @@ fn test_request() {
 #[test]
 fn test_request_error() {
     use helix::*;
-    let req = BanUserRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = BanUserRequest::new("1234", "5678");
 
     let body = BanUserBody::new("9876", "no reason".to_string(), 300);
 

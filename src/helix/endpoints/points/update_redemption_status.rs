@@ -72,31 +72,53 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Redemption Status](super::update_redemption_status)
 ///
 /// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateRedemptionStatusRequest {
     /// Provided broadcaster_id must match the user_id in the auth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
 
     /// ID of the Custom Reward the redemptions to be updated are for.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub reward_id: types::RewardId,
 
     /// ID of the Custom Reward Redemption to update, must match a Custom Reward Redemption on broadcaster_id’s channel
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub id: types::RedemptionId,
+}
+
+impl UpdateRedemptionStatusRequest {
+    /// Update the status of Custom Reward Redemption object on a channel that are in the UNFULFILLED status.
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        reward_id: impl Into<types::RewardId>,
+        id: impl Into<types::RedemptionId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            reward_id: reward_id.into(),
+            id: id.into(),
+        }
+    }
 }
 
 /// Body Parameters for [Update Redemption Status](super::update_redemption_status)
 ///
 /// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateRedemptionStatusBody {
     /// The new status to set redemptions to. Can be either FULFILLED or CANCELED. Updating to CANCELED will refund the user their points.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub status: CustomRewardRedemptionStatus,
+}
+
+impl UpdateRedemptionStatusBody {
+    /// The new status to set
+    pub fn status(status: CustomRewardRedemptionStatus) -> Self { Self { status } }
 }
 
 /// FIXME: Returns an object.
@@ -176,15 +198,13 @@ impl helix::private::SealedSerialize for UpdateRedemptionStatusBody {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = UpdateRedemptionStatusRequest::builder()
-        .broadcaster_id("274637212".to_string())
-        .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-        .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63".to_string())
-        .build();
+    let req = UpdateRedemptionStatusRequest::new(
+        "274637212",
+        "92af127c-7326-4483-a52b-b0da0be61c01",
+        "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
+    );
 
-    let body = UpdateRedemptionStatusBody::builder()
-        .status(CustomRewardRedemptionStatus::Unfulfilled)
-        .build();
+    let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Unfulfilled);
 
     dbg!(req.create_request(body, "abcd", "client").unwrap());
     // From twitch docs

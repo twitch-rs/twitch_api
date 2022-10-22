@@ -5,14 +5,11 @@
 //!
 //! ## Request: [AddChannelVipRequest]
 //!
-//! To use this endpoint, construct a [`AddChannelVipRequest`] with the [`AddChannelVipRequest::builder()`] method.
+//! To use this endpoint, construct a [`AddChannelVipRequest`] with the [`AddChannelVipRequest::new()`] or[`AddChannelVipRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::add_channel_vip;
-//! let request = add_channel_vip::AddChannelVipRequest::builder()
-//!     .broadcaster_id("123")
-//!     .user_id("456")
-//!     .build();
+//! let request = add_channel_vip::AddChannelVipRequest::new("123", "456");
 //! ```
 //!
 //! ## Response: [AddChannelVipResponse]
@@ -27,10 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = add_channel_vip::AddChannelVipRequest::builder()
-//!     .broadcaster_id("123")
-//!     .user_id("456")
-//!     .build();
+//! let request = add_channel_vip::AddChannelVipRequest::new("123", "456");
 //! let response: add_channel_vip::AddChannelVipResponse = client.req_post(request, helix::EmptyBody, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -44,15 +38,29 @@ use helix::RequestPost;
 /// Query Parameters for [Add Channel Vip](super::add_channel_vip)
 ///
 /// [`add-channel-vip`](https://dev.twitch.tv/docs/api/reference#add-channel-vip)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct AddChannelVipRequest {
     /// The ID of the broadcaster that’s granting VIP status to the user.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of the user to add as a VIP in the broadcaster’s chat room.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub user_id: types::UserId,
+}
+
+impl AddChannelVipRequest {
+    /// Add a channel VIP
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        user_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: user_id.into(),
+        }
+    }
 }
 
 /// Return Values for [Add Channel Vip](super::add_channel_vip)
@@ -108,10 +116,7 @@ impl RequestPost for AddChannelVipRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = AddChannelVipRequest::builder()
-        .broadcaster_id("123")
-        .user_id("456")
-        .build();
+    let req = AddChannelVipRequest::new("123", "456");
 
     dbg!(req
         .create_request(helix::EmptyBody, "token", "clientid")

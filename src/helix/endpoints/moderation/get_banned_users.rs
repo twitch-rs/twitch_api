@@ -43,26 +43,58 @@ use helix::RequestGet;
 /// Query Parameters for [Get Banned Users](super::get_banned_users)
 ///
 /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetBannedUsersRequest {
     /// Must match the User ID in the Bearer token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.
     /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
     /// Maximum: 100
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub user_id: Vec<types::UserId>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub before: Option<helix::Cursor>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
-    #[builder(setter(into), default)]
-    pub first: Option<String>,
+    #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
+    pub first: Option<usize>,
+}
+
+impl GetBannedUsersRequest {
+    /// Get banned users in a broadcasters channel.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: Default::default(),
+            after: Default::default(),
+            before: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// Check if supplied user is banned.
+    pub fn user(mut self, user_id: impl Into<types::UserId>) -> Self {
+        self.user_id = vec![user_id.into()];
+        self
+    }
+
+    /// Check if supplied users are banned.
+    pub fn users(mut self, user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
+        self.user_id = user_ids.into_iter().map(Into::into).collect();
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Get Banned Users](super::get_banned_users)
@@ -110,9 +142,7 @@ impl helix::Paginated for GetBannedUsersRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetBannedUsersRequest::builder()
-        .broadcaster_id("198704263".to_string())
-        .build();
+    let req = GetBannedUsersRequest::broadcaster_id("198704263");
 
     // From twitch docs
     let data = br#"

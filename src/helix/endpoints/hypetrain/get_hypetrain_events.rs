@@ -44,25 +44,38 @@ use helix::RequestGet;
 /// Query Parameters for [Get Hype Train Events](super::get_hypetrain_events)
 ///
 /// [`get-hype-train-events`](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetHypeTrainEventsRequest {
     /// Must match the User ID in the Bearer token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub cursor: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Retreive a single event by event ID
     #[deprecated(
         since = "0.6.0",
         note = "this does nothing, see https://discuss.dev.twitch.tv/t/get-hype-train-events-api-endpoint-id-query-parameter-deprecation/37613"
     )]
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub id: Option<String>,
+}
+
+impl GetHypeTrainEventsRequest {
+    /// Get hypetrain evens
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            cursor: Default::default(),
+            first: Default::default(),
+            id: Default::default(),
+        }
+    }
 }
 
 /// Return Values for [Get Hype Train Events](super::get_hypetrain_events)
@@ -139,9 +152,7 @@ impl helix::Paginated for GetHypeTrainEventsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetHypeTrainEventsRequest::builder()
-        .broadcaster_id("270954519".to_string())
-        .build();
+    let req = GetHypeTrainEventsRequest::broadcaster_id("270954519");
 
     // From twitch docs
     let data = br#"

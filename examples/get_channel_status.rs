@@ -31,9 +31,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     .await
     .unwrap();
 
-    let req = GetStreamsRequest::builder()
-        .user_login(vec![args.next().unwrap().into()])
-        .build();
+    let req = GetStreamsRequest::user_login(args.next().unwrap());
 
     let response = client.req_get(req, &token).await.unwrap();
 

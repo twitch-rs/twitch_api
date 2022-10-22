@@ -37,14 +37,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .try_collect::<Vec<_>>()
         .await?;
     let games = client
-        .get_games_by_id(
-            streams
-                .iter()
-                .map(|s| s.game_id.clone())
-                .collect::<Vec<_>>()
-                .as_slice(),
-            &token,
-        )
+        .get_games_by_id(streams.iter().map(|s| s.game_id.clone()), &token)
         .await?;
 
     println!(

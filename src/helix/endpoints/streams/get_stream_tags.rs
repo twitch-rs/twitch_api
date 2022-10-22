@@ -43,13 +43,23 @@ use helix::RequestGet;
 /// Query Parameters for [Get Stream Tags](super::get_stream_tags)
 ///
 /// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetStreamTagsRequest {
     // FIXME: twitch docs sucks
     /// ID of the stream whose tags are going to be fetched
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
+}
+
+impl GetStreamTagsRequest {
+    /// ID of the stream whose tags are going to be fetched
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 /// Return Values for [Get Stream Tags](super::get_stream_tags)
@@ -71,9 +81,7 @@ impl RequestGet for GetStreamTagsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetStreamTagsRequest::builder()
-        .broadcaster_id("198704263".to_string())
-        .build();
+    let req = GetStreamTagsRequest::broadcaster_id("198704263");
 
     // From twitch docs
     let data = "\

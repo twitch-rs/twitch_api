@@ -64,49 +64,65 @@ use helix::RequestPatch;
 /// Query Parameters for [Update Chat Settings](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateChatSettingsRequest {
     /// The ID of the broadcaster whose chat settings you want to update.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     /// This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster is making the update, also set this parameter to the broadcaster’s ID.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
+}
+
+///FIXME: The moderator_id parameter is redundant, we should make this a client ext function
+impl UpdateChatSettingsRequest {
+    /// Update the chat settings for the specified broadcaster as the specified moderator
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
 }
 
 /// Body Parameters for [Update Chat Settings](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateChatSettingsBody {
     /// A Boolean value that determines whether chat messages must contain only emotes.
     ///
     /// Set to true, if only messages that are 100% emotes are allowed; otherwise, false. Default is false.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub emote_mode: Option<bool>,
     /// A Boolean value that determines whether the broadcaster restricts the chat room to followers only, based on how long they’ve followed.
     ///
     /// Set to true, if the broadcaster restricts the chat room to followers only; otherwise, false. Default is true.
     ///
     /// See [`follower_mode_duration`](Self::follower_mode_duration) for how long the followers must have followed the broadcaster to participate in the chat room.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub follower_mode: Option<bool>,
     /// The length of time, in minutes, that the followers must have followed the broadcaster to participate in the chat room (see follower_mode).
     ///
     /// You may specify a value in the range: 0 (no restriction) through 129600 (3 months). The default is 0.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub follower_mode_duration: Option<u64>,
     /// A Boolean value that determines whether the broadcaster adds a short delay before chat messages appear in the chat room. This gives chat moderators and bots a chance to remove them before viewers can see the message.
     ///
     /// Set to true, if the broadcaster applies a delay; otherwise, false. Default is false.
     ///
     /// See [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) for the length of the delay.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub non_moderator_chat_delay: Option<bool>,
     /// The amount of time, in seconds, that messages are delayed from appearing in chat.
     ///
@@ -117,29 +133,29 @@ pub struct UpdateChatSettingsBody {
     /// * 6 — 6 second delay
     ///
     /// See [`non_moderator_chat_delay`](Self::non_moderator_chat_delay).
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub non_moderator_chat_delay_duration: Option<u64>,
     /// A Boolean value that determines whether the broadcaster limits how often users in the chat room are allowed to send messages.
     ///
     /// Set to true, if the broadcaster applies a wait period messages; otherwise, false. Default is false.
     ///
     /// See [`slow_mode_wait_time`](Self::slow_mode_wait_time) for the delay.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub slow_mode: Option<bool>,
     /// The amount of time, in seconds, that users need to wait between sending messages (see slow_mode).
     ///
     /// You may specify a value in the range: 3 (3 second delay) through 120 (2 minute delay). The default is 30 seconds.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub slow_mode_wait_time: Option<u64>,
     /// A Boolean value that determines whether only users that subscribe to the broadcaster’s channel can talk in the chat room.
     ///
     /// Set to true, if the broadcaster restricts the chat room to subscribers only; otherwise, false. Default is false.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub subscriber_mode: Option<bool>,
     /// A Boolean value that determines whether the broadcaster requires users to post only unique messages in the chat room.
     ///
     /// Set to true, if the broadcaster requires unique messages only; otherwise, false. Default is false.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub unique_chat_mode: Option<bool>,
 }
 
@@ -214,15 +230,13 @@ impl RequestPatch for UpdateChatSettingsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = UpdateChatSettingsRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = UpdateChatSettingsRequest::new("1234", "5678");
 
-    let body = UpdateChatSettingsBody::builder()
-        .slow_mode(true)
-        .slow_mode_wait_time(10)
-        .build();
+    let body = UpdateChatSettingsBody {
+        slow_mode: Some(true),
+        slow_mode_wait_time: Some(10),
+        ..Default::default()
+    };
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

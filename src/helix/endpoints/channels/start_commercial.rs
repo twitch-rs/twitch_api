@@ -51,10 +51,6 @@
 use super::*;
 use helix::RequestPost;
 
-impl StartCommercialRequest {
-    /// Create a new [`StartCommercialRequest`]
-    pub fn new() -> Self { StartCommercialRequest {} }
-}
 // Not implementing builder since it's not really needed...
 /// Query Parameters for [Start Commercial](super::start_commercial)
 ///
@@ -63,6 +59,11 @@ impl StartCommercialRequest {
 #[non_exhaustive]
 pub struct StartCommercialRequest {}
 
+impl StartCommercialRequest {
+    /// Create a new [`StartCommercialRequest`]
+    pub fn new() -> Self { StartCommercialRequest {} }
+}
+
 impl Default for StartCommercialRequest {
     fn default() -> Self { StartCommercialRequest::new() }
 }
@@ -70,14 +71,28 @@ impl Default for StartCommercialRequest {
 /// Body Parameters for [Start Commercial](super::start_commercial)
 ///
 /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct StartCommercialBody {
     /// ID of the channel requesting a commercial
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Desired length of the commercial in seconds. Valid options are 30, 60, 90, 120, 150, 180.
     pub length: types::CommercialLength,
+}
+
+impl StartCommercialBody {
+    /// Start a commercial in this broadcasters channel
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        length: impl Into<types::CommercialLength>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            length: length.into(),
+        }
+    }
 }
 
 /// Return Values for [Start Commercial](super::start_commercial)
@@ -116,10 +131,7 @@ fn test_request() {
     use helix::*;
     let req = StartCommercialRequest {};
 
-    let body = StartCommercialBody::builder()
-        .broadcaster_id("1234")
-        .length(crate::types::CommercialLength::Length120)
-        .build();
+    let body = StartCommercialBody::new("1234", types::CommercialLength::Length120);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

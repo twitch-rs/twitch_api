@@ -44,27 +44,66 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Stream Schedule](super::get_channel_stream_schedule)
 ///
 /// [`get-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetChannelStreamScheduleRequest {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of the stream segment to return. Maximum: 100.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub id: Option<types::StreamSegmentId>,
     /// A timestamp in RFC3339 format to start returning stream segments from. If not specified, the current date and time is used.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub start_time: Option<types::Timestamp>,
     /// A timezone offset for the requester specified in minutes. This is recommended to ensure stream segments are returned for the correct week. For example, a timezone that is +4 hours from GMT would be “240.” If not specified, “0” is used for GMT.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub utc_offset: Option<String>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Maximum number of stream segments to return. Maximum: 25. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
+}
+
+impl GetChannelStreamScheduleRequest {
+    /// Get a broadcasters schedule
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: Default::default(),
+            start_time: Default::default(),
+            utc_offset: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// Set the id for the request.
+    pub fn id(mut self, id: impl Into<types::StreamSegmentId>) -> Self {
+        self.id = Some(id.into());
+        self
+    }
+
+    /// Set the start_time for the request.
+    pub fn start_time(mut self, start_time: impl Into<types::Timestamp>) -> Self {
+        self.start_time = Some(start_time.into());
+        self
+    }
+
+    /// Set the utc_offset for the request.
+    pub fn utc_offset(mut self, utc_offset: impl Into<String>) -> Self {
+        self.utc_offset = Some(utc_offset.into());
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Get Channel Stream Schedule](super::get_channel_stream_schedule)
@@ -90,9 +129,7 @@ impl helix::Paginated for GetChannelStreamScheduleRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelStreamScheduleRequest::builder()
-        .broadcaster_id("141981764")
-        .build();
+    let req = GetChannelStreamScheduleRequest::broadcaster_id("141981764");
 
     // From twitch docs. FIXME: Docs has ...
     let data = br#"

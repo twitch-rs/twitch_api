@@ -3,16 +3,33 @@
 
 use super::*;
 /// [`channel.channel_points_custom_reward_redemption.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionupdate): a redemption of a channel points custom reward has been updated for the specified channel.
-#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPointsCustomRewardRedemptionUpdateV1 {
     /// The broadcaster user ID for the channel you want to receive channel points custom reward update notifications for.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
     /// Optional. Specify a reward id to only receive notifications for a specific reward.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub reward_id: Option<types::RewardId>,
+}
+
+impl ChannelPointsCustomRewardRedemptionUpdateV1 {
+    /// The broadcaster user ID for the channel you want to receive channel points custom reward update notifications for.
+    pub fn broadcaster_user_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+            reward_id: None,
+        }
+    }
+
+    /// Specify a reward id to only receive notifications for a specific reward.
+    pub fn reward_id(mut self, reward_id: impl Into<types::RewardId>) -> Self {
+        self.reward_id = Some(reward_id.into());
+        self
+    }
 }
 
 impl EventSubscription for ChannelPointsCustomRewardRedemptionUpdateV1 {

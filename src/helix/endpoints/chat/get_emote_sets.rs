@@ -43,13 +43,32 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Emotes](super::get_emote_sets)
 ///
 /// [`get-emote-sets`](https://dev.twitch.tv/docs/api/reference#get-emote-sets)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetEmoteSetsRequest {
     // FIXME: twitch doc specifies maximum as 25, but it actually is 10
     /// The broadcaster whose emotes are being requested. Minimum: 1. Maximum: 10
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub emote_set_id: Vec<types::EmoteSetId>,
+}
+
+impl GetEmoteSetsRequest {
+    /// Get emotes in this set
+    pub fn emote_set_id(emote_set_id: impl Into<types::EmoteSetId>) -> Self {
+        Self {
+            emote_set_id: vec![emote_set_id.into()],
+        }
+    }
+
+    /// Get emotes in these sets
+    pub fn emote_set_ids(
+        emote_set_ids: impl IntoIterator<Item = impl Into<types::EmoteSetId>>,
+    ) -> Self {
+        Self {
+            emote_set_id: emote_set_ids.into_iter().map(Into::into).collect(),
+        }
+    }
 }
 
 /// Return Values for [Get Channel Emotes](super::get_emote_sets)
@@ -93,7 +112,7 @@ impl Emote {
     /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// let emotes = client.get_emote_sets(&["301590448".into()], &token).await?;
+    /// let emotes = client.get_emote_sets(["301590448"], &token).await?;
     /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0");
     /// # Ok(())
     /// # }
@@ -115,9 +134,7 @@ impl RequestGet for GetEmoteSetsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetEmoteSetsRequest::builder()
-        .emote_set_id(vec!["301590448".into()])
-        .build();
+    let req = GetEmoteSetsRequest::emote_set_id("301590448");
 
     // From twitch docs
     // FIXME: Example has ... and is malformed, uses [] in images

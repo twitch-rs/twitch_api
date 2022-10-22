@@ -43,15 +43,67 @@ use helix::RequestGet;
 /// Query Parameters for [Get Users](super::get_users)
 ///
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetUsersRequest {
     /// User ID. Multiple user IDs can be specified. Limit: 100.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub id: Vec<types::UserId>,
     /// User login name. Multiple login names can be specified. Limit: 100.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub login: Vec<types::UserName>,
+}
+
+impl GetUsersRequest {
+    /// Get a single user by their [`UserName`](types::UserName)
+    pub fn login(login: impl Into<types::UserName>) -> Self {
+        Self {
+            id: Vec::default(),
+            login: vec![login.into()],
+        }
+    }
+
+    /// Get multiple user by their [`UserName`](types::UserName)
+    ///
+    /// ```rust
+    /// use twitch_api::helix::users::get_users::GetUsersRequest;
+    /// GetUsersRequest::logins(["twitch", "justintv"]);
+    /// ```
+    pub fn logins(login: impl IntoIterator<Item = impl Into<types::UserName>>) -> Self {
+        Self {
+            id: Vec::default(),
+            login: login.into_iter().map(Into::into).collect(),
+        }
+    }
+
+    /// Get a user by their [`UserId`](types::UserId)
+    pub fn id(id: impl Into<types::UserId>) -> Self {
+        Self {
+            id: vec![id.into()],
+            login: Vec::default(),
+        }
+    }
+
+    /// Get multiple user by their [`UserId`](types::UserId)
+    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
+        Self {
+            id: ids.into_iter().map(Into::into).collect(),
+            login: Vec::default(),
+        }
+    }
+
+    /// Returns an empty [`GetUsersRequest`]
+    ///
+    /// # Notes
+    ///
+    /// This is not a valid request, it needs to be filled out with other fields.
+    pub fn new() -> Self {
+        Self {
+            id: Vec::default(),
+            login: Vec::default(),
+        }
+    }
 }
 
 /// Return Values for [Get Users](super::get_users)
@@ -107,9 +159,7 @@ impl RequestGet for GetUsersRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetUsersRequest::builder()
-        .id(vec!["44322889".into()])
-        .build();
+    let req = GetUsersRequest::id("44322889");
 
     // From twitch docs
     // FIXME: This is not valid anymore. Twitch....

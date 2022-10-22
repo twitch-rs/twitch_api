@@ -10,9 +10,7 @@
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //!
-//! let request = GetUsersRequest::builder()
-//!     .login(vec!["justintv123".into()])
-//!     .build();
+//! let request = GetUsersRequest::login("justintv123");
 //!
 //! // Send it however you want
 //! // Create a [`http::Response<hyper::body::Bytes>`] with RequestGet::create_request, which takes an access token and a client_id

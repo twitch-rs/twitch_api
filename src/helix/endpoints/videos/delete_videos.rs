@@ -44,12 +44,29 @@ use helix::RequestDelete;
 /// Query Parameters for [Delete Videos](super::delete_videos)
 ///
 /// [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct DeleteVideosRequest {
     /// ID of the video(s) to be deleted. Limit: 5.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub id: Vec<types::VideoId>,
+}
+
+impl DeleteVideosRequest {
+    /// ID of the video to be deleted
+    pub fn id(id: impl Into<types::VideoId>) -> Self {
+        Self {
+            id: vec![id.into()],
+        }
+    }
+
+    /// ID of the videos to be deleted
+    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::VideoId>>) -> Self {
+        Self {
+            id: ids.into_iter().map(Into::into).collect(),
+        }
+    }
 }
 // FIXME: Should return VideoIds
 /// Return Values for [Delete Videos](super::delete_videos)
@@ -102,9 +119,7 @@ impl RequestDelete for DeleteVideosRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = DeleteVideosRequest::builder()
-        .id(vec!["234482848".into()])
-        .build();
+    let req = DeleteVideosRequest::id("234482848");
 
     // From twitch docs
     let data = br#""#.to_vec();

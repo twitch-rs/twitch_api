@@ -11,9 +11,7 @@
 //! # let _: &HelixClient<twitch_api::DummyHttpClient> = &client;
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let req = GetChannelInformationRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let req = GetChannelInformationRequest::broadcaster_id("1234");
 //!
 //! // Get Channel Information Request only returns one entry.
 //! println!("{:?}", &client.req_get(req, &token).await?.data);

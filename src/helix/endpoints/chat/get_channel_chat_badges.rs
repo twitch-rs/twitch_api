@@ -43,12 +43,22 @@ use helix::RequestGet;
 /// Query Parameters for [Get Channel Chat Badges](super::get_channel_chat_badges)
 ///
 /// [`get-channel-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetChannelChatBadgesRequest {
     /// The broadcaster whose chat badges are being requested. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
+}
+
+impl GetChannelChatBadgesRequest {
+    /// Get chat badges for the specified broadcaster.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 /// Return Values for [Get Channel Chat Badges](super::get_channel_chat_badges)
@@ -70,9 +80,7 @@ impl RequestGet for GetChannelChatBadgesRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelChatBadgesRequest::builder()
-        .broadcaster_id("135093069")
-        .build();
+    let req = GetChannelChatBadgesRequest::broadcaster_id("135093069");
 
     // From twitch docs
     // FIXME: Example has ...

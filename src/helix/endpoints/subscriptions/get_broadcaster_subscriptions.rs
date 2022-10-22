@@ -42,21 +42,49 @@ use helix::RequestGet;
 /// Query Parameters for [Get Broadcaster Subscriptions](super::get_broadcaster_subscriptions)
 ///
 /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetBroadcasterSubscriptionsRequest {
     /// User ID of the broadcaster. Must match the User ID in the Bearer token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Unique identifier of account to get subscription status of. Accepts up to 100 values.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub user_id: Vec<types::UserId>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
-    #[builder(setter(into), default)]
-    pub first: Option<String>,
+    #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
+    pub first: Option<usize>,
+}
+
+impl GetBroadcasterSubscriptionsRequest {
+    /// Get a broadcasters subscribers
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// check for specific users in broadcasters subscriptions
+    pub fn subscriber(
+        mut self,
+        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
+    ) -> Self {
+        self.user_id = user_ids.into_iter().map(Into::into).collect();
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Get Broadcaster Subscriptions](super::get_broadcaster_subscriptions)
@@ -146,9 +174,7 @@ pub enum BroadcasterSubscriptionPointsError {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetBroadcasterSubscriptionsRequest::builder()
-        .broadcaster_id("123".to_string())
-        .build();
+    let req = GetBroadcasterSubscriptionsRequest::broadcaster_id("123");
 
     // From twitch docs. Example has ...
     let data = br#"

@@ -44,40 +44,75 @@ use helix::RequestGet;
 /// Query Parameters for [Get Videos](super::get_videos)
 ///
 /// [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetVideosRequest {
     /// ID of the video being queried. Limit: 100. If this is specified, you cannot use any of the optional query parameters below.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub id: Vec<types::VideoId>,
     /// ID of the user who owns the video.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub user_id: Option<types::UserId>,
     /// ID of the game the video is of.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub game_id: Option<types::CategoryId>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub before: Option<helix::Cursor>,
     /// Number of values to be returned when getting videos by user or game ID. Limit: 100. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Language of the video being queried. Limit: 1.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub language: Option<String>,
     /// Period during which the video was created. Valid values: "all", "day", "week", "month". Default: "all".
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub period: Option<VideoPeriod>,
     /// Sort order of the videos. Valid values: "time", "trending", "views". Default: "time".
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub sort: Option<Sort>,
     /// Type of video. Valid values: "all", "upload", "archive", "highlight". Default: "all".
     #[serde(rename = "type")]
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub type_: Option<VideoTypeFilter>,
+}
+
+impl GetVideosRequest {
+    /// ID of the video being queried.
+    pub fn id(id: impl Into<types::VideoId>) -> Self {
+        Self {
+            id: vec![id.into()],
+            ..Self::default()
+        }
+    }
+
+    /// IDs of the videos being queried.
+    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::VideoId>>) -> Self {
+        Self {
+            id: ids.into_iter().map(Into::into).collect(),
+            ..Self::default()
+        }
+    }
+
+    /// ID of the user who owns the video.
+    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: Some(user_id.into()),
+            ..Self::default()
+        }
+    }
+
+    /// ID of the game the video is of.
+    pub fn game_id(game_id: impl Into<types::CategoryId>) -> Self {
+        Self {
+            game_id: Some(game_id.into()),
+            ..Self::default()
+        }
+    }
 }
 
 /// Return Values for [Get Videos](super::get_videos)
@@ -154,9 +189,7 @@ impl helix::Paginated for GetVideosRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetVideosRequest::builder()
-        .id(vec!["234482848".into()])
-        .build();
+    let req = GetVideosRequest::id("234482848");
 
     // From twitch docs
     let data = br#"

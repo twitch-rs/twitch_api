@@ -61,37 +61,51 @@ use helix::RequestPost;
 /// Query Parameters for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CheckAutoModStatusRequest {
     /// Must match the User ID in the Bearer token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
+}
+
+impl CheckAutoModStatusRequest {
+    /// Check automod status in this broadcasters channel.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 /// Body Parameters for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CheckAutoModStatusBody {
     /// Developer-generated identifier for mapping messages to results.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub msg_id: types::MsgId,
     /// Message text.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub msg_text: String,
     /// User ID of the sender.
     #[deprecated(since = "0.7.0", note = "user_id in automod check is no longer read")]
-    #[builder(setter(into, strip_option), default)]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(setter(into, strip_option), default)
+    )]
     pub user_id: Option<types::UserId>,
 }
 
 impl CheckAutoModStatusBody {
     /// Create a new [`CheckAutoModStatusBody`]
-    pub fn new(msg_id: types::MsgId, msg_text: String) -> Self {
+    pub fn new(msg_id: impl Into<types::MsgId>, msg_text: String) -> Self {
         Self {
-            msg_id,
+            msg_id: msg_id.into(),
             msg_text,
             user_id: None,
         }
@@ -140,13 +154,11 @@ impl RequestPost for CheckAutoModStatusRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = CheckAutoModStatusRequest::builder()
-        .broadcaster_id("198704263")
-        .build();
+    let req = CheckAutoModStatusRequest::broadcaster_id("198704263");
 
     let body = vec![
-        CheckAutoModStatusBody::new("123".into(), "hello world".to_string()),
-        CheckAutoModStatusBody::new("393".into(), "automoded word".to_string()),
+        CheckAutoModStatusBody::new("123", "hello world".to_string()),
+        CheckAutoModStatusBody::new("393", "automoded word".to_string()),
     ];
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());

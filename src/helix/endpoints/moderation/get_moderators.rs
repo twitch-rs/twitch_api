@@ -44,21 +44,55 @@ use helix::RequestGet;
 /// Query Parameters for [Get Moderators](super::get_moderators)
 ///
 /// [`get-moderators`](https://dev.twitch.tv/docs/api/reference#get-moderators)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetModeratorsRequest {
     /// Must match the User ID in the Bearer token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Filters the results and only returns a status object for users who are moderators in this channel and have a matching user_id.
-    #[builder(setter(into), default)]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
     pub user_id: Vec<types::UserId>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
-    #[builder(setter(into), default)]
-    pub first: Option<String>,
+    #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
+    pub first: Option<usize>,
+}
+
+impl GetModeratorsRequest {
+    /// Get moderators in a broadcasters channel.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// Check if supplied user is a moderator.
+    pub fn user_id(mut self, user_id: impl Into<types::UserId>) -> Self {
+        self.user_id = vec![user_id.into()];
+        self
+    }
+
+    /// Filter the results for specific users.
+    pub fn user_ids(
+        mut self,
+        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
+    ) -> Self {
+        self.user_id = user_ids.into_iter().map(Into::into).collect();
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Get Moderators](super::get_moderators)
@@ -94,9 +128,7 @@ impl helix::Paginated for GetModeratorsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetModeratorsRequest::builder()
-        .broadcaster_id("198704263".to_string())
-        .build();
+    let req = GetModeratorsRequest::broadcaster_id("198704263");
 
     // From twitch docs
     let data = br#"

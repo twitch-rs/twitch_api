@@ -3,13 +3,23 @@
 
 use super::*;
 /// [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionend-beta): a Prediction ends on the specified channel.
-#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPredictionEndV1 {
     /// The broadcaster user ID of the channel for which “prediction end” notifications will be received.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
+}
+
+impl ChannelPredictionEndV1 {
+    /// The broadcaster user ID of the channel for which “prediction end” notifications will be received.
+    pub fn broadcaster_user_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
 }
 
 impl EventSubscription for ChannelPredictionEndV1 {
@@ -80,10 +90,10 @@ fn parse_payload() {
             "outcomes": [
                 {
                     "id": "12345",
-                    "title": "Yeah!", 
+                    "title": "Yeah!",
                     "color": "blue",
-                    "users": 2, 
-                    "channel_points": 15000, 
+                    "users": 2,
+                    "channel_points": 15000,
                     "top_predictors": [
                         {
                             "user_name": "Cool_User",
@@ -99,13 +109,13 @@ fn parse_payload() {
                             "channel_points_won": 5000,
                             "channel_points_used": 100
                         }
-                    ] 
+                    ]
                 },
                 {
                     "id": "22435",
-                    "title": "No!", 
-                    "users": 2, 
-                    "channel_points": 200, 
+                    "title": "No!",
+                    "users": 2,
+                    "channel_points": 200,
                     "color": "pink",
                     "top_predictors": [
                         {

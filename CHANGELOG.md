@@ -12,13 +12,18 @@
 - All (most) types are now living in their own crate `twitch_types`
 - Features for clients are now named after the client, e.g feature `reqwest_client` is now simply `reqwest`
 - MSRV: 1.60.0
+- Fixed wrong type on `UserAuthorizationGrantV1::client_id`
+- Deprecate `bits_voting_enabled`, `bits_per_vote` and `bits_votes` on `Create Poll` and `Poll` and made the fields optional
+- `Get Clips` takes and returns `ClipId` instead of a string
+- Made `GetCustomRewardRedemptionRequest::reward_id` optional
+- `typed-builder` is now optional and not enabled by default, enable feature `typed-builder` to use the `::builder()` methods
+- Client ext methods that take a `IntoIterator<Item = T>` now takes a `IntoIterator<Item = impl Into<T>>`
 
 ### Changes
 
 - Deprecate `Get User` `view_count`
 - Deprecate `Check AutoMod status` `user_id`
 - Removed deprecated `limit` on `GetEventSubSubscriptionsRequest` response
-- Deprecate `bits_voting_enabled`, `bits_per_vote` and `bits_votes` on `Create Poll` and `Poll`
 - Removed deprecated `limit` on `CreateEventSubSubscription`
 - Removed deprecated `AddBlockedTerm`, `DeleteBlockedTerm`, `DeletePermittedTerm` and `AddPermittedTerm` on `ModerationActionCommand`
 
@@ -36,6 +41,7 @@
 - Added `Add Channel Moderator` and `Remove Channel Moderator` endpoint
 - Added `Get VIPs`, `Add Channel VIP` and `Remove Channel VIP` endpoint
 - Added `Send Whisper` endpoint
+- Added `Delete Channel Stream Schedule Segment` that was accidentally not included in `0.6.0`
 
 ## [v0.6.1] - 2022-04-29
 

@@ -48,18 +48,34 @@ use helix::RequestDelete;
 /// Query Parameters for [Unban User](super::unban_user)
 ///
 /// [`unban-user`](https://dev.twitch.tv/docs/api/reference#unban-user)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UnbanUserRequest {
     /// The ID of the broadcaster whose chat room the user is banned from chatting in.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
     /// The ID of the user to remove the ban or timeout from.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub user_id: types::UserId,
+}
+
+impl UnbanUserRequest {
+    /// Remove the ban or timeout that was placed on the specified user.
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        user_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            user_id: user_id.into(),
+        }
+    }
 }
 
 /// Return Values for [Unban User](super::unban_user)
@@ -113,11 +129,7 @@ impl RequestDelete for UnbanUserRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = UnbanUserRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .user_id("9876")
-        .build();
+    let req = UnbanUserRequest::new("1234", "5678", "9876");
 
     dbg!(req.create_request("token", "clientid").unwrap());
 

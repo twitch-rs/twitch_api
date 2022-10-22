@@ -3,8 +3,6 @@
 //!
 //! # Notes
 //!
-//! This doesn't seem to work for removing people who follow owner of token. Use [Block User](crate::helix::schedule::block_user) for that
-//!
 //! # Accessing the endpoint
 //!
 //! ## Request: [DeleteChannelStreamScheduleSegmentRequest]
@@ -13,9 +11,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::delete_channel_stream_schedule_segment;
-//! let request = delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegmentRequest::builder()
-//!     .from_id("1234").to_id("4321")
-//!     .build();
+//! let request = delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegmentRequest::new(
+//!     "1234",
+//!     "eyJzZWdtZW50SUQiOiI4Y2EwN2E2NC0xYTZkLTRjYWItYWE5Ni0xNjIyYzNjYWUzZDkiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyMX0="
+//! );
 //! ```
 //!
 //! ## Response: [DeleteChannelStreamScheduleSegment]
@@ -30,9 +29,10 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegmentRequest::builder()
-//!     .from_id("1234").to_id("4321")
-//!     .build();
+//! let request = delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegmentRequest::new(
+//!     "1234",
+//!     "eyJzZWdtZW50SUQiOiI4Y2EwN2E2NC0xYTZkLTRjYWItYWE5Ni0xNjIyYzNjYWUzZDkiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyMX0="
+//! );
 //! let response: delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegment = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -47,16 +47,31 @@ use helix::RequestDelete;
 /// Query Parameters for [Delete Channel Stream Schedule Segment](super::delete_channel_stream_schedule_segment)
 ///
 /// [`delete-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#delete-channel-stream-schedule-segment)
-#[derive(PartialEq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct DeleteChannelStreamScheduleSegmentRequest {
-    /// User ID of the follower
-    #[builder(setter(into))]
-    pub from_id: types::UserId,
-    /// Channel to be unfollowed by the user
-    #[builder(setter(into))]
-    pub to_id: types::UserId,
+    /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    pub broadcaster_id: types::UserId,
+    /// The ID of the streaming segment to delete.
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    pub id: types::StreamSegmentId,
 }
+
+impl DeleteChannelStreamScheduleSegmentRequest {
+    /// Delete a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        id: impl Into<types::StreamSegmentId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+        }
+    }
+}
+
 /// Return Values for [Delete Channel Stream Schedule Segment](super::delete_channel_stream_schedule_segment)
 ///
 /// [`delete-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#delete-channel-stream-schedule-segment)
@@ -75,16 +90,39 @@ impl Request for DeleteChannelStreamScheduleSegmentRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageSchedule];
 }
 
-impl RequestDelete for DeleteChannelStreamScheduleSegmentRequest {}
+impl RequestDelete for DeleteChannelStreamScheduleSegmentRequest {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, <Self as Request>::Response>, helix::HelixRequestDeleteError>
+    where
+        Self: Sized,
+    {
+        match status {
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
+                data: DeleteChannelStreamScheduleSegment::Success,
+                pagination: None,
+                request,
+                total: None,
+                other: None,
+            }),
+            _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
+                reason: "unexpected status",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
+    }
+}
 
 #[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
-    let req = DeleteChannelStreamScheduleSegmentRequest::builder()
-        .to_id("41245072".to_string())
-        .from_id("41245071".to_string())
-        .build();
+    let req = DeleteChannelStreamScheduleSegmentRequest::new("41245071", "eyJzZWdtZW50SUQiOiI4Y2EwN2E2NC0xYTZkLTRjYWItYWE5Ni0xNjIyYzNjYWUzZDkiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyMX0=");
 
     // From twitch docs
     let data = br#""#.to_vec();
@@ -95,7 +133,7 @@ fn test_request() {
     let uri = req.get_uri().unwrap();
     assert_eq!(
         uri.to_string(),
-        "https://api.twitch.tv/helix/schedule/follows?from_id=41245071&to_id=41245072"
+        "https://api.twitch.tv/helix/schedule/segment?broadcaster_id=41245071&id=eyJzZWdtZW50SUQiOiI4Y2EwN2E2NC0xYTZkLTRjYWItYWE5Ni0xNjIyYzNjYWUzZDkiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyMX0%3D"
     );
 
     dbg!(

@@ -5,16 +5,14 @@
 //!
 //! ## Request: [GetCheermotesRequest]
 //!
-//! To use this endpoint, construct a [`GetCheermotesRequest`] with the [`GetCheermotesRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetCheermotesRequest`] with the [`GetCheermotesRequest::new()`] or [`GetCheermotesRequest::builder()`] method.
 //! If you do not provide an ID, the request will only include global cheermotes as defined by twitch.
 //!
 //! ```rust
 //! use twitch_api::helix::bits::get_cheermotes;
-//! let request = get_cheermotes::GetCheermotesRequest::builder()
-//!     .broadcaster_id(Some("1234".into()))
-//!     .build();
+//! let request = get_cheermotes::GetCheermotesRequest::broadcaster_id("1234");
 //! // Without broadcaster ID
-//! let request = get_cheermotes::GetCheermotesRequest::builder().build();
+//! let request = get_cheermotes::GetCheermotesRequest::new();
 //! ```
 //!
 //! ## Response: [Cheermote]
@@ -29,7 +27,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_cheermotes::GetCheermotesRequest::builder().build();
+//! let request = get_cheermotes::GetCheermotesRequest::new();
 //! let response: Vec<get_cheermotes::Cheermote> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -43,12 +41,25 @@ use helix::RequestGet;
 /// Query Parameters for [Get Cheermotes](super::get_cheermotes)
 ///
 /// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetCheermotesRequest {
     /// ID for the broadcaster who might own specialized Cheermotes.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub broadcaster_id: Option<types::UserId>,
+}
+
+impl GetCheermotesRequest {
+    /// Get available Cheermotes.
+    pub fn new() -> Self { Self::default() }
+
+    /// Get Cheermotes in a specific broadcasters channel.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: Some(broadcaster_id.into()),
+        }
+    }
 }
 
 /// Return Values for [Get Cheermotes](super::get_cheermotes)
@@ -108,7 +119,7 @@ pub struct Tiers {
     pub id: String,
     /// Structure containing both animated and static image sets, sorted by light and dark.
     pub images: CheermoteImages,
-    /// Minimum number of bits needed to be used to hit the given tier of emote.  
+    /// Minimum number of bits needed to be used to hit the given tier of emote.
     pub min_bits: i64,
     /// Indicates whether or not we hide the emote from the bits card.
     pub show_in_bits_card: bool,
@@ -179,9 +190,7 @@ impl RequestGet for GetCheermotesRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetCheermotesRequest::builder()
-        .broadcaster_id(Some("1234".into()))
-        .build();
+    let req = GetCheermotesRequest::broadcaster_id("1234");
 
     // From api call
     let data = br##"

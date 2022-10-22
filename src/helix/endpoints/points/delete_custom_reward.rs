@@ -45,16 +45,28 @@ use helix::RequestDelete;
 /// Query Parameters for [Delete CustomReward](super::delete_custom_reward)
 ///
 /// [`delete-custom-reward`](https://dev.twitch.tv/docs/api/reference#delete-custom-reward)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct DeleteCustomRewardRequest {
     /// Provided broadcaster_id must match the user_id in the auth token
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// ID of the Custom Reward to delete, must match a Custom Reward on broadcaster_id’s channel.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub id: types::RewardId,
 }
+
+impl DeleteCustomRewardRequest {
+    /// Reward to delete
+    pub fn new(broadcaster_id: impl Into<types::UserId>, id: impl Into<types::RewardId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+        }
+    }
+}
+
 // FIXME: Should return VideoIds
 /// Return Values for [Delete CustomReward](super::delete_custom_reward)
 ///
@@ -108,10 +120,7 @@ impl RequestDelete for DeleteCustomRewardRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = DeleteCustomRewardRequest::builder()
-        .broadcaster_id("274637212")
-        .id("b045196d-9ce7-4a27-a9b9-279ed341ab28")
-        .build();
+    let req = DeleteCustomRewardRequest::new("274637212", "b045196d-9ce7-4a27-a9b9-279ed341ab28");
 
     // From twitch docs
     let data = br#""#.to_vec();

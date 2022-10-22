@@ -46,16 +46,17 @@ use helix::RequestDelete;
 /// Query Parameters for [Delete Chat Messages](super::delete_chat_messages)
 ///
 /// [`delete-chat-messages`](https://dev.twitch.tv/docs/api/reference#delete-chat-messages)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct DeleteChatMessagesRequest {
     /// The ID of the broadcaster that owns the chat room to remove messages from.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     ///
     /// This ID must match the user ID in the OAuth token. If the broadcaster wants to remove messages themselves, set this parameter to the broadcaster’s ID, too.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
     /// The ID of the message to remove.
     ///
@@ -68,8 +69,28 @@ pub struct DeleteChatMessagesRequest {
     /// The message must not belong to another moderator.
     ///
     /// If not specified, the request removes all messages in the broadcaster’s chat room.
-    #[builder(setter(into), default)]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub message_id: Option<types::MsgId>,
+}
+
+impl DeleteChatMessagesRequest {
+    /// Remove chat message(s)
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            message_id: None,
+        }
+    }
+
+    /// A specific message to remove
+    pub fn message_id(mut self, message_id: impl Into<types::MsgId>) -> Self {
+        self.message_id = Some(message_id.into());
+        self
+    }
 }
 
 /// Return Values for [Delete Chat Messages](super::delete_chat_messages)
@@ -125,10 +146,7 @@ impl RequestDelete for DeleteChatMessagesRequest {
 #[test]
 fn test_request_all() {
     use helix::*;
-    let req = DeleteChatMessagesRequest::builder()
-        .broadcaster_id("11111")
-        .moderator_id("44444")
-        .build();
+    let req = DeleteChatMessagesRequest::new("11111", "44444");
 
     // From twitch docs
     let data = br#""#.to_vec();
@@ -148,11 +166,7 @@ fn test_request_all() {
 #[test]
 fn test_request_specific() {
     use helix::*;
-    let req = DeleteChatMessagesRequest::builder()
-        .broadcaster_id("11111")
-        .moderator_id("44444")
-        .message_id(Some("abc-123-def".into()))
-        .build();
+    let req = DeleteChatMessagesRequest::new("11111", "44444").message_id("abc-123-def");
 
     // From twitch docs
     let data = br#""#.to_vec();

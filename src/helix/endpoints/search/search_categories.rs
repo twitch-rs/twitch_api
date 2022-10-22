@@ -43,21 +43,40 @@ use helix::RequestGet;
 /// Query Parameters for [Search Categories](super::search_categories)
 ///
 /// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct SearchCategoriesRequest {
     /// URI encoded search query
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub query: String,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub before: Option<helix::Cursor>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
-    #[builder(setter(into), default)]
-    pub first: Option<String>,
+    #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
+    pub first: Option<usize>,
+}
+
+impl SearchCategoriesRequest {
+    /// Search categories with the following query.
+    pub fn query(query: impl Into<String>) -> Self {
+        Self {
+            query: query.into(),
+            after: None,
+            before: None,
+            first: None,
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
 }
 
 /// Return Values for [Search Categories](super::search_categories)
@@ -110,7 +129,7 @@ impl helix::Paginated for SearchCategoriesRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = SearchCategoriesRequest::builder().query("fort").build();
+    let req = SearchCategoriesRequest::query("fort");
 
     // From twitch docs
     let data = br#"
@@ -149,9 +168,7 @@ fn test_request() {
 #[test]
 fn test_request_null() {
     use helix::*;
-    let req = SearchCategoriesRequest::builder()
-        .query("aaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        .build();
+    let req = SearchCategoriesRequest::query("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
     // From twitch docs
     let data = br#"

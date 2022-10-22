@@ -5,24 +5,19 @@
 //!
 //! ## Request: [GetBitsLeaderboardRequest]
 //!
-//! To use this endpoint, construct a [`GetBitsLeaderboardRequest`] with the [`GetBitsLeaderboardRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetBitsLeaderboardRequest`] with the [`GetBitsLeaderboardRequest::new()`] or [`GetBitsLeaderboardRequest::builder()`] method.
 //! Provide [`started_at`](GetBitsLeaderboardRequest::started_at) and [`period`](GetBitsLeaderboardRequest::period) to get a different leaderboard than default
-//!
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::bits::get_bits_leaderboard;
-//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder()
-//!     .period("day".to_string())
-//!     .build();
+//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new().period("day".to_string());
 //! // Get leaderbord for the lifetime of the channel
-//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder().build();
+//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new();
 //! ```
 //!
 //! ## Response: [BitsLeaderboard]
 //!
-//!
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
-//!
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, bits::get_bits_leaderboard};
@@ -32,7 +27,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::builder().build();
+//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new();
 //! let response: get_bits_leaderboard::BitsLeaderboard = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -46,11 +41,12 @@ use helix::RequestGet;
 /// Query Parameters for [Get Bits Leaderboard](super::get_bits_leaderboard)
 ///
 /// [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetBitsLeaderboardRequest {
     /// Number of results to be returned. Maximum: 100. Default: 10.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub count: Option<i32>,
     // TODO: Enum
     /// Time period over which data is aggregated (PST time zone). This parameter interacts with started_at. Valid values follow. Default: "all".
@@ -60,14 +56,58 @@ pub struct GetBitsLeaderboardRequest {
     /// * "month" – 00:00:00 on the first day of the month specified in started_at, through 00:00:00 on the first day of the following month.
     /// * "year" – 00:00:00 on the first day of the year specified in started_at, through 00:00:00 on the first day of the following year.
     /// * "all" – The lifetime of the broadcaster's channel. If this is specified (or used by default), started_at is ignored.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub period: Option<String>,
     /// Timestamp for the period over which the returned data is aggregated. Must be in RFC 3339 format. If this is not provided, data is aggregated over the current period; e.g., the current day/week/month/year. This value is ignored if period is "all".
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub started_at: Option<types::Timestamp>,
     /// ID of the user whose results are returned; i.e., the person who paid for the Bits.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub user_id: Option<types::UserId>,
+}
+
+impl GetBitsLeaderboardRequest {
+    /// Number of results to be returned. Maximum: 100. Default: 10.
+    pub fn count(self, count: i32) -> Self {
+        Self {
+            count: Some(count),
+            ..self
+        }
+    }
+
+    /// Get loaderboard for this period. Valid values: `"day"`, `"week"`, `"month"`, `"year"`, `"all"`
+    pub fn period(self, period: String) -> Self {
+        Self {
+            period: Some(period),
+            ..self
+        }
+    }
+
+    /// Get leaderboard starting at this timestamp
+    pub fn started_at(self, started_at: impl Into<types::Timestamp>) -> Self {
+        Self {
+            started_at: Some(started_at.into()),
+            ..self
+        }
+    }
+
+    /// Get leaderboard where this user is included (if they are on the leaderboard)
+    pub fn user_id(self, user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: Some(user_id.into()),
+            ..self
+        }
+    }
+
+    /// Returns an new [`GetBitsLeaderboardRequest`]
+    pub fn new() -> Self {
+        Self {
+            count: None,
+            period: None,
+            started_at: None,
+            user_id: None,
+        }
+    }
 }
 
 /// Return Values for [Get Bits Leaderboard](super::get_bits_leaderboard)
@@ -164,7 +204,7 @@ impl RequestGet for GetBitsLeaderboardRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetBitsLeaderboardRequest::builder().build();
+    let req = GetBitsLeaderboardRequest::new();
 
     // From api call
     let data = br##"

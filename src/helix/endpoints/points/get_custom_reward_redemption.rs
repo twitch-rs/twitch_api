@@ -13,11 +13,9 @@
 //! use twitch_api::helix::points::{
 //!     CustomRewardRedemptionStatus, GetCustomRewardRedemptionRequest,
 //! };
-//! let request = GetCustomRewardRedemptionRequest::builder()
-//!     .broadcaster_id("274637212".to_string())
-//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-//!     .status(CustomRewardRedemptionStatus::Canceled)
-//!     .build();
+//! let request = GetCustomRewardRedemptionRequest::broadcaster_id("274637212")
+//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
+//!     .status(CustomRewardRedemptionStatus::Canceled);
 //! ```
 //!
 //! ## Response: [CustomRewardRedemption]
@@ -33,11 +31,9 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = GetCustomRewardRedemptionRequest::builder()
-//!     .broadcaster_id("274637212".to_string())
-//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-//!     .status(CustomRewardRedemptionStatus::Canceled)
-//!     .build();
+//! let request = GetCustomRewardRedemptionRequest::broadcaster_id("274637212")
+//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
+//!     .status(CustomRewardRedemptionStatus::Canceled);
 //! let response: Vec<CustomRewardRedemption> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -52,28 +48,54 @@ use helix::RequestGet;
 /// Query Parameters for [Get Custom Reward Redemption](super::get_custom_reward_redemption)
 ///
 /// [`get-custom-reward-redemption`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetCustomRewardRedemptionRequest {
     /// Provided broadcaster_id must match the user_id in the auth token
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
 
     /// When ID is not provided, this parameter returns paginated Custom Reward Redemption objects for redemptions of the Custom Reward with ID reward_id
-    #[builder(setter(into))]
-    pub reward_id: types::RewardId,
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    pub reward_id: Option<types::RewardId>,
 
     /// When id is not provided, this param is required and filters the paginated Custom Reward Redemption objects for redemptions with the matching status. Can be one of UNFULFILLED, FULFILLED or CANCELED
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub status: Option<CustomRewardRedemptionStatus>,
 
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries without ID. If an ID is specified, it supersedes any cursor/offset combinations. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
 
     /// Number of results to be returned when getting the paginated Custom Reward Redemption objects for a reward. Limit: 50. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
+}
+
+impl GetCustomRewardRedemptionRequest {
+    /// Reward to fetch
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            reward_id: None,
+            status: Default::default(),
+            after: Default::default(),
+            first: Default::default(),
+        }
+    }
+
+    /// Specific reward to query
+    pub fn reward_id(mut self, reward_id: impl Into<types::RewardId>) -> Self {
+        self.reward_id = Some(reward_id.into());
+        self
+    }
+
+    /// Status of rewards to return
+    pub fn status(mut self, status: impl Into<CustomRewardRedemptionStatus>) -> Self {
+        self.status = Some(status.into());
+        self
+    }
 }
 
 /// Return Values for [Get Custom Reward Redemption](super::get_custom_reward_redemption)
@@ -154,11 +176,9 @@ impl helix::Paginated for GetCustomRewardRedemptionRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetCustomRewardRedemptionRequest::builder()
-        .broadcaster_id("274637212".to_string())
-        .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-        .status(CustomRewardRedemptionStatus::Canceled)
-        .build();
+    let req = GetCustomRewardRedemptionRequest::broadcaster_id("274637212")
+        .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
+        .status(CustomRewardRedemptionStatus::Canceled);
 
     // From twitch docs
     let data = br##"

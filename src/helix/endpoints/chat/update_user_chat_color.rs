@@ -46,16 +46,27 @@ use helix::RequestPut;
 /// Query Parameters for [Update Chat Settings](super::update_user_chat_color)
 ///
 /// [`update-user-chat-color`](https://dev.twitch.tv/docs/api/reference#update-user-chat-color)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct UpdateUserChatColorRequest {
     /// The ID of the user whose chat color you want to update.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub user_id: types::UserId,
     /// The color to use for the user’s name in chat.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow = "'static")]
     pub color: types::NamedUserColor<'static>,
+}
+
+impl UpdateUserChatColorRequest {
+    /// Update the users chat color
+    pub fn new(user_id: impl Into<types::UserId>, color: types::NamedUserColor<'static>) -> Self {
+        Self {
+            user_id: user_id.into(),
+            color,
+        }
+    }
 }
 
 /// Return Values for [Update Chat Settings](super::update_user_chat_color)
@@ -111,10 +122,7 @@ impl RequestPut for UpdateUserChatColorRequest {
 #[test]
 fn test_request_named() {
     use helix::*;
-    let req = UpdateUserChatColorRequest::builder()
-        .user_id("123")
-        .color(types::NamedUserColor::Blue)
-        .build();
+    let req = UpdateUserChatColorRequest::new("123", types::NamedUserColor::Blue);
 
     dbg!(req.create_request(EmptyBody, "token", "clientid").unwrap());
 
@@ -135,11 +143,10 @@ fn test_request_named() {
 #[cfg(test)]
 #[test]
 fn test_request_hex() {
+    use std::convert::TryInto;
+
     use helix::*;
-    let req = UpdateUserChatColorRequest::builder()
-        .user_id("123")
-        .color(twitch_types::HexColor::from("#9146FF"))
-        .build();
+    let req = UpdateUserChatColorRequest::new("123", "#9146FF".try_into().unwrap());
 
     dbg!(req.create_request(EmptyBody, "token", "clientid").unwrap());
 

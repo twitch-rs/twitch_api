@@ -56,23 +56,38 @@ use helix::RequestPost;
 /// Query Parameters for [Add Blocked Term](super::add_blocked_term)
 ///
 /// [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct AddBlockedTermRequest {
     /// The ID of the broadcaster that owns the list of blocked terms.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster wants to add the blocked term (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
+}
+
+impl AddBlockedTermRequest {
+    /// Where to add blocked term
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
 }
 
 /// Body Parameters for [Add Blocked Term](super::add_blocked_term)
 ///
 /// [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct AddBlockedTermBody {
     ///The word or phrase to block from being used in the broadcaster’s chat room.
@@ -125,10 +140,7 @@ impl RequestPost for AddBlockedTermRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = AddBlockedTermRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = AddBlockedTermRequest::new("1234", "5678");
 
     let body = AddBlockedTermBody::new("A phrase I'm not fond of".to_string());
 

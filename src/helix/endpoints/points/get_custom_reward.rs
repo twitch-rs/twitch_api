@@ -46,18 +46,48 @@ use helix::RequestGet;
 /// Query Parameters for [Get Custom Reward](super::get_custom_reward)
 ///
 /// [`get-custom-reward`](https://dev.twitch.tv/docs/api/reference#get-custom-reward)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetCustomRewardRequest {
     /// Provided broadcaster_id must match the user_id in the auth token
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// When used, this parameter filters the results and only returns reward objects for the Custom Rewards with matching ID. Maximum: 50
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub id: Vec<types::RewardId>,
     /// When set to true, only returns custom rewards that the calling client_id can manage. Defaults false.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub only_manageable_rewards: Option<bool>,
+}
+
+impl GetCustomRewardRequest {
+    /// Rewards on this broadcasters channel
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            id: Default::default(),
+            only_manageable_rewards: Default::default(),
+        }
+    }
+
+    /// Get reward with this id
+    pub fn id(mut self, id: impl Into<types::RewardId>) -> Self {
+        self.id = vec![id.into()];
+        self
+    }
+
+    /// Get rewards with these ids
+    pub fn ids(mut self, id: impl IntoIterator<Item = impl Into<types::RewardId>>) -> Self {
+        self.id = id.into_iter().map(Into::into).collect();
+        self
+    }
+
+    /// Only return rewards that this application/client id can edit
+    pub fn only_manageable_rewards(mut self, only_manageable_rewards: bool) -> Self {
+        self.only_manageable_rewards = Some(only_manageable_rewards);
+        self
+    }
 }
 
 /// Return Values for [Get Custom Reward](super::get_custom_reward)
@@ -124,9 +154,7 @@ impl RequestGet for GetCustomRewardRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetCustomRewardRequest::builder()
-        .broadcaster_id("274637212".to_string())
-        .build();
+    let req = GetCustomRewardRequest::broadcaster_id("274637212".to_string());
 
     // From twitch docs
     let data = br##"

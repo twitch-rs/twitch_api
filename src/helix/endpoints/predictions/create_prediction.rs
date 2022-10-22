@@ -1,4 +1,4 @@
-//! Get information about all Channel Points Predictions or specific Channel Points Predictions for a Twitch channel.
+//! Create a Channel Points Prediction for a specific Twitch channel.
 //!
 //! Results are ordered by most recent, so it can be assumed that the currently active or locked Prediction will be the first item.
 //! [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
@@ -67,9 +67,8 @@ use helix::RequestPost;
 /// Query Parameters for [Create Prediction](super::create_prediction)
 ///
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
-#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreatePredictionRequest {}
 
@@ -81,14 +80,15 @@ impl CreatePredictionRequest {
 /// Body Parameters for [Create Prediction](super::create_prediction)
 ///
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreatePredictionBody {
     /// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Title for the Prediction. Maximum: 45 characters.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub title: String,
     /// Array of outcome objects with titles for the Prediction. Array size must be 2.
     pub outcomes: (NewPredictionOutcome, NewPredictionOutcome),
@@ -96,10 +96,28 @@ pub struct CreatePredictionBody {
     pub prediction_window: i64,
 }
 
+impl CreatePredictionBody {
+    /// Create a Channel Points Prediction for a specific Twitch channel.
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        title: String,
+        outcomes: (NewPredictionOutcome, NewPredictionOutcome),
+        prediction_window: i64,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            title,
+            outcomes,
+            prediction_window,
+        }
+    }
+}
+
 impl helix::private::SealedSerialize for CreatePredictionBody {}
 
 /// Choice settings for a poll
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct NewPredictionOutcome {
     /// Text displayed for the choice. Maximum: 25 characters.
@@ -177,17 +195,14 @@ impl RequestPost for CreatePredictionRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = CreatePredictionRequest::builder().build();
+    let req = CreatePredictionRequest::new();
 
-    let body = CreatePredictionBody::builder()
-        .broadcaster_id("141981764")
-        .title("Any leeks in the stream?")
-        .outcomes(NewPredictionOutcome::new_tuple(
-            "Yes, give it time.",
-            "Definitely not.",
-        ))
-        .prediction_window(120)
-        .build();
+    let body = CreatePredictionBody::new(
+        "141981764",
+        "Any leeks in the stream?".to_owned(),
+        NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+        120,
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

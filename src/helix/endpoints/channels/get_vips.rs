@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetVipsRequest]
 //!
-//! To use this endpoint, construct a [`GetVipsRequest`] with the [`GetVipsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetVipsRequest`] with the [`GetVipsRequest::broadcaster_id()`] or [`GetVipsRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::get_vips;
-//! let request = get_vips::GetVipsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_vips::GetVipsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [Vip]
@@ -28,9 +26,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_vips::GetVipsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_vips::GetVipsRequest::broadcaster_id("1234");
 //! let response: Vec<get_vips::Vip> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -44,21 +40,56 @@ use helix::RequestGet;
 /// Query Parameters for [Get VIPs](super::get_vips)
 ///
 /// [`get-vips`](https://dev.twitch.tv/docs/api/reference#get-vips)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetVipsRequest {
     /// The ID of the broadcaster whose list of VIPs you want to get.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// Filters the list for specific VIPs. To specify more than one user, include the user_id parameter for each user to get. For example, &user_id=1234&user_id=5678. The maximum number of IDs that you may specify is 100. Ignores those users in the list that aren’t VIPs.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub user_id: Vec<types::UserId>,
     /// The maximum number of items to return per page in the response. The minimum page size is 1 item per page and the maximum is 100. The default is 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value. Read more.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
+}
+
+impl GetVipsRequest {
+    /// Get channel VIPs in channel
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: vec![],
+            first: None,
+            after: None,
+        }
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
+        self
+    }
+
+    /// Filter response with this ID
+    pub fn user_id(self, user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            user_id: vec![user_id.into()],
+            ..self
+        }
+    }
+
+    /// Filter response with these IDs
+    pub fn user_ids(self, user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
+        Self {
+            user_id: user_ids.into_iter().map(Into::into).collect(),
+            ..self
+        }
+    }
 }
 
 /// Return Values for [Get VIPs](super::get_vips)
@@ -94,9 +125,7 @@ impl RequestGet for GetVipsRequest {}
 #[test]
 fn test_request_all() {
     use helix::*;
-    let req = GetVipsRequest::builder()
-        .broadcaster_id("123".to_string())
-        .build();
+    let req = GetVipsRequest::broadcaster_id("123");
 
     // From twitch docs
     // FIXME: Example has ...
@@ -130,10 +159,7 @@ fn test_request_all() {
 #[test]
 fn test_request_multiple() {
     use helix::*;
-    let req = GetVipsRequest::builder()
-        .broadcaster_id("123".to_string())
-        .user_id(vec!["456".into(), "678".into()])
-        .build();
+    let req = GetVipsRequest::broadcaster_id("123").user_ids(["456", "678"]);
 
     // From twitch docs
     // FIXME: Example has ...

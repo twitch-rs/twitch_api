@@ -45,15 +45,29 @@ use helix::RequestDelete;
 /// Query Parameters for [Remove Channel VIP](super::remove_channel_vip)
 ///
 /// [`remove-channel-vip`](https://dev.twitch.tv/docs/api/reference#remove-channel-vip)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct RemoveChannelVipRequest {
     /// The ID of the broadcaster that’s removing VIP status from the user.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of the user to remove as a VIP from the broadcaster’s chat room.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub user_id: types::UserId,
+}
+
+impl RemoveChannelVipRequest {
+    /// Remove channel VIP
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        user_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: user_id.into(),
+        }
+    }
 }
 
 /// Return Values for [Remove Channel VIP](super::remove_channel_vip)
@@ -106,10 +120,7 @@ impl RequestDelete for RemoveChannelVipRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = RemoveChannelVipRequest::builder()
-        .broadcaster_id("123")
-        .user_id("456")
-        .build();
+    let req = RemoveChannelVipRequest::new("123", "456");
 
     dbg!(req.create_request("token", "clientid").unwrap());
 

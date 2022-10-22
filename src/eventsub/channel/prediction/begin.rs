@@ -3,13 +3,23 @@
 
 use super::*;
 /// [`channel.prediction.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionbegin-beta): a Prediction begins on the specified channel
-#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelPredictionBeginV1 {
     /// The broadcaster user ID of the channel for which “prediction begin” notifications will be received.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
+}
+
+impl ChannelPredictionBeginV1 {
+    /// The broadcaster user ID of the channel for which “prediction begin” notifications will be received.
+    pub fn broadcaster_user_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
 }
 
 impl EventSubscription for ChannelPredictionBeginV1 {

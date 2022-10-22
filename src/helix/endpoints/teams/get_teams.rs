@@ -41,15 +41,34 @@ use helix::RequestGet;
 /// Query Parameters for [Get Teams](super::get_teams)
 ///
 /// [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetTeamsRequest {
     /// Team ID.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub id: Option<types::TeamId>,
     /// Team name.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub name: Option<String>,
+}
+
+impl GetTeamsRequest {
+    /// Get team with this [`TeamId`](types::TeamId)
+    pub fn id(id: impl Into<types::TeamId>) -> Self {
+        Self {
+            id: Some(id.into()),
+            name: None,
+        }
+    }
+
+    /// Get team with this name
+    pub fn name(name: String) -> Self {
+        Self {
+            id: None,
+            name: Some(name),
+        }
+    }
 }
 
 /// Return Values for [Get Teams](super::get_teams)
@@ -82,7 +101,7 @@ impl RequestGet for GetTeamsRequest {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetTeamsRequest::builder().id(Some("6358".into())).build();
+    let req = GetTeamsRequest::id("6358");
 
     // From twitch docs
     let data = br#"

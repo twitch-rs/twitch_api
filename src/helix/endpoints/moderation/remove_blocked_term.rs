@@ -46,19 +46,35 @@ use helix::RequestDelete;
 /// Query Parameters for [Remove Blocked Terms](super::remove_blocked_term)
 ///
 /// [`remove-blocked-term`](https://dev.twitch.tv/docs/api/reference#remove-blocked-term)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct RemoveBlockedTermRequest {
     /// The ID of the broadcaster that owns the list of blocked terms.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     /// If the broadcaster wants to delete the blocked term (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
     /// The ID of the blocked term you want to delete.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub id: types::BlockedTermId,
+}
+
+impl RemoveBlockedTermRequest {
+    /// Remove blocked term
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        id: impl Into<types::BlockedTermId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            id: id.into(),
+        }
+    }
 }
 
 /// Return Values for [Remove Blocked Terms](super::remove_blocked_term)
@@ -114,11 +130,7 @@ impl RequestDelete for RemoveBlockedTermRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = RemoveBlockedTermRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .id("c9fc79b8-0f63-4ef7-9d38-efd811e74ac2")
-        .build();
+    let req = RemoveBlockedTermRequest::new("1234", "5678", "c9fc79b8-0f63-4ef7-9d38-efd811e74ac2");
 
     // From twitch docs
     let data = br#""#.to_vec();

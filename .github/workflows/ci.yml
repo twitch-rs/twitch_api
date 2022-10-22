@@ -94,6 +94,11 @@ jobs:
         with:
           command: clippy
           args: --locked --all-targets --no-default-features --features "helix"
+      - name: Run clippy --all-targets --no-default-features --features "helix client"
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: --locked --all-targets --no-default-features --features "helix client"
       - name: Run clippy --all-targets --no-default-features --features "tmi"
         uses: actions-rs/cargo@v1
         with:

@@ -43,34 +43,100 @@ use helix::RequestGet;
 /// Query Parameters for [Get Clips](super::get_clips)
 ///
 /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetClipsRequest {
     /// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub broadcaster_id: Option<types::UserId>,
     /// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub game_id: Option<types::CategoryId>,
+    // FIXME: add types::ClipId
     /// ID of the clip being queried. Limit: 100.
-    #[builder(default)]
-    pub id: Vec<String>,
+    #[cfg_attr(feature = "typed-builder", builder(default))]
+    pub id: Vec<types::ClipId>,
     // one of above is needed.
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub before: Option<helix::Cursor>,
     /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, started_at also must be specified; otherwise, the time period is ignored.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub ended_at: Option<types::Timestamp>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Starting date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub started_at: Option<types::Timestamp>,
+}
+
+impl GetClipsRequest {
+    /// An empty request
+    ///
+    /// # Notes
+    ///
+    /// This is not a valid request and needs to be filled out with other fields
+    pub fn empty() -> Self {
+        Self {
+            broadcaster_id: Default::default(),
+            game_id: Default::default(),
+            id: Default::default(),
+            after: Default::default(),
+            before: Default::default(),
+            ended_at: Default::default(),
+            first: Default::default(),
+            started_at: Default::default(),
+        }
+    }
+
+    /// Broadcaster for whom clips are returned.
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: Some(broadcaster_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// Game for which clips are returned.
+    pub fn game_id(game_id: impl Into<types::CategoryId>) -> Self {
+        Self {
+            game_id: Some(game_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// ID of clip being queried
+    pub fn clip_id(clip_id: impl Into<types::ClipId>) -> Self {
+        Self {
+            id: vec![clip_id.into()],
+            ..Self::empty()
+        }
+    }
+
+    /// IDs of clips being queried
+    pub fn clip_ids(clip_ids: impl IntoIterator<Item = impl Into<types::ClipId>>) -> Self {
+        Self {
+            id: clip_ids.into_iter().map(Into::into).collect(),
+            ..Self::empty()
+        }
+    }
+
+    /// Ending date/time for the returned clips
+    pub fn started_at(&mut self, started_at: impl Into<types::Timestamp>) -> &mut Self {
+        self.started_at = Some(started_at.into());
+        self
+    }
+
+    /// Ending date/time for the returned clips
+    pub fn ended_at(&mut self, ended_at: impl Into<types::Timestamp>) -> &mut Self {
+        self.ended_at = Some(ended_at.into());
+        self
+    }
 }
 
 /// Return Values for [Get Clips](super::get_clips)
@@ -134,9 +200,7 @@ impl helix::Paginated for GetClipsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetClipsRequest::builder()
-        .id(vec![String::from("AwkwardHelplessSalamanderSwiftRage")])
-        .build();
+    let req = GetClipsRequest::clip_id(String::from("AwkwardHelplessSalamanderSwiftRage"));
 
     // From twitch docs
     let data = br#"

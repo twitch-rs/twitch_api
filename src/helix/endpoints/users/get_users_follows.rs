@@ -40,21 +40,66 @@ use helix::RequestGet;
 /// Query Parameters for [Get Users Follows](super::get_users_follows)
 ///
 /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetUsersFollowsRequest {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    #[builder(default)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// User ID. The request returns information about users who are being followed by the from_id user.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub from_id: Option<types::UserId>,
     /// User ID. The request returns information about users who are following the to_id user.
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub to_id: Option<types::UserId>,
+}
+
+impl GetUsersFollowsRequest {
+    /// Get the broadcasters that `from_id` is following
+    pub fn following(from_id: impl Into<types::UserId>) -> Self {
+        Self {
+            from_id: Some(from_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// Get the followers of `to_id`
+    pub fn followers(to_id: impl Into<types::UserId>) -> Self {
+        Self {
+            to_id: Some(to_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// Check if user follows a specific broadcaster
+    pub fn follows(
+        user_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            from_id: Some(user_id.into()),
+            to_id: Some(broadcaster_id.into()),
+            ..Self::empty()
+        }
+    }
+
+    /// Returns an empty [`GetUsersFollowsRequest`]
+    ///
+    /// # Notes
+    ///
+    /// This is not a valid request, it needs to be filled with other fields
+    pub fn empty() -> Self {
+        Self {
+            after: None,
+            first: None,
+            from_id: None,
+            to_id: None,
+        }
+    }
 }
 
 /// Return Values for [Get Users Follows](super::get_users_follows)
@@ -153,10 +198,7 @@ impl helix::Paginated for GetUsersFollowsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetUsersFollowsRequest::builder()
-        .to_id(Some("23161357".into()))
-        .build();
-
+    let req = GetUsersFollowsRequest::followers("23161357");
     // From twitch docs
     let data = br#"
 {

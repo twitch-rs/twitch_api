@@ -46,15 +46,29 @@ use helix::RequestDelete;
 /// Query Parameters for [Remove Channel Moderator](super::remove_channel_moderator)
 ///
 /// [`remove-channel-moderator`](https://dev.twitch.tv/docs/api/reference#remove-channel-moderator)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct RemoveChannelModeratorRequest {
     /// The ID of the broadcaster that owns the chat room.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
     /// The ID of the user to remove as a moderator from the broadcaster’s chat room.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub moderator_id: types::UserId,
+}
+
+impl RemoveChannelModeratorRequest {
+    /// Remove moderator
+    pub fn new(
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+    ) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
 }
 
 /// Return Values for [Remove Channel Moderator](super::remove_channel_moderator)
@@ -108,10 +122,7 @@ impl RequestDelete for RemoveChannelModeratorRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = RemoveChannelModeratorRequest::builder()
-        .broadcaster_id("1234")
-        .moderator_id("5678")
-        .build();
+    let req = RemoveChannelModeratorRequest::new("1234", "5678");
 
     dbg!(req.create_request("token", "clientid").unwrap());
 

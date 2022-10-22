@@ -42,12 +42,22 @@ use helix::RequestDelete;
 /// Query Parameters for [Cancel A Raid](super::cancel_a_raid)
 ///
 /// [`cancel-a-raid`](https://dev.twitch.tv/docs/api/reference#cancel-a-raid)
-#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CancelARaidRequest {
     /// The ID of the broadcaster that sent the raiding party.
-    #[builder(setter(into))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_id: types::UserId,
+}
+
+impl CancelARaidRequest {
+    /// Cancel a pending raid on this broadcasters channel
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 /// Return Values for [Cancel A Raid](super::cancel_a_raid)
@@ -102,9 +112,7 @@ impl RequestDelete for CancelARaidRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = CancelARaidRequest::builder()
-        .broadcaster_id("12345678")
-        .build();
+    let req = CancelARaidRequest::broadcaster_id("12345678");
 
     // From twitch docs
     let data = br#""#.to_vec();
