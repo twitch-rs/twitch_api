@@ -352,25 +352,6 @@
 <span id="352">352</span>
 <span id="353">353</span>
 <span id="354">354</span>
-<span id="355">355</span>
-<span id="356">356</span>
-<span id="357">357</span>
-<span id="358">358</span>
-<span id="359">359</span>
-<span id="360">360</span>
-<span id="361">361</span>
-<span id="362">362</span>
-<span id="363">363</span>
-<span id="364">364</span>
-<span id="365">365</span>
-<span id="366">366</span>
-<span id="367">367</span>
-<span id="368">368</span>
-<span id="369">369</span>
-<span id="370">370</span>
-<span id="371">371</span>
-<span id="372">372</span>
-<span id="373">373</span>
 </pre><pre class="rust"><code><span class="attribute">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
@@ -403,9 +384,7 @@
 //! let token =
 //!     AppAccessToken::get_app_access_token(&amp;client, client_id, client_secret, Scope::all())
 //!         .await?;
-//! let req = GetChannelInformationRequest::builder()
-//!     .broadcaster_id(&quot;27620241&quot;)
-//!     .build();
+//! let req = GetChannelInformationRequest::broadcaster_id(&quot;27620241&quot;);
 //! println!(
 //!     &quot;{:?}&quot;,
 //!     &amp;client.helix.req_get(req, &amp;token).await?.data.unwrap().title
@@ -459,30 +438,22 @@
 //! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;trace_unknown_fields&lt;/code&gt;&lt;/span&gt; | Logs ignored fields as `WARN` log messages where  applicable. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
 //! | &lt;span class=&quot;module-item stab portability&quot; style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;&gt;&lt;code&gt;deny_unknown_fields&lt;/code&gt;&lt;/span&gt; | Adds `#[serde(deny_unknown_fields)]` on all applicable structs/enums. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
 
-</span><span class="comment">// FIXME: This is a hack to prevent early pass failing on
-// `arbitrary expressions in key-value attributes are unstable` on stable rust pre 1.54.
-// Remove when MSRV 1.54 (or when  hits stable)
-// https://github.com/rust-lang/rust/issues/82768
-</span><span class="doccomment">/// Doc test for README
-</span><span class="attribute">#[cfg_attr(all(doctest, nightly, feature = <span class="string">&quot;all&quot;</span>), cfg_attr(all(doctest, nightly, feature = <span class="string">&quot;all&quot;</span>), doc = <span class="macro">include_str!</span>(<span class="string">&quot;../README.md&quot;</span>)))]
+/// Doc test for README
+</span><span class="attribute">#[doc = <span class="macro">include_str!</span>(<span class="string">&quot;../README.md&quot;</span>)]
 #[doc(hidden)]
 </span><span class="kw">pub struct </span>ReadmeDoctests;
 
 <span class="kw">pub use </span>twitch_types <span class="kw">as </span>types;
 
 <span class="attribute">#[cfg(feature = <span class="string">&quot;helix&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;helix&quot;</span>)))]
 </span><span class="kw">pub mod </span>helix;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;tmi&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;tmi&quot;</span>)))]
 </span><span class="kw">pub mod </span>tmi;
 
 <span class="attribute">#[cfg(feature = <span class="string">&quot;pubsub&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;pubsub&quot;</span>)))]
 </span><span class="kw">pub mod </span>pubsub;
 
 <span class="attribute">#[cfg(feature = <span class="string">&quot;eventsub&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;eventsub&quot;</span>)))]
 </span><span class="kw">pub mod </span>eventsub;
 
 <span class="attribute">#[cfg(all(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;client&quot;</span>))]
@@ -497,10 +468,8 @@
 </span><span class="kw">pub use </span>twitch_oauth2;
 
 <span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;client&quot;</span>)))]
 </span><span class="kw">pub mod </span>client;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;client&quot;</span>)))]
 </span><span class="kw">pub use </span>client::Client <span class="kw">as </span>HttpClient;
 
 <span class="attribute">#[doc(hidden)]
@@ -533,21 +502,18 @@
 ///
 /// Set the environment variable `TWITCH_HELIX_URL` to `http://localhost:8080/mock/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.
 </span><span class="attribute">#[cfg(feature = <span class="string">&quot;helix&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;helix&quot;</span>)))]
 </span><span class="kw">pub static </span>TWITCH_HELIX_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
     <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_HELIX_URL&quot;</span>, <span class="string">&quot;https://api.twitch.tv/helix/&quot;</span>);
 <span class="doccomment">/// Location of Twitch TMI
 ///
 /// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_TMI_URL`.
 </span><span class="attribute">#[cfg(feature = <span class="string">&quot;tmi&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;tmi&quot;</span>)))]
 </span><span class="kw">pub static </span>TWITCH_TMI_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
     <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_TMI_URL&quot;</span>, <span class="string">&quot;https://tmi.twitch.tv/&quot;</span>);
 <span class="doccomment">/// Location to twitch PubSub
 ///
 /// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_PUBSUB_URL`.
 </span><span class="attribute">#[cfg(feature = <span class="string">&quot;pubsub&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;pubsub&quot;</span>)))]
 </span><span class="kw">pub static </span>TWITCH_PUBSUB_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
     <span class="macro">mock_env_url!</span>(<span class="string">&quot;TWITCH_PUBSUB_URL&quot;</span>, <span class="string">&quot;wss://pubsub-edge.twitch.tv&quot;</span>);
 
@@ -566,10 +532,6 @@
 ///
 /// See [`client`] for implemented clients, you can also define your own if needed.
 </span><span class="attribute">#[cfg(all(feature = <span class="string">&quot;client&quot;</span>, any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>)))]
-#[cfg_attr(
-    nightly,
-    doc(cfg(all(feature = <span class="string">&quot;client&quot;</span>, any(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>))))
-)]
 #[derive(Clone)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>TwitchClient&lt;<span class="lifetime">&#39;a</span>, C&gt;

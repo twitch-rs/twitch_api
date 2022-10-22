@@ -177,6 +177,10 @@
 <span id="177">177</span>
 <span id="178">178</span>
 <span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
 </pre><pre class="rust"><code><span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="doccomment">/// A Stream ID
@@ -198,6 +202,10 @@
 <span class="doccomment">/// A video ID
 </span><span class="attribute">#[aliri_braid::braid(serde)]
 </span><span class="kw">pub struct </span>VideoId;
+
+<span class="doccomment">/// A clip ID
+</span><span class="attribute">#[aliri_braid::braid(serde)]
+</span><span class="kw">pub struct </span>ClipId;
 
 <span class="doccomment">/// A Stream Segment ID.
 </span><span class="attribute">#[aliri_braid::braid(serde)]

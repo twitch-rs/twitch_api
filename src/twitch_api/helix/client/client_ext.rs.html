@@ -1054,69 +1054,6 @@
 <span id="1054">1054</span>
 <span id="1055">1055</span>
 <span id="1056">1056</span>
-<span id="1057">1057</span>
-<span id="1058">1058</span>
-<span id="1059">1059</span>
-<span id="1060">1060</span>
-<span id="1061">1061</span>
-<span id="1062">1062</span>
-<span id="1063">1063</span>
-<span id="1064">1064</span>
-<span id="1065">1065</span>
-<span id="1066">1066</span>
-<span id="1067">1067</span>
-<span id="1068">1068</span>
-<span id="1069">1069</span>
-<span id="1070">1070</span>
-<span id="1071">1071</span>
-<span id="1072">1072</span>
-<span id="1073">1073</span>
-<span id="1074">1074</span>
-<span id="1075">1075</span>
-<span id="1076">1076</span>
-<span id="1077">1077</span>
-<span id="1078">1078</span>
-<span id="1079">1079</span>
-<span id="1080">1080</span>
-<span id="1081">1081</span>
-<span id="1082">1082</span>
-<span id="1083">1083</span>
-<span id="1084">1084</span>
-<span id="1085">1085</span>
-<span id="1086">1086</span>
-<span id="1087">1087</span>
-<span id="1088">1088</span>
-<span id="1089">1089</span>
-<span id="1090">1090</span>
-<span id="1091">1091</span>
-<span id="1092">1092</span>
-<span id="1093">1093</span>
-<span id="1094">1094</span>
-<span id="1095">1095</span>
-<span id="1096">1096</span>
-<span id="1097">1097</span>
-<span id="1098">1098</span>
-<span id="1099">1099</span>
-<span id="1100">1100</span>
-<span id="1101">1101</span>
-<span id="1102">1102</span>
-<span id="1103">1103</span>
-<span id="1104">1104</span>
-<span id="1105">1105</span>
-<span id="1106">1106</span>
-<span id="1107">1107</span>
-<span id="1108">1108</span>
-<span id="1109">1109</span>
-<span id="1110">1110</span>
-<span id="1111">1111</span>
-<span id="1112">1112</span>
-<span id="1113">1113</span>
-<span id="1114">1114</span>
-<span id="1115">1115</span>
-<span id="1116">1116</span>
-<span id="1117">1117</span>
-<span id="1118">1118</span>
-<span id="1119">1119</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]
 
 </span><span class="kw">use </span><span class="kw">crate</span>::helix::{<span class="self">self</span>, ClientRequestError, HelixClient};
@@ -1137,14 +1074,9 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="self">self</span>.req_get(
-            helix::users::GetUsersRequest::builder()
-                .login(<span class="macro">vec!</span>[login.into()])
-                .build(),
-            token,
-        )
-        .<span class="kw">await
-        </span>.map(|response| response.first())
+        <span class="self">self</span>.req_get(helix::users::GetUsersRequest::login(login), token)
+            .<span class="kw">await
+            </span>.map(|response| response.first())
     }
 
     <span class="doccomment">/// Get [User](helix::users::User) from user id
@@ -1156,14 +1088,9 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="self">self</span>.req_get(
-            helix::users::GetUsersRequest::builder()
-                .id(<span class="macro">vec!</span>[id.into()])
-                .build(),
-            token,
-        )
-        .<span class="kw">await
-        </span>.map(|response| response.first())
+        <span class="self">self</span>.req_get(helix::users::GetUsersRequest::id(id), token)
+            .<span class="kw">await
+            </span>.map(|response| response.first())
     }
 
     <span class="doccomment">/// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters login
@@ -1192,9 +1119,7 @@
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
         <span class="self">self</span>.req_get(
-            helix::channels::GetChannelInformationRequest::builder()
-                .broadcaster_id(id.into())
-                .build(),
+            helix::channels::GetChannelInformationRequest::broadcaster_id(id),
             token,
         )
         .<span class="kw">await
@@ -1224,7 +1149,7 @@
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
         broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
         moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
-        batch_size: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;u32&gt;&gt;,
+        batch_size: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
         token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T,
     ) -&gt; std::pin::Pin&lt;
         Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::chat::Chatter, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;&gt; + <span class="lifetime">&#39;a</span>&gt;,
@@ -1232,11 +1157,11 @@
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::chat::GetChattersRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .moderator_id(moderator_id)
-            .first(batch_size)
-            .build();
+        <span class="kw">let </span>req = helix::chat::GetChattersRequest {
+            first: batch_size.into(),
+            ..helix::chat::GetChattersRequest::new(broadcaster_id, moderator_id)
+        };
+
         make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
@@ -1267,9 +1192,7 @@
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::search::SearchCategoriesRequest::builder()
-            .query(query.into())
-            .build();
+        <span class="kw">let </span>req = helix::search::SearchCategoriesRequest::query(query).first(<span class="number">100</span>);
         make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
@@ -1301,10 +1224,7 @@
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::search::SearchChannelsRequest::builder()
-            .query(query.into())
-            .live_only(live_only)
-            .build();
+        <span class="kw">let </span>req = helix::search::SearchChannelsRequest::query(query.into()).live_only(live_only);
         make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
@@ -1343,17 +1263,18 @@
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::users::GetUsersFollowsRequest::builder()
-            .to_id(to_id)
-            .from_id(from_id)
-            .first(<span class="number">100</span>)
-            .build();
+        <span class="kw">let </span><span class="kw-2">mut </span>req = helix::users::GetUsersFollowsRequest::empty();
+        req.to_id = to_id.into();
+        req.from_id = from_id.into();
+
         make_stream(req, token, <span class="self">self</span>, |s| {
             std::collections::VecDeque::from(s.follow_relationships)
         })
     }
 
     <span class="doccomment">/// Get authenticated users&#39; followed [streams](helix::streams::Stream)
+    ///
+    /// Requires token with scope [`user:read:follows`](twitch_oauth2::Scope::UserReadFollows).
     ///
     /// # Examples
     ///
@@ -1388,9 +1309,7 @@
             <span class="prelude-val">Ok</span>(t) =&gt; t,
             <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span>futures::stream::once(<span class="kw">async </span>{ <span class="prelude-val">Err</span>(e) }).boxed(),
         };
-        <span class="kw">let </span>req = helix::streams::GetFollowedStreamsRequest::builder()
-            .user_id(user_id)
-            .build();
+        <span class="kw">let </span>req = helix::streams::GetFollowedStreamsRequest::user_id(user_id);
         make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
@@ -1436,9 +1355,7 @@
             <span class="prelude-val">Ok</span>(t) =&gt; t,
             <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span>futures::stream::once(<span class="kw">async </span>{ <span class="prelude-val">Err</span>(e) }).boxed(),
         };
-        <span class="kw">let </span>req = helix::subscriptions::GetBroadcasterSubscriptionsRequest::builder()
-            .broadcaster_id(user_id)
-            .build();
+        <span class="kw">let </span>req = helix::subscriptions::GetBroadcasterSubscriptionsRequest::broadcaster_id(user_id);
         make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
@@ -1472,9 +1389,7 @@
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::moderation::GetModeratorsRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .build();
+        <span class="kw">let </span>req = helix::moderation::GetModeratorsRequest::broadcaster_id(broadcaster_id);
 
         make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
@@ -1509,9 +1424,7 @@
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::moderation::GetBannedUsersRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .build();
+        <span class="kw">let </span>req = helix::moderation::GetBannedUsersRequest::broadcaster_id(broadcaster_id);
 
         make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
@@ -1549,9 +1462,7 @@
     {
         <span class="kw">let </span>resp = <span class="self">self
             </span>.req_get(
-                helix::users::GetUsersFollowsRequest::builder()
-                    .from_id(<span class="prelude-val">Some</span>(to_id.into()))
-                    .build(),
+                helix::users::GetUsersFollowsRequest::followers(to_id),
                 token,
             )
             .<span class="kw">await</span><span class="question-mark">?</span>;
@@ -1562,23 +1473,19 @@
     <span class="doccomment">/// Get games by ID. Can only be at max 100 ids.
     </span><span class="kw">pub async fn </span>get_games_by_id&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        ids: <span class="kw-2">&amp;</span>[types::CategoryId],
+        ids: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>Into&lt;types::CategoryId&gt;&gt;,
         token: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;std::collections::HashMap&lt;types::CategoryId, helix::games::Game&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
+        <span class="kw">let </span>ids: Vec&lt;<span class="kw">_</span>&gt; = ids.into_iter().take(<span class="number">101</span>).map(Into::into).collect();
         <span class="kw">if </span>ids.len() &gt; <span class="number">100 </span>{
             <span class="kw">return </span><span class="prelude-val">Err</span>(ClientRequestError::Custom(<span class="string">&quot;too many IDs, max 100&quot;</span>.into()));
         }
 
         <span class="kw">let </span>resp = <span class="self">self
-            </span>.req_get(
-                helix::games::GetGamesRequest::builder()
-                    .id(ids.to_vec())
-                    .build(),
-                token,
-            )
+            </span>.req_get(helix::games::GetGamesRequest::ids(ids), token)
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(resp
@@ -1599,9 +1506,7 @@
     {
         <span class="prelude-val">Ok</span>(<span class="self">self
             </span>.req_put(
-                helix::users::BlockUserRequest::builder()
-                    .target_user_id(target_user_id)
-                    .build(),
+                helix::users::BlockUserRequest::block_user(target_user_id),
                 helix::EmptyBody,
                 token,
             )
@@ -1620,9 +1525,7 @@
     {
         <span class="prelude-val">Ok</span>(<span class="self">self
             </span>.req_delete(
-                helix::users::UnblockUserRequest::builder()
-                    .target_user_id(target_user_id)
-                    .build(),
+                helix::users::UnblockUserRequest::unblock_user(target_user_id),
                 token,
             )
             .<span class="kw">await</span><span class="question-mark">?
@@ -1644,10 +1547,7 @@
     {
         <span class="prelude-val">Ok</span>(<span class="self">self
             </span>.req_post(
-                helix::moderation::BanUserRequest::builder()
-                    .broadcaster_id(broadcaster_id)
-                    .moderator_id(moderator_id)
-                    .build(),
+                helix::moderation::BanUserRequest::new(broadcaster_id, moderator_id),
                 helix::moderation::BanUserBody::new(target_user_id, reason.to_string(), duration),
                 token,
             )
@@ -1668,11 +1568,11 @@
     {
         <span class="prelude-val">Ok</span>(<span class="self">self
             </span>.req_delete(
-                helix::moderation::UnbanUserRequest::builder()
-                    .broadcaster_id(broadcaster_id)
-                    .moderator_id(moderator_id)
-                    .user_id(target_user_id)
-                    .build(),
+                helix::moderation::UnbanUserRequest::new(
+                    broadcaster_id,
+                    moderator_id,
+                    target_user_id,
+                ),
                 token,
             )
             .<span class="kw">await</span><span class="question-mark">?
@@ -1718,9 +1618,7 @@
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::schedule::GetChannelStreamScheduleRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .build();
+        <span class="kw">let </span>req = helix::schedule::GetChannelStreamScheduleRequest::broadcaster_id(broadcaster_id);
 
         make_stream(req, token, <span class="self">self</span>, |broadcasts| broadcasts.segments.into())
     }
@@ -1733,7 +1631,7 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::chat::GetGlobalEmotesRequest::builder().build();
+        <span class="kw">let </span>req = helix::chat::GetGlobalEmotesRequest::new();
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
@@ -1746,9 +1644,7 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::chat::GetChannelEmotesRequest::builder()
-            .broadcaster_id(user_id)
-            .build();
+        <span class="kw">let </span>req = helix::chat::GetChannelEmotesRequest::broadcaster_id(user_id);
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
@@ -1773,19 +1669,17 @@
     <span class="doccomment">/// Get emotes in emote set
     </span><span class="kw">pub async fn </span>get_emote_sets&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        emote_sets: <span class="kw-2">&amp;</span>[types::EmoteSetId],
+        emote_sets: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>Into&lt;types::EmoteSetId&gt;&gt;,
         token: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::get_emote_sets::Emote&gt;, ClientError&lt;<span class="lifetime">&#39;a</span>, C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::chat::GetEmoteSetsRequest::builder()
-            .emote_set_id(emote_sets.to_owned())
-            .build();
+        <span class="kw">let </span>req = helix::chat::GetEmoteSetsRequest::emote_set_ids(emote_sets);
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
-    <span class="doccomment">/// Get a user&#39;s chat settings
+    <span class="doccomment">/// Get a broadcaster&#39;s chat settings
     </span><span class="kw">pub async fn </span>get_chat_settings&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
         broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
@@ -1795,10 +1689,10 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::chat::GetChatSettingsRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .moderator_id(moderator_id)
-            .build();
+        <span class="kw">let </span><span class="kw-2">mut </span>req = helix::chat::GetChatSettingsRequest::broadcaster_id(broadcaster_id);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(moderator_id) = moderator_id.into() {
+            req = req.moderator_id(moderator_id);
+        }
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
@@ -1814,10 +1708,7 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::chat::SendChatAnnouncementRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .moderator_id(moderator_id)
-            .build();
+        <span class="kw">let </span>req = helix::chat::SendChatAnnouncementRequest::new(broadcaster_id, moderator_id);
         <span class="kw">let </span>body = helix::chat::SendChatAnnouncementBody::new(message.to_string(), color)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="self">self
             </span>.req_post(req, body, token)
@@ -1837,11 +1728,9 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::moderation::DeleteChatMessagesRequest {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
-            message_id: <span class="prelude-val">Some</span>(message_id.into()),
-        };
+        <span class="kw">let </span>req = helix::moderation::DeleteChatMessagesRequest::new(broadcaster_id, moderator_id)
+            .message_id(message_id);
+
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_delete(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
@@ -1855,11 +1744,7 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::moderation::DeleteChatMessagesRequest {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
-            message_id: <span class="prelude-val">None</span>,
-        };
+        <span class="kw">let </span>req = helix::moderation::DeleteChatMessagesRequest::new(broadcaster_id, moderator_id);
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_delete(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
@@ -1873,10 +1758,7 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::raids::StartARaidRequest::builder()
-            .from_broadcaster_id(from_broadcaster_id)
-            .to_broadcaster_id(to_broadcaster_id)
-            .build();
+        <span class="kw">let </span>req = helix::raids::StartARaidRequest::new(from_broadcaster_id, to_broadcaster_id);
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_post(req, helix::EmptyBody, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
@@ -1889,9 +1771,7 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::raids::CancelARaidRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .build();
+        <span class="kw">let </span>req = helix::raids::CancelARaidRequest::broadcaster_id(broadcaster_id);
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_delete(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
@@ -1938,9 +1818,7 @@
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::chat::GetUserChatColorRequest {
-            user_id: user_ids.into_iter().map(Into::into).collect(),
-        };
+        <span class="kw">let </span>req = helix::chat::GetUserChatColorRequest::user_ids(user_ids);
 
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
@@ -1992,9 +1870,7 @@
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::channels::GetVipsRequest::builder()
-            .broadcaster_id(broadcaster_id)
-            .build();
+        <span class="kw">let </span>req = helix::channels::GetVipsRequest::broadcaster_id(broadcaster_id);
 
         make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
@@ -2074,9 +1950,7 @@
 /// use twitch_api::helix;
 /// use futures::TryStreamExt;
 ///
-/// let req = helix::moderation::GetModeratorsRequest::builder()
-/// .broadcaster_id(&quot;1234&quot;)
-/// .build();
+/// let req = helix::moderation::GetModeratorsRequest::broadcaster_id(&quot;1234&quot;);
 ///
 /// helix::make_stream(req, &amp;token, &amp;client, std::collections::VecDeque::from).try_collect::&lt;Vec&lt;_&gt;&gt;().await?
 /// # ;

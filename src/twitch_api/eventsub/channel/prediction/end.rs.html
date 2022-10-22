@@ -135,18 +135,38 @@
 <span id="135">135</span>
 <span id="136">136</span>
 <span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
 </pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;channel.hype_train.end&quot;</span>)]
 </span><span class="doccomment">//! A Prediction ends on the specified channel.
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="doccomment">/// [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionend-beta): a Prediction ends on the specified channel.
-</span><span class="attribute">#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChannelPredictionEndV1 {
     <span class="doccomment">/// The broadcaster user ID of the channel for which “prediction end” notifications will be received.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_user_id: types::UserId,
+}
+
+<span class="kw">impl </span>ChannelPredictionEndV1 {
+    <span class="doccomment">/// The broadcaster user ID of the channel for which “prediction end” notifications will be received.
+    </span><span class="kw">pub fn </span>broadcaster_user_id(broadcaster_user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
 }
 
 <span class="kw">impl </span>EventSubscription <span class="kw">for </span>ChannelPredictionEndV1 {
@@ -217,10 +237,10 @@
             &quot;outcomes&quot;: [
                 {
                     &quot;id&quot;: &quot;12345&quot;,
-                    &quot;title&quot;: &quot;Yeah!&quot;, 
+                    &quot;title&quot;: &quot;Yeah!&quot;,
                     &quot;color&quot;: &quot;blue&quot;,
-                    &quot;users&quot;: 2, 
-                    &quot;channel_points&quot;: 15000, 
+                    &quot;users&quot;: 2,
+                    &quot;channel_points&quot;: 15000,
                     &quot;top_predictors&quot;: [
                         {
                             &quot;user_name&quot;: &quot;Cool_User&quot;,
@@ -236,13 +256,13 @@
                             &quot;channel_points_won&quot;: 5000,
                             &quot;channel_points_used&quot;: 100
                         }
-                    ] 
+                    ]
                 },
                 {
                     &quot;id&quot;: &quot;22435&quot;,
-                    &quot;title&quot;: &quot;No!&quot;, 
-                    &quot;users&quot;: 2, 
-                    &quot;channel_points&quot;: 200, 
+                    &quot;title&quot;: &quot;No!&quot;,
+                    &quot;users&quot;: 2,
+                    &quot;channel_points&quot;: 200,
                     &quot;color&quot;: &quot;pink&quot;,
                     &quot;top_predictors&quot;: [
                         {

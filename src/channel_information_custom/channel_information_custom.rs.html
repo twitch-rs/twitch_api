@@ -65,8 +65,6 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
-<span id="68">68</span>
-<span id="69">69</span>
 </pre><pre class="rust"><code><span class="kw">use </span>twitch_api::{helix, types, HelixClient};
 <span class="kw">use </span>twitch_oauth2::{AccessToken, UserToken};
 
@@ -97,9 +95,7 @@
 
     <span class="kw">let </span>resp = client
         .req_get_custom(
-            helix::channels::GetChannelInformationRequest::builder()
-                .broadcaster_id(id)
-                .build(),
+            helix::channels::GetChannelInformationRequest::broadcaster_id(id),
             <span class="kw-2">&amp;</span>token,
         )
         .<span class="kw">await

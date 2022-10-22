@@ -186,6 +186,27 @@
 <span id="186">186</span>
 <span id="187">187</span>
 <span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Allow or deny a message that was held for review by AutoMod.
 //! [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
 //!
@@ -246,7 +267,8 @@
 <span class="doccomment">/// Query Parameters for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ManageHeldAutoModMessagesRequest {}
 
@@ -262,18 +284,42 @@
 <span class="doccomment">/// Body Parameters for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ManageHeldAutoModMessagesBody {
     <span class="doccomment">/// The moderator who is approving or rejecting the held message. Must match the user_id in the user OAuth token.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>user_id: types::UserId,
     <span class="doccomment">/// ID of the message to be allowed or denied. These message IDs are retrieved from IRC or PubSub. Only one message ID can be provided.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>msg_id: types::MsgId,
     <span class="doccomment">/// The action to take for the message. Must be &quot;ALLOW&quot; or &quot;DENY&quot;.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>action: AutoModAction,
+}
+
+<span class="kw">impl </span>ManageHeldAutoModMessagesBody {
+    <span class="doccomment">/// Create a new [`ManageHeldAutoModMessagesBody`]
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::moderation::ManageHeldAutoModMessagesBody;
+    ///
+    /// let body = ManageHeldAutoModMessagesBody::new(&quot;1234&quot;, &quot;5678&quot;, true);
+    /// ```
+    </span><span class="kw">pub fn </span>new(
+        user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        msg_id: <span class="kw">impl </span>Into&lt;types::MsgId&gt;,
+        action: <span class="kw">impl </span>Into&lt;AutoModAction&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            user_id: user_id.into(),
+            msg_id: msg_id.into(),
+            action: action.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Action to take for a message.
@@ -353,11 +399,7 @@
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">let </span>req = ManageHeldAutoModMessagesRequest::new();
 
-    <span class="kw">let </span>body = ManageHeldAutoModMessagesBody::builder()
-        .action(<span class="bool-val">true</span>)
-        .user_id(<span class="string">&quot;9327994&quot;</span>)
-        .msg_id(<span class="string">&quot;836013710&quot;</span>)
-        .build();
+    <span class="kw">let </span>body = ManageHeldAutoModMessagesBody::new(<span class="string">&quot;9327994&quot;</span>, <span class="string">&quot;836013710&quot;</span>, <span class="bool-val">true</span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

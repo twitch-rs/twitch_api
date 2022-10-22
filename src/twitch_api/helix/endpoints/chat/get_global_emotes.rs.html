@@ -109,6 +109,10 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets all global emotes. Global emotes are Twitch-specific emoticons that every user can use in Twitch chat.
 //! [`get-global-emotes`](https://dev.twitch.tv/docs/api/reference#get-global-emotes)
 //!
@@ -150,11 +154,15 @@
 <span class="doccomment">/// Query Parameters for [Get Channel Emotes](super::get_global_emotes)
 ///
 /// [`get-global-emotes`](https://dev.twitch.tv/docs/api/reference#get-global-emotes)
-</span><span class="attribute">#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetGlobalEmotesRequest {}
+
+<span class="kw">impl </span>GetGlobalEmotesRequest {
+    <span class="doccomment">/// Get global emotes
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ <span class="self">Self </span>{} }
+}
 
 <span class="doccomment">/// Return Values for [Get Channel Emotes](super::get_global_emotes)
 ///

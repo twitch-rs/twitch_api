@@ -155,6 +155,10 @@
 <span id="155">155</span>
 <span id="156">156</span>
 <span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets channel information for users.
 //! [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
 //!
@@ -162,13 +166,11 @@
 //!
 //! ## Request: [GetChannelInformationRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::broadcaster_id()`] or [`GetChannelInformationRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::get_channel_information;
-//! let request = get_channel_information::GetChannelInformationRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
+//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_id(&quot;1234&quot;);
 //! ```
 //!
 //! ## Response: [ChannelInformation]
@@ -185,9 +187,7 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = get_channel_information::GetChannelInformationRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
+//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_id(&quot;1234&quot;);
 //! let response: Option&lt;get_channel_information::ChannelInformation&gt; = client.req_get(request, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -201,12 +201,22 @@
 <span class="doccomment">/// Query Parameters for [Get Channel Information](super::get_channel_information)
 ///
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChannelInformationRequest {
     <span class="doccomment">/// ID of the channel
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+}
+
+<span class="kw">impl </span>GetChannelInformationRequest {
+    <span class="doccomment">/// Get channel information for a specific broadcaster.
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Get Channel Information](super::get_channel_information)
@@ -279,9 +289,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetChannelInformationRequest::builder()
-        .broadcaster_id(<span class="string">&quot;44445592&quot;</span>.to_string())
-        .build();
+    <span class="kw">let </span>req = GetChannelInformationRequest::broadcaster_id(<span class="string">&quot;44445592&quot;</span>.to_string());
 
     <span class="comment">// From twitch docs
     </span><span class="kw">let </span>data = <span class="string">br#&quot;

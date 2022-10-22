@@ -268,6 +268,18 @@
 <span id="268">268</span>
 <span id="269">269</span>
 <span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Updates a Custom Reward created on a channel.
 //!
 //! Only rewards created programmatically by the same client_id can be updated.
@@ -336,64 +348,76 @@
 <span class="doccomment">/// Query Parameters for [Update Custom Rewards](super::update_custom_reward)
 ///
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateCustomRewardRequest {
     <span class="doccomment">/// Provided broadcaster_id must match the user_id in the auth token
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// ID of the Custom Reward to update, must match a Custom Reward on broadcaster_id’s channel.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>id: types::RewardId,
+}
+
+<span class="kw">impl </span>UpdateCustomRewardRequest {
+    <span class="doccomment">/// Update a Custom Reward created on the broadcaster&#39;s channel
+    </span><span class="kw">pub fn </span>new(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;, id: <span class="kw">impl </span>Into&lt;types::RewardId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Body Parameters for [Update Custom Rewards](super::update_custom_reward)
 ///
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateCustomRewardBody {
     <span class="doccomment">/// The title of the reward
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>title: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// The prompt for the viewer when they are redeeming the reward
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>prompt: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// The cost of the reward
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>cost: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>background_color: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Is the reward currently enabled, if false the reward won’t show up to viewers
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>is_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// Does the user need to enter information when redeeming the reward.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>is_user_input_required: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// Whether a maximum per stream is enabled
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>is_max_per_stream_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// The maximum number per stream if enabled
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>max_per_stream: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// Whether a maximum per user per stream is enabled. Defaults to false.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>is_max_per_user_per_stream_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// The maximum number per user per stream if enabled
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>max_per_user_per_stream: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// Whether a cooldown is enabled. Defaults to false.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>is_global_cooldown_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// The cooldown in seconds if enabled
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>global_cooldown_seconds: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// Is the reward currently paused, if true viewers can’t redeem
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>is_paused: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// Should redemptions be set to FULFILLED status immediately when redeemed and skip the request queue instead of the normal UNFULFILLED status.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>should_redemptions_skip_request_queue: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 }
 
@@ -474,12 +498,12 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = UpdateCustomRewardRequest::builder()
-        .broadcaster_id(<span class="string">&quot;274637212&quot;</span>)
-        .id(<span class="string">&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = UpdateCustomRewardRequest::new(<span class="string">&quot;274637212&quot;</span>, <span class="string">&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;</span>);
 
-    <span class="kw">let </span>body = UpdateCustomRewardBody::builder().is_enabled(<span class="bool-val">false</span>).build();
+    <span class="kw">let </span>body = UpdateCustomRewardBody {
+        is_enabled: <span class="prelude-val">Some</span>(<span class="bool-val">false</span>),
+        ..Default::default()
+    };
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

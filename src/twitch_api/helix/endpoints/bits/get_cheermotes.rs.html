@@ -416,6 +416,15 @@
 <span id="416">416</span>
 <span id="417">417</span>
 <span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Retrieves the list of available Cheermotes, animated emotes to which viewers can assign Bits, to cheer in chat.
 //! [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
 //!
@@ -423,16 +432,14 @@
 //!
 //! ## Request: [GetCheermotesRequest]
 //!
-//! To use this endpoint, construct a [`GetCheermotesRequest`] with the [`GetCheermotesRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetCheermotesRequest`] with the [`GetCheermotesRequest::new()`] or [`GetCheermotesRequest::builder()`] method.
 //! If you do not provide an ID, the request will only include global cheermotes as defined by twitch.
 //!
 //! ```rust
 //! use twitch_api::helix::bits::get_cheermotes;
-//! let request = get_cheermotes::GetCheermotesRequest::builder()
-//!     .broadcaster_id(Some(&quot;1234&quot;.into()))
-//!     .build();
+//! let request = get_cheermotes::GetCheermotesRequest::broadcaster_id(&quot;1234&quot;);
 //! // Without broadcaster ID
-//! let request = get_cheermotes::GetCheermotesRequest::builder().build();
+//! let request = get_cheermotes::GetCheermotesRequest::new();
 //! ```
 //!
 //! ## Response: [Cheermote]
@@ -447,7 +454,7 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = get_cheermotes::GetCheermotesRequest::builder().build();
+//! let request = get_cheermotes::GetCheermotesRequest::new();
 //! let response: Vec&lt;get_cheermotes::Cheermote&gt; = client.req_get(request, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -461,12 +468,25 @@
 <span class="doccomment">/// Query Parameters for [Get Cheermotes](super::get_cheermotes)
 ///
 /// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetCheermotesRequest {
     <span class="doccomment">/// ID for the broadcaster who might own specialized Cheermotes.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: <span class="prelude-ty">Option</span>&lt;types::UserId&gt;,
+}
+
+<span class="kw">impl </span>GetCheermotesRequest {
+    <span class="doccomment">/// Get available Cheermotes.
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::default() }
+
+    <span class="doccomment">/// Get Cheermotes in a specific broadcasters channel.
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: <span class="prelude-val">Some</span>(broadcaster_id.into()),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Get Cheermotes](super::get_cheermotes)
@@ -526,7 +546,7 @@
     </span><span class="kw">pub </span>id: String,
     <span class="doccomment">/// Structure containing both animated and static image sets, sorted by light and dark.
     </span><span class="kw">pub </span>images: CheermoteImages,
-    <span class="doccomment">/// Minimum number of bits needed to be used to hit the given tier of emote.  
+    <span class="doccomment">/// Minimum number of bits needed to be used to hit the given tier of emote.
     </span><span class="kw">pub </span>min_bits: i64,
     <span class="doccomment">/// Indicates whether or not we hide the emote from the bits card.
     </span><span class="kw">pub </span>show_in_bits_card: bool,
@@ -597,9 +617,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetCheermotesRequest::builder()
-        .broadcaster_id(<span class="prelude-val">Some</span>(<span class="string">&quot;1234&quot;</span>.into()))
-        .build();
+    <span class="kw">let </span>req = GetCheermotesRequest::broadcaster_id(<span class="string">&quot;1234&quot;</span>);
 
     <span class="comment">// From api call
     </span><span class="kw">let </span>data = <span class="string">br##&quot;

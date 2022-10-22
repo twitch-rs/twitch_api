@@ -200,6 +200,18 @@
 <span id="200">200</span>
 <span id="201">201</span>
 <span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Sends an announcement to the broadcaster’s chat room.
 //! [`send-chat-announcement`](https://dev.twitch.tv/docs/api/reference#send-chat-announcement)
 //!
@@ -262,23 +274,38 @@
 <span class="doccomment">/// Query Parameters for [Send Chat Announcement](super::send_chat_announcement)
 ///
 /// [`send-chat-announcement`](https://dev.twitch.tv/docs/api/reference#send-chat-announcement)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SendChatAnnouncementRequest {
     <span class="doccomment">/// The ID of the broadcaster that owns the chat room to send the announcement to.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// The ID of a user who has permission to moderate the broadcaster’s chat room.
     ///
     /// This ID must match the user ID in the OAuth token, which can be a moderator or the broadcaster.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>moderator_id: types::UserId,
+}
+
+<span class="kw">impl </span>SendChatAnnouncementRequest {
+    <span class="doccomment">/// Send announcement in channel as this moderator
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Body Parameters for [Send Chat Announcement](super::send_chat_announcement)
 ///
 /// [`send-chat-announcement`](https://dev.twitch.tv/docs/api/reference#send-chat-announcement)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SendChatAnnouncementBody {
     <span class="doccomment">/// The announcement to make in the broadcaster’s chat room. Announcements are limited to a maximum of 500 characters; announcements longer than 500 characters are truncated.
@@ -293,7 +320,7 @@
     /// * primary (default)
     ///
     /// If color is set to primary or is not set, the channel’s accent color is used to highlight the announcement (see Profile Accent Color under [profile settings](https://www.twitch.tv/settings/profile), Channel and Videos, and Brand).
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>color: AnnouncementColor,
 }
 
@@ -380,10 +407,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = SendChatAnnouncementRequest::builder()
-        .broadcaster_id(<span class="string">&quot;1234&quot;</span>)
-        .moderator_id(<span class="string">&quot;5678&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = SendChatAnnouncementRequest::new(<span class="string">&quot;1234&quot;</span>, <span class="string">&quot;5678&quot;</span>);
 
     <span class="kw">let </span>body = SendChatAnnouncementBody::new(<span class="string">&quot;hello chat!&quot;</span>.to_owned(), <span class="string">&quot;purple&quot;</span>).unwrap();
 

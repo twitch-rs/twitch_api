@@ -342,7 +342,7 @@
     /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
     /// #       twitch_oauth2::AccessToken::new(&quot;totallyvalidtoken&quot;.to_string()), None,
     /// #       twitch_oauth2::ClientId::new(&quot;validclientid&quot;.to_string()), None, &quot;justintv&quot;.into(), &quot;1337&quot;.into(), None, None));
-    ///     let req = channels::GetChannelInformationRequest::builder().broadcaster_id(&quot;123456&quot;).build();
+    ///     let req = channels::GetChannelInformationRequest::broadcaster_id(&quot;123456&quot;);
     ///     let client = HelixClient::new();
     /// # let _: &amp;HelixClient&lt;twitch_api::DummyHttpClient&gt; = &amp;client;
     ///

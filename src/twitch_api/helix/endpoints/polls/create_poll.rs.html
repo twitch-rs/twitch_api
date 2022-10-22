@@ -250,6 +250,36 @@
 <span id="250">250</span>
 <span id="251">251</span>
 <span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Create a poll for a specific Twitch channel.
 //! [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
 //!
@@ -320,9 +350,8 @@
 <span class="doccomment">/// Query Parameters for [Create Poll](super::create_poll)
 ///
 /// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
-</span><span class="attribute">#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreatePollRequest {}
 
@@ -334,14 +363,15 @@
 <span class="doccomment">/// Body Parameters for [Create Poll](super::create_poll)
 ///
 /// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreatePollBody {
     <span class="doccomment">/// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// Question displayed for the poll. Maximum: 60 characters.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>title: String,
     <span class="doccomment">/// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.
     </span><span class="kw">pub </span>duration: i64,
@@ -349,25 +379,58 @@
     </span><span class="kw">pub </span>choices: Vec&lt;NewPollChoice&gt;,
     <span class="doccomment">/// Indicates if Bits can be used for voting. Default: false
     </span><span class="attribute">#[deprecated(since = <span class="string">&quot;0.7.0&quot;</span>, note = <span class="string">&quot;bit options for polls has been removed&quot;</span>)]
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>bits_voting_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// Number of Bits required to vote once with Bits. Minimum: 0. Maximum: 10000.
     </span><span class="attribute">#[deprecated(since = <span class="string">&quot;0.7.0&quot;</span>, note = <span class="string">&quot;bit options for polls has been removed&quot;</span>)]
-    #[builder(default, setter(into))]
+    #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>bits_per_vote: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Indicates if Channel Points can be used for voting. Default: false
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>channel_points_voting_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// Number of Channel Points required to vote once with Channel Points. Minimum: 0. Maximum: 1000000.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>channel_points_per_vote: <span class="prelude-ty">Option</span>&lt;i64&gt;,
+}
+
+<span class="kw">impl </span>CreatePollBody {
+    <span class="doccomment">/// Set if Channel Points voting is enabled
+    </span><span class="kw">pub fn </span>channel_points_voting_enabled(<span class="kw-2">mut </span><span class="self">self</span>, enabled: bool) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.channel_points_voting_enabled = <span class="prelude-val">Some</span>(enabled);
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Channel points per vote
+    </span><span class="kw">pub fn </span>channel_points_per_vote(<span class="kw-2">mut </span><span class="self">self</span>, points: i64) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.channel_points_per_vote = <span class="prelude-val">Some</span>(points);
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Poll settings
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        title: String,
+        duration: i64,
+        choices: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>Into&lt;NewPollChoice&gt;&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            title,
+            duration,
+            choices: choices.into_iter().map(|s| s.into()).collect(),
+            bits_voting_enabled: Default::default(),
+            bits_per_vote: Default::default(),
+            channel_points_voting_enabled: Default::default(),
+            channel_points_per_vote: Default::default(),
+        }
+    }
 }
 
 <span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>CreatePollBody {}
 
-<span class="comment">// FIXME: I&#39;d prefer this to be a Vec&lt;String&gt; on CreatePollBody
-</span><span class="doccomment">/// Choice settings for a poll
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+<span class="doccomment">/// Choice settings for a poll
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>NewPollChoice {
     <span class="doccomment">/// Text displayed for the choice. Maximum: 25 characters.
@@ -439,19 +502,16 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = CreatePollRequest::builder().build();
+    <span class="kw">let </span>req = CreatePollRequest::new();
 
-    <span class="kw">let </span>body = CreatePollBody::builder()
-        .broadcaster_id(<span class="string">&quot;141981764&quot;</span>)
-        .title(<span class="string">&quot;Heads or Tails?&quot;</span>)
-        .choices(<span class="macro">vec!</span>[
-            NewPollChoice::new(<span class="string">&quot;Heads&quot;</span>),
-            NewPollChoice::new(<span class="string">&quot;Tails&quot;</span>),
-        ])
-        .channel_points_voting_enabled(<span class="bool-val">true</span>)
-        .channel_points_per_vote(<span class="number">100</span>)
-        .duration(<span class="number">1800</span>)
-        .build();
+    <span class="kw">let </span>body = CreatePollBody::new(
+        <span class="string">&quot;141981764&quot;</span>,
+        <span class="string">&quot;Heads or Tails?&quot;</span>.to_owned(),
+        <span class="number">1800</span>,
+        [NewPollChoice::new(<span class="string">&quot;Heads&quot;</span>), NewPollChoice::new(<span class="string">&quot;Tails&quot;</span>)],
+    )
+    .channel_points_per_vote(<span class="number">100</span>)
+    .channel_points_voting_enabled(<span class="bool-val">true</span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

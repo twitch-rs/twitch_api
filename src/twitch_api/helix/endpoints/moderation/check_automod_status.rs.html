@@ -178,6 +178,18 @@
 <span id="178">178</span>
 <span id="179">179</span>
 <span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
 </pre><pre class="rust"><code><span class="attribute">#![allow(deprecated_in_future, deprecated)]
 </span><span class="doccomment">//! Determines whether a string message meets the channel’s AutoMod requirements.
 //! [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
@@ -241,37 +253,51 @@
 <span class="doccomment">/// Query Parameters for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CheckAutoModStatusRequest {
     <span class="doccomment">/// Must match the User ID in the Bearer token.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+}
+
+<span class="kw">impl </span>CheckAutoModStatusRequest {
+    <span class="doccomment">/// Check automod status in this broadcasters channel.
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Body Parameters for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CheckAutoModStatusBody {
     <span class="doccomment">/// Developer-generated identifier for mapping messages to results.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>msg_id: types::MsgId,
     <span class="doccomment">/// Message text.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>msg_text: String,
     <span class="doccomment">/// User ID of the sender.
     </span><span class="attribute">#[deprecated(since = <span class="string">&quot;0.7.0&quot;</span>, note = <span class="string">&quot;user_id in automod check is no longer read&quot;</span>)]
-    #[builder(setter(into, strip_option), default)]
+    #[cfg_attr(
+        feature = <span class="string">&quot;typed-builder&quot;</span>,
+        builder(setter(into, strip_option), default)
+    )]
     </span><span class="kw">pub </span>user_id: <span class="prelude-ty">Option</span>&lt;types::UserId&gt;,
 }
 
 <span class="kw">impl </span>CheckAutoModStatusBody {
     <span class="doccomment">/// Create a new [`CheckAutoModStatusBody`]
-    </span><span class="kw">pub fn </span>new(msg_id: types::MsgId, msg_text: String) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(msg_id: <span class="kw">impl </span>Into&lt;types::MsgId&gt;, msg_text: String) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            msg_id,
+            msg_id: msg_id.into(),
             msg_text,
             user_id: <span class="prelude-val">None</span>,
         }
@@ -320,13 +346,11 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = CheckAutoModStatusRequest::builder()
-        .broadcaster_id(<span class="string">&quot;198704263&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = CheckAutoModStatusRequest::broadcaster_id(<span class="string">&quot;198704263&quot;</span>);
 
     <span class="kw">let </span>body = <span class="macro">vec!</span>[
-        CheckAutoModStatusBody::new(<span class="string">&quot;123&quot;</span>.into(), <span class="string">&quot;hello world&quot;</span>.to_string()),
-        CheckAutoModStatusBody::new(<span class="string">&quot;393&quot;</span>.into(), <span class="string">&quot;automoded word&quot;</span>.to_string()),
+        CheckAutoModStatusBody::new(<span class="string">&quot;123&quot;</span>, <span class="string">&quot;hello world&quot;</span>.to_string()),
+        CheckAutoModStatusBody::new(<span class="string">&quot;393&quot;</span>, <span class="string">&quot;automoded word&quot;</span>.to_string()),
     ];
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());

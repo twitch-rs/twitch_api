@@ -237,6 +237,8 @@
 <span id="237">237</span>
 <span id="238">238</span>
 <span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Creates an EventSub subscription.
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::eventsub::{EventSubscription, EventType, Status, Transport, TransportResponse};
@@ -244,10 +246,11 @@
 <span class="doccomment">/// Query Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)
 ///
 /// [`create-eventsub-subscription`](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreateEventSubSubscriptionRequest&lt;E: EventSubscription&gt; {
-    <span class="attribute">#[builder(setter(skip), default)]
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(skip), default))]
     #[serde(skip)]
     </span>phantom: std::marker::PhantomData&lt;E&gt;,
 }
@@ -275,7 +278,8 @@
 /// # Notes
 ///
 /// This body is quite different from the official body. If you want the true representation in text, see [`helix::HelixRequestBody::try_to_body`] on [`CreateEventSubSubscriptionRequest&lt;E: EventSubscription&gt;`](CreateEventSubSubscriptionRequest)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreateEventSubSubscriptionBody&lt;E: EventSubscription&gt; {
     <span class="doccomment">/// Subscription that will be created
@@ -424,10 +428,10 @@
     <span class="kw">use </span><span class="kw">crate</span>::eventsub::{<span class="self">self</span>, user::UserUpdateV1};
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">let </span>req: CreateEventSubSubscriptionRequest&lt;UserUpdateV1&gt; =
-        CreateEventSubSubscriptionRequest::builder().build();
+        CreateEventSubSubscriptionRequest::default();
 
     <span class="kw">let </span>body = CreateEventSubSubscriptionBody::new(
-        UserUpdateV1::builder().user_id(<span class="string">&quot;1234&quot;</span>).build(),
+        UserUpdateV1::new(<span class="string">&quot;1234&quot;</span>),
         eventsub::Transport {
             method: eventsub::TransportMethod::Webhook,
             callback: <span class="string">&quot;example.com&quot;</span>.to_string(),

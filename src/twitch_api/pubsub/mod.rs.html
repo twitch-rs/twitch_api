@@ -655,31 +655,6 @@
 <span id="655">655</span>
 <span id="656">656</span>
 <span id="657">657</span>
-<span id="658">658</span>
-<span id="659">659</span>
-<span id="660">660</span>
-<span id="661">661</span>
-<span id="662">662</span>
-<span id="663">663</span>
-<span id="664">664</span>
-<span id="665">665</span>
-<span id="666">666</span>
-<span id="667">667</span>
-<span id="668">668</span>
-<span id="669">669</span>
-<span id="670">670</span>
-<span id="671">671</span>
-<span id="672">672</span>
-<span id="673">673</span>
-<span id="674">674</span>
-<span id="675">675</span>
-<span id="676">676</span>
-<span id="677">677</span>
-<span id="678">678</span>
-<span id="679">679</span>
-<span id="680">680</span>
-<span id="681">681</span>
-<span id="682">682</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Holds serializable pubsub stuff
 //!
 //! Use [`listen_command()`] to send subscription listen and parse the responses with [`Response::parse`]
@@ -768,29 +743,22 @@
 <span class="kw">pub mod </span>channel_bits;
 <span class="kw">pub mod </span>channel_bits_badge;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
 </span><span class="kw">pub mod </span>channel_cheer;
 <span class="kw">pub mod </span>channel_points;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
 </span><span class="kw">pub mod </span>channel_sub_gifts;
 <span class="kw">pub mod </span>channel_subscriptions;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
 </span><span class="kw">pub mod </span>community_points;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
 </span><span class="kw">pub mod </span>following;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
 </span><span class="kw">pub mod </span>hypetrain;
 <span class="kw">pub mod </span>moderation;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
 </span><span class="kw">pub mod </span>raid;
 <span class="kw">pub mod </span>user_moderation_notifications;
 <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
 </span><span class="kw">pub mod </span>video_playback;
 
 <span class="kw">use crate</span>::{parse_json, parse_json_value};
@@ -823,7 +791,6 @@
     </span>AutoModQueue(automod_queue::AutoModQueue),
     <span class="doccomment">/// A user redeems an reward using channel points.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>CommunityPointsChannelV1(community_points::CommunityPointsChannelV1),
     <span class="doccomment">/// Anyone cheers in a specified channel.
     </span>ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2),
@@ -831,11 +798,9 @@
     </span>ChannelBitsBadgeUnlocks(channel_bits_badge::ChannelBitsBadgeUnlocks),
     <span class="doccomment">/// A user redeems a cheer with shared rewards.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>ChannelCheerEventsPublicV1(channel_cheer::ChannelCheerEventsPublicV1),
     <span class="doccomment">/// A user gifts subs.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>ChannelSubGiftsV1(channel_sub_gifts::ChannelSubGiftsV1),
     <span class="doccomment">/// A moderator performs an action in the channel.
     </span>ChatModeratorActions(moderation::ChatModeratorActions),
@@ -845,27 +810,21 @@
     </span>ChannelSubscribeEventsV1(channel_subscriptions::ChannelSubscribeEventsV1),
     <span class="doccomment">/// Statistics about stream
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>VideoPlayback(video_playback::VideoPlayback),
     <span class="doccomment">/// Statistics about stream
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>VideoPlaybackById(video_playback::VideoPlaybackById),
     <span class="doccomment">/// A user redeems an reward using channel points.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>HypeTrainEventsV1(hypetrain::HypeTrainEventsV1),
     <span class="doccomment">/// A user redeems an reward using channel points.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>HypeTrainEventsV1Rewards(hypetrain::HypeTrainEventsV1Rewards),
     <span class="doccomment">/// A user follows the channel
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>Following(following::Following),
     <span class="doccomment">/// A user raids the channel
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>Raid(raid::Raid),
     <span class="doccomment">/// A user’s message held by AutoMod has been approved or denied.
     </span>UserModerationNotifications(user_moderation_notifications::UserModerationNotifications),
@@ -1086,7 +1045,6 @@
     </span>},
     <span class="doccomment">/// Response from the [community_points::CommunityPointsChannelV1] topic.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>CommunityPointsChannelV1 {
         <span class="doccomment">/// Topic message
         </span>topic: community_points::CommunityPointsChannelV1,
@@ -1096,7 +1054,6 @@
     },
     <span class="doccomment">/// Response from the [channel_cheer::ChannelCheerEventsPublicV1] topic.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>ChannelCheerEventsPublicV1 {
         <span class="doccomment">/// Topic message
         </span>topic: channel_cheer::ChannelCheerEventsPublicV1,
@@ -1106,7 +1063,6 @@
     },
     <span class="doccomment">/// Response from the [channel_sub_gifts::ChannelSubGiftsV1] topic.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>ChannelSubGiftsV1 {
         <span class="doccomment">/// Topic message
         </span>topic: channel_sub_gifts::ChannelSubGiftsV1,
@@ -1117,7 +1073,6 @@
 
     <span class="doccomment">/// Response from the [video_playback::VideoPlayback] topic.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>VideoPlayback {
         <span class="doccomment">/// Topic message
         </span>topic: video_playback::VideoPlayback,
@@ -1127,7 +1082,6 @@
     },
     <span class="doccomment">/// Response from the [video_playback::VideoPlaybackById] topic.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>VideoPlaybackById {
         <span class="doccomment">/// Topic message
         </span>topic: video_playback::VideoPlaybackById,
@@ -1137,7 +1091,6 @@
     },
     <span class="doccomment">/// Response from the [hypetrain::HypeTrainEventsV1] topic.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>HypeTrainEventsV1 {
         <span class="doccomment">/// Topic message
         </span>topic: hypetrain::HypeTrainEventsV1,
@@ -1147,7 +1100,6 @@
     </span>},
     <span class="doccomment">/// Response from the [hypetrain::HypeTrainEventsV1Rewards] topic.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>HypeTrainEventsV1Rewards {
         <span class="doccomment">/// Topic message
         </span>topic: hypetrain::HypeTrainEventsV1Rewards,
@@ -1157,7 +1109,6 @@
     },
     <span class="doccomment">/// Response from the [following::Following] topic.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>Following {
         <span class="doccomment">/// Topic message
         </span>topic: following::Following,
@@ -1167,7 +1118,6 @@
     },
     <span class="doccomment">/// Response from the [raid::Raid] topic.
     </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
     </span>Raid {
         <span class="doccomment">/// Topic message
         </span>topic: raid::Raid,

@@ -75,18 +75,38 @@
 <span id="75">75</span>
 <span id="76">76</span>
 <span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
 </pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;stream.online&quot;</span>)]
 </span><span class="doccomment">//! The specified broadcaster starts a stream
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// [`stream.online`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamonline): the specified broadcaster starts a stream
-</span><span class="attribute">#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>StreamOnlineV1 {
     <span class="doccomment">/// The broadcaster user ID you want to get stream online notifications for.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_user_id: types::UserId,
+}
+
+<span class="kw">impl </span>StreamOnlineV1 {
+    <span class="doccomment">/// The broadcaster user ID you want to get stream online notifications for.
+    </span><span class="kw">pub fn </span>broadcaster_user_id(broadcaster_user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
 }
 
 <span class="kw">impl </span>EventSubscription <span class="kw">for </span>StreamOnlineV1 {

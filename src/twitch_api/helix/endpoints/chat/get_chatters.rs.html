@@ -127,6 +127,29 @@
 <span id="127">127</span>
 <span id="128">128</span>
 <span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets the list of users that are connected to the specified broadcaster’s chat session.
 //! [`get-chatters`](https://dev.twitch.tv/docs/api/reference#get-chatters)
 //!
@@ -178,23 +201,49 @@
 <span class="doccomment">/// Query Parameters for [Get Chatters](super::get_chatters)
 ///
 /// [`get-chatters`](https://dev.twitch.tv/docs/api/reference#get-chatters)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChattersRequest {
     <span class="doccomment">/// The ID of the broadcaster whose list of chatters you want to get.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// The ID of the moderator or the specified broadcaster that’s requesting the list of chatters. This ID must match the user ID associated with the user access token.
     ///
     /// The moderator must have permission to moderate the broadcaster’s chat room.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>moderator_id: types::UserId,
     <span class="doccomment">/// The maximum number of items to return per page in the response. The minimum page size is 1 item per page and the maximum is 1,000. The default is 100.
-    </span><span class="attribute">#[builder(default, setter(into))]
-    </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;u32&gt;,
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value.
-    </span><span class="attribute">#[builder(default)]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
     </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;,
+}
+
+<span class="kw">impl </span>GetChattersRequest {
+    <span class="doccomment">/// Get chatters in broadcasters channel
+    ///
+    /// # Notes
+    ///
+    /// The moderator has to be the token owner and can moderate the chat
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            first: <span class="prelude-val">None</span>,
+            after: <span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="doccomment">/// Set amount of results returned per page.
+    </span><span class="kw">pub fn </span>first(<span class="kw-2">mut </span><span class="self">self</span>, first: usize) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.first = <span class="prelude-val">Some</span>(first);
+        <span class="self">self
+    </span>}
 }
 
 <span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetChattersRequest {
@@ -226,10 +275,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetChattersRequest::builder()
-        .broadcaster_id(<span class="string">&quot;123456&quot;</span>)
-        .moderator_id(<span class="string">&quot;654321&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = GetChattersRequest::new(<span class="string">&quot;123456&quot;</span>, <span class="string">&quot;654321&quot;</span>);
 
     <span class="comment">// From twitch docs
     // FIXME: Example has ...

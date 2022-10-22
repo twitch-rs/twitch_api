@@ -167,6 +167,20 @@
 <span id="167">167</span>
 <span id="168">168</span>
 <span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Removes a single chat message or all chat messages from the broadcaster’s chat room.
 //! [`delete-chat-messages`](https://dev.twitch.tv/docs/api/reference#delete-chat-messages)
 //!
@@ -215,16 +229,17 @@
 <span class="doccomment">/// Query Parameters for [Delete Chat Messages](super::delete_chat_messages)
 ///
 /// [`delete-chat-messages`](https://dev.twitch.tv/docs/api/reference#delete-chat-messages)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>DeleteChatMessagesRequest {
     <span class="doccomment">/// The ID of the broadcaster that owns the chat room to remove messages from.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// The ID of a user that has permission to moderate the broadcaster’s chat room.
     ///
     /// This ID must match the user ID in the OAuth token. If the broadcaster wants to remove messages themselves, set this parameter to the broadcaster’s ID, too.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>moderator_id: types::UserId,
     <span class="doccomment">/// The ID of the message to remove.
     ///
@@ -237,8 +252,28 @@
     /// The message must not belong to another moderator.
     ///
     /// If not specified, the request removes all messages in the broadcaster’s chat room.
-    </span><span class="attribute">#[builder(setter(into), default)]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>message_id: <span class="prelude-ty">Option</span>&lt;types::MsgId&gt;,
+}
+
+<span class="kw">impl </span>DeleteChatMessagesRequest {
+    <span class="doccomment">/// Remove chat message(s)
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            message_id: <span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="doccomment">/// A specific message to remove
+    </span><span class="kw">pub fn </span>message_id(<span class="kw-2">mut </span><span class="self">self</span>, message_id: <span class="kw">impl </span>Into&lt;types::MsgId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.message_id = <span class="prelude-val">Some</span>(message_id.into());
+        <span class="self">self
+    </span>}
 }
 
 <span class="doccomment">/// Return Values for [Delete Chat Messages](super::delete_chat_messages)
@@ -294,10 +329,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request_all() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = DeleteChatMessagesRequest::builder()
-        .broadcaster_id(<span class="string">&quot;11111&quot;</span>)
-        .moderator_id(<span class="string">&quot;44444&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = DeleteChatMessagesRequest::new(<span class="string">&quot;11111&quot;</span>, <span class="string">&quot;44444&quot;</span>);
 
     <span class="comment">// From twitch docs
     </span><span class="kw">let </span>data = <span class="string">br#&quot;&quot;#</span>.to_vec();
@@ -317,11 +349,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request_specific() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = DeleteChatMessagesRequest::builder()
-        .broadcaster_id(<span class="string">&quot;11111&quot;</span>)
-        .moderator_id(<span class="string">&quot;44444&quot;</span>)
-        .message_id(<span class="prelude-val">Some</span>(<span class="string">&quot;abc-123-def&quot;</span>.into()))
-        .build();
+    <span class="kw">let </span>req = DeleteChatMessagesRequest::new(<span class="string">&quot;11111&quot;</span>, <span class="string">&quot;44444&quot;</span>).message_id(<span class="string">&quot;abc-123-def&quot;</span>);
 
     <span class="comment">// From twitch docs
     </span><span class="kw">let </span>data = <span class="string">br#&quot;&quot;#</span>.to_vec();

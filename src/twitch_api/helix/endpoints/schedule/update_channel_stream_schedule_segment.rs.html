@@ -199,6 +199,21 @@
 <span id="199">199</span>
 <span id="200">200</span>
 <span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Update a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
 //! [`update-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment)
 //!
@@ -262,41 +277,56 @@
 <span class="doccomment">/// Query Parameters for [Update Channel Stream Schedule Segment](super::update_channel_stream_schedule_segment)
 ///
 /// [`update-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateChannelStreamScheduleSegmentRequest {
     <span class="doccomment">/// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// The ID of the streaming segment to update.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>id: types::StreamSegmentId,
+}
+
+<span class="kw">impl </span>UpdateChannelStreamScheduleSegmentRequest {
+    <span class="doccomment">/// Update a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        id: <span class="kw">impl </span>Into&lt;types::StreamSegmentId&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Body Parameters for [Update Channel Stream Schedule Segment](super::update_channel_stream_schedule_segment)
 ///
 /// [`update-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateChannelStreamScheduleSegmentBody {
     <span class="doccomment">/// Start time for the scheduled broadcast specified in RFC3339 format.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>start_time: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>duration: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Game/Category ID for the scheduled broadcast.
-    </span><span class="attribute">#[builder(default, setter(into))]
-    </span><span class="kw">pub </span>category_id: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    </span><span class="kw">pub </span>category_id: <span class="prelude-ty">Option</span>&lt;types::CategoryId&gt;,
     <span class="doccomment">/// Title for the scheduled broadcast. Maximum: 140 characters.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>title: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Indicated if the scheduled broadcast is canceled.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>is_canceled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="comment">// FIXME: Enum?
     </span><span class="doccomment">/// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>timezone: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 
@@ -350,14 +380,14 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = UpdateChannelStreamScheduleSegmentRequest::builder()
-        .broadcaster_id(<span class="string">&quot;141981764&quot;</span>)
-        .id(<span class="string">&quot;eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = UpdateChannelStreamScheduleSegmentRequest::new(
+        <span class="string">&quot;141981764&quot;</span>,
+        <span class="string">&quot;eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=&quot;</span>);
 
-    <span class="kw">let </span>body = UpdateChannelStreamScheduleSegmentBody::builder()
-        .duration(<span class="string">&quot;120&quot;</span>.to_string())
-        .build();
+    <span class="kw">let </span>body = UpdateChannelStreamScheduleSegmentBody {
+        duration: <span class="prelude-val">Some</span>(<span class="string">&quot;120&quot;</span>.to_string()),
+        ..&lt;<span class="kw">_</span>&gt;::default()
+    };
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

@@ -120,18 +120,38 @@
 <span id="120">120</span>
 <span id="121">121</span>
 <span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
 </pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;channel.hype_train.lock&quot;</span>)]
 </span><span class="doccomment">//! A user responds to a prediction on the specified channel
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="doccomment">/// [`channel.hype_train.lock`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionlock-beta): an user responds to a prediction on the specified channel
-</span><span class="attribute">#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChannelPredictionLockV1 {
     <span class="doccomment">/// The broadcaster user ID of the channel for which “prediction lock” notifications will be received.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_user_id: types::UserId,
+}
+
+<span class="kw">impl </span>ChannelPredictionLockV1 {
+    <span class="doccomment">/// The broadcaster user ID of the channel for which “prediction lock” notifications will be received.
+    </span><span class="kw">pub fn </span>broadcaster_user_id(broadcaster_user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
 }
 
 <span class="kw">impl </span>EventSubscription <span class="kw">for </span>ChannelPredictionLockV1 {
@@ -196,11 +216,11 @@
             &quot;title&quot;: &quot;Aren’t shoes just really hard socks?&quot;,
             &quot;outcomes&quot;: [
                 {
-                    &quot;id&quot;: &quot;1243456&quot;, 
-                    &quot;title&quot;: &quot;Yeah!&quot;, 
-                    &quot;color&quot;: &quot;blue&quot;, 
-                    &quot;users&quot;: 10, 
-                    &quot;channel_points&quot;: 15000, 
+                    &quot;id&quot;: &quot;1243456&quot;,
+                    &quot;title&quot;: &quot;Yeah!&quot;,
+                    &quot;color&quot;: &quot;blue&quot;,
+                    &quot;users&quot;: 10,
+                    &quot;channel_points&quot;: 15000,
                     &quot;top_predictors&quot;: [
                         {
                             &quot;user_name&quot;: &quot;Cool_User&quot;,
@@ -219,8 +239,8 @@
                     ]
                 },
                 {
-                    &quot;id&quot;: &quot;2243456&quot;, 
-                    &quot;title&quot;: &quot;No!&quot;, 
+                    &quot;id&quot;: &quot;2243456&quot;,
+                    &quot;title&quot;: &quot;No!&quot;,
                     &quot;color&quot;: &quot;pink&quot;,
                     &quot;top_predictors&quot;: [
                         {

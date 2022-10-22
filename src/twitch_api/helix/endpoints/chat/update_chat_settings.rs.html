@@ -257,6 +257,20 @@
 <span id="257">257</span>
 <span id="258">258</span>
 <span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Updates the broadcaster’s chat settings.
 //! [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
 //!
@@ -323,49 +337,65 @@
 <span class="doccomment">/// Query Parameters for [Update Chat Settings](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateChatSettingsRequest {
     <span class="doccomment">/// The ID of the broadcaster whose chat settings you want to update.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// The ID of a user that has permission to moderate the broadcaster’s chat room.
     /// This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster is making the update, also set this parameter to the broadcaster’s ID.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>moderator_id: types::UserId,
+}
+
+<span class="doccomment">///FIXME: The moderator_id parameter is redundant, we should make this a client ext function
+</span><span class="kw">impl </span>UpdateChatSettingsRequest {
+    <span class="doccomment">/// Update the chat settings for the specified broadcaster as the specified moderator
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Body Parameters for [Update Chat Settings](super::update_chat_settings)
 ///
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateChatSettingsBody {
     <span class="doccomment">/// A Boolean value that determines whether chat messages must contain only emotes.
     ///
     /// Set to true, if only messages that are 100% emotes are allowed; otherwise, false. Default is false.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>emote_mode: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// A Boolean value that determines whether the broadcaster restricts the chat room to followers only, based on how long they’ve followed.
     ///
     /// Set to true, if the broadcaster restricts the chat room to followers only; otherwise, false. Default is true.
     ///
     /// See [`follower_mode_duration`](Self::follower_mode_duration) for how long the followers must have followed the broadcaster to participate in the chat room.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>follower_mode: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// The length of time, in minutes, that the followers must have followed the broadcaster to participate in the chat room (see follower_mode).
     ///
     /// You may specify a value in the range: 0 (no restriction) through 129600 (3 months). The default is 0.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>follower_mode_duration: <span class="prelude-ty">Option</span>&lt;u64&gt;,
     <span class="doccomment">/// A Boolean value that determines whether the broadcaster adds a short delay before chat messages appear in the chat room. This gives chat moderators and bots a chance to remove them before viewers can see the message.
     ///
     /// Set to true, if the broadcaster applies a delay; otherwise, false. Default is false.
     ///
     /// See [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) for the length of the delay.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>non_moderator_chat_delay: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// The amount of time, in seconds, that messages are delayed from appearing in chat.
     ///
@@ -376,29 +406,29 @@
     /// * 6 — 6 second delay
     ///
     /// See [`non_moderator_chat_delay`](Self::non_moderator_chat_delay).
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>non_moderator_chat_delay_duration: <span class="prelude-ty">Option</span>&lt;u64&gt;,
     <span class="doccomment">/// A Boolean value that determines whether the broadcaster limits how often users in the chat room are allowed to send messages.
     ///
     /// Set to true, if the broadcaster applies a wait period messages; otherwise, false. Default is false.
     ///
     /// See [`slow_mode_wait_time`](Self::slow_mode_wait_time) for the delay.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>slow_mode: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// The amount of time, in seconds, that users need to wait between sending messages (see slow_mode).
     ///
     /// You may specify a value in the range: 3 (3 second delay) through 120 (2 minute delay). The default is 30 seconds.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>slow_mode_wait_time: <span class="prelude-ty">Option</span>&lt;u64&gt;,
     <span class="doccomment">/// A Boolean value that determines whether only users that subscribe to the broadcaster’s channel can talk in the chat room.
     ///
     /// Set to true, if the broadcaster restricts the chat room to subscribers only; otherwise, false. Default is false.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>subscriber_mode: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// A Boolean value that determines whether the broadcaster requires users to post only unique messages in the chat room.
     ///
     /// Set to true, if the broadcaster requires unique messages only; otherwise, false. Default is false.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>unique_chat_mode: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 }
 
@@ -473,15 +503,13 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = UpdateChatSettingsRequest::builder()
-        .broadcaster_id(<span class="string">&quot;1234&quot;</span>)
-        .moderator_id(<span class="string">&quot;5678&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = UpdateChatSettingsRequest::new(<span class="string">&quot;1234&quot;</span>, <span class="string">&quot;5678&quot;</span>);
 
-    <span class="kw">let </span>body = UpdateChatSettingsBody::builder()
-        .slow_mode(<span class="bool-val">true</span>)
-        .slow_mode_wait_time(<span class="number">10</span>)
-        .build();
+    <span class="kw">let </span>body = UpdateChatSettingsBody {
+        slow_mode: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
+        slow_mode_wait_time: <span class="prelude-val">Some</span>(<span class="number">10</span>),
+        ..Default::default()
+    };
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

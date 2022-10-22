@@ -156,6 +156,7 @@
 <span id="156">156</span>
 <span id="157">157</span>
 <span id="158">158</span>
+<span id="159">159</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Raid another channel by sending the broadcaster’s viewers to the targeted channel.
 //! [`start-a-raid`](https://dev.twitch.tv/docs/api/reference#start-a-raid)
 //!
@@ -198,14 +199,15 @@
 <span class="doccomment">/// Query Parameters for [Start A Raid](super::start_a_raid)
 ///
 /// [`start-a-raid`](https://dev.twitch.tv/docs/api/reference#start-a-raid)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>StartARaidRequest {
     <span class="doccomment">/// The ID of the broadcaster that’s sending the raiding party.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span>from_broadcaster_id: types::UserId,
     <span class="doccomment">/// The ID of the broadcaster to raid.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span>to_broadcaster_id: types::UserId,
 }
 

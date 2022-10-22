@@ -233,6 +233,21 @@
 <span id="233">233</span>
 <span id="234">234</span>
 <span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
 </pre><pre class="rust"><code><span class="doccomment">//! End a poll that is currently active.
 //!
 //! [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
@@ -297,9 +312,8 @@
 <span class="doccomment">/// Query Parameters for [End Poll](super::end_poll)
 ///
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
-</span><span class="attribute">#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>EndPollRequest {}
 
@@ -311,14 +325,15 @@
 <span class="doccomment">/// Body Parameters for [End Poll](super::end_poll)
 ///
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>EndPollBody {
     <span class="doccomment">/// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
-    </span><span class="attribute">#[builder(setter(into))]
-    </span><span class="kw">pub </span>broadcaster_id: String,
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
+    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// ID of the poll.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>id: types::PollId,
     <span class="doccomment">/// The poll status to be set.
     ///
@@ -326,6 +341,21 @@
     /// [`TERMINATED`](types::PollStatus::Terminated): End the poll manually, but allow it to be viewed publicly.
     /// [`ARCHIVED`](types::PollStatus::Archived): End the poll manually and do not allow it to be viewed publicly.
     </span><span class="kw">pub </span>status: PollStatus,
+}
+
+<span class="kw">impl </span>EndPollBody {
+    <span class="doccomment">/// End a poll that is currently active.
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        id: <span class="kw">impl </span>Into&lt;types::PollId&gt;,
+        status: PollStatus,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            id: id.into(),
+            status,
+        }
+    }
 }
 
 <span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>EndPollBody {}
@@ -411,13 +441,13 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = EndPollRequest::builder().build();
+    <span class="kw">let </span>req = EndPollRequest::new();
 
-    <span class="kw">let </span>body = EndPollBody::builder()
-        .broadcaster_id(<span class="string">&quot;274637212&quot;</span>)
-        .id(<span class="string">&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;</span>)
-        .status(PollStatus::Terminated)
-        .build();
+    <span class="kw">let </span>body = EndPollBody::new(
+        <span class="string">&quot;274637212&quot;</span>,
+        <span class="string">&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;</span>,
+        PollStatus::Terminated,
+    );
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

@@ -128,6 +128,17 @@
 <span id="128">128</span>
 <span id="129">129</span>
 <span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Removes a moderator from the broadcaster’s chat room.
 //! [`remove-channel-moderator`](https://dev.twitch.tv/docs/api/reference#remove-channel-moderator)
 //!
@@ -176,15 +187,29 @@
 <span class="doccomment">/// Query Parameters for [Remove Channel Moderator](super::remove_channel_moderator)
 ///
 /// [`remove-channel-moderator`](https://dev.twitch.tv/docs/api/reference#remove-channel-moderator)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>RemoveChannelModeratorRequest {
     <span class="doccomment">/// The ID of the broadcaster that owns the chat room.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// The ID of the user to remove as a moderator from the broadcaster’s chat room.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>moderator_id: types::UserId,
+}
+
+<span class="kw">impl </span>RemoveChannelModeratorRequest {
+    <span class="doccomment">/// Remove moderator
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Remove Channel Moderator](super::remove_channel_moderator)
@@ -238,10 +263,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = RemoveChannelModeratorRequest::builder()
-        .broadcaster_id(<span class="string">&quot;1234&quot;</span>)
-        .moderator_id(<span class="string">&quot;5678&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = RemoveChannelModeratorRequest::new(<span class="string">&quot;1234&quot;</span>, <span class="string">&quot;5678&quot;</span>);
 
     <span class="macro">dbg!</span>(req.create_request(<span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

@@ -214,6 +214,21 @@
 <span id="214">214</span>
 <span id="215">215</span>
 <span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets the broadcaster’s chat settings.
 //! [`get-chat-settings`](https://dev.twitch.tv/docs/api/reference#get-chat-settings)
 //!
@@ -274,11 +289,12 @@
 <span class="doccomment">/// Query Parameters for [Get Chat Settings](super::get_chat_settings)
 ///
 /// [`get-chat-settings`](https://dev.twitch.tv/docs/api/reference#get-chat-settings)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChatSettingsRequest {
     <span class="doccomment">/// The ID of the broadcaster whose chat settings you want to get.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// Required only to access the [`non_moderator_chat_delay`](ChatSettings::non_moderator_chat_delay)
     /// or [`non_moderator_chat_delay_duration`](ChatSettings::non_moderator_chat_delay_duration) settings.
@@ -291,8 +307,27 @@
     ///
     /// If the broadcaster wants to get their own settings (instead of having the moderator do it),
     /// set this parameter to the broadcaster’s ID, too.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>moderator_id: <span class="prelude-ty">Option</span>&lt;types::UserId&gt;,
+}
+
+<span class="kw">impl </span>GetChatSettingsRequest {
+    <span class="doccomment">/// Get chat settings for broadcasters channel
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: <span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="doccomment">/// The ID of a user that has permission to moderate the broadcaster’s chat room.
+    ///
+    /// Required only to access the [`non_moderator_chat_delay`](ChatSettings::non_moderator_chat_delay)
+    /// or [`non_moderator_chat_delay_duration`](ChatSettings::non_moderator_chat_delay_duration) settings.
+    </span><span class="kw">pub fn </span>moderator_id(<span class="kw-2">mut </span><span class="self">self</span>, moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.moderator_id = <span class="prelude-val">Some</span>(moderator_id.into());
+        <span class="self">self
+    </span>}
 }
 
 <span class="kw">impl </span>Request <span class="kw">for </span>GetChatSettingsRequest {
@@ -353,15 +388,12 @@
 #[test]
 </span><span class="kw">fn </span>test_request_as_mod() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetChatSettingsRequest::builder()
-        .broadcaster_id(<span class="string">&quot;1234&quot;</span>.to_owned())
-        <span class="comment">// Twitch&#39;s example is wrong,
-        // they didn&#39;t include a moderator id in the request
-        // but received `non_moderator_chat_delay`.
-        </span>.moderator_id(types::UserId::from(<span class="string">&quot;713936733&quot;</span>))
-        .build();
+    <span class="kw">let </span>req = GetChatSettingsRequest::broadcaster_id(<span class="string">&quot;1234&quot;</span>).moderator_id(<span class="string">&quot;713936733&quot;</span>);
 
-    <span class="comment">// From twitch docs
+    <span class="comment">// Twitch&#39;s example is wrong,
+    // they didn&#39;t include a moderator id in the request
+    // but received `non_moderator_chat_delay`.
+    // From twitch docs
     </span><span class="kw">let </span>data = <span class="string">br#&quot;
     {
       &quot;data&quot;: [
@@ -397,9 +429,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request_as_user() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetChatSettingsRequest::builder()
-        .broadcaster_id(<span class="string">&quot;11148817&quot;</span>.to_owned())
-        .build();
+    <span class="kw">let </span>req = GetChatSettingsRequest::broadcaster_id(<span class="string">&quot;11148817&quot;</span>);
 
     <span class="comment">// From twitch docs
     </span><span class="kw">let </span>data = <span class="string">br#&quot;

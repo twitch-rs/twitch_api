@@ -152,6 +152,20 @@
 <span id="152">152</span>
 <span id="153">153</span>
 <span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Update the settings for a channel’s stream schedule. This can be used for setting vacation details.
 //!
 //! [`update-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference/#update-channel-stream-schedule)
@@ -200,24 +214,38 @@
 <span class="doccomment">/// Query Parameters for [Update Channel Stream Schedule](super::update_channel_stream_schedule)
 ///
 /// [`update-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateChannelStreamScheduleRequest {
     <span class="doccomment">/// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// Indicates if Vacation Mode is enabled. Set to true to add a vacation or false to remove vacation from the channel streaming schedule.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>is_vacation_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// Start time for vacation specified in RFC3339 format. Required if is_vacation_enabled is set to true.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>vacation_start_time: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
     <span class="doccomment">/// End time for vacation specified in RFC3339 format. Required if is_vacation_enabled is set to true.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>vacation_end_time: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
     <span class="doccomment">/// The timezone for when the vacation is being scheduled using the IANA time zone database format. Required if is_vacation_enabled is set to true.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>timezone: <span class="prelude-ty">Option</span>&lt;String&gt;,
+}
+
+<span class="kw">impl </span>UpdateChannelStreamScheduleRequest {
+    <span class="doccomment">/// Update the settings for a channel’s stream schedule.
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            is_vacation_enabled: Default::default(),
+            vacation_start_time: Default::default(),
+            vacation_end_time: Default::default(),
+            timezone: Default::default(),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Update Channel Stream Schedule](super::update_channel_stream_schedule)
@@ -279,13 +307,13 @@
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">use </span>std::convert::TryInto;
-    <span class="kw">let </span>req = UpdateChannelStreamScheduleRequest::builder()
-        .broadcaster_id(<span class="string">&quot;141981764&quot;</span>)
-        .is_vacation_enabled(<span class="bool-val">true</span>)
-        .vacation_start_time(<span class="prelude-val">Some</span>(<span class="string">&quot;2021-05-16T00:00:00Z&quot;</span>.try_into().unwrap()))
-        .vacation_end_time(<span class="prelude-val">Some</span>(<span class="string">&quot;2021-05-23T00:00:00Z&quot;</span>.try_into().unwrap()))
-        .timezone(<span class="string">&quot;America/New_York&quot;</span>.to_string())
-        .build();
+    <span class="kw">let </span>req = UpdateChannelStreamScheduleRequest {
+        is_vacation_enabled: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
+        vacation_start_time: <span class="prelude-val">Some</span>(<span class="string">&quot;2021-05-16T00:00:00Z&quot;</span>.try_into().unwrap()),
+        vacation_end_time: <span class="prelude-val">Some</span>(<span class="string">&quot;2021-05-23T00:00:00Z&quot;</span>.try_into().unwrap()),
+        timezone: <span class="prelude-val">Some</span>(<span class="string">&quot;America/New_York&quot;</span>.to_string()),
+        ..UpdateChannelStreamScheduleRequest::broadcaster_id(<span class="string">&quot;141981764&quot;</span>)
+    };
 
     <span class="kw">let </span>body = helix::EmptyBody;
 

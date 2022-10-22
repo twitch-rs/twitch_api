@@ -45,7 +45,6 @@
 <span id="45">45</span>
 <span id="46">46</span>
 <span id="47">47</span>
-<span id="48">48</span>
 </pre><pre class="rust"><code><span class="kw">use </span>twitch_api::HelixClient;
 <span class="kw">use </span>twitch_oauth2::{AccessToken, TwitchToken, UserToken};
 
@@ -80,13 +79,12 @@
 
     <span class="kw">let </span>broadcaster_id = token.validate_token(<span class="kw-2">&amp;</span>client).<span class="kw">await</span><span class="question-mark">?</span>.user_id.unwrap();
 
-    <span class="kw">let </span>req = twitch_api::helix::channels::ModifyChannelInformationRequest::builder()
-        .broadcaster_id(<span class="kw-2">&amp;*</span>broadcaster_id)
-        .build();
+    <span class="kw">let </span>req = twitch_api::helix::channels::ModifyChannelInformationRequest::broadcaster_id(
+        broadcaster_id,
+    );
 
-    <span class="kw">let </span>data = twitch_api::helix::channels::ModifyChannelInformationBody::builder()
-        .title(<span class="string">&quot;Hello World!&quot;</span>.to_string())
-        .build();
+    <span class="kw">let </span><span class="kw-2">mut </span>data = twitch_api::helix::channels::ModifyChannelInformationBody::new();
+    data.title(<span class="string">&quot;Hello World!&quot;</span>);
 
     <span class="macro">println!</span>(<span class="string">&quot;scopes: {:?}&quot;</span>, token.scopes());
     <span class="kw">let </span>response = client.req_patch(req, data, <span class="kw-2">&amp;</span>token).<span class="kw">await</span><span class="question-mark">?</span>;

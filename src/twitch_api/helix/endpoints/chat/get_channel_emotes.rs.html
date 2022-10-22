@@ -119,6 +119,14 @@
 <span id="119">119</span>
 <span id="120">120</span>
 <span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets all custom emotes for a specific Twitch channel including subscriber emotes, Bits tier emotes, and follower emotes.
 //! [`get-channel-emotes`](https://dev.twitch.tv/docs/api/reference#get-channel-emotes)
 //!
@@ -164,12 +172,22 @@
 <span class="doccomment">/// Query Parameters for [Get Channel Emotes](super::get_channel_emotes)
 ///
 /// [`get-channel-emotes`](https://dev.twitch.tv/docs/api/reference#get-channel-emotes)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChannelEmotesRequest {
     <span class="doccomment">/// The broadcaster whose emotes are being requested.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+}
+
+<span class="kw">impl </span>GetChannelEmotesRequest {
+    <span class="doccomment">/// Get emotes in a specific broadcasters channel.
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Get Channel Emotes](super::get_channel_emotes)
@@ -191,9 +209,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetChannelEmotesRequest::builder()
-        .broadcaster_id(<span class="string">&quot;304456832&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = GetChannelEmotesRequest::broadcaster_id(<span class="string">&quot;304456832&quot;</span>);
 
     <span class="comment">// From twitch docs
     // FIXME: Example has ... and is malformed, uses [] in images

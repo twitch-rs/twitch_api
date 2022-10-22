@@ -116,6 +116,14 @@
 <span id="116">116</span>
 <span id="117">117</span>
 <span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets a list of custom chat badges that can be used in chat for the specified channel. This includes subscriber badges and Bit badges.
 //! [`get-channel-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges)
 //!
@@ -161,12 +169,22 @@
 <span class="doccomment">/// Query Parameters for [Get Channel Chat Badges](super::get_channel_chat_badges)
 ///
 /// [`get-channel-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChannelChatBadgesRequest {
     <span class="doccomment">/// The broadcaster whose chat badges are being requested. Provided broadcaster_id must match the user_id in the user OAuth token.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+}
+
+<span class="kw">impl </span>GetChannelChatBadgesRequest {
+    <span class="doccomment">/// Get chat badges for the specified broadcaster.
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Get Channel Chat Badges](super::get_channel_chat_badges)
@@ -188,9 +206,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetChannelChatBadgesRequest::builder()
-        .broadcaster_id(<span class="string">&quot;135093069&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = GetChannelChatBadgesRequest::broadcaster_id(<span class="string">&quot;135093069&quot;</span>);
 
     <span class="comment">// From twitch docs
     // FIXME: Example has ...

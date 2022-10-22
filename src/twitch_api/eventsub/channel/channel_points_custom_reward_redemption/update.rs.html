@@ -97,21 +97,55 @@
 <span id="97">97</span>
 <span id="98">98</span>
 <span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
 </pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;channel.channel_points_custom_reward_redemption.update&quot;</span>)]
 </span><span class="doccomment">//! A redemption of a channel points custom reward has been updated for the specified channel.
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="doccomment">/// [`channel.channel_points_custom_reward_redemption.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionupdate): a redemption of a channel points custom reward has been updated for the specified channel.
-</span><span class="attribute">#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChannelPointsCustomRewardRedemptionUpdateV1 {
     <span class="doccomment">/// The broadcaster user ID for the channel you want to receive channel points custom reward update notifications for.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_user_id: types::UserId,
     <span class="doccomment">/// Optional. Specify a reward id to only receive notifications for a specific reward.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>reward_id: <span class="prelude-ty">Option</span>&lt;types::RewardId&gt;,
+}
+
+<span class="kw">impl </span>ChannelPointsCustomRewardRedemptionUpdateV1 {
+    <span class="doccomment">/// The broadcaster user ID for the channel you want to receive channel points custom reward update notifications for.
+    </span><span class="kw">pub fn </span>broadcaster_user_id(broadcaster_user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_user_id: broadcaster_user_id.into(),
+            reward_id: <span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="doccomment">/// Specify a reward id to only receive notifications for a specific reward.
+    </span><span class="kw">pub fn </span>reward_id(<span class="kw-2">mut </span><span class="self">self</span>, reward_id: <span class="kw">impl </span>Into&lt;types::RewardId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.reward_id = <span class="prelude-val">Some</span>(reward_id.into());
+        <span class="self">self
+    </span>}
 }
 
 <span class="kw">impl </span>EventSubscription <span class="kw">for </span>ChannelPointsCustomRewardRedemptionUpdateV1 {

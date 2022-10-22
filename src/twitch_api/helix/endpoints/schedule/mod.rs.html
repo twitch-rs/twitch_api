@@ -81,6 +81,11 @@
 <span id="81">81</span>
 <span id="82">82</span>
 <span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding stream schedules
 </span><span class="kw">use crate</span>::{
     helix::{<span class="self">self</span>, Request},
@@ -89,6 +94,7 @@
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="kw">pub mod </span>create_channel_stream_schedule_segment;
+<span class="kw">pub mod </span>delete_channel_stream_schedule_segment;
 <span class="kw">pub mod </span>get_channel_stream_schedule;
 <span class="kw">pub mod </span>update_channel_stream_schedule;
 <span class="kw">pub mod </span>update_channel_stream_schedule_segment;
@@ -96,6 +102,10 @@
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>create_channel_stream_schedule_segment::{
     CreateChannelStreamScheduleSegmentBody, CreateChannelStreamScheduleSegmentRequest,
+};
+<span class="attribute">#[doc(inline)]
+</span><span class="kw">pub use </span>delete_channel_stream_schedule_segment::{
+    DeleteChannelStreamScheduleSegment, DeleteChannelStreamScheduleSegmentRequest,
 };
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>get_channel_stream_schedule::GetChannelStreamScheduleRequest;

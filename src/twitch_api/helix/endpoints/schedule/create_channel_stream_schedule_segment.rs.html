@@ -185,6 +185,36 @@
 <span id="185">185</span>
 <span id="186">186</span>
 <span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
 //! [`create-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment)
 //!
@@ -260,38 +290,67 @@
 <span class="doccomment">/// Query Parameters for [Create Channel Stream Schedule Segment](super::create_channel_stream_schedule_segment)
 ///
 /// [`create-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreateChannelStreamScheduleSegmentRequest {
     <span class="doccomment">/// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+}
+
+<span class="kw">impl </span>CreateChannelStreamScheduleSegmentRequest {
+    <span class="doccomment">/// Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Body Parameters for [Create Channel Stream Schedule Segment](super::create_channel_stream_schedule_segment)
 ///
 /// [`create-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreateChannelStreamScheduleSegmentBody {
     <span class="doccomment">/// Start time for the scheduled broadcast specified in RFC3339 format.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>start_time: types::Timestamp,
     <span class="comment">// FIXME: specific braid?
     </span><span class="doccomment">/// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>timezone: String,
     <span class="doccomment">/// Indicates if the scheduled broadcast is recurring weekly.
     </span><span class="kw">pub </span>is_recurring: bool,
     <span class="doccomment">/// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>duration: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Game/Category ID for the scheduled broadcast.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>category_id: <span class="prelude-ty">Option</span>&lt;types::CategoryId&gt;,
     <span class="doccomment">/// Title for the scheduled broadcast. Maximum: 140 characters.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>title: <span class="prelude-ty">Option</span>&lt;String&gt;,
+}
+
+<span class="kw">impl </span>CreateChannelStreamScheduleSegmentBody {
+    <span class="doccomment">/// Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
+    </span><span class="kw">pub fn </span>new(
+        start_time: <span class="kw">impl </span>Into&lt;types::Timestamp&gt;,
+        timezone: String,
+        is_recurring: bool,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            start_time: start_time.into(),
+            timezone,
+            is_recurring,
+            duration: Default::default(),
+            category_id: Default::default(),
+            title: Default::default(),
+        }
+    }
 }
 
 <span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>CreateChannelStreamScheduleSegmentBody {}
@@ -316,20 +375,21 @@
 <span class="attribute">#[cfg(test)]
 #[test]
 </span><span class="kw">fn </span>test_request() {
-    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">use </span>std::convert::TryFrom;
-    <span class="kw">let </span>req = CreateChannelStreamScheduleSegmentRequest::builder()
-        .broadcaster_id(<span class="string">&quot;141981764&quot;</span>)
-        .build();
 
-    <span class="kw">let </span>body = CreateChannelStreamScheduleSegmentBody::builder()
-        .start_time(types::Timestamp::try_from(<span class="string">&quot;2021-07-01T18:00:00Z&quot;</span>).unwrap())
-        .timezone(<span class="string">&quot;America/New_York&quot;</span>)
-        .is_recurring(<span class="bool-val">false</span>)
-        .duration(<span class="string">&quot;60&quot;</span>.to_string())
-        .category_id(<span class="prelude-val">Some</span>(<span class="string">&quot;509670&quot;</span>.into()))
-        .title(<span class="string">&quot;TwitchDev Monthly Update // July 1, 2021&quot;</span>.to_string())
-        .build();
+    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+    <span class="kw">let </span>req = CreateChannelStreamScheduleSegmentRequest::broadcaster_id(<span class="string">&quot;141981764&quot;</span>);
+
+    <span class="kw">let </span>body = CreateChannelStreamScheduleSegmentBody {
+        duration: <span class="prelude-val">Some</span>(<span class="string">&quot;60&quot;</span>.to_string()),
+        category_id: <span class="prelude-val">Some</span>(<span class="string">&quot;509670&quot;</span>.into()),
+        title: <span class="prelude-val">Some</span>(<span class="string">&quot;TwitchDev Monthly Update // July 1, 2021&quot;</span>.to_string()),
+        ..CreateChannelStreamScheduleSegmentBody::new(
+            types::Timestamp::try_from(<span class="string">&quot;2021-07-01T18:00:00Z&quot;</span>).unwrap(),
+            <span class="string">&quot;America/New_York&quot;</span>.to_owned(),
+            <span class="bool-val">false</span>,
+        )
+    };
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

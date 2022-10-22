@@ -42,11 +42,6 @@
 <span id="42">42</span>
 <span id="43">43</span>
 <span id="44">44</span>
-<span id="45">45</span>
-<span id="46">46</span>
-<span id="47">47</span>
-<span id="48">48</span>
-<span id="49">49</span>
 </pre><pre class="rust"><code><span class="kw">use </span>twitch_api::{helix::streams::GetStreamsRequest, TwitchClient};
 <span class="kw">use </span>twitch_oauth2::{AccessToken, UserToken};
 <span class="kw">fn </span>main() {
@@ -85,12 +80,7 @@
     )
     .<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="kw">let </span>req = GetStreamsRequest::builder()
-        .user_login(<span class="macro">vec!</span>[args
-            .next()
-            .expect(<span class="string">&quot;please provide an username&quot;</span>)
-            .into()])
-        .build();
+    <span class="kw">let </span>req = GetStreamsRequest::user_login(args.next().expect(<span class="string">&quot;please provide an username&quot;</span>));
     foo_client.client.helix.clone_client();
     <span class="kw">let </span>response = foo_client.client.helix.req_get(req, <span class="kw-2">&amp;</span>token).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, response);

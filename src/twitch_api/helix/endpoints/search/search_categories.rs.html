@@ -172,6 +172,23 @@
 <span id="172">172</span>
 <span id="173">173</span>
 <span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Returns a list of games or categories that match the query via name either entirely or partially.
 //! [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
 //!
@@ -217,21 +234,40 @@
 </span><span class="doccomment">/// Query Parameters for [Search Categories](super::search_categories)
 ///
 /// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SearchCategoriesRequest {
     <span class="doccomment">/// URI encoded search query
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>query: String,
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    </span><span class="attribute">#[builder(default)]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
     </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;,
     <span class="doccomment">/// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    </span><span class="attribute">#[builder(default)]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
     </span><span class="kw">pub </span>before: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;,
     <span class="doccomment">/// Number of values to be returned per page. Limit: 100. Default: 20.
-    </span><span class="attribute">#[builder(setter(into), default)]
-    </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into), default))]
+    </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+}
+
+<span class="kw">impl </span>SearchCategoriesRequest {
+    <span class="doccomment">/// Search categories with the following query.
+    </span><span class="kw">pub fn </span>query(query: <span class="kw">impl </span>Into&lt;String&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            query: query.into(),
+            after: <span class="prelude-val">None</span>,
+            before: <span class="prelude-val">None</span>,
+            first: <span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="doccomment">/// Set amount of results returned per page.
+    </span><span class="kw">pub fn </span>first(<span class="kw-2">mut </span><span class="self">self</span>, first: usize) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.first = <span class="prelude-val">Some</span>(first);
+        <span class="self">self
+    </span>}
 }
 
 <span class="doccomment">/// Return Values for [Search Categories](super::search_categories)
@@ -284,7 +320,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = SearchCategoriesRequest::builder().query(<span class="string">&quot;fort&quot;</span>).build();
+    <span class="kw">let </span>req = SearchCategoriesRequest::query(<span class="string">&quot;fort&quot;</span>);
 
     <span class="comment">// From twitch docs
     </span><span class="kw">let </span>data = <span class="string">br#&quot;
@@ -323,9 +359,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request_null() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = SearchCategoriesRequest::builder()
-        .query(<span class="string">&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = SearchCategoriesRequest::query(<span class="string">&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;</span>);
 
     <span class="comment">// From twitch docs
     </span><span class="kw">let </span>data = <span class="string">br#&quot;

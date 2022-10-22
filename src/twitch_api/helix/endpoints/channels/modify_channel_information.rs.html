@@ -166,6 +166,46 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Modify channel information for users.
 //! [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
 //!
@@ -226,35 +266,76 @@
 <span class="doccomment">/// Query Parameters for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ModifyChannelInformationRequest {
     <span class="doccomment">/// ID of the channel
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+}
+
+<span class="kw">impl </span>ModifyChannelInformationRequest {
+    <span class="doccomment">/// Modify specified broadcasters channel
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        ModifyChannelInformationRequest {
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 <span class="comment">// FIXME: Twitch docs sucks...
 </span><span class="doccomment">/// Body Parameters for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-</span><span class="attribute">#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ModifyChannelInformationBody {
     <span class="doccomment">/// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>game_id: <span class="prelude-ty">Option</span>&lt;types::CategoryId&gt;,
     <span class="doccomment">/// Language of the channel
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>broadcaster_language: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Title of the stream. Value must not be an empty string.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>title: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 
+<span class="kw">impl </span>ModifyChannelInformationBody {
+    <span class="doccomment">/// Data to set on the stream.
+    ///
+    ///  # Examples
+    ///
+    /// ```rust
+    /// # use twitch_api::helix::channels::modify_channel_information::ModifyChannelInformationBody;
+    ///
+    /// let body = ModifyChannelInformationBody::new().game_id(&quot;123&quot;);
+    /// ```
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ Default::default() }
+
+    <span class="doccomment">/// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
+    </span><span class="kw">pub fn </span>game_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, game_id: <span class="kw">impl </span>Into&lt;types::CategoryId&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.game_id = <span class="prelude-val">Some</span>(game_id.into());
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Language of the channel
+    </span><span class="kw">pub fn </span>broadcaster_language(<span class="kw-2">&amp;mut </span><span class="self">self</span>, broadcaster_language: <span class="kw">impl </span>Into&lt;String&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.broadcaster_language = <span class="prelude-val">Some</span>(broadcaster_language.into());
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Title of the stream. Value must not be an empty string.
+    </span><span class="kw">pub fn </span>title(<span class="kw-2">&amp;mut </span><span class="self">self</span>, title: <span class="kw">impl </span>Into&lt;String&gt;) -&gt; <span class="kw-2">&amp;mut </span>ModifyChannelInformationBody {
+        <span class="self">self</span>.title = <span class="prelude-val">Some</span>(title.into());
+        <span class="self">self
+    </span>}
+}
+
 <span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>ModifyChannelInformationBody {}
+
 <span class="doccomment">/// Return Values for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
@@ -311,13 +392,12 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = ModifyChannelInformationRequest::builder()
-        .broadcaster_id(String::from(<span class="string">&quot;0&quot;</span>))
-        .build();
+    <span class="kw">let </span>req = ModifyChannelInformationRequest::broadcaster_id(<span class="string">&quot;0&quot;</span>);
 
-    <span class="kw">let </span>body = ModifyChannelInformationBody::builder()
-        .title(<span class="string">&quot;Hello World!&quot;</span>.to_string())
-        .build();
+    <span class="kw">let </span>body = ModifyChannelInformationBody {
+        title: <span class="prelude-val">Some</span>(<span class="string">&quot;Hello World!&quot;</span>.to_string()),
+        ..Default::default()
+    };
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

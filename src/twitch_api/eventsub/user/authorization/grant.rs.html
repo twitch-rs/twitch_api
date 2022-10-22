@@ -67,17 +67,29 @@
 <span id="67">67</span>
 <span id="68">68</span>
 <span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
 </pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;user.authorization.grant&quot;</span>)]
 </span><span class="doccomment">//! A user’s authorization has been granted to your client id.
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="doccomment">/// [`user.authorization.grant`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationgrant): a user’s authorization has been granted to your client id.
-</span><span class="attribute">#[derive(Clone, Debug, typed_builder::TypedBuilder, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UserAuthorizationGrantV1 {
     <span class="doccomment">/// Your application’s client id. The provided client_id must match the client id in the application access token
-    </span><span class="attribute">#[builder(setter(into))]
-    </span><span class="kw">pub </span>client_id: types::UserId,
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
+    </span><span class="kw">pub </span>client_id: String,
+}
+
+<span class="kw">impl </span>UserAuthorizationGrantV1 {
+    <span class="doccomment">/// Your application’s client id. The provided client_id must match the client id in the application access token
+    </span><span class="kw">pub fn </span>new(client_id: String) -&gt; <span class="self">Self </span>{ <span class="self">Self </span>{ client_id } }
 }
 
 <span class="kw">impl </span>EventSubscription <span class="kw">for </span>UserAuthorizationGrantV1 {

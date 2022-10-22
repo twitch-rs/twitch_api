@@ -141,8 +141,6 @@
 <span id="141">141</span>
 <span id="142">142</span>
 <span id="143">143</span>
-<span id="144">144</span>
-<span id="145">145</span>
 </pre><pre class="rust"><code><span class="kw">use </span>futures::TryStreamExt;
 <span class="kw">use </span>twitch_api::types;
 <span class="kw">use </span>twitch_api::HelixClient;
@@ -261,9 +259,7 @@
     );
 
     <span class="macro">println!</span>(<span class="string">&quot;====Banned users====&quot;</span>);
-    <span class="kw">let </span>banned_users_req = GetBannedUsersRequest::builder()
-        .broadcaster_id(broadcaster_id)
-        .build();
+    <span class="kw">let </span>banned_users_req = GetBannedUsersRequest::broadcaster_id(broadcaster_id);
     <span class="kw">let </span><span class="kw-2">mut </span>response = client.req_get(banned_users_req, token).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="macro">println!</span>(
         <span class="string">&quot;{:?}&quot;</span>,

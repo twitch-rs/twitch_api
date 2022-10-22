@@ -114,6 +114,10 @@
 <span id="114">114</span>
 <span id="115">115</span>
 <span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets a list of users who have editor permissions for a specific channel.
 //! [`get-channel-editors`](https://dev.twitch.tv/docs/api/reference#get-channel-editors)
 //!
@@ -121,13 +125,11 @@
 //!
 //! ## Request: [GetChannelEditorsRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelEditorsRequest`] with the [`GetChannelEditorsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelEditorsRequest`] with the [`GetChannelEditorsRequest::broadcaster_id()`] or [`GetChannelEditorsRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::get_channel_editors;
-//! let request = get_channel_editors::GetChannelEditorsRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
+//! let request = get_channel_editors::GetChannelEditorsRequest::broadcaster_id(&quot;1234&quot;);
 //! ```
 //!
 //! ## Response: [Editor]
@@ -144,9 +146,7 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = get_channel_editors::GetChannelEditorsRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
+//! let request = get_channel_editors::GetChannelEditorsRequest::broadcaster_id(&quot;1234&quot;);
 //! let response: Vec&lt;get_channel_editors::Editor&gt; = client.req_get(request, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -160,12 +160,22 @@
 <span class="doccomment">/// Query Parameters for [Get Channel Editors](super::get_channel_editors)
 ///
 /// [`get-channel-editors`](https://dev.twitch.tv/docs/api/reference#get-channel-editors)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChannelEditorsRequest {
     <span class="doccomment">/// Broadcaster’s user ID associated with the channel.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+}
+
+<span class="kw">impl </span>GetChannelEditorsRequest {
+    <span class="doccomment">/// Get specified broadcasters channel editors
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Get Channel Editors](super::get_channel_editors)
@@ -197,9 +207,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetChannelEditorsRequest::builder()
-        .broadcaster_id(<span class="string">&quot;44445592&quot;</span>.to_string())
-        .build();
+    <span class="kw">let </span>req = GetChannelEditorsRequest::broadcaster_id(<span class="string">&quot;44445592&quot;</span>.to_string());
 
     <span class="comment">// From twitch docs
     </span><span class="kw">let </span>data = <span class="string">br#&quot;

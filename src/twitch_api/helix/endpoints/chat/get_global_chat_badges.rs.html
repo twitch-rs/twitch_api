@@ -101,7 +101,6 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
-<span id="104">104</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets a list of chat badges that can be used in chat for any channel.
 //! [`get-global-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-global-chat-badges)
 //!
@@ -143,14 +142,13 @@
 <span class="doccomment">/// Query Parameters for [Get Global Chat Badges](super::get_global_chat_badges)
 ///
 /// [`get-global-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-global-chat-badges)
-</span><span class="attribute">#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetGlobalChatBadgesRequest {}
 
 <span class="kw">impl </span>GetGlobalChatBadgesRequest {
-    <span class="doccomment">/// Make a new [`Self`]
+    <span class="doccomment">/// Get global chat badges
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::default() }
 }
 

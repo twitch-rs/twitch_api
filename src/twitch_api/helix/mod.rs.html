@@ -169,8 +169,6 @@
 <span id="169">169</span>
 <span id="170">170</span>
 <span id="171">171</span>
-<span id="172">172</span>
-<span id="173">173</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
 //!
 //!
@@ -183,9 +181,7 @@
 //! # #[tokio::main]
 //! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
 //!
-//! let request = GetUsersRequest::builder()
-//!     .login(vec![&quot;justintv123&quot;.into()])
-//!     .build();
+//! let request = GetUsersRequest::login(&quot;justintv123&quot;);
 //!
 //! // Send it however you want
 //! // Create a [`http::Response&lt;hyper::body::Bytes&gt;`] with RequestGet::create_request, which takes an access token and a client_id

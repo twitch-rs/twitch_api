@@ -239,7 +239,22 @@
 <span id="239">239</span>
 <span id="240">240</span>
 <span id="241">241</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Get information about all Channel Points Predictions or specific Channel Points Predictions for a Twitch channel.
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Create a Channel Points Prediction for a specific Twitch channel.
 //!
 //! Results are ordered by most recent, so it can be assumed that the currently active or locked Prediction will be the first item.
 //! [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
@@ -308,9 +323,8 @@
 <span class="doccomment">/// Query Parameters for [Create Prediction](super::create_prediction)
 ///
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
-</span><span class="attribute">#[derive(
-    PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug, Default,
-)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreatePredictionRequest {}
 
@@ -322,14 +336,15 @@
 <span class="doccomment">/// Body Parameters for [Create Prediction](super::create_prediction)
 ///
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreatePredictionBody {
     <span class="doccomment">/// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// Title for the Prediction. Maximum: 45 characters.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>title: String,
     <span class="doccomment">/// Array of outcome objects with titles for the Prediction. Array size must be 2.
     </span><span class="kw">pub </span>outcomes: (NewPredictionOutcome, NewPredictionOutcome),
@@ -337,10 +352,28 @@
     </span><span class="kw">pub </span>prediction_window: i64,
 }
 
+<span class="kw">impl </span>CreatePredictionBody {
+    <span class="doccomment">/// Create a Channel Points Prediction for a specific Twitch channel.
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        title: String,
+        outcomes: (NewPredictionOutcome, NewPredictionOutcome),
+        prediction_window: i64,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            title,
+            outcomes,
+            prediction_window,
+        }
+    }
+}
+
 <span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>CreatePredictionBody {}
 
 <span class="doccomment">/// Choice settings for a poll
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>NewPredictionOutcome {
     <span class="doccomment">/// Text displayed for the choice. Maximum: 25 characters.
@@ -418,17 +451,14 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = CreatePredictionRequest::builder().build();
+    <span class="kw">let </span>req = CreatePredictionRequest::new();
 
-    <span class="kw">let </span>body = CreatePredictionBody::builder()
-        .broadcaster_id(<span class="string">&quot;141981764&quot;</span>)
-        .title(<span class="string">&quot;Any leeks in the stream?&quot;</span>)
-        .outcomes(NewPredictionOutcome::new_tuple(
-            <span class="string">&quot;Yes, give it time.&quot;</span>,
-            <span class="string">&quot;Definitely not.&quot;</span>,
-        ))
-        .prediction_window(<span class="number">120</span>)
-        .build();
+    <span class="kw">let </span>body = CreatePredictionBody::new(
+        <span class="string">&quot;141981764&quot;</span>,
+        <span class="string">&quot;Any leeks in the stream?&quot;</span>.to_owned(),
+        NewPredictionOutcome::new_tuple(<span class="string">&quot;Yes, give it time.&quot;</span>, <span class="string">&quot;Definitely not.&quot;</span>),
+        <span class="number">120</span>,
+    );
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

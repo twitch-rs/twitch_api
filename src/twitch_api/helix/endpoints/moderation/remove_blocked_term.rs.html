@@ -133,6 +133,18 @@
 <span id="133">133</span>
 <span id="134">134</span>
 <span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Removes the word or phrase that the broadcaster is blocking users from using in their chat room.
 //! [`remove-blocked-term`](https://dev.twitch.tv/docs/api/reference#remove-blocked-term)
 //!
@@ -181,19 +193,35 @@
 <span class="doccomment">/// Query Parameters for [Remove Blocked Terms](super::remove_blocked_term)
 ///
 /// [`remove-blocked-term`](https://dev.twitch.tv/docs/api/reference#remove-blocked-term)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>RemoveBlockedTermRequest {
     <span class="doccomment">/// The ID of the broadcaster that owns the list of blocked terms.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     /// If the broadcaster wants to delete the blocked term (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>moderator_id: types::UserId,
     <span class="doccomment">/// The ID of the blocked term you want to delete.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>id: types::BlockedTermId,
+}
+
+<span class="kw">impl </span>RemoveBlockedTermRequest {
+    <span class="doccomment">/// Remove blocked term
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        id: <span class="kw">impl </span>Into&lt;types::BlockedTermId&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            id: id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Remove Blocked Terms](super::remove_blocked_term)
@@ -249,11 +277,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = RemoveBlockedTermRequest::builder()
-        .broadcaster_id(<span class="string">&quot;1234&quot;</span>)
-        .moderator_id(<span class="string">&quot;5678&quot;</span>)
-        .id(<span class="string">&quot;c9fc79b8-0f63-4ef7-9d38-efd811e74ac2&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = RemoveBlockedTermRequest::new(<span class="string">&quot;1234&quot;</span>, <span class="string">&quot;5678&quot;</span>, <span class="string">&quot;c9fc79b8-0f63-4ef7-9d38-efd811e74ac2&quot;</span>);
 
     <span class="comment">// From twitch docs
     </span><span class="kw">let </span>data = <span class="string">br#&quot;&quot;#</span>.to_vec();

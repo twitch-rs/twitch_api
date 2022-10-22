@@ -263,6 +263,15 @@
 <span id="263">263</span>
 <span id="264">264</span>
 <span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Bans a user from participating in a broadcaster’s chat room, or puts them in a timeout.
 //! [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 //!
@@ -321,25 +330,40 @@
 <span class="doccomment">/// Query Parameters for [Ban User](super::ban_user)
 ///
 /// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>BanUserRequest {
     <span class="doccomment">/// The ID of the broadcaster whose chat room the user is being banned from.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// The ID of a user that has permission to moderate the broadcaster’s chat room.
     /// This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster wants to ban the user (instead of having the moderator do it),
     /// set this parameter to the broadcaster’s ID, too.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>moderator_id: types::UserId,
+}
+
+<span class="kw">impl </span>BanUserRequest {
+    <span class="doccomment">/// Ban a user on this channel
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Body Parameters for [Ban User](super::ban_user)
 ///
 /// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>BanUserBody {
     <span class="doccomment">/// Duration of the (optional) timeout in seconds.
@@ -349,13 +373,13 @@
     /// To put a user in a timeout, include this field and specify the timeout period, in seconds.
     /// The minimum timeout is 1 second and the maximum is 1,209,600 seconds (2 weeks).
     /// To end a user’s timeout early, set this field to 1, or send an Unban user request.
-    </span><span class="attribute">#[builder(default, setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>duration: <span class="prelude-ty">Option</span>&lt;u32&gt;,
     <span class="doccomment">/// The reason the user is being banned or put in a timeout. The text is user defined and limited to a maximum of 500 characters.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>reason: String,
     <span class="doccomment">/// The ID of the user to ban or put in a timeout.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>user_id: types::UserId,
 }
 
@@ -459,10 +483,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = BanUserRequest::builder()
-        .broadcaster_id(<span class="string">&quot;1234&quot;</span>)
-        .moderator_id(<span class="string">&quot;5678&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = BanUserRequest::new(<span class="string">&quot;1234&quot;</span>, <span class="string">&quot;5678&quot;</span>);
 
     <span class="kw">let </span>body = BanUserBody::new(<span class="string">&quot;9876&quot;</span>, <span class="string">&quot;no reason&quot;</span>.to_string(), <span class="number">300</span>);
 
@@ -499,10 +520,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request_error() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = BanUserRequest::builder()
-        .broadcaster_id(<span class="string">&quot;1234&quot;</span>)
-        .moderator_id(<span class="string">&quot;5678&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = BanUserRequest::new(<span class="string">&quot;1234&quot;</span>, <span class="string">&quot;5678&quot;</span>);
 
     <span class="kw">let </span>body = BanUserBody::new(<span class="string">&quot;9876&quot;</span>, <span class="string">&quot;no reason&quot;</span>.to_string(), <span class="number">300</span>);
 

@@ -145,6 +145,18 @@
 <span id="145">145</span>
 <span id="146">146</span>
 <span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Starts a commercial on a specified channel.
 //! [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
 //!
@@ -198,10 +210,6 @@
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span>helix::RequestPost;
 
-<span class="kw">impl </span>StartCommercialRequest {
-    <span class="doccomment">/// Create a new [`StartCommercialRequest`]
-    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ StartCommercialRequest {} }
-}
 <span class="comment">// Not implementing builder since it&#39;s not really needed...
 </span><span class="doccomment">/// Query Parameters for [Start Commercial](super::start_commercial)
 ///
@@ -210,6 +218,11 @@
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>StartCommercialRequest {}
 
+<span class="kw">impl </span>StartCommercialRequest {
+    <span class="doccomment">/// Create a new [`StartCommercialRequest`]
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ StartCommercialRequest {} }
+}
+
 <span class="kw">impl </span>Default <span class="kw">for </span>StartCommercialRequest {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{ StartCommercialRequest::new() }
 }
@@ -217,14 +230,28 @@
 <span class="doccomment">/// Body Parameters for [Start Commercial](super::start_commercial)
 ///
 /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>StartCommercialBody {
     <span class="doccomment">/// ID of the channel requesting a commercial
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// Desired length of the commercial in seconds. Valid options are 30, 60, 90, 120, 150, 180.
     </span><span class="kw">pub </span>length: types::CommercialLength,
+}
+
+<span class="kw">impl </span>StartCommercialBody {
+    <span class="doccomment">/// Start a commercial in this broadcasters channel
+    </span><span class="kw">pub fn </span>new(
+        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        length: <span class="kw">impl </span>Into&lt;types::CommercialLength&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            length: length.into(),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Start Commercial](super::start_commercial)
@@ -263,10 +290,7 @@
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">let </span>req = StartCommercialRequest {};
 
-    <span class="kw">let </span>body = StartCommercialBody::builder()
-        .broadcaster_id(<span class="string">&quot;1234&quot;</span>)
-        .length(<span class="kw">crate</span>::types::CommercialLength::Length120)
-        .build();
+    <span class="kw">let </span>body = StartCommercialBody::new(<span class="string">&quot;1234&quot;</span>, types::CommercialLength::Length120);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

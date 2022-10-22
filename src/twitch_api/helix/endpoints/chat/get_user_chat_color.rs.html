@@ -125,6 +125,21 @@
 <span id="125">125</span>
 <span id="126">126</span>
 <span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets the color used for the user’s name in chat.
 //! [`get-user-chat-color`](https://dev.twitch.tv/docs/api/reference#get-user-chat-color)
 //!
@@ -170,11 +185,28 @@
 <span class="doccomment">/// Query Parameters for [Get Chatters](super::get_user_chat_color)
 ///
 /// [`get-user-chat-color`](https://dev.twitch.tv/docs/api/reference#get-user-chat-color)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetUserChatColorRequest {
     <span class="doccomment">/// The ID of the user whose color you want to get.
     </span><span class="kw">pub </span>user_id: Vec&lt;types::UserId&gt;,
+}
+
+<span class="kw">impl </span>GetUserChatColorRequest {
+    <span class="doccomment">/// Get chat color of specified user
+    </span><span class="kw">pub fn </span>user_id(user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            user_id: <span class="macro">vec!</span>[user_id.into()],
+        }
+    }
+
+    <span class="doccomment">/// Get chat colors of specified users
+    </span><span class="kw">pub fn </span>user_ids(user_ids: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>Into&lt;types::UserId&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            user_id: user_ids.into_iter().map(Into::into).collect(),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Get Chatters](super::get_user_chat_color)
@@ -214,9 +246,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetUserChatColorRequest::builder()
-        .user_id(<span class="macro">vec!</span>[<span class="string">&quot;11111&quot;</span>.into(), <span class="string">&quot;44444&quot;</span>.into()])
-        .build();
+    <span class="kw">let </span>req = GetUserChatColorRequest::user_ids([<span class="string">&quot;11111&quot;</span>, <span class="string">&quot;44444&quot;</span>]);
 
     <span class="comment">// From twitch docs
     // FIXME: Example has ...

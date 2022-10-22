@@ -68,7 +68,7 @@
     </span>.unwrap();
 
     <span class="kw">let </span>streams: Vec&lt;String&gt; = args.collect();
-    <span class="kw">let </span>req = GetStreamsRequest::builder().build();
+    <span class="kw">let </span>req = GetStreamsRequest::default();
 
     <span class="kw">let </span>response = client.helix.req_get(req, <span class="kw-2">&amp;</span>token).<span class="kw">await</span>.unwrap();
 

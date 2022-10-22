@@ -49,8 +49,6 @@
 <span id="49">49</span>
 <span id="50">50</span>
 <span id="51">51</span>
-<span id="52">52</span>
-<span id="53">53</span>
 </pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;channel&quot;</span>)]
 </span><span class="doccomment">//! Helix endpoints regarding channels
 //!
@@ -64,9 +62,7 @@
 //! # let _: &amp;HelixClient&lt;twitch_api::DummyHttpClient&gt; = &amp;client;
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let req = GetChannelInformationRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
+//! let req = GetChannelInformationRequest::broadcaster_id(&quot;1234&quot;);
 //!
 //! // Get Channel Information Request only returns one entry.
 //! println!(&quot;{:?}&quot;, &amp;client.req_get(req, &amp;token).await?.data);

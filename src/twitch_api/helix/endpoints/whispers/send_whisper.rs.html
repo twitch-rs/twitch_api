@@ -182,8 +182,6 @@
 <span id="182">182</span>
 <span id="183">183</span>
 <span id="184">184</span>
-<span id="185">185</span>
-<span id="186">186</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Sends a whisper message to the specified user.
 //! [`send-whisper`](https://dev.twitch.tv/docs/api/reference#send-whisper)
 //!
@@ -242,14 +240,15 @@
 <span class="doccomment">/// Query Parameters for [Send Whisper](super::send_whisper)
 ///
 /// [`send-whisper`](https://dev.twitch.tv/docs/api/reference#send-whisper)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SendWhisperRequest {
     <span class="doccomment">/// The ID of the user sending the whisper. This user must have a verified phone number.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>from_user_id: types::UserId,
     <span class="doccomment">/// The ID of the user to receive the whisper.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>to_user_id: types::UserId,
 }
 
@@ -348,10 +347,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = SendWhisperRequest::builder()
-        .to_user_id(<span class="string">&quot;456&quot;</span>)
-        .from_user_id(<span class="string">&quot;123&quot;</span>)
-        .build();
+    <span class="kw">let </span>req = SendWhisperRequest::new(<span class="string">&quot;123&quot;</span>, <span class="string">&quot;456&quot;</span>);
 
     <span class="kw">let </span>body = SendWhisperBody::new(<span class="string">&quot;hello&quot;</span>);
 

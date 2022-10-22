@@ -43,9 +43,6 @@
 <span id="43">43</span>
 <span id="44">44</span>
 <span id="45">45</span>
-<span id="46">46</span>
-<span id="47">47</span>
-<span id="48">48</span>
 </pre><pre class="rust"><code><span class="kw">use </span>twitch_api::HelixClient;
 <span class="kw">use </span>twitch_oauth2::{AccessToken, UserToken};
 
@@ -81,13 +78,10 @@
 
     <span class="kw">let </span>broadcaster_id = token.user_id.as_str();
 
-    <span class="kw">let </span>req = twitch_api::helix::moderation::CheckAutoModStatusRequest::builder()
-        .broadcaster_id(broadcaster_id)
-        .build();
-    <span class="kw">let </span>data = twitch_api::helix::moderation::CheckAutoModStatusBody::builder()
-        .msg_id(<span class="string">&quot;123&quot;</span>)
-        .msg_text(args.collect::&lt;String&gt;())
-        .build();
+    <span class="kw">let </span>req =
+        twitch_api::helix::moderation::CheckAutoModStatusRequest::broadcaster_id(broadcaster_id);
+    <span class="kw">let </span>data =
+        twitch_api::helix::moderation::CheckAutoModStatusBody::new(<span class="string">&quot;123&quot;</span>, args.collect::&lt;String&gt;());
     <span class="macro">println!</span>(<span class="string">&quot;data: {:?}&quot;</span>, data);
     <span class="kw">let </span>response = client.req_post(req, <span class="macro">vec!</span>[data], <span class="kw-2">&amp;</span>token).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, response.data);

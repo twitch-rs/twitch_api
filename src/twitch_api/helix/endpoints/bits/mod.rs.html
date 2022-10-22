@@ -30,8 +30,6 @@
 <span id="30">30</span>
 <span id="31">31</span>
 <span id="32">32</span>
-<span id="33">33</span>
-<span id="34">34</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding bits
 //!
 //! # Examples
@@ -44,9 +42,7 @@
 //! # let _: &amp;HelixClient&lt;twitch_api::DummyHttpClient&gt; = &amp;client;
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let req = GetCheermotesRequest::builder()
-//!     .broadcaster_id(Some(&quot;1234&quot;.into()))
-//!     .build();
+//! let req = GetCheermotesRequest::broadcaster_id(&quot;1234&quot;);
 //!
 //! println!(&quot;{:?}&quot;, &amp;client.req_get(req, &amp;token).await?.data);
 //! # Ok(())

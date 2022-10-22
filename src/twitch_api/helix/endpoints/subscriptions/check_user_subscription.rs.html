@@ -183,6 +183,28 @@
 <span id="183">183</span>
 <span id="184">184</span>
 <span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Checks if a specific user is subscribed to a specific channel.
 //! [`check-user-subscription`](https://dev.twitch.tv/docs/api/reference#check-user-subscription)
 //!
@@ -227,15 +249,41 @@
 <span class="doccomment">/// Query Parameters for [Check User Subscription](super::check_user_subscription)
 ///
 /// [`check-user-subscription`](https://dev.twitch.tv/docs/api/reference#check-user-subscription)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CheckUserSubscriptionRequest {
     <span class="doccomment">/// User ID of the broadcaster. Must match the User ID in the Bearer token.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>broadcaster_id: types::UserId,
     <span class="doccomment">/// Unique identifier of account to get subscription status of. Accepts up to 100 values.
-    </span><span class="attribute">#[builder(default)]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
     </span><span class="kw">pub </span>user_id: Vec&lt;types::UserId&gt;,
+}
+
+<span class="kw">impl </span>CheckUserSubscriptionRequest {
+    <span class="doccomment">/// Checks subscribed users to this specific channel.
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_id: broadcaster_id.into(),
+            user_id: Default::default(),
+        }
+    }
+
+    <span class="doccomment">/// Filter the results for specific users.
+    </span><span class="kw">pub fn </span>user_ids(
+        <span class="kw-2">mut </span><span class="self">self</span>,
+        user_ids: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>Into&lt;types::UserId&gt;&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.user_id = user_ids.into_iter().map(Into::into).collect();
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Filter the results for specific user.
+    </span><span class="kw">pub fn </span>user_id(<span class="kw-2">mut </span><span class="self">self</span>, user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.user_id = <span class="macro">vec!</span>[user_id.into()];
+        <span class="self">self
+    </span>}
 }
 
 <span class="doccomment">/// Return Values for [Check User Subscription](super::check_user_subscription)
@@ -309,9 +357,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request1() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = CheckUserSubscriptionRequest::builder()
-        .broadcaster_id(<span class="string">&quot;123&quot;</span>.to_string())
-        .build();
+    <span class="kw">let </span>req = CheckUserSubscriptionRequest::broadcaster_id(<span class="string">&quot;123&quot;</span>);
 
     <span class="comment">// From twitch docs.
     </span><span class="kw">let </span>data = <span class="string">br#&quot;
@@ -344,9 +390,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request2() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = CheckUserSubscriptionRequest::builder()
-        .broadcaster_id(<span class="string">&quot;123&quot;</span>.to_string())
-        .build();
+    <span class="kw">let </span>req = CheckUserSubscriptionRequest::broadcaster_id(<span class="string">&quot;123&quot;</span>);
 
     <span class="comment">// From twitch docs.
     </span><span class="kw">let </span>data = <span class="string">br#&quot;

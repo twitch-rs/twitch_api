@@ -156,6 +156,13 @@
 <span id="156">156</span>
 <span id="157">157</span>
 <span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Updates the color used for the user’s name in chat.
 //!
 //! [`update-user-chat-color`](https://dev.twitch.tv/docs/api/reference#update-user-chat-color)
@@ -204,16 +211,27 @@
 <span class="doccomment">/// Query Parameters for [Update Chat Settings](super::update_user_chat_color)
 ///
 /// [`update-user-chat-color`](https://dev.twitch.tv/docs/api/reference#update-user-chat-color)
-</span><span class="attribute">#[derive(PartialEq, Eq, typed_builder::TypedBuilder, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateUserChatColorRequest {
     <span class="doccomment">/// The ID of the user whose chat color you want to update.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>user_id: types::UserId,
     <span class="doccomment">/// The color to use for the user’s name in chat.
-    </span><span class="attribute">#[builder(setter(into))]
+    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     #[serde(borrow = <span class="string">&quot;&#39;static&quot;</span>)]
     </span><span class="kw">pub </span>color: types::NamedUserColor&lt;<span class="lifetime">&#39;static</span>&gt;,
+}
+
+<span class="kw">impl </span>UpdateUserChatColorRequest {
+    <span class="doccomment">/// Update the users chat color
+    </span><span class="kw">pub fn </span>new(user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;, color: types::NamedUserColor&lt;<span class="lifetime">&#39;static</span>&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            user_id: user_id.into(),
+            color,
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Update Chat Settings](super::update_user_chat_color)
@@ -269,10 +287,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request_named() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = UpdateUserChatColorRequest::builder()
-        .user_id(<span class="string">&quot;123&quot;</span>)
-        .color(types::NamedUserColor::Blue)
-        .build();
+    <span class="kw">let </span>req = UpdateUserChatColorRequest::new(<span class="string">&quot;123&quot;</span>, types::NamedUserColor::Blue);
 
     <span class="macro">dbg!</span>(req.create_request(EmptyBody, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
@@ -293,11 +308,10 @@
 <span class="attribute">#[cfg(test)]
 #[test]
 </span><span class="kw">fn </span>test_request_hex() {
+    <span class="kw">use </span>std::convert::TryInto;
+
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = UpdateUserChatColorRequest::builder()
-        .user_id(<span class="string">&quot;123&quot;</span>)
-        .color(twitch_types::HexColor::from(<span class="string">&quot;#9146FF&quot;</span>))
-        .build();
+    <span class="kw">let </span>req = UpdateUserChatColorRequest::new(<span class="string">&quot;123&quot;</span>, <span class="string">&quot;#9146FF&quot;</span>.try_into().unwrap());
 
     <span class="macro">dbg!</span>(req.create_request(EmptyBody, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
