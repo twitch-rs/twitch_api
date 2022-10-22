@@ -86,12 +86,15 @@ impl ModifyChannelInformationRequest {
 pub struct ModifyChannelInformationBody {
     /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub game_id: Option<types::CategoryId>,
     /// Language of the channel
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub broadcaster_language: Option<String>,
     /// Title of the stream. Value must not be an empty string.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
 }
 

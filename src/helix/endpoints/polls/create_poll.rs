@@ -98,10 +98,12 @@ pub struct CreatePollBody {
     /// Indicates if Bits can be used for voting. Default: false
     #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub bits_voting_enabled: Option<bool>,
     /// Number of Bits required to vote once with Bits. Minimum: 0. Maximum: 10000.
     #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub bits_per_vote: Option<i64>,
     /// Indicates if Channel Points can be used for voting. Default: false
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]

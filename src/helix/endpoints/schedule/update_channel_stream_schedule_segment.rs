@@ -95,22 +95,28 @@ impl UpdateChannelStreamScheduleSegmentRequest {
 pub struct UpdateChannelStreamScheduleSegmentBody {
     /// Start time for the scheduled broadcast specified in RFC3339 format.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub start_time: Option<String>,
     /// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub duration: Option<String>,
     /// Game/Category ID for the scheduled broadcast.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub category_id: Option<types::CategoryId>,
     /// Title for the scheduled broadcast. Maximum: 140 characters.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
     /// Indicated if the scheduled broadcast is canceled.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub is_canceled: Option<bool>,
     // FIXME: Enum?
     /// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub timezone: Option<String>,
 }
 
