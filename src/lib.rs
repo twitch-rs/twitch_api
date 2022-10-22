@@ -84,30 +84,22 @@
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>trace_unknown_fields</code></span> | Logs ignored fields as `WARN` log messages where  applicable. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>deny_unknown_fields</code></span> | Adds `#[serde(deny_unknown_fields)]` on all applicable structs/enums. Please consider using this and filing an issue or PR when a new field has been added to the endpoint but not added to this library. |
 
-// FIXME: This is a hack to prevent early pass failing on
-// `arbitrary expressions in key-value attributes are unstable` on stable rust pre 1.54.
-// Remove when MSRV 1.54 (or when  hits stable)
-// https://github.com/rust-lang/rust/issues/82768
 /// Doc test for README
-#[cfg_attr(all(doctest, nightly, feature = "all"), cfg_attr(all(doctest, nightly, feature = "all"), doc = include_str!("../README.md")))]
+#[doc = include_str!("../README.md")]
 #[doc(hidden)]
 pub struct ReadmeDoctests;
 
 pub use twitch_types as types;
 
 #[cfg(feature = "helix")]
-#[cfg_attr(nightly, doc(cfg(feature = "helix")))]
 pub mod helix;
 #[cfg(feature = "tmi")]
-#[cfg_attr(nightly, doc(cfg(feature = "tmi")))]
 pub mod tmi;
 
 #[cfg(feature = "pubsub")]
-#[cfg_attr(nightly, doc(cfg(feature = "pubsub")))]
 pub mod pubsub;
 
 #[cfg(feature = "eventsub")]
-#[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
 pub mod eventsub;
 
 #[cfg(all(feature = "helix", feature = "client"))]
@@ -122,10 +114,8 @@ pub use crate::tmi::TmiClient;
 pub use twitch_oauth2;
 
 #[cfg(feature = "client")]
-#[cfg_attr(nightly, doc(cfg(feature = "client")))]
 pub mod client;
 #[cfg(feature = "client")]
-#[cfg_attr(nightly, doc(cfg(feature = "client")))]
 pub use client::Client as HttpClient;
 
 #[doc(hidden)]
@@ -158,21 +148,18 @@ macro_rules! mock_env_url {
 ///
 /// Set the environment variable `TWITCH_HELIX_URL` to `http://localhost:8080/mock/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.
 #[cfg(feature = "helix")]
-#[cfg_attr(nightly, doc(cfg(feature = "helix")))]
 pub static TWITCH_HELIX_URL: once_cell::sync::Lazy<url::Url> =
     mock_env_url!("TWITCH_HELIX_URL", "https://api.twitch.tv/helix/");
 /// Location of Twitch TMI
 ///
 /// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_TMI_URL`.
 #[cfg(feature = "tmi")]
-#[cfg_attr(nightly, doc(cfg(feature = "tmi")))]
 pub static TWITCH_TMI_URL: once_cell::sync::Lazy<url::Url> =
     mock_env_url!("TWITCH_TMI_URL", "https://tmi.twitch.tv/");
 /// Location to twitch PubSub
 ///
 /// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_PUBSUB_URL`.
 #[cfg(feature = "pubsub")]
-#[cfg_attr(nightly, doc(cfg(feature = "pubsub")))]
 pub static TWITCH_PUBSUB_URL: once_cell::sync::Lazy<url::Url> =
     mock_env_url!("TWITCH_PUBSUB_URL", "wss://pubsub-edge.twitch.tv");
 
@@ -191,10 +178,6 @@ pub static TWITCH_PUBSUB_URL: once_cell::sync::Lazy<url::Url> =
 ///
 /// See [`client`] for implemented clients, you can also define your own if needed.
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
-#[cfg_attr(
-    nightly,
-    doc(cfg(all(feature = "client", any(feature = "helix", feature = "tmi"))))
-)]
 #[derive(Clone)]
 #[non_exhaustive]
 pub struct TwitchClient<'a, C>
