@@ -64,7 +64,7 @@ pub struct RemoveChannelModeratorRequest {
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub enum RemoveChannelModeratorResponse {
-    /// Successfully added the moderator.
+    /// Successfully removed the moderator.
     Success,
 }
 

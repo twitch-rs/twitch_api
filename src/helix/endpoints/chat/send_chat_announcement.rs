@@ -21,10 +21,9 @@
 //!
 //! ```
 //! # use twitch_api::helix::chat::send_chat_announcement;
-//! let body = send_chat_announcement::SendChatAnnouncementBody::new(
-//!     "Hello chat!".to_owned(),
-//!     "purple".to_owned(),
-//! );
+//! let body =
+//!     send_chat_announcement::SendChatAnnouncementBody::new("Hello chat!".to_owned(), "purple")
+//!         .unwrap();
 //! ```
 //!
 //! ## Response: [SendChatAnnouncementResponse]
@@ -46,8 +45,8 @@
 //!     .build();
 //! let body = send_chat_announcement::SendChatAnnouncementBody::new(
 //!     "Hello chat!".to_owned(),
-//!     "purple".to_owned(),
-//! );
+//!     "purple",
+//! ).unwrap();
 //! let response: helix::chat::SendChatAnnouncementResponse = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -93,12 +92,20 @@ pub struct SendChatAnnouncementBody {
     ///
     /// If color is set to primary or is not set, the channel’s accent color is used to highlight the announcement (see Profile Accent Color under [profile settings](https://www.twitch.tv/settings/profile), Channel and Videos, and Brand).
     #[builder(setter(into))]
-    pub color: String,
+    pub color: AnnouncementColor,
 }
 
 impl SendChatAnnouncementBody {
     /// Create a new announcement with specified color
-    pub fn new(message: String, color: String) -> Self { Self { message, color } }
+    pub fn new<E>(
+        message: String,
+        color: impl std::convert::TryInto<AnnouncementColor, Error = E>,
+    ) -> Result<Self, E> {
+        Ok(Self {
+            message,
+            color: color.try_into()?,
+        })
+    }
 }
 
 impl helix::private::SealedSerialize for SendChatAnnouncementBody {}
@@ -176,7 +183,7 @@ fn test_request() {
         .moderator_id("5678")
         .build();
 
-    let body = SendChatAnnouncementBody::new("hello chat!".to_owned(), "purple".to_owned());
+    let body = SendChatAnnouncementBody::new("hello chat!".to_owned(), "purple").unwrap();
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

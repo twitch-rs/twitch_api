@@ -682,6 +682,264 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
             .build();
         Ok(self.req_get(req, token).await?.data)
     }
+
+    /// Send a chat announcement
+    pub async fn send_chat_announcement<T, E>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        message: impl std::fmt::Display,
+        color: impl std::convert::TryInto<helix::chat::AnnouncementColor, Error = E>,
+        token: &T,
+    ) -> Result<helix::chat::SendChatAnnouncementResponse, ClientExtError<'a, C, E>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::chat::SendChatAnnouncementRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .moderator_id(moderator_id)
+            .build();
+        let body = helix::chat::SendChatAnnouncementBody::new(message.to_string(), color)?;
+        Ok(self
+            .req_post(req, body, token)
+            .await
+            .map_err(ClientExtError::ClientError)?
+            .data)
+    }
+
+    /// Delete a specific chat message
+    pub async fn delete_chat_message<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        message_id: impl Into<types::MsgId>,
+        token: &T,
+    ) -> Result<helix::moderation::DeleteChatMessagesResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::moderation::DeleteChatMessagesRequest {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            message_id: Some(message_id.into()),
+        };
+        Ok(self.req_delete(req, token).await?.data)
+    }
+
+    /// Delete all chat messages in a broadcasters chat room
+    pub async fn delete_all_chat_message<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<helix::moderation::DeleteChatMessagesResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::moderation::DeleteChatMessagesRequest {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+            message_id: None,
+        };
+        Ok(self.req_delete(req, token).await?.data)
+    }
+
+    /// Start a raid
+    pub async fn start_a_raid<T>(
+        &'a self,
+        from_broadcaster_id: impl Into<types::UserId>,
+        to_broadcaster_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<helix::raids::StartARaidResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::raids::StartARaidRequest::builder()
+            .from_broadcaster_id(from_broadcaster_id)
+            .to_broadcaster_id(to_broadcaster_id)
+            .build();
+        Ok(self.req_post(req, helix::EmptyBody, token).await?.data)
+    }
+
+    /// Cancel a raid
+    pub async fn cancel_a_raid<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<helix::raids::CancelARaidResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::raids::CancelARaidRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .build();
+        Ok(self.req_delete(req, token).await?.data)
+    }
+
+    /// Get a users chat color
+    pub async fn get_user_chat_color<T>(
+        &'a self,
+        user_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<Option<helix::chat::UserChatColor>, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::chat::GetUserChatColorRequest {
+            user_id: vec![user_id.into()],
+        };
+
+        Ok(self.req_get(req, token).await?.first())
+    }
+
+    /// Get a users chat color
+    pub async fn update_user_chat_color<T>(
+        &'a self,
+        user_id: impl Into<types::UserId>,
+        color: impl Into<types::NamedUserColor<'static>>,
+        token: &T,
+    ) -> Result<helix::chat::UpdateUserChatColorResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::chat::UpdateUserChatColorRequest {
+            user_id: user_id.into(),
+            color: color.into(),
+        };
+
+        Ok(self.req_put(req, helix::EmptyBody, token).await?.data)
+    }
+
+    /// Get multiple users chat colors
+    pub async fn get_users_chat_colors<T>(
+        &'a self,
+        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
+        token: &T,
+    ) -> Result<Vec<helix::chat::UserChatColor>, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::chat::GetUserChatColorRequest {
+            user_id: user_ids.into_iter().map(Into::into).collect(),
+        };
+
+        Ok(self.req_get(req, token).await?.data)
+    }
+
+    /// Add a channel moderator
+    pub async fn add_channel_moderator<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<helix::moderation::AddChannelModeratorResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::moderation::AddChannelModeratorRequest {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        };
+
+        Ok(self.req_post(req, helix::EmptyBody, token).await?.data)
+    }
+
+    /// Remove a channel moderator
+    pub async fn remove_channel_moderator<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        moderator_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<helix::moderation::RemoveChannelModeratorResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::moderation::RemoveChannelModeratorRequest {
+            broadcaster_id: broadcaster_id.into(),
+            moderator_id: moderator_id.into(),
+        };
+
+        Ok(self.req_delete(req, token).await?.data)
+    }
+
+    /// Get channel VIPs
+    pub fn get_vips_in_channel<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        token: &'a T,
+    ) -> std::pin::Pin<
+        Box<dyn futures::Stream<Item = Result<helix::channels::Vip, ClientError<'a, C>>> + 'a>,
+    >
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::channels::GetVipsRequest::builder()
+            .broadcaster_id(broadcaster_id)
+            .build();
+
+        make_stream(req, token, self, std::collections::VecDeque::from)
+    }
+
+    /// Add a channel vip
+    pub async fn add_channel_vip<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        user_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<helix::channels::AddChannelVipResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::channels::AddChannelVipRequest {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: user_id.into(),
+        };
+
+        Ok(self.req_post(req, helix::EmptyBody, token).await?.data)
+    }
+
+    /// Remove a channel vip
+    pub async fn remove_channel_vip<T>(
+        &'a self,
+        broadcaster_id: impl Into<types::UserId>,
+        user_id: impl Into<types::UserId>,
+        token: &T,
+    ) -> Result<helix::channels::RemoveChannelVipResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::channels::RemoveChannelVipRequest {
+            broadcaster_id: broadcaster_id.into(),
+            user_id: user_id.into(),
+        };
+
+        Ok(self.req_delete(req, token).await?.data)
+    }
+
+    /// Send a whisper
+    pub async fn send_whisper<T>(
+        &'a self,
+        from: impl Into<types::UserId>,
+        to: impl Into<types::UserId>,
+        message: impl std::fmt::Display,
+        token: &T,
+    ) -> Result<helix::whispers::SendWhisperResponse, ClientError<'a, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let req = helix::whispers::SendWhisperRequest::new(from, to);
+        let body = helix::whispers::SendWhisperBody::new(message);
+
+        Ok(self.req_post(req, body, token).await?.data)
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum ClientExtError<'a, C: crate::HttpClient<'a>, E> {
+    #[error(transparent)]
+    ClientError(ClientError<'a, C>),
+    #[error(transparent)]
+    Other(#[from] E),
 }
 
 /// Make a paginate-able request into a stream
