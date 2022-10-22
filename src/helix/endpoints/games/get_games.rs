@@ -9,9 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::games::get_games;
-//! let request = get_games::GetGamesRequest::builder()
-//!     .id(vec!["4321".into()])
-//!     .build();
+//! let request = get_games::GetGamesRequest::id("4321");
 //! ```
 //!
 //! ## Response: [Game](types::TwitchCategory)
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_games::GetGamesRequest::builder()
-//!     .id(vec!["4321".into()])
-//!     .build();
+//! let request = get_games::GetGamesRequest::id("4321");
 //! let response: Vec<get_games::Game> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -89,17 +85,7 @@ impl GetGamesRequest {
     }
 
     /// Returns an empty [`GetGamesRequest`]
-    ///
-    /// # Examples
-    ///
-    /// ```rust
-    /// use twitch_api::helix::users::GetGamesRequest;
-    /// GetGamesRequest {
-    ///     from_id: Some("1234".into()),
-    ///     ..GetGamesRequest::empty()
-    /// }
-    /// ```
-    pub fn empty() -> Self {
+    fn empty() -> Self {
         Self {
             id: Default::default(),
             name: Default::default(),

@@ -68,7 +68,7 @@ impl GetUsersRequest {
     ///
     /// ```rust
     /// use twitch_api::helix::users::get_users::GetUsersRequest;
-    /// GetUsersRequest::logins(&["twitch".into(), "justintv".into()])
+    /// GetUsersRequest::logins(["twitch", "justintv"]);
     /// ```
     pub fn logins(login: impl IntoIterator<Item = impl Into<types::UserName>>) -> Self {
         Self {
@@ -95,16 +95,10 @@ impl GetUsersRequest {
 
     /// Returns an empty [`GetUsersRequest`]
     ///
-    /// # Examples
+    /// # Notes
     ///
-    /// ```rust
-    /// use twitch_api::helix::users::GetUsersRequest;
-    /// GetUsersRequest {
-    ///     id: vec!["1234".into()],
-    ///     ..GetUsersRequest::empty()
-    /// }
-    /// ```
-    pub fn empty() -> Self {
+    /// This is not a valid request, it needs to be filled out with other fields.
+    pub fn new() -> Self {
         Self {
             id: Vec::default(),
             login: Vec::default(),

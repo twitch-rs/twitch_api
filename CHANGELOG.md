@@ -17,6 +17,7 @@
 - `Get Clips` takes and returns `ClipId` instead of a string
 - Made `GetCustomRewardRedemptionRequest::reward_id` optional
 - `typed-builder` is now optional and not enabled by default, enable feature `typed-builder` to use the `::builder()` methods
+- Client ext methods that take a `IntoIterator<Item = T>` now takes a `IntoIterator<Item = impl Into<T>>`
 
 ### Changes
 

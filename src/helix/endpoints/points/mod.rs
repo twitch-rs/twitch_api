@@ -11,12 +11,9 @@
 //! # let _: &HelixClient<twitch_api::DummyHttpClient> = &client;
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = GetCustomRewardRedemptionRequest::builder()
-//!     .broadcaster_id("274637212".to_string())
-//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-//!     .status(CustomRewardRedemptionStatus::Canceled)
-//!     .build();
-//!
+//! let request = GetCustomRewardRedemptionRequest::broadcaster_id("274637212")
+//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
+//!     .status(CustomRewardRedemptionStatus::Canceled);
 //!
 //! println!("{:?}", &client.req_get(request, &token).await?.data.get(0));
 //! # Ok(())

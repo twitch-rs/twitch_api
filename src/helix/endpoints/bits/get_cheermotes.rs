@@ -10,7 +10,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::bits::get_cheermotes;
-//! let request = get_cheermotes::GetCheermotesRequest::new().broadcaster_id("1234");
+//! let request = get_cheermotes::GetCheermotesRequest::broadcaster_id("1234");
 //! // Without broadcaster ID
 //! let request = get_cheermotes::GetCheermotesRequest::new();
 //! ```

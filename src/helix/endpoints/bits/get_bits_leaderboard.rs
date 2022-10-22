@@ -10,9 +10,7 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::bits::get_bits_leaderboard;
-//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new()
-//!     .period("day".to_string())
-//!     .build();
+//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new().period("day".to_string());
 //! // Get leaderbord for the lifetime of the channel
 //! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new();
 //! ```

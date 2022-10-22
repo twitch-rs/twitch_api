@@ -11,12 +11,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::delete_channel_stream_schedule_segment;
-//! let request =
-//!     delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegmentRequest::builder(
-//!     )
-//!     .from_id("1234")
-//!     .id("eyJzZWdtZW50SUQiOiI4Y2EwN2E2NC0xYTZkLTRjYWItYWE5Ni0xNjIyYzNjYWUzZDkiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyMX0=")
-//!     .build();
+//! let request = delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegmentRequest::new(
+//!     "1234",
+//!     "eyJzZWdtZW50SUQiOiI4Y2EwN2E2NC0xYTZkLTRjYWItYWE5Ni0xNjIyYzNjYWUzZDkiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyMX0="
+//! );
 //! ```
 //!
 //! ## Response: [DeleteChannelStreamScheduleSegment]
@@ -31,10 +29,10 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegmentRequest::builder()
-//!     .from_id("1234")
-//!     .id("eyJzZWdtZW50SUQiOiI4Y2EwN2E2NC0xYTZkLTRjYWItYWE5Ni0xNjIyYzNjYWUzZDkiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyMX0=")
-//!     .build();
+//! let request = delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegmentRequest::new(
+//!     "1234",
+//!     "eyJzZWdtZW50SUQiOiI4Y2EwN2E2NC0xYTZkLTRjYWItYWE5Ni0xNjIyYzNjYWUzZDkiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyMX0="
+//! );
 //! let response: delete_channel_stream_schedule_segment::DeleteChannelStreamScheduleSegment = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }

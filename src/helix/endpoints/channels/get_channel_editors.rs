@@ -26,7 +26,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_editors::GetChannelEditorsRequest::broadcaster_id("1234"):
+//! let request = get_channel_editors::GetChannelEditorsRequest::broadcaster_id("1234");
 //! let response: Vec<get_channel_editors::Editor> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

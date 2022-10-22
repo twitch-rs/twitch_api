@@ -112,7 +112,7 @@ impl Emote {
     /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// let emotes = client.get_emote_sets(&["301590448".into()], &token).await?;
+    /// let emotes = client.get_emote_sets(["301590448"], &token).await?;
     /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0");
     /// # Ok(())
     /// # }

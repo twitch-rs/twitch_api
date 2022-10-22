@@ -417,13 +417,13 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// Get games by ID. Can only be at max 100 ids.
     pub async fn get_games_by_id<T>(
         &'a self,
-        ids: impl IntoIterator<Item = types::CategoryId>,
+        ids: impl IntoIterator<Item = impl Into<types::CategoryId>>,
         token: &T,
     ) -> Result<std::collections::HashMap<types::CategoryId, helix::games::Game>, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
-        let ids: Vec<_> = ids.into_iter().take(101).collect();
+        let ids: Vec<_> = ids.into_iter().take(101).map(Into::into).collect();
         if ids.len() > 100 {
             return Err(ClientRequestError::Custom("too many IDs, max 100".into()));
         }
@@ -613,7 +613,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// Get emotes in emote set
     pub async fn get_emote_sets<T>(
         &'a self,
-        emote_sets: impl IntoIterator<Item = types::EmoteSetId>,
+        emote_sets: impl IntoIterator<Item = impl Into<types::EmoteSetId>>,
         token: &T,
     ) -> Result<Vec<helix::chat::get_emote_sets::Emote>, ClientError<'a, C>>
     where
@@ -756,15 +756,13 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// Get multiple users chat colors
     pub async fn get_users_chat_colors<T>(
         &'a self,
-        user_ids: impl IntoIterator<Item = types::UserId>,
+        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
         token: &T,
     ) -> Result<Vec<helix::chat::UserChatColor>, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::chat::GetUserChatColorRequest {
-            user_id: user_ids.into_iter().map(Into::into).collect(),
-        };
+        let req = helix::chat::GetUserChatColorRequest::user_ids(user_ids);
 
         Ok(self.req_get(req, token).await?.data)
     }
