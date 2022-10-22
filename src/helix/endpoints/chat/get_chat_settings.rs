@@ -82,7 +82,7 @@ pub struct GetChatSettingsRequest {
 
 impl GetChatSettingsRequest {
     /// Get chat settings for broadcasters channel
-    pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
             moderator_id: None,
@@ -157,7 +157,7 @@ impl RequestGet for GetChatSettingsRequest {
 #[test]
 fn test_request_as_mod() {
     use helix::*;
-    let req = GetChatSettingsRequest::new("1234").moderator_id("713936733");
+    let req = GetChatSettingsRequest::broadcaster_id("1234").moderator_id("713936733");
 
     // Twitch's example is wrong,
     // they didn't include a moderator id in the request
@@ -198,7 +198,7 @@ fn test_request_as_mod() {
 #[test]
 fn test_request_as_user() {
     use helix::*;
-    let req = GetChatSettingsRequest::new("11148817");
+    let req = GetChatSettingsRequest::broadcaster_id("11148817");
 
     // From twitch docs
     let data = br#"

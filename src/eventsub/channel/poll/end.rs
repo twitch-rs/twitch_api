@@ -15,7 +15,7 @@ pub struct ChannelPollEndV1 {
 
 impl ChannelPollEndV1 {
     /// The broadcaster user ID of the channel for which “poll end” notifications will be received.
-    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_user_id: broadcaster_user_id.into(),
         }

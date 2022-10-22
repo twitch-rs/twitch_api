@@ -58,7 +58,7 @@ pub struct GetUserBlockListRequest {
 
 impl GetUserBlockListRequest {
     /// Get a specified user’s block list
-    pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
             after: Default::default(),
@@ -103,7 +103,7 @@ impl helix::Paginated for GetUserBlockListRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetUserBlockListRequest::new("23161357");
+    let req = GetUserBlockListRequest::broadcaster_id("23161357");
 
     // From twitch docs // FIXME: twitch docs say id, not user_id
     let data = br#"

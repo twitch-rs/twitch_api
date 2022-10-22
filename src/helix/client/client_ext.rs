@@ -633,7 +633,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        let mut req = helix::chat::GetChatSettingsRequest::new(broadcaster_id);
+        let mut req = helix::chat::GetChatSettingsRequest::broadcaster_id(broadcaster_id);
         if let Some(moderator_id) = moderator_id.into() {
             req = req.moderator_id(moderator_id);
         }
@@ -715,7 +715,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::raids::CancelARaidRequest::new(broadcaster_id);
+        let req = helix::raids::CancelARaidRequest::broadcaster_id(broadcaster_id);
         Ok(self.req_delete(req, token).await?.data)
     }
 
@@ -816,7 +816,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::channels::GetVipsRequest::new(broadcaster_id);
+        let req = helix::channels::GetVipsRequest::broadcaster_id(broadcaster_id);
 
         make_stream(req, token, self, std::collections::VecDeque::from)
     }

@@ -79,7 +79,7 @@ pub struct GetCustomRewardRedemptionRequest {
 
 impl GetCustomRewardRedemptionRequest {
     /// Reward to fetch
-    pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
             reward_id: None,
@@ -180,7 +180,7 @@ impl helix::Paginated for GetCustomRewardRedemptionRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetCustomRewardRedemptionRequest::new("274637212")
+    let req = GetCustomRewardRedemptionRequest::broadcaster_id("274637212")
         .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
         .status(CustomRewardRedemptionStatus::Canceled);
 

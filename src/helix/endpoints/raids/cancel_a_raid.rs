@@ -53,7 +53,7 @@ pub struct CancelARaidRequest {
 
 impl CancelARaidRequest {
     /// Cancel a pending raid on this broadcasters channel
-    pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
         }
@@ -112,7 +112,7 @@ impl RequestDelete for CancelARaidRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = CancelARaidRequest::new("12345678");
+    let req = CancelARaidRequest::broadcaster_id("12345678");
 
     // From twitch docs
     let data = br#""#.to_vec();

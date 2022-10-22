@@ -64,7 +64,7 @@ pub struct GetVipsRequest {
 
 impl GetVipsRequest {
     /// Get channel VIPs in channel
-    pub fn new(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
             user_id: vec![],
@@ -129,7 +129,7 @@ impl RequestGet for GetVipsRequest {}
 #[test]
 fn test_request_all() {
     use helix::*;
-    let req = GetVipsRequest::new("123");
+    let req = GetVipsRequest::broadcaster_id("123");
 
     // From twitch docs
     // FIXME: Example has ...
@@ -163,7 +163,7 @@ fn test_request_all() {
 #[test]
 fn test_request_multiple() {
     use helix::*;
-    let req = GetVipsRequest::new("123").user_ids(["456", "678"]);
+    let req = GetVipsRequest::broadcaster_id("123").user_ids(["456", "678"]);
 
     // From twitch docs
     // FIXME: Example has ...
