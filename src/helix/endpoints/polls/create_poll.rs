@@ -68,9 +68,7 @@ use helix::RequestPost;
 /// Query Parameters for [Create Poll](super::create_poll)
 ///
 /// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
-#[derive(
-    PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default,
-)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreatePollRequest {}

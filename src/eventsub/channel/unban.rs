@@ -13,6 +13,15 @@ pub struct ChannelUnbanV1 {
     pub broadcaster_user_id: types::UserId,
 }
 
+impl ChannelUnbanV1 {
+    /// The broadcaster user ID for the channel you want to get unban notifications for.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for ChannelUnbanV1 {
     type Payload = ChannelUnbanV1Payload;
 

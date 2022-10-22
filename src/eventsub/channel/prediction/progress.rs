@@ -13,6 +13,15 @@ pub struct ChannelPredictionProgressV1 {
     pub broadcaster_user_id: types::UserId,
 }
 
+impl ChannelPredictionProgressV1 {
+    /// The broadcaster user ID of the channel for which “prediction progress” notifications will be received.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for ChannelPredictionProgressV1 {
     type Payload = ChannelPredictionProgressV1Payload;
 
@@ -75,11 +84,11 @@ fn parse_payload() {
             "title": "Aren’t shoes just really hard socks?",
             "outcomes": [
                 {
-                    "id": "1243456", 
-                    "title": "Yeah!", 
-                    "color": "blue", 
-                    "users": 10, 
-                    "channel_points": 15000, 
+                    "id": "1243456",
+                    "title": "Yeah!",
+                    "color": "blue",
+                    "users": 10,
+                    "channel_points": 15000,
                     "top_predictors": [
                         {
                             "user_name": "Cool_User",
@@ -98,8 +107,8 @@ fn parse_payload() {
                     ]
                 },
                 {
-                    "id": "2243456", 
-                    "title": "No!", 
+                    "id": "2243456",
+                    "title": "No!",
                     "color": "pink",
                     "top_predictors": [
                         {

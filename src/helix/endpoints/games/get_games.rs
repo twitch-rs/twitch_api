@@ -81,9 +81,9 @@ impl GetGamesRequest {
     }
 
     /// Get games with specific exact id match.
-    pub fn ids(ids: impl IntoIterator<Item = types::CategoryId>) -> Self {
+    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::CategoryId>>) -> Self {
         Self {
-            id: ids.into_iter().collect(),
+            id: ids.into_iter().map(Into::into).collect(),
             ..Self::empty()
         }
     }

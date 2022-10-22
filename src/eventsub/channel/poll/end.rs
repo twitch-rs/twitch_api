@@ -13,6 +13,15 @@ pub struct ChannelPollEndV1 {
     pub broadcaster_user_id: types::UserId,
 }
 
+impl ChannelPollEndV1 {
+    /// The broadcaster user ID of the channel for which “poll end” notifications will be received.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for ChannelPollEndV1 {
     type Payload = ChannelPollEndV1Payload;
 

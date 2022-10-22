@@ -9,7 +9,12 @@ use super::*;
 pub struct UserAuthorizationGrantV1 {
     /// Your application’s client id. The provided client_id must match the client id in the application access token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub client_id: types::UserId,
+    pub client_id: String,
+}
+
+impl UserAuthorizationGrantV1 {
+    /// Your application’s client id. The provided client_id must match the client id in the application access token
+    pub fn new(client_id: String) -> Self { Self { client_id } }
 }
 
 impl EventSubscription for UserAuthorizationGrantV1 {

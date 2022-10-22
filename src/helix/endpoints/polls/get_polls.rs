@@ -77,8 +77,8 @@ impl GetPollsRequest {
         self
     }
 
-    pub fn ids(mut self, id: impl IntoIterator<Item = types::PollId>) -> Self {
-        self.id = id.into_iter().collect();
+    pub fn ids(mut self, id: impl IntoIterator<Item = impl Into<types::PollId>>) -> Self {
+        self.id = id.into_iter().map(Into::into).collect();
         self
     }
 }

@@ -13,6 +13,15 @@ pub struct ChannelSubscriptionMessageV1 {
     pub broadcaster_user_id: types::UserId,
 }
 
+impl ChannelSubscriptionMessageV1 {
+    /// The broadcaster user ID for the channel you want to get resubscription chat message notifications for.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for ChannelSubscriptionMessageV1 {
     type Payload = ChannelSubscriptionMessageV1Payload;
 

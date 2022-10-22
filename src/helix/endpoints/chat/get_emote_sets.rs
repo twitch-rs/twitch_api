@@ -62,9 +62,11 @@ impl GetEmoteSetsRequest {
     }
 
     /// Get emotes in these sets
-    pub fn emote_set_ids(emote_set_ids: impl IntoIterator<Item = types::EmoteSetId>) -> Self {
+    pub fn emote_set_ids(
+        emote_set_ids: impl IntoIterator<Item = impl Into<types::EmoteSetId>>,
+    ) -> Self {
         Self {
-            emote_set_id: emote_set_ids.into_iter().collect(),
+            emote_set_id: emote_set_ids.into_iter().map(Into::into).collect(),
         }
     }
 }

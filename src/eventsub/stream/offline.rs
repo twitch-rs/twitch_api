@@ -13,6 +13,15 @@ pub struct StreamOfflineV1 {
     pub broadcaster_user_id: types::UserId,
 }
 
+impl StreamOfflineV1 {
+    /// The broadcaster user ID you want to get stream offline notifications for.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for StreamOfflineV1 {
     type Payload = StreamOfflineV1Payload;
 

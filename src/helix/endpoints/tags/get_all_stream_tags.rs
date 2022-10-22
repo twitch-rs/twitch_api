@@ -59,8 +59,8 @@ pub struct GetAllStreamTagsRequest {
 
 impl GetAllStreamTagsRequest {
     /// Filter the results for specific tag.
-    pub fn tag_ids(mut self, tag_ids: impl IntoIterator<Item = types::TagId>) -> Self {
-        self.tag_id = tag_ids.into_iter().collect();
+    pub fn tag_ids(mut self, tag_ids: impl IntoIterator<Item = impl Into<types::TagId>>) -> Self {
+        self.tag_id = tag_ids.into_iter().map(Into::into).collect();
         self
     }
 

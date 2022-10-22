@@ -756,7 +756,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// Get multiple users chat colors
     pub async fn get_users_chat_colors<T>(
         &'a self,
-        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
+        user_ids: impl IntoIterator<Item = types::UserId>,
         token: &T,
     ) -> Result<Vec<helix::chat::UserChatColor>, ClientError<'a, C>>
     where

@@ -99,9 +99,9 @@ pub struct ReplaceStreamTagsBody {
 }
 
 impl ReplaceStreamTagsBody {
-    pub fn tag_ids(tag_ids: impl IntoIterator<Item = types::TagId>) -> Self {
+    pub fn tag_ids(tag_ids: impl IntoIterator<Item = impl Into<types::TagId>>) -> Self {
         Self {
-            tag_ids: tag_ids.into_iter().collect(),
+            tag_ids: tag_ids.into_iter().map(Into::into).collect(),
             ..Self::default()
         }
     }

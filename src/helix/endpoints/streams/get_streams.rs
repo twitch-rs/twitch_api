@@ -43,7 +43,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Streams](super::get_streams)
 ///
 /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetStreamsRequest {
@@ -80,9 +80,9 @@ impl GetStreamsRequest {
     }
 
     /// Return streams for specified user ids
-    pub fn user_ids(user_ids: impl IntoIterator<Item = types::UserId>) -> Self {
+    pub fn user_ids(user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
         Self {
-            user_id: user_ids.into_iter().collect(),
+            user_id: user_ids.into_iter().map(Into::into).collect(),
             ..Self::default()
         }
     }
@@ -96,9 +96,9 @@ impl GetStreamsRequest {
     }
 
     /// Return streams for specified users by [nickname](types::UserName)
-    pub fn user_logins(user_logins: impl IntoIterator<Item = types::UserName>) -> Self {
+    pub fn user_logins(user_logins: impl IntoIterator<Item = impl Into<types::UserName>>) -> Self {
         Self {
-            user_login: user_logins.into_iter().collect(),
+            user_login: user_logins.into_iter().map(Into::into).collect(),
             ..Self::default()
         }
     }

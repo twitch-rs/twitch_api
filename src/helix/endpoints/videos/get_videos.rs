@@ -82,6 +82,7 @@ pub struct GetVideosRequest {
 }
 
 impl GetVideosRequest {
+    /// ID of the video being queried.
     pub fn id(id: impl Into<types::VideoId>) -> Self {
         Self {
             id: vec![id.into()],
@@ -89,13 +90,15 @@ impl GetVideosRequest {
         }
     }
 
-    pub fn ids(ids: impl IntoIterator<Item = types::VideoId>) -> Self {
+    /// IDs of the videos being queried.
+    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::VideoId>>) -> Self {
         Self {
-            id: ids.into_iter().collect(),
+            id: ids.into_iter().map(Into::into).collect(),
             ..Self::default()
         }
     }
 
+    /// ID of the user who owns the video.
     pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
         Self {
             user_id: Some(user_id.into()),
@@ -103,6 +106,7 @@ impl GetVideosRequest {
         }
     }
 
+    /// ID of the game the video is of.
     pub fn game_id(game_id: impl Into<types::CategoryId>) -> Self {
         Self {
             game_id: Some(game_id.into()),

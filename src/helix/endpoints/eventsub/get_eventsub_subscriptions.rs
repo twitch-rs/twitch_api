@@ -16,14 +16,12 @@ pub struct GetEventSubSubscriptionsRequest {
     pub status: Option<eventsub::Status>,
     /// Filter subscriptions by [subscription type](eventsub::EventType) (e.g., [channel.update](eventsub::EventType::ChannelUpdate)).
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-
     pub type_: Option<eventsub::EventType>,
     /// Filter subscriptions by user ID.
     ///
     /// The response contains subscriptions where the user ID
     /// matches a user ID that you specified inthe Condition object when you created the subscription.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-
     pub user_id: Option<types::UserId>,
     // FIXME: https://github.com/twitchdev/issues/issues/272
     /// Cursor for forward pagination

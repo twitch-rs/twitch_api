@@ -190,7 +190,7 @@ fn test_request() {
         CreateEventSubSubscriptionRequest::default();
 
     let body = CreateEventSubSubscriptionBody::new(
-        UserUpdateV1::user_id("1234"),
+        UserUpdateV1::new("1234"),
         eventsub::Transport {
             method: eventsub::TransportMethod::Webhook,
             callback: "example.com".to_string(),

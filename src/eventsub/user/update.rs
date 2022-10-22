@@ -13,7 +13,8 @@ pub struct UserUpdateV1 {
 }
 
 impl UserUpdateV1 {
-    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+    /// The user ID for the user you want update notifications for.
+    pub fn new(user_id: impl Into<types::UserId>) -> Self {
         Self {
             user_id: user_id.into(),
         }

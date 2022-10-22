@@ -13,6 +13,15 @@ pub struct ChannelPredictionBeginV1 {
     pub broadcaster_user_id: types::UserId,
 }
 
+impl ChannelPredictionBeginV1 {
+    /// The broadcaster user ID of the channel for which “prediction begin” notifications will be received.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for ChannelPredictionBeginV1 {
     type Payload = ChannelPredictionBeginV1Payload;
 

@@ -1,8 +1,8 @@
 //! A a broadcaster raids another broadcaster’s channel.
 use super::*;
 
-/// [`channel.raid`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelraid-beta): a a broadcaster raids another broadcaster’s channel.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+/// [`channel.raid`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelraid): a a broadcaster raids another broadcaster’s channel.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -13,6 +13,24 @@ pub struct ChannelRaidV1 {
     /// The broadcaster user ID that received the channel raid you want to get notifications for. Use this parameter if you want to know when a specific broadcaster is raided by another broadcaster.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub to_broadcaster_user_id: Option<types::UserId>,
+}
+
+impl ChannelRaidV1 {
+    /// The broadcaster user ID that created the channel raid you want to get notifications for.
+    pub fn from_broadcaster_user_id(from_broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            from_broadcaster_user_id: Some(from_broadcaster_user_id.into()),
+            to_broadcaster_user_id: None,
+        }
+    }
+
+    /// The broadcaster user ID that received the channel raid you want to get notifications for.
+    pub fn to_broadcaster_user_id(to_broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            from_broadcaster_user_id: None,
+            to_broadcaster_user_id: Some(to_broadcaster_user_id.into()),
+        }
+    }
 }
 
 impl EventSubscription for ChannelRaidV1 {

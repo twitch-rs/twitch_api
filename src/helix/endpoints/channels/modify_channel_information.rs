@@ -80,9 +80,7 @@ impl ModifyChannelInformationRequest {
 /// Body Parameters for [Modify Channel Information](super::modify_channel_information)
 ///
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
-#[derive(
-    PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default,
-)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct ModifyChannelInformationBody {
@@ -122,7 +120,7 @@ impl ModifyChannelInformationBody {
     }
 
     /// Title of the stream. Value must not be an empty string.
-    pub fn title(&mut self, title: impl Into<String>) -> &mut Self {
+    pub fn title(&mut self, title: impl Into<String>) -> &mut ModifyChannelInformationBody {
         self.title = Some(title.into());
         self
     }

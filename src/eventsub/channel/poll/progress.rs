@@ -13,6 +13,15 @@ pub struct ChannelPollProgressV1 {
     pub broadcaster_user_id: types::UserId,
 }
 
+impl ChannelPollProgressV1 {
+    /// The broadcaster user ID of the channel for which “poll progress” notifications will be received.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for ChannelPollProgressV1 {
     type Payload = ChannelPollProgressV1Payload;
 
@@ -87,7 +96,7 @@ fn parse_payload() {
             "channel_points_voting": {
                 "is_enabled": true,
                 "amount_per_vote": 10
-            },  
+            },
             "started_at": "2020-07-15T17:16:03.17106713Z",
             "ends_at": "2020-07-15T17:16:08.17106713Z"
         }

@@ -16,6 +16,22 @@ pub struct ChannelPointsCustomRewardRedemptionAddV1 {
     pub reward_id: Option<types::RewardId>,
 }
 
+impl ChannelPointsCustomRewardRedemptionAddV1 {
+    /// The broadcaster user ID for the channel you want to receive channel points custom reward redemption add notifications for.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+            reward_id: None,
+        }
+    }
+
+    /// Specify a reward id to only receive notifications for a specific reward.
+    pub fn reward_id(mut self, reward_id: impl Into<types::RewardId>) -> Self {
+        self.reward_id = Some(reward_id.into());
+        self
+    }
+}
+
 impl EventSubscription for ChannelPointsCustomRewardRedemptionAddV1 {
     type Payload = ChannelPointsCustomRewardRedemptionAddV1Payload;
 

@@ -94,13 +94,16 @@ pub struct CheckAutoModStatusBody {
     pub msg_text: String,
     /// User ID of the sender.
     #[deprecated(since = "0.7.0", note = "user_id in automod check is no longer read")]
-    #[cfg_attr(feature = "typed-builder", builder(setter(into, strip_option), default))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(setter(into, strip_option), default)
+    )]
     pub user_id: Option<types::UserId>,
 }
 
 impl CheckAutoModStatusBody {
     /// Create a new [`CheckAutoModStatusBody`]
-    pub fn new(msg_id: types::MsgId, msg_text: String) -> Self {
+    pub fn new(msg_id: impl Into<types::MsgId>, msg_text: String) -> Self {
         Self {
             msg_id: msg_id.into(),
             msg_text,
@@ -154,8 +157,8 @@ fn test_request() {
     let req = CheckAutoModStatusRequest::broadcaster_id("198704263");
 
     let body = vec![
-        CheckAutoModStatusBody::new("123".into(), "hello world".to_string()),
-        CheckAutoModStatusBody::new("393".into(), "automoded word".to_string()),
+        CheckAutoModStatusBody::new("123", "hello world".to_string()),
+        CheckAutoModStatusBody::new("393", "automoded word".to_string()),
     ];
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());

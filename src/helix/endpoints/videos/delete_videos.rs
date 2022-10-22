@@ -54,15 +54,17 @@ pub struct DeleteVideosRequest {
 }
 
 impl DeleteVideosRequest {
+    /// ID of the video to be deleted
     pub fn id(id: impl Into<types::VideoId>) -> Self {
         Self {
             id: vec![id.into()],
         }
     }
 
-    pub fn ids(ids: impl IntoIterator<Item = types::VideoId>) -> Self {
+    /// ID of the videos to be deleted
+    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::VideoId>>) -> Self {
         Self {
-            id: ids.into_iter().collect(),
+            id: ids.into_iter().map(Into::into).collect(),
         }
     }
 }

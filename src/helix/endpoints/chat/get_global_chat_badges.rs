@@ -39,9 +39,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Global Chat Badges](super::get_global_chat_badges)
 ///
 /// [`get-global-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-global-chat-badges)
-#[derive(
-    PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default,
-)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetGlobalChatBadgesRequest {}

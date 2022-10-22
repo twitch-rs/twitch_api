@@ -13,6 +13,15 @@ pub struct ChannelGoalEndV1 {
     pub broadcaster_user_id: types::UserId,
 }
 
+impl ChannelGoalEndV1 {
+    /// The ID of the broadcaster to get notified about.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for ChannelGoalEndV1 {
     type Payload = ChannelGoalEndV1Payload;
 

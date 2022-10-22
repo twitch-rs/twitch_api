@@ -1,4 +1,4 @@
-#![deny(/*missing_docs,*/ rustdoc::broken_intra_doc_links)]
+#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![doc(html_root_url = "https://docs.rs/twitch_api/0.6.1")]

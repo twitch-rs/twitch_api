@@ -13,6 +13,15 @@ pub struct ChannelPredictionEndV1 {
     pub broadcaster_user_id: types::UserId,
 }
 
+impl ChannelPredictionEndV1 {
+    /// The broadcaster user ID of the channel for which “prediction end” notifications will be received.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for ChannelPredictionEndV1 {
     type Payload = ChannelPredictionEndV1Payload;
 
@@ -81,10 +90,10 @@ fn parse_payload() {
             "outcomes": [
                 {
                     "id": "12345",
-                    "title": "Yeah!", 
+                    "title": "Yeah!",
                     "color": "blue",
-                    "users": 2, 
-                    "channel_points": 15000, 
+                    "users": 2,
+                    "channel_points": 15000,
                     "top_predictors": [
                         {
                             "user_name": "Cool_User",
@@ -100,13 +109,13 @@ fn parse_payload() {
                             "channel_points_won": 5000,
                             "channel_points_used": 100
                         }
-                    ] 
+                    ]
                 },
                 {
                     "id": "22435",
-                    "title": "No!", 
-                    "users": 2, 
-                    "channel_points": 200, 
+                    "title": "No!",
+                    "users": 2,
+                    "channel_points": 200,
                     "color": "pink",
                     "top_predictors": [
                         {

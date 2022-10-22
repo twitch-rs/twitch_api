@@ -14,6 +14,15 @@ pub struct ChannelHypeTrainProgressV1 {
     pub broadcaster_user_id: types::UserId,
 }
 
+impl ChannelHypeTrainProgressV1 {
+    /// The broadcaster user ID for the channel you want hype train progress notifications for.
+    pub fn new(broadcaster_user_id: impl Into<types::UserId>) -> Self {
+        Self {
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
 impl EventSubscription for ChannelHypeTrainProgressV1 {
     type Payload = ChannelHypeTrainProgressV1Payload;
 

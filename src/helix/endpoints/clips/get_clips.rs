@@ -56,7 +56,7 @@ pub struct GetClipsRequest {
     // FIXME: add types::ClipId
     /// ID of the clip being queried. Limit: 100.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub id: Vec<String>,
+    pub id: Vec<types::ClipId>,
     // one of above is needed.
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
@@ -106,17 +106,17 @@ impl GetClipsRequest {
     }
 
     /// ID of clip being queried
-    pub fn clip_id(clip_id: String) -> Self {
+    pub fn clip_id(clip_id: impl Into<types::ClipId>) -> Self {
         Self {
-            id: vec![clip_id],
+            id: vec![clip_id.into()],
             ..Self::empty()
         }
     }
 
     /// IDs of clips being queried
-    pub fn clip_ids(clip_ids: impl IntoIterator<Item = String>) -> Self {
+    pub fn clip_ids(clip_ids: impl IntoIterator<Item = impl Into<types::ClipId>>) -> Self {
         Self {
-            id: clip_ids.into_iter().collect(),
+            id: clip_ids.into_iter().map(Into::into).collect(),
             ..Self::empty()
         }
     }

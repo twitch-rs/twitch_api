@@ -61,9 +61,7 @@ use helix::RequestPatch;
 /// Query Parameters for [End Prediction](super::end_prediction)
 ///
 /// [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
-#[derive(
-    PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default,
-)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct EndPredictionRequest {}

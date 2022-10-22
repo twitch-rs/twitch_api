@@ -84,8 +84,11 @@ impl GetBroadcasterSubscriptionsEventsRequest {
     }
 
     /// Filter the results for specific users.
-    pub fn user_ids(mut self, user_ids: impl IntoIterator<Item = types::UserId>) -> Self {
-        self.user_id = user_ids.into_iter().collect();
+    pub fn user_ids(
+        mut self,
+        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
+    ) -> Self {
+        self.user_id = user_ids.into_iter().map(Into::into).collect();
         self
     }
 

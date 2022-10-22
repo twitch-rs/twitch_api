@@ -70,10 +70,10 @@ impl GetUsersRequest {
     /// use twitch_api2::helix::users::get_users::GetUsersRequest;
     /// GetUsersRequest::logins(&["twitch".into(), "justintv".into()])
     /// ```
-    pub fn logins(login: impl IntoIterator<Item = types::UserName>) -> Self {
+    pub fn logins(login: impl IntoIterator<Item = impl Into<types::UserName>>) -> Self {
         Self {
             id: Vec::default(),
-            login: login.into_iter().collect(),
+            login: login.into_iter().map(Into::into).collect(),
         }
     }
 
@@ -86,9 +86,9 @@ impl GetUsersRequest {
     }
 
     /// Get multiple user by their [`UserId`](types::UserId)
-    pub fn ids(ids: impl IntoIterator<Item = types::UserId>) -> Self {
+    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
         Self {
-            id: ids.into_iter().collect(),
+            id: ids.into_iter().map(Into::into).collect(),
             login: Vec::default(),
         }
     }

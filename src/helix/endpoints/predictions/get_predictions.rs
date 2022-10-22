@@ -80,8 +80,8 @@ impl GetPredictionsRequest {
         self
     }
 
-    pub fn ids(mut self, ids: impl IntoIterator<Item = types::PredictionId>) -> Self {
-        self.id = ids.into_iter().collect();
+    pub fn ids(mut self, ids: impl IntoIterator<Item = impl Into<types::PredictionId>>) -> Self {
+        self.id = ids.into_iter().map(Into::into).collect();
         self
     }
 }

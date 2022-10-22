@@ -72,8 +72,11 @@ impl GetBroadcasterSubscriptionsRequest {
     }
 
     /// check for specific users in broadcasters subscriptions
-    pub fn subscriber(mut self, user_ids: impl IntoIterator<Item = types::UserId>) -> Self {
-        self.user_id = user_ids.into_iter().collect();
+    pub fn subscriber(
+        mut self,
+        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
+    ) -> Self {
+        self.user_id = user_ids.into_iter().map(Into::into).collect();
         self
     }
 

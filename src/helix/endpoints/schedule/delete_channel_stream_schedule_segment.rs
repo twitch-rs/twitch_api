@@ -3,8 +3,6 @@
 //!
 //! # Notes
 //!
-//! This doesn't seem to work for removing people who follow owner of token. Use [Block User](crate::helix::schedule::block_user) for that
-//!
 //! # Accessing the endpoint
 //!
 //! ## Request: [DeleteChannelStreamScheduleSegmentRequest]
