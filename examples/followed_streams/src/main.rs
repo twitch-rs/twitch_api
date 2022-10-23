@@ -16,7 +16,7 @@ fn main() {
 
 #[tokio::main]
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    let _ = dotenv::dotenv();
+    let _ = dotenvy::dotenv();
     let mut args = std::env::args().skip(1);
     let client: HelixClient<reqwest::Client> = HelixClient::default();
     let token = UserToken::from_existing(

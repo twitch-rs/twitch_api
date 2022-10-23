@@ -85,9 +85,15 @@ fn main() -> color_eyre::Result<()> {
             if !cargo_ver(&sh)?.contains("nightly") {
                 color_eyre::eyre::bail!("Not running with a nightly cargo, use `cargo +nightly`");
             }
+            // run twice, wierd errors with scrape
             cmd!(
                 sh,
-                "cargo doc --target-dir {target_dir} --no-deps --features {TWITCH_API_FEATURES} -Zunstable-options -Zrustdoc-scrape-examples=examples -p twitch_api -p twitch_oauth2 -p twitch_types -Zrustdoc-map {last...}"
+                "cargo doc --target-dir {target_dir} --no-deps --features {TWITCH_API_FEATURES} -p twitch_api -p twitch_oauth2 -p twitch_types -Zrustdoc-map"
+            )
+            .run()?;
+            cmd!(
+                sh,
+                "cargo doc --target-dir {target_dir} --no-deps --features {TWITCH_API_FEATURES} -Zunstable-options -Zrustdoc-scrape-examples=all -p twitch_api -p twitch_oauth2 -p twitch_types -Zrustdoc-map {last...}"
             )
             .run()?;
         }

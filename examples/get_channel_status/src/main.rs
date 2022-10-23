@@ -1,5 +1,5 @@
-use twitch_api::HelixClient;
-use twitch_oauth2::{AccessToken, TwitchToken, UserToken};
+use twitch_api::{helix::streams::GetStreamsRequest, HelixClient};
+use twitch_oauth2::{AccessToken, UserToken};
 
 fn main() {
     use std::error::Error;
@@ -15,9 +15,9 @@ fn main() {
 
 #[tokio::main]
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    let _ = dotenv::dotenv();
+    let _ = dotenvy::dotenv();
     let mut args = std::env::args().skip(1);
-    let client: HelixClient<surf::Client> = HelixClient::new();
+    let client: HelixClient<reqwest::Client> = HelixClient::new();
     let token = UserToken::from_existing(
         &client,
         std::env::var("TWITCH_TOKEN")
@@ -28,20 +28,13 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         None,
         None,
     )
-    .await?;
+    .await
+    .unwrap();
 
-    let broadcaster_id = token.validate_token(&client).await?.user_id.unwrap();
+    let req = GetStreamsRequest::user_login(args.next().unwrap());
 
-    let req = twitch_api::helix::channels::ModifyChannelInformationRequest::broadcaster_id(
-        broadcaster_id,
-    );
+    let response = client.req_get(req, &token).await.unwrap();
 
-    let mut data = twitch_api::helix::channels::ModifyChannelInformationBody::new();
-    data.title("Hello World!");
-
-    println!("scopes: {:?}", token.scopes());
-    let response = client.req_patch(req, data, &token).await?;
-    println!("{:?}", response);
-
+    println!("Stream information:\n\t{:?}", response.data);
     Ok(())
 }

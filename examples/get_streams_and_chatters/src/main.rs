@@ -4,9 +4,9 @@ use twitch_oauth2::{AccessToken, UserToken};
 
 #[tokio::main]
 async fn main() {
-    let _ = dotenv::dotenv();
+    let _ = dotenvy::dotenv();
     let mut args = std::env::args().skip(1);
-    let client: TwitchClient<surf::Client> = TwitchClient::new();
+    let client: TwitchClient<reqwest::Client> = TwitchClient::new();
     let token = UserToken::from_existing(
         &client,
         std::env::var("TWITCH_TOKEN")

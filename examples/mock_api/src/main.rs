@@ -16,7 +16,7 @@ fn main() {
 
 #[tokio::main]
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    let _ = dotenv::dotenv(); // Eat error
+    let _ = dotenvy::dotenv(); // Eat error
 
     let client: HelixClient<reqwest::Client> = HelixClient::default();
 

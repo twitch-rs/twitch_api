@@ -14,6 +14,11 @@ pub struct CreateEventSubSubscriptionRequest<E: EventSubscription> {
     phantom: std::marker::PhantomData<E>,
 }
 
+impl<E: EventSubscription> CreateEventSubSubscriptionRequest<E> {
+    /// Create a new eventsub subscription
+    pub fn new() -> Self { Self::default() }
+}
+
 impl<E: EventSubscription> Default for CreateEventSubSubscriptionRequest<E> {
     fn default() -> Self {
         Self {

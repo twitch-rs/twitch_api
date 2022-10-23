@@ -35,7 +35,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
-        rust: [1.60.0, nightly]
+        rust: [1.64.0, nightly]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -88,37 +88,37 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --locked --all-targets --no-default-features
+          args: --locked --all-targets --no-default-features -p twitch_api
       - name: Run clippy --all-targets --no-default-features --features "helix"
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --locked --all-targets --no-default-features --features "helix"
+          args: --locked --all-targets --no-default-features --features "helix" -p twitch_api
       - name: Run clippy --all-targets --no-default-features --features "helix client"
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --locked --all-targets --no-default-features --features "helix client"
+          args: --locked --all-targets --no-default-features --features "helix client" -p twitch_api
       - name: Run clippy --all-targets --no-default-features --features "tmi"
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --locked --all-targets --no-default-features --features "tmi"
+          args: --locked --all-targets --no-default-features --features "tmi" -p twitch_api
       - name: Run clippy --all-targets --no-default-features --features "pubsub"
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --locked --all-targets --no-default-features --features "pubsub"
+          args: --locked --all-targets --no-default-features --features "pubsub" -p twitch_api
       - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} trace_unknown_fields"
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} trace_unknown_fields"
+          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} trace_unknown_fields" -p twitch_api
       - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}"
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
+          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} _all" -p twitch_api
       - name: Run clippy --all-targets --all-features --workspace
         uses: actions-rs/cargo@v1
         with:

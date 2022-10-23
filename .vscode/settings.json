@@ -5,5 +5,9 @@
     "rust-analyzer.diagnostics.disabled": [
         "type-mismatch"
     ],
+    "rust-analyzer.procMacro.ignored": {
+        "tracing-attributes": ["instrument"],
+        "tracing": ["info", "debug", "error", "warn", "span", "instrument"]
+    },
     "rust-analyzer.procMacro.attributes.enable": true, // Broken on dyn -> impl, https://github.com/rust-analyzer/rust-analyzer/issues/11815
 }
