@@ -100,6 +100,7 @@ pub struct BanUserBody {
     /// The minimum timeout is 1 second and the maximum is 1,209,600 seconds (2 weeks).
     /// To end a user’s timeout early, set this field to 1, or send an Unban user request.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub duration: Option<u32>,
     /// The reason the user is being banned or put in a timeout. The text is user defined and limited to a maximum of 500 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]

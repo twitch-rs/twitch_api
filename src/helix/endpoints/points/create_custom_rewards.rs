@@ -90,38 +90,49 @@ pub struct CreateCustomRewardBody {
     pub title: String,
     /// The prompt for the viewer when they are redeeming the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub prompt: Option<String>,
     /// The cost of the reward
     pub cost: usize,
     /// Is the reward currently enabled, if false the reward won’t show up to viewers. Defaults true
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub is_enabled: Option<bool>,
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub background_color: Option<String>,
     /// Does the user need to enter information when redeeming the reward. Defaults false
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub is_user_input_required: Option<bool>,
     /// Whether a maximum per stream is enabled. Defaults to false.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub is_max_per_stream_enabled: Option<bool>,
     /// The maximum number per stream if enabled
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_per_stream: Option<usize>,
     /// Whether a maximum per user per stream is enabled. Defaults to false.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub is_max_per_user_per_stream_enabled: Option<bool>,
     /// The maximum number per user per stream if enabled
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_per_user_per_stream: Option<usize>,
     /// Whether a cooldown is enabled. Defaults to false.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub is_global_cooldown_enabled: Option<bool>,
     /// The cooldown in seconds if enabled
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub global_cooldown_seconds: Option<usize>,
     /// Should redemptions be set to FULFILLED status immediately when redeemed and skip the request queue instead of the normal UNFULFILLED status. Defaults false
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub should_redemptions_skip_request_queue: Option<bool>,
 }
 

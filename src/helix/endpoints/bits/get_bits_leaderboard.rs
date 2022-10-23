@@ -41,7 +41,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Bits Leaderboard](super::get_bits_leaderboard)
 ///
 /// [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct GetBitsLeaderboardRequest {
@@ -100,14 +100,7 @@ impl GetBitsLeaderboardRequest {
     }
 
     /// Returns an new [`GetBitsLeaderboardRequest`]
-    pub fn new() -> Self {
-        Self {
-            count: None,
-            period: None,
-            started_at: None,
-            user_id: None,
-        }
-    }
+    pub fn new() -> Self { Self::default() }
 }
 
 /// Return Values for [Get Bits Leaderboard](super::get_bits_leaderboard)

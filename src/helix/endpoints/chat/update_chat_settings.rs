@@ -104,6 +104,7 @@ pub struct UpdateChatSettingsBody {
     ///
     /// Set to true, if only messages that are 100% emotes are allowed; otherwise, false. Default is false.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub emote_mode: Option<bool>,
     /// A Boolean value that determines whether the broadcaster restricts the chat room to followers only, based on how long they’ve followed.
     ///
@@ -111,11 +112,13 @@ pub struct UpdateChatSettingsBody {
     ///
     /// See [`follower_mode_duration`](Self::follower_mode_duration) for how long the followers must have followed the broadcaster to participate in the chat room.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub follower_mode: Option<bool>,
     /// The length of time, in minutes, that the followers must have followed the broadcaster to participate in the chat room (see follower_mode).
     ///
     /// You may specify a value in the range: 0 (no restriction) through 129600 (3 months). The default is 0.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub follower_mode_duration: Option<u64>,
     /// A Boolean value that determines whether the broadcaster adds a short delay before chat messages appear in the chat room. This gives chat moderators and bots a chance to remove them before viewers can see the message.
     ///
@@ -123,6 +126,7 @@ pub struct UpdateChatSettingsBody {
     ///
     /// See [`non_moderator_chat_delay_duration`](Self::non_moderator_chat_delay_duration) for the length of the delay.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub non_moderator_chat_delay: Option<bool>,
     /// The amount of time, in seconds, that messages are delayed from appearing in chat.
     ///
@@ -134,6 +138,7 @@ pub struct UpdateChatSettingsBody {
     ///
     /// See [`non_moderator_chat_delay`](Self::non_moderator_chat_delay).
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub non_moderator_chat_delay_duration: Option<u64>,
     /// A Boolean value that determines whether the broadcaster limits how often users in the chat room are allowed to send messages.
     ///
@@ -141,21 +146,25 @@ pub struct UpdateChatSettingsBody {
     ///
     /// See [`slow_mode_wait_time`](Self::slow_mode_wait_time) for the delay.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub slow_mode: Option<bool>,
     /// The amount of time, in seconds, that users need to wait between sending messages (see slow_mode).
     ///
     /// You may specify a value in the range: 3 (3 second delay) through 120 (2 minute delay). The default is 30 seconds.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub slow_mode_wait_time: Option<u64>,
     /// A Boolean value that determines whether only users that subscribe to the broadcaster’s channel can talk in the chat room.
     ///
     /// Set to true, if the broadcaster restricts the chat room to subscribers only; otherwise, false. Default is false.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub subscriber_mode: Option<bool>,
     /// A Boolean value that determines whether the broadcaster requires users to post only unique messages in the chat room.
     ///
     /// Set to true, if the broadcaster requires unique messages only; otherwise, false. Default is false.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub unique_chat_mode: Option<bool>,
 }
 

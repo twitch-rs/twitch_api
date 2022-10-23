@@ -15,9 +15,9 @@ fn main() {
 
 #[tokio::main]
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    let _ = dotenv::dotenv();
+    let _ = dotenvy::dotenv();
     let mut args = std::env::args().skip(1);
-    let client: HelixClient<surf::Client> = HelixClient::default();
+    let client: HelixClient<reqwest::Client> = HelixClient::default();
 
     let token = UserToken::from_existing(
         &client,
@@ -35,8 +35,11 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     let req =
         twitch_api::helix::moderation::CheckAutoModStatusRequest::broadcaster_id(broadcaster_id);
-    let data =
-        twitch_api::helix::moderation::CheckAutoModStatusBody::new("123", args.collect::<String>());
+    let mut message = args.by_ref().collect::<Vec<_>>().join(" ");
+    if message.is_empty() {
+        let _ = std::mem::replace(&mut message, String::from("hello!"));
+    };
+    let data = twitch_api::helix::moderation::CheckAutoModStatusBody::new("123", message);
     println!("data: {:?}", data);
     let response = client.req_post(req, vec![data], &token).await?;
     println!("{:?}", response.data);

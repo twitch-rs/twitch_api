@@ -109,12 +109,15 @@ pub struct CreateChannelStreamScheduleSegmentBody {
     pub is_recurring: bool,
     /// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub duration: Option<String>,
     /// Game/Category ID for the scheduled broadcast.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub category_id: Option<types::CategoryId>,
     /// Title for the scheduled broadcast. Maximum: 140 characters.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
 }
 

@@ -1,5 +1,7 @@
-use twitch_api::{helix::streams::GetStreamsRequest, TwitchClient};
+use futures::TryStreamExt;
+use twitch_api::HelixClient;
 use twitch_oauth2::{AccessToken, UserToken};
+
 fn main() {
     use std::error::Error;
     if let Err(err) = run() {
@@ -12,20 +14,13 @@ fn main() {
     }
 }
 
-#[derive(Default)]
-pub struct FooClient {
-    client: TwitchClient<'static, reqwest::Client>,
-}
-
 #[tokio::main]
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-    let _ = dotenv::dotenv();
+    let _ = dotenvy::dotenv();
     let mut args = std::env::args().skip(1);
-
-    let foo_client = FooClient::default();
-
+    let client: HelixClient<reqwest::Client> = HelixClient::new();
     let token = UserToken::from_existing(
-        &foo_client.client,
+        &client,
         std::env::var("TWITCH_TOKEN")
             .ok()
             .or_else(|| args.next())
@@ -36,9 +31,25 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     )
     .await?;
 
-    let req = GetStreamsRequest::user_login(args.next().expect("please provide an username"));
-    foo_client.client.helix.clone_client();
-    let response = foo_client.client.helix.req_get(req, &token).await?;
-    println!("{:?}", response);
+    let broadcaster_id = token.user_id.as_str();
+
+    println!("====Moderators====");
+    println!(
+        "{:?}",
+        client
+            .get_moderators_in_channel_from_id(broadcaster_id, &token)
+            .try_collect::<Vec<_>>()
+            .await?,
+    );
+
+    println!("====Banned users====");
+    println!(
+        "{:?}",
+        client
+            .get_banned_users_in_channel_from_id(broadcaster_id, &token)
+            .try_collect::<Vec<_>>()
+            .await?,
+    );
+
     Ok(())
 }

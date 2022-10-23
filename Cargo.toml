@@ -13,40 +13,50 @@ resolver = "2"
 include = [
     "src/*",
     "./Cargo.toml",
-    "examples/*",
+    "examples/**",
     "./README.md",
     "CONTRIBUTING.md",
     "CHANGELOG.md",
     "LICENSE*",
 ]
+rust-version = "1.64"
+
+
+[workspace]
+members = ["xtask", "examples/*"]
+exclude = ["twitch_types", "twitch_oauth2"]
+
+[workspace.dependencies]
+twitch_api = { version = "0.6.1", path = "." }
+twitch_oauth2 = { version = "0.9.0", path = "twitch_oauth2/" }
 
 [dependencies]
-thiserror = "1.0.26"
+thiserror = "1.0.37"
 displaydoc = "0.2.3"
-http = "0.2.4"
+http = "0.2.8"
 typed-builder = { version = "0.10.0", optional = true }
-url = "2.2.2"
-once_cell = "1.8.0"
+url = "2.3.1"
+once_cell = "1.15.0"
 twitch_oauth2 = { version = "0.9.0", optional = true, path = "twitch_oauth2/" }
-serde = { version = "1.0.127", features = ["derive"] }
-serde_path_to_error = { version = "0.1.4", optional = true }
-async-trait = { version = "0.1.51", optional = true }
-serde_json = { version = "1.0.66", optional = true }
-serde_ignored = { version = "0.1.2", optional = true }
-tracing = { version = "0.1.26", optional = true }
-ureq = { version = "2.4.0", optional = true, default-features = false, features = [
+serde = { version = "1.0.147", features = ["derive"] }
+serde_path_to_error = { version = "0.1.8", optional = true }
+async-trait = { version = "0.1.58", optional = true }
+serde_json = { version = "1.0.87", optional = true }
+serde_ignored = { version = "0.1.5", optional = true }
+tracing = { version = "0.1.37", optional = true }
+ureq = { version = "2.5.0", optional = true, default-features = false, features = [
     "tls",
 ] }
-reqwest = { version = "0.11.4", optional = true, default-features = false }
-surf = { version = "2.2.0", optional = true, default-features = false }
+reqwest = { version = "0.11.12", optional = true, default-features = false }
+surf = { version = "2.3.2", optional = true, default-features = false }
 http-types = { version = "2.12.0", optional = true, features = [
     "hyperium_http",
 ] }
-sha2 = { version = "0.10.2", optional = true }
-crypto_hmac = { package = "hmac", version = "0.12.0", optional = true }
+sha2 = { version = "0.10.6", optional = true }
+crypto_hmac = { package = "hmac", version = "0.12.1", optional = true }
 aliri_braid = "0.2.4"
-futures = { version = "0.3.16", optional = true }
-hyper = { version = "0.14.18", optional = true }
+futures = { version = "0.3.25", optional = true }
+hyper = { version = "0.14.20", optional = true }
 twitch_types = { version = "0.3.5", path = "./twitch_types" }
 
 [features]
@@ -134,80 +144,26 @@ _all = [
 ]
 
 [dev-dependencies]
-tokio = { version = "1.10.0", features = ["rt-multi-thread", "macros"] }
-dotenv = "0.15.0"
-futures = "0.3.16"
+tokio = { version = "1.21.2", features = [
+    "rt-multi-thread",
+    "macros",
+    "rt-multi-thread",
+] }
+futures = "0.3.25"
 serde_cbor = "0.11.2"
-serde_json = "1.0.66"
-surf = "2.2.0"
-reqwest = "0.11.4"
-hyper = "0.14.18"
-
+serde_json = "1.0.87"
 
 [build-dependencies]
-version_check = "0.9.3"
-
-[workspace]
-members = ["xtask"]
-exclude = ["twitch_types", "twitch_oauth2"]
-
-
-[[example]]
-name = "automod_check"
-path = "examples/automod_check.rs"
-required-features = ["surf", "helix"]
-
-[[example]]
-name = "get_channel_status"
-path = "examples/get_channel_status.rs"
-required-features = ["reqwest", "helix"]
-
-[[example]]
-name = "get_moderation"
-path = "examples/get_moderation.rs"
-required-features = ["surf", "helix"]
-
-[[example]]
-name = "get_streams_and_chatters"
-path = "examples/get_streams_and_chatters.rs"
-required-features = ["surf", "helix", "tmi"]
-
-[[example]]
-name = "modify_channel"
-path = "examples/modify_channel.rs"
-
-required-features = ["surf", "helix"]
-[[example]]
-name = "client"
-path = "examples/client.rs"
-required-features = ["reqwest", "helix"]
-
-[[example]]
-name = "channel_information"
-path = "examples/channel_information.rs"
-required-features = ["reqwest", "helix"]
-
-[[example]]
-name = "channel_information_custom"
-path = "examples/channel_information_custom.rs"
-required-features = ["reqwest", "helix", "unsupported"]
-
-[[example]]
-name = "followed_streams"
-path = "examples/followed_streams.rs"
-required-features = ["reqwest", "helix"]
-
-[[example]]
-name = "mock_api"
-path = "examples/mock_api.rs"
-required-features = ["reqwest", "helix", "mock_api", "twitch_oauth2/mock_api"]
+version_check = "0.9.4"
 
 [package.metadata.docs.rs]
 features = ["all", "unsupported", "_all"]
 rustc-args = ["--cfg", "nightly"]
 rustdoc-args = ["--cfg", "nightly"]
-cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples=examples"]
+cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples=all"]
 
+[profile.dev.package.backtrace]
+opt-level = 3
 
 #workaround for using different twitch_types
 [patch.crates-io.twitch_types]

@@ -19,9 +19,9 @@ jobs:
       - name: build docs
         run: cargo xtask doc
       - name: move index.html
-        run: cp ./docs/index.html ./target/extra/doc/index.html
+        run: cp ./docs/index.html ./target/doc/index.html
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target/extra/doc
+          publish_dir: ./target/doc

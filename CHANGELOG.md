@@ -11,7 +11,7 @@
 - Crate name changed: `twitch_api2` -> `twitch_api`, also changed to new org `twitch-rs`
 - All (most) types are now living in their own crate `twitch_types`
 - Features for clients are now named after the client, e.g feature `reqwest_client` is now simply `reqwest`
-- MSRV: 1.60.0
+- MSRV: 1.64.0
 - Fixed wrong type on `UserAuthorizationGrantV1::client_id`
 - Deprecate `bits_voting_enabled`, `bits_per_vote` and `bits_votes` on `Create Poll` and `Poll` and made the fields optional
 - `Get Clips` takes and returns `ClipId` instead of a string
