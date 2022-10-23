@@ -270,7 +270,7 @@ async fn write(
                     {
                         // NOOP
                     } else {
-                        Err(e).unwrap()
+                        return Err(error.into());
                     }
                 }
             };
