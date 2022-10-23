@@ -56,10 +56,12 @@ fn main() -> color_eyre::Result<()> {
                 let change_log =
                     std::fs::read_to_string(get_cargo_workspace().join("CHANGELOG.md"))?;
 
-                color_eyre::eyre::ensure!(
-                    change_log.contains(&format!("## [{tag}] -")),
-                    "change log is not updated"
-                );
+                if !tag.contains('-') {
+                    color_eyre::eyre::ensure!(
+                        change_log.contains(&format!("## [{tag}] -")),
+                        "change log is not updated"
+                    );
+                }
 
                 if dry_run {
                     eprintln!("{}", cmd!(sh, "git tag {tag}"));
