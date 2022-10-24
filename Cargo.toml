@@ -13,7 +13,7 @@ resolver = "2"
 include = [
     "src/*",
     "./Cargo.toml",
-    "examples/**",
+    "examples/*",
     "./README.md",
     "CONTRIBUTING.md",
     "CHANGELOG.md",
@@ -144,17 +144,66 @@ _all = [
 ]
 
 [dev-dependencies]
-tokio = { version = "1.21.2", features = [
-    "rt-multi-thread",
-    "macros",
-    "rt-multi-thread",
-] }
+tokio = { version = "1.21.2", features = ["rt-multi-thread", "macros"] }
+dotenvy = "0.15.6"
 futures = "0.3.25"
 serde_cbor = "0.11.2"
 serde_json = "1.0.87"
+reqwest = "0.11.12"
+hyper = "0.14.20"
 
 [build-dependencies]
 version_check = "0.9.4"
+
+[[example]]
+name = "automod_check"
+path = "examples/automod_check.rs"
+required-features = ["reqwest", "helix"]
+
+[[example]]
+name = "get_channel_status"
+path = "examples/get_channel_status.rs"
+required-features = ["reqwest", "helix"]
+
+[[example]]
+name = "get_moderation"
+path = "examples/get_moderation.rs"
+required-features = ["reqwest", "helix"]
+
+[[example]]
+name = "get_streams_and_chatters"
+path = "examples/get_streams_and_chatters.rs"
+required-features = ["reqwest", "helix", "tmi"]
+
+[[example]]
+name = "modify_channel"
+path = "examples/modify_channel.rs"
+
+required-features = ["reqwest", "helix"]
+[[example]]
+name = "client"
+path = "examples/client.rs"
+required-features = ["reqwest", "helix"]
+
+[[example]]
+name = "channel_information"
+path = "examples/channel_information.rs"
+required-features = ["reqwest", "helix"]
+
+[[example]]
+name = "channel_information_custom"
+path = "examples/channel_information_custom.rs"
+required-features = ["reqwest", "helix", "unsupported"]
+
+[[example]]
+name = "followed_streams"
+path = "examples/followed_streams.rs"
+required-features = ["reqwest", "helix"]
+
+[[example]]
+name = "mock_api"
+path = "examples/mock_api.rs"
+required-features = ["reqwest", "helix", "mock_api", "twitch_oauth2/mock_api"]
 
 [package.metadata.docs.rs]
 features = ["all", "unsupported", "_all"]
