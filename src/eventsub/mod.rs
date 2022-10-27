@@ -5,6 +5,9 @@
 //!
 //! # Examples
 //!
+//! See [`examples/`](https://github.com/twitch-rs/twitch_api/tree/main/examples/eventsub) for a more complete example of using eventsub.
+// FIXME: Use the actual link to the source files, currently can't do that on docs.rs since the workspace member is removed in the tarball
+//!
 //! Subscribe to a channel's follow events:
 //!
 //! ```rust, no_run
