@@ -44,18 +44,20 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetTeamsRequest {
+pub struct GetTeamsRequest<'a> {
     /// Team ID.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub id: Option<types::TeamId>,
+    #[serde(borrow)]
+    pub id: Option<&'a types::TeamIdRef>,
     /// Team name.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub name: Option<String>,
+    #[serde(borrow)]
+    pub name: Option<&'a str>,
 }
 
-impl GetTeamsRequest {
+impl<'a> GetTeamsRequest<'a> {
     /// Get team with this [`TeamId`](types::TeamId)
-    pub fn id(id: impl Into<types::TeamId>) -> Self {
+    pub fn id(id: impl Into<&'a types::TeamIdRef>) -> Self {
         Self {
             id: Some(id.into()),
             name: None,
@@ -63,7 +65,7 @@ impl GetTeamsRequest {
     }
 
     /// Get team with this name
-    pub fn name(name: String) -> Self {
+    pub fn name(name: &'a str) -> Self {
         Self {
             id: None,
             name: Some(name),
@@ -85,7 +87,7 @@ pub struct Team {
     pub team: TeamInformation,
 }
 
-impl Request for GetTeamsRequest {
+impl Request for GetTeamsRequest<'_> {
     type Response = Vec<Team>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -95,7 +97,7 @@ impl Request for GetTeamsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetTeamsRequest {}
+impl RequestGet for GetTeamsRequest<'_> {}
 
 #[cfg(test)]
 #[test]

@@ -52,15 +52,17 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetChattersRequest {
+pub struct GetChattersRequest<'a> {
     /// The ID of the broadcaster whose list of chatters you want to get.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// The ID of the moderator or the specified broadcaster that’s requesting the list of chatters. This ID must match the user ID associated with the user access token.
     ///
     /// The moderator must have permission to moderate the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: &'a types::UserIdRef,
     /// The maximum number of items to return per page in the response. The minimum page size is 1 item per page and the maximum is 1,000. The default is 100.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
@@ -69,15 +71,15 @@ pub struct GetChattersRequest {
     pub after: Option<helix::Cursor>,
 }
 
-impl GetChattersRequest {
+impl<'a> GetChattersRequest<'a> {
     /// Get chatters in broadcasters channel
     ///
     /// # Notes
     ///
     /// The moderator has to be the token owner and can moderate the chat
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        moderator_id: impl Into<&'a types::UserIdRef>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -94,7 +96,7 @@ impl GetChattersRequest {
     }
 }
 
-impl helix::Paginated for GetChattersRequest {
+impl helix::Paginated for GetChattersRequest<'_> {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
 }
 
@@ -109,7 +111,7 @@ pub struct Chatter {
     pub user_login: types::UserName,
 }
 
-impl Request for GetChattersRequest {
+impl Request for GetChattersRequest<'_> {
     type Response = Vec<Chatter>;
 
     const PATH: &'static str = "chat/chatters";
@@ -117,7 +119,7 @@ impl Request for GetChattersRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChattersRequest {}
+impl RequestGet for GetChattersRequest<'_> {}
 
 #[cfg(test)]
 #[test]

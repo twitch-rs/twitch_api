@@ -49,15 +49,17 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct DeleteChatMessagesRequest {
+pub struct DeleteChatMessagesRequest<'a> {
     /// The ID of the broadcaster that owns the chat room to remove messages from.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     ///
     /// This ID must match the user ID in the OAuth token. If the broadcaster wants to remove messages themselves, set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: &'a types::UserIdRef,
     /// The ID of the message to remove.
     ///
     /// The id tag in the PRIVMSG contains the message’s ID (see [PRIVMSG Tags](https://dev.twitch.tv/docs/irc/tags#privmsg-tags)).
@@ -70,14 +72,15 @@ pub struct DeleteChatMessagesRequest {
     ///
     /// If not specified, the request removes all messages in the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub message_id: Option<types::MsgId>,
+    #[serde(borrow)]
+    pub message_id: Option<&'a types::MsgIdRef>,
 }
 
-impl DeleteChatMessagesRequest {
+impl<'a> DeleteChatMessagesRequest<'a> {
     /// Remove chat message(s)
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        moderator_id: impl Into<&'a types::UserIdRef>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -87,7 +90,7 @@ impl DeleteChatMessagesRequest {
     }
 
     /// A specific message to remove
-    pub fn message_id(mut self, message_id: impl Into<types::MsgId>) -> Self {
+    pub fn message_id(mut self, message_id: impl Into<&'a types::MsgIdRef>) -> Self {
         self.message_id = Some(message_id.into());
         self
     }
@@ -103,7 +106,7 @@ pub enum DeleteChatMessagesResponse {
     Success,
 }
 
-impl Request for DeleteChatMessagesRequest {
+impl Request for DeleteChatMessagesRequest<'_> {
     type Response = DeleteChatMessagesResponse;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -114,7 +117,7 @@ impl Request for DeleteChatMessagesRequest {
         &[twitch_oauth2::Scope::ModeratorManageChatMessages];
 }
 
-impl RequestDelete for DeleteChatMessagesRequest {
+impl RequestDelete for DeleteChatMessagesRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

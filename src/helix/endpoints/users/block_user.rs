@@ -52,10 +52,11 @@ use helix::RequestPut;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct BlockUserRequest {
+pub struct BlockUserRequest<'a> {
     /// User ID of the follower
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub target_user_id: types::UserId,
+    #[serde(borrow)]
+    pub target_user_id: &'a types::UserIdRef,
     /// Source context for blocking the user. Valid values: "chat", "whisper".
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub source_context: Option<SourceContext>,
@@ -64,9 +65,9 @@ pub struct BlockUserRequest {
     pub reason: Option<Reason>,
 }
 
-impl BlockUserRequest {
+impl<'a> BlockUserRequest<'a> {
     /// Block a user
-    pub fn block_user(target_user_id: impl Into<types::UserId>) -> Self {
+    pub fn block_user(target_user_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             target_user_id: target_user_id.into(),
             source_context: None,
@@ -88,7 +89,7 @@ impl BlockUserRequest {
 }
 
 /// Source context for blocking the user.
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Copy, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 #[non_exhaustive]
 pub enum SourceContext {
@@ -99,7 +100,7 @@ pub enum SourceContext {
 }
 
 /// Reason for blocking the user.
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Copy, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 #[non_exhaustive]
 pub enum Reason {
@@ -121,7 +122,7 @@ pub enum BlockUser {
     Success,
 }
 
-impl Request for BlockUserRequest {
+impl Request for BlockUserRequest<'_> {
     type Response = BlockUser;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -131,7 +132,7 @@ impl Request for BlockUserRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageBlockedUsers];
 }
 
-impl RequestPut for BlockUserRequest {
+impl RequestPut for BlockUserRequest<'_> {
     type Body = helix::EmptyBody;
 
     fn parse_inner_response(

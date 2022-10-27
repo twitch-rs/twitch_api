@@ -46,10 +46,11 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct SearchChannelsRequest {
+pub struct SearchChannelsRequest<'a> {
     /// URL encoded search query
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub query: String,
+    #[serde(borrow)]
+    pub query: &'a str,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
@@ -62,9 +63,9 @@ pub struct SearchChannelsRequest {
     pub live_only: Option<bool>,
 }
 
-impl SearchChannelsRequest {
+impl<'a> SearchChannelsRequest<'a> {
     /// Search channels with the following query.
-    pub fn query(query: impl Into<String>) -> Self {
+    pub fn query(query: impl Into<&'a str>) -> Self {
         Self {
             query: query.into(),
             after: None,
@@ -122,7 +123,7 @@ pub struct Channel {
     pub tag_ids: Vec<types::TagId>,
 }
 
-impl Request for SearchChannelsRequest {
+impl Request for SearchChannelsRequest<'_> {
     type Response = Vec<Channel>;
 
     const PATH: &'static str = "search/channels";
@@ -130,9 +131,9 @@ impl Request for SearchChannelsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for SearchChannelsRequest {}
+impl RequestGet for SearchChannelsRequest<'_> {}
 
-impl helix::Paginated for SearchChannelsRequest {
+impl helix::Paginated for SearchChannelsRequest<'_> {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
 }
 

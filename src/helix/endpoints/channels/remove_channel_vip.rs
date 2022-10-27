@@ -48,20 +48,22 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct RemoveChannelVipRequest {
+pub struct RemoveChannelVipRequest<'a> {
     /// The ID of the broadcaster that’s removing VIP status from the user.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// The ID of the user to remove as a VIP from the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub user_id: types::UserId,
+    #[serde(borrow)]
+    pub user_id: &'a types::UserIdRef,
 }
 
-impl RemoveChannelVipRequest {
+impl<'a> RemoveChannelVipRequest<'a> {
     /// Remove channel VIP
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        user_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        user_id: impl Into<&'a types::UserIdRef>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -80,7 +82,7 @@ pub enum RemoveChannelVipResponse {
     Success,
 }
 
-impl Request for RemoveChannelVipRequest {
+impl Request for RemoveChannelVipRequest<'_> {
     type Response = RemoveChannelVipResponse;
 
     const PATH: &'static str = "channels/vips";
@@ -88,7 +90,7 @@ impl Request for RemoveChannelVipRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageVips];
 }
 
-impl RequestDelete for RemoveChannelVipRequest {
+impl RequestDelete for RemoveChannelVipRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

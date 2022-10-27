@@ -44,15 +44,16 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetChannelTeamsRequest {
+pub struct GetChannelTeamsRequest<'a> {
     /// Team ID.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
 }
 
-impl GetChannelTeamsRequest {
+impl<'a> GetChannelTeamsRequest<'a> {
     /// Get the team of this specific broadcaster
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
         }
@@ -77,7 +78,7 @@ pub struct BroadcasterTeam {
     pub team: TeamInformation,
 }
 
-impl Request for GetChannelTeamsRequest {
+impl Request for GetChannelTeamsRequest<'_> {
     type Response = Vec<BroadcasterTeam>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -87,7 +88,7 @@ impl Request for GetChannelTeamsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChannelTeamsRequest {}
+impl RequestGet for GetChannelTeamsRequest<'_> {}
 
 #[cfg(test)]
 #[test]

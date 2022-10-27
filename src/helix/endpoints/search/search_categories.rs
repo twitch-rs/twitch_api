@@ -46,24 +46,26 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct SearchCategoriesRequest {
+pub struct SearchCategoriesRequest<'a> {
     /// URI encoded search query
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub query: String,
+    #[serde(borrow)]
+    pub query: &'a str,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub before: Option<helix::Cursor>,
+    #[serde(borrow)]
+    pub before: Option<&'a helix::CursorRef>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
     pub first: Option<usize>,
 }
 
-impl SearchCategoriesRequest {
+impl<'a> SearchCategoriesRequest<'a> {
     /// Search categories with the following query.
-    pub fn query(query: impl Into<String>) -> Self {
+    pub fn query(query: impl Into<&'a str>) -> Self {
         Self {
             query: query.into(),
             after: None,
@@ -84,7 +86,7 @@ impl SearchCategoriesRequest {
 /// [`search-categories`](https://dev.twitch.tv/docs/api/reference#search-categories)
 pub type Category = types::TwitchCategory;
 
-impl Request for SearchCategoriesRequest {
+impl Request for SearchCategoriesRequest<'_> {
     type Response = Vec<Category>;
 
     const PATH: &'static str = "search/categories";
@@ -92,7 +94,7 @@ impl Request for SearchCategoriesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for SearchCategoriesRequest {
+impl RequestGet for SearchCategoriesRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
@@ -121,7 +123,7 @@ impl RequestGet for SearchCategoriesRequest {
     }
 }
 
-impl helix::Paginated for SearchCategoriesRequest {
+impl helix::Paginated for SearchCategoriesRequest<'_> {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
 }
 

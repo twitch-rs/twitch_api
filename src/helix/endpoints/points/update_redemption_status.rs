@@ -75,26 +75,29 @@ use helix::RequestPatch;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UpdateRedemptionStatusRequest {
+pub struct UpdateRedemptionStatusRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
 
     /// ID of the Custom Reward the redemptions to be updated are for.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub reward_id: types::RewardId,
+    #[serde(borrow)]
+    pub reward_id: &'a types::RewardIdRef,
 
     /// ID of the Custom Reward Redemption to update, must match a Custom Reward Redemption on broadcaster_id’s channel
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub id: types::RedemptionId,
+    #[serde(borrow)]
+    pub id: &'a types::RedemptionIdRef,
 }
 
-impl UpdateRedemptionStatusRequest {
+impl<'a> UpdateRedemptionStatusRequest<'a> {
     /// Update the status of Custom Reward Redemption object on a channel that are in the UNFULFILLED status.
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        reward_id: impl Into<types::RewardId>,
-        id: impl Into<types::RedemptionId>,
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        reward_id: impl Into<&'a types::RewardIdRef>,
+        id: impl Into<&'a types::RedemptionIdRef>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -132,7 +135,7 @@ pub enum UpdateRedemptionStatusInformation {
     Success(CustomRewardRedemption),
 }
 
-impl Request for UpdateRedemptionStatusRequest {
+impl Request for UpdateRedemptionStatusRequest<'_> {
     type Response = UpdateRedemptionStatusInformation;
 
     const PATH: &'static str = "channel_points/custom_rewards/redemptions";
@@ -141,7 +144,7 @@ impl Request for UpdateRedemptionStatusRequest {
         &[twitch_oauth2::scopes::Scope::ChannelManageBroadcast];
 }
 
-impl RequestPatch for UpdateRedemptionStatusRequest {
+impl RequestPatch for UpdateRedemptionStatusRequest<'_> {
     type Body = UpdateRedemptionStatusBody;
 
     fn parse_inner_response(

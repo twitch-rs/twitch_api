@@ -46,10 +46,11 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetCreatorGoalsRequest {
+pub struct GetCreatorGoalsRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub cursor: Option<helix::Cursor>,
@@ -58,12 +59,13 @@ pub struct GetCreatorGoalsRequest {
     pub first: Option<usize>,
     /// Retreive a single event by event ID
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub id: Option<String>,
+    #[serde(borrow)]
+    pub id: Option<&'a str>,
 }
 
-impl GetCreatorGoalsRequest {
+impl<'a> GetCreatorGoalsRequest<'a> {
     /// Gets the broadcaster’s list of active goals.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
             cursor: Default::default(),
@@ -107,7 +109,7 @@ pub struct CreatorGoal {
     pub created_at: types::Timestamp,
 }
 
-impl Request for GetCreatorGoalsRequest {
+impl Request for GetCreatorGoalsRequest<'_> {
     type Response = Vec<CreatorGoal>;
 
     const PATH: &'static str = "goals";
@@ -115,7 +117,7 @@ impl Request for GetCreatorGoalsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadGoals];
 }
 
-impl RequestGet for GetCreatorGoalsRequest {}
+impl RequestGet for GetCreatorGoalsRequest<'_> {}
 
 #[cfg(test)]
 #[test]

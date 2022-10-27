@@ -76,15 +76,16 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CreateChannelStreamScheduleSegmentRequest {
+pub struct CreateChannelStreamScheduleSegmentRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
 }
 
-impl CreateChannelStreamScheduleSegmentRequest {
+impl<'a> CreateChannelStreamScheduleSegmentRequest<'a> {
     /// Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
         }
@@ -97,40 +98,42 @@ impl CreateChannelStreamScheduleSegmentRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CreateChannelStreamScheduleSegmentBody {
+pub struct CreateChannelStreamScheduleSegmentBody<'a> {
     /// Start time for the scheduled broadcast specified in RFC3339 format.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub start_time: types::Timestamp,
+    #[serde(borrow)]
+    pub start_time: &'a types::TimestampRef,
     // FIXME: specific braid?
     /// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub timezone: String,
+    #[serde(borrow)]
+    pub timezone: &'a str,
     /// Indicates if the scheduled broadcast is recurring weekly.
     pub is_recurring: bool,
     /// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub duration: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub duration: Option<&'a str>,
     /// Game/Category ID for the scheduled broadcast.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub category_id: Option<types::CategoryId>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub category_id: Option<&'a types::CategoryIdRef>,
     /// Title for the scheduled broadcast. Maximum: 140 characters.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub title: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub title: Option<&'a str>,
 }
 
-impl CreateChannelStreamScheduleSegmentBody {
+impl<'a> CreateChannelStreamScheduleSegmentBody<'a> {
     /// Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     pub fn new(
-        start_time: impl Into<types::Timestamp>,
-        timezone: String,
+        start_time: impl Into<&'a types::TimestampRef>,
+        timezone: impl Into<&'a str>,
         is_recurring: bool,
     ) -> Self {
         Self {
             start_time: start_time.into(),
-            timezone,
+            timezone: timezone.into(),
             is_recurring,
             duration: Default::default(),
             category_id: Default::default(),
@@ -139,14 +142,14 @@ impl CreateChannelStreamScheduleSegmentBody {
     }
 }
 
-impl helix::private::SealedSerialize for CreateChannelStreamScheduleSegmentBody {}
+impl helix::private::SealedSerialize for CreateChannelStreamScheduleSegmentBody<'_> {}
 
 /// Return Values for [Create Channel Stream Schedule Segment](super::create_channel_stream_schedule_segment)
 ///
 /// [`create-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment)
 pub type CreateChannelStreamScheduleSegmentResponse = ScheduledBroadcasts;
 
-impl Request for CreateChannelStreamScheduleSegmentRequest {
+impl Request for CreateChannelStreamScheduleSegmentRequest<'_> {
     type Response = CreateChannelStreamScheduleSegmentResponse;
 
     const PATH: &'static str = "schedule/segment";
@@ -154,8 +157,8 @@ impl Request for CreateChannelStreamScheduleSegmentRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageSchedule];
 }
 
-impl RequestPost for CreateChannelStreamScheduleSegmentRequest {
-    type Body = CreateChannelStreamScheduleSegmentBody;
+impl<'a> RequestPost for CreateChannelStreamScheduleSegmentRequest<'a> {
+    type Body = CreateChannelStreamScheduleSegmentBody<'a>;
 }
 
 #[cfg(test)]
@@ -166,15 +169,12 @@ fn test_request() {
     use helix::*;
     let req = CreateChannelStreamScheduleSegmentRequest::broadcaster_id("141981764");
 
+    let ts = types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap();
     let body = CreateChannelStreamScheduleSegmentBody {
-        duration: Some("60".to_string()),
+        duration: Some("60"),
         category_id: Some("509670".into()),
-        title: Some("TwitchDev Monthly Update // July 1, 2021".to_string()),
-        ..CreateChannelStreamScheduleSegmentBody::new(
-            types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap(),
-            "America/New_York".to_owned(),
-            false,
-        )
+        title: Some("TwitchDev Monthly Update // July 1, 2021"),
+        ..CreateChannelStreamScheduleSegmentBody::new(&*ts, "America/New_York", false)
     };
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());

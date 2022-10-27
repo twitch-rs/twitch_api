@@ -58,21 +58,23 @@
 
 use super::*;
 use helix::RequestPost;
+
 /// Query Parameters for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CheckAutoModStatusRequest {
+pub struct CheckAutoModStatusRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
 }
 
-impl CheckAutoModStatusRequest {
+impl<'a> CheckAutoModStatusRequest<'a> {
     /// Check automod status in this broadcasters channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
         }
@@ -85,26 +87,28 @@ impl CheckAutoModStatusRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CheckAutoModStatusBody {
+pub struct CheckAutoModStatusBody<'a> {
     /// Developer-generated identifier for mapping messages to results.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub msg_id: types::MsgId,
+    #[serde(borrow)]
+    pub msg_id: &'a types::MsgIdRef,
     /// Message text.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub msg_text: String,
+    #[serde(borrow)]
+    pub msg_text: &'a str,
     /// User ID of the sender.
     #[deprecated(since = "0.7.0", note = "user_id in automod check is no longer read")]
     #[cfg_attr(
         feature = "typed-builder",
         builder(setter(into, strip_option), default)
     )]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub user_id: Option<types::UserId>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub user_id: Option<&'a types::UserIdRef>,
 }
 
-impl CheckAutoModStatusBody {
+impl<'a> CheckAutoModStatusBody<'a> {
     /// Create a new [`CheckAutoModStatusBody`]
-    pub fn new(msg_id: impl Into<types::MsgId>, msg_text: String) -> Self {
+    pub fn new(msg_id: impl Into<&'a types::MsgIdRef>, msg_text: &'a str) -> Self {
         Self {
             msg_id: msg_id.into(),
             msg_text,
@@ -113,11 +117,11 @@ impl CheckAutoModStatusBody {
     }
 }
 
-impl helix::HelixRequestBody for Vec<CheckAutoModStatusBody> {
+impl<'a> helix::HelixRequestBody for [CheckAutoModStatusBody<'a>] {
     fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
-            data: &'a Vec<CheckAutoModStatusBody>,
+            data: &'a [CheckAutoModStatusBody<'a>],
         }
 
         serde_json::to_vec(&InnerBody { data: self })
@@ -139,7 +143,7 @@ pub struct CheckAutoModStatus {
     pub is_permitted: bool,
 }
 
-impl Request for CheckAutoModStatusRequest {
+impl Request for CheckAutoModStatusRequest<'_> {
     type Response = Vec<CheckAutoModStatus>;
 
     const PATH: &'static str = "moderation/enforcements/status";
@@ -147,9 +151,11 @@ impl Request for CheckAutoModStatusRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
 }
 
-impl RequestPost for CheckAutoModStatusRequest {
-    type Body = Vec<CheckAutoModStatusBody>;
+impl<'a> RequestPost for CheckAutoModStatusRequest<'a> {
+    type Body = &'a [&'a CheckAutoModStatusBody<'a>];
 }
+
+impl<'a> helix::private::SealedSerialize for &'a [&'a CheckAutoModStatusBody<'a>] {}
 
 #[cfg(test)]
 #[test]
@@ -157,12 +163,16 @@ fn test_request() {
     use helix::*;
     let req = CheckAutoModStatusRequest::broadcaster_id("198704263");
 
-    let body = vec![
-        CheckAutoModStatusBody::new("123", "hello world".to_string()),
-        CheckAutoModStatusBody::new("393", "automoded word".to_string()),
-    ];
-
-    dbg!(req.create_request(body, "token", "clientid").unwrap());
+    dbg!(req
+        .create_request(
+            &[
+                &CheckAutoModStatusBody::new("123", "hello world"),
+                &CheckAutoModStatusBody::new("393", "automoded word"),
+            ],
+            "token",
+            "clientid"
+        )
+        .unwrap());
 
     // From twitch docs
     let data = br#"

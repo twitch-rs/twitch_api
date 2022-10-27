@@ -59,18 +59,20 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct SendWhisperRequest {
+pub struct SendWhisperRequest<'a> {
     /// The ID of the user sending the whisper. This user must have a verified phone number.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub from_user_id: types::UserId,
+    #[serde(borrow)]
+    pub from_user_id: &'a types::UserIdRef,
     /// The ID of the user to receive the whisper.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub to_user_id: types::UserId,
+    #[serde(borrow)]
+    pub to_user_id: &'a types::UserIdRef,
 }
 
-impl SendWhisperRequest {
+impl<'a> SendWhisperRequest<'a> {
     /// Create a new [`SendWhisperRequest`]
-    pub fn new(from: impl Into<types::UserId>, to: impl Into<types::UserId>) -> Self {
+    pub fn new(from: impl Into<&'a types::UserIdRef>, to: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             from_user_id: from.into(),
             to_user_id: to.into(),
@@ -83,7 +85,7 @@ impl SendWhisperRequest {
 /// [`send-whisper`](https://dev.twitch.tv/docs/api/reference#send-whisper)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[non_exhaustive]
-pub struct SendWhisperBody {
+pub struct SendWhisperBody<'a> {
     /// The whisper message to send. The message must not be empty.
     ///
     /// The maximum message lengths are:
@@ -92,23 +94,19 @@ pub struct SendWhisperBody {
     /// 10,000 characters if the user you're sending the message to has whispered you before.
     ///
     /// Messages that exceed the maximum length are truncated.
-    pub message: String,
+    pub message: &'a str,
 }
 
-impl From<String> for SendWhisperBody {
-    fn from(string: String) -> Self { Self::new(string) }
+impl<'a> From<&'a str> for SendWhisperBody<'a> {
+    fn from(string: &'a str) -> Self { Self::new(string) }
 }
 
-impl SendWhisperBody {
+impl<'a> SendWhisperBody<'a> {
     /// Create a new message
-    pub fn new(message: impl std::fmt::Display) -> Self {
-        Self {
-            message: message.to_string(),
-        }
-    }
+    pub fn new(message: &'a str) -> Self { Self { message } }
 }
 
-impl helix::private::SealedSerialize for SendWhisperBody {}
+impl helix::private::SealedSerialize for SendWhisperBody<'_> {}
 
 /// Return Values for [Send Whisper](super::send_whisper)
 ///
@@ -121,7 +119,7 @@ pub enum SendWhisperResponse {
     Success,
 }
 
-impl Request for SendWhisperRequest {
+impl Request for SendWhisperRequest<'_> {
     type Response = SendWhisperResponse;
 
     const PATH: &'static str = "whispers";
@@ -129,8 +127,8 @@ impl Request for SendWhisperRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageWhispers];
 }
 
-impl RequestPost for SendWhisperRequest {
-    type Body = SendWhisperBody;
+impl<'a> RequestPost for SendWhisperRequest<'a> {
+    type Body = SendWhisperBody<'a>;
 
     fn parse_inner_response(
         request: Option<Self>,

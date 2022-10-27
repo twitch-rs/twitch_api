@@ -49,20 +49,22 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct RemoveChannelModeratorRequest {
+pub struct RemoveChannelModeratorRequest<'a> {
     /// The ID of the broadcaster that owns the chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// The ID of the user to remove as a moderator from the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: &'a types::UserIdRef,
 }
 
-impl RemoveChannelModeratorRequest {
+impl<'a> RemoveChannelModeratorRequest<'a> {
     /// Remove moderator
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        moderator_id: impl Into<&'a types::UserIdRef>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -82,7 +84,7 @@ pub enum RemoveChannelModeratorResponse {
     Success,
 }
 
-impl Request for RemoveChannelModeratorRequest {
+impl Request for RemoveChannelModeratorRequest<'_> {
     type Response = RemoveChannelModeratorResponse;
 
     const PATH: &'static str = "moderation/moderators";
@@ -90,7 +92,7 @@ impl Request for RemoveChannelModeratorRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageModerators];
 }
 
-impl RequestDelete for RemoveChannelModeratorRequest {
+impl RequestDelete for RemoveChannelModeratorRequest<'_> {
     fn parse_inner_response<'d>(
         request: Option<Self>,
         uri: &http::Uri,

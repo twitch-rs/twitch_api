@@ -63,6 +63,9 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`CreatePollRequest::parse_response(None, &request.get_uri(), response)`](CreatePollRequest::parse_response)
 
+use std::borrow::Cow;
+use std::marker::PhantomData;
+
 use super::*;
 use helix::RequestPost;
 /// Query Parameters for [Create Poll](super::create_poll)
@@ -71,11 +74,14 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CreatePollRequest {}
+pub struct CreatePollRequest<'a> {
+    #[serde(skip)]
+    _marker: PhantomData<&'a ()>,
+}
 
-impl CreatePollRequest {
+impl CreatePollRequest<'_> {
     /// Create a new [`CreatePollRequest`]
-    pub fn new() -> Self { Self {} }
+    pub fn new() -> Self { Self::default() }
 }
 
 /// Body Parameters for [Create Poll](super::create_poll)
@@ -84,17 +90,20 @@ impl CreatePollRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CreatePollBody {
+pub struct CreatePollBody<'a> {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// Question displayed for the poll. Maximum: 60 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub title: String,
+    #[serde(borrow)]
+    pub title: &'a str,
     /// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.
     pub duration: i64,
     /// Array of the poll choices. Minimum: 2 choices. Maximum: 5 choices.
-    pub choices: Vec<NewPollChoice>,
+    #[serde(borrow)]
+    pub choices: Cow<'a, [NewPollChoice<'a>]>,
     /// Indicates if Bits can be used for voting. Default: false
     #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -113,7 +122,7 @@ pub struct CreatePollBody {
     pub channel_points_per_vote: Option<i64>,
 }
 
-impl CreatePollBody {
+impl<'a> CreatePollBody<'a> {
     /// Set if Channel Points voting is enabled
     pub fn channel_points_voting_enabled(mut self, enabled: bool) -> Self {
         self.channel_points_voting_enabled = Some(enabled);
@@ -128,16 +137,16 @@ impl CreatePollBody {
 
     /// Poll settings
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        title: String,
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        title: &'a str,
         duration: i64,
-        choices: impl IntoIterator<Item = impl Into<NewPollChoice>>,
+        choices: impl Into<Cow<'a, [NewPollChoice<'a>]>>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
             title,
             duration,
-            choices: choices.into_iter().map(|s| s.into()).collect(),
+            choices: choices.into(),
             bits_voting_enabled: Default::default(),
             bits_per_vote: Default::default(),
             channel_points_voting_enabled: Default::default(),
@@ -146,20 +155,21 @@ impl CreatePollBody {
     }
 }
 
-impl helix::private::SealedSerialize for CreatePollBody {}
+impl helix::private::SealedSerialize for CreatePollBody<'_> {}
 
 /// Choice settings for a poll
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct NewPollChoice {
+pub struct NewPollChoice<'a> {
     /// Text displayed for the choice. Maximum: 25 characters.
-    pub title: String,
+    #[serde(borrow)]
+    pub title: &'a str,
 }
 
-impl NewPollChoice {
+impl<'a> NewPollChoice<'a> {
     /// Create a new [`NewPollChoice`]
-    pub fn new(title: impl Into<String>) -> Self {
+    pub fn new(title: impl Into<&'a str>) -> Self {
         Self {
             title: title.into(),
         }
@@ -171,7 +181,7 @@ impl NewPollChoice {
 /// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
 pub type CreatePollResponse = super::Poll;
 
-impl Request for CreatePollRequest {
+impl Request for CreatePollRequest<'_> {
     type Response = CreatePollResponse;
 
     const PATH: &'static str = "polls";
@@ -179,8 +189,8 @@ impl Request for CreatePollRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManagePolls];
 }
 
-impl RequestPost for CreatePollRequest {
-    type Body = CreatePollBody;
+impl<'a> RequestPost for CreatePollRequest<'a> {
+    type Body = CreatePollBody<'a>;
 
     fn parse_inner_response(
         request: Option<Self>,
@@ -224,14 +234,10 @@ fn test_request() {
     use helix::*;
     let req = CreatePollRequest::new();
 
-    let body = CreatePollBody::new(
-        "141981764",
-        "Heads or Tails?".to_owned(),
-        1800,
-        [NewPollChoice::new("Heads"), NewPollChoice::new("Tails")],
-    )
-    .channel_points_per_vote(100)
-    .channel_points_voting_enabled(true);
+    let choices: &[NewPollChoice] = &[NewPollChoice::new("Heads"), NewPollChoice::new("Tails")];
+    let body = CreatePollBody::new("141981764", "Heads or Tails?", 1800, choices)
+        .channel_points_per_vote(100)
+        .channel_points_voting_enabled(true);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

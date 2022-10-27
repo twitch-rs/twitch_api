@@ -49,20 +49,22 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct AddChannelModeratorRequest {
+pub struct AddChannelModeratorRequest<'a> {
     /// The ID of the broadcaster that owns the chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// The ID of the user to add as a moderator in the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: &'a types::UserIdRef,
 }
 
-impl AddChannelModeratorRequest {
+impl<'a> AddChannelModeratorRequest<'a> {
     /// Add moderator on channel
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        moderator_id: impl Into<&'a types::UserIdRef>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -82,7 +84,7 @@ pub enum AddChannelModeratorResponse {
     Success,
 }
 
-impl Request for AddChannelModeratorRequest {
+impl Request for AddChannelModeratorRequest<'_> {
     type Response = AddChannelModeratorResponse;
 
     const PATH: &'static str = "moderation/moderators";
@@ -90,7 +92,7 @@ impl Request for AddChannelModeratorRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageModerators];
 }
 
-impl RequestPost for AddChannelModeratorRequest {
+impl RequestPost for AddChannelModeratorRequest<'_> {
     type Body = helix::EmptyBody;
 
     fn parse_inner_response<'d>(

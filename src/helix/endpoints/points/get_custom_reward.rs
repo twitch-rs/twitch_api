@@ -42,6 +42,7 @@
 
 use super::*;
 use helix::RequestGet;
+use std::borrow::Cow;
 
 /// Query Parameters for [Get Custom Reward](super::get_custom_reward)
 ///
@@ -49,37 +50,33 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetCustomRewardRequest {
+pub struct GetCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// When used, this parameter filters the results and only returns reward objects for the Custom Rewards with matching ID. Maximum: 50
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub id: Vec<types::RewardId>,
+    #[serde(borrow)]
+    pub id: Cow<'a, [&'a types::RewardIdRef]>,
     /// When set to true, only returns custom rewards that the calling client_id can manage. Defaults false.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub only_manageable_rewards: Option<bool>,
 }
 
-impl GetCustomRewardRequest {
+impl<'a> GetCustomRewardRequest<'a> {
     /// Rewards on this broadcasters channel
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
-            id: Default::default(),
+            id: Cow::Borrowed(&[]),
             only_manageable_rewards: Default::default(),
         }
     }
 
-    /// Get reward with this id
-    pub fn id(mut self, id: impl Into<types::RewardId>) -> Self {
-        self.id = vec![id.into()];
-        self
-    }
-
     /// Get rewards with these ids
-    pub fn ids(mut self, id: impl IntoIterator<Item = impl Into<types::RewardId>>) -> Self {
-        self.id = id.into_iter().map(Into::into).collect();
+    pub fn ids(mut self, id: impl Into<Cow<'a, [&'a types::RewardIdRef]>>) -> Self {
+        self.id = id.into();
         self
     }
 
@@ -139,7 +136,7 @@ pub struct CustomReward {
     pub cooldown_expires_at: Option<types::Timestamp>,
 }
 
-impl Request for GetCustomRewardRequest {
+impl Request for GetCustomRewardRequest<'_> {
     type Response = Vec<CustomReward>;
 
     const PATH: &'static str = "channel_points/custom_rewards";
@@ -148,13 +145,13 @@ impl Request for GetCustomRewardRequest {
         &[twitch_oauth2::scopes::Scope::ChannelReadRedemptions];
 }
 
-impl RequestGet for GetCustomRewardRequest {}
+impl RequestGet for GetCustomRewardRequest<'_> {}
 
 #[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetCustomRewardRequest::broadcaster_id("274637212".to_string());
+    let req = GetCustomRewardRequest::broadcaster_id("274637212");
 
     // From twitch docs
     let data = br##"

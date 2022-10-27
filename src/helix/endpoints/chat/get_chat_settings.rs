@@ -61,10 +61,11 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetChatSettingsRequest {
+pub struct GetChatSettingsRequest<'a> {
     /// The ID of the broadcaster whose chat settings you want to get.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// Required only to access the [`non_moderator_chat_delay`](ChatSettings::non_moderator_chat_delay)
     /// or [`non_moderator_chat_delay_duration`](ChatSettings::non_moderator_chat_delay_duration) settings.
     /// If you want to access these settings, you need to provide a valid [`moderator_id`](Self::moderator_id)
@@ -77,12 +78,13 @@ pub struct GetChatSettingsRequest {
     /// If the broadcaster wants to get their own settings (instead of having the moderator do it),
     /// set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub moderator_id: Option<types::UserId>,
+    #[serde(borrow)]
+    pub moderator_id: Option<&'a types::UserIdRef>,
 }
 
-impl GetChatSettingsRequest {
+impl<'a> GetChatSettingsRequest<'a> {
     /// Get chat settings for broadcasters channel
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
             moderator_id: None,
@@ -93,13 +95,13 @@ impl GetChatSettingsRequest {
     ///
     /// Required only to access the [`non_moderator_chat_delay`](ChatSettings::non_moderator_chat_delay)
     /// or [`non_moderator_chat_delay_duration`](ChatSettings::non_moderator_chat_delay_duration) settings.
-    pub fn moderator_id(mut self, moderator_id: impl Into<types::UserId>) -> Self {
+    pub fn moderator_id(mut self, moderator_id: impl Into<&'a types::UserIdRef>) -> Self {
         self.moderator_id = Some(moderator_id.into());
         self
     }
 }
 
-impl Request for GetChatSettingsRequest {
+impl Request for GetChatSettingsRequest<'_> {
     type Response = ChatSettings;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -110,7 +112,7 @@ impl Request for GetChatSettingsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChatSettingsRequest {
+impl RequestGet for GetChatSettingsRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

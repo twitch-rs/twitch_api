@@ -39,6 +39,7 @@
 
 use super::*;
 use helix::RequestGet;
+use std::borrow::Cow;
 
 // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 /// Query Parameters for [Get Videos](super::get_videos)
@@ -47,28 +48,33 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetVideosRequest {
+pub struct GetVideosRequest<'a> {
     /// ID of the video being queried. Limit: 100. If this is specified, you cannot use any of the optional query parameters below.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub id: Vec<types::VideoId>,
+    #[serde(borrow)]
+    pub id: Cow<'a, [&'a types::VideoIdRef]>,
     /// ID of the user who owns the video.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub user_id: Option<types::UserId>,
+    #[serde(borrow)]
+    pub user_id: Option<&'a types::UserIdRef>,
     /// ID of the game the video is of.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub game_id: Option<types::CategoryId>,
+    #[serde(borrow)]
+    pub game_id: Option<&'a types::CategoryIdRef>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub before: Option<helix::Cursor>,
+    #[serde(borrow)]
+    pub before: Option<&'a helix::CursorRef>,
     /// Number of values to be returned when getting videos by user or game ID. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Language of the video being queried. Limit: 1.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub language: Option<String>,
+    #[serde(borrow)]
+    pub language: Option<&'a str>,
     /// Period during which the video was created. Valid values: "all", "day", "week", "month". Default: "all".
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub period: Option<VideoPeriod>,
@@ -81,25 +87,17 @@ pub struct GetVideosRequest {
     pub type_: Option<VideoTypeFilter>,
 }
 
-impl GetVideosRequest {
-    /// ID of the video being queried.
-    pub fn id(id: impl Into<types::VideoId>) -> Self {
-        Self {
-            id: vec![id.into()],
-            ..Self::default()
-        }
-    }
-
+impl<'a> GetVideosRequest<'a> {
     /// IDs of the videos being queried.
-    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::VideoId>>) -> Self {
+    pub fn ids(ids: impl Into<Cow<'a, [&'a types::VideoIdRef]>>) -> Self {
         Self {
-            id: ids.into_iter().map(Into::into).collect(),
+            id: ids.into(),
             ..Self::default()
         }
     }
 
     /// ID of the user who owns the video.
-    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+    pub fn user_id(user_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             user_id: Some(user_id.into()),
             ..Self::default()
@@ -107,7 +105,7 @@ impl GetVideosRequest {
     }
 
     /// ID of the game the video is of.
-    pub fn game_id(game_id: impl Into<types::CategoryId>) -> Self {
+    pub fn game_id(game_id: impl Into<&'a types::CategoryIdRef>) -> Self {
         Self {
             game_id: Some(game_id.into()),
             ..Self::default()
@@ -171,7 +169,7 @@ pub struct MutedSegment {
     pub offset: i64,
 }
 
-impl Request for GetVideosRequest {
+impl Request for GetVideosRequest<'_> {
     type Response = Vec<Video>;
 
     const PATH: &'static str = "videos";
@@ -179,9 +177,9 @@ impl Request for GetVideosRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetVideosRequest {}
+impl RequestGet for GetVideosRequest<'_> {}
 
-impl helix::Paginated for GetVideosRequest {
+impl helix::Paginated for GetVideosRequest<'_> {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
 }
 
@@ -189,7 +187,7 @@ impl helix::Paginated for GetVideosRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetVideosRequest::id("234482848");
+    let req = GetVideosRequest::ids(vec!["234482848".into()]);
 
     // From twitch docs
     let data = br#"

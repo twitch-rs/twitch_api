@@ -46,15 +46,16 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetChannelChatBadgesRequest {
+pub struct GetChannelChatBadgesRequest<'a> {
     /// The broadcaster whose chat badges are being requested. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
 }
 
-impl GetChannelChatBadgesRequest {
+impl<'a> GetChannelChatBadgesRequest<'a> {
     /// Get chat badges for the specified broadcaster.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
         }
@@ -66,7 +67,7 @@ impl GetChannelChatBadgesRequest {
 /// [`get-channel-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges)
 pub type GetChannelChatBadgesResponse = BadgeSet;
 
-impl Request for GetChannelChatBadgesRequest {
+impl Request for GetChannelChatBadgesRequest<'_> {
     type Response = Vec<GetChannelChatBadgesResponse>;
 
     const PATH: &'static str = "chat/badges";
@@ -74,7 +75,7 @@ impl Request for GetChannelChatBadgesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChannelChatBadgesRequest {}
+impl RequestGet for GetChannelChatBadgesRequest<'_> {}
 
 #[cfg(test)]
 #[test]

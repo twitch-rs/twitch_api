@@ -67,24 +67,26 @@ use helix::RequestPatch;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UpdateChatSettingsRequest {
+pub struct UpdateChatSettingsRequest<'a> {
     /// The ID of the broadcaster whose chat settings you want to update.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     /// This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster is making the update, also set this parameter to the broadcaster’s ID.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: &'a types::UserIdRef,
 }
 
 ///FIXME: The moderator_id parameter is redundant, we should make this a client ext function
-impl UpdateChatSettingsRequest {
+impl<'a> UpdateChatSettingsRequest<'a> {
     /// Update the chat settings for the specified broadcaster as the specified moderator
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        moderator_id: impl Into<&'a types::UserIdRef>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -175,7 +177,7 @@ impl helix::private::SealedSerialize for UpdateChatSettingsBody {}
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
 pub type UpdateChatSettingsResponse = ChatSettings;
 
-impl Request for UpdateChatSettingsRequest {
+impl Request for UpdateChatSettingsRequest<'_> {
     type Response = ChatSettings;
 
     const PATH: &'static str = "chat/settings";
@@ -184,7 +186,7 @@ impl Request for UpdateChatSettingsRequest {
         &[twitch_oauth2::Scope::ModeratorManageChatSettings];
 }
 
-impl RequestPatch for UpdateChatSettingsRequest {
+impl RequestPatch for UpdateChatSettingsRequest<'_> {
     type Body = UpdateChatSettingsBody;
 
     fn parse_inner_response(

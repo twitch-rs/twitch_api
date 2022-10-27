@@ -39,6 +39,7 @@
 
 use super::*;
 use helix::RequestGet;
+use std::borrow::Cow;
 
 /// Query Parameters for [Get Channel Emotes](super::get_emote_sets)
 ///
@@ -46,27 +47,19 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetEmoteSetsRequest {
+pub struct GetEmoteSetsRequest<'a> {
     // FIXME: twitch doc specifies maximum as 25, but it actually is 10
     /// The broadcaster whose emotes are being requested. Minimum: 1. Maximum: 10
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub emote_set_id: Vec<types::EmoteSetId>,
+    #[serde(borrow)]
+    pub emote_set_id: Cow<'a, [&'a types::EmoteSetIdRef]>,
 }
 
-impl GetEmoteSetsRequest {
-    /// Get emotes in this set
-    pub fn emote_set_id(emote_set_id: impl Into<types::EmoteSetId>) -> Self {
-        Self {
-            emote_set_id: vec![emote_set_id.into()],
-        }
-    }
-
+impl<'a> GetEmoteSetsRequest<'a> {
     /// Get emotes in these sets
-    pub fn emote_set_ids(
-        emote_set_ids: impl IntoIterator<Item = impl Into<types::EmoteSetId>>,
-    ) -> Self {
+    pub fn emote_set_ids(emote_set_ids: impl Into<Cow<'a, [&'a types::EmoteSetIdRef]>>) -> Self {
         Self {
-            emote_set_id: emote_set_ids.into_iter().map(Into::into).collect(),
+            emote_set_id: emote_set_ids.into(),
         }
     }
 }
@@ -120,7 +113,7 @@ impl Emote {
     pub fn url(&self) -> types::EmoteUrlBuilder<'_> { EmoteUrlBuilder::new(&self.id) }
 }
 
-impl Request for GetEmoteSetsRequest {
+impl Request for GetEmoteSetsRequest<'_> {
     type Response = Vec<Emote>;
 
     const PATH: &'static str = "chat/emotes/set";
@@ -128,13 +121,15 @@ impl Request for GetEmoteSetsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetEmoteSetsRequest {}
+impl RequestGet for GetEmoteSetsRequest<'_> {}
 
 #[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetEmoteSetsRequest::emote_set_id("301590448");
+
+    let ids: &[&types::EmoteSetIdRef] = &["301590448".into()];
+    let req = GetEmoteSetsRequest::emote_set_ids(ids);
 
     // From twitch docs
     // FIXME: Example has ... and is malformed, uses [] in images

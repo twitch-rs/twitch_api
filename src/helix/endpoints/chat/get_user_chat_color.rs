@@ -39,6 +39,7 @@
 
 use super::*;
 use helix::RequestGet;
+use std::borrow::Cow;
 
 /// Query Parameters for [Get Chatters](super::get_user_chat_color)
 ///
@@ -46,23 +47,17 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetUserChatColorRequest {
+pub struct GetUserChatColorRequest<'a> {
     /// The ID of the user whose color you want to get.
-    pub user_id: Vec<types::UserId>,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
 }
 
-impl GetUserChatColorRequest {
-    /// Get chat color of specified user
-    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
-        Self {
-            user_id: vec![user_id.into()],
-        }
-    }
-
+impl<'a> GetUserChatColorRequest<'a> {
     /// Get chat colors of specified users
-    pub fn user_ids(user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
+    pub fn user_ids(user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
         Self {
-            user_id: user_ids.into_iter().map(Into::into).collect(),
+            user_id: user_ids.into(),
         }
     }
 }
@@ -90,7 +85,7 @@ pub struct UserChatColor {
     pub color: Option<types::HexColor>,
 }
 
-impl Request for GetUserChatColorRequest {
+impl Request for GetUserChatColorRequest<'_> {
     type Response = Vec<UserChatColor>;
 
     const PATH: &'static str = "chat/color";
@@ -98,13 +93,14 @@ impl Request for GetUserChatColorRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetUserChatColorRequest {}
+impl RequestGet for GetUserChatColorRequest<'_> {}
 
 #[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetUserChatColorRequest::user_ids(["11111", "44444"]);
+    let ids: &[&types::UserIdRef] = &["11111".into(), "44444".into()];
+    let req = GetUserChatColorRequest::user_ids(ids);
 
     // From twitch docs
     // FIXME: Example has ...

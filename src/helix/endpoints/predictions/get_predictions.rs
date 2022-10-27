@@ -39,6 +39,7 @@
 
 use super::*;
 use helix::RequestGet;
+use std::borrow::Cow;
 pub use types::{PredictionOutcome, PredictionOutcomeId, PredictionStatus};
 
 /// Query Parameters for [Get predictions](super::get_predictions)
@@ -47,16 +48,18 @@ pub use types::{PredictionOutcome, PredictionOutcomeId, PredictionStatus};
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetPredictionsRequest {
+pub struct GetPredictionsRequest<'a> {
     /// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// ID of a Prediction. Filters results to one or more specific Predictions.
     /// Not providing one or more IDs will return the full list of Predictions for the authenticated channel.
     ///
     /// Maximum: 100
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub id: Vec<types::PredictionId>,
+    #[serde(borrow)]
+    pub id: Cow<'a, [&'a types::PredictionIdRef]>,
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub after: Option<helix::Cursor>,
@@ -65,26 +68,20 @@ pub struct GetPredictionsRequest {
     pub first: Option<usize>,
 }
 
-impl GetPredictionsRequest {
+impl<'a> GetPredictionsRequest<'a> {
     /// Get information about predictions for this broadcasters channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
-            id: Default::default(),
+            id: Cow::Borrowed(&[]),
             after: Default::default(),
             first: Default::default(),
         }
     }
 
-    /// ID of a Prediction.
-    pub fn id(mut self, id: impl Into<types::PredictionId>) -> Self {
-        self.id = vec![id.into()];
-        self
-    }
-
     /// IDs of a Predictions.
-    pub fn ids(mut self, ids: impl IntoIterator<Item = impl Into<types::PredictionId>>) -> Self {
-        self.id = ids.into_iter().map(Into::into).collect();
+    pub fn ids(mut self, ids: impl Into<Cow<'a, [&'a types::PredictionIdRef]>>) -> Self {
+        self.id = ids.into();
         self
     }
 }
@@ -122,7 +119,7 @@ pub struct Prediction {
     pub locked_at: Option<types::Timestamp>,
 }
 
-impl Request for GetPredictionsRequest {
+impl Request for GetPredictionsRequest<'_> {
     type Response = Vec<Prediction>;
 
     const PATH: &'static str = "predictions";
@@ -130,9 +127,9 @@ impl Request for GetPredictionsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadPredictions];
 }
 
-impl RequestGet for GetPredictionsRequest {}
+impl RequestGet for GetPredictionsRequest<'_> {}
 
-impl helix::Paginated for GetPredictionsRequest {
+impl helix::Paginated for GetPredictionsRequest<'_> {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor; }
 }
 
@@ -140,8 +137,9 @@ impl helix::Paginated for GetPredictionsRequest {
 #[test]
 fn test_request() {
     use helix::*;
+
     let req = GetPredictionsRequest::broadcaster_id("55696719")
-        .id("d6676d5c-c86e-44d2-bfc4-100fb48f0656");
+        .ids(vec!["d6676d5c-c86e-44d2-bfc4-100fb48f0656".into()]);
 
     // From twitch docs
     let data = br#"

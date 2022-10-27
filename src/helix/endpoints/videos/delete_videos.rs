@@ -39,6 +39,7 @@
 
 use super::*;
 use helix::RequestDelete;
+use std::borrow::Cow;
 
 // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 /// Query Parameters for [Delete Videos](super::delete_videos)
@@ -47,26 +48,16 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct DeleteVideosRequest {
+pub struct DeleteVideosRequest<'a> {
     /// ID of the video(s) to be deleted. Limit: 5.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub id: Vec<types::VideoId>,
+    #[serde(borrow)]
+    pub id: Cow<'a, [&'a types::VideoIdRef]>,
 }
 
-impl DeleteVideosRequest {
-    /// ID of the video to be deleted
-    pub fn id(id: impl Into<types::VideoId>) -> Self {
-        Self {
-            id: vec![id.into()],
-        }
-    }
-
+impl<'a> DeleteVideosRequest<'a> {
     /// ID of the videos to be deleted
-    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::VideoId>>) -> Self {
-        Self {
-            id: ids.into_iter().map(Into::into).collect(),
-        }
-    }
+    pub fn ids(ids: impl Into<Cow<'a, [&'a types::VideoIdRef]>>) -> Self { Self { id: ids.into() } }
 }
 // FIXME: Should return VideoIds
 /// Return Values for [Delete Videos](super::delete_videos)
@@ -79,7 +70,7 @@ pub enum DeleteVideo {
     Success,
 }
 
-impl Request for DeleteVideosRequest {
+impl Request for DeleteVideosRequest<'_> {
     type Response = DeleteVideo;
 
     const PATH: &'static str = "videos";
@@ -87,7 +78,7 @@ impl Request for DeleteVideosRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageVideos];
 }
 
-impl RequestDelete for DeleteVideosRequest {
+impl RequestDelete for DeleteVideosRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
@@ -119,7 +110,7 @@ impl RequestDelete for DeleteVideosRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = DeleteVideosRequest::id("234482848");
+    let req = DeleteVideosRequest::ids(vec!["234482848".into()]);
 
     // From twitch docs
     let data = br#""#.to_vec();

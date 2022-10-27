@@ -38,6 +38,7 @@
 //! and parse the [`http::Response`] with [`CheckUserSubscriptionRequest::parse_response(None, &request.get_uri(), response)`](CheckUserSubscriptionRequest::parse_response)
 use super::*;
 use helix::RequestGet;
+use std::borrow::Cow;
 
 /// Query Parameters for [Check User Subscription](super::check_user_subscription)
 ///
@@ -45,36 +46,29 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CheckUserSubscriptionRequest {
+pub struct CheckUserSubscriptionRequest<'a> {
     /// User ID of the broadcaster. Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// Unique identifier of account to get subscription status of. Accepts up to 100 values.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub user_id: Vec<types::UserId>,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
 }
 
-impl CheckUserSubscriptionRequest {
+impl<'a> CheckUserSubscriptionRequest<'a> {
     /// Checks subscribed users to this specific channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
-            user_id: Default::default(),
+            user_id: Cow::Borrowed(&[]),
         }
     }
 
     /// Filter the results for specific users.
-    pub fn user_ids(
-        mut self,
-        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
-    ) -> Self {
-        self.user_id = user_ids.into_iter().map(Into::into).collect();
-        self
-    }
-
-    /// Filter the results for specific user.
-    pub fn user_id(mut self, user_id: impl Into<types::UserId>) -> Self {
-        self.user_id = vec![user_id.into()];
+    pub fn user_ids(mut self, user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+        self.user_id = user_ids.into();
         self
     }
 }
@@ -102,7 +96,7 @@ pub struct UserSubscription {
     pub tier: types::SubscriptionTier,
 }
 
-impl Request for CheckUserSubscriptionRequest {
+impl Request for CheckUserSubscriptionRequest<'_> {
     type Response = UserSubscription;
 
     const PATH: &'static str = "subscriptions/user";
@@ -110,7 +104,7 @@ impl Request for CheckUserSubscriptionRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadSubscriptions];
 }
 
-impl RequestGet for CheckUserSubscriptionRequest {
+impl RequestGet for CheckUserSubscriptionRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

@@ -46,6 +46,7 @@
 
 use super::*;
 use helix::RequestGet;
+use std::borrow::Cow;
 
 /// Query Parameters for [Get Broadcaster Subscriptions Events](super::get_broadcaster_subscriptions_events)
 ///
@@ -53,14 +54,16 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetBroadcasterSubscriptionsEventsRequest {
+pub struct GetBroadcasterSubscriptionsEventsRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// Filters the results and only returns a status object for users who have a subscribe event in this channel and have a matching user_id.
     /// Maximum: 100
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub user_id: Vec<types::UserId>,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
@@ -69,15 +72,16 @@ pub struct GetBroadcasterSubscriptionsEventsRequest {
     pub first: Option<usize>,
     /// Retreive a single event by event ID
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub id: Option<String>,
+    #[serde(borrow)]
+    pub id: Option<&'a str>,
 }
 
-impl GetBroadcasterSubscriptionsEventsRequest {
+impl<'a> GetBroadcasterSubscriptionsEventsRequest<'a> {
     /// Get events for this broadcaster
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
-            user_id: Default::default(),
+            user_id: Cow::Borrowed(&[]),
             after: Default::default(),
             first: Default::default(),
             id: Default::default(),
@@ -85,17 +89,8 @@ impl GetBroadcasterSubscriptionsEventsRequest {
     }
 
     /// Filter the results for specific users.
-    pub fn user_ids(
-        mut self,
-        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
-    ) -> Self {
-        self.user_id = user_ids.into_iter().map(Into::into).collect();
-        self
-    }
-
-    /// Filter the results for specific user.
-    pub fn user_id(mut self, user_id: impl Into<types::UserId>) -> Self {
-        self.user_id = vec![user_id.into()];
+    pub fn user_ids(mut self, user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+        self.user_id = user_ids.into();
         self
     }
 }
@@ -181,7 +176,7 @@ where D: serde::de::Deserializer<'de> {
     })
 }
 
-impl Request for GetBroadcasterSubscriptionsEventsRequest {
+impl Request for GetBroadcasterSubscriptionsEventsRequest<'_> {
     type Response = Vec<BroadcasterSubscriptionEvent>;
 
     const PATH: &'static str = "subscriptions/events";
@@ -190,9 +185,9 @@ impl Request for GetBroadcasterSubscriptionsEventsRequest {
         &[twitch_oauth2::Scope::ChannelReadSubscriptions];
 }
 
-impl RequestGet for GetBroadcasterSubscriptionsEventsRequest {}
+impl RequestGet for GetBroadcasterSubscriptionsEventsRequest<'_> {}
 
-impl helix::Paginated for GetBroadcasterSubscriptionsEventsRequest {
+impl helix::Paginated for GetBroadcasterSubscriptionsEventsRequest<'_> {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
 }
 

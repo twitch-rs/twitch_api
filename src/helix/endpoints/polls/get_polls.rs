@@ -39,6 +39,7 @@
 
 use super::*;
 use helix::RequestGet;
+use std::borrow::Cow;
 pub use types::{PollChoice, PollStatus};
 
 /// Query Parameters for [Get polls](super::get_polls)
@@ -47,13 +48,15 @@ pub use types::{PollChoice, PollStatus};
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetPollsRequest {
+pub struct GetPollsRequest<'a> {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// ID of a poll. Filters results to one or more specific polls. Not providing one or more IDs will return the full list of polls for the authenticated channel.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub id: Vec<types::PollId>,
+    #[serde(borrow)]
+    pub id: Cow<'a, [&'a types::PollIdRef]>,
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub after: Option<helix::Cursor>,
@@ -62,9 +65,9 @@ pub struct GetPollsRequest {
     pub first: Option<usize>,
 }
 
-impl GetPollsRequest {
+impl<'a> GetPollsRequest<'a> {
     /// The broadcaster running polls.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
             id: Default::default(),
@@ -73,15 +76,9 @@ impl GetPollsRequest {
         }
     }
 
-    /// ID of a poll to query.
-    pub fn id(mut self, id: impl Into<types::PollId>) -> Self {
-        self.id = vec![id.into()];
-        self
-    }
-
     /// IDs of the polls to query.
-    pub fn ids(mut self, id: impl IntoIterator<Item = impl Into<types::PollId>>) -> Self {
-        self.id = id.into_iter().map(Into::into).collect();
+    pub fn ids(mut self, id: impl Into<Cow<'a, [&'a types::PollIdRef]>>) -> Self {
+        self.id = id.into();
         self
     }
 }
@@ -125,7 +122,7 @@ pub struct Poll {
     pub ended_at: Option<types::Timestamp>,
 }
 
-impl Request for GetPollsRequest {
+impl Request for GetPollsRequest<'_> {
     type Response = Vec<Poll>;
 
     const PATH: &'static str = "polls";
@@ -133,9 +130,9 @@ impl Request for GetPollsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadPolls];
 }
 
-impl RequestGet for GetPollsRequest {}
+impl RequestGet for GetPollsRequest<'_> {}
 
-impl helix::Paginated for GetPollsRequest {
+impl helix::Paginated for GetPollsRequest<'_> {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor; }
 }
 
@@ -143,8 +140,8 @@ impl helix::Paginated for GetPollsRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req =
-        GetPollsRequest::broadcaster_id("141981764").id("ed961efd-8a3f-4cf5-a9d0-e616c590cd2a");
+    let req = GetPollsRequest::broadcaster_id("141981764")
+        .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()]);
 
     // From twitch docs
     let data = br#"

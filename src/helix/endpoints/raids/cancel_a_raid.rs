@@ -45,15 +45,16 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CancelARaidRequest {
+pub struct CancelARaidRequest<'a> {
     /// The ID of the broadcaster that sent the raiding party.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
 }
 
-impl CancelARaidRequest {
+impl<'a> CancelARaidRequest<'a> {
     /// Cancel a pending raid on this broadcasters channel
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
         }
@@ -70,7 +71,7 @@ pub enum CancelARaidResponse {
     Success,
 }
 
-impl Request for CancelARaidRequest {
+impl Request for CancelARaidRequest<'_> {
     type Response = CancelARaidResponse;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -80,7 +81,7 @@ impl Request for CancelARaidRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageRaids];
 }
 
-impl RequestDelete for CancelARaidRequest {
+impl RequestDelete for CancelARaidRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

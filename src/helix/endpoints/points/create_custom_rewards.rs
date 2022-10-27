@@ -63,15 +63,16 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CreateCustomRewardRequest {
+pub struct CreateCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
 }
 
-impl CreateCustomRewardRequest {
+impl<'a> CreateCustomRewardRequest<'a> {
     /// Channel to create reward on
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
         }
@@ -84,14 +85,15 @@ impl CreateCustomRewardRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CreateCustomRewardBody {
+pub struct CreateCustomRewardBody<'a> {
     /// The title of the reward
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub title: String,
+    #[serde(borrow)]
+    pub title: &'a str,
     /// The prompt for the viewer when they are redeeming the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub prompt: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub prompt: Option<&'a str>,
     /// The cost of the reward
     pub cost: usize,
     /// Is the reward currently enabled, if false the reward won’t show up to viewers. Defaults true
@@ -100,8 +102,8 @@ pub struct CreateCustomRewardBody {
     pub is_enabled: Option<bool>,
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub background_color: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub background_color: Option<&'a str>,
     /// Does the user need to enter information when redeeming the reward. Defaults false
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -136,10 +138,10 @@ pub struct CreateCustomRewardBody {
     pub should_redemptions_skip_request_queue: Option<bool>,
 }
 
-impl CreateCustomRewardBody {
+impl<'a> CreateCustomRewardBody<'a> {
     // FIXME: need to add more here
     /// Reward to create with title.
-    pub fn new(title: String, cost: usize) -> Self {
+    pub fn new(title: &'a str, cost: usize) -> Self {
         Self {
             title,
             prompt: Default::default(),
@@ -158,14 +160,14 @@ impl CreateCustomRewardBody {
     }
 }
 
-impl helix::private::SealedSerialize for CreateCustomRewardBody {}
+impl helix::private::SealedSerialize for CreateCustomRewardBody<'_> {}
 
 /// Return Values for [Create Custom Rewards](super::create_custom_rewards)
 ///
 /// [`create-custom-rewards`](https://dev.twitch.tv/docs/api/reference#create-custom-rewards)
 pub type CreateCustomRewardResponse = super::CustomReward;
 
-impl Request for CreateCustomRewardRequest {
+impl Request for CreateCustomRewardRequest<'_> {
     type Response = CreateCustomRewardResponse;
 
     const PATH: &'static str = "channel_points/custom_rewards";
@@ -174,8 +176,8 @@ impl Request for CreateCustomRewardRequest {
         &[twitch_oauth2::Scope::ChannelManageRedemptions];
 }
 
-impl RequestPost for CreateCustomRewardRequest {
-    type Body = CreateCustomRewardBody;
+impl<'a> RequestPost for CreateCustomRewardRequest<'a> {
+    type Body = CreateCustomRewardBody<'a>;
 
     fn parse_inner_response(
         request: Option<Self>,
@@ -219,7 +221,7 @@ fn test_request() {
     use helix::*;
     let req = CreateCustomRewardRequest::broadcaster_id("274637212");
 
-    let body = CreateCustomRewardBody::new("game analysis 1v1".to_owned(), 50000);
+    let body = CreateCustomRewardBody::new("game analysis 1v1", 50000);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

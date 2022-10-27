@@ -41,20 +41,22 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct AddChannelVipRequest {
+pub struct AddChannelVipRequest<'a> {
     /// The ID of the broadcaster that’s granting VIP status to the user.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// The ID of the user to add as a VIP in the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub user_id: types::UserId,
+    #[serde(borrow)]
+    pub user_id: &'a types::UserIdRef,
 }
 
-impl AddChannelVipRequest {
+impl<'a> AddChannelVipRequest<'a> {
     /// Add a channel VIP
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        user_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        user_id: impl Into<&'a types::UserIdRef>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -74,7 +76,7 @@ pub enum AddChannelVipResponse {
     Success,
 }
 
-impl Request for AddChannelVipRequest {
+impl Request for AddChannelVipRequest<'_> {
     type Response = AddChannelVipResponse;
 
     const PATH: &'static str = "channels/vips";
@@ -82,7 +84,7 @@ impl Request for AddChannelVipRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageVips];
 }
 
-impl RequestPost for AddChannelVipRequest {
+impl RequestPost for AddChannelVipRequest<'_> {
     type Body = helix::EmptyBody;
 
     fn parse_inner_response(

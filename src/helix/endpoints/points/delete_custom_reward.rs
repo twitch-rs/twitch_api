@@ -48,18 +48,23 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct DeleteCustomRewardRequest {
+pub struct DeleteCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// ID of the Custom Reward to delete, must match a Custom Reward on broadcaster_id’s channel.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub id: types::RewardId,
+    #[serde(borrow)]
+    pub id: &'a types::RewardIdRef,
 }
 
-impl DeleteCustomRewardRequest {
+impl<'a> DeleteCustomRewardRequest<'a> {
     /// Reward to delete
-    pub fn new(broadcaster_id: impl Into<types::UserId>, id: impl Into<types::RewardId>) -> Self {
+    pub fn new(
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        id: impl Into<&'a types::RewardIdRef>,
+    ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
             id: id.into(),
@@ -79,7 +84,7 @@ pub enum DeleteCustomReward {
     Success,
 }
 
-impl Request for DeleteCustomRewardRequest {
+impl Request for DeleteCustomRewardRequest<'_> {
     type Response = DeleteCustomReward;
 
     const PATH: &'static str = "channel_points/custom_rewards";
@@ -88,7 +93,7 @@ impl Request for DeleteCustomRewardRequest {
         &[twitch_oauth2::Scope::ChannelManageRedemptions];
 }
 
-impl RequestDelete for DeleteCustomRewardRequest {
+impl RequestDelete for DeleteCustomRewardRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

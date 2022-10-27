@@ -48,14 +48,16 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetBlockedTerms {
+pub struct GetBlockedTerms<'a> {
     /// The ID of the broadcaster whose blocked terms you’re getting.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     /// If the broadcaster wants to get their own block terms (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: &'a types::UserIdRef,
     /// The maximum number of blocked terms to return per page in the response. The minimum page size is 1 blocked term per page and the maximum is 100. The default is 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<u32>,
@@ -64,11 +66,11 @@ pub struct GetBlockedTerms {
     pub after: Option<helix::Cursor>,
 }
 
-impl GetBlockedTerms {
+impl<'a> GetBlockedTerms<'a> {
     /// Get blocked terms in a broadcasters channel as specified moderator
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        moderator_id: impl Into<&'a types::UserIdRef>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
@@ -90,7 +92,7 @@ impl GetBlockedTerms {
 /// [`get-blocked-terms`](https://dev.twitch.tv/docs/api/reference#get-blocked-terms)
 pub type GetBlockedTermsResponse = BlockedTerm;
 
-impl Request for GetBlockedTerms {
+impl Request for GetBlockedTerms<'_> {
     type Response = Vec<BlockedTerm>;
 
     const PATH: &'static str = "moderation/blocked_terms";
@@ -99,9 +101,9 @@ impl Request for GetBlockedTerms {
         &[twitch_oauth2::Scope::ModeratorReadBlockedTerms];
 }
 
-impl RequestGet for GetBlockedTerms {}
+impl RequestGet for GetBlockedTerms<'_> {}
 
-impl helix::Paginated for GetBlockedTerms {
+impl helix::Paginated for GetBlockedTerms<'_> {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
 }
 

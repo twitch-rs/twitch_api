@@ -46,16 +46,17 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetStreamTagsRequest {
+pub struct GetStreamTagsRequest<'a> {
     // FIXME: twitch docs sucks
     /// ID of the stream whose tags are going to be fetched
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: &'a types::UserIdRef,
 }
 
-impl GetStreamTagsRequest {
+impl<'a> GetStreamTagsRequest<'a> {
     /// ID of the stream whose tags are going to be fetched
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into(),
         }
@@ -67,7 +68,7 @@ impl GetStreamTagsRequest {
 /// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
 pub type Tag = helix::tags::TwitchTag;
 
-impl Request for GetStreamTagsRequest {
+impl Request for GetStreamTagsRequest<'_> {
     type Response = Vec<Tag>;
 
     const PATH: &'static str = "streams/tags";
@@ -75,7 +76,7 @@ impl Request for GetStreamTagsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetStreamTagsRequest {}
+impl RequestGet for GetStreamTagsRequest<'_> {}
 
 #[cfg(test)]
 #[test]
