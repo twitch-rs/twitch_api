@@ -36,16 +36,11 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         &*broadcaster_id,
     );
 
+    let mut body = twitch_api::helix::channels::ModifyChannelInformationBody::new();
+    body.title("Hello World!");
+
     println!("scopes: {:?}", token.scopes());
-    let response = client
-        .req_patch(
-            req,
-            twitch_api::helix::channels::ModifyChannelInformationBody::builder()
-                .title("Hello World!")
-                .build(),
-            &token,
-        )
-        .await?;
+    let response = client.req_patch(req, body, &token).await?;
     println!("{:?}", response);
 
     Ok(())

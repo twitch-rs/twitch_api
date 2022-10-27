@@ -124,7 +124,7 @@ impl<'a> ModifyChannelInformationBody<'a> {
     }
 
     /// Title of the stream. Value must not be an empty string.
-    pub fn title(&'a mut self, title: impl Into<&'a str>) -> &'a mut ModifyChannelInformationBody {
+    pub fn title(&mut self, title: impl Into<&'a str>) -> &mut Self {
         self.title = Some(title.into());
         self
     }
