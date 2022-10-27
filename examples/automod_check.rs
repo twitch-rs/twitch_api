@@ -35,11 +35,8 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     let req =
         twitch_api::helix::moderation::CheckAutoModStatusRequest::broadcaster_id(broadcaster_id);
-    let mut message = args.by_ref().collect::<Vec<_>>().join(" ");
-    if message.is_empty() {
-        let _ = std::mem::replace(&mut message, String::from("hello!"));
-    };
-    let data = twitch_api::helix::moderation::CheckAutoModStatusBody::new("123", message);
+    let data =
+        twitch_api::helix::moderation::CheckAutoModStatusBody::new("123", args.collect::<String>());
     println!("data: {:?}", data);
     let response = client.req_post(req, vec![data], &token).await?;
     println!("{:?}", response.data);
