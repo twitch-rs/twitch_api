@@ -21,10 +21,12 @@
 //! let body = create_poll::CreatePollBody::builder()
 //!     .broadcaster_id("141981764")
 //!     .title("Heads or Tails?")
-//!     .choices(vec![
-//!         create_poll::NewPollChoice::new("Heads"),
-//!         create_poll::NewPollChoice::new("Tails"),
-//!     ])
+//!     .choices(
+//!         &[
+//!             create_poll::NewPollChoice::new("Heads"),
+//!             create_poll::NewPollChoice::new("Tails"),
+//!         ][..],
+//!     )
 //!     .channel_points_voting_enabled(true)
 //!     .channel_points_per_vote(100)
 //!     .duration(1800)
@@ -47,10 +49,11 @@
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = create_poll::CreatePollRequest::builder()
 //!     .build();
+//! let choices: &[create_poll::NewPollChoice] = &[create_poll::NewPollChoice::new("Heads"), create_poll::NewPollChoice::new("Tails")];
 //! let body = create_poll::CreatePollBody::builder()
 //!     .broadcaster_id("141981764")
 //!     .title("Heads or Tails?")
-//!     .choices(vec![create_poll::NewPollChoice::new("Heads"), create_poll::NewPollChoice::new("Tails")])
+//!     .choices(choices)
 //!     .channel_points_voting_enabled(true)
 //!     .channel_points_per_vote(100)
 //!     .duration(1800)
@@ -75,6 +78,7 @@ use helix::RequestPost;
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreatePollRequest<'a> {
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     #[serde(skip)]
     _marker: PhantomData<&'a ()>,
 }
@@ -102,6 +106,10 @@ pub struct CreatePollBody<'a> {
     /// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.
     pub duration: i64,
     /// Array of the poll choices. Minimum: 2 choices. Maximum: 5 choices.
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub choices: Cow<'a, [NewPollChoice<'a>]>,
     /// Indicates if Bits can be used for voting. Default: false

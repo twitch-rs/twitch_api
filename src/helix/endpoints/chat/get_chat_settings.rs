@@ -21,9 +21,9 @@
 //!     types,
 //! };
 //! let request = get_chat_settings::GetChatSettingsRequest::builder()
-//!     .broadcaster_id("1234567".to_owned())
+//!     .broadcaster_id("1234567")
 //!     // optional
-//!     .moderator_id(types::UserId::from("9876543"))
+//!     .moderator_id(types::UserIdRef::from_str("9876543"))
 //!     .build();
 //! ```
 //!
@@ -40,9 +40,9 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = get_chat_settings::GetChatSettingsRequest::builder()
-//!     .broadcaster_id("1234567".to_owned())
+//!     .broadcaster_id("1234567")
 //!     // optional
-//!     .moderator_id(types::UserId::from("9876543"))
+//!     .moderator_id(types::UserIdRef::from_str("9876543"))
 //!     .build();
 //! let response: helix::chat::ChatSettings = client.req_get(request, &token).await?.data;
 //! # Ok(())

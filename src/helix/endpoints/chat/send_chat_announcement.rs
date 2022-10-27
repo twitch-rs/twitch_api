@@ -22,8 +22,7 @@
 //! ```
 //! # use twitch_api::helix::chat::send_chat_announcement;
 //! let body =
-//!     send_chat_announcement::SendChatAnnouncementBody::new("Hello chat!".to_owned(), "purple")
-//!         .unwrap();
+//!     send_chat_announcement::SendChatAnnouncementBody::new("Hello chat!", "purple").unwrap();
 //! ```
 //!
 //! ## Response: [SendChatAnnouncementResponse]
@@ -44,7 +43,7 @@
 //!     .moderator_id("5678")
 //!     .build();
 //! let body = send_chat_announcement::SendChatAnnouncementBody::new(
-//!     "Hello chat!".to_owned(),
+//!     "Hello chat!",
 //!     "purple",
 //! ).unwrap();
 //! let response: helix::chat::SendChatAnnouncementResponse = client.req_post(request, body, &token).await?.data;

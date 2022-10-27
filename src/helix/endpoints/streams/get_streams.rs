@@ -10,7 +10,7 @@
 //! ```rust
 //! use twitch_api::helix::streams::get_streams;
 //! let request = get_streams::GetStreamsRequest::builder()
-//!     .user_login(vec!["justintvfan".into()])
+//!     .user_login(&["justintvfan".into()][..])
 //!     .build();
 //! ```
 //!
@@ -20,14 +20,16 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, streams::get_streams};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-//! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+//! let client: helix::HelixClient<'static, client::DummyHttpClient> =
+//!     helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+//! let logins: &[&types::UserNameRef] = &["justintvfan".into()];
 //! let request = get_streams::GetStreamsRequest::builder()
-//!     .user_login(vec!["justintvfan".into()])
+//!     .user_login(logins)
 //!     .build();
 //! let response: Vec<get_streams::Stream> = client.req_get(request, &token).await?.data;
 //! # Ok(())
@@ -59,7 +61,10 @@ pub struct GetStreamsRequest<'a> {
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Returns streams broadcasting a specified game ID. You can specify up to 10 IDs.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub game_id: Cow<'a, [&'a types::CategoryIdRef]>,
     /// Stream language. You can specify up to 100 languages.
@@ -67,11 +72,17 @@ pub struct GetStreamsRequest<'a> {
     #[serde(borrow)]
     pub language: Option<&'a str>,
     /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
-    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub user_id: Cow<'a, [&'a types::UserIdRef]>,
     /// Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub user_login: Cow<'a, [&'a types::UserNameRef]>,
 }

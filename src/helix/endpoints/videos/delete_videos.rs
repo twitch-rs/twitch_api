@@ -10,7 +10,7 @@
 //! ```rust
 //! use twitch_api::helix::videos::delete_videos;
 //! let request = delete_videos::DeleteVideosRequest::builder()
-//!     .id(vec!["1234".into()])
+//!     .id(&["1234".into()][..])
 //!     .build();
 //! ```
 //!
@@ -20,14 +20,15 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, videos::delete_videos};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+//! let ids: &[&types::VideoIdRef] = &["1234".into()];
 //! let request = delete_videos::DeleteVideosRequest::builder()
-//!     .id(vec!["1234".into()])
+//!     .id(ids)
 //!     .build();
 //! let response: delete_videos::DeleteVideo = client.req_delete(request, &token).await?.data;
 //! # Ok(())
@@ -50,7 +51,10 @@ use std::borrow::Cow;
 #[non_exhaustive]
 pub struct DeleteVideosRequest<'a> {
     /// ID of the video(s) to be deleted. Limit: 5.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub id: Cow<'a, [&'a types::VideoIdRef]>,
 }

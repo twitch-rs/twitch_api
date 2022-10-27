@@ -10,7 +10,7 @@
 //! ```rust
 //! use twitch_api::helix::chat::get_user_chat_color;
 //! let request = get_user_chat_color::GetUserChatColorRequest::builder()
-//!     .user_id(vec!["4321".into()])
+//!     .user_id(&["4321".into()][..])
 //!     .build();
 //! ```
 //!
@@ -20,14 +20,15 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, chat::get_user_chat_color};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+//! let ids: &[&types::UserIdRef] = &["4321".into()];
 //! let request = get_user_chat_color::GetUserChatColorRequest::builder()
-//!     .user_id(vec!["4321".into()])
+//!     .user_id(ids)
 //!     .build();
 //! let response: Vec<helix::chat::UserChatColor> = client.req_get(request, &token).await?.data;
 //! # Ok(())
@@ -49,6 +50,10 @@ use std::borrow::Cow;
 #[non_exhaustive]
 pub struct GetUserChatColorRequest<'a> {
     /// The ID of the user whose color you want to get.
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub user_id: Cow<'a, [&'a types::UserIdRef]>,
 }

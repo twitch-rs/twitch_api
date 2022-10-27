@@ -50,7 +50,10 @@ use std::borrow::Cow;
 #[non_exhaustive]
 pub struct GetVideosRequest<'a> {
     /// ID of the video being queried. Limit: 100. If this is specified, you cannot use any of the optional query parameters below.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub id: Cow<'a, [&'a types::VideoIdRef]>,
     /// ID of the user who owns the video.

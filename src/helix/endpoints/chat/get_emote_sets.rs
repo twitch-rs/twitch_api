@@ -10,7 +10,7 @@
 //! ```rust
 //! use twitch_api::helix::chat::get_emote_sets;
 //! let request = get_emote_sets::GetEmoteSetsRequest::builder()
-//!     .emote_set_id(vec!["1234".into()])
+//!     .emote_set_id(&["1234".into()][..])
 //!     .build();
 //! ```
 //!
@@ -20,14 +20,15 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, chat::get_emote_sets};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+//! let ids: &[&types::EmoteSetIdRef] = &["1234".into()];
 //! let request = get_emote_sets::GetEmoteSetsRequest::builder()
-//!     .emote_set_id(vec!["1234".into()])
+//!     .emote_set_id(ids)
 //!     .build();
 //! let response: Vec<helix::chat::get_emote_sets::Emote> = client.req_get(request, &token).await?.data;
 //! # Ok(())
@@ -50,7 +51,10 @@ use std::borrow::Cow;
 pub struct GetEmoteSetsRequest<'a> {
     // FIXME: twitch doc specifies maximum as 25, but it actually is 10
     /// The broadcaster whose emotes are being requested. Minimum: 1. Maximum: 10
-    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub emote_set_id: Cow<'a, [&'a types::EmoteSetIdRef]>,
 }
@@ -99,13 +103,14 @@ impl Emote {
     ///
     /// ```rust, no_run
     /// use twitch_api::helix::{self, chat::get_channel_emotes};
-    /// # use twitch_api::client;
+    /// # use twitch_api::{client, types};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// let emotes = client.get_emote_sets(["301590448"], &token).await?;
+    /// let ids: &[&types::EmoteSetIdRef] = &["301590448".into()];
+    /// let emotes = client.get_emote_sets(ids, &token).await?;
     /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0");
     /// # Ok(())
     /// # }

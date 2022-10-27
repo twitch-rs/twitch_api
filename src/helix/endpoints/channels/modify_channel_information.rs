@@ -21,7 +21,7 @@
 //! ```
 //! # use twitch_api::helix::channels::modify_channel_information;
 //! let body = modify_channel_information::ModifyChannelInformationBody::builder()
-//!     .title("Hello World!".to_string())
+//!     .title("Hello World!")
 //!     .build();
 //! ```
 //!
@@ -43,7 +43,7 @@
 //!     .broadcaster_id("1234")
 //!     .build();
 //! let body = modify_channel_information::ModifyChannelInformationBody::builder()
-//!     .title("Hello World!".to_string())
+//!     .title("Hello World!")
 //!     .build();
 //! let response: modify_channel_information::ModifyChannelInformation = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())

@@ -4,16 +4,15 @@
 //! # Examples
 //!
 //! ```rust,no_run
-//! # use twitch_api::helix::{HelixClient, streams::GetStreamsRequest};
+//! # use twitch_api::{helix::{HelixClient, streams::GetStreamsRequest}, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! let client = HelixClient::new();
 //! # let _: &HelixClient<twitch_api::DummyHttpClient> = &client;
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let req = GetStreamsRequest::builder()
-//!     .user_login(vec!["justinfan1337".into()])
-//!     .build();
+//! let logins: &[&types::UserNameRef] = &["justinfan1337".into()];
+//! let req = GetStreamsRequest::builder().user_login(logins).build();
 //!
 //! // If this doesn't return a result, that would mean the stream is not live.
 //! println!("{:?}", &client.req_get(req, &token).await?.data.get(0));

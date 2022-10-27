@@ -5,12 +5,13 @@
 //! you can decide to use this library without any specific client implementation.
 //!
 //! ```rust
-//! use twitch_api::helix::{self, Request, RequestGet, users::{GetUsersRequest, User}};
+//! use twitch_api::{helix::{self, Request, RequestGet, users::{GetUsersRequest, User}}, types};
 //!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //!
-//! let request = GetUsersRequest::login("justintv123");
+//! let logins: &[&types::UserNameRef] = &["justintv123".into()];
+//! let request = GetUsersRequest::logins(logins);
 //!
 //! // Send it however you want
 //! // Create a [`http::Response<hyper::body::Bytes>`] with RequestGet::create_request, which takes an access token and a client_id

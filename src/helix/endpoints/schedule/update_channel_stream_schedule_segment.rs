@@ -23,7 +23,7 @@
 //! # use twitch_api::helix::schedule::update_channel_stream_schedule_segment;
 //! let body =
 //!     update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::builder()
-//!         .duration("120".to_string())
+//!         .duration("120")
 //!         .build();
 //! ```
 //!
@@ -46,7 +46,7 @@
 //!     .id("eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=")
 //!     .build();
 //! let body = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::builder()
-//!     .duration("120".to_string())
+//!     .duration("120")
 //!     .build();
 //! let response: update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentResponse = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())

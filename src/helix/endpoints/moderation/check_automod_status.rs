@@ -44,11 +44,11 @@
 //! let request = check_automod_status::CheckAutoModStatusRequest::builder()
 //!     .broadcaster_id("1234")
 //!     .build();
-//! let body = vec![check_automod_status::CheckAutoModStatusBody::builder()
+//! let body = &[&check_automod_status::CheckAutoModStatusBody::builder()
 //!     .msg_id("test1")
 //!     .msg_text("automod please approve this!")
 //!     .build()];
-//! let response: Vec<check_automod_status::CheckAutoModStatus> = client.req_post(request, body, &token).await?.data;
+//! let response: Vec<check_automod_status::CheckAutoModStatus> = client.req_post(request, &body[..], &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```

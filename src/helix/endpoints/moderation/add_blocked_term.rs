@@ -21,7 +21,7 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::add_blocked_term;
-//! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of".to_string());
+//! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of");
 //! ```
 //!
 //! ## Response: [BlockedTerm]
@@ -42,7 +42,7 @@
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
 //!     .build();
-//! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of".to_string());
+//! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of");
 //! let response: &helix::moderation::BlockedTerm = client.req_post(request, body, &token).await?.data.first().unwrap();
 //! # Ok(())
 //! # }

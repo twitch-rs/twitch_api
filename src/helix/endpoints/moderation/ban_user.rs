@@ -21,7 +21,7 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::ban_user;
-//! let body = ban_user::BanUserBody::new("9876", "no reason".to_string(), 120);
+//! let body = ban_user::BanUserBody::new("9876", "no reason", 120);
 //! ```
 //!
 //! ## Response: [BanUser]
@@ -42,7 +42,7 @@
 //!     .broadcaster_id("1234")
 //!     .moderator_id("5678")
 //!     .build();
-//! let body = ban_user::BanUserBody::new("9876", "no reason".to_string(), 120);
+//! let body = ban_user::BanUserBody::new("9876", "no reason", 120);
 //! let response: ban_user::BanUser = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

@@ -12,9 +12,9 @@
 //! ```rust
 //! use twitch_api::helix::points::UpdateRedemptionStatusRequest;
 //! let request = UpdateRedemptionStatusRequest::builder()
-//!     .broadcaster_id("274637212".to_string())
-//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-//!     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63".to_string())
+//!     .broadcaster_id("274637212")
+//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
+//!     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63")
 //!     .build();
 //! ```
 //!
@@ -47,9 +47,9 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = UpdateRedemptionStatusRequest::builder()
-//!     .broadcaster_id("274637212".to_string())
-//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-//!     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63".to_string())
+//!     .broadcaster_id("274637212")
+//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
+//!     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63")
 //!     .build();
 //! let body = UpdateRedemptionStatusBody::builder()
 //!     .status(CustomRewardRedemptionStatus::Canceled)

@@ -25,7 +25,7 @@
 //! # use twitch_api::helix::points::update_custom_reward;
 //! let body = update_custom_reward::UpdateCustomRewardBody::builder()
 //!     .cost(501)
-//!     .title("hydrate but differently now!".to_string())
+//!     .title("hydrate but differently now!")
 //!     .build();
 //! ```
 //!
@@ -49,7 +49,7 @@
 //!     .build();
 //! let body = update_custom_reward::UpdateCustomRewardBody::builder()
 //!     .cost(501)
-//!     .title("hydrate but differently now!".to_string())
+//!     .title("hydrate but differently now!")
 //!     .build();
 //! let response: update_custom_reward::UpdateCustomReward = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())

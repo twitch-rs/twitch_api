@@ -9,7 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::games::get_games;
-//! let request = get_games::GetGamesRequest::id("4321");
+//! let request = get_games::GetGamesRequest::ids(&["4321".into()][..]);
 //! ```
 //!
 //! ## Response: [Game](types::TwitchCategory)
@@ -18,13 +18,14 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, games::get_games};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_games::GetGamesRequest::id("4321");
+//! let ids: &[&types::CategoryIdRef] = &["4321".into()];
+//! let request = get_games::GetGamesRequest::ids(ids);
 //! let response: Vec<get_games::Game> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -45,11 +46,17 @@ use std::borrow::Cow;
 #[non_exhaustive]
 pub struct GetGamesRequest<'a> {
     /// Game ID. At most 100 id values can be specified.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub id: Cow<'a, [&'a types::CategoryIdRef]>,
     /// Game name. The name must be an exact match. For instance, “Pokemon” will not return a list of Pokemon games; instead, query the specific Pokemon game(s) in which you are interested. At most 100 name values can be specified.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub name: Cow<'a, [&'a str]>,
 }

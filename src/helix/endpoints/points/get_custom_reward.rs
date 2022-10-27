@@ -12,7 +12,7 @@
 //! ```rust
 //! use twitch_api::helix::points::GetCustomRewardRequest;
 //! let request = GetCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212".to_string())
+//!     .broadcaster_id("274637212")
 //!     .build();
 //! ```
 //!
@@ -30,7 +30,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = GetCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212".to_string())
+//!     .broadcaster_id("274637212")
 //!     .build();
 //! let response: Vec<CustomReward> = client.req_get(request, &token).await?.data;
 //! # Ok(())

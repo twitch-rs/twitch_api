@@ -8,7 +8,7 @@
 //! ```rust
 //! use twitch_api::helix::teams::get_teams;
 //! let request = get_teams::GetTeamsRequest::builder()
-//!     .name("coolteam".to_string())
+//!     .name("coolteam")
 //!     .build();
 //! ```
 //!
@@ -25,7 +25,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = get_teams::GetTeamsRequest::builder()
-//!     .name("coolteam".to_string())
+//!     .name("coolteam")
 //!     .build();
 //! let response: Vec<get_teams::Team> = client.req_get(request, &token).await?.data;
 //! # Ok(())

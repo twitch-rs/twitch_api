@@ -14,8 +14,8 @@
 //! ```rust
 //! use twitch_api::helix::chat::get_chatters;
 //! let request = get_chatters::GetChattersRequest::builder()
-//!     .broadcaster_id("1234".to_string())
-//!     .moderator_id("4321".to_string())
+//!     .broadcaster_id("1234")
+//!     .moderator_id("4321")
 //!     .build();
 //! ```
 //!
@@ -32,8 +32,8 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = get_chatters::GetChattersRequest::builder()
-//!     .broadcaster_id("1234".to_string())
-//!     .moderator_id("4321".to_string())
+//!     .broadcaster_id("1234")
+//!     .moderator_id("4321")
 //!     .build();
 //! let response: Vec<helix::chat::Chatter> = client.req_get(request, &token).await?.data;
 //! # Ok(())

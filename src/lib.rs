@@ -57,7 +57,7 @@
 //! #       Err(e) => panic!(e),
 //! #   };
 //!
-//! println!("{:?}", &client.helix.get_channel_from_login("twitch".to_string(), &token).await?.unwrap().title);
+//! println!("{:?}", &client.helix.get_channel_from_login("twitch", &token).await?.unwrap().title);
 //! # Ok(())
 //! # }
 //! ```

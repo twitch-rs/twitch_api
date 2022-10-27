@@ -73,6 +73,7 @@ use helix::RequestPost;
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct CreatePredictionRequest<'a> {
+    #[cfg_attr(feature = "typed-builder", builder(default))]
     #[serde(skip)]
     _marker: PhantomData<&'a ()>,
 }

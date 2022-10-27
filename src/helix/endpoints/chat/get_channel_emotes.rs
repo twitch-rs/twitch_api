@@ -10,7 +10,7 @@
 //! ```rust
 //! use twitch_api::helix::chat::get_channel_emotes;
 //! let request = get_channel_emotes::GetChannelEmotesRequest::builder()
-//!     .broadcaster_id("1234".to_string())
+//!     .broadcaster_id("1234")
 //!     .build();
 //! ```
 //!
@@ -27,7 +27,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = get_channel_emotes::GetChannelEmotesRequest::builder()
-//!     .broadcaster_id("1234".to_string())
+//!     .broadcaster_id("1234")
 //!     .build();
 //! let response: Vec<helix::chat::ChannelEmote> = client.req_get(request, &token).await?.data;
 //! # Ok(())

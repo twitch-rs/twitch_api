@@ -264,7 +264,9 @@ pub async fn is_live<'a>(
     tracing::info!("checking if live");
     if let Some(stream) = client
         .req_get(
-            helix::streams::get_streams::GetStreamsRequest::user_id(config.broadcaster.id.clone()),
+            helix::streams::get_streams::GetStreamsRequest::user_ids(
+                &[config.broadcaster.id.as_ref()][..],
+            ),
             token,
         )
         .await

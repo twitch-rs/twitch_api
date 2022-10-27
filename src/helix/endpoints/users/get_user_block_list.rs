@@ -8,7 +8,7 @@
 //! ```rust
 //! use twitch_api::helix::users::get_user_block_list;
 //! let request = get_user_block_list::GetUserBlockListRequest::builder()
-//!     .broadcaster_id("1234".to_string())
+//!     .broadcaster_id("1234")
 //!     .build();
 //! ```
 //!
@@ -25,7 +25,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = get_user_block_list::GetUserBlockListRequest::builder()
-//!     .broadcaster_id("1234".to_string())
+//!     .broadcaster_id("1234")
 //!     .build();
 //! let response: Vec<get_user_block_list::UserBlock> = client.req_get(request, &token).await?.data;
 //! # Ok(())

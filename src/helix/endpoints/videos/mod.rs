@@ -4,14 +4,15 @@
 //! # Examples
 //!
 //! ```rust,no_run
-//! # use twitch_api::helix::{HelixClient, videos::GetVideosRequest};
+//! # use twitch_api::{helix::{HelixClient, videos::GetVideosRequest}, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! let client = HelixClient::new();
 //! # let _: &HelixClient<twitch_api::DummyHttpClient> = &client;
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let req = GetVideosRequest::builder().id(vec!["1337".into()]).build();
+//! let ids: &[&types::VideoIdRef] = &["1234".into()];
+//! let req = GetVideosRequest::builder().id(ids).build();
 //!
 //! println!("{:?}", &client.req_get(req, &token).await?.data);
 //! # Ok(())

@@ -8,8 +8,8 @@
 //! ```rust
 //! use twitch_api::helix::users::get_users;
 //! let request = get_users::GetUsersRequest::builder()
-//!     .id(vec!["1234".into()])
-//!     .login(vec!["justintvfan".into()])
+//!     .id(&["1234".into()][..])
+//!     .login(&["justintvfan".into()][..])
 //!     .build();
 //! ```
 //!
@@ -19,15 +19,17 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, users::get_users};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+//! let ids: &[&types::UserIdRef] = &["1234".into()];
+//! let logins: &[&types::UserNameRef] = &["justintvfan".into()];
 //! let request = get_users::GetUsersRequest::builder()
-//!     .id(vec!["1234".into()])
-//!     .login(vec!["justintvfan".into()])
+//!     .id(ids)
+//!     .login(logins)
 //!     .build();
 //! let response: Vec<get_users::User> = client.req_get(request, &token).await?.data;
 //! # Ok(())
@@ -49,11 +51,17 @@ use std::borrow::Cow;
 #[non_exhaustive]
 pub struct GetUsersRequest<'a> {
     /// User ID. Multiple user IDs can be specified. Limit: 100.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub id: Cow<'a, [&'a types::UserIdRef]>,
     /// User login name. Multiple login names can be specified. Limit: 100.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
     #[serde(borrow)]
     pub login: Cow<'a, [&'a types::UserNameRef]>,
 }
@@ -63,7 +71,7 @@ impl<'a> GetUsersRequest<'a> {
     ///
     /// ```rust
     /// use twitch_api::helix::users::get_users::GetUsersRequest;
-    /// GetUsersRequest::logins(["twitch", "justintv"]);
+    /// GetUsersRequest::logins(&["twitch".into(), "justintv".into()][..]);
     /// ```
     pub fn logins(login: impl Into<Cow<'a, [&'a types::UserNameRef]>>) -> Self {
         Self {
