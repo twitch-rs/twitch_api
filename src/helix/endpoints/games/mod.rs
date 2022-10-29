@@ -3,8 +3,8 @@ use crate::{
     helix::{self, Request},
     types,
 };
-
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
 
 pub mod get_games;
 pub mod get_top_games;

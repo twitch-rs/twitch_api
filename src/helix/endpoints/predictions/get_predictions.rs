@@ -39,7 +39,6 @@
 
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 pub use types::{PredictionOutcome, PredictionOutcomeId, PredictionStatus};
 
 /// Query Parameters for [Get predictions](super::get_predictions)
@@ -52,7 +51,7 @@ pub struct GetPredictionsRequest<'a> {
     /// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of a Prediction. Filters results to one or more specific Predictions.
     /// Not providing one or more IDs will return the full list of Predictions for the authenticated channel.
     ///
@@ -70,9 +69,9 @@ pub struct GetPredictionsRequest<'a> {
 
 impl<'a> GetPredictionsRequest<'a> {
     /// Get information about predictions for this broadcasters channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             id: Cow::Borrowed(&[]),
             after: Default::default(),
             first: Default::default(),

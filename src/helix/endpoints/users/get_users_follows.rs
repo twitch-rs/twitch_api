@@ -53,38 +53,38 @@ pub struct GetUsersFollowsRequest<'a> {
     /// User ID. The request returns information about users who are being followed by the from_id user.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub from_id: Option<&'a types::UserIdRef>,
+    pub from_id: Option<Cow<'a, types::UserIdRef>>,
     /// User ID. The request returns information about users who are following the to_id user.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub to_id: Option<&'a types::UserIdRef>,
+    pub to_id: Option<Cow<'a, types::UserIdRef>>,
 }
 
 impl<'a> GetUsersFollowsRequest<'a> {
     /// Get the broadcasters that `from_id` is following
-    pub fn following(from_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn following(from_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            from_id: Some(from_id.into()),
+            from_id: Some(from_id.to_cow()),
             ..Self::empty()
         }
     }
 
     /// Get the followers of `to_id`
-    pub fn followers(to_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn followers(to_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            to_id: Some(to_id.into()),
+            to_id: Some(to_id.to_cow()),
             ..Self::empty()
         }
     }
 
     /// Check if user follows a specific broadcaster
     pub fn follows(
-        user_id: impl Into<&'a types::UserIdRef>,
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            from_id: Some(user_id.into()),
-            to_id: Some(broadcaster_id.into()),
+            from_id: Some(user_id.to_cow()),
+            to_id: Some(broadcaster_id.to_cow()),
             ..Self::empty()
         }
     }

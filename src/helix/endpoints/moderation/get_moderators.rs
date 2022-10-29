@@ -38,7 +38,6 @@
 //! and parse the [`http::Response`] with [`GetModeratorsRequest::parse_response(None, &request.get_uri(), response)`](GetModeratorsRequest::parse_response)
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 
 // Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
 // Maximum: 100
@@ -52,7 +51,7 @@ pub struct GetModeratorsRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Filters the results and only returns a status object for users who are moderators in this channel and have a matching user_id.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
     #[serde(borrow)]
@@ -67,9 +66,9 @@ pub struct GetModeratorsRequest<'a> {
 
 impl<'a> GetModeratorsRequest<'a> {
     /// Get moderators in a broadcasters channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             user_id: Cow::Borrowed(&[]),
             after: Default::default(),
             first: Default::default(),

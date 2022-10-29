@@ -1,5 +1,7 @@
 //! Convenience functions for [HelixClient]
 
+use std::borrow::Cow;
+
 use crate::helix::{self, ClientRequestError, HelixClient};
 use crate::types;
 use twitch_oauth2::TwitchToken;
@@ -50,16 +52,16 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         T: TwitchToken + ?Sized,
     {
         if let Some(user) = self.get_user_from_login(login.into(), token).await? {
-            self.get_channel_from_id(&*user.id, token).await
+            self.get_channel_from_id(&user.id, token).await
         } else {
             Ok(None)
         }
     }
 
     /// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters id
-    pub async fn get_channel_from_id<T>(
+    pub async fn get_channel_from_id<'b, T>(
         &'a self,
-        id: impl Into<&types::UserIdRef>,
+        id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<Option<helix::channels::ChannelInformation>, ClientError<'a, C>>
     where
@@ -106,7 +108,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     {
         let req = helix::chat::GetChattersRequest {
             first: batch_size.into(),
-            ..helix::chat::GetChattersRequest::new(broadcaster_id, moderator_id)
+            ..helix::chat::GetChattersRequest::new(broadcaster_id.into(), moderator_id.into())
         };
 
         make_stream(req, token, self, std::collections::VecDeque::from)
@@ -211,8 +213,8 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         T: TwitchToken + Send + Sync + ?Sized,
     {
         let mut req = helix::users::GetUsersFollowsRequest::empty();
-        req.to_id = to_id.into();
-        req.from_id = from_id.into();
+        req.to_id = to_id.into().map(Cow::Borrowed);
+        req.from_id = from_id.into().map(Cow::Borrowed);
 
         make_stream(req, token, self, |s| {
             std::collections::VecDeque::from(s.follow_relationships)
@@ -323,9 +325,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     ///
     /// # Ok(()) }
     /// ```
-    pub fn get_moderators_in_channel_from_id<T>(
+    pub fn get_moderators_in_channel_from_id<'b: 'a, T>(
         &'a self,
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &'a T,
     ) -> std::pin::Pin<
         Box<
@@ -358,9 +360,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     ///
     /// # Ok(()) }
     /// ```
-    pub fn get_banned_users_in_channel_from_id<T>(
+    pub fn get_banned_users_in_channel_from_id<'b: 'a, T>(
         &'a self,
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &'a T,
     ) -> std::pin::Pin<
         Box<
@@ -377,16 +379,16 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Get a users, with login, follow count
-    pub async fn get_total_followers_from_login<T>(
+    pub async fn get_total_followers_from_login<'b, T>(
         &'a self,
-        login: impl Into<&types::UserNameRef>,
+        login: impl types::IntoCow<'b, types::UserNameRef> + 'b,
         token: &T,
     ) -> Result<Option<i64>, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
-        if let Some(user) = self.get_user_from_login(login, token).await? {
-            self.get_total_followers_from_id(&*user.id, token)
+        if let Some(user) = self.get_user_from_login(&*login.to_cow(), token).await? {
+            self.get_total_followers_from_id(&user.id, token)
                 .await
                 .map(Some)
         } else {
@@ -399,9 +401,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// # Notes
     ///
     /// This returns zero if the user doesn't exist
-    pub async fn get_total_followers_from_id<T>(
+    pub async fn get_total_followers_from_id<'b, T>(
         &'a self,
-        to_id: impl Into<&types::UserIdRef>,
+        to_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<i64, ClientError<'a, C>>
     where
@@ -443,9 +445,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Block a user
-    pub async fn block_user<T>(
+    pub async fn block_user<'b, T>(
         &'a self,
-        target_user_id: impl Into<&types::UserIdRef>,
+        target_user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::users::BlockUser, ClientError<'a, C>>
     where
@@ -462,9 +464,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Unblock a user
-    pub async fn unblock_user<T>(
+    pub async fn unblock_user<'b, T>(
         &'a self,
-        target_user_id: impl Into<&types::UserIdRef>,
+        target_user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::users::UnblockUser, ClientError<'a, C>>
     where
@@ -480,13 +482,13 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Ban a user
-    pub async fn ban_user<T>(
+    pub async fn ban_user<'b, T>(
         &'a self,
-        target_user_id: impl Into<&types::UserIdRef>,
-        reason: impl AsRef<str>,
+        target_user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        reason: impl Into<&'b str>,
         duration: impl Into<Option<u32>>,
-        broadcaster_id: impl Into<&types::UserIdRef>,
-        moderator_id: impl Into<&types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::moderation::BanUser, ClientError<'a, C>>
     where
@@ -494,12 +496,8 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     {
         Ok(self
             .req_post(
-                helix::moderation::BanUserRequest::new(broadcaster_id.into(), moderator_id.into()),
-                helix::moderation::BanUserBody::new(
-                    target_user_id.into(),
-                    reason.as_ref(),
-                    duration,
-                ),
+                helix::moderation::BanUserRequest::new(broadcaster_id, moderator_id),
+                helix::moderation::BanUserBody::new(target_user_id, reason.into(), duration),
                 token,
             )
             .await?
@@ -507,11 +505,11 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Unban a user
-    pub async fn unban_user<T>(
+    pub async fn unban_user<'b, T>(
         &'a self,
-        target_user_id: impl Into<&types::UserIdRef>,
-        broadcaster_id: impl Into<&types::UserIdRef>,
-        moderator_id: impl Into<&types::UserIdRef>,
+        target_user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::moderation::UnbanUserResponse, ClientError<'a, C>>
     where
@@ -520,9 +518,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
         Ok(self
             .req_delete(
                 helix::moderation::UnbanUserRequest::new(
-                    broadcaster_id.into(),
-                    moderator_id.into(),
-                    target_user_id.into(),
+                    broadcaster_id,
+                    moderator_id,
+                    target_user_id,
                 ),
                 token,
             )
@@ -559,9 +557,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     ///
     /// # Ok(()) }
     /// ```
-    pub fn get_channel_schedule<T>(
+    pub fn get_channel_schedule<'b: 'a, T>(
         &'a self,
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &'a T,
     ) -> std::pin::Pin<
         Box<dyn futures::Stream<Item = Result<helix::schedule::Segment, ClientError<'a, C>>> + 'a>,
@@ -587,9 +585,9 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Get channel emotes in channel with user id
-    pub async fn get_channel_emotes_from_id<T>(
+    pub async fn get_channel_emotes_from_id<'b, T>(
         &'a self,
-        user_id: impl Into<&types::UserIdRef>,
+        user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<Vec<helix::chat::ChannelEmote>, ClientError<'a, C>>
     where
@@ -602,14 +600,17 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     /// Get channel emotes in channel with user login
     pub async fn get_channel_emotes_from_login<T>(
         &'a self,
-        login: impl Into<&types::UserNameRef>,
+        login: impl types::IntoCow<'a, types::UserNameRef> + 'a,
         token: &T,
     ) -> Result<Option<Vec<helix::chat::ChannelEmote>>, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
-        if let Some(user) = self.get_user_from_login(login.into(), token).await? {
-            self.get_channel_emotes_from_id(&*user.id, token)
+        if let Some(user) = self
+            .get_user_from_login(login.to_cow().as_ref(), token)
+            .await?
+        {
+            self.get_channel_emotes_from_id(&user.id, token)
                 .await
                 .map(Some)
         } else {
@@ -631,10 +632,10 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Get a broadcaster's chat settings
-    pub async fn get_chat_settings<T>(
+    pub async fn get_chat_settings<'b, T>(
         &'a self,
-        broadcaster_id: impl Into<&types::UserIdRef>,
-        moderator_id: impl Into<Option<&'a types::UserIdRef>>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        moderator_id: impl Into<Option<&'b types::UserIdRef>> + 'b,
         token: &T,
     ) -> Result<helix::chat::ChatSettings, ClientError<'a, C>>
     where
@@ -648,22 +649,19 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Send a chat announcement
-    pub async fn send_chat_announcement<T, E>(
+    pub async fn send_chat_announcement<'b, T, E>(
         &'a self,
-        broadcaster_id: impl Into<&types::UserIdRef>,
-        moderator_id: impl Into<&types::UserIdRef>,
-        message: impl AsRef<str>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        message: impl Into<&'b str>,
         color: impl std::convert::TryInto<helix::chat::AnnouncementColor, Error = E>,
         token: &T,
     ) -> Result<helix::chat::SendChatAnnouncementResponse, ClientExtError<'a, C, E>>
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::chat::SendChatAnnouncementRequest::new(
-            broadcaster_id.into(),
-            moderator_id.into(),
-        );
-        let body = helix::chat::SendChatAnnouncementBody::new(message.as_ref(), color)?;
+        let req = helix::chat::SendChatAnnouncementRequest::new(broadcaster_id, moderator_id);
+        let body = helix::chat::SendChatAnnouncementBody::new(message.into(), color)?;
         Ok(self
             .req_post(req, body, token)
             .await
@@ -672,62 +670,53 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Delete a specific chat message
-    pub async fn delete_chat_message<T>(
+    pub async fn delete_chat_message<'b, T>(
         &'a self,
-        broadcaster_id: impl Into<&types::UserIdRef>,
-        moderator_id: impl Into<&types::UserIdRef>,
-        message_id: impl Into<&types::MsgIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        message_id: impl types::IntoCow<'b, types::MsgIdRef> + 'b,
         token: &T,
     ) -> Result<helix::moderation::DeleteChatMessagesResponse, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::moderation::DeleteChatMessagesRequest::new(
-            broadcaster_id.into(),
-            moderator_id.into(),
-        )
-        .message_id(message_id.into());
+        let req = helix::moderation::DeleteChatMessagesRequest::new(broadcaster_id, moderator_id)
+            .message_id(message_id);
         Ok(self.req_delete(req, token).await?.data)
     }
 
     /// Delete all chat messages in a broadcasters chat room
-    pub async fn delete_all_chat_message<T>(
+    pub async fn delete_all_chat_message<'b, T>(
         &'a self,
-        broadcaster_id: impl Into<&types::UserIdRef>,
-        moderator_id: impl Into<&types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::moderation::DeleteChatMessagesResponse, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::moderation::DeleteChatMessagesRequest::new(
-            broadcaster_id.into(),
-            moderator_id.into(),
-        );
+        let req = helix::moderation::DeleteChatMessagesRequest::new(broadcaster_id, moderator_id);
         Ok(self.req_delete(req, token).await?.data)
     }
 
     /// Start a raid
-    pub async fn start_a_raid<T>(
+    pub async fn start_a_raid<'b, T>(
         &'a self,
-        from_broadcaster_id: impl Into<&types::UserIdRef>,
-        to_broadcaster_id: impl Into<&types::UserIdRef>,
+        from_broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        to_broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::raids::StartARaidResponse, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::raids::StartARaidRequest::new(
-            from_broadcaster_id.into(),
-            to_broadcaster_id.into(),
-        );
+        let req = helix::raids::StartARaidRequest::new(from_broadcaster_id, to_broadcaster_id);
         Ok(self.req_post(req, helix::EmptyBody, token).await?.data)
     }
 
     /// Cancel a raid
-    pub async fn cancel_a_raid<T>(
+    pub async fn cancel_a_raid<'b, T>(
         &'a self,
-        broadcaster_id: impl Into<&types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::raids::CancelARaidResponse, ClientError<'a, C>>
     where
@@ -756,17 +745,17 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Get a users chat color
-    pub async fn update_user_chat_color<T>(
+    pub async fn update_user_chat_color<'b, T>(
         &'a self,
-        user_id: impl Into<&types::UserIdRef>,
-        color: impl Into<types::NamedUserColor<'static>>,
+        user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        color: impl Into<types::NamedUserColor<'b>> + 'b,
         token: &T,
     ) -> Result<helix::chat::UpdateUserChatColorResponse, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
         let req = helix::chat::UpdateUserChatColorRequest {
-            user_id: user_id.into(),
+            user_id: user_id.to_cow(),
             color: color.into(),
         };
 
@@ -788,45 +777,45 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Add a channel moderator
-    pub async fn add_channel_moderator<T>(
+    pub async fn add_channel_moderator<'b, T>(
         &'a self,
-        broadcaster_id: impl Into<&types::UserIdRef>,
-        moderator_id: impl Into<&types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::moderation::AddChannelModeratorResponse, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
         let req = helix::moderation::AddChannelModeratorRequest {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
         };
 
         Ok(self.req_post(req, helix::EmptyBody, token).await?.data)
     }
 
     /// Remove a channel moderator
-    pub async fn remove_channel_moderator<T>(
+    pub async fn remove_channel_moderator<'b, T>(
         &'a self,
-        broadcaster_id: impl Into<&types::UserIdRef>,
-        moderator_id: impl Into<&types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::moderation::RemoveChannelModeratorResponse, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
         let req = helix::moderation::RemoveChannelModeratorRequest {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
         };
 
         Ok(self.req_delete(req, token).await?.data)
     }
 
     /// Get channel VIPs
-    pub fn get_vips_in_channel<T>(
+    pub fn get_vips_in_channel<'b: 'a, T>(
         &'a self,
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &'a T,
     ) -> std::pin::Pin<
         Box<dyn futures::Stream<Item = Result<helix::channels::Vip, ClientError<'a, C>>> + 'a>,
@@ -840,47 +829,47 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     }
 
     /// Add a channel vip
-    pub async fn add_channel_vip<T>(
+    pub async fn add_channel_vip<'b, T>(
         &'a self,
-        broadcaster_id: impl Into<&types::UserIdRef>,
-        user_id: impl Into<&types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::channels::AddChannelVipResponse, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
         let req = helix::channels::AddChannelVipRequest {
-            broadcaster_id: broadcaster_id.into(),
-            user_id: user_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            user_id: user_id.to_cow(),
         };
 
         Ok(self.req_post(req, helix::EmptyBody, token).await?.data)
     }
 
     /// Remove a channel vip
-    pub async fn remove_channel_vip<T>(
+    pub async fn remove_channel_vip<'b, T>(
         &'a self,
-        broadcaster_id: impl Into<&types::UserIdRef>,
-        user_id: impl Into<&types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
     ) -> Result<helix::channels::RemoveChannelVipResponse, ClientError<'a, C>>
     where
         T: TwitchToken + ?Sized,
     {
         let req = helix::channels::RemoveChannelVipRequest {
-            broadcaster_id: broadcaster_id.into(),
-            user_id: user_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            user_id: user_id.to_cow(),
         };
 
         Ok(self.req_delete(req, token).await?.data)
     }
 
     /// Send a whisper
-    pub async fn send_whisper<T>(
+    pub async fn send_whisper<'b, T>(
         &'a self,
-        from: impl Into<&types::UserIdRef>,
-        to: impl Into<&types::UserIdRef>,
-        message: impl AsRef<str>,
+        from: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        to: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        message: impl Into<&'b str>,
         token: &T,
     ) -> Result<helix::whispers::SendWhisperResponse, ClientError<'a, C>>
     where
@@ -888,8 +877,8 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     {
         Ok(self
             .req_post(
-                helix::whispers::SendWhisperRequest::new(from.into(), to.into()),
-                helix::whispers::SendWhisperBody::new(message.as_ref()),
+                helix::whispers::SendWhisperRequest::new(from, to),
+                helix::whispers::SendWhisperBody::new(message.into()),
                 token,
             )
             .await?

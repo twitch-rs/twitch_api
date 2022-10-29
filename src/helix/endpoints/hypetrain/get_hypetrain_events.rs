@@ -51,7 +51,7 @@ pub struct GetHypeTrainEventsRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub cursor: Option<helix::Cursor>,
@@ -70,9 +70,9 @@ pub struct GetHypeTrainEventsRequest<'a> {
 
 impl<'a> GetHypeTrainEventsRequest<'a> {
     /// Get hypetrain evens
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             cursor: Default::default(),
             first: Default::default(),
             id: Default::default(),

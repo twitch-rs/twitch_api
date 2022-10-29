@@ -5,6 +5,7 @@ use crate::{
     types::{self, EmoteUrlBuilder},
 };
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
 
 pub mod get_channel_chat_badges;
 pub mod get_channel_emotes;

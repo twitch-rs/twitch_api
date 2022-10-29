@@ -39,7 +39,6 @@
 
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 
 /// Query Parameters for [Get Clips](super::get_clips)
 ///
@@ -51,11 +50,11 @@ pub struct GetClipsRequest<'a> {
     /// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: Option<&'a types::UserIdRef>,
+    pub broadcaster_id: Option<Cow<'a, types::UserIdRef>>,
     /// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub game_id: Option<&'a types::CategoryIdRef>,
+    pub game_id: Option<Cow<'a, types::CategoryIdRef>>,
     // FIXME: add types::ClipId
     /// ID of the clip being queried. Limit: 100.
     #[cfg_attr(feature = "typed-builder", builder(default))]
@@ -72,14 +71,14 @@ pub struct GetClipsRequest<'a> {
     /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, started_at also must be specified; otherwise, the time period is ignored.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[serde(borrow)]
-    pub ended_at: Option<&'a types::TimestampRef>,
+    pub ended_at: Option<Cow<'a, types::TimestampRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Starting date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[serde(borrow)]
-    pub started_at: Option<&'a types::TimestampRef>,
+    pub started_at: Option<Cow<'a, types::TimestampRef>>,
 }
 
 impl<'a> GetClipsRequest<'a> {
@@ -102,17 +101,17 @@ impl<'a> GetClipsRequest<'a> {
     }
 
     /// Broadcaster for whom clips are returned.
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: Some(broadcaster_id.into()),
+            broadcaster_id: Some(broadcaster_id.to_cow()),
             ..Self::empty()
         }
     }
 
     /// Game for which clips are returned.
-    pub fn game_id(game_id: impl Into<&'a types::CategoryIdRef>) -> Self {
+    pub fn game_id(game_id: impl types::IntoCow<'a, types::CategoryIdRef> + 'a) -> Self {
         Self {
-            game_id: Some(game_id.into()),
+            game_id: Some(game_id.to_cow()),
             ..Self::empty()
         }
     }
@@ -126,14 +125,20 @@ impl<'a> GetClipsRequest<'a> {
     }
 
     /// Ending date/time for the returned clips
-    pub fn started_at(&mut self, started_at: impl Into<&'a types::TimestampRef>) -> &mut Self {
-        self.started_at = Some(started_at.into());
+    pub fn started_at(
+        &mut self,
+        started_at: impl types::IntoCow<'a, types::TimestampRef> + 'a,
+    ) -> &mut Self {
+        self.started_at = Some(started_at.to_cow());
         self
     }
 
     /// Ending date/time for the returned clips
-    pub fn ended_at(&mut self, ended_at: impl Into<&'a types::TimestampRef>) -> &mut Self {
-        self.ended_at = Some(ended_at.into());
+    pub fn ended_at(
+        &mut self,
+        ended_at: impl types::IntoCow<'a, types::TimestampRef> + 'a,
+    ) -> &mut Self {
+        self.ended_at = Some(ended_at.to_cow());
         self
     }
 }

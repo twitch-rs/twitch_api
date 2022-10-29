@@ -27,7 +27,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     let resp = client
         .req_get_custom(
-            helix::channels::GetChannelInformationRequest::broadcaster_id(&*token.user_id),
+            helix::channels::GetChannelInformationRequest::broadcaster_id(&token.user_id),
             &token,
         )
         .await

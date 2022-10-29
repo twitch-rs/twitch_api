@@ -31,7 +31,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .expect("no user found");
 
     let channel = client
-        .get_channel_from_id(&*user.id, &token)
+        .get_channel_from_id(&user.id, &token)
         .await?
         .expect("no channel found");
 

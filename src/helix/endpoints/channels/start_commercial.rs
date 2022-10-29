@@ -79,7 +79,7 @@ pub struct StartCommercialBody<'a> {
     /// ID of the channel requesting a commercial
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Desired length of the commercial in seconds. Valid options are 30, 60, 90, 120, 150, 180.
     pub length: types::CommercialLength,
 }
@@ -87,11 +87,11 @@ pub struct StartCommercialBody<'a> {
 impl<'a> StartCommercialBody<'a> {
     /// Start a commercial in this broadcasters channel
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         length: impl Into<types::CommercialLength>,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             length: length.into(),
         }
     }

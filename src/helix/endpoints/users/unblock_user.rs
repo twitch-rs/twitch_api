@@ -49,14 +49,14 @@ pub struct UnblockUserRequest<'a> {
     /// User ID of the follower
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub target_user_id: &'a types::UserIdRef,
+    pub target_user_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> UnblockUserRequest<'a> {
     /// Create a new unblock request
-    pub fn unblock_user(target_user_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn unblock_user(target_user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            target_user_id: target_user_id.into(),
+            target_user_id: target_user_id.to_cow(),
         }
     }
 }

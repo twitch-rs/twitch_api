@@ -65,14 +65,14 @@ pub struct ModifyChannelInformationRequest<'a> {
     /// ID of the channel
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> ModifyChannelInformationRequest<'a> {
     /// Modify specified broadcasters channel
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         ModifyChannelInformationRequest {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -88,7 +88,7 @@ pub struct ModifyChannelInformationBody<'a> {
     /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub game_id: Option<&'a types::CategoryIdRef>,
+    pub game_id: Option<Cow<'a, types::CategoryIdRef>>,
     /// Language of the channel
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
@@ -112,8 +112,11 @@ impl<'a> ModifyChannelInformationBody<'a> {
     pub fn new() -> Self { Default::default() }
 
     /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
-    pub fn game_id(&mut self, game_id: impl Into<&'a types::CategoryIdRef>) -> &mut Self {
-        self.game_id = Some(game_id.into());
+    pub fn game_id(
+        &mut self,
+        game_id: impl types::IntoCow<'a, types::CategoryIdRef> + 'a,
+    ) -> &mut Self {
+        self.game_id = Some(game_id.to_cow());
         self
     }
 
@@ -191,7 +194,7 @@ fn test_request() {
     let req = ModifyChannelInformationRequest::broadcaster_id("0");
 
     let body = ModifyChannelInformationBody {
-        title: Some("Hello World!".into()),
+        title: Some("Hello World!"),
         ..Default::default()
     };
 

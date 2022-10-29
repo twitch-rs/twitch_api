@@ -36,7 +36,6 @@
 //! and parse the [`http::Response`] with [`GetVipsRequest::parse_response(None, &request.get_uri(), response)`](GetVipsRequest::parse_response)
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 
 /// Query Parameters for [Get VIPs](super::get_vips)
 ///
@@ -48,7 +47,7 @@ pub struct GetVipsRequest<'a> {
     /// The ID of the broadcaster whose list of VIPs you want to get.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Filters the list for specific VIPs. To specify more than one user, include the user_id parameter for each user to get. For example, &user_id=1234&user_id=5678. The maximum number of IDs that you may specify is 100. Ignores those users in the list that aren’t VIPs.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[serde(borrow)]
@@ -63,9 +62,9 @@ pub struct GetVipsRequest<'a> {
 
 impl<'a> GetVipsRequest<'a> {
     /// Get channel VIPs in channel
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             user_id: Cow::Borrowed(&[]),
             first: None,
             after: None,

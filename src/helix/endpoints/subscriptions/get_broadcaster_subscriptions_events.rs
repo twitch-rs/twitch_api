@@ -46,7 +46,6 @@
 
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 
 /// Query Parameters for [Get Broadcaster Subscriptions Events](super::get_broadcaster_subscriptions_events)
 ///
@@ -58,7 +57,7 @@ pub struct GetBroadcasterSubscriptionsEventsRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Filters the results and only returns a status object for users who have a subscribe event in this channel and have a matching user_id.
     /// Maximum: 100
     #[cfg_attr(feature = "typed-builder", builder(default))]
@@ -78,9 +77,9 @@ pub struct GetBroadcasterSubscriptionsEventsRequest<'a> {
 
 impl<'a> GetBroadcasterSubscriptionsEventsRequest<'a> {
     /// Get events for this broadcaster
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             user_id: Cow::Borrowed(&[]),
             after: Default::default(),
             first: Default::default(),

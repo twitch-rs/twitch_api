@@ -86,11 +86,11 @@ pub struct EndPredictionBody<'a> {
     /// The broadcaster running predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of the prediction.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub id: &'a types::PredictionIdRef,
+    pub id: Cow<'a, types::PredictionIdRef>,
     /// The Prediction status to be set. Valid values:
     ///
     /// [`RESOLVED`](types::PredictionStatus): A winning outcome has been chosen and the Channel Points have been distributed to the users who predicted the correct outcome.
@@ -100,19 +100,19 @@ pub struct EndPredictionBody<'a> {
     /// ID of the winning outcome for the Prediction. This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub winning_outcome_id: Option<&'a types::PredictionIdRef>,
+    pub winning_outcome_id: Option<Cow<'a, types::PredictionIdRef>>,
 }
 
 impl<'a> EndPredictionBody<'a> {
     /// End given prediction that is currently active.
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        id: impl Into<&'a types::PredictionIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::PredictionIdRef> + 'a,
         status: impl Into<types::PredictionStatus>,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            id: id.to_cow(),
             status: status.into(),
             winning_outcome_id: None,
         }
@@ -123,9 +123,9 @@ impl<'a> EndPredictionBody<'a> {
     /// This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
     pub fn winning_outcome_id(
         mut self,
-        winning_outcome_id: impl Into<&'a types::PredictionIdRef>,
+        winning_outcome_id: impl types::IntoCow<'a, types::PredictionIdRef> + 'a,
     ) -> Self {
-        self.winning_outcome_id = Some(winning_outcome_id.into());
+        self.winning_outcome_id = Some(winning_outcome_id.to_cow());
         self
     }
 }

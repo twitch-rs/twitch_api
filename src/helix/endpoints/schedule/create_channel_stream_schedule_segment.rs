@@ -25,7 +25,7 @@
 //! # use twitch_api::helix::schedule::create_channel_stream_schedule_segment;
 //! let body =
 //!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!         .start_time(&*twitch_api::types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap())
+//!         .start_time(&twitch_api::types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap())
 //!         .timezone("America/New_York")
 //!         .is_recurring(false)
 //!         .duration("60")
@@ -54,7 +54,7 @@
 //!     .build();
 //! let timestamp = twitch_api::types::Timestamp::try_from("2021-07-01T18:00:00Z")?;
 //! let body = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!     .start_time(&*timestamp)
+//!     .start_time(&timestamp)
 //!     .timezone("America/New_York")
 //!     .is_recurring(false)
 //!     .duration("60")
@@ -81,14 +81,14 @@ pub struct CreateChannelStreamScheduleSegmentRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> CreateChannelStreamScheduleSegmentRequest<'a> {
     /// Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -103,7 +103,7 @@ pub struct CreateChannelStreamScheduleSegmentBody<'a> {
     /// Start time for the scheduled broadcast specified in RFC3339 format.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub start_time: &'a types::TimestampRef,
+    pub start_time: Cow<'a, types::TimestampRef>,
     // FIXME: specific braid?
     /// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
@@ -118,7 +118,7 @@ pub struct CreateChannelStreamScheduleSegmentBody<'a> {
     /// Game/Category ID for the scheduled broadcast.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub category_id: Option<&'a types::CategoryIdRef>,
+    pub category_id: Option<Cow<'a, types::CategoryIdRef>>,
     /// Title for the scheduled broadcast. Maximum: 140 characters.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
@@ -128,12 +128,12 @@ pub struct CreateChannelStreamScheduleSegmentBody<'a> {
 impl<'a> CreateChannelStreamScheduleSegmentBody<'a> {
     /// Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     pub fn new(
-        start_time: impl Into<&'a types::TimestampRef>,
+        start_time: impl types::IntoCow<'a, types::TimestampRef> + 'a,
         timezone: impl Into<&'a str>,
         is_recurring: bool,
     ) -> Self {
         Self {
-            start_time: start_time.into(),
+            start_time: start_time.to_cow(),
             timezone: timezone.into(),
             is_recurring,
             duration: Default::default(),
@@ -173,7 +173,7 @@ fn test_request() {
     let ts = types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap();
     let body = CreateChannelStreamScheduleSegmentBody {
         duration: Some("60"),
-        category_id: Some("509670".into()),
+        category_id: Some(types::IntoCow::to_cow("509670")),
         title: Some("TwitchDev Monthly Update // July 1, 2021"),
         ..CreateChannelStreamScheduleSegmentBody::new(&*ts, "America/New_York", false)
     };

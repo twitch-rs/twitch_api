@@ -53,21 +53,21 @@ pub struct UpdateUserChatColorRequest<'a> {
     /// The ID of the user whose chat color you want to update.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub user_id: &'a types::UserIdRef,
+    pub user_id: Cow<'a, types::UserIdRef>,
     /// The color to use for the user’s name in chat.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow = "'static")]
-    pub color: types::NamedUserColor<'static>,
+    #[serde(borrow)]
+    pub color: types::NamedUserColor<'a>,
 }
 
 impl<'a> UpdateUserChatColorRequest<'a> {
     /// Update the users chat color
     pub fn new(
-        user_id: impl Into<&'a types::UserIdRef>,
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         color: types::NamedUserColor<'static>,
     ) -> Self {
         Self {
-            user_id: user_id.into(),
+            user_id: user_id.to_cow(),
             color,
         }
     }

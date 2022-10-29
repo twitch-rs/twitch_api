@@ -40,7 +40,6 @@
 
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 
 /// Query Parameters for [Get Chatters](super::get_user_chat_color)
 ///

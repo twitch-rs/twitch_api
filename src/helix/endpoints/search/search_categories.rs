@@ -50,7 +50,7 @@ pub struct SearchCategoriesRequest<'a> {
     /// URI encoded search query
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub query: &'a str,
+    pub query: Cow<'a, str>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
@@ -67,7 +67,7 @@ impl<'a> SearchCategoriesRequest<'a> {
     /// Search categories with the following query.
     pub fn query(query: impl Into<&'a str>) -> Self {
         Self {
-            query: query.into(),
+            query: query.into().into(),
             after: None,
             before: None,
             first: None,

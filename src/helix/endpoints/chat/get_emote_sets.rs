@@ -40,7 +40,6 @@
 
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 
 /// Query Parameters for [Get Channel Emotes](super::get_emote_sets)
 ///

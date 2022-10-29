@@ -69,14 +69,14 @@ pub struct CheckAutoModStatusRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> CheckAutoModStatusRequest<'a> {
     /// Check automod status in this broadcasters channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -91,7 +91,7 @@ pub struct CheckAutoModStatusBody<'a> {
     /// Developer-generated identifier for mapping messages to results.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub msg_id: &'a types::MsgIdRef,
+    pub msg_id: Cow<'a, types::MsgIdRef>,
     /// Message text.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
@@ -103,14 +103,14 @@ pub struct CheckAutoModStatusBody<'a> {
         builder(setter(into, strip_option), default)
     )]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub user_id: Option<&'a types::UserIdRef>,
+    pub user_id: Option<Cow<'a, types::UserIdRef>>,
 }
 
 impl<'a> CheckAutoModStatusBody<'a> {
     /// Create a new [`CheckAutoModStatusBody`]
-    pub fn new(msg_id: impl Into<&'a types::MsgIdRef>, msg_text: &'a str) -> Self {
+    pub fn new(msg_id: impl types::IntoCow<'a, types::MsgIdRef> + 'a, msg_text: &'a str) -> Self {
         Self {
-            msg_id: msg_id.into(),
+            msg_id: msg_id.to_cow(),
             msg_text,
             user_id: None,
         }

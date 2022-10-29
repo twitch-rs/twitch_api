@@ -48,7 +48,7 @@ pub struct GetCheermotesRequest<'a> {
     /// ID for the broadcaster who might own specialized Cheermotes.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: Option<&'a types::UserIdRef>,
+    pub broadcaster_id: Option<Cow<'a, types::UserIdRef>>,
 }
 
 impl<'a> GetCheermotesRequest<'a> {
@@ -56,9 +56,9 @@ impl<'a> GetCheermotesRequest<'a> {
     pub fn new() -> Self { Self::default() }
 
     /// Get Cheermotes in a specific broadcasters channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: Some(broadcaster_id.into()),
+            broadcaster_id: Some(broadcaster_id.to_cow()),
         }
     }
 }

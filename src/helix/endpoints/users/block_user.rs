@@ -56,7 +56,7 @@ pub struct BlockUserRequest<'a> {
     /// User ID of the follower
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub target_user_id: &'a types::UserIdRef,
+    pub target_user_id: Cow<'a, types::UserIdRef>,
     /// Source context for blocking the user. Valid values: "chat", "whisper".
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub source_context: Option<SourceContext>,
@@ -67,9 +67,9 @@ pub struct BlockUserRequest<'a> {
 
 impl<'a> BlockUserRequest<'a> {
     /// Block a user
-    pub fn block_user(target_user_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn block_user(target_user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            target_user_id: target_user_id.into(),
+            target_user_id: target_user_id.to_cow(),
             source_context: None,
             reason: None,
         }

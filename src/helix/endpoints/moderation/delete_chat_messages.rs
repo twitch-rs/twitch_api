@@ -53,13 +53,13 @@ pub struct DeleteChatMessagesRequest<'a> {
     /// The ID of the broadcaster that owns the chat room to remove messages from.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     ///
     /// This ID must match the user ID in the OAuth token. If the broadcaster wants to remove messages themselves, set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub moderator_id: &'a types::UserIdRef,
+    pub moderator_id: Cow<'a, types::UserIdRef>,
     /// The ID of the message to remove.
     ///
     /// The id tag in the PRIVMSG contains the message’s ID (see [PRIVMSG Tags](https://dev.twitch.tv/docs/irc/tags#privmsg-tags)).
@@ -73,25 +73,25 @@ pub struct DeleteChatMessagesRequest<'a> {
     /// If not specified, the request removes all messages in the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub message_id: Option<&'a types::MsgIdRef>,
+    pub message_id: Option<Cow<'a, types::MsgIdRef>>,
 }
 
 impl<'a> DeleteChatMessagesRequest<'a> {
     /// Remove chat message(s)
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        moderator_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
             message_id: None,
         }
     }
 
     /// A specific message to remove
-    pub fn message_id(mut self, message_id: impl Into<&'a types::MsgIdRef>) -> Self {
-        self.message_id = Some(message_id.into());
+    pub fn message_id(mut self, message_id: impl types::IntoCow<'a, types::MsgIdRef> + 'a) -> Self {
+        self.message_id = Some(message_id.to_cow());
         self
     }
 }

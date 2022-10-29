@@ -63,7 +63,7 @@ pub struct BanUserRequest<'a> {
     /// The ID of the broadcaster whose chat room the user is being banned from.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     /// This ID must match the user ID associated with the user OAuth token.
     ///
@@ -71,18 +71,18 @@ pub struct BanUserRequest<'a> {
     /// set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub moderator_id: &'a types::UserIdRef,
+    pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> BanUserRequest<'a> {
     /// Ban a user on this channel
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        moderator_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
         }
     }
 }
@@ -111,20 +111,20 @@ pub struct BanUserBody<'a> {
     /// The ID of the user to ban or put in a timeout.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub user_id: &'a types::UserIdRef,
+    pub user_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> BanUserBody<'a> {
     /// Create a new [`BanUserBody`]
     pub fn new(
-        user_id: impl Into<&'a types::UserIdRef>,
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         reason: &'a str,
         duration: impl Into<Option<u32>>,
     ) -> Self {
         Self {
             duration: duration.into(),
             reason,
-            user_id: user_id.into(),
+            user_id: user_id.to_cow(),
         }
     }
 }

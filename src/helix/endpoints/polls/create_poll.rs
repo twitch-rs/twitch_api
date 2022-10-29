@@ -66,11 +66,10 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`CreatePollRequest::parse_response(None, &request.get_uri(), response)`](CreatePollRequest::parse_response)
 
-use std::borrow::Cow;
-use std::marker::PhantomData;
-
 use super::*;
 use helix::RequestPost;
+use std::marker::PhantomData;
+
 /// Query Parameters for [Create Poll](super::create_poll)
 ///
 /// [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
@@ -98,7 +97,7 @@ pub struct CreatePollBody<'a> {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Question displayed for the poll. Maximum: 60 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
@@ -145,13 +144,13 @@ impl<'a> CreatePollBody<'a> {
 
     /// Poll settings
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         title: &'a str,
         duration: i64,
         choices: impl Into<Cow<'a, [NewPollChoice<'a>]>>,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             title,
             duration,
             choices: choices.into(),

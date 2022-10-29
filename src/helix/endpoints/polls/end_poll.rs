@@ -87,11 +87,11 @@ pub struct EndPollBody<'a> {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of the poll.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub id: &'a types::PollIdRef,
+    pub id: Cow<'a, types::PollIdRef>,
     /// The poll status to be set.
     ///
     /// Valid values:
@@ -103,13 +103,13 @@ pub struct EndPollBody<'a> {
 impl<'a> EndPollBody<'a> {
     /// End a poll that is currently active.
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        id: impl Into<&'a types::PollIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::PollIdRef> + 'a,
         status: PollStatus,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            id: id.to_cow(),
             status,
         }
     }

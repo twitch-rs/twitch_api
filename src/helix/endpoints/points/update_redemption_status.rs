@@ -79,30 +79,30 @@ pub struct UpdateRedemptionStatusRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 
     /// ID of the Custom Reward the redemptions to be updated are for.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub reward_id: &'a types::RewardIdRef,
+    pub reward_id: Cow<'a, types::RewardIdRef>,
 
     /// ID of the Custom Reward Redemption to update, must match a Custom Reward Redemption on broadcaster_id’s channel
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub id: &'a types::RedemptionIdRef,
+    pub id: Cow<'a, types::RedemptionIdRef>,
 }
 
 impl<'a> UpdateRedemptionStatusRequest<'a> {
     /// Update the status of Custom Reward Redemption object on a channel that are in the UNFULFILLED status.
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        reward_id: impl Into<&'a types::RewardIdRef>,
-        id: impl Into<&'a types::RedemptionIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        reward_id: impl types::IntoCow<'a, types::RewardIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::RedemptionIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            reward_id: reward_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            reward_id: reward_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }

@@ -63,19 +63,22 @@ pub struct SendWhisperRequest<'a> {
     /// The ID of the user sending the whisper. This user must have a verified phone number.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub from_user_id: &'a types::UserIdRef,
+    pub from_user_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to receive the whisper.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub to_user_id: &'a types::UserIdRef,
+    pub to_user_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> SendWhisperRequest<'a> {
     /// Create a new [`SendWhisperRequest`]
-    pub fn new(from: impl Into<&'a types::UserIdRef>, to: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn new(
+        from: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        to: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+    ) -> Self {
         Self {
-            from_user_id: from.into(),
-            to_user_id: to.into(),
+            from_user_id: from.to_cow(),
+            to_user_id: to.to_cow(),
         }
     }
 }

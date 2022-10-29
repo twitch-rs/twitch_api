@@ -65,7 +65,7 @@ pub struct GetChatSettingsRequest<'a> {
     /// The ID of the broadcaster whose chat settings you want to get.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Required only to access the [`non_moderator_chat_delay`](ChatSettings::non_moderator_chat_delay)
     /// or [`non_moderator_chat_delay_duration`](ChatSettings::non_moderator_chat_delay_duration) settings.
     /// If you want to access these settings, you need to provide a valid [`moderator_id`](Self::moderator_id)
@@ -79,14 +79,14 @@ pub struct GetChatSettingsRequest<'a> {
     /// set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub moderator_id: Option<&'a types::UserIdRef>,
+    pub moderator_id: Option<Cow<'a, types::UserIdRef>>,
 }
 
 impl<'a> GetChatSettingsRequest<'a> {
     /// Get chat settings for broadcasters channel
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             moderator_id: None,
         }
     }
@@ -95,8 +95,11 @@ impl<'a> GetChatSettingsRequest<'a> {
     ///
     /// Required only to access the [`non_moderator_chat_delay`](ChatSettings::non_moderator_chat_delay)
     /// or [`non_moderator_chat_delay_duration`](ChatSettings::non_moderator_chat_delay_duration) settings.
-    pub fn moderator_id(mut self, moderator_id: impl Into<&'a types::UserIdRef>) -> Self {
-        self.moderator_id = Some(moderator_id.into());
+    pub fn moderator_id(
+        mut self,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+    ) -> Self {
+        self.moderator_id = Some(moderator_id.to_cow());
         self
     }
 }

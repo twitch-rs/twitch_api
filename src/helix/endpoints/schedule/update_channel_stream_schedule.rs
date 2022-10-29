@@ -53,18 +53,18 @@ pub struct UpdateChannelStreamScheduleRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Indicates if Vacation Mode is enabled. Set to true to add a vacation or false to remove vacation from the channel streaming schedule.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_vacation_enabled: Option<bool>,
     /// Start time for vacation specified in RFC3339 format. Required if is_vacation_enabled is set to true.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub vacation_start_time: Option<&'a types::TimestampRef>,
+    pub vacation_start_time: Option<Cow<'a, types::TimestampRef>>,
     /// End time for vacation specified in RFC3339 format. Required if is_vacation_enabled is set to true.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub vacation_end_time: Option<&'a types::TimestampRef>,
+    pub vacation_end_time: Option<Cow<'a, types::TimestampRef>>,
     /// The timezone for when the vacation is being scheduled using the IANA time zone database format. Required if is_vacation_enabled is set to true.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
@@ -73,9 +73,9 @@ pub struct UpdateChannelStreamScheduleRequest<'a> {
 
 impl<'a> UpdateChannelStreamScheduleRequest<'a> {
     /// Update the settings for a channel’s stream schedule.
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             is_vacation_enabled: Default::default(),
             vacation_start_time: Default::default(),
             vacation_end_time: Default::default(),
@@ -149,8 +149,8 @@ fn test_request() {
     let end = types::Timestamp::try_from("2021-05-23T00:00:00Z").unwrap();
     let req = UpdateChannelStreamScheduleRequest {
         is_vacation_enabled: Some(true),
-        vacation_start_time: Some(&start),
-        vacation_end_time: Some(&end),
+        vacation_start_time: Some(types::IntoCow::to_cow(&start)),
+        vacation_end_time: Some(types::IntoCow::to_cow(&end)),
         timezone: Some("America/New_York"),
         ..UpdateChannelStreamScheduleRequest::broadcaster_id("141981764")
     };

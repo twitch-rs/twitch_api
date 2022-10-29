@@ -40,7 +40,6 @@
 
 use super::*;
 use helix::RequestDelete;
-use std::borrow::Cow;
 
 // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 /// Query Parameters for [Delete Videos](super::delete_videos)

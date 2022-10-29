@@ -52,22 +52,22 @@ pub struct RemoveChannelVipRequest<'a> {
     /// The ID of the broadcaster that’s removing VIP status from the user.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to remove as a VIP from the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub user_id: &'a types::UserIdRef,
+    pub user_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> RemoveChannelVipRequest<'a> {
     /// Remove channel VIP
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        user_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            user_id: user_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            user_id: user_id.to_cow(),
         }
     }
 }

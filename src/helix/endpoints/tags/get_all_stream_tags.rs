@@ -38,7 +38,6 @@
 
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 
 /// Query Parameters for [Get All Stream Tags](super::get_all_stream_tags)
 ///

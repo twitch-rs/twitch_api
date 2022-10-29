@@ -53,29 +53,29 @@ pub struct RemoveBlockedTermRequest<'a> {
     /// The ID of the broadcaster that owns the list of blocked terms.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     /// If the broadcaster wants to delete the blocked term (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub moderator_id: &'a types::UserIdRef,
+    pub moderator_id: Cow<'a, types::UserIdRef>,
     /// The ID of the blocked term you want to delete.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub id: &'a types::BlockedTermIdRef,
+    pub id: Cow<'a, types::BlockedTermIdRef>,
 }
 
 impl<'a> RemoveBlockedTermRequest<'a> {
     /// Remove blocked term
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        moderator_id: impl Into<&'a types::UserIdRef>,
-        id: impl Into<&'a types::BlockedTermIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::BlockedTermIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }

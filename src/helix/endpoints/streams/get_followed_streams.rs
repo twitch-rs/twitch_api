@@ -50,7 +50,7 @@ pub struct GetFollowedStreamsRequest<'a> {
     /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub user_id: &'a types::UserIdRef,
+    pub user_id: Cow<'a, types::UserIdRef>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
@@ -69,9 +69,9 @@ impl<'a> GetFollowedStreamsRequest<'a> {
     /// Requires token with scope [`user:read:follows`](twitch_oauth2::Scope::UserReadFollows).
     ///
     /// See also [`HelixClient::get_followed_streams`](crate::helix::HelixClient::get_followed_streams).
-    pub fn user_id(user_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn user_id(user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            user_id: user_id.into(),
+            user_id: user_id.to_cow(),
             after: Default::default(),
             before: Default::default(),
             first: Default::default(),

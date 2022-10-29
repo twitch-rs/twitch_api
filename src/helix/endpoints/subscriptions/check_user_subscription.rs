@@ -38,7 +38,6 @@
 //! and parse the [`http::Response`] with [`CheckUserSubscriptionRequest::parse_response(None, &request.get_uri(), response)`](CheckUserSubscriptionRequest::parse_response)
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 
 /// Query Parameters for [Check User Subscription](super::check_user_subscription)
 ///
@@ -50,7 +49,7 @@ pub struct CheckUserSubscriptionRequest<'a> {
     /// User ID of the broadcaster. Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Unique identifier of account to get subscription status of. Accepts up to 100 values.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[serde(borrow)]
@@ -59,9 +58,9 @@ pub struct CheckUserSubscriptionRequest<'a> {
 
 impl<'a> CheckUserSubscriptionRequest<'a> {
     /// Checks subscribed users to this specific channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             user_id: Cow::Borrowed(&[]),
         }
     }

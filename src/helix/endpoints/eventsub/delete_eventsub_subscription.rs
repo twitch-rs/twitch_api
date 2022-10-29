@@ -13,12 +13,14 @@ pub struct DeleteEventSubSubscriptionRequest<'a> {
     /// The subscription ID for the subscription you want to delete.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub id: &'a types::EventSubIdRef,
+    pub id: Cow<'a, types::EventSubIdRef>,
 }
 
 impl<'a> DeleteEventSubSubscriptionRequest<'a> {
     /// Delete this eventsub subscription.
-    pub fn id(id: impl Into<&'a types::EventSubIdRef>) -> Self { Self { id: id.into() } }
+    pub fn id(id: impl types::IntoCow<'a, types::EventSubIdRef> + 'a) -> Self {
+        Self { id: id.to_cow() }
+    }
 }
 
 impl Request for DeleteEventSubSubscriptionRequest<'_> {

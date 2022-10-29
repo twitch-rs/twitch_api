@@ -5,6 +5,7 @@ use crate::{
     types,
 };
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
 
 pub mod create_eventsub_subscription;
 pub mod delete_eventsub_subscription;

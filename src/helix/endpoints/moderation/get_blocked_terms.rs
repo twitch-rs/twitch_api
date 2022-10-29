@@ -52,12 +52,12 @@ pub struct GetBlockedTerms<'a> {
     /// The ID of the broadcaster whose blocked terms you’re getting.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     /// If the broadcaster wants to get their own block terms (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub moderator_id: &'a types::UserIdRef,
+    pub moderator_id: Cow<'a, types::UserIdRef>,
     /// The maximum number of blocked terms to return per page in the response. The minimum page size is 1 blocked term per page and the maximum is 100. The default is 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<u32>,
@@ -69,12 +69,12 @@ pub struct GetBlockedTerms<'a> {
 impl<'a> GetBlockedTerms<'a> {
     /// Get blocked terms in a broadcasters channel as specified moderator
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        moderator_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
             after: Default::default(),
             first: Default::default(),
         }

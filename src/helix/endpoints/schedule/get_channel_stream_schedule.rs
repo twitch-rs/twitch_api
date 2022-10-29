@@ -51,15 +51,15 @@ pub struct GetChannelStreamScheduleRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the stream segment to return. Maximum: 100.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub id: Option<&'a types::StreamSegmentIdRef>,
+    pub id: Option<Cow<'a, types::StreamSegmentIdRef>>,
     /// A timestamp in RFC3339 format to start returning stream segments from. If not specified, the current date and time is used.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub start_time: Option<&'a types::TimestampRef>,
+    pub start_time: Option<Cow<'a, types::TimestampRef>>,
     /// A timezone offset for the requester specified in minutes. This is recommended to ensure stream segments are returned for the correct week. For example, a timezone that is +4 hours from GMT would be “240.” If not specified, “0” is used for GMT.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
@@ -74,9 +74,9 @@ pub struct GetChannelStreamScheduleRequest<'a> {
 
 impl<'a> GetChannelStreamScheduleRequest<'a> {
     /// Get a broadcasters schedule
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             id: Default::default(),
             start_time: Default::default(),
             utc_offset: Default::default(),
@@ -86,14 +86,17 @@ impl<'a> GetChannelStreamScheduleRequest<'a> {
     }
 
     /// Set the id for the request.
-    pub fn id(mut self, id: impl Into<&'a types::StreamSegmentIdRef>) -> Self {
-        self.id = Some(id.into());
+    pub fn id(mut self, id: impl types::IntoCow<'a, types::StreamSegmentIdRef> + 'a) -> Self {
+        self.id = Some(id.to_cow());
         self
     }
 
     /// Set the start_time for the request.
-    pub fn start_time(mut self, start_time: impl Into<&'a types::TimestampRef>) -> Self {
-        self.start_time = Some(start_time.into());
+    pub fn start_time(
+        mut self,
+        start_time: impl types::IntoCow<'a, types::TimestampRef> + 'a,
+    ) -> Self {
+        self.start_time = Some(start_time.to_cow());
         self
     }
 

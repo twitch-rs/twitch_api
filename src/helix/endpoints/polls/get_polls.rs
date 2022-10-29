@@ -39,7 +39,6 @@
 
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 pub use types::{PollChoice, PollStatus};
 
 /// Query Parameters for [Get polls](super::get_polls)
@@ -52,7 +51,7 @@ pub struct GetPollsRequest<'a> {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of a poll. Filters results to one or more specific polls. Not providing one or more IDs will return the full list of polls for the authenticated channel.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
@@ -67,9 +66,9 @@ pub struct GetPollsRequest<'a> {
 
 impl<'a> GetPollsRequest<'a> {
     /// The broadcaster running polls.
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             id: Default::default(),
             after: Default::default(),
             first: Default::default(),

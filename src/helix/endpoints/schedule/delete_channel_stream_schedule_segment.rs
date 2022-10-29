@@ -54,22 +54,22 @@ pub struct DeleteChannelStreamScheduleSegmentRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the streaming segment to delete.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub id: &'a types::StreamSegmentIdRef,
+    pub id: Cow<'a, types::StreamSegmentIdRef>,
 }
 
 impl<'a> DeleteChannelStreamScheduleSegmentRequest<'a> {
     /// Delete a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        id: impl Into<&'a types::StreamSegmentIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::StreamSegmentIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }

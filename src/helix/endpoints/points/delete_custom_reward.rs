@@ -52,22 +52,22 @@ pub struct DeleteCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of the Custom Reward to delete, must match a Custom Reward on broadcaster_id’s channel.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub id: &'a types::RewardIdRef,
+    pub id: Cow<'a, types::RewardIdRef>,
 }
 
 impl<'a> DeleteCustomRewardRequest<'a> {
     /// Reward to delete
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        id: impl Into<&'a types::RewardIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::RewardIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }

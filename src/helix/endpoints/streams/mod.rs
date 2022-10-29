@@ -24,6 +24,7 @@ use crate::{
     types,
 };
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
 
 #[doc(inline)]
 pub use get_followed_streams::GetFollowedStreamsRequest;

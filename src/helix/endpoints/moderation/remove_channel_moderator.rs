@@ -53,22 +53,22 @@ pub struct RemoveChannelModeratorRequest<'a> {
     /// The ID of the broadcaster that owns the chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to remove as a moderator from the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub moderator_id: &'a types::UserIdRef,
+    pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> RemoveChannelModeratorRequest<'a> {
     /// Remove moderator
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
-        moderator_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
         }
     }
 }

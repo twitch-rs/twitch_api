@@ -39,7 +39,6 @@
 
 use super::*;
 use helix::RequestGet;
-use std::borrow::Cow;
 
 // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 /// Query Parameters for [Get Videos](super::get_videos)
@@ -59,11 +58,11 @@ pub struct GetVideosRequest<'a> {
     /// ID of the user who owns the video.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub user_id: Option<&'a types::UserIdRef>,
+    pub user_id: Option<Cow<'a, types::UserIdRef>>,
     /// ID of the game the video is of.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub game_id: Option<&'a types::CategoryIdRef>,
+    pub game_id: Option<Cow<'a, types::CategoryIdRef>>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
@@ -100,17 +99,17 @@ impl<'a> GetVideosRequest<'a> {
     }
 
     /// ID of the user who owns the video.
-    pub fn user_id(user_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn user_id(user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            user_id: Some(user_id.into()),
+            user_id: Some(user_id.to_cow()),
             ..Self::default()
         }
     }
 
     /// ID of the game the video is of.
-    pub fn game_id(game_id: impl Into<&'a types::CategoryIdRef>) -> Self {
+    pub fn game_id(game_id: impl types::IntoCow<'a, types::CategoryIdRef> + 'a) -> Self {
         Self {
-            game_id: Some(game_id.into()),
+            game_id: Some(game_id.to_cow()),
             ..Self::default()
         }
     }

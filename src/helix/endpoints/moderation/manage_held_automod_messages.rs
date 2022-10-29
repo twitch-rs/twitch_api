@@ -83,11 +83,11 @@ pub struct ManageHeldAutoModMessagesBody<'a> {
     /// The moderator who is approving or rejecting the held message. Must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub user_id: &'a types::UserIdRef,
+    pub user_id: Cow<'a, types::UserIdRef>,
     /// ID of the message to be allowed or denied. These message IDs are retrieved from IRC or PubSub. Only one message ID can be provided.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub msg_id: &'a types::MsgIdRef,
+    pub msg_id: Cow<'a, types::MsgIdRef>,
     /// The action to take for the message. Must be "ALLOW" or "DENY".
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub action: AutoModAction,
@@ -104,13 +104,13 @@ impl<'a> ManageHeldAutoModMessagesBody<'a> {
     /// let body = ManageHeldAutoModMessagesBody::new("1234", "5678", true);
     /// ```
     pub fn new(
-        user_id: impl Into<&'a types::UserIdRef>,
-        msg_id: impl Into<&'a types::MsgIdRef>,
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        msg_id: impl types::IntoCow<'a, types::MsgIdRef> + 'a,
         action: impl Into<AutoModAction>,
     ) -> Self {
         Self {
-            user_id: user_id.into(),
-            msg_id: msg_id.into(),
+            user_id: user_id.to_cow(),
+            msg_id: msg_id.to_cow(),
             action: action.into(),
         }
     }

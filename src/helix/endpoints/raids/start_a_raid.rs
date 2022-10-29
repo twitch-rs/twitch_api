@@ -47,22 +47,22 @@ pub struct StartARaidRequest<'a> {
     /// The ID of the broadcaster that’s sending the raiding party.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    from_broadcaster_id: &'a types::UserIdRef,
+    from_broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the broadcaster to raid.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    to_broadcaster_id: &'a types::UserIdRef,
+    to_broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> StartARaidRequest<'a> {
     /// Create a new [`StartARaidRequest`]
     pub fn new(
-        from_broadcaster_id: impl Into<&'a types::UserIdRef>,
-        to_broadcaster_id: impl Into<&'a types::UserIdRef>,
+        from_broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        to_broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            from_broadcaster_id: from_broadcaster_id.into(),
-            to_broadcaster_id: to_broadcaster_id.into(),
+            from_broadcaster_id: from_broadcaster_id.to_cow(),
+            to_broadcaster_id: to_broadcaster_id.to_cow(),
         }
     }
 }

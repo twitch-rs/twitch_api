@@ -62,11 +62,11 @@ pub struct GetBitsLeaderboardRequest<'a> {
     /// Timestamp for the period over which the returned data is aggregated. Must be in RFC 3339 format. If this is not provided, data is aggregated over the current period; e.g., the current day/week/month/year. This value is ignored if period is "all".
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub started_at: Option<&'a types::TimestampRef>,
+    pub started_at: Option<Cow<'a, types::TimestampRef>>,
     /// ID of the user whose results are returned; i.e., the person who paid for the Bits.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub user_id: Option<&'a types::UserIdRef>,
+    pub user_id: Option<Cow<'a, types::UserIdRef>>,
 }
 
 impl<'a> GetBitsLeaderboardRequest<'a> {
@@ -87,17 +87,17 @@ impl<'a> GetBitsLeaderboardRequest<'a> {
     }
 
     /// Get leaderboard starting at this timestamp
-    pub fn started_at(self, started_at: impl Into<&'a types::TimestampRef>) -> Self {
+    pub fn started_at(self, started_at: impl types::IntoCow<'a, types::TimestampRef> + 'a) -> Self {
         Self {
-            started_at: Some(started_at.into()),
+            started_at: Some(started_at.to_cow()),
             ..self
         }
     }
 
     /// Get leaderboard where this user is included (if they are on the leaderboard)
-    pub fn user_id(self, user_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn user_id(self, user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            user_id: Some(user_id.into()),
+            user_id: Some(user_id.to_cow()),
             ..self
         }
     }

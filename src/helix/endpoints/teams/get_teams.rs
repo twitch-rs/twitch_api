@@ -48,7 +48,7 @@ pub struct GetTeamsRequest<'a> {
     /// Team ID.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub id: Option<&'a types::TeamIdRef>,
+    pub id: Option<Cow<'a, types::TeamIdRef>>,
     /// Team name.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
@@ -57,9 +57,9 @@ pub struct GetTeamsRequest<'a> {
 
 impl<'a> GetTeamsRequest<'a> {
     /// Get team with this [`TeamId`](types::TeamId)
-    pub fn id(id: impl Into<&'a types::TeamIdRef>) -> Self {
+    pub fn id(id: impl types::IntoCow<'a, types::TeamIdRef> + 'a) -> Self {
         Self {
-            id: Some(id.into()),
+            id: Some(id.to_cow()),
             name: None,
         }
     }

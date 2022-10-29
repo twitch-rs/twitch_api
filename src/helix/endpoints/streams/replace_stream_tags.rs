@@ -60,7 +60,6 @@
 //! and parse the [`http::Response`] with [`ReplaceStreamTagsRequest::parse_response(None, &request.get_uri(), response)`](ReplaceStreamTagsRequest::parse_response)
 use super::*;
 use helix::RequestPut;
-use std::borrow::Cow;
 
 /// Query Parameters for [Replace Stream Tags](super::replace_stream_tags)
 ///
@@ -72,14 +71,14 @@ pub struct ReplaceStreamTagsRequest<'a> {
     /// ID of the stream for which tags are to be replaced.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> ReplaceStreamTagsRequest<'a> {
     /// ID of the stream for which tags are to be replaced.
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }

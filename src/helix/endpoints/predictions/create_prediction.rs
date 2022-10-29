@@ -93,7 +93,7 @@ pub struct CreatePredictionBody<'a> {
     /// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Title for the Prediction. Maximum: 45 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
@@ -107,13 +107,13 @@ pub struct CreatePredictionBody<'a> {
 impl<'a> CreatePredictionBody<'a> {
     /// Create a Channel Points Prediction for a specific Twitch channel.
     pub fn new(
-        broadcaster_id: impl Into<&'a types::UserIdRef>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         title: &'a str,
         outcomes: (NewPredictionOutcome<'a>, NewPredictionOutcome<'a>),
         prediction_window: i64,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             title,
             outcomes,
             prediction_window,

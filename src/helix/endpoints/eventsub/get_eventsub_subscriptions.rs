@@ -23,7 +23,7 @@ pub struct GetEventSubSubscriptionsRequest<'a> {
     /// matches a user ID that you specified in the Condition object when you created the subscription.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub user_id: Option<&'a types::UserIdRef>,
+    pub user_id: Option<Cow<'a, types::UserIdRef>>,
     // FIXME: https://github.com/twitchdev/issues/issues/272
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]

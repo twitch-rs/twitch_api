@@ -55,12 +55,12 @@ pub struct GetCustomRewardRedemptionRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub broadcaster_id: &'a types::UserIdRef,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 
     /// When ID is not provided, this parameter returns paginated Custom Reward Redemption objects for redemptions of the Custom Reward with ID reward_id
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub reward_id: Option<&'a types::RewardIdRef>,
+    pub reward_id: Option<Cow<'a, types::RewardIdRef>>,
 
     /// When id is not provided, this param is required and filters the paginated Custom Reward Redemption objects for redemptions with the matching status. Can be one of UNFULFILLED, FULFILLED or CANCELED
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -77,9 +77,9 @@ pub struct GetCustomRewardRedemptionRequest<'a> {
 
 impl<'a> GetCustomRewardRedemptionRequest<'a> {
     /// Reward to fetch
-    pub fn broadcaster_id(broadcaster_id: impl Into<&'a types::UserIdRef>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             reward_id: None,
             status: Default::default(),
             after: Default::default(),
@@ -88,8 +88,11 @@ impl<'a> GetCustomRewardRedemptionRequest<'a> {
     }
 
     /// Specific reward to query
-    pub fn reward_id(mut self, reward_id: impl Into<&'a types::RewardIdRef>) -> Self {
-        self.reward_id = Some(reward_id.into());
+    pub fn reward_id(
+        mut self,
+        reward_id: impl types::IntoCow<'a, types::RewardIdRef> + 'a,
+    ) -> Self {
+        self.reward_id = Some(reward_id.to_cow());
         self
     }
 
