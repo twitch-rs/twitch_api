@@ -61,7 +61,7 @@ pub struct GetHypeTrainEventsRequest<'a> {
     )]
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub id: Option<&'a str>,
+    pub id: Option<Cow<'a, str>>,
 }
 
 impl<'a> GetHypeTrainEventsRequest<'a> {

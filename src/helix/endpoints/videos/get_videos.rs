@@ -72,7 +72,7 @@ pub struct GetVideosRequest<'a> {
     /// Language of the video being queried. Limit: 1.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub language: Option<&'a str>,
+    pub language: Option<Cow<'a, str>>,
     /// Period during which the video was created. Valid values: "all", "day", "week", "month". Default: "all".
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub period: Option<VideoPeriod>,

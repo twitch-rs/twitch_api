@@ -68,7 +68,7 @@ pub struct UpdateChannelStreamScheduleRequest<'a> {
     /// The timezone for when the vacation is being scheduled using the IANA time zone database format. Required if is_vacation_enabled is set to true.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub timezone: Option<&'a str>,
+    pub timezone: Option<Cow<'a, str>>,
 }
 
 impl<'a> UpdateChannelStreamScheduleRequest<'a> {
@@ -151,7 +151,7 @@ fn test_request() {
         is_vacation_enabled: Some(true),
         vacation_start_time: Some(types::IntoCow::to_cow(&start)),
         vacation_end_time: Some(types::IntoCow::to_cow(&end)),
-        timezone: Some("America/New_York"),
+        timezone: Some("America/New_York".into()),
         ..UpdateChannelStreamScheduleRequest::broadcaster_id("141981764")
     };
 

@@ -69,7 +69,7 @@ pub struct GetBroadcasterSubscriptionsEventsRequest<'a> {
     /// Retreive a single event by event ID
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub id: Option<&'a str>,
+    pub id: Option<Cow<'a, str>>,
 }
 
 impl<'a> GetBroadcasterSubscriptionsEventsRequest<'a> {

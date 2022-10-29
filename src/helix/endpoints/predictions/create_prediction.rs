@@ -93,7 +93,7 @@ pub struct CreatePredictionBody<'a> {
     /// Title for the Prediction. Maximum: 45 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub title: &'a str,
+    pub title: Cow<'a, str>,
     /// Array of outcome objects with titles for the Prediction. Array size must be 2.
     pub outcomes: (NewPredictionOutcome<'a>, NewPredictionOutcome<'a>),
     /// Total duration for the Prediction (in seconds). Minimum: 1. Maximum: 1800.
@@ -104,13 +104,13 @@ impl<'a> CreatePredictionBody<'a> {
     /// Create a Channel Points Prediction for a specific Twitch channel.
     pub fn new(
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
-        title: &'a str,
+        title: impl Into<Cow<'a, str>>,
         outcomes: (NewPredictionOutcome<'a>, NewPredictionOutcome<'a>),
         prediction_window: i64,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.to_cow(),
-            title,
+            title: title.into(),
             outcomes,
             prediction_window,
         }
@@ -126,19 +126,19 @@ impl helix::private::SealedSerialize for CreatePredictionBody<'_> {}
 pub struct NewPredictionOutcome<'a> {
     /// Text displayed for the choice. Maximum: 25 characters.
     #[serde(borrow)]
-    pub title: &'a str,
+    pub title: Cow<'a, str>,
 }
 
 impl<'a> NewPredictionOutcome<'a> {
     /// Create a new [`NewPredictionOutcome`]
-    pub fn new(title: impl Into<&'a str>) -> Self {
+    pub fn new(title: impl Into<Cow<'a, str>>) -> Self {
         Self {
             title: title.into(),
         }
     }
 
     /// Create a two new [`NewPredictionOutcome`]s
-    pub fn new_tuple(blue: impl Into<&'a str>, pink: impl Into<&'a str>) -> (Self, Self) {
+    pub fn new_tuple(blue: impl Into<Cow<'a, str>>, pink: impl Into<Cow<'a, str>>) -> (Self, Self) {
         (Self::new(blue), Self::new(pink))
     }
 }

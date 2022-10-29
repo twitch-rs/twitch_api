@@ -26,7 +26,7 @@
 //!         "America/New_York",
 //!         false,
 //!     );
-//! body.duration = Some("60");
+//! body.duration = Some("60".into());
 //! body.category_id = Some(twitch_types::CategoryIdRef::from_static("509670").as_cow());
 //! body.title = Some("TwitchDev Monthly Update // July 1, 2021".into());
 //! ```
@@ -55,7 +55,7 @@
 //!         "America/New_York",
 //!         false,
 //!     );
-//! body.duration = Some("60");
+//! body.duration = Some("60".into());
 //! body.category_id = Some(twitch_types::CategoryIdRef::from_static("509670").as_cow());
 //! body.title = Some("TwitchDev Monthly Update // July 1, 2021".into());
 //! let response: create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentResponse = client.req_post(request, body, &token).await?.data;
@@ -105,13 +105,13 @@ pub struct CreateChannelStreamScheduleSegmentBody<'a> {
     /// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub timezone: &'a str,
+    pub timezone: Cow<'a, str>,
     /// Indicates if the scheduled broadcast is recurring weekly.
     pub is_recurring: bool,
     /// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub duration: Option<&'a str>,
+    pub duration: Option<Cow<'a, str>>,
     /// Game/Category ID for the scheduled broadcast.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
@@ -119,14 +119,14 @@ pub struct CreateChannelStreamScheduleSegmentBody<'a> {
     /// Title for the scheduled broadcast. Maximum: 140 characters.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub title: Option<&'a str>,
+    pub title: Option<Cow<'a, str>>,
 }
 
 impl<'a> CreateChannelStreamScheduleSegmentBody<'a> {
     /// Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     pub fn new(
         start_time: impl types::IntoCow<'a, types::TimestampRef> + 'a,
-        timezone: impl Into<&'a str>,
+        timezone: impl Into<Cow<'a, str>>,
         is_recurring: bool,
     ) -> Self {
         Self {
@@ -169,9 +169,9 @@ fn test_request() {
 
     let ts = types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap();
     let body = CreateChannelStreamScheduleSegmentBody {
-        duration: Some("60"),
+        duration: Some("60".into()),
         category_id: Some(types::IntoCow::to_cow("509670")),
-        title: Some("TwitchDev Monthly Update // July 1, 2021"),
+        title: Some("TwitchDev Monthly Update // July 1, 2021".into()),
         ..CreateChannelStreamScheduleSegmentBody::new(&*ts, "America/New_York", false)
     };
 

@@ -87,11 +87,11 @@ pub struct ModifyChannelInformationBody<'a> {
     /// Language of the channel
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub broadcaster_language: Option<&'a str>,
+    pub broadcaster_language: Option<Cow<'a, str>>,
     /// Title of the stream. Value must not be an empty string.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub title: Option<&'a str>,
+    pub title: Option<Cow<'a, str>>,
 }
 
 impl<'a> ModifyChannelInformationBody<'a> {
@@ -116,13 +116,16 @@ impl<'a> ModifyChannelInformationBody<'a> {
     }
 
     /// Language of the channel
-    pub fn broadcaster_language(&mut self, broadcaster_language: impl Into<&'a str>) -> &mut Self {
+    pub fn broadcaster_language(
+        &mut self,
+        broadcaster_language: impl Into<Cow<'a, str>>,
+    ) -> &mut Self {
         self.broadcaster_language = Some(broadcaster_language.into());
         self
     }
 
     /// Title of the stream. Value must not be an empty string.
-    pub fn title(&mut self, title: impl Into<&'a str>) -> &mut Self {
+    pub fn title(&mut self, title: impl Into<Cow<'a, str>>) -> &mut Self {
         self.title = Some(title.into());
         self
     }
@@ -188,10 +191,8 @@ fn test_request() {
     use helix::*;
     let req = ModifyChannelInformationRequest::broadcaster_id("0");
 
-    let body = ModifyChannelInformationBody {
-        title: Some("Hello World!"),
-        ..Default::default()
-    };
+    let mut body = ModifyChannelInformationBody::new();
+    body.title("Hello World!");
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

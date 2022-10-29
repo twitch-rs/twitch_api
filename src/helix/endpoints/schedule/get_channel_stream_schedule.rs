@@ -60,7 +60,7 @@ pub struct GetChannelStreamScheduleRequest<'a> {
     /// A timezone offset for the requester specified in minutes. This is recommended to ensure stream segments are returned for the correct week. For example, a timezone that is +4 hours from GMT would be “240.” If not specified, “0” is used for GMT.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub utc_offset: Option<&'a str>,
+    pub utc_offset: Option<Cow<'a, str>>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub after: Option<helix::Cursor>,
@@ -98,7 +98,7 @@ impl<'a> GetChannelStreamScheduleRequest<'a> {
     }
 
     /// Set the utc_offset for the request.
-    pub fn utc_offset(mut self, utc_offset: impl Into<&'a str>) -> Self {
+    pub fn utc_offset(mut self, utc_offset: impl Into<Cow<'a, str>>) -> Self {
         self.utc_offset = Some(utc_offset.into());
         self
     }

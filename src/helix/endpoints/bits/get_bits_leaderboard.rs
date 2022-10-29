@@ -58,7 +58,7 @@ pub struct GetBitsLeaderboardRequest<'a> {
     /// * "all" – The lifetime of the broadcaster's channel. If this is specified (or used by default), started_at is ignored.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub period: Option<&'a str>,
+    pub period: Option<Cow<'a, str>>,
     /// Timestamp for the period over which the returned data is aggregated. Must be in RFC 3339 format. If this is not provided, data is aggregated over the current period; e.g., the current day/week/month/year. This value is ignored if period is "all".
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
@@ -79,9 +79,9 @@ impl<'a> GetBitsLeaderboardRequest<'a> {
     }
 
     /// Get loaderboard for this period. Valid values: `"day"`, `"week"`, `"month"`, `"year"`, `"all"`
-    pub fn period(self, period: &'a str) -> Self {
+    pub fn period(self, period: impl Into<Cow<'a, str>>) -> Self {
         Self {
-            period: Some(period),
+            period: Some(period.into()),
             ..self
         }
     }

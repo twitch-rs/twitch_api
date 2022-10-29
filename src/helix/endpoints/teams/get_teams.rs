@@ -3,13 +3,11 @@
 //!
 //! ## Request: [GetTeamsRequest]
 //!
-//! To use this endpoint, construct a [`GetTeamsRequest`] with the [`GetTeamsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetTeamsRequest`]
 //!
 //! ```rust
 //! use twitch_api::helix::teams::get_teams;
-//! let request = get_teams::GetTeamsRequest::builder()
-//!     .name("coolteam")
-//!     .build();
+//! let request = get_teams::GetTeamsRequest::name("coolteam");
 //! ```
 //!
 //! ## Response: [Team]
@@ -24,9 +22,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_teams::GetTeamsRequest::builder()
-//!     .name("coolteam")
-//!     .build();
+//! let request = get_teams::GetTeamsRequest::name("coolteam");
 //! let response: Vec<get_teams::Team> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -52,7 +48,7 @@ pub struct GetTeamsRequest<'a> {
     /// Team name.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub name: Option<&'a str>,
+    pub name: Option<Cow<'a, str>>,
 }
 
 impl<'a> GetTeamsRequest<'a> {
@@ -65,10 +61,10 @@ impl<'a> GetTeamsRequest<'a> {
     }
 
     /// Get team with this name
-    pub fn name(name: &'a str) -> Self {
+    pub fn name(name: impl Into<Cow<'a, str>>) -> Self {
         Self {
             id: None,
-            name: Some(name),
+            name: Some(name.into()),
         }
     }
 }

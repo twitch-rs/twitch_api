@@ -79,11 +79,11 @@ pub struct CreateCustomRewardBody<'a> {
     /// The title of the reward
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub title: &'a str,
+    pub title: Cow<'a, str>,
     /// The prompt for the viewer when they are redeeming the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub prompt: Option<&'a str>,
+    pub prompt: Option<Cow<'a, str>>,
     /// The cost of the reward
     pub cost: usize,
     /// Is the reward currently enabled, if false the reward won’t show up to viewers. Defaults true
@@ -93,7 +93,7 @@ pub struct CreateCustomRewardBody<'a> {
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub background_color: Option<&'a str>,
+    pub background_color: Option<Cow<'a, str>>,
     /// Does the user need to enter information when redeeming the reward. Defaults false
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -131,9 +131,9 @@ pub struct CreateCustomRewardBody<'a> {
 impl<'a> CreateCustomRewardBody<'a> {
     // FIXME: need to add more here
     /// Reward to create with title.
-    pub fn new(title: &'a str, cost: usize) -> Self {
+    pub fn new(title: impl Into<Cow<'a, str>>, cost: usize) -> Self {
         Self {
-            title,
+            title: title.into(),
             prompt: Default::default(),
             cost,
             is_enabled: Default::default(),

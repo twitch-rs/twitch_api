@@ -101,7 +101,7 @@ pub struct BanUserBody<'a> {
     /// The reason the user is being banned or put in a timeout. The text is user defined and limited to a maximum of 500 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub reason: &'a str,
+    pub reason: Cow<'a, str>,
     /// The ID of the user to ban or put in a timeout.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
@@ -112,12 +112,12 @@ impl<'a> BanUserBody<'a> {
     /// Create a new [`BanUserBody`]
     pub fn new(
         user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
-        reason: &'a str,
+        reason: impl Into<Cow<'a, str>>,
         duration: impl Into<Option<u32>>,
     ) -> Self {
         Self {
             duration: duration.into(),
-            reason,
+            reason: reason.into(),
             user_id: user_id.to_cow(),
         }
     }

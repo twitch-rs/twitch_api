@@ -91,7 +91,7 @@ impl<'a> SendChatAnnouncementRequest<'a> {
 pub struct SendChatAnnouncementBody<'a> {
     /// The announcement to make in the broadcaster’s chat room. Announcements are limited to a maximum of 500 characters; announcements longer than 500 characters are truncated.
     #[serde(borrow)]
-    pub message: &'a str,
+    pub message: Cow<'a, str>,
     // FIXME: Enumify?
     /// The color used to highlight the announcement. Possible case-sensitive values are:
     ///
@@ -109,11 +109,11 @@ pub struct SendChatAnnouncementBody<'a> {
 impl<'a> SendChatAnnouncementBody<'a> {
     /// Create a new announcement with specified color
     pub fn new<E>(
-        message: &'a str,
+        message: impl Into<Cow<'a, str>>,
         color: impl std::convert::TryInto<AnnouncementColor, Error = E>,
     ) -> Result<Self, E> {
         Ok(Self {
-            message,
+            message: message.into(),
             color: color.try_into()?,
         })
     }

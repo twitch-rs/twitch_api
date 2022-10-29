@@ -92,7 +92,7 @@ pub struct CreatePollBody<'a> {
     /// Question displayed for the poll. Maximum: 60 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub title: &'a str,
+    pub title: Cow<'a, str>,
     /// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.
     pub duration: i64,
     /// Array of the poll choices. Minimum: 2 choices. Maximum: 5 choices.
@@ -136,13 +136,13 @@ impl<'a> CreatePollBody<'a> {
     /// Poll settings
     pub fn new(
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
-        title: &'a str,
+        title: impl Into<Cow<'a, str>>,
         duration: i64,
         choices: impl Into<Cow<'a, [NewPollChoice<'a>]>>,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.to_cow(),
-            title,
+            title: title.into(),
             duration,
             choices: choices.into(),
             bits_voting_enabled: Default::default(),
@@ -162,12 +162,12 @@ impl helix::private::SealedSerialize for CreatePollBody<'_> {}
 pub struct NewPollChoice<'a> {
     /// Text displayed for the choice. Maximum: 25 characters.
     #[serde(borrow)]
-    pub title: &'a str,
+    pub title: Cow<'a, str>,
 }
 
 impl<'a> NewPollChoice<'a> {
     /// Create a new [`NewPollChoice`]
-    pub fn new(title: impl Into<&'a str>) -> Self {
+    pub fn new(title: impl Into<Cow<'a, str>>) -> Self {
         Self {
             title: title.into(),
         }

@@ -91,7 +91,7 @@ pub struct SendWhisperBody<'a> {
     /// 10,000 characters if the user you're sending the message to has whispered you before.
     ///
     /// Messages that exceed the maximum length are truncated.
-    pub message: &'a str,
+    pub message: Cow<'a, str>,
 }
 
 impl<'a> From<&'a str> for SendWhisperBody<'a> {
@@ -100,7 +100,11 @@ impl<'a> From<&'a str> for SendWhisperBody<'a> {
 
 impl<'a> SendWhisperBody<'a> {
     /// Create a new message
-    pub fn new(message: &'a str) -> Self { Self { message } }
+    pub fn new(message: impl Into<Cow<'a, str>>) -> Self {
+        Self {
+            message: message.into(),
+        }
+    }
 }
 
 impl helix::private::SealedSerialize for SendWhisperBody<'_> {}

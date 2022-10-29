@@ -65,9 +65,9 @@ pub struct SearchCategoriesRequest<'a> {
 
 impl<'a> SearchCategoriesRequest<'a> {
     /// Search categories with the following query.
-    pub fn query(query: impl Into<&'a str>) -> Self {
+    pub fn query(query: impl Into<Cow<'a, str>>) -> Self {
         Self {
-            query: query.into().into(),
+            query: query.into(),
             after: None,
             before: None,
             first: None,

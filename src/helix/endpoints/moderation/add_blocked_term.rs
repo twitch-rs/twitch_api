@@ -91,12 +91,12 @@ pub struct AddBlockedTermBody<'a> {
     /// The term must contain a minimum of 2 characters and may contain up to a maximum of 500 characters.
     /// Terms can use a wildcard character (*). The wildcard character must appear at the beginning or end of a word, or set of characters. For example, *foo or foo*.
     #[serde(borrow)]
-    pub text: &'a str,
+    pub text: Cow<'a, str>,
 }
 
 impl<'a> AddBlockedTermBody<'a> {
     /// Create a new [`AddBlockedTermBody`]
-    pub fn new(text: &'a str) -> Self { Self { text } }
+    pub fn new(text: impl Into<Cow<'a, str>>) -> Self { Self { text: text.into() } }
 }
 
 impl helix::private::SealedSerialize for AddBlockedTermBody<'_> {}

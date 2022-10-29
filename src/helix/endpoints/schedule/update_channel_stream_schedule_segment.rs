@@ -23,7 +23,7 @@
 //! # use twitch_api::helix::schedule::update_channel_stream_schedule_segment;
 //! let body =
 //!     update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::builder()
-//!         .duration("120")
+//!         .duration(Some("120".into()))
 //!         .build();
 //! ```
 //!
@@ -46,7 +46,7 @@
 //!     "eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=",
 //! );
 //! let body = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::builder()
-//!     .duration("120")
+//!     .duration(Some("120".into()))
 //!     .build();
 //! let response: update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentResponse = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
@@ -98,11 +98,11 @@ pub struct UpdateChannelStreamScheduleSegmentBody<'a> {
     /// Start time for the scheduled broadcast specified in RFC3339 format.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub start_time: Option<&'a str>,
+    pub start_time: Option<Cow<'a, str>>,
     /// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub duration: Option<&'a str>,
+    pub duration: Option<Cow<'a, str>>,
     /// Game/Category ID for the scheduled broadcast.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
@@ -110,7 +110,7 @@ pub struct UpdateChannelStreamScheduleSegmentBody<'a> {
     /// Title for the scheduled broadcast. Maximum: 140 characters.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub title: Option<&'a str>,
+    pub title: Option<Cow<'a, str>>,
     /// Indicated if the scheduled broadcast is canceled.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -119,7 +119,7 @@ pub struct UpdateChannelStreamScheduleSegmentBody<'a> {
     /// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub timezone: Option<&'a str>,
+    pub timezone: Option<Cow<'a, str>>,
 }
 
 impl helix::private::SealedSerialize for UpdateChannelStreamScheduleSegmentBody<'_> {}
@@ -177,7 +177,7 @@ fn test_request() {
         "eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=");
 
     let body = UpdateChannelStreamScheduleSegmentBody {
-        duration: Some("120"),
+        duration: Some("120".into()),
         ..<_>::default()
     };
 

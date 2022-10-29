@@ -99,7 +99,7 @@ pub struct UpdateCustomRewardBody<'a> {
     /// The prompt for the viewer when they are redeeming the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub prompt: Option<&'a str>,
+    pub prompt: Option<Cow<'a, str>>,
     /// The cost of the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]

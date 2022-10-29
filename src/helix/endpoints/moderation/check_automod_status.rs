@@ -87,7 +87,7 @@ pub struct CheckAutoModStatusBody<'a> {
     /// Message text.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[serde(borrow)]
-    pub msg_text: &'a str,
+    pub msg_text: Cow<'a, str>,
     /// User ID of the sender.
     #[deprecated(since = "0.7.0", note = "user_id in automod check is no longer read")]
     #[cfg_attr(
@@ -100,10 +100,13 @@ pub struct CheckAutoModStatusBody<'a> {
 
 impl<'a> CheckAutoModStatusBody<'a> {
     /// Create a new [`CheckAutoModStatusBody`]
-    pub fn new(msg_id: impl types::IntoCow<'a, types::MsgIdRef> + 'a, msg_text: &'a str) -> Self {
+    pub fn new(
+        msg_id: impl types::IntoCow<'a, types::MsgIdRef> + 'a,
+        msg_text: impl Into<Cow<'a, str>>,
+    ) -> Self {
         Self {
             msg_id: msg_id.to_cow(),
-            msg_text,
+            msg_text: msg_text.into(),
             user_id: None,
         }
     }

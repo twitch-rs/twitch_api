@@ -69,7 +69,7 @@ pub struct GetStreamsRequest<'a> {
     /// Stream language. You can specify up to 100 languages.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[serde(borrow)]
-    pub language: Option<&'a str>,
+    pub language: Option<Cow<'a, str>>,
     /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
     #[cfg_attr(
         feature = "typed-builder",

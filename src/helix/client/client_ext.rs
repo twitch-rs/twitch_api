@@ -141,7 +141,7 @@ impl<'a, C: crate::HttpClient<'a> + Sync> HelixClient<'a, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::search::SearchCategoriesRequest::query(query).first(100);
+        let req = helix::search::SearchCategoriesRequest::query(query.into()).first(100);
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
