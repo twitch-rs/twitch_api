@@ -5,14 +5,11 @@
 //!
 //! ## Request: [AddBlockedTermRequest]
 //!
-//! To use this endpoint, construct a [`AddBlockedTermRequest`] with the [`AddBlockedTermRequest::builder()`] method.
+//! To use this endpoint, construct a [`AddBlockedTermRequest`] with the [`AddBlockedTermRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::add_blocked_term;
-//! let request = add_blocked_term::AddBlockedTermRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = add_blocked_term::AddBlockedTermRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Body: [AddBlockedTermBody]
@@ -38,10 +35,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = add_blocked_term::AddBlockedTermRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = add_blocked_term::AddBlockedTermRequest::new("1234", "5678");
 //! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of");
 //! let response: &helix::moderation::BlockedTerm = client.req_post(request, body, &token).await?.data.first().unwrap();
 //! # Ok(())

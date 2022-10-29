@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetStreamTagsRequest]
 //!
-//! To use this endpoint, construct a [`GetStreamTagsRequest`] with the [`GetStreamTagsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetStreamTagsRequest`] with the [`GetStreamTagsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::streams::get_stream_tags;
-//! let request = get_stream_tags::GetStreamTagsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_stream_tags::GetStreamTagsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [Tag](helix::tags::TwitchTag)
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_stream_tags::GetStreamTagsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_stream_tags::GetStreamTagsRequest::broadcaster_id("1234");
 //! let response: Vec<get_stream_tags::Tag> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

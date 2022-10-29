@@ -5,19 +5,15 @@
 //!
 //! ## Request: [BlockUserRequest]
 //!
-//! To use this endpoint, construct a [`BlockUserRequest`] with the [`BlockUserRequest::builder()`] method.
+//! To use this endpoint, construct a [`BlockUserRequest`] with the [`BlockUserRequest::block_user()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::users::block_user::{self, Reason, SourceContext};
-//! let request = block_user::BlockUserRequest::builder()
-//!     .target_user_id("1234")
-//!     .build();
+//! let request = block_user::BlockUserRequest::block_user("1234");
 //! // Or, specifying a reason for the block
-//! let request = block_user::BlockUserRequest::builder()
-//!     .target_user_id("1234")
+//! let request = block_user::BlockUserRequest::block_user("1234")
 //!     .source_context(SourceContext::Chat)
-//!     .reason(Reason::Spam)
-//!     .build();
+//!     .reason(Reason::Spam);
 //! ```
 //!
 //! ## Response: [BlockUser]
@@ -32,9 +28,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = block_user::BlockUserRequest::builder()
-//!     .target_user_id("1234")
-//!     .build();
+//! let request = block_user::BlockUserRequest::block_user("1234");
 //! let response: block_user::BlockUser = client.req_put(request, helix::EmptyBody, &token).await?.data;
 //! # Ok(())
 //! # }

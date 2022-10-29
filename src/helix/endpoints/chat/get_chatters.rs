@@ -9,14 +9,11 @@
 //!
 //! ## Request: [GetChattersRequest]
 //!
-//! To use this endpoint, construct a [`GetChattersRequest`] with the [`GetChattersRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChattersRequest`] with the [`GetChattersRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_chatters;
-//! let request = get_chatters::GetChattersRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("4321")
-//!     .build();
+//! let request = get_chatters::GetChattersRequest::new("1234", "4321");
 //! ```
 //!
 //! ## Response: [Chatter]
@@ -31,10 +28,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_chatters::GetChattersRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("4321")
-//!     .build();
+//! let request = get_chatters::GetChattersRequest::new("1234", "4321");
 //! let response: Vec<helix::chat::Chatter> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

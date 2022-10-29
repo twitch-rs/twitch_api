@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetVideosRequest]
 //!
-//! To use this endpoint, construct a [`GetVideosRequest`] with the [`GetVideosRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetVideosRequest`]
 //!
 //! ```rust
 //! use twitch_api::helix::videos::get_videos;
-//! let request = get_videos::GetVideosRequest::builder()
-//!     .user_id(Some("1234".into()))
-//!     .build();
+//! let request = get_videos::GetVideosRequest::user_id("1234");
 //! ```
 //!
 //! ## Response: [Video]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_videos::GetVideosRequest::builder()
-//!     .user_id(Some("1234".into()))
-//!     .build();
+//! let request = get_videos::GetVideosRequest::user_id("1234");
 //! let response: Vec<get_videos::Video> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

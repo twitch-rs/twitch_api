@@ -5,13 +5,11 @@
 //!
 //! ## Request: [CreateCustomRewardRequest]
 //!
-//! To use this endpoint, construct a [`CreateCustomRewardRequest`] with the [`CreateCustomRewardRequest::builder()`] method.
+//! To use this endpoint, construct a [`CreateCustomRewardRequest`] with the [`CreateCustomRewardRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::create_custom_rewards;
-//! let request = create_custom_rewards::CreateCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .build();
+//! let request = create_custom_rewards::CreateCustomRewardRequest::broadcaster_id("274637212");
 //! ```
 //!
 //! ## Body: [CreateCustomRewardBody]
@@ -20,10 +18,7 @@
 //!
 //! ```
 //! # use twitch_api::helix::points::create_custom_rewards;
-//! let body = create_custom_rewards::CreateCustomRewardBody::builder()
-//!     .cost(500)
-//!     .title("hydrate!")
-//!     .build();
+//! let mut body = create_custom_rewards::CreateCustomRewardBody::new("hydrate", 500);
 //! ```
 //!
 //! ## Response: [CreateCustomRewardResponse]
@@ -40,13 +35,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = create_custom_rewards::CreateCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .build();
-//! let body = create_custom_rewards::CreateCustomRewardBody::builder()
-//!     .cost(500)
-//!     .title("hydrate!")
-//!     .build();
+//! let request = create_custom_rewards::CreateCustomRewardRequest::broadcaster_id("274637212");
+//! let mut body = create_custom_rewards::CreateCustomRewardBody::new("hydrate", 500);
 //! let response: create_custom_rewards::CreateCustomRewardResponse = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

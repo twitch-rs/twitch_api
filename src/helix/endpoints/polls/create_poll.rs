@@ -17,20 +17,14 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! # use twitch_api::helix::polls::create_poll;
-//! let body = create_poll::CreatePollBody::builder()
-//!     .broadcaster_id("141981764")
-//!     .title("Heads or Tails?")
-//!     .choices(
-//!         &[
-//!             create_poll::NewPollChoice::new("Heads"),
-//!             create_poll::NewPollChoice::new("Tails"),
-//!         ][..],
-//!     )
-//!     .channel_points_voting_enabled(true)
-//!     .channel_points_per_vote(100)
-//!     .duration(1800)
-//!     .build();
+//! use twitch_api::helix::polls::create_poll;
+//! let choices: &[create_poll::NewPollChoice] = &[
+//!     create_poll::NewPollChoice::new("Heads"),
+//!     create_poll::NewPollChoice::new("Tails"),
+//! ];
+//! let mut body = create_poll::CreatePollBody::new("141981764", "Heads or Tails?", 1800, choices);
+//! body.channel_points_voting_enabled = Some(true);
+//! body.channel_points_per_vote = Some(100);
 //! ```
 //!
 //! ## Response: [CreatePollResponse]
@@ -47,17 +41,14 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = create_poll::CreatePollRequest::builder()
-//!     .build();
-//! let choices: &[create_poll::NewPollChoice] = &[create_poll::NewPollChoice::new("Heads"), create_poll::NewPollChoice::new("Tails")];
-//! let body = create_poll::CreatePollBody::builder()
-//!     .broadcaster_id("141981764")
-//!     .title("Heads or Tails?")
-//!     .choices(choices)
-//!     .channel_points_voting_enabled(true)
-//!     .channel_points_per_vote(100)
-//!     .duration(1800)
-//!     .build();
+//! let request = create_poll::CreatePollRequest::new();
+//! let choices: &[create_poll::NewPollChoice] = &[
+//!     create_poll::NewPollChoice::new("Heads"),
+//!     create_poll::NewPollChoice::new("Tails"),
+//! ];
+//! let mut body = create_poll::CreatePollBody::new("141981764", "Heads or Tails?", 1800, choices);
+//! body.channel_points_voting_enabled = Some(true);
+//! body.channel_points_per_vote = Some(100);
 //! let response: create_poll::CreatePollResponse = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

@@ -9,10 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::whispers::send_whisper;
-//! let request = send_whisper::SendWhisperRequest::builder()
-//!     .to_user_id("456")
-//!     .from_user_id("123")
-//!     .build();
+//! let request = send_whisper::SendWhisperRequest::new("456", "123");
 //! ```
 //!
 //! ## Body: [SendWhisperBody]
@@ -38,10 +35,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = send_whisper::SendWhisperRequest::builder()
-//!     .to_user_id("456")
-//!     .from_user_id("123")
-//!     .build();
+//! let request = send_whisper::SendWhisperRequest::new("456", "123");
 //! let body = send_whisper::SendWhisperBody::new("Hello!");
 //! let response: send_whisper::SendWhisperResponse = client.req_post(request, body, &token).await?.data;
 //! # Ok(())

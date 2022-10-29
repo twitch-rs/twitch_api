@@ -6,13 +6,11 @@
 //!
 //! ## Request: [GetHypeTrainEventsRequest]
 //!
-//! To use this endpoint, construct a [`GetHypeTrainEventsRequest`] with the [`GetHypeTrainEventsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetHypeTrainEventsRequest`] with the [`GetHypeTrainEventsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::hypetrain::get_hypetrain_events;
-//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::builder()
-//!     .broadcaster_id("4321")
-//!     .build();
+//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::broadcaster_id("4321");
 //! ```
 //!
 //! ## Response: [HypeTrainEvent](types::TwitchCategory)
@@ -27,9 +25,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::builder()
-//!     .broadcaster_id("4321")
-//!     .build();
+//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::broadcaster_id("4321");
 //! let response: Vec<get_hypetrain_events::HypeTrainEvent> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

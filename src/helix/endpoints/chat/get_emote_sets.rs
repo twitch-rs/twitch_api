@@ -9,9 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_emote_sets;
-//! let request = get_emote_sets::GetEmoteSetsRequest::builder()
-//!     .emote_set_id(&["1234".into()][..])
-//!     .build();
+//! let ids: &[&twitch_types::EmoteSetIdRef] = &["1234".into()];
+//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(ids);
 //! ```
 //!
 //! ## Response: [Emote]
@@ -26,10 +25,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let ids: &[&types::EmoteSetIdRef] = &["1234".into()];
-//! let request = get_emote_sets::GetEmoteSetsRequest::builder()
-//!     .emote_set_id(ids)
-//!     .build();
+//! let ids: &[&twitch_types::EmoteSetIdRef] = &["1234".into()];
+//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(ids);
 //! let response: Vec<helix::chat::get_emote_sets::Emote> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

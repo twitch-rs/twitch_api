@@ -3,13 +3,11 @@
 //!
 //! ## Request: [GetUsersFollowsRequest]
 //!
-//! To use this endpoint, construct a [`GetUsersFollowsRequest`] with the [`GetUsersFollowsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetUsersFollowsRequest`]
 //!
 //! ```rust
 //! use twitch_api::helix::users::get_users_follows;
-//! let request = get_users_follows::GetUsersFollowsRequest::builder()
-//!     .to_id(Some("1234".into()))
-//!     .build();
+//! let request = get_users_follows::GetUsersFollowsRequest::following("1234");
 //! ```
 //!
 //! ## Response: [UsersFollows]
@@ -24,9 +22,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_users_follows::GetUsersFollowsRequest::builder()
-//!     .to_id(Some("1234".into()))
-//!     .build();
+//! let request = get_users_follows::GetUsersFollowsRequest::following("1234");
 //! let response: Vec<get_users_follows::FollowRelationship> = client.req_get(request, &token).await?.data.follow_relationships;
 //! # Ok(())
 //! # }

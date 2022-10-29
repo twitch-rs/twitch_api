@@ -5,13 +5,12 @@
 //!
 //! ## Request: [ModifyChannelInformationRequest]
 //!
-//! To use this endpoint, construct a [`ModifyChannelInformationRequest`] with the [`ModifyChannelInformationRequest::builder()`] method.
+//! To use this endpoint, construct a [`ModifyChannelInformationRequest`] with the [`ModifyChannelInformationRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::modify_channel_information;
-//! let request = modify_channel_information::ModifyChannelInformationRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request =
+//!     modify_channel_information::ModifyChannelInformationRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Body: [ModifyChannelInformationBody]
@@ -20,9 +19,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::channels::modify_channel_information;
-//! let body = modify_channel_information::ModifyChannelInformationBody::builder()
-//!     .title("Hello World!")
-//!     .build();
+//! let mut body = modify_channel_information::ModifyChannelInformationBody::new();
+//! body.title("Hello World!");
 //! ```
 //!
 //! ## Response: [ModifyChannelInformation]
@@ -39,12 +37,9 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = modify_channel_information::ModifyChannelInformationRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
-//! let body = modify_channel_information::ModifyChannelInformationBody::builder()
-//!     .title("Hello World!")
-//!     .build();
+//! let request = modify_channel_information::ModifyChannelInformationRequest::broadcaster_id("1234");
+//! let mut body = modify_channel_information::ModifyChannelInformationBody::new();
+//! body.title("Hello World!");
 //! let response: modify_channel_information::ModifyChannelInformation = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

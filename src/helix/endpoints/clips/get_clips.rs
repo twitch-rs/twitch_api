@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetClipsRequest]
 //!
-//! To use this endpoint, construct a [`GetClipsRequest`] with the [`GetClipsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetClipsRequest`] with the [`GetClipsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::clips::get_clips;
-//! let request = get_clips::GetClipsRequest::builder()
-//!     .broadcaster_id(Some("1234".into()))
-//!     .build();
+//! let request = get_clips::GetClipsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [Clip]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_clips::GetClipsRequest::builder()
-//!     .broadcaster_id(Some("1234".into()))
-//!     .build();
+//! let request = get_clips::GetClipsRequest::broadcaster_id("1234");
 //! let response: Vec<get_clips::Clip> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -139,6 +135,12 @@ impl<'a> GetClipsRequest<'a> {
         ended_at: impl types::IntoCow<'a, types::TimestampRef> + 'a,
     ) -> &mut Self {
         self.ended_at = Some(ended_at.to_cow());
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
         self
     }
 }

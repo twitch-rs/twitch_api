@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetFollowedStreamsRequest]
 //!
-//! To use this endpoint, construct a [`GetFollowedStreamsRequest`] with the [`GetFollowedStreamsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetFollowedStreamsRequest`] with the [`GetFollowedStreamsRequest::user_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::streams::get_followed_streams;
-//! let request = get_followed_streams::GetFollowedStreamsRequest::builder()
-//!     .user_id("1234")
-//!     .build();
+//! let request = get_followed_streams::GetFollowedStreamsRequest::user_id("1234");
 //! ```
 //!
 //! ## Response: [Stream]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_followed_streams::GetFollowedStreamsRequest::builder()
-//!     .user_id("1234")
-//!     .build();
+//! let request = get_followed_streams::GetFollowedStreamsRequest::user_id("1234");
 //! let response: Vec<get_followed_streams::GetFollowedStreamsResponse> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

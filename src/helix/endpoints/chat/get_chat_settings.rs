@@ -13,18 +13,16 @@
 //!
 //! ## Request: [GetChatSettingsRequest]
 //!
-//! To use this endpoint, construct a [`GetChatSettingsRequest`] with the [`GetChatSettingsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChatSettingsRequest`] with the [`GetChatSettingsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::{
 //!     helix::{self, chat::get_chat_settings},
 //!     types,
 //! };
-//! let request = get_chat_settings::GetChatSettingsRequest::builder()
-//!     .broadcaster_id("1234567")
+//! let request = get_chat_settings::GetChatSettingsRequest::broadcaster_id("1234567")
 //!     // optional
-//!     .moderator_id(types::UserIdRef::from_str("9876543"))
-//!     .build();
+//!     .moderator_id("9876543");
 //! ```
 //!
 //! ## Response: [ChatSettings]
@@ -39,11 +37,9 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_chat_settings::GetChatSettingsRequest::builder()
-//!     .broadcaster_id("1234567")
+//! let request = get_chat_settings::GetChatSettingsRequest::broadcaster_id("1234567")
 //!     // optional
-//!     .moderator_id(types::UserIdRef::from_str("9876543"))
-//!     .build();
+//!     .moderator_id("9876543");
 //! let response: helix::chat::ChatSettings = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

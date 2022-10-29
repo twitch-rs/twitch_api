@@ -6,13 +6,12 @@
 //! See also [`get_channel_schedule`](helix::HelixClient::get_channel_schedule)
 //! ## Request: [GetChannelStreamScheduleRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelStreamScheduleRequest`] with the [`GetChannelStreamScheduleRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelStreamScheduleRequest`] with the [`GetChannelStreamScheduleRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::get_channel_stream_schedule;
-//! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request =
+//!     get_channel_stream_schedule::GetChannelStreamScheduleRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [ScheduledBroadcasts]
@@ -27,9 +26,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::broadcaster_id("1234");
 //! let response: helix::schedule::ScheduledBroadcasts = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

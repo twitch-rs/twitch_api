@@ -5,14 +5,11 @@
 //!
 //! ## Request: [GetBlockedTerms]
 //!
-//! To use this endpoint, construct a [`GetBlockedTerms`] with the [`GetBlockedTerms::builder()`] method.
+//! To use this endpoint, construct a [`GetBlockedTerms`] with the [`GetBlockedTerms::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::get_blocked_terms;
-//! let request = get_blocked_terms::GetBlockedTerms::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = get_blocked_terms::GetBlockedTerms::new("1234", "5678");
 //! ```
 //!
 //! ## Response: [BlockedTerm]
@@ -27,10 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_blocked_terms::GetBlockedTerms::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = get_blocked_terms::GetBlockedTerms::new("1234", "5678");
 //! let response: Vec<helix::moderation::BlockedTerm> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

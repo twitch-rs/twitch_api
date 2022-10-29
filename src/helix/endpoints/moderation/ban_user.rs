@@ -5,14 +5,11 @@
 //!
 //! ## Request: [BanUserRequest]
 //!
-//! To use this endpoint, construct a [`BanUserRequest`] with the [`BanUserRequest::builder()`] method.
+//! To use this endpoint, construct a [`BanUserRequest`] with the [`BanUserRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::ban_user;
-//! let request = ban_user::BanUserRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = ban_user::BanUserRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Body: [BanUserBody]
@@ -38,10 +35,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = ban_user::BanUserRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = ban_user::BanUserRequest::new("1234", "5678");
 //! let body = ban_user::BanUserBody::new("9876", "no reason", 120);
 //! let response: ban_user::BanUser = client.req_post(request, body, &token).await?.data;
 //! # Ok(())

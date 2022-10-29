@@ -9,9 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::get_moderators;
-//! let request = get_moderators::GetModeratorsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_moderators::GetModeratorsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [Moderator]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_moderators::GetModeratorsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_moderators::GetModeratorsRequest::broadcaster_id("1234");
 //! let response: Vec<get_moderators::Moderator> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

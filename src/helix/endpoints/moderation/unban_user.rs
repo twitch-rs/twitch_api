@@ -5,15 +5,11 @@
 //!
 //! ## Request: [UnbanUserRequest]
 //!
-//! To use this endpoint, construct a [`UnbanUserRequest`] with the [`UnbanUserRequest::builder()`] method.
+//! To use this endpoint, construct a [`UnbanUserRequest`] with the [`UnbanUserRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::unban_user;
-//! let request = unban_user::UnbanUserRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .user_id("1337")
-//!     .build();
+//! let request = unban_user::UnbanUserRequest::new("1234", "5678", "1337");
 //! ```
 //!
 //! ## Response: [UnbanUserResponse]
@@ -30,11 +26,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = unban_user::UnbanUserRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .user_id("1337")
-//!     .build();
+//! let request = unban_user::UnbanUserRequest::new("1234", "5678", "1337");
 //! let response: unban_user::UnbanUserResponse = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }

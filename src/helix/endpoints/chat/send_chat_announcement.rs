@@ -5,14 +5,11 @@
 //!
 //! ## Request: [SendChatAnnouncementRequest]
 //!
-//! To use this endpoint, construct a [`SendChatAnnouncementRequest`] with the [`SendChatAnnouncementRequest::builder()`] method.
+//! To use this endpoint, construct a [`SendChatAnnouncementRequest`] with the [`SendChatAnnouncementRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::send_chat_announcement;
-//! let request = send_chat_announcement::SendChatAnnouncementRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = send_chat_announcement::SendChatAnnouncementRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Body: [SendChatAnnouncementBody]
@@ -38,10 +35,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = send_chat_announcement::SendChatAnnouncementRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = send_chat_announcement::SendChatAnnouncementRequest::new("1234", "5678");
 //! let body = send_chat_announcement::SendChatAnnouncementBody::new(
 //!     "Hello chat!",
 //!     "purple",

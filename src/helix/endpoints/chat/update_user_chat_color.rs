@@ -10,10 +10,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::update_user_chat_color;
-//! let request = update_user_chat_color::UpdateUserChatColorRequest::builder()
-//!     .user_id("123")
-//!     .color(twitch_types::NamedUserColor::Blue)
-//!     .build();
+//! let request = update_user_chat_color::UpdateUserChatColorRequest::new(
+//!     "123",
+//!     twitch_types::NamedUserColor::Blue,
+//! );
 //! ```
 //!
 //! ## Response: [UpdateUserChatColorResponse]
@@ -28,11 +28,10 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = update_user_chat_color::UpdateUserChatColorRequest::builder()
-//!     .user_id("123")
-//!     .color(twitch_types::NamedUserColor::Blue)
-//!     .build();
-//!
+//! let request = update_user_chat_color::UpdateUserChatColorRequest::new(
+//!     "123",
+//!     twitch_types::NamedUserColor::Blue,
+//! );
 //! let response: helix::chat::UpdateUserChatColorResponse = client.req_put(request, helix::EmptyBody, &token).await?.data;
 //! # Ok(())
 //! # }

@@ -5,14 +5,14 @@
 //!
 //! ## Request: [UpdateChannelStreamScheduleSegmentRequest]
 //!
-//! To use this endpoint, construct a [`UpdateChannelStreamScheduleSegmentRequest`] with the [`UpdateChannelStreamScheduleSegmentRequest::builder()`] method.
+//! To use this endpoint, construct a [`UpdateChannelStreamScheduleSegmentRequest`] with the [`UpdateChannelStreamScheduleSegmentRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::update_channel_stream_schedule_segment;
-//! let request = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentRequest::builder()
-//!     .broadcaster_id("141981764")
-//!     .id("eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=")
-//!     .build();
+//! let request = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentRequest::new(
+//!     "141981764",
+//!     "eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=",
+//! );
 //! ```
 //!
 //! ## Body: [UpdateChannelStreamScheduleSegmentBody]
@@ -41,10 +41,10 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentRequest::builder()
-//!     .broadcaster_id("141981764")
-//!     .id("eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=")
-//!     .build();
+//! let request = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentRequest::new(
+//!     "141981764",
+//!     "eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=",
+//! );
 //! let body = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::builder()
 //!     .duration("120")
 //!     .build();

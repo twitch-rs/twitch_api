@@ -7,14 +7,11 @@
 //!
 //! ## Request: [UpdateCustomRewardRequest]
 //!
-//! To use this endpoint, construct an [`UpdateCustomRewardRequest`] with the [`UpdateCustomRewardRequest::builder()`] method.
+//! To use this endpoint, construct an [`UpdateCustomRewardRequest`] with the [`UpdateCustomRewardRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::update_custom_reward;
-//! let request = update_custom_reward::UpdateCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("reward-id")
-//!     .build();
+//! let request = update_custom_reward::UpdateCustomRewardRequest::new("274637212", "reward-id");
 //! ```
 //!
 //! ## Body: [UpdateCustomRewardBody]
@@ -23,10 +20,9 @@
 //!
 //! ```
 //! # use twitch_api::helix::points::update_custom_reward;
-//! let body = update_custom_reward::UpdateCustomRewardBody::builder()
-//!     .cost(501)
-//!     .title("hydrate but differently now!")
-//!     .build();
+//! let mut body = update_custom_reward::UpdateCustomRewardBody::default();
+//! body.cost = Some(501);
+//! body.title = Some("hydrate but differently now!".into());
 //! ```
 //!
 //! ## Response: [UpdateCustomReward]
@@ -43,14 +39,10 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = update_custom_reward::UpdateCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("reward-id")
-//!     .build();
-//! let body = update_custom_reward::UpdateCustomRewardBody::builder()
-//!     .cost(501)
-//!     .title("hydrate but differently now!")
-//!     .build();
+//! let request = update_custom_reward::UpdateCustomRewardRequest::new("274637212", "reward-id");
+//! let mut body = update_custom_reward::UpdateCustomRewardBody::default();
+//! body.cost = Some(501);
+//! body.title = Some("hydrate but differently now!".into());
 //! let response: update_custom_reward::UpdateCustomReward = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -103,7 +95,7 @@ pub struct UpdateCustomRewardBody<'a> {
     /// The title of the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub title: Option<&'a str>,
+    pub title: Option<Cow<'a, str>>,
     /// The prompt for the viewer when they are redeeming the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
@@ -115,7 +107,7 @@ pub struct UpdateCustomRewardBody<'a> {
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none", borrow)]
-    pub background_color: Option<&'a str>,
+    pub background_color: Option<Cow<'a, str>>,
     /// Is the reward currently enabled, if false the reward won’t show up to viewers
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]

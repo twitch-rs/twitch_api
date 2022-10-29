@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetBannedUsersRequest]
 //!
-//! To use this endpoint, construct a [`GetBannedUsersRequest`] with the [`GetBannedUsersRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetBannedUsersRequest`] with the [`GetBannedUsersRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::get_banned_users;
-//! let request = get_banned_users::GetBannedUsersRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_banned_users::GetBannedUsersRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [BannedUser]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_banned_users::GetBannedUsersRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_banned_users::GetBannedUsersRequest::broadcaster_id("1234");
 //! let response: Vec<get_banned_users::BannedUser> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

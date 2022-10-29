@@ -18,10 +18,10 @@
 //!
 //! ```
 //! # use twitch_api::helix::channels::start_commercial;
-//! let body = start_commercial::StartCommercialBody::builder()
-//!     .broadcaster_id("1234")
-//!     .length(twitch_api::types::CommercialLength::Length90)
-//!     .build();
+//! let body = start_commercial::StartCommercialBody::new(
+//!     "1234",
+//!     twitch_api::types::CommercialLength::Length90,
+//! );
 //! ```
 //!
 //! ## Response: [StartCommercialRequest]
@@ -37,10 +37,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = start_commercial::StartCommercialRequest::new();
-//! let body = start_commercial::StartCommercialBody::builder()
-//!     .broadcaster_id("1234")
-//!     .length(twitch_api::types::CommercialLength::Length90)
-//!     .build();
+//! let body = start_commercial::StartCommercialBody::new("1234", twitch_api::types::CommercialLength::Length90);
 //! let response: Vec<start_commercial::StartCommercial> = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

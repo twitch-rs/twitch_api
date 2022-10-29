@@ -5,13 +5,11 @@
 //!
 //! ## Request: [CheckUserSubscriptionRequest]
 //!
-//! To use this endpoint, construct a [`CheckUserSubscriptionRequest`] with the [`CheckUserSubscriptionRequest::builder()`] method.
+//! To use this endpoint, construct a [`CheckUserSubscriptionRequest`] with the [`CheckUserSubscriptionRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::subscriptions::check_user_subscription;
-//! let request = check_user_subscription::CheckUserSubscriptionRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = check_user_subscription::CheckUserSubscriptionRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [UserSubscription]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = check_user_subscription::CheckUserSubscriptionRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = check_user_subscription::CheckUserSubscriptionRequest::broadcaster_id("1234");
 //! let response: check_user_subscription::UserSubscription = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

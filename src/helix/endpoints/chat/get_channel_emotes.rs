@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetChannelEmotesRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelEmotesRequest`] with the [`GetChannelEmotesRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelEmotesRequest`] with the [`GetChannelEmotesRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_channel_emotes;
-//! let request = get_channel_emotes::GetChannelEmotesRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_channel_emotes::GetChannelEmotesRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [ChannelEmote]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_emotes::GetChannelEmotesRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_channel_emotes::GetChannelEmotesRequest::broadcaster_id("1234");
 //! let response: Vec<helix::chat::ChannelEmote> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

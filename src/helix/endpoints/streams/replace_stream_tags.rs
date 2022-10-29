@@ -9,9 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::streams::replace_stream_tags;
-//! let request = replace_stream_tags::ReplaceStreamTagsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = replace_stream_tags::ReplaceStreamTagsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Body: [ReplaceStreamTagsBody]
@@ -20,12 +18,10 @@
 //!
 //! ```
 //! # use twitch_api::helix::streams::replace_stream_tags;
-//! let body = replace_stream_tags::ReplaceStreamTagsBody::builder()
-//!     .tag_ids(vec![
-//!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
-//!         "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
-//!     ])
-//!     .build();
+//! let body = replace_stream_tags::ReplaceStreamTagsBody::tag_ids(vec![
+//!     "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
+//!     "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
+//! ]);
 //! ```
 //!
 //! ## Response: [ReplaceStreamTags]
@@ -42,15 +38,11 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = replace_stream_tags::ReplaceStreamTagsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
-//! let body = replace_stream_tags::ReplaceStreamTagsBody::builder()
-//!     .tag_ids(vec![
-//!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
-//!         "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
-//!     ])
-//!     .build();
+//! let request = replace_stream_tags::ReplaceStreamTagsRequest::broadcaster_id("1234");
+//! let body = replace_stream_tags::ReplaceStreamTagsBody::tag_ids(vec![
+//!     "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
+//!     "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
+//! ]);
 //! let response: replace_stream_tags::ReplaceStreamTags = client.req_put(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

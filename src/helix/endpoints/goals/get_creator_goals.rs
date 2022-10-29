@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetCreatorGoalsRequest]
 //!
-//! To use this endpoint, construct a [`GetCreatorGoalsRequest`] with the [`GetCreatorGoalsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetCreatorGoalsRequest`] with the [`GetCreatorGoalsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::goals::get_creator_goals;
-//! let request = get_creator_goals::GetCreatorGoalsRequest::builder()
-//!     .broadcaster_id("4321")
-//!     .build();
+//! let request = get_creator_goals::GetCreatorGoalsRequest::broadcaster_id("4321");
 //! ```
 //!
 //! ## Response: [CreatorGoal](types::TwitchCategory)
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_creator_goals::GetCreatorGoalsRequest::builder()
-//!     .broadcaster_id("4321")
-//!     .build();
+//! let request = get_creator_goals::GetCreatorGoalsRequest::broadcaster_id("4321");
 //! let response: Vec<get_creator_goals::CreatorGoal> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

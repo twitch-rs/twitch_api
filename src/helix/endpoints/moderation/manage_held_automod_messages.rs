@@ -5,7 +5,7 @@
 //!
 //! ## Request: [ManageHeldAutoModMessagesRequest]
 //!
-//! To use this endpoint, construct a [`ManageHeldAutoModMessagesRequest`] with the [`ManageHeldAutoModMessagesRequest::builder()`] method.
+//! To use this endpoint, construct a [`ManageHeldAutoModMessagesRequest`] with the [`ManageHeldAutoModMessagesRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::manage_held_automod_messages;
@@ -18,11 +18,11 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::manage_held_automod_messages;
-//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::builder()
-//!     .action(true)
-//!     .user_id("9327994")
-//!     .msg_id("836013710")
-//!     .build();
+//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::new(
+//!     "9327994",
+//!     "836013710",
+//!     true,
+//! );
 //! ```
 //!
 //! ## Response: [ManageHeldAutoModMessages]
@@ -40,11 +40,11 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = manage_held_automod_messages::ManageHeldAutoModMessagesRequest::new();
-//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::builder()
-//!     .action(true)
-//!     .user_id("9327994")
-//!     .msg_id("836013710")
-//!     .build();
+//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::new(
+//!     "9327994",
+//!     "836013710",
+//!     true,
+//! );
 //! let response: manage_held_automod_messages::ManageHeldAutoModMessages = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

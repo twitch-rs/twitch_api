@@ -7,15 +7,15 @@
 //!
 //! ## Request: [UpdateRedemptionStatusRequest]
 //!
-//! To use this endpoint, construct a [`UpdateRedemptionStatusRequest`] with the [`UpdateRedemptionStatusRequest::builder()`] method.
+//! To use this endpoint, construct a [`UpdateRedemptionStatusRequest`] with the [`UpdateRedemptionStatusRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::UpdateRedemptionStatusRequest;
-//! let request = UpdateRedemptionStatusRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
-//!     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63")
-//!     .build();
+//! let request = UpdateRedemptionStatusRequest::new(
+//!     "274637212",
+//!     "92af127c-7326-4483-a52b-b0da0be61c01",
+//!     "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
+//! );
 //! ```
 //!
 //! ## Body: [UpdateRedemptionStatusBody]
@@ -24,9 +24,7 @@
 //!
 //! ```
 //! use twitch_api::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};
-//! let body = UpdateRedemptionStatusBody::builder()
-//!     .status(CustomRewardRedemptionStatus::Canceled)
-//!     .build();
+//! let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
 //! ```
 //!
 //! ## Response: [UpdateRedemptionStatusInformation]
@@ -46,14 +44,12 @@
 //!     helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = UpdateRedemptionStatusRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
-//!     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63")
-//!     .build();
-//! let body = UpdateRedemptionStatusBody::builder()
-//!     .status(CustomRewardRedemptionStatus::Canceled)
-//!     .build();
+//! let request = UpdateRedemptionStatusRequest::new(
+//!     "274637212",
+//!     "92af127c-7326-4483-a52b-b0da0be61c01",
+//!     "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
+//! );
+//! let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
 //! let response: UpdateRedemptionStatusInformation =
 //!     client.req_patch(request, body, &token).await?.data;
 //! # Ok(())

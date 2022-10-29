@@ -5,13 +5,11 @@
 //!
 //! ## Request: [CancelARaidRequest]
 //!
-//! To use this endpoint, construct a [`CancelARaidRequest`] with the [`CancelARaidRequest::builder()`] method.
+//! To use this endpoint, construct a [`CancelARaidRequest`] with the [`CancelARaidRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::raids::cancel_a_raid;
-//! let request = cancel_a_raid::CancelARaidRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = cancel_a_raid::CancelARaidRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [CancelARaidResponse]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = cancel_a_raid::CancelARaidRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = cancel_a_raid::CancelARaidRequest::broadcaster_id("1234");
 //! let response: cancel_a_raid::CancelARaidResponse = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }

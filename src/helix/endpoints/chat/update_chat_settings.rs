@@ -5,14 +5,11 @@
 //!
 //! ## Request: [UpdateChatSettingsRequest]
 //!
-//! To use this endpoint, construct an [`UpdateChatSettingsRequest`] with the [`UpdateChatSettingsRequest::builder()`] method.
+//! To use this endpoint, construct an [`UpdateChatSettingsRequest`] with the [`UpdateChatSettingsRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::update_chat_settings;
-//! let request = update_chat_settings::UpdateChatSettingsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = update_chat_settings::UpdateChatSettingsRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Body: [UpdateChatSettingsBody]
@@ -41,10 +38,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = update_chat_settings::UpdateChatSettingsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = update_chat_settings::UpdateChatSettingsRequest::new("1234", "5678");
 //! let body = update_chat_settings::UpdateChatSettingsBody::builder()
 //!     .slow_mode(true)
 //!     .slow_mode_wait_time(10)

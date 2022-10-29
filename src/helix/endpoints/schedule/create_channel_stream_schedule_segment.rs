@@ -5,15 +5,12 @@
 //!
 //! ## Request: [CreateChannelStreamScheduleSegmentRequest]
 //!
-//! To use this endpoint, construct a [`CreateChannelStreamScheduleSegmentRequest`] with the [`CreateChannelStreamScheduleSegmentRequest::builder()`] method.
+//! To use this endpoint, construct a [`CreateChannelStreamScheduleSegmentRequest`] with the [`CreateChannelStreamScheduleSegmentRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::create_channel_stream_schedule_segment;
 //! let request =
-//!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::builder(
-//!     )
-//!     .broadcaster_id("141981764")
-//!     .build();
+//!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::broadcaster_id("141981764");
 //! ```
 //!
 //! ## Body: [CreateChannelStreamScheduleSegmentBody]
@@ -23,15 +20,15 @@
 //! ```
 //! # use std::convert::TryFrom;
 //! # use twitch_api::helix::schedule::create_channel_stream_schedule_segment;
-//! let body =
-//!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!         .start_time(&twitch_api::types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap())
-//!         .timezone("America/New_York")
-//!         .is_recurring(false)
-//!         .duration("60")
-//!         .category_id(Some("509670".into()))
-//!         .title("TwitchDev Monthly Update // July 1, 2021")
-//!         .build();
+//! let mut body =
+//!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::new(
+//!         twitch_api::types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap(),
+//!         "America/New_York",
+//!         false,
+//!     );
+//! body.duration = Some("60");
+//! body.category_id = Some(twitch_types::CategoryIdRef::from_static("509670").as_cow());
+//! body.title = Some("TwitchDev Monthly Update // July 1, 2021".into());
 //! ```
 //!
 //! ## Response: [ScheduledBroadcasts]
@@ -49,18 +46,18 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::builder()
-//!     .broadcaster_id("141981764")
-//!     .build();
+//! let request =
+//!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentRequest::broadcaster_id("141981764");
 //! let timestamp = twitch_api::types::Timestamp::try_from("2021-07-01T18:00:00Z")?;
-//! let body = create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::builder()
-//!     .start_time(&timestamp)
-//!     .timezone("America/New_York")
-//!     .is_recurring(false)
-//!     .duration("60")
-//!     .category_id(Some("509670".into()))
-//!     .title("TwitchDev Monthly Update // July 1, 2021")
-//!     .build();
+//! let mut body =
+//!     create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentBody::new(
+//!         twitch_api::types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap(),
+//!         "America/New_York",
+//!         false,
+//!     );
+//! body.duration = Some("60");
+//! body.category_id = Some(twitch_types::CategoryIdRef::from_static("509670").as_cow());
+//! body.title = Some("TwitchDev Monthly Update // July 1, 2021".into());
 //! let response: create_channel_stream_schedule_segment::CreateChannelStreamScheduleSegmentResponse = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

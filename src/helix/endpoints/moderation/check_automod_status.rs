@@ -6,13 +6,11 @@
 //!
 //! ## Request: [CheckAutoModStatusRequest]
 //!
-//! To use this endpoint, construct a [`CheckAutoModStatusRequest`] with the [`CheckAutoModStatusRequest::builder()`] method.
+//! To use this endpoint, construct a [`CheckAutoModStatusRequest`] with the [`CheckAutoModStatusRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::check_automod_status;
-//! let request = check_automod_status::CheckAutoModStatusRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = check_automod_status::CheckAutoModStatusRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Body: [CheckAutoModStatusBody]
@@ -21,10 +19,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::check_automod_status;
-//! let body = check_automod_status::CheckAutoModStatusBody::builder()
-//!     .msg_id("test1")
-//!     .msg_text("automod please approve this!")
-//!     .build();
+//! let body =
+//!     check_automod_status::CheckAutoModStatusBody::new("test1", "automod please approve this!");
 //! ```
 //!
 //! ## Response: [CheckAutoModStatus]
@@ -41,14 +37,10 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = check_automod_status::CheckAutoModStatusRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
-//! let body = &[&check_automod_status::CheckAutoModStatusBody::builder()
-//!     .msg_id("test1")
-//!     .msg_text("automod please approve this!")
-//!     .build()];
-//! let response: Vec<check_automod_status::CheckAutoModStatus> = client.req_post(request, &body[..], &token).await?.data;
+//! let request = check_automod_status::CheckAutoModStatusRequest::broadcaster_id("1234");
+//! let body =
+//!     check_automod_status::CheckAutoModStatusBody::new("test1", "automod please approve this!");
+//! let response: Vec<check_automod_status::CheckAutoModStatus> = client.req_post(request, &[&body].as_slice(), &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```

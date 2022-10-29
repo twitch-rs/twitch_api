@@ -5,15 +5,11 @@
 //!
 //! ## Request: [RemoveBlockedTermRequest]
 //!
-//! To use this endpoint, construct a [`RemoveBlockedTermRequest`] with the [`RemoveBlockedTermRequest::builder()`] method.
+//! To use this endpoint, construct a [`RemoveBlockedTermRequest`] with the [`RemoveBlockedTermRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::remove_blocked_term;
-//! let request = remove_blocked_term::RemoveBlockedTermRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .id("DEADBEEF")
-//!     .build();
+//! let request = remove_blocked_term::RemoveBlockedTermRequest::new("1234", "5678", "DEADBEEF");
 //! ```
 //!
 //! ## Response: [RemoveBlockedTerm]
@@ -28,11 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = remove_blocked_term::RemoveBlockedTermRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .id("DEADBEEF")
-//!     .build();
+//! let request = remove_blocked_term::RemoveBlockedTermRequest::new("1234", "5678", "DEADBEEF");
 //! let response: remove_blocked_term::RemoveBlockedTerm = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }

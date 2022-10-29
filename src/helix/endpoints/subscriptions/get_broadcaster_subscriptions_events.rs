@@ -10,14 +10,12 @@
 //!
 //! ## Request: [GetBroadcasterSubscriptionsEventsRequest]
 //!
-//! To use this endpoint, construct a [`GetBroadcasterSubscriptionsEventsRequest`] with the [`GetBroadcasterSubscriptionsEventsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetBroadcasterSubscriptionsEventsRequest`] with the [`GetBroadcasterSubscriptionsEventsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::subscriptions::get_broadcaster_subscriptions_events;
 //! let request =
-//!     get_broadcaster_subscriptions_events::GetBroadcasterSubscriptionsEventsRequest::builder()
-//!         .broadcaster_id("1234")
-//!         .build();
+//!     get_broadcaster_subscriptions_events::GetBroadcasterSubscriptionsEventsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [BroadcasterSubscriptionEvent]
@@ -32,9 +30,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_broadcaster_subscriptions_events::GetBroadcasterSubscriptionsEventsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request =
+//!     get_broadcaster_subscriptions_events::GetBroadcasterSubscriptionsEventsRequest::broadcaster_id("1234");
 //! let response: Vec<get_broadcaster_subscriptions_events::BroadcasterSubscriptionEvent> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

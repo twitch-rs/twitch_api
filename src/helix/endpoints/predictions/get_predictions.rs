@@ -3,14 +3,12 @@
 //!
 //! ## Request: [GetPredictionsRequest]
 //!
-//! To use this endpoint, construct a [`GetPredictionsRequest`] with the [`GetPredictionsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetPredictionsRequest`] with the [`GetPredictionsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::predictions::get_predictions;
-//! let request = get_predictions::GetPredictionsRequest::builder()
-//!     .id(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()])
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_predictions::GetPredictionsRequest::broadcaster_id("1234")
+//!     .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()]);
 //! ```
 //!
 //! ## Response: [Prediction]
@@ -25,10 +23,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_predictions::GetPredictionsRequest::builder()
-//!     .id(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()])
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_predictions::GetPredictionsRequest::broadcaster_id("1234")
+//!     .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()]);
 //! let response: Vec<get_predictions::Prediction> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

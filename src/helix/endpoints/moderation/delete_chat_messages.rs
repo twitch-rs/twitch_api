@@ -5,15 +5,12 @@
 //!
 //! ## Request: [DeleteChatMessagesRequest]
 //!
-//! To use this endpoint, construct a [`DeleteChatMessagesRequest`] with the [`DeleteChatMessagesRequest::builder()`] method.
+//! To use this endpoint, construct a [`DeleteChatMessagesRequest`] with the [`DeleteChatMessagesRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::delete_chat_messages;
-//! let request = delete_chat_messages::DeleteChatMessagesRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .message_id(Some("abc-123-def".into()))
-//!     .build();
+//! let request = delete_chat_messages::DeleteChatMessagesRequest::new("1234", "5678")
+//!     .message_id("abc-123-def");
 //! ```
 //!
 //! ## Response: [DeleteChatMessagesResponse]
@@ -28,11 +25,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = delete_chat_messages::DeleteChatMessagesRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .message_id(Some("abc-123-def".into()))
-//!     .build();
+//! let request = delete_chat_messages::DeleteChatMessagesRequest::new("1234", "5678")
+//!     .message_id("abc-123-def");
 //! let response: delete_chat_messages::DeleteChatMessagesResponse = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }

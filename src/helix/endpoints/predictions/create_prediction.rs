@@ -20,15 +20,12 @@
 //!
 //! ```
 //! # use twitch_api::helix::predictions::create_prediction;
-//! let body = create_prediction::CreatePredictionBody::builder()
-//!     .broadcaster_id("141981764")
-//!     .title("Any leeks in the stream?")
-//!     .outcomes(create_prediction::NewPredictionOutcome::new_tuple(
-//!         "Yes, give it time.",
-//!         "Definitely not.",
-//!     ))
-//!     .prediction_window(120)
-//!     .build();
+//! let body = create_prediction::CreatePredictionBody::new(
+//!     "141981764",
+//!     "Any leeks in the stream?",
+//!     create_prediction::NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+//!     120,
+//! );
 //! ```
 //!
 //! ## Response: [CreatePredictionResponse]
@@ -45,14 +42,13 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = create_prediction::CreatePredictionRequest::builder()
-//!     .build();
-//! let body = create_prediction::CreatePredictionBody::builder()
-//!     .broadcaster_id("141981764")
-//!     .title("Any leeks in the stream?")
-//!     .outcomes(create_prediction::NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."))
-//!     .prediction_window(120)
-//!     .build();
+//! let request = create_prediction::CreatePredictionRequest::new();
+//! let body = create_prediction::CreatePredictionBody::new(
+//!     "141981764",
+//!     "Any leeks in the stream?",
+//!     create_prediction::NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+//!     120,
+//! );
 //! let response: create_prediction::CreatePredictionResponse = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

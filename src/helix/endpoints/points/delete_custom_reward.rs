@@ -5,14 +5,11 @@
 //!
 //! ## Request: [DeleteCustomRewardRequest]
 //!
-//! To use this endpoint, construct a [`DeleteCustomRewardRequest`] with the [`DeleteCustomRewardRequest::builder()`] method.
+//! To use this endpoint, construct a [`DeleteCustomRewardRequest`] with the [`DeleteCustomRewardRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::delete_custom_reward;
-//! let request = delete_custom_reward::DeleteCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("1234")
-//!     .build();
+//! let request = delete_custom_reward::DeleteCustomRewardRequest::new("274637212", "1234");
 //! ```
 //!
 //! ## Response: [DeleteCustomReward]
@@ -27,10 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = delete_custom_reward::DeleteCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("1234")
-//!     .build();
+//! let request = delete_custom_reward::DeleteCustomRewardRequest::new("274637212", "1234");
 //! let response: delete_custom_reward::DeleteCustomReward = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }

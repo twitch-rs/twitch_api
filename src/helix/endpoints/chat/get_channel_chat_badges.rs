@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetChannelChatBadgesRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelChatBadgesRequest`] with the [`GetChannelChatBadgesRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelChatBadgesRequest`] with the [`GetChannelChatBadgesRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_channel_chat_badges;
-//! let request = get_channel_chat_badges::GetChannelChatBadgesRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_channel_chat_badges::GetChannelChatBadgesRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [BadgeSet]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_chat_badges::GetChannelChatBadgesRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_channel_chat_badges::GetChannelChatBadgesRequest::broadcaster_id("1234");
 //! let response: Vec<helix::chat::BadgeSet> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

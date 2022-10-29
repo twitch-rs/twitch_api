@@ -19,11 +19,11 @@
 //!
 //! ```
 //! # use twitch_api::helix::polls::end_poll;
-//! let body = end_poll::EndPollBody::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("92af127c-7326-4483-a52b-b0da0be61c01")
-//!     .status(end_poll::PollStatus::Terminated)
-//!     .build();
+//! let body = end_poll::EndPollBody::new(
+//!     "274637212",
+//!     "92af127c-7326-4483-a52b-b0da0be61c01",
+//!     end_poll::PollStatus::Terminated,
+//! );
 //! ```
 //!
 //! ## Response: [EndPoll]
@@ -41,11 +41,11 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = end_poll::EndPollRequest::new();
-//! let body = end_poll::EndPollBody::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("92af127c-7326-4483-a52b-b0da0be61c01")
-//!     .status(end_poll::PollStatus::Terminated)
-//!     .build();
+//! let body = end_poll::EndPollBody::new(
+//!     "274637212",
+//!     "92af127c-7326-4483-a52b-b0da0be61c01",
+//!     end_poll::PollStatus::Terminated,
+//! );
 //! let response: end_poll::EndPoll = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

@@ -7,13 +7,11 @@
 //!
 //! ## Request: [GetCustomRewardRequest]
 //!
-//! To use this endpoint, construct a [`GetCustomRewardRequest`] with the [`GetCustomRewardRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetCustomRewardRequest`] with the [`GetCustomRewardRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::GetCustomRewardRequest;
-//! let request = GetCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .build();
+//! let request = GetCustomRewardRequest::broadcaster_id("274637212");
 //! ```
 //!
 //! ## Response: [CustomReward]
@@ -29,9 +27,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = GetCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .build();
+//! let request = GetCustomRewardRequest::broadcaster_id("274637212");
 //! let response: Vec<CustomReward> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

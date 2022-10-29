@@ -5,14 +5,11 @@
 //!
 //! ## Request: [RemoveChannelVipRequest]
 //!
-//! To use this endpoint, construct a [`RemoveChannelVipRequest`] with the [`RemoveChannelVipRequest::builder()`] method.
+//! To use this endpoint, construct a [`RemoveChannelVipRequest`] with the [`RemoveChannelVipRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::remove_channel_vip;
-//! let request = remove_channel_vip::RemoveChannelVipRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .user_id("1337")
-//!     .build();
+//! let request = remove_channel_vip::RemoveChannelVipRequest::new("1234", "1337");
 //! ```
 //!
 //! ## Response: [RemoveChannelVipResponse]
@@ -27,10 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = remove_channel_vip::RemoveChannelVipRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .user_id("1337")
-//!     .build();
+//! let request = remove_channel_vip::RemoveChannelVipRequest::new("1234", "1337");
 //! let response: remove_channel_vip::RemoveChannelVipResponse = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }

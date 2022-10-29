@@ -10,9 +10,11 @@
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::update_channel_stream_schedule;
-//! let request = update_channel_stream_schedule::UpdateChannelStreamScheduleRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .build();
+//! let mut request =
+//!     update_channel_stream_schedule::UpdateChannelStreamScheduleRequest::broadcaster_id(
+//!         "274637212",
+//!     );
+//! request.is_vacation_enabled = Some(true);
 //! ```
 //!
 //! ## Response: [UpdateChannelStreamSchedule]
@@ -29,10 +31,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = update_channel_stream_schedule::UpdateChannelStreamScheduleRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .is_vacation_enabled(false)
-//!     .build();
+//! let mut request = update_channel_stream_schedule::UpdateChannelStreamScheduleRequest::broadcaster_id("274637212");
+//! request.is_vacation_enabled = Some(true);
 //! let body = helix::EmptyBody;
 //! let response: update_channel_stream_schedule::UpdateChannelStreamSchedule = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
