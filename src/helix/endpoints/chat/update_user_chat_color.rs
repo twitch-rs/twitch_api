@@ -10,10 +10,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::update_user_chat_color;
-//! let request = update_user_chat_color::UpdateUserChatColorRequest::builder()
-//!     .user_id("123")
-//!     .color(twitch_types::NamedUserColor::Blue)
-//!     .build();
+//! let request = update_user_chat_color::UpdateUserChatColorRequest::new(
+//!     "123",
+//!     twitch_types::NamedUserColor::Blue,
+//! );
 //! ```
 //!
 //! ## Response: [UpdateUserChatColorResponse]
@@ -28,11 +28,10 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = update_user_chat_color::UpdateUserChatColorRequest::builder()
-//!     .user_id("123")
-//!     .color(twitch_types::NamedUserColor::Blue)
-//!     .build();
-//!
+//! let request = update_user_chat_color::UpdateUserChatColorRequest::new(
+//!     "123",
+//!     twitch_types::NamedUserColor::Blue,
+//! );
 //! let response: helix::chat::UpdateUserChatColorResponse = client.req_put(request, helix::EmptyBody, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -49,21 +48,25 @@ use helix::RequestPut;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UpdateUserChatColorRequest {
+pub struct UpdateUserChatColorRequest<'a> {
     /// The ID of the user whose chat color you want to update.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub user_id: types::UserId,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, types::UserIdRef>,
     /// The color to use for the user’s name in chat.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow = "'static")]
-    pub color: types::NamedUserColor<'static>,
+    #[serde(borrow)]
+    pub color: types::NamedUserColor<'a>,
 }
 
-impl UpdateUserChatColorRequest {
+impl<'a> UpdateUserChatColorRequest<'a> {
     /// Update the users chat color
-    pub fn new(user_id: impl Into<types::UserId>, color: types::NamedUserColor<'static>) -> Self {
+    pub fn new(
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        color: types::NamedUserColor<'static>,
+    ) -> Self {
         Self {
-            user_id: user_id.into(),
+            user_id: user_id.to_cow(),
             color,
         }
     }
@@ -80,7 +83,7 @@ pub enum UpdateUserChatColorResponse {
     Success,
 }
 
-impl Request for UpdateUserChatColorRequest {
+impl Request for UpdateUserChatColorRequest<'_> {
     type Response = UpdateUserChatColorResponse;
 
     const PATH: &'static str = "chat/color";
@@ -88,7 +91,7 @@ impl Request for UpdateUserChatColorRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageChatColor];
 }
 
-impl RequestPut for UpdateUserChatColorRequest {
+impl RequestPut for UpdateUserChatColorRequest<'_> {
     type Body = helix::EmptyBody;
 
     fn parse_inner_response<'d>(

@@ -5,7 +5,7 @@
 //!
 //! ## Request: [ManageHeldAutoModMessagesRequest]
 //!
-//! To use this endpoint, construct a [`ManageHeldAutoModMessagesRequest`] with the [`ManageHeldAutoModMessagesRequest::builder()`] method.
+//! To use this endpoint, construct a [`ManageHeldAutoModMessagesRequest`] with the [`ManageHeldAutoModMessagesRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::manage_held_automod_messages;
@@ -18,11 +18,11 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::manage_held_automod_messages;
-//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::builder()
-//!     .action(true)
-//!     .user_id("9327994")
-//!     .msg_id("836013710")
-//!     .build();
+//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::new(
+//!     "9327994",
+//!     "836013710",
+//!     true,
+//! );
 //! ```
 //!
 //! ## Response: [ManageHeldAutoModMessages]
@@ -40,11 +40,11 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = manage_held_automod_messages::ManageHeldAutoModMessagesRequest::new();
-//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::builder()
-//!     .action(true)
-//!     .user_id("9327994")
-//!     .msg_id("836013710")
-//!     .build();
+//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::new(
+//!     "9327994",
+//!     "836013710",
+//!     true,
+//! );
 //! let response: manage_held_automod_messages::ManageHeldAutoModMessages = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -53,23 +53,24 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`ManageHeldAutoModMessagesRequest::parse_response(None, &request.get_uri(), response)`](ManageHeldAutoModMessagesRequest::parse_response)
 
+use std::marker::PhantomData;
+
 use super::*;
 use helix::RequestPost;
 /// Query Parameters for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct ManageHeldAutoModMessagesRequest {}
-
-impl ManageHeldAutoModMessagesRequest {
-    /// Create a new [`ManageHeldAutoModMessagesRequest`]
-    pub fn new() -> Self { Self {} }
+pub struct ManageHeldAutoModMessagesRequest<'a> {
+    #[serde(skip)]
+    _marker: PhantomData<&'a ()>,
 }
 
-impl Default for ManageHeldAutoModMessagesRequest {
-    fn default() -> Self { Self::new() }
+impl ManageHeldAutoModMessagesRequest<'_> {
+    /// Create a new [`ManageHeldAutoModMessagesRequest`]
+    pub fn new() -> Self { Self::default() }
 }
 
 /// Body Parameters for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
@@ -78,19 +79,21 @@ impl Default for ManageHeldAutoModMessagesRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct ManageHeldAutoModMessagesBody {
+pub struct ManageHeldAutoModMessagesBody<'a> {
     /// The moderator who is approving or rejecting the held message. Must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub user_id: types::UserId,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, types::UserIdRef>,
     /// ID of the message to be allowed or denied. These message IDs are retrieved from IRC or PubSub. Only one message ID can be provided.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub msg_id: types::MsgId,
+    #[serde(borrow)]
+    pub msg_id: Cow<'a, types::MsgIdRef>,
     /// The action to take for the message. Must be "ALLOW" or "DENY".
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub action: AutoModAction,
 }
 
-impl ManageHeldAutoModMessagesBody {
+impl<'a> ManageHeldAutoModMessagesBody<'a> {
     /// Create a new [`ManageHeldAutoModMessagesBody`]
     ///
     /// # Examples
@@ -101,20 +104,20 @@ impl ManageHeldAutoModMessagesBody {
     /// let body = ManageHeldAutoModMessagesBody::new("1234", "5678", true);
     /// ```
     pub fn new(
-        user_id: impl Into<types::UserId>,
-        msg_id: impl Into<types::MsgId>,
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        msg_id: impl types::IntoCow<'a, types::MsgIdRef> + 'a,
         action: impl Into<AutoModAction>,
     ) -> Self {
         Self {
-            user_id: user_id.into(),
-            msg_id: msg_id.into(),
+            user_id: user_id.to_cow(),
+            msg_id: msg_id.to_cow(),
             action: action.into(),
         }
     }
 }
 
 /// Action to take for a message.
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Copy, Clone, Debug)]
 #[serde(rename_all = "UPPERCASE")]
 #[non_exhaustive]
 pub enum AutoModAction {
@@ -133,7 +136,7 @@ impl From<bool> for AutoModAction {
     }
 }
 
-impl helix::private::SealedSerialize for ManageHeldAutoModMessagesBody {}
+impl helix::private::SealedSerialize for ManageHeldAutoModMessagesBody<'_> {}
 
 /// Return Values for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
@@ -146,7 +149,7 @@ pub enum ManageHeldAutoModMessages {
     Success,
 }
 
-impl Request for ManageHeldAutoModMessagesRequest {
+impl Request for ManageHeldAutoModMessagesRequest<'_> {
     type Response = ManageHeldAutoModMessages;
 
     const PATH: &'static str = "moderation/automod/message";
@@ -154,8 +157,8 @@ impl Request for ManageHeldAutoModMessagesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
 }
 
-impl RequestPost for ManageHeldAutoModMessagesRequest {
-    type Body = ManageHeldAutoModMessagesBody;
+impl<'a> RequestPost for ManageHeldAutoModMessagesRequest<'a> {
+    type Body = ManageHeldAutoModMessagesBody<'a>;
 
     fn parse_inner_response<'d>(
         request: Option<Self>,

@@ -9,9 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::get_moderators;
-//! let request = get_moderators::GetModeratorsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_moderators::GetModeratorsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [Moderator]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_moderators::GetModeratorsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_moderators::GetModeratorsRequest::broadcaster_id("1234");
 //! let response: Vec<get_moderators::Moderator> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -47,44 +43,37 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetModeratorsRequest {
+pub struct GetModeratorsRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Filters the results and only returns a status object for users who are moderators in this channel and have a matching user_id.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
-    pub user_id: Vec<types::UserId>,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
     pub first: Option<usize>,
 }
 
-impl GetModeratorsRequest {
+impl<'a> GetModeratorsRequest<'a> {
     /// Get moderators in a broadcasters channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            user_id: Default::default(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            user_id: Cow::Borrowed(&[]),
             after: Default::default(),
             first: Default::default(),
         }
     }
 
-    /// Check if supplied user is a moderator.
-    pub fn user_id(mut self, user_id: impl Into<types::UserId>) -> Self {
-        self.user_id = vec![user_id.into()];
-        self
-    }
-
     /// Filter the results for specific users.
-    pub fn user_ids(
-        mut self,
-        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
-    ) -> Self {
-        self.user_id = user_ids.into_iter().map(Into::into).collect();
+    pub fn user_ids(mut self, user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+        self.user_id = user_ids.into();
         self
     }
 
@@ -110,7 +99,7 @@ pub struct Moderator {
     pub user_login: types::UserName,
 }
 
-impl Request for GetModeratorsRequest {
+impl Request for GetModeratorsRequest<'_> {
     type Response = Vec<Moderator>;
 
     const PATH: &'static str = "moderation/moderators";
@@ -118,10 +107,12 @@ impl Request for GetModeratorsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
 }
 
-impl RequestGet for GetModeratorsRequest {}
+impl RequestGet for GetModeratorsRequest<'_> {}
 
-impl helix::Paginated for GetModeratorsRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetModeratorsRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

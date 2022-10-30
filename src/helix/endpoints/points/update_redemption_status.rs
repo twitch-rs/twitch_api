@@ -7,15 +7,15 @@
 //!
 //! ## Request: [UpdateRedemptionStatusRequest]
 //!
-//! To use this endpoint, construct a [`UpdateRedemptionStatusRequest`] with the [`UpdateRedemptionStatusRequest::builder()`] method.
+//! To use this endpoint, construct a [`UpdateRedemptionStatusRequest`] with the [`UpdateRedemptionStatusRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::UpdateRedemptionStatusRequest;
-//! let request = UpdateRedemptionStatusRequest::builder()
-//!     .broadcaster_id("274637212".to_string())
-//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-//!     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63".to_string())
-//!     .build();
+//! let request = UpdateRedemptionStatusRequest::new(
+//!     "274637212",
+//!     "92af127c-7326-4483-a52b-b0da0be61c01",
+//!     "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
+//! );
 //! ```
 //!
 //! ## Body: [UpdateRedemptionStatusBody]
@@ -24,9 +24,7 @@
 //!
 //! ```
 //! use twitch_api::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};
-//! let body = UpdateRedemptionStatusBody::builder()
-//!     .status(CustomRewardRedemptionStatus::Canceled)
-//!     .build();
+//! let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
 //! ```
 //!
 //! ## Response: [UpdateRedemptionStatusInformation]
@@ -46,14 +44,12 @@
 //!     helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = UpdateRedemptionStatusRequest::builder()
-//!     .broadcaster_id("274637212".to_string())
-//!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01".to_string())
-//!     .id("17fa2df1-ad76-4804-bfa5-a40ef63efe63".to_string())
-//!     .build();
-//! let body = UpdateRedemptionStatusBody::builder()
-//!     .status(CustomRewardRedemptionStatus::Canceled)
-//!     .build();
+//! let request = UpdateRedemptionStatusRequest::new(
+//!     "274637212",
+//!     "92af127c-7326-4483-a52b-b0da0be61c01",
+//!     "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
+//! );
+//! let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
 //! let response: UpdateRedemptionStatusInformation =
 //!     client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
@@ -75,31 +71,34 @@ use helix::RequestPatch;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UpdateRedemptionStatusRequest {
+pub struct UpdateRedemptionStatusRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 
     /// ID of the Custom Reward the redemptions to be updated are for.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub reward_id: types::RewardId,
+    #[serde(borrow)]
+    pub reward_id: Cow<'a, types::RewardIdRef>,
 
     /// ID of the Custom Reward Redemption to update, must match a Custom Reward Redemption on broadcaster_id’s channel
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub id: types::RedemptionId,
+    #[serde(borrow)]
+    pub id: Cow<'a, types::RedemptionIdRef>,
 }
 
-impl UpdateRedemptionStatusRequest {
+impl<'a> UpdateRedemptionStatusRequest<'a> {
     /// Update the status of Custom Reward Redemption object on a channel that are in the UNFULFILLED status.
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        reward_id: impl Into<types::RewardId>,
-        id: impl Into<types::RedemptionId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        reward_id: impl types::IntoCow<'a, types::RewardIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::RedemptionIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            reward_id: reward_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            reward_id: reward_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }
@@ -132,7 +131,7 @@ pub enum UpdateRedemptionStatusInformation {
     Success(CustomRewardRedemption),
 }
 
-impl Request for UpdateRedemptionStatusRequest {
+impl Request for UpdateRedemptionStatusRequest<'_> {
     type Response = UpdateRedemptionStatusInformation;
 
     const PATH: &'static str = "channel_points/custom_rewards/redemptions";
@@ -141,7 +140,7 @@ impl Request for UpdateRedemptionStatusRequest {
         &[twitch_oauth2::scopes::Scope::ChannelManageBroadcast];
 }
 
-impl RequestPatch for UpdateRedemptionStatusRequest {
+impl RequestPatch for UpdateRedemptionStatusRequest<'_> {
     type Body = UpdateRedemptionStatusBody;
 
     fn parse_inner_response(

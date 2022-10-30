@@ -43,17 +43,18 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetChannelInformationRequest {
+pub struct GetChannelInformationRequest<'a> {
     /// ID of the channel
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
-impl GetChannelInformationRequest {
+impl<'a> GetChannelInformationRequest<'a> {
     /// Get channel information for a specific broadcaster.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -87,7 +88,7 @@ pub struct ChannelInformation {
     pub delay: i64,
 }
 
-impl Request for GetChannelInformationRequest {
+impl Request for GetChannelInformationRequest<'_> {
     type Response = Option<ChannelInformation>;
 
     const PATH: &'static str = "channels";
@@ -95,7 +96,7 @@ impl Request for GetChannelInformationRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChannelInformationRequest {
+impl RequestGet for GetChannelInformationRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
@@ -128,7 +129,7 @@ impl RequestGet for GetChannelInformationRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelInformationRequest::broadcaster_id("44445592".to_string());
+    let req = GetChannelInformationRequest::broadcaster_id("44445592");
 
     // From twitch docs
     let data = br#"

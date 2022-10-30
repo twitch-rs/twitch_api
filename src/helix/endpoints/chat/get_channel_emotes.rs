@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetChannelEmotesRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelEmotesRequest`] with the [`GetChannelEmotesRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelEmotesRequest`] with the [`GetChannelEmotesRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_channel_emotes;
-//! let request = get_channel_emotes::GetChannelEmotesRequest::builder()
-//!     .broadcaster_id("1234".to_string())
-//!     .build();
+//! let request = get_channel_emotes::GetChannelEmotesRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [ChannelEmote]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_emotes::GetChannelEmotesRequest::builder()
-//!     .broadcaster_id("1234".to_string())
-//!     .build();
+//! let request = get_channel_emotes::GetChannelEmotesRequest::broadcaster_id("1234");
 //! let response: Vec<helix::chat::ChannelEmote> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -46,17 +42,18 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetChannelEmotesRequest {
+pub struct GetChannelEmotesRequest<'a> {
     /// The broadcaster whose emotes are being requested.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
-impl GetChannelEmotesRequest {
+impl<'a> GetChannelEmotesRequest<'a> {
     /// Get emotes in a specific broadcasters channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -66,7 +63,7 @@ impl GetChannelEmotesRequest {
 /// [`get-channel-emotes`](https://dev.twitch.tv/docs/api/reference#get-channel-emotes)
 pub type GetChannelEmotesResponse = ChannelEmote;
 
-impl Request for GetChannelEmotesRequest {
+impl Request for GetChannelEmotesRequest<'_> {
     type Response = Vec<GetChannelEmotesResponse>;
 
     const PATH: &'static str = "chat/emotes";
@@ -74,7 +71,7 @@ impl Request for GetChannelEmotesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChannelEmotesRequest {}
+impl RequestGet for GetChannelEmotesRequest<'_> {}
 
 #[cfg(test)]
 #[test]

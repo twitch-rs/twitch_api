@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetFollowedStreamsRequest]
 //!
-//! To use this endpoint, construct a [`GetFollowedStreamsRequest`] with the [`GetFollowedStreamsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetFollowedStreamsRequest`] with the [`GetFollowedStreamsRequest::user_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::streams::get_followed_streams;
-//! let request = get_followed_streams::GetFollowedStreamsRequest::builder()
-//!     .user_id("1234")
-//!     .build();
+//! let request = get_followed_streams::GetFollowedStreamsRequest::user_id("1234");
 //! ```
 //!
 //! ## Response: [Stream]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_followed_streams::GetFollowedStreamsRequest::builder()
-//!     .user_id("1234")
-//!     .build();
+//! let request = get_followed_streams::GetFollowedStreamsRequest::user_id("1234");
 //! let response: Vec<get_followed_streams::GetFollowedStreamsResponse> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -46,30 +42,32 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetFollowedStreamsRequest {
+pub struct GetFollowedStreamsRequest<'a> {
     /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub user_id: types::UserId,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, types::UserIdRef>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub before: Option<helix::Cursor>,
+    #[serde(borrow)]
+    pub before: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
 }
 
-impl GetFollowedStreamsRequest {
+impl<'a> GetFollowedStreamsRequest<'a> {
     /// Get a users followed streams.
     ///
     /// Requires token with scope [`user:read:follows`](twitch_oauth2::Scope::UserReadFollows).
     ///
     /// See also [`HelixClient::get_followed_streams`](crate::helix::HelixClient::get_followed_streams).
-    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
+    pub fn user_id(user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            user_id: user_id.into(),
+            user_id: user_id.to_cow(),
             after: Default::default(),
             before: Default::default(),
             first: Default::default(),
@@ -88,7 +86,7 @@ impl GetFollowedStreamsRequest {
 /// [`get-followed-streams`](https://dev.twitch.tv/docs/api/reference#get-followed-streams)
 pub type GetFollowedStreamsResponse = Stream;
 
-impl Request for GetFollowedStreamsRequest {
+impl Request for GetFollowedStreamsRequest<'_> {
     type Response = Vec<GetFollowedStreamsResponse>;
 
     const PATH: &'static str = "streams/followed";
@@ -96,10 +94,12 @@ impl Request for GetFollowedStreamsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadFollows];
 }
 
-impl RequestGet for GetFollowedStreamsRequest {}
+impl RequestGet for GetFollowedStreamsRequest<'_> {}
 
-impl helix::Paginated for GetFollowedStreamsRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetFollowedStreamsRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

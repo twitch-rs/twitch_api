@@ -9,18 +9,21 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct DeleteEventSubSubscriptionRequest {
+pub struct DeleteEventSubSubscriptionRequest<'a> {
     /// The subscription ID for the subscription you want to delete.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub id: types::EventSubId,
+    #[serde(borrow)]
+    pub id: Cow<'a, types::EventSubIdRef>,
 }
 
-impl DeleteEventSubSubscriptionRequest {
+impl<'a> DeleteEventSubSubscriptionRequest<'a> {
     /// Delete this eventsub subscription.
-    pub fn id(id: impl Into<types::EventSubId>) -> Self { Self { id: id.into() } }
+    pub fn id(id: impl types::IntoCow<'a, types::EventSubIdRef> + 'a) -> Self {
+        Self { id: id.to_cow() }
+    }
 }
 
-impl Request for DeleteEventSubSubscriptionRequest {
+impl Request for DeleteEventSubSubscriptionRequest<'_> {
     type Response = DeleteEventSubSubscription;
 
     const PATH: &'static str = "eventsub/subscriptions";
@@ -38,7 +41,7 @@ pub enum DeleteEventSubSubscription {
     Success,
 }
 
-impl RequestDelete for DeleteEventSubSubscriptionRequest {
+impl RequestDelete for DeleteEventSubSubscriptionRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

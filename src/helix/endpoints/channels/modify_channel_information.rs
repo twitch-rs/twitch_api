@@ -5,13 +5,12 @@
 //!
 //! ## Request: [ModifyChannelInformationRequest]
 //!
-//! To use this endpoint, construct a [`ModifyChannelInformationRequest`] with the [`ModifyChannelInformationRequest::builder()`] method.
+//! To use this endpoint, construct a [`ModifyChannelInformationRequest`] with the [`ModifyChannelInformationRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::modify_channel_information;
-//! let request = modify_channel_information::ModifyChannelInformationRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request =
+//!     modify_channel_information::ModifyChannelInformationRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Body: [ModifyChannelInformationBody]
@@ -20,9 +19,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::channels::modify_channel_information;
-//! let body = modify_channel_information::ModifyChannelInformationBody::builder()
-//!     .title("Hello World!".to_string())
-//!     .build();
+//! let mut body = modify_channel_information::ModifyChannelInformationBody::new();
+//! body.title("Hello World!");
 //! ```
 //!
 //! ## Response: [ModifyChannelInformation]
@@ -39,12 +37,9 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = modify_channel_information::ModifyChannelInformationRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
-//! let body = modify_channel_information::ModifyChannelInformationBody::builder()
-//!     .title("Hello World!".to_string())
-//!     .build();
+//! let request = modify_channel_information::ModifyChannelInformationRequest::broadcaster_id("1234");
+//! let mut body = modify_channel_information::ModifyChannelInformationBody::new();
+//! body.title("Hello World!");
 //! let response: modify_channel_information::ModifyChannelInformation = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -61,17 +56,18 @@ use helix::RequestPatch;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct ModifyChannelInformationRequest {
+pub struct ModifyChannelInformationRequest<'a> {
     /// ID of the channel
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
-impl ModifyChannelInformationRequest {
+impl<'a> ModifyChannelInformationRequest<'a> {
     /// Modify specified broadcasters channel
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         ModifyChannelInformationRequest {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -83,22 +79,22 @@ impl ModifyChannelInformationRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct ModifyChannelInformationBody {
+pub struct ModifyChannelInformationBody<'a> {
     /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub game_id: Option<types::CategoryId>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub game_id: Option<Cow<'a, types::CategoryIdRef>>,
     /// Language of the channel
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub broadcaster_language: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub broadcaster_language: Option<Cow<'a, str>>,
     /// Title of the stream. Value must not be an empty string.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub title: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub title: Option<Cow<'a, str>>,
 }
 
-impl ModifyChannelInformationBody {
+impl<'a> ModifyChannelInformationBody<'a> {
     /// Data to set on the stream.
     ///
     ///  # Examples
@@ -111,25 +107,31 @@ impl ModifyChannelInformationBody {
     pub fn new() -> Self { Default::default() }
 
     /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
-    pub fn game_id(&mut self, game_id: impl Into<types::CategoryId>) -> &mut Self {
-        self.game_id = Some(game_id.into());
+    pub fn game_id(
+        &mut self,
+        game_id: impl types::IntoCow<'a, types::CategoryIdRef> + 'a,
+    ) -> &mut Self {
+        self.game_id = Some(game_id.to_cow());
         self
     }
 
     /// Language of the channel
-    pub fn broadcaster_language(&mut self, broadcaster_language: impl Into<String>) -> &mut Self {
+    pub fn broadcaster_language(
+        &mut self,
+        broadcaster_language: impl Into<Cow<'a, str>>,
+    ) -> &mut Self {
         self.broadcaster_language = Some(broadcaster_language.into());
         self
     }
 
     /// Title of the stream. Value must not be an empty string.
-    pub fn title(&mut self, title: impl Into<String>) -> &mut ModifyChannelInformationBody {
+    pub fn title(&mut self, title: impl Into<Cow<'a, str>>) -> &mut Self {
         self.title = Some(title.into());
         self
     }
 }
 
-impl helix::private::SealedSerialize for ModifyChannelInformationBody {}
+impl helix::private::SealedSerialize for ModifyChannelInformationBody<'_> {}
 
 /// Return Values for [Modify Channel Information](super::modify_channel_information)
 ///
@@ -141,7 +143,7 @@ pub enum ModifyChannelInformation {
     Success,
 }
 
-impl Request for ModifyChannelInformationRequest {
+impl Request for ModifyChannelInformationRequest<'_> {
     type Response = ModifyChannelInformation;
 
     const PATH: &'static str = "channels";
@@ -149,8 +151,8 @@ impl Request for ModifyChannelInformationRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserEditBroadcast];
 }
 
-impl RequestPatch for ModifyChannelInformationRequest {
-    type Body = ModifyChannelInformationBody;
+impl<'a> RequestPatch for ModifyChannelInformationRequest<'a> {
+    type Body = ModifyChannelInformationBody<'a>;
 
     fn parse_inner_response(
         request: Option<Self>,
@@ -189,10 +191,8 @@ fn test_request() {
     use helix::*;
     let req = ModifyChannelInformationRequest::broadcaster_id("0");
 
-    let body = ModifyChannelInformationBody {
-        title: Some("Hello World!".to_string()),
-        ..Default::default()
-    };
+    let mut body = ModifyChannelInformationBody::new();
+    body.title("Hello World!");
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

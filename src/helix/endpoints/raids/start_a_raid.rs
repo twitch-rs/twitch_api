@@ -43,24 +43,26 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct StartARaidRequest {
+pub struct StartARaidRequest<'a> {
     /// The ID of the broadcaster that’s sending the raiding party.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    from_broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    from_broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the broadcaster to raid.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    to_broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    to_broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
-impl StartARaidRequest {
+impl<'a> StartARaidRequest<'a> {
     /// Create a new [`StartARaidRequest`]
     pub fn new(
-        from_broadcaster_id: impl Into<types::UserId>,
-        to_broadcaster_id: impl Into<types::UserId>,
+        from_broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        to_broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            from_broadcaster_id: from_broadcaster_id.into(),
-            to_broadcaster_id: to_broadcaster_id.into(),
+            from_broadcaster_id: from_broadcaster_id.to_cow(),
+            to_broadcaster_id: to_broadcaster_id.to_cow(),
         }
     }
 }
@@ -77,7 +79,7 @@ pub struct StartARaidResponse {
     /// A Boolean value that indicates whether the channel being raided contains mature content.
     is_mature: bool,
 }
-impl Request for StartARaidRequest {
+impl Request for StartARaidRequest<'_> {
     type Response = StartARaidResponse;
 
     const PATH: &'static str = "raids";
@@ -85,7 +87,7 @@ impl Request for StartARaidRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageRaids];
 }
 
-impl RequestPost for StartARaidRequest {
+impl RequestPost for StartARaidRequest<'_> {
     type Body = helix::EmptyBody;
 
     fn parse_inner_response(

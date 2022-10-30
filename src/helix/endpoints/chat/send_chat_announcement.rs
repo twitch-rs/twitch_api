@@ -5,14 +5,11 @@
 //!
 //! ## Request: [SendChatAnnouncementRequest]
 //!
-//! To use this endpoint, construct a [`SendChatAnnouncementRequest`] with the [`SendChatAnnouncementRequest::builder()`] method.
+//! To use this endpoint, construct a [`SendChatAnnouncementRequest`] with the [`SendChatAnnouncementRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::send_chat_announcement;
-//! let request = send_chat_announcement::SendChatAnnouncementRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = send_chat_announcement::SendChatAnnouncementRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Body: [SendChatAnnouncementBody]
@@ -22,8 +19,7 @@
 //! ```
 //! # use twitch_api::helix::chat::send_chat_announcement;
 //! let body =
-//!     send_chat_announcement::SendChatAnnouncementBody::new("Hello chat!".to_owned(), "purple")
-//!         .unwrap();
+//!     send_chat_announcement::SendChatAnnouncementBody::new("Hello chat!", "purple").unwrap();
 //! ```
 //!
 //! ## Response: [SendChatAnnouncementResponse]
@@ -39,12 +35,9 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = send_chat_announcement::SendChatAnnouncementRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = send_chat_announcement::SendChatAnnouncementRequest::new("1234", "5678");
 //! let body = send_chat_announcement::SendChatAnnouncementBody::new(
-//!     "Hello chat!".to_owned(),
+//!     "Hello chat!",
 //!     "purple",
 //! ).unwrap();
 //! let response: helix::chat::SendChatAnnouncementResponse = client.req_post(request, body, &token).await?.data;
@@ -63,26 +56,28 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct SendChatAnnouncementRequest {
+pub struct SendChatAnnouncementRequest<'a> {
     /// The ID of the broadcaster that owns the chat room to send the announcement to.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user who has permission to moderate the broadcaster’s chat room.
     ///
     /// This ID must match the user ID in the OAuth token, which can be a moderator or the broadcaster.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
-impl SendChatAnnouncementRequest {
+impl<'a> SendChatAnnouncementRequest<'a> {
     /// Send announcement in channel as this moderator
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
         }
     }
 }
@@ -93,9 +88,10 @@ impl SendChatAnnouncementRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct SendChatAnnouncementBody {
+pub struct SendChatAnnouncementBody<'a> {
     /// The announcement to make in the broadcaster’s chat room. Announcements are limited to a maximum of 500 characters; announcements longer than 500 characters are truncated.
-    pub message: String,
+    #[serde(borrow)]
+    pub message: Cow<'a, str>,
     // FIXME: Enumify?
     /// The color used to highlight the announcement. Possible case-sensitive values are:
     ///
@@ -110,26 +106,26 @@ pub struct SendChatAnnouncementBody {
     pub color: AnnouncementColor,
 }
 
-impl SendChatAnnouncementBody {
+impl<'a> SendChatAnnouncementBody<'a> {
     /// Create a new announcement with specified color
     pub fn new<E>(
-        message: String,
+        message: impl Into<Cow<'a, str>>,
         color: impl std::convert::TryInto<AnnouncementColor, Error = E>,
     ) -> Result<Self, E> {
         Ok(Self {
-            message,
+            message: message.into(),
             color: color.try_into()?,
         })
     }
 }
 
-impl helix::private::SealedSerialize for SendChatAnnouncementBody {}
+impl helix::private::SealedSerialize for SendChatAnnouncementBody<'_> {}
 
-impl helix::HelixRequestBody for Vec<SendChatAnnouncementBody> {
+impl<'a> helix::HelixRequestBody for [SendChatAnnouncementBody<'a>] {
     fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
-            data: &'a Vec<SendChatAnnouncementBody>,
+            data: &'a [SendChatAnnouncementBody<'a>],
         }
 
         serde_json::to_vec(&InnerBody { data: self })
@@ -149,7 +145,7 @@ pub enum SendChatAnnouncementResponse {
     Success,
 }
 
-impl Request for SendChatAnnouncementRequest {
+impl Request for SendChatAnnouncementRequest<'_> {
     // FIXME: this is a single entry
     type Response = SendChatAnnouncementResponse;
 
@@ -159,8 +155,8 @@ impl Request for SendChatAnnouncementRequest {
         &[twitch_oauth2::Scope::ModeratorManageAnnouncements];
 }
 
-impl RequestPost for SendChatAnnouncementRequest {
-    type Body = SendChatAnnouncementBody;
+impl<'a> RequestPost for SendChatAnnouncementRequest<'a> {
+    type Body = SendChatAnnouncementBody<'a>;
 
     fn parse_inner_response<'d>(
         request: Option<Self>,
@@ -195,7 +191,7 @@ fn test_request() {
     use helix::*;
     let req = SendChatAnnouncementRequest::new("1234", "5678");
 
-    let body = SendChatAnnouncementBody::new("hello chat!".to_owned(), "purple").unwrap();
+    let body = SendChatAnnouncementBody::new("hello chat!", "purple").unwrap();
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

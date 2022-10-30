@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetChannelChatBadgesRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelChatBadgesRequest`] with the [`GetChannelChatBadgesRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelChatBadgesRequest`] with the [`GetChannelChatBadgesRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_channel_chat_badges;
-//! let request = get_channel_chat_badges::GetChannelChatBadgesRequest::builder()
-//!     .broadcaster_id("1234".to_string())
-//!     .build();
+//! let request = get_channel_chat_badges::GetChannelChatBadgesRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [BadgeSet]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_chat_badges::GetChannelChatBadgesRequest::builder()
-//!     .broadcaster_id("1234".to_string())
-//!     .build();
+//! let request = get_channel_chat_badges::GetChannelChatBadgesRequest::broadcaster_id("1234");
 //! let response: Vec<helix::chat::BadgeSet> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -46,17 +42,18 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetChannelChatBadgesRequest {
+pub struct GetChannelChatBadgesRequest<'a> {
     /// The broadcaster whose chat badges are being requested. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
-impl GetChannelChatBadgesRequest {
+impl<'a> GetChannelChatBadgesRequest<'a> {
     /// Get chat badges for the specified broadcaster.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -66,7 +63,7 @@ impl GetChannelChatBadgesRequest {
 /// [`get-channel-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges)
 pub type GetChannelChatBadgesResponse = BadgeSet;
 
-impl Request for GetChannelChatBadgesRequest {
+impl Request for GetChannelChatBadgesRequest<'_> {
     type Response = Vec<GetChannelChatBadgesResponse>;
 
     const PATH: &'static str = "chat/badges";
@@ -74,7 +71,7 @@ impl Request for GetChannelChatBadgesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChannelChatBadgesRequest {}
+impl RequestGet for GetChannelChatBadgesRequest<'_> {}
 
 #[cfg(test)]
 #[test]

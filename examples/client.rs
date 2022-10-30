@@ -1,4 +1,4 @@
-use twitch_api::{helix::streams::GetStreamsRequest, TwitchClient};
+use twitch_api::{helix::streams::GetStreamsRequest, types, TwitchClient};
 use twitch_oauth2::{AccessToken, UserToken};
 fn main() {
     use std::error::Error;
@@ -36,9 +36,20 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     )
     .await?;
 
-    let req = GetStreamsRequest::user_login(args.next().expect("please provide an username"));
     foo_client.client.helix.clone_client();
-    let response = foo_client.client.helix.req_get(req, &token).await?;
-    println!("{:?}", response);
+    let response = foo_client
+        .client
+        .helix
+        .req_get(
+            GetStreamsRequest::user_logins(
+                &[types::UserNameRef::from_str(
+                    &args.next().expect("please provide an username"),
+                )][..],
+            ),
+            &token,
+        )
+        .await?
+        .data;
+    println!("{response:?}");
     Ok(())
 }

@@ -5,14 +5,11 @@
 //!
 //! ## Request: [RemoveChannelVipRequest]
 //!
-//! To use this endpoint, construct a [`RemoveChannelVipRequest`] with the [`RemoveChannelVipRequest::builder()`] method.
+//! To use this endpoint, construct a [`RemoveChannelVipRequest`] with the [`RemoveChannelVipRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::remove_channel_vip;
-//! let request = remove_channel_vip::RemoveChannelVipRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .user_id("1337")
-//!     .build();
+//! let request = remove_channel_vip::RemoveChannelVipRequest::new("1234", "1337");
 //! ```
 //!
 //! ## Response: [RemoveChannelVipResponse]
@@ -27,10 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = remove_channel_vip::RemoveChannelVipRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .user_id("1337")
-//!     .build();
+//! let request = remove_channel_vip::RemoveChannelVipRequest::new("1234", "1337");
 //! let response: remove_channel_vip::RemoveChannelVipResponse = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -48,24 +42,26 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct RemoveChannelVipRequest {
+pub struct RemoveChannelVipRequest<'a> {
     /// The ID of the broadcaster that’s removing VIP status from the user.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to remove as a VIP from the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub user_id: types::UserId,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, types::UserIdRef>,
 }
 
-impl RemoveChannelVipRequest {
+impl<'a> RemoveChannelVipRequest<'a> {
     /// Remove channel VIP
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        user_id: impl Into<types::UserId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            user_id: user_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            user_id: user_id.to_cow(),
         }
     }
 }
@@ -80,7 +76,7 @@ pub enum RemoveChannelVipResponse {
     Success,
 }
 
-impl Request for RemoveChannelVipRequest {
+impl Request for RemoveChannelVipRequest<'_> {
     type Response = RemoveChannelVipResponse;
 
     const PATH: &'static str = "channels/vips";
@@ -88,7 +84,7 @@ impl Request for RemoveChannelVipRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageVips];
 }
 
-impl RequestDelete for RemoveChannelVipRequest {
+impl RequestDelete for RemoveChannelVipRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

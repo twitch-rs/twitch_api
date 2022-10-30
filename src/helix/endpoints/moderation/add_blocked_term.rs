@@ -5,14 +5,11 @@
 //!
 //! ## Request: [AddBlockedTermRequest]
 //!
-//! To use this endpoint, construct a [`AddBlockedTermRequest`] with the [`AddBlockedTermRequest::builder()`] method.
+//! To use this endpoint, construct a [`AddBlockedTermRequest`] with the [`AddBlockedTermRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::add_blocked_term;
-//! let request = add_blocked_term::AddBlockedTermRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = add_blocked_term::AddBlockedTermRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Body: [AddBlockedTermBody]
@@ -21,7 +18,7 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::add_blocked_term;
-//! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of".to_string());
+//! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of");
 //! ```
 //!
 //! ## Response: [BlockedTerm]
@@ -38,11 +35,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = add_blocked_term::AddBlockedTermRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
-//! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of".to_string());
+//! let request = add_blocked_term::AddBlockedTermRequest::new("1234", "5678");
+//! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of");
 //! let response: &helix::moderation::BlockedTerm = client.req_post(request, body, &token).await?.data.first().unwrap();
 //! # Ok(())
 //! # }
@@ -59,26 +53,28 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct AddBlockedTermRequest {
+pub struct AddBlockedTermRequest<'a> {
     /// The ID of the broadcaster that owns the list of blocked terms.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster wants to add the blocked term (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
-impl AddBlockedTermRequest {
+impl<'a> AddBlockedTermRequest<'a> {
     /// Where to add blocked term
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
         }
     }
 }
@@ -89,26 +85,27 @@ impl AddBlockedTermRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct AddBlockedTermBody {
+pub struct AddBlockedTermBody<'a> {
     ///The word or phrase to block from being used in the broadcaster’s chat room.
     ///
     /// The term must contain a minimum of 2 characters and may contain up to a maximum of 500 characters.
     /// Terms can use a wildcard character (*). The wildcard character must appear at the beginning or end of a word, or set of characters. For example, *foo or foo*.
-    pub text: String,
+    #[serde(borrow)]
+    pub text: Cow<'a, str>,
 }
 
-impl AddBlockedTermBody {
+impl<'a> AddBlockedTermBody<'a> {
     /// Create a new [`AddBlockedTermBody`]
-    pub fn new(text: String) -> Self { Self { text } }
+    pub fn new(text: impl Into<Cow<'a, str>>) -> Self { Self { text: text.into() } }
 }
 
-impl helix::private::SealedSerialize for AddBlockedTermBody {}
+impl helix::private::SealedSerialize for AddBlockedTermBody<'_> {}
 
-impl helix::HelixRequestBody for Vec<AddBlockedTermBody> {
+impl<'a> helix::HelixRequestBody for [AddBlockedTermBody<'a>] {
     fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
-            data: &'a Vec<AddBlockedTermBody>,
+            data: &'a [AddBlockedTermBody<'a>],
         }
 
         serde_json::to_vec(&InnerBody { data: self })
@@ -122,7 +119,7 @@ impl helix::HelixRequestBody for Vec<AddBlockedTermBody> {
 /// [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
 pub type AddBlockedTermResponse = BlockedTerm;
 
-impl Request for AddBlockedTermRequest {
+impl Request for AddBlockedTermRequest<'_> {
     // FIXME: this is a single entry
     type Response = Vec<BlockedTerm>;
 
@@ -132,8 +129,8 @@ impl Request for AddBlockedTermRequest {
         &[twitch_oauth2::Scope::ModeratorManageBlockedTerms];
 }
 
-impl RequestPost for AddBlockedTermRequest {
-    type Body = AddBlockedTermBody;
+impl<'a> RequestPost for AddBlockedTermRequest<'a> {
+    type Body = AddBlockedTermBody<'a>;
 }
 
 #[cfg(test)]
@@ -142,7 +139,7 @@ fn test_request() {
     use helix::*;
     let req = AddBlockedTermRequest::new("1234", "5678");
 
-    let body = AddBlockedTermBody::new("A phrase I'm not fond of".to_string());
+    let body = AddBlockedTermBody::new("A phrase I'm not fond of");
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

@@ -42,32 +42,37 @@ use helix::RequestGet;
 /// Query Parameters for [Get All Stream Tags](super::get_all_stream_tags)
 ///
 /// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetAllStreamTagsRequest {
+pub struct GetAllStreamTagsRequest<'a> {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// ID of a tag. Multiple IDs can be specified. If provided, only the specified tag(s) is(are) returned. Maximum of 100.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub tag_id: Vec<types::TagId>,
+    #[serde(borrow)]
+    pub tag_id: Cow<'a, [&'a types::TagIdRef]>,
 }
 
-impl GetAllStreamTagsRequest {
+impl<'a> GetAllStreamTagsRequest<'a> {
     /// Filter the results for specific tag.
-    pub fn tag_ids(mut self, tag_ids: impl IntoIterator<Item = impl Into<types::TagId>>) -> Self {
-        self.tag_id = tag_ids.into_iter().map(Into::into).collect();
+    pub fn tag_ids(mut self, tag_ids: impl Into<Cow<'a, [&'a types::TagIdRef]>>) -> Self {
+        self.tag_id = tag_ids.into();
         self
     }
+}
 
-    /// Filter the results for specific tag.
-    pub fn tag_id(mut self, tag_id: impl Into<types::TagId>) -> Self {
-        self.tag_id = vec![tag_id.into()];
-        self
+impl Default for GetAllStreamTagsRequest<'_> {
+    fn default() -> Self {
+        Self {
+            after: None,
+            first: None,
+            tag_id: Cow::Borrowed(&[]),
+        }
     }
 }
 
@@ -76,7 +81,7 @@ impl GetAllStreamTagsRequest {
 /// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
 pub type Tag = helix::tags::TwitchTag;
 
-impl Request for GetAllStreamTagsRequest {
+impl Request for GetAllStreamTagsRequest<'_> {
     type Response = Vec<Tag>;
 
     const PATH: &'static str = "tags/streams";
@@ -84,10 +89,12 @@ impl Request for GetAllStreamTagsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetAllStreamTagsRequest {}
+impl RequestGet for GetAllStreamTagsRequest<'_> {}
 
-impl helix::Paginated for GetAllStreamTagsRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetAllStreamTagsRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

@@ -53,7 +53,7 @@ pub struct CreateEventSubSubscriptionBody<E: EventSubscription> {
     pub transport: Transport,
 }
 
-impl<E: EventSubscription> helix::HelixRequestBody for CreateEventSubSubscriptionBody<E> {
+impl<'a, E: EventSubscription> helix::HelixRequestBody for CreateEventSubSubscriptionBody<E> {
     fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(PartialEq, Serialize, Debug)]
         struct IEventSubRequestBody<'a> {
@@ -76,8 +76,8 @@ impl<E: EventSubscription> helix::HelixRequestBody for CreateEventSubSubscriptio
 // FIXME: Builder?
 impl<E: EventSubscription> CreateEventSubSubscriptionBody<E> {
     /// Create a new [`CreateEventSubSubscriptionBody`]
-    pub fn new(subscription: E, transport: Transport) -> CreateEventSubSubscriptionBody<E> {
-        CreateEventSubSubscriptionBody {
+    pub fn new(subscription: E, transport: Transport) -> Self {
+        Self {
             subscription,
             transport,
         }
@@ -194,14 +194,13 @@ fn test_request() {
     let req: CreateEventSubSubscriptionRequest<UserUpdateV1> =
         CreateEventSubSubscriptionRequest::default();
 
-    let body = CreateEventSubSubscriptionBody::new(
-        UserUpdateV1::new("1234"),
-        eventsub::Transport {
-            method: eventsub::TransportMethod::Webhook,
-            callback: "example.com".to_string(),
-            secret: "heyhey13".to_string(),
-        },
-    );
+    let sub = UserUpdateV1::new("1234");
+    let transport = eventsub::Transport {
+        method: eventsub::TransportMethod::Webhook,
+        callback: "example.com".to_string(),
+        secret: "heyhey13".to_string(),
+    };
+    let body = CreateEventSubSubscriptionBody::new(sub, transport);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

@@ -50,24 +50,26 @@ use helix::RequestDelete;
 #[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct DeleteChannelStreamScheduleSegmentRequest {
+pub struct DeleteChannelStreamScheduleSegmentRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the streaming segment to delete.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub id: types::StreamSegmentId,
+    #[serde(borrow)]
+    pub id: Cow<'a, types::StreamSegmentIdRef>,
 }
 
-impl DeleteChannelStreamScheduleSegmentRequest {
+impl<'a> DeleteChannelStreamScheduleSegmentRequest<'a> {
     /// Delete a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        id: impl Into<types::StreamSegmentId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::StreamSegmentIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }
@@ -82,7 +84,7 @@ pub enum DeleteChannelStreamScheduleSegment {
     Success,
 }
 
-impl Request for DeleteChannelStreamScheduleSegmentRequest {
+impl Request for DeleteChannelStreamScheduleSegmentRequest<'_> {
     type Response = DeleteChannelStreamScheduleSegment;
 
     const PATH: &'static str = "schedule/segment";
@@ -90,7 +92,7 @@ impl Request for DeleteChannelStreamScheduleSegmentRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageSchedule];
 }
 
-impl RequestDelete for DeleteChannelStreamScheduleSegmentRequest {
+impl RequestDelete for DeleteChannelStreamScheduleSegmentRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

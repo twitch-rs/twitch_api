@@ -24,11 +24,10 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .map(AccessToken::new)
         .expect("Please set env: TWITCH_TOKEN or pass token as first argument");
     let token = UserToken::from_existing(&client, token, None, None).await?;
-    let id = token.user_id.clone();
 
     let resp = client
         .req_get_custom(
-            helix::channels::GetChannelInformationRequest::broadcaster_id(id),
+            helix::channels::GetChannelInformationRequest::broadcaster_id(&token.user_id),
             &token,
         )
         .await

@@ -5,14 +5,11 @@
 //!
 //! ## Request: [RemoveChannelModeratorRequest]
 //!
-//! To use this endpoint, construct a [`RemoveChannelModeratorRequest`] with the [`RemoveChannelModeratorRequest::builder()`] method.
+//! To use this endpoint, construct a [`RemoveChannelModeratorRequest`] with the [`RemoveChannelModeratorRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::remove_channel_moderator;
-//! let request = remove_channel_moderator::RemoveChannelModeratorRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = remove_channel_moderator::RemoveChannelModeratorRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Response: [RemoveChannelModeratorResponse]
@@ -28,10 +25,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = remove_channel_moderator::RemoveChannelModeratorRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = remove_channel_moderator::RemoveChannelModeratorRequest::new("1234", "5678");
 //! let response: helix::moderation::RemoveChannelModeratorResponse = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -49,24 +43,26 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct RemoveChannelModeratorRequest {
+pub struct RemoveChannelModeratorRequest<'a> {
     /// The ID of the broadcaster that owns the chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to remove as a moderator from the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
-impl RemoveChannelModeratorRequest {
+impl<'a> RemoveChannelModeratorRequest<'a> {
     /// Remove moderator
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
         }
     }
 }
@@ -82,7 +78,7 @@ pub enum RemoveChannelModeratorResponse {
     Success,
 }
 
-impl Request for RemoveChannelModeratorRequest {
+impl Request for RemoveChannelModeratorRequest<'_> {
     type Response = RemoveChannelModeratorResponse;
 
     const PATH: &'static str = "moderation/moderators";
@@ -90,7 +86,7 @@ impl Request for RemoveChannelModeratorRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageModerators];
 }
 
-impl RequestDelete for RemoveChannelModeratorRequest {
+impl RequestDelete for RemoveChannelModeratorRequest<'_> {
     fn parse_inner_response<'d>(
         request: Option<Self>,
         uri: &http::Uri,

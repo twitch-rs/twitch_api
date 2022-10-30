@@ -43,17 +43,18 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetChannelEditorsRequest {
+pub struct GetChannelEditorsRequest<'a> {
     /// Broadcaster’s user ID associated with the channel.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
-impl GetChannelEditorsRequest {
+impl<'a> GetChannelEditorsRequest<'a> {
     /// Get specified broadcasters channel editors
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -73,7 +74,7 @@ pub struct Editor {
     pub created_at: types::Timestamp,
 }
 
-impl Request for GetChannelEditorsRequest {
+impl Request for GetChannelEditorsRequest<'_> {
     type Response = Vec<Editor>;
 
     const PATH: &'static str = "channels/editors";
@@ -81,13 +82,13 @@ impl Request for GetChannelEditorsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadEditors];
 }
 
-impl RequestGet for GetChannelEditorsRequest {}
+impl RequestGet for GetChannelEditorsRequest<'_> {}
 
 #[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelEditorsRequest::broadcaster_id("44445592".to_string());
+    let req = GetChannelEditorsRequest::broadcaster_id("44445592");
 
     // From twitch docs
     let data = br#"

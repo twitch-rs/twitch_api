@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetStreamTagsRequest]
 //!
-//! To use this endpoint, construct a [`GetStreamTagsRequest`] with the [`GetStreamTagsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetStreamTagsRequest`] with the [`GetStreamTagsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::streams::get_stream_tags;
-//! let request = get_stream_tags::GetStreamTagsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_stream_tags::GetStreamTagsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [Tag](helix::tags::TwitchTag)
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_stream_tags::GetStreamTagsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_stream_tags::GetStreamTagsRequest::broadcaster_id("1234");
 //! let response: Vec<get_stream_tags::Tag> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -46,18 +42,19 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetStreamTagsRequest {
+pub struct GetStreamTagsRequest<'a> {
     // FIXME: twitch docs sucks
     /// ID of the stream whose tags are going to be fetched
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
-impl GetStreamTagsRequest {
+impl<'a> GetStreamTagsRequest<'a> {
     /// ID of the stream whose tags are going to be fetched
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -67,7 +64,7 @@ impl GetStreamTagsRequest {
 /// [`get-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-stream-tags)
 pub type Tag = helix::tags::TwitchTag;
 
-impl Request for GetStreamTagsRequest {
+impl Request for GetStreamTagsRequest<'_> {
     type Response = Vec<Tag>;
 
     const PATH: &'static str = "streams/tags";
@@ -75,7 +72,7 @@ impl Request for GetStreamTagsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetStreamTagsRequest {}
+impl RequestGet for GetStreamTagsRequest<'_> {}
 
 #[cfg(test)]
 #[test]

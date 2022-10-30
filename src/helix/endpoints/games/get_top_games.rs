@@ -45,19 +45,20 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetTopGamesRequest {
+pub struct GetTopGamesRequest<'a> {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub before: Option<helix::Cursor>,
+    #[serde(borrow)]
+    pub before: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
 }
 
-impl GetTopGamesRequest {
+impl GetTopGamesRequest<'_> {
     /// Set amount of results returned per page.
     pub fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
@@ -70,7 +71,7 @@ impl GetTopGamesRequest {
 /// [`get-top-games`](https://dev.twitch.tv/docs/api/reference#get-top-games)
 pub type Game = types::TwitchCategory;
 
-impl Request for GetTopGamesRequest {
+impl Request for GetTopGamesRequest<'_> {
     type Response = Vec<Game>;
 
     const PATH: &'static str = "games/top";
@@ -78,10 +79,12 @@ impl Request for GetTopGamesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetTopGamesRequest {}
+impl RequestGet for GetTopGamesRequest<'_> {}
 
-impl helix::Paginated for GetTopGamesRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetTopGamesRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

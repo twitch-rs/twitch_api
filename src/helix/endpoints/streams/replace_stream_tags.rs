@@ -9,9 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::streams::replace_stream_tags;
-//! let request = replace_stream_tags::ReplaceStreamTagsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = replace_stream_tags::ReplaceStreamTagsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Body: [ReplaceStreamTagsBody]
@@ -20,12 +18,10 @@
 //!
 //! ```
 //! # use twitch_api::helix::streams::replace_stream_tags;
-//! let body = replace_stream_tags::ReplaceStreamTagsBody::builder()
-//!     .tag_ids(vec![
-//!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
-//!         "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
-//!     ])
-//!     .build();
+//! let body = replace_stream_tags::ReplaceStreamTagsBody::tag_ids(vec![
+//!     "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
+//!     "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
+//! ]);
 //! ```
 //!
 //! ## Response: [ReplaceStreamTags]
@@ -42,15 +38,11 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = replace_stream_tags::ReplaceStreamTagsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
-//! let body = replace_stream_tags::ReplaceStreamTagsBody::builder()
-//!     .tag_ids(vec![
-//!         "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
-//!         "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
-//!     ])
-//!     .build();
+//! let request = replace_stream_tags::ReplaceStreamTagsRequest::broadcaster_id("1234");
+//! let body = replace_stream_tags::ReplaceStreamTagsBody::tag_ids(vec![
+//!     "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
+//!     "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
+//! ]);
 //! let response: replace_stream_tags::ReplaceStreamTags = client.req_put(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -67,17 +59,18 @@ use helix::RequestPut;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct ReplaceStreamTagsRequest {
+pub struct ReplaceStreamTagsRequest<'a> {
     /// ID of the stream for which tags are to be replaced.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
-impl ReplaceStreamTagsRequest {
+impl<'a> ReplaceStreamTagsRequest<'a> {
     /// ID of the stream for which tags are to be replaced.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -92,25 +85,18 @@ impl ReplaceStreamTagsRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct ReplaceStreamTagsBody {
+pub struct ReplaceStreamTagsBody<'a> {
     /// IDs of tags to be applied to the stream.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub tag_ids: Vec<types::TagId>,
+    #[serde(borrow)]
+    pub tag_ids: Cow<'a, [&'a types::TagIdRef]>,
 }
 
-impl ReplaceStreamTagsBody {
+impl<'a> ReplaceStreamTagsBody<'a> {
     /// IDs of tags to be applied to the stream.
-    pub fn tag_ids(tag_ids: impl IntoIterator<Item = impl Into<types::TagId>>) -> Self {
+    pub fn tag_ids(tag_ids: impl Into<Cow<'a, [&'a types::TagIdRef]>>) -> Self {
         Self {
-            tag_ids: tag_ids.into_iter().map(Into::into).collect(),
-            ..Self::default()
-        }
-    }
-
-    /// ID of tag to be applied to the stream.
-    pub fn tag_id(tag_id: impl Into<types::TagId>) -> Self {
-        Self {
-            tag_ids: vec![tag_id.into()],
+            tag_ids: tag_ids.into(),
             ..Self::default()
         }
     }
@@ -125,9 +111,9 @@ pub enum ReplaceStreamTags {
     Success,
 }
 
-impl helix::private::SealedSerialize for ReplaceStreamTagsBody {}
+impl helix::private::SealedSerialize for ReplaceStreamTagsBody<'_> {}
 
-impl Request for ReplaceStreamTagsRequest {
+impl Request for ReplaceStreamTagsRequest<'_> {
     type Response = ReplaceStreamTags;
 
     const PATH: &'static str = "streams/tags";
@@ -135,8 +121,8 @@ impl Request for ReplaceStreamTagsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageBroadcast];
 }
 
-impl RequestPut for ReplaceStreamTagsRequest {
-    type Body = ReplaceStreamTagsBody;
+impl<'a> RequestPut for ReplaceStreamTagsRequest<'a> {
+    type Body = ReplaceStreamTagsBody<'a>;
 
     fn parse_inner_response(
         request: Option<Self>,
@@ -171,10 +157,11 @@ fn test_request() {
     use helix::*;
     let req = ReplaceStreamTagsRequest::broadcaster_id("0");
 
-    let body = ReplaceStreamTagsBody::tag_ids([
-        "621fb5bf-5498-4d8f-b4ac-db4d40d401bf",
-        "79977fb9-f106-4a87-a386-f1b0f99783dd",
-    ]);
+    let ids: &[&types::TagIdRef] = &[
+        "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
+        "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
+    ];
+    let body = ReplaceStreamTagsBody::tag_ids(ids);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
     // From twitch docs

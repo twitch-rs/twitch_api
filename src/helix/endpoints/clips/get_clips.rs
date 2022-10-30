@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetClipsRequest]
 //!
-//! To use this endpoint, construct a [`GetClipsRequest`] with the [`GetClipsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetClipsRequest`] with the [`GetClipsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::clips::get_clips;
-//! let request = get_clips::GetClipsRequest::builder()
-//!     .broadcaster_id(Some("1234".into()))
-//!     .build();
+//! let request = get_clips::GetClipsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [Clip]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_clips::GetClipsRequest::builder()
-//!     .broadcaster_id(Some("1234".into()))
-//!     .build();
+//! let request = get_clips::GetClipsRequest::broadcaster_id("1234");
 //! let response: Vec<get_clips::Clip> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -46,36 +42,42 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetClipsRequest {
+pub struct GetClipsRequest<'a> {
     /// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub broadcaster_id: Option<types::UserId>,
+    #[serde(borrow)]
+    pub broadcaster_id: Option<Cow<'a, types::UserIdRef>>,
     /// ID of the game for which clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub game_id: Option<types::CategoryId>,
+    #[serde(borrow)]
+    pub game_id: Option<Cow<'a, types::CategoryIdRef>>,
     // FIXME: add types::ClipId
     /// ID of the clip being queried. Limit: 100.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub id: Vec<types::ClipId>,
+    #[serde(borrow)]
+    pub id: Cow<'a, [&'a types::ClipIdRef]>,
     // one of above is needed.
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub before: Option<helix::Cursor>,
+    #[serde(borrow)]
+    pub before: Option<Cow<'a, helix::CursorRef>>,
     /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, started_at also must be specified; otherwise, the time period is ignored.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub ended_at: Option<types::Timestamp>,
+    #[serde(borrow)]
+    pub ended_at: Option<Cow<'a, types::TimestampRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Starting date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub started_at: Option<types::Timestamp>,
+    #[serde(borrow)]
+    pub started_at: Option<Cow<'a, types::TimestampRef>>,
 }
 
-impl GetClipsRequest {
+impl<'a> GetClipsRequest<'a> {
     /// An empty request
     ///
     /// # Notes
@@ -85,7 +87,7 @@ impl GetClipsRequest {
         Self {
             broadcaster_id: Default::default(),
             game_id: Default::default(),
-            id: Default::default(),
+            id: Cow::Borrowed(&[]),
             after: Default::default(),
             before: Default::default(),
             ended_at: Default::default(),
@@ -95,46 +97,50 @@ impl GetClipsRequest {
     }
 
     /// Broadcaster for whom clips are returned.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: Some(broadcaster_id.into()),
+            broadcaster_id: Some(broadcaster_id.to_cow()),
             ..Self::empty()
         }
     }
 
     /// Game for which clips are returned.
-    pub fn game_id(game_id: impl Into<types::CategoryId>) -> Self {
+    pub fn game_id(game_id: impl types::IntoCow<'a, types::CategoryIdRef> + 'a) -> Self {
         Self {
-            game_id: Some(game_id.into()),
-            ..Self::empty()
-        }
-    }
-
-    /// ID of clip being queried
-    pub fn clip_id(clip_id: impl Into<types::ClipId>) -> Self {
-        Self {
-            id: vec![clip_id.into()],
+            game_id: Some(game_id.to_cow()),
             ..Self::empty()
         }
     }
 
     /// IDs of clips being queried
-    pub fn clip_ids(clip_ids: impl IntoIterator<Item = impl Into<types::ClipId>>) -> Self {
+    pub fn clip_ids(clip_ids: impl Into<Cow<'a, [&'a types::ClipIdRef]>>) -> Self {
         Self {
-            id: clip_ids.into_iter().map(Into::into).collect(),
+            id: clip_ids.into(),
             ..Self::empty()
         }
     }
 
     /// Ending date/time for the returned clips
-    pub fn started_at(&mut self, started_at: impl Into<types::Timestamp>) -> &mut Self {
-        self.started_at = Some(started_at.into());
+    pub fn started_at(
+        &mut self,
+        started_at: impl types::IntoCow<'a, types::TimestampRef> + 'a,
+    ) -> &mut Self {
+        self.started_at = Some(started_at.to_cow());
         self
     }
 
     /// Ending date/time for the returned clips
-    pub fn ended_at(&mut self, ended_at: impl Into<types::Timestamp>) -> &mut Self {
-        self.ended_at = Some(ended_at.into());
+    pub fn ended_at(
+        &mut self,
+        ended_at: impl types::IntoCow<'a, types::TimestampRef> + 'a,
+    ) -> &mut Self {
+        self.ended_at = Some(ended_at.to_cow());
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
         self
     }
 }
@@ -182,7 +188,7 @@ pub struct Clip {
     pub vod_offset: Option<i64>,
 }
 
-impl Request for GetClipsRequest {
+impl Request for GetClipsRequest<'_> {
     type Response = Vec<Clip>;
 
     const PATH: &'static str = "clips";
@@ -190,17 +196,20 @@ impl Request for GetClipsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetClipsRequest {}
+impl RequestGet for GetClipsRequest<'_> {}
 
-impl helix::Paginated for GetClipsRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetClipsRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetClipsRequest::clip_id(String::from("AwkwardHelplessSalamanderSwiftRage"));
+
+    let req = GetClipsRequest::clip_ids(vec!["AwkwardHelplessSalamanderSwiftRage".into()]);
 
     // From twitch docs
     let data = br#"

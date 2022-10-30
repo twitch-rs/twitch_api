@@ -26,12 +26,12 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     let token = UserToken::from_existing(&client, token, None, None).await?;
 
     let user = client
-        .get_user_from_login(args.next().unwrap(), &token)
+        .get_user_from_login(&*args.next().unwrap(), &token)
         .await?
         .expect("no user found");
 
     let channel = client
-        .get_channel_from_id(user.id.clone(), &token)
+        .get_channel_from_id(&user.id, &token)
         .await?
         .expect("no channel found");
 

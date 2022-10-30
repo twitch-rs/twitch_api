@@ -5,13 +5,12 @@
 //!
 //! ## Request: [GetBroadcasterSubscriptionsRequest]
 //!
-//! To use this endpoint, construct a [`GetBroadcasterSubscriptionsRequest`] with the [`GetBroadcasterSubscriptionsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetBroadcasterSubscriptionsRequest`] with the [`GetBroadcasterSubscriptionsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::subscriptions::get_broadcaster_subscriptions;
-//! let request = get_broadcaster_subscriptions::GetBroadcasterSubscriptionsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request =
+//!     get_broadcaster_subscriptions::GetBroadcasterSubscriptionsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [BroadcasterSubscription]
@@ -26,9 +25,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_broadcaster_subscriptions::GetBroadcasterSubscriptionsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request =
+//!     get_broadcaster_subscriptions::GetBroadcasterSubscriptionsRequest::broadcaster_id("1234");
 //! let response: Vec<get_broadcaster_subscriptions::BroadcasterSubscription> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -39,44 +37,44 @@
 
 use super::*;
 use helix::RequestGet;
+
 /// Query Parameters for [Get Broadcaster Subscriptions](super::get_broadcaster_subscriptions)
 ///
 /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetBroadcasterSubscriptionsRequest {
+pub struct GetBroadcasterSubscriptionsRequest<'a> {
     /// User ID of the broadcaster. Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Unique identifier of account to get subscription status of. Accepts up to 100 values.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub user_id: Vec<types::UserId>,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
     pub first: Option<usize>,
 }
 
-impl GetBroadcasterSubscriptionsRequest {
+impl<'a> GetBroadcasterSubscriptionsRequest<'a> {
     /// Get a broadcasters subscribers
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            user_id: Default::default(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            user_id: Cow::Borrowed(&[]),
             after: Default::default(),
             first: Default::default(),
         }
     }
 
     /// check for specific users in broadcasters subscriptions
-    pub fn subscriber(
-        mut self,
-        user_ids: impl IntoIterator<Item = impl Into<types::UserId>>,
-    ) -> Self {
-        self.user_id = user_ids.into_iter().map(Into::into).collect();
+    pub fn subscriber(mut self, user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+        self.user_id = user_ids.into();
         self
     }
 
@@ -132,7 +130,7 @@ pub struct BroadcasterSubscription {
     pub user_name: types::DisplayName,
 }
 
-impl Request for GetBroadcasterSubscriptionsRequest {
+impl Request for GetBroadcasterSubscriptionsRequest<'_> {
     type Response = Vec<BroadcasterSubscription>;
 
     const PATH: &'static str = "subscriptions";
@@ -141,13 +139,15 @@ impl Request for GetBroadcasterSubscriptionsRequest {
         &[twitch_oauth2::Scope::ChannelReadSubscriptions];
 }
 
-impl RequestGet for GetBroadcasterSubscriptionsRequest {}
+impl RequestGet for GetBroadcasterSubscriptionsRequest<'_> {}
 
-impl helix::Paginated for GetBroadcasterSubscriptionsRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetBroadcasterSubscriptionsRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
-impl helix::Response<GetBroadcasterSubscriptionsRequest, Vec<BroadcasterSubscription>> {
+impl helix::Response<GetBroadcasterSubscriptionsRequest<'_>, Vec<BroadcasterSubscription>> {
     /// The current number of subscriber points earned by this broadcaster.
     pub fn points(&self) -> Result<i64, BroadcasterSubscriptionPointsError> {
         let points = self.get_other("points")?;

@@ -44,20 +44,21 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetCheermotesRequest {
+pub struct GetCheermotesRequest<'a> {
     /// ID for the broadcaster who might own specialized Cheermotes.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub broadcaster_id: Option<types::UserId>,
+    #[serde(borrow)]
+    pub broadcaster_id: Option<Cow<'a, types::UserIdRef>>,
 }
 
-impl GetCheermotesRequest {
+impl<'a> GetCheermotesRequest<'a> {
     /// Get available Cheermotes.
     pub fn new() -> Self { Self::default() }
 
     /// Get Cheermotes in a specific broadcasters channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: Some(broadcaster_id.into()),
+            broadcaster_id: Some(broadcaster_id.to_cow()),
         }
     }
 }
@@ -176,7 +177,7 @@ pub struct CheermoteImageArray {
 #[serde(transparent)]
 pub struct Level(pub String);
 
-impl Request for GetCheermotesRequest {
+impl Request for GetCheermotesRequest<'_> {
     type Response = Vec<Cheermote>;
 
     const PATH: &'static str = "bits/cheermotes";
@@ -184,7 +185,7 @@ impl Request for GetCheermotesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetCheermotesRequest {}
+impl RequestGet for GetCheermotesRequest<'_> {}
 
 #[cfg(test)]
 #[test]

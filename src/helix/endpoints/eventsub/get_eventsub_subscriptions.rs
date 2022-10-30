@@ -10,7 +10,7 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetEventSubSubscriptionsRequest {
+pub struct GetEventSubSubscriptionsRequest<'a> {
     /// Include this parameter to filter subscriptions by their status.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub status: Option<eventsub::Status>,
@@ -22,18 +22,19 @@ pub struct GetEventSubSubscriptionsRequest {
     /// The response contains subscriptions where the user ID
     /// matches a user ID that you specified in the Condition object when you created the subscription.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub user_id: Option<types::UserId>,
+    #[serde(borrow)]
+    pub user_id: Option<Cow<'a, types::UserIdRef>>,
     // FIXME: https://github.com/twitchdev/issues/issues/272
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     // FIXME: https://github.com/twitchdev/issues/issues/271
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
 }
 
-impl GetEventSubSubscriptionsRequest {
+impl GetEventSubSubscriptionsRequest<'_> {
     /// Get eventsub subscriptions by this status
     pub fn status(status: impl Into<eventsub::Status>) -> Self {
         Self {
@@ -51,7 +52,7 @@ impl GetEventSubSubscriptionsRequest {
     }
 }
 
-impl Request for GetEventSubSubscriptionsRequest {
+impl Request for GetEventSubSubscriptionsRequest<'_> {
     type Response = EventSubSubscriptions;
 
     const PATH: &'static str = "eventsub/subscriptions";
@@ -76,7 +77,7 @@ pub struct EventSubSubscriptions {
     pub subscriptions: Vec<eventsub::EventSubSubscription>,
 }
 
-impl RequestGet for GetEventSubSubscriptionsRequest {
+impl RequestGet for GetEventSubSubscriptionsRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
@@ -122,8 +123,10 @@ impl RequestGet for GetEventSubSubscriptionsRequest {
     }
 }
 
-impl helix::Paginated for GetEventSubSubscriptionsRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetEventSubSubscriptionsRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

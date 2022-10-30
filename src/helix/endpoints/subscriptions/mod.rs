@@ -11,10 +11,7 @@
 //! # let _: &HelixClient<twitch_api::DummyHttpClient> = &client;
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let req = GetBroadcasterSubscriptionsRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
-//!
+//! let req = GetBroadcasterSubscriptionsRequest::broadcaster_id("1234");
 //!
 //! println!("{:?}", &client.req_get(req, &token).await?.data);
 //! # Ok(())
@@ -26,6 +23,7 @@ use crate::{
     types,
 };
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
 
 pub mod check_user_subscription;
 pub mod get_broadcaster_subscriptions;

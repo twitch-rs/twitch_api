@@ -5,15 +5,11 @@
 //!
 //! ## Request: [UnbanUserRequest]
 //!
-//! To use this endpoint, construct a [`UnbanUserRequest`] with the [`UnbanUserRequest::builder()`] method.
+//! To use this endpoint, construct a [`UnbanUserRequest`] with the [`UnbanUserRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::unban_user;
-//! let request = unban_user::UnbanUserRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .user_id("1337")
-//!     .build();
+//! let request = unban_user::UnbanUserRequest::new("1234", "5678", "1337");
 //! ```
 //!
 //! ## Response: [UnbanUserResponse]
@@ -30,11 +26,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = unban_user::UnbanUserRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .user_id("1337")
-//!     .build();
+//! let request = unban_user::UnbanUserRequest::new("1234", "5678", "1337");
 //! let response: unban_user::UnbanUserResponse = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -51,29 +43,32 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UnbanUserRequest {
+pub struct UnbanUserRequest<'a> {
     /// The ID of the broadcaster whose chat room the user is banned from chatting in.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to remove the ban or timeout from.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub user_id: types::UserId,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, types::UserIdRef>,
 }
 
-impl UnbanUserRequest {
+impl<'a> UnbanUserRequest<'a> {
     /// Remove the ban or timeout that was placed on the specified user.
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
-        user_id: impl Into<types::UserId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
-            user_id: user_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
+            user_id: user_id.to_cow(),
         }
     }
 }
@@ -88,7 +83,7 @@ pub enum UnbanUserResponse {
     Success,
 }
 
-impl Request for UnbanUserRequest {
+impl Request for UnbanUserRequest<'_> {
     type Response = UnbanUserResponse;
 
     const PATH: &'static str = "moderation/bans";
@@ -97,7 +92,7 @@ impl Request for UnbanUserRequest {
         &[twitch_oauth2::Scope::ModeratorManageBannedUsers];
 }
 
-impl RequestDelete for UnbanUserRequest {
+impl RequestDelete for UnbanUserRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

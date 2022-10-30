@@ -9,9 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_emote_sets;
-//! let request = get_emote_sets::GetEmoteSetsRequest::builder()
-//!     .emote_set_id(vec!["1234".into()])
-//!     .build();
+//! let ids: &[&twitch_types::EmoteSetIdRef] = &["1234".into()];
+//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(ids);
 //! ```
 //!
 //! ## Response: [Emote]
@@ -20,15 +19,14 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, chat::get_emote_sets};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_emote_sets::GetEmoteSetsRequest::builder()
-//!     .emote_set_id(vec!["1234".into()])
-//!     .build();
+//! let ids: &[&twitch_types::EmoteSetIdRef] = &["1234".into()];
+//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(ids);
 //! let response: Vec<helix::chat::get_emote_sets::Emote> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -46,27 +44,22 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetEmoteSetsRequest {
+pub struct GetEmoteSetsRequest<'a> {
     // FIXME: twitch doc specifies maximum as 25, but it actually is 10
     /// The broadcaster whose emotes are being requested. Minimum: 1. Maximum: 10
-    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub emote_set_id: Vec<types::EmoteSetId>,
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
+    #[serde(borrow)]
+    pub emote_set_id: Cow<'a, [&'a types::EmoteSetIdRef]>,
 }
 
-impl GetEmoteSetsRequest {
-    /// Get emotes in this set
-    pub fn emote_set_id(emote_set_id: impl Into<types::EmoteSetId>) -> Self {
-        Self {
-            emote_set_id: vec![emote_set_id.into()],
-        }
-    }
-
+impl<'a> GetEmoteSetsRequest<'a> {
     /// Get emotes in these sets
-    pub fn emote_set_ids(
-        emote_set_ids: impl IntoIterator<Item = impl Into<types::EmoteSetId>>,
-    ) -> Self {
+    pub fn emote_set_ids(emote_set_ids: impl Into<Cow<'a, [&'a types::EmoteSetIdRef]>>) -> Self {
         Self {
-            emote_set_id: emote_set_ids.into_iter().map(Into::into).collect(),
+            emote_set_id: emote_set_ids.into(),
         }
     }
 }
@@ -106,13 +99,14 @@ impl Emote {
     ///
     /// ```rust, no_run
     /// use twitch_api::helix::{self, chat::get_channel_emotes};
-    /// # use twitch_api::client;
+    /// # use twitch_api::{client, types};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// let emotes = client.get_emote_sets(["301590448"], &token).await?;
+    /// let ids: &[&types::EmoteSetIdRef] = &["301590448".into()];
+    /// let emotes = client.get_emote_sets(ids, &token).await?;
     /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0");
     /// # Ok(())
     /// # }
@@ -120,7 +114,7 @@ impl Emote {
     pub fn url(&self) -> types::EmoteUrlBuilder<'_> { EmoteUrlBuilder::new(&self.id) }
 }
 
-impl Request for GetEmoteSetsRequest {
+impl Request for GetEmoteSetsRequest<'_> {
     type Response = Vec<Emote>;
 
     const PATH: &'static str = "chat/emotes/set";
@@ -128,13 +122,15 @@ impl Request for GetEmoteSetsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetEmoteSetsRequest {}
+impl RequestGet for GetEmoteSetsRequest<'_> {}
 
 #[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetEmoteSetsRequest::emote_set_id("301590448");
+
+    let ids: &[&types::EmoteSetIdRef] = &["301590448".into()];
+    let req = GetEmoteSetsRequest::emote_set_ids(ids);
 
     // From twitch docs
     // FIXME: Example has ... and is malformed, uses [] in images

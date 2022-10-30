@@ -3,13 +3,11 @@
 //!
 //! ## Request: [GetUserBlockListRequest]
 //!
-//! To use this endpoint, construct a [`GetUserBlockListRequest`] with the [`GetUserBlockListRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetUserBlockListRequest`] with the [`GetUserBlockListRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::users::get_user_block_list;
-//! let request = get_user_block_list::GetUserBlockListRequest::builder()
-//!     .broadcaster_id("1234".to_string())
-//!     .build();
+//! let request = get_user_block_list::GetUserBlockListRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [UserBlock]
@@ -24,9 +22,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_user_block_list::GetUserBlockListRequest::builder()
-//!     .broadcaster_id("1234".to_string())
-//!     .build();
+//! let request = get_user_block_list::GetUserBlockListRequest::broadcaster_id("1234");
 //! let response: Vec<get_user_block_list::UserBlock> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -44,23 +40,24 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetUserBlockListRequest {
+pub struct GetUserBlockListRequest<'a> {
     /// User ID for a Twitch user.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
 }
 
-impl GetUserBlockListRequest {
+impl<'a> GetUserBlockListRequest<'a> {
     /// Get a specified user’s block list
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             after: Default::default(),
             first: Default::default(),
         }
@@ -82,7 +79,7 @@ pub struct UserBlock {
     pub display_name: types::DisplayName,
 }
 
-impl Request for GetUserBlockListRequest {
+impl Request for GetUserBlockListRequest<'_> {
     type Response = Vec<UserBlock>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -93,10 +90,12 @@ impl Request for GetUserBlockListRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetUserBlockListRequest {}
+impl RequestGet for GetUserBlockListRequest<'_> {}
 
-impl helix::Paginated for GetUserBlockListRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetUserBlockListRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

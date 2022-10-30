@@ -3,13 +3,11 @@
 //!
 //! ## Request: [GetUsersFollowsRequest]
 //!
-//! To use this endpoint, construct a [`GetUsersFollowsRequest`] with the [`GetUsersFollowsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetUsersFollowsRequest`]
 //!
 //! ```rust
 //! use twitch_api::helix::users::get_users_follows;
-//! let request = get_users_follows::GetUsersFollowsRequest::builder()
-//!     .to_id(Some("1234".into()))
-//!     .build();
+//! let request = get_users_follows::GetUsersFollowsRequest::following("1234");
 //! ```
 //!
 //! ## Response: [UsersFollows]
@@ -24,9 +22,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_users_follows::GetUsersFollowsRequest::builder()
-//!     .to_id(Some("1234".into()))
-//!     .build();
+//! let request = get_users_follows::GetUsersFollowsRequest::following("1234");
 //! let response: Vec<get_users_follows::FollowRelationship> = client.req_get(request, &token).await?.data.follow_relationships;
 //! # Ok(())
 //! # }
@@ -43,46 +39,48 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetUsersFollowsRequest {
+pub struct GetUsersFollowsRequest<'a> {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// User ID. The request returns information about users who are being followed by the from_id user.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub from_id: Option<types::UserId>,
+    #[serde(borrow)]
+    pub from_id: Option<Cow<'a, types::UserIdRef>>,
     /// User ID. The request returns information about users who are following the to_id user.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub to_id: Option<types::UserId>,
+    #[serde(borrow)]
+    pub to_id: Option<Cow<'a, types::UserIdRef>>,
 }
 
-impl GetUsersFollowsRequest {
+impl<'a> GetUsersFollowsRequest<'a> {
     /// Get the broadcasters that `from_id` is following
-    pub fn following(from_id: impl Into<types::UserId>) -> Self {
+    pub fn following(from_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            from_id: Some(from_id.into()),
+            from_id: Some(from_id.to_cow()),
             ..Self::empty()
         }
     }
 
     /// Get the followers of `to_id`
-    pub fn followers(to_id: impl Into<types::UserId>) -> Self {
+    pub fn followers(to_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            to_id: Some(to_id.into()),
+            to_id: Some(to_id.to_cow()),
             ..Self::empty()
         }
     }
 
     /// Check if user follows a specific broadcaster
     pub fn follows(
-        user_id: impl Into<types::UserId>,
-        broadcaster_id: impl Into<types::UserId>,
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            from_id: Some(user_id.into()),
-            to_id: Some(broadcaster_id.into()),
+            from_id: Some(user_id.to_cow()),
+            to_id: Some(broadcaster_id.to_cow()),
             ..Self::empty()
         }
     }
@@ -141,7 +139,7 @@ pub struct FollowRelationship {
     pub to_login: types::UserName,
 }
 
-impl Request for GetUsersFollowsRequest {
+impl Request for GetUsersFollowsRequest<'_> {
     type Response = UsersFollows;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -151,7 +149,7 @@ impl Request for GetUsersFollowsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetUsersFollowsRequest {
+impl RequestGet for GetUsersFollowsRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
@@ -190,8 +188,10 @@ impl RequestGet for GetUsersFollowsRequest {
     }
 }
 
-impl helix::Paginated for GetUsersFollowsRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetUsersFollowsRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

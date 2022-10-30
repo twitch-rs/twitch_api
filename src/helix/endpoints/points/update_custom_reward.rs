@@ -7,14 +7,11 @@
 //!
 //! ## Request: [UpdateCustomRewardRequest]
 //!
-//! To use this endpoint, construct an [`UpdateCustomRewardRequest`] with the [`UpdateCustomRewardRequest::builder()`] method.
+//! To use this endpoint, construct an [`UpdateCustomRewardRequest`] with the [`UpdateCustomRewardRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::update_custom_reward;
-//! let request = update_custom_reward::UpdateCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("reward-id")
-//!     .build();
+//! let request = update_custom_reward::UpdateCustomRewardRequest::new("274637212", "reward-id");
 //! ```
 //!
 //! ## Body: [UpdateCustomRewardBody]
@@ -23,10 +20,9 @@
 //!
 //! ```
 //! # use twitch_api::helix::points::update_custom_reward;
-//! let body = update_custom_reward::UpdateCustomRewardBody::builder()
-//!     .cost(501)
-//!     .title("hydrate but differently now!".to_string())
-//!     .build();
+//! let mut body = update_custom_reward::UpdateCustomRewardBody::default();
+//! body.cost = Some(501);
+//! body.title = Some("hydrate but differently now!".into());
 //! ```
 //!
 //! ## Response: [UpdateCustomReward]
@@ -43,14 +39,10 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = update_custom_reward::UpdateCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("reward-id")
-//!     .build();
-//! let body = update_custom_reward::UpdateCustomRewardBody::builder()
-//!     .cost(501)
-//!     .title("hydrate but differently now!".to_string())
-//!     .build();
+//! let request = update_custom_reward::UpdateCustomRewardRequest::new("274637212", "reward-id");
+//! let mut body = update_custom_reward::UpdateCustomRewardBody::default();
+//! body.cost = Some(501);
+//! body.title = Some("hydrate but differently now!".into());
 //! let response: update_custom_reward::UpdateCustomReward = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -69,21 +61,26 @@ use helix::RequestPatch;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UpdateCustomRewardRequest {
+pub struct UpdateCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of the Custom Reward to update, must match a Custom Reward on broadcaster_id’s channel.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub id: types::RewardId,
+    #[serde(borrow)]
+    pub id: Cow<'a, types::RewardIdRef>,
 }
 
-impl UpdateCustomRewardRequest {
+impl<'a> UpdateCustomRewardRequest<'a> {
     /// Update a Custom Reward created on the broadcaster's channel
-    pub fn new(broadcaster_id: impl Into<types::UserId>, id: impl Into<types::RewardId>) -> Self {
+    pub fn new(
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::RewardIdRef> + 'a,
+    ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }
@@ -94,23 +91,23 @@ impl UpdateCustomRewardRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UpdateCustomRewardBody {
+pub struct UpdateCustomRewardBody<'a> {
     /// The title of the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub title: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub title: Option<Cow<'a, str>>,
     /// The prompt for the viewer when they are redeeming the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub prompt: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub prompt: Option<Cow<'a, str>>,
     /// The cost of the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<usize>,
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub background_color: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    pub background_color: Option<Cow<'a, str>>,
     /// Is the reward currently enabled, if false the reward won’t show up to viewers
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -153,7 +150,7 @@ pub struct UpdateCustomRewardBody {
     pub should_redemptions_skip_request_queue: Option<bool>,
 }
 
-impl helix::private::SealedSerialize for UpdateCustomRewardBody {}
+impl helix::private::SealedSerialize for UpdateCustomRewardBody<'_> {}
 
 /// Return Values for [Update CustomReward](super::update_custom_reward)
 ///
@@ -166,7 +163,7 @@ pub enum UpdateCustomReward {
     Success(CustomReward),
 }
 
-impl Request for UpdateCustomRewardRequest {
+impl Request for UpdateCustomRewardRequest<'_> {
     type Response = UpdateCustomReward;
 
     const PATH: &'static str = "channel_points/custom_rewards";
@@ -175,8 +172,8 @@ impl Request for UpdateCustomRewardRequest {
         &[twitch_oauth2::Scope::ChannelManageRedemptions];
 }
 
-impl RequestPatch for UpdateCustomRewardRequest {
-    type Body = UpdateCustomRewardBody;
+impl<'a> RequestPatch for UpdateCustomRewardRequest<'a> {
+    type Body = UpdateCustomRewardBody<'a>;
 
     fn parse_inner_response(
         request: Option<Self>,

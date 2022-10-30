@@ -51,14 +51,16 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetCustomRewardRedemptionRequest {
+pub struct GetCustomRewardRedemptionRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 
     /// When ID is not provided, this parameter returns paginated Custom Reward Redemption objects for redemptions of the Custom Reward with ID reward_id
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub reward_id: Option<types::RewardId>,
+    #[serde(borrow)]
+    pub reward_id: Option<Cow<'a, types::RewardIdRef>>,
 
     /// When id is not provided, this param is required and filters the paginated Custom Reward Redemption objects for redemptions with the matching status. Can be one of UNFULFILLED, FULFILLED or CANCELED
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -66,18 +68,18 @@ pub struct GetCustomRewardRedemptionRequest {
 
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries without ID. If an ID is specified, it supersedes any cursor/offset combinations. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
 
     /// Number of results to be returned when getting the paginated Custom Reward Redemption objects for a reward. Limit: 50. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
 }
 
-impl GetCustomRewardRedemptionRequest {
+impl<'a> GetCustomRewardRedemptionRequest<'a> {
     /// Reward to fetch
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             reward_id: None,
             status: Default::default(),
             after: Default::default(),
@@ -86,8 +88,11 @@ impl GetCustomRewardRedemptionRequest {
     }
 
     /// Specific reward to query
-    pub fn reward_id(mut self, reward_id: impl Into<types::RewardId>) -> Self {
-        self.reward_id = Some(reward_id.into());
+    pub fn reward_id(
+        mut self,
+        reward_id: impl types::IntoCow<'a, types::RewardIdRef> + 'a,
+    ) -> Self {
+        self.reward_id = Some(reward_id.to_cow());
         self
     }
 
@@ -157,7 +162,7 @@ pub struct Reward {
     pub cost: i64,
 }
 
-impl Request for GetCustomRewardRedemptionRequest {
+impl Request for GetCustomRewardRedemptionRequest<'_> {
     type Response = Vec<CustomRewardRedemption>;
 
     const PATH: &'static str = "channel_points/custom_rewards/redemptions";
@@ -166,10 +171,12 @@ impl Request for GetCustomRewardRedemptionRequest {
         &[twitch_oauth2::scopes::Scope::ChannelReadRedemptions];
 }
 
-impl RequestGet for GetCustomRewardRedemptionRequest {}
+impl RequestGet for GetCustomRewardRedemptionRequest<'_> {}
 
-impl helix::Paginated for GetCustomRewardRedemptionRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetCustomRewardRedemptionRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

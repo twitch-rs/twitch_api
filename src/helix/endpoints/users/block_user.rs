@@ -5,19 +5,15 @@
 //!
 //! ## Request: [BlockUserRequest]
 //!
-//! To use this endpoint, construct a [`BlockUserRequest`] with the [`BlockUserRequest::builder()`] method.
+//! To use this endpoint, construct a [`BlockUserRequest`] with the [`BlockUserRequest::block_user()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::users::block_user::{self, Reason, SourceContext};
-//! let request = block_user::BlockUserRequest::builder()
-//!     .target_user_id("1234")
-//!     .build();
+//! let request = block_user::BlockUserRequest::block_user("1234");
 //! // Or, specifying a reason for the block
-//! let request = block_user::BlockUserRequest::builder()
-//!     .target_user_id("1234")
+//! let request = block_user::BlockUserRequest::block_user("1234")
 //!     .source_context(SourceContext::Chat)
-//!     .reason(Reason::Spam)
-//!     .build();
+//!     .reason(Reason::Spam);
 //! ```
 //!
 //! ## Response: [BlockUser]
@@ -32,9 +28,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = block_user::BlockUserRequest::builder()
-//!     .target_user_id("1234")
-//!     .build();
+//! let request = block_user::BlockUserRequest::block_user("1234");
 //! let response: block_user::BlockUser = client.req_put(request, helix::EmptyBody, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -52,10 +46,11 @@ use helix::RequestPut;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct BlockUserRequest {
+pub struct BlockUserRequest<'a> {
     /// User ID of the follower
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub target_user_id: types::UserId,
+    #[serde(borrow)]
+    pub target_user_id: Cow<'a, types::UserIdRef>,
     /// Source context for blocking the user. Valid values: "chat", "whisper".
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub source_context: Option<SourceContext>,
@@ -64,11 +59,11 @@ pub struct BlockUserRequest {
     pub reason: Option<Reason>,
 }
 
-impl BlockUserRequest {
+impl<'a> BlockUserRequest<'a> {
     /// Block a user
-    pub fn block_user(target_user_id: impl Into<types::UserId>) -> Self {
+    pub fn block_user(target_user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            target_user_id: target_user_id.into(),
+            target_user_id: target_user_id.to_cow(),
             source_context: None,
             reason: None,
         }
@@ -88,7 +83,7 @@ impl BlockUserRequest {
 }
 
 /// Source context for blocking the user.
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Copy, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 #[non_exhaustive]
 pub enum SourceContext {
@@ -99,7 +94,7 @@ pub enum SourceContext {
 }
 
 /// Reason for blocking the user.
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Copy, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 #[non_exhaustive]
 pub enum Reason {
@@ -121,7 +116,7 @@ pub enum BlockUser {
     Success,
 }
 
-impl Request for BlockUserRequest {
+impl Request for BlockUserRequest<'_> {
     type Response = BlockUser;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -131,7 +126,7 @@ impl Request for BlockUserRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageBlockedUsers];
 }
 
-impl RequestPut for BlockUserRequest {
+impl RequestPut for BlockUserRequest<'_> {
     type Body = helix::EmptyBody;
 
     fn parse_inner_response(

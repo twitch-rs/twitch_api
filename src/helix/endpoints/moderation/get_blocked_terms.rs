@@ -5,14 +5,11 @@
 //!
 //! ## Request: [GetBlockedTerms]
 //!
-//! To use this endpoint, construct a [`GetBlockedTerms`] with the [`GetBlockedTerms::builder()`] method.
+//! To use this endpoint, construct a [`GetBlockedTerms`] with the [`GetBlockedTerms::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::get_blocked_terms;
-//! let request = get_blocked_terms::GetBlockedTerms::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = get_blocked_terms::GetBlockedTerms::new("1234", "5678");
 //! ```
 //!
 //! ## Response: [BlockedTerm]
@@ -27,10 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_blocked_terms::GetBlockedTerms::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = get_blocked_terms::GetBlockedTerms::new("1234", "5678");
 //! let response: Vec<helix::moderation::BlockedTerm> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -48,31 +42,33 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetBlockedTerms {
+pub struct GetBlockedTerms<'a> {
     /// The ID of the broadcaster whose blocked terms you’re getting.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     /// If the broadcaster wants to get their own block terms (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: Cow<'a, types::UserIdRef>,
     /// The maximum number of blocked terms to return per page in the response. The minimum page size is 1 blocked term per page and the maximum is 100. The default is 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<u32>,
     /// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
 }
 
-impl GetBlockedTerms {
+impl<'a> GetBlockedTerms<'a> {
     /// Get blocked terms in a broadcasters channel as specified moderator
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
             after: Default::default(),
             first: Default::default(),
         }
@@ -90,7 +86,7 @@ impl GetBlockedTerms {
 /// [`get-blocked-terms`](https://dev.twitch.tv/docs/api/reference#get-blocked-terms)
 pub type GetBlockedTermsResponse = BlockedTerm;
 
-impl Request for GetBlockedTerms {
+impl Request for GetBlockedTerms<'_> {
     type Response = Vec<BlockedTerm>;
 
     const PATH: &'static str = "moderation/blocked_terms";
@@ -99,10 +95,12 @@ impl Request for GetBlockedTerms {
         &[twitch_oauth2::Scope::ModeratorReadBlockedTerms];
 }
 
-impl RequestGet for GetBlockedTerms {}
+impl RequestGet for GetBlockedTerms<'_> {}
 
-impl helix::Paginated for GetBlockedTerms {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetBlockedTerms<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

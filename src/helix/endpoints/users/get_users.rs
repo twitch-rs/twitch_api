@@ -8,8 +8,8 @@
 //! ```rust
 //! use twitch_api::helix::users::get_users;
 //! let request = get_users::GetUsersRequest::builder()
-//!     .id(vec!["1234".into()])
-//!     .login(vec!["justintvfan".into()])
+//!     .id(&["1234".into()][..])
+//!     .login(&["justintvfan".into()][..])
 //!     .build();
 //! ```
 //!
@@ -19,15 +19,17 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, users::get_users};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+//! let ids: &[&types::UserIdRef] = &["1234".into()];
+//! let logins: &[&types::UserNameRef] = &["justintvfan".into()];
 //! let request = get_users::GetUsersRequest::builder()
-//!     .id(vec!["1234".into()])
-//!     .login(vec!["justintvfan".into()])
+//!     .id(ids)
+//!     .login(logins)
 //!     .build();
 //! let response: Vec<get_users::User> = client.req_get(request, &token).await?.data;
 //! # Ok(())
@@ -46,50 +48,42 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetUsersRequest {
+pub struct GetUsersRequest<'a> {
     /// User ID. Multiple user IDs can be specified. Limit: 100.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub id: Vec<types::UserId>,
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
+    #[serde(borrow)]
+    pub id: Cow<'a, [&'a types::UserIdRef]>,
     /// User login name. Multiple login names can be specified. Limit: 100.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub login: Vec<types::UserName>,
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
+    #[serde(borrow)]
+    pub login: Cow<'a, [&'a types::UserNameRef]>,
 }
 
-impl GetUsersRequest {
-    /// Get a single user by their [`UserName`](types::UserName)
-    pub fn login(login: impl Into<types::UserName>) -> Self {
-        Self {
-            id: Vec::default(),
-            login: vec![login.into()],
-        }
-    }
-
+impl<'a> GetUsersRequest<'a> {
     /// Get multiple user by their [`UserName`](types::UserName)
     ///
     /// ```rust
     /// use twitch_api::helix::users::get_users::GetUsersRequest;
-    /// GetUsersRequest::logins(["twitch", "justintv"]);
+    /// GetUsersRequest::logins(&["twitch".into(), "justintv".into()][..]);
     /// ```
-    pub fn logins(login: impl IntoIterator<Item = impl Into<types::UserName>>) -> Self {
+    pub fn logins(login: impl Into<Cow<'a, [&'a types::UserNameRef]>>) -> Self {
         Self {
-            id: Vec::default(),
-            login: login.into_iter().map(Into::into).collect(),
-        }
-    }
-
-    /// Get a user by their [`UserId`](types::UserId)
-    pub fn id(id: impl Into<types::UserId>) -> Self {
-        Self {
-            id: vec![id.into()],
-            login: Vec::default(),
+            id: Cow::Borrowed(&[]),
+            login: login.into(),
         }
     }
 
     /// Get multiple user by their [`UserId`](types::UserId)
-    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
+    pub fn ids(ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
         Self {
-            id: ids.into_iter().map(Into::into).collect(),
-            login: Vec::default(),
+            id: ids.into(),
+            login: Cow::Borrowed(&[]),
         }
     }
 
@@ -100,8 +94,8 @@ impl GetUsersRequest {
     /// This is not a valid request, it needs to be filled out with other fields.
     pub fn new() -> Self {
         Self {
-            id: Vec::default(),
-            login: Vec::default(),
+            id: Cow::Borrowed(&[]),
+            login: Cow::Borrowed(&[]),
         }
     }
 }
@@ -143,7 +137,7 @@ pub struct User {
     pub view_count: usize,
 }
 
-impl Request for GetUsersRequest {
+impl Request for GetUsersRequest<'_> {
     type Response = Vec<User>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -153,13 +147,15 @@ impl Request for GetUsersRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetUsersRequest {}
+impl RequestGet for GetUsersRequest<'_> {}
 
 #[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetUsersRequest::id("44322889");
+
+    let ids: &[&types::UserIdRef] = &["44322889".into()];
+    let req = GetUsersRequest::ids(ids);
 
     // From twitch docs
     // FIXME: This is not valid anymore. Twitch....

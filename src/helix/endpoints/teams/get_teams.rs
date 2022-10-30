@@ -3,13 +3,11 @@
 //!
 //! ## Request: [GetTeamsRequest]
 //!
-//! To use this endpoint, construct a [`GetTeamsRequest`] with the [`GetTeamsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetTeamsRequest`]
 //!
 //! ```rust
 //! use twitch_api::helix::teams::get_teams;
-//! let request = get_teams::GetTeamsRequest::builder()
-//!     .name("coolteam".to_string())
-//!     .build();
+//! let request = get_teams::GetTeamsRequest::name("coolteam");
 //! ```
 //!
 //! ## Response: [Team]
@@ -24,9 +22,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_teams::GetTeamsRequest::builder()
-//!     .name("coolteam".to_string())
-//!     .build();
+//! let request = get_teams::GetTeamsRequest::name("coolteam");
 //! let response: Vec<get_teams::Team> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -44,29 +40,31 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetTeamsRequest {
+pub struct GetTeamsRequest<'a> {
     /// Team ID.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub id: Option<types::TeamId>,
+    #[serde(borrow)]
+    pub id: Option<Cow<'a, types::TeamIdRef>>,
     /// Team name.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub name: Option<String>,
+    #[serde(borrow)]
+    pub name: Option<Cow<'a, str>>,
 }
 
-impl GetTeamsRequest {
+impl<'a> GetTeamsRequest<'a> {
     /// Get team with this [`TeamId`](types::TeamId)
-    pub fn id(id: impl Into<types::TeamId>) -> Self {
+    pub fn id(id: impl types::IntoCow<'a, types::TeamIdRef> + 'a) -> Self {
         Self {
-            id: Some(id.into()),
+            id: Some(id.to_cow()),
             name: None,
         }
     }
 
     /// Get team with this name
-    pub fn name(name: String) -> Self {
+    pub fn name(name: impl Into<Cow<'a, str>>) -> Self {
         Self {
             id: None,
-            name: Some(name),
+            name: Some(name.into()),
         }
     }
 }
@@ -85,7 +83,7 @@ pub struct Team {
     pub team: TeamInformation,
 }
 
-impl Request for GetTeamsRequest {
+impl Request for GetTeamsRequest<'_> {
     type Response = Vec<Team>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -95,7 +93,7 @@ impl Request for GetTeamsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetTeamsRequest {}
+impl RequestGet for GetTeamsRequest<'_> {}
 
 #[cfg(test)]
 #[test]

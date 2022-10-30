@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetBannedUsersRequest]
 //!
-//! To use this endpoint, construct a [`GetBannedUsersRequest`] with the [`GetBannedUsersRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetBannedUsersRequest`] with the [`GetBannedUsersRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::get_banned_users;
-//! let request = get_banned_users::GetBannedUsersRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_banned_users::GetBannedUsersRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [BannedUser]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_banned_users::GetBannedUsersRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_banned_users::GetBannedUsersRequest::broadcaster_id("1234");
 //! let response: Vec<get_banned_users::BannedUser> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -46,47 +42,44 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetBannedUsersRequest {
+pub struct GetBannedUsersRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Filters the results and only returns a status object for users who are banned in this channel and have a matching user_id.
     /// Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
     /// Maximum: 100
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub user_id: Vec<types::UserId>,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub before: Option<helix::Cursor>,
+    #[serde(borrow)]
+    pub before: Option<Cow<'a, helix::CursorRef>>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
     pub first: Option<usize>,
 }
 
-impl GetBannedUsersRequest {
+impl<'a> GetBannedUsersRequest<'a> {
     /// Get banned users in a broadcasters channel.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            user_id: Default::default(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            user_id: Cow::Borrowed(&[]),
             after: Default::default(),
             before: Default::default(),
             first: Default::default(),
         }
     }
 
-    /// Check if supplied user is banned.
-    pub fn user(mut self, user_id: impl Into<types::UserId>) -> Self {
-        self.user_id = vec![user_id.into()];
-        self
-    }
-
     /// Check if supplied users are banned.
-    pub fn users(mut self, user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
-        self.user_id = user_ids.into_iter().map(Into::into).collect();
+    pub fn users(mut self, user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+        self.user_id = user_ids.into();
         self
     }
 
@@ -124,7 +117,7 @@ pub struct BannedUser {
     pub moderator_name: types::DisplayName,
 }
 
-impl Request for GetBannedUsersRequest {
+impl Request for GetBannedUsersRequest<'_> {
     type Response = Vec<BannedUser>;
 
     const PATH: &'static str = "moderation/banned";
@@ -132,10 +125,12 @@ impl Request for GetBannedUsersRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
 }
 
-impl RequestGet for GetBannedUsersRequest {}
+impl RequestGet for GetBannedUsersRequest<'_> {}
 
-impl helix::Paginated for GetBannedUsersRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetBannedUsersRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

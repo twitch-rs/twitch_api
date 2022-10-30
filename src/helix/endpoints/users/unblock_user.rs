@@ -5,13 +5,11 @@
 //!
 //! ## Request: [UnblockUserRequest]
 //!
-//! To use this endpoint, construct a [`UnblockUserRequest`] with the [`UnblockUserRequest::builder()`] method.
+//! To use this endpoint, construct a [`UnblockUserRequest`] with the [`UnblockUserRequest::unblock_user()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::users::unblock_user;
-//! let request = unblock_user::UnblockUserRequest::builder()
-//!     .target_user_id("1234")
-//!     .build();
+//! let request = unblock_user::UnblockUserRequest::unblock_user("1234");
 //! ```
 //!
 //! ## Response: [UnblockUser]
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = unblock_user::UnblockUserRequest::builder()
-//!     .target_user_id("1234")
-//!     .build();
+//! let request = unblock_user::UnblockUserRequest::unblock_user("1234");
 //! let response: unblock_user::UnblockUser = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -45,17 +41,18 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UnblockUserRequest {
+pub struct UnblockUserRequest<'a> {
     /// User ID of the follower
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub target_user_id: types::UserId,
+    #[serde(borrow)]
+    pub target_user_id: Cow<'a, types::UserIdRef>,
 }
 
-impl UnblockUserRequest {
+impl<'a> UnblockUserRequest<'a> {
     /// Create a new unblock request
-    pub fn unblock_user(target_user_id: impl Into<types::UserId>) -> Self {
+    pub fn unblock_user(target_user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            target_user_id: target_user_id.into(),
+            target_user_id: target_user_id.to_cow(),
         }
     }
 }
@@ -70,7 +67,7 @@ pub enum UnblockUser {
     Success,
 }
 
-impl Request for UnblockUserRequest {
+impl Request for UnblockUserRequest<'_> {
     type Response = UnblockUser;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -80,7 +77,7 @@ impl Request for UnblockUserRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageBlockedUsers];
 }
 
-impl RequestDelete for UnblockUserRequest {
+impl RequestDelete for UnblockUserRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

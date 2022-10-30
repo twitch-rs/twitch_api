@@ -20,15 +20,12 @@
 //!
 //! ```
 //! # use twitch_api::helix::predictions::create_prediction;
-//! let body = create_prediction::CreatePredictionBody::builder()
-//!     .broadcaster_id("141981764")
-//!     .title("Any leeks in the stream?")
-//!     .outcomes(create_prediction::NewPredictionOutcome::new_tuple(
-//!         "Yes, give it time.",
-//!         "Definitely not.",
-//!     ))
-//!     .prediction_window(120)
-//!     .build();
+//! let body = create_prediction::CreatePredictionBody::new(
+//!     "141981764",
+//!     "Any leeks in the stream?",
+//!     create_prediction::NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+//!     120,
+//! );
 //! ```
 //!
 //! ## Response: [CreatePredictionResponse]
@@ -45,14 +42,13 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = create_prediction::CreatePredictionRequest::builder()
-//!     .build();
-//! let body = create_prediction::CreatePredictionBody::builder()
-//!     .broadcaster_id("141981764")
-//!     .title("Any leeks in the stream?")
-//!     .outcomes(create_prediction::NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."))
-//!     .prediction_window(120)
-//!     .build();
+//! let request = create_prediction::CreatePredictionRequest::new();
+//! let body = create_prediction::CreatePredictionBody::new(
+//!     "141981764",
+//!     "Any leeks in the stream?",
+//!     create_prediction::NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+//!     120,
+//! );
 //! let response: create_prediction::CreatePredictionResponse = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -60,6 +56,8 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`CreatePredictionRequest::parse_response(None, &request.get_uri(), response)`](CreatePredictionRequest::parse_response)
+
+use std::marker::PhantomData;
 
 use super::*;
 use helix::RequestPost;
@@ -70,11 +68,15 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CreatePredictionRequest {}
+pub struct CreatePredictionRequest<'a> {
+    #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[serde(skip)]
+    _marker: PhantomData<&'a ()>,
+}
 
-impl CreatePredictionRequest {
+impl CreatePredictionRequest<'_> {
     /// Create a new [`CreatePredictionRequest`]
-    pub fn new() -> Self { Self {} }
+    pub fn new() -> Self { Self::default() }
 }
 
 /// Body Parameters for [Create Prediction](super::create_prediction)
@@ -83,57 +85,60 @@ impl CreatePredictionRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct CreatePredictionBody {
+pub struct CreatePredictionBody<'a> {
     /// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Title for the Prediction. Maximum: 45 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub title: String,
+    #[serde(borrow)]
+    pub title: Cow<'a, str>,
     /// Array of outcome objects with titles for the Prediction. Array size must be 2.
-    pub outcomes: (NewPredictionOutcome, NewPredictionOutcome),
+    pub outcomes: (NewPredictionOutcome<'a>, NewPredictionOutcome<'a>),
     /// Total duration for the Prediction (in seconds). Minimum: 1. Maximum: 1800.
     pub prediction_window: i64,
 }
 
-impl CreatePredictionBody {
+impl<'a> CreatePredictionBody<'a> {
     /// Create a Channel Points Prediction for a specific Twitch channel.
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        title: String,
-        outcomes: (NewPredictionOutcome, NewPredictionOutcome),
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        title: impl Into<Cow<'a, str>>,
+        outcomes: (NewPredictionOutcome<'a>, NewPredictionOutcome<'a>),
         prediction_window: i64,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            title,
+            broadcaster_id: broadcaster_id.to_cow(),
+            title: title.into(),
             outcomes,
             prediction_window,
         }
     }
 }
 
-impl helix::private::SealedSerialize for CreatePredictionBody {}
+impl helix::private::SealedSerialize for CreatePredictionBody<'_> {}
 
 /// Choice settings for a poll
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct NewPredictionOutcome {
+pub struct NewPredictionOutcome<'a> {
     /// Text displayed for the choice. Maximum: 25 characters.
-    pub title: String,
+    #[serde(borrow)]
+    pub title: Cow<'a, str>,
 }
 
-impl NewPredictionOutcome {
+impl<'a> NewPredictionOutcome<'a> {
     /// Create a new [`NewPredictionOutcome`]
-    pub fn new(title: impl Into<String>) -> Self {
+    pub fn new(title: impl Into<Cow<'a, str>>) -> Self {
         Self {
             title: title.into(),
         }
     }
 
     /// Create a two new [`NewPredictionOutcome`]s
-    pub fn new_tuple(blue: impl Into<String>, pink: impl Into<String>) -> (Self, Self) {
+    pub fn new_tuple(blue: impl Into<Cow<'a, str>>, pink: impl Into<Cow<'a, str>>) -> (Self, Self) {
         (Self::new(blue), Self::new(pink))
     }
 }
@@ -143,7 +148,7 @@ impl NewPredictionOutcome {
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
 pub type CreatePredictionResponse = super::Prediction;
 
-impl Request for CreatePredictionRequest {
+impl Request for CreatePredictionRequest<'_> {
     type Response = CreatePredictionResponse;
 
     const PATH: &'static str = "predictions";
@@ -152,8 +157,8 @@ impl Request for CreatePredictionRequest {
         &[twitch_oauth2::Scope::ChannelManagePredictions];
 }
 
-impl RequestPost for CreatePredictionRequest {
-    type Body = CreatePredictionBody;
+impl<'a> RequestPost for CreatePredictionRequest<'a> {
+    type Body = CreatePredictionBody<'a>;
 
     fn parse_inner_response(
         request: Option<Self>,
@@ -199,7 +204,7 @@ fn test_request() {
 
     let body = CreatePredictionBody::new(
         "141981764",
-        "Any leeks in the stream?".to_owned(),
+        "Any leeks in the stream?",
         NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
         120,
     );

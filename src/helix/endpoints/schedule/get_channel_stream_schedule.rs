@@ -6,13 +6,12 @@
 //! See also [`get_channel_schedule`](helix::HelixClient::get_channel_schedule)
 //! ## Request: [GetChannelStreamScheduleRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelStreamScheduleRequest`] with the [`GetChannelStreamScheduleRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelStreamScheduleRequest`] with the [`GetChannelStreamScheduleRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::get_channel_stream_schedule;
-//! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request =
+//!     get_channel_stream_schedule::GetChannelStreamScheduleRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [ScheduledBroadcasts]
@@ -27,9 +26,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .build();
+//! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::broadcaster_id("1234");
 //! let response: helix::schedule::ScheduledBroadcasts = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -47,32 +44,36 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetChannelStreamScheduleRequest {
+pub struct GetChannelStreamScheduleRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the stream segment to return. Maximum: 100.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub id: Option<types::StreamSegmentId>,
+    #[serde(borrow)]
+    pub id: Option<Cow<'a, types::StreamSegmentIdRef>>,
     /// A timestamp in RFC3339 format to start returning stream segments from. If not specified, the current date and time is used.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub start_time: Option<types::Timestamp>,
+    #[serde(borrow)]
+    pub start_time: Option<Cow<'a, types::TimestampRef>>,
     /// A timezone offset for the requester specified in minutes. This is recommended to ensure stream segments are returned for the correct week. For example, a timezone that is +4 hours from GMT would be “240.” If not specified, “0” is used for GMT.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub utc_offset: Option<String>,
+    #[serde(borrow)]
+    pub utc_offset: Option<Cow<'a, str>>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of stream segments to return. Maximum: 25. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
 }
 
-impl GetChannelStreamScheduleRequest {
+impl<'a> GetChannelStreamScheduleRequest<'a> {
     /// Get a broadcasters schedule
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             id: Default::default(),
             start_time: Default::default(),
             utc_offset: Default::default(),
@@ -82,19 +83,22 @@ impl GetChannelStreamScheduleRequest {
     }
 
     /// Set the id for the request.
-    pub fn id(mut self, id: impl Into<types::StreamSegmentId>) -> Self {
-        self.id = Some(id.into());
+    pub fn id(mut self, id: impl types::IntoCow<'a, types::StreamSegmentIdRef> + 'a) -> Self {
+        self.id = Some(id.to_cow());
         self
     }
 
     /// Set the start_time for the request.
-    pub fn start_time(mut self, start_time: impl Into<types::Timestamp>) -> Self {
-        self.start_time = Some(start_time.into());
+    pub fn start_time(
+        mut self,
+        start_time: impl types::IntoCow<'a, types::TimestampRef> + 'a,
+    ) -> Self {
+        self.start_time = Some(start_time.to_cow());
         self
     }
 
     /// Set the utc_offset for the request.
-    pub fn utc_offset(mut self, utc_offset: impl Into<String>) -> Self {
+    pub fn utc_offset(mut self, utc_offset: impl Into<Cow<'a, str>>) -> Self {
         self.utc_offset = Some(utc_offset.into());
         self
     }
@@ -111,7 +115,7 @@ impl GetChannelStreamScheduleRequest {
 /// [`get-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule)
 pub type GetChannelStreamScheduleResponse = ScheduledBroadcasts;
 
-impl Request for GetChannelStreamScheduleRequest {
+impl Request for GetChannelStreamScheduleRequest<'_> {
     type Response = ScheduledBroadcasts;
 
     const PATH: &'static str = "schedule";
@@ -119,10 +123,12 @@ impl Request for GetChannelStreamScheduleRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChannelStreamScheduleRequest {}
+impl RequestGet for GetChannelStreamScheduleRequest<'_> {}
 
-impl helix::Paginated for GetChannelStreamScheduleRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor; }
+impl helix::Paginated for GetChannelStreamScheduleRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

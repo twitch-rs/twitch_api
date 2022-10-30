@@ -6,13 +6,11 @@
 //!
 //! ## Request: [GetHypeTrainEventsRequest]
 //!
-//! To use this endpoint, construct a [`GetHypeTrainEventsRequest`] with the [`GetHypeTrainEventsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetHypeTrainEventsRequest`] with the [`GetHypeTrainEventsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::hypetrain::get_hypetrain_events;
-//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::builder()
-//!     .broadcaster_id("4321".to_string())
-//!     .build();
+//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::broadcaster_id("4321");
 //! ```
 //!
 //! ## Response: [HypeTrainEvent](types::TwitchCategory)
@@ -27,9 +25,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::builder()
-//!     .broadcaster_id("4321".to_string())
-//!     .build();
+//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::broadcaster_id("4321");
 //! let response: Vec<get_hypetrain_events::HypeTrainEvent> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -47,10 +43,11 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetHypeTrainEventsRequest {
+pub struct GetHypeTrainEventsRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub cursor: Option<helix::Cursor>,
@@ -63,14 +60,15 @@ pub struct GetHypeTrainEventsRequest {
         note = "this does nothing, see https://discuss.dev.twitch.tv/t/get-hype-train-events-api-endpoint-id-query-parameter-deprecation/37613"
     )]
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub id: Option<String>,
+    #[serde(borrow)]
+    pub id: Option<Cow<'a, str>>,
 }
 
-impl GetHypeTrainEventsRequest {
+impl<'a> GetHypeTrainEventsRequest<'a> {
     /// Get hypetrain evens
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             cursor: Default::default(),
             first: Default::default(),
             id: Default::default(),
@@ -134,7 +132,7 @@ pub struct HypeTrainEventData {
     pub id: types::HypeTrainId,
 }
 
-impl Request for GetHypeTrainEventsRequest {
+impl Request for GetHypeTrainEventsRequest<'_> {
     type Response = Vec<HypeTrainEvent>;
 
     const PATH: &'static str = "hypetrain/events";
@@ -142,9 +140,9 @@ impl Request for GetHypeTrainEventsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetHypeTrainEventsRequest {}
+impl RequestGet for GetHypeTrainEventsRequest<'_> {}
 
-impl helix::Paginated for GetHypeTrainEventsRequest {
+impl helix::Paginated for GetHypeTrainEventsRequest<'_> {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.cursor = cursor }
 }
 

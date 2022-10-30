@@ -5,6 +5,7 @@ use crate::{
     types::{self, EmoteUrlBuilder},
 };
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
 
 pub mod get_channel_chat_badges;
 pub mod get_channel_emotes;
@@ -114,7 +115,7 @@ impl ChannelEmote {
     /// # Examples
     ///
     /// ```rust, no_run
-    /// # use twitch_api::{client, helix};
+    /// # use twitch_api::{client, helix, types};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();

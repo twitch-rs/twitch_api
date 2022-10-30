@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetCreatorGoalsRequest]
 //!
-//! To use this endpoint, construct a [`GetCreatorGoalsRequest`] with the [`GetCreatorGoalsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetCreatorGoalsRequest`] with the [`GetCreatorGoalsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::goals::get_creator_goals;
-//! let request = get_creator_goals::GetCreatorGoalsRequest::builder()
-//!     .broadcaster_id("4321".to_string())
-//!     .build();
+//! let request = get_creator_goals::GetCreatorGoalsRequest::broadcaster_id("4321");
 //! ```
 //!
 //! ## Response: [CreatorGoal](types::TwitchCategory)
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_creator_goals::GetCreatorGoalsRequest::builder()
-//!     .broadcaster_id("4321".to_string())
-//!     .build();
+//! let request = get_creator_goals::GetCreatorGoalsRequest::broadcaster_id("4321");
 //! let response: Vec<get_creator_goals::CreatorGoal> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -46,10 +42,11 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetCreatorGoalsRequest {
+pub struct GetCreatorGoalsRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub cursor: Option<helix::Cursor>,
@@ -58,14 +55,15 @@ pub struct GetCreatorGoalsRequest {
     pub first: Option<usize>,
     /// Retreive a single event by event ID
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub id: Option<String>,
+    #[serde(borrow)]
+    pub id: Option<Cow<'a, str>>,
 }
 
-impl GetCreatorGoalsRequest {
+impl<'a> GetCreatorGoalsRequest<'a> {
     /// Gets the broadcaster’s list of active goals.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             cursor: Default::default(),
             first: Default::default(),
             id: Default::default(),
@@ -107,7 +105,7 @@ pub struct CreatorGoal {
     pub created_at: types::Timestamp,
 }
 
-impl Request for GetCreatorGoalsRequest {
+impl Request for GetCreatorGoalsRequest<'_> {
     type Response = Vec<CreatorGoal>;
 
     const PATH: &'static str = "goals";
@@ -115,7 +113,7 @@ impl Request for GetCreatorGoalsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadGoals];
 }
 
-impl RequestGet for GetCreatorGoalsRequest {}
+impl RequestGet for GetCreatorGoalsRequest<'_> {}
 
 #[cfg(test)]
 #[test]

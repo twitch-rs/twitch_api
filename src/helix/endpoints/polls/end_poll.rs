@@ -19,11 +19,11 @@
 //!
 //! ```
 //! # use twitch_api::helix::polls::end_poll;
-//! let body = end_poll::EndPollBody::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("92af127c-7326-4483-a52b-b0da0be61c01")
-//!     .status(end_poll::PollStatus::Terminated)
-//!     .build();
+//! let body = end_poll::EndPollBody::new(
+//!     "274637212",
+//!     "92af127c-7326-4483-a52b-b0da0be61c01",
+//!     end_poll::PollStatus::Terminated,
+//! );
 //! ```
 //!
 //! ## Response: [EndPoll]
@@ -41,11 +41,11 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = end_poll::EndPollRequest::new();
-//! let body = end_poll::EndPollBody::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("92af127c-7326-4483-a52b-b0da0be61c01")
-//!     .status(end_poll::PollStatus::Terminated)
-//!     .build();
+//! let body = end_poll::EndPollBody::new(
+//!     "274637212",
+//!     "92af127c-7326-4483-a52b-b0da0be61c01",
+//!     end_poll::PollStatus::Terminated,
+//! );
 //! let response: end_poll::EndPoll = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -53,6 +53,8 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`EndPollRequest::parse_response(None, &request.get_uri(), response)`](EndPollRequest::parse_response)
+
+use std::marker::PhantomData;
 
 use crate::helix::{parse_json, HelixRequestPatchError};
 
@@ -65,11 +67,14 @@ pub use types::PollStatus;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct EndPollRequest {}
+pub struct EndPollRequest<'a> {
+    #[serde(skip)]
+    _marker: PhantomData<&'a ()>,
+}
 
-impl EndPollRequest {
+impl EndPollRequest<'_> {
     /// Make a new [`EndPollRequest`]
-    pub fn new() -> Self { Self {} }
+    pub fn new() -> Self { Self::default() }
 }
 
 /// Body Parameters for [End Poll](super::end_poll)
@@ -78,13 +83,15 @@ impl EndPollRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct EndPollBody {
+pub struct EndPollBody<'a> {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of the poll.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub id: types::PollId,
+    #[serde(borrow)]
+    pub id: Cow<'a, types::PollIdRef>,
     /// The poll status to be set.
     ///
     /// Valid values:
@@ -93,22 +100,22 @@ pub struct EndPollBody {
     pub status: PollStatus,
 }
 
-impl EndPollBody {
+impl<'a> EndPollBody<'a> {
     /// End a poll that is currently active.
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        id: impl Into<types::PollId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::PollIdRef> + 'a,
         status: PollStatus,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            id: id.to_cow(),
             status,
         }
     }
 }
 
-impl helix::private::SealedSerialize for EndPollBody {}
+impl helix::private::SealedSerialize for EndPollBody<'_> {}
 
 /// Return Values for [Update CustomReward](super::end_poll)
 ///
@@ -126,7 +133,7 @@ pub enum EndPoll {
     AuthFailed,
 }
 
-impl Request for EndPollRequest {
+impl Request for EndPollRequest<'_> {
     type Response = EndPoll;
 
     const PATH: &'static str = "polls";
@@ -134,8 +141,8 @@ impl Request for EndPollRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManagePolls];
 }
 
-impl RequestPatch for EndPollRequest {
-    type Body = EndPollBody;
+impl<'a> RequestPatch for EndPollRequest<'a> {
+    type Body = EndPollBody<'a>;
 
     fn parse_inner_response(
         request: Option<Self>,

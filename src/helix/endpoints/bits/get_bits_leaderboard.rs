@@ -10,7 +10,7 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::bits::get_bits_leaderboard;
-//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new().period("day".to_string());
+//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new().period("day");
 //! // Get leaderbord for the lifetime of the channel
 //! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new();
 //! ```
@@ -44,7 +44,7 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetBitsLeaderboardRequest {
+pub struct GetBitsLeaderboardRequest<'a> {
     /// Number of results to be returned. Maximum: 100. Default: 10.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub count: Option<i32>,
@@ -57,16 +57,19 @@ pub struct GetBitsLeaderboardRequest {
     /// * "year" – 00:00:00 on the first day of the year specified in started_at, through 00:00:00 on the first day of the following year.
     /// * "all" – The lifetime of the broadcaster's channel. If this is specified (or used by default), started_at is ignored.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub period: Option<String>,
+    #[serde(borrow)]
+    pub period: Option<Cow<'a, str>>,
     /// Timestamp for the period over which the returned data is aggregated. Must be in RFC 3339 format. If this is not provided, data is aggregated over the current period; e.g., the current day/week/month/year. This value is ignored if period is "all".
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub started_at: Option<types::Timestamp>,
+    #[serde(borrow)]
+    pub started_at: Option<Cow<'a, types::TimestampRef>>,
     /// ID of the user whose results are returned; i.e., the person who paid for the Bits.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub user_id: Option<types::UserId>,
+    #[serde(borrow)]
+    pub user_id: Option<Cow<'a, types::UserIdRef>>,
 }
 
-impl GetBitsLeaderboardRequest {
+impl<'a> GetBitsLeaderboardRequest<'a> {
     /// Number of results to be returned. Maximum: 100. Default: 10.
     pub fn count(self, count: i32) -> Self {
         Self {
@@ -76,25 +79,25 @@ impl GetBitsLeaderboardRequest {
     }
 
     /// Get loaderboard for this period. Valid values: `"day"`, `"week"`, `"month"`, `"year"`, `"all"`
-    pub fn period(self, period: String) -> Self {
+    pub fn period(self, period: impl Into<Cow<'a, str>>) -> Self {
         Self {
-            period: Some(period),
+            period: Some(period.into()),
             ..self
         }
     }
 
     /// Get leaderboard starting at this timestamp
-    pub fn started_at(self, started_at: impl Into<types::Timestamp>) -> Self {
+    pub fn started_at(self, started_at: impl types::IntoCow<'a, types::TimestampRef> + 'a) -> Self {
         Self {
-            started_at: Some(started_at.into()),
+            started_at: Some(started_at.to_cow()),
             ..self
         }
     }
 
     /// Get leaderboard where this user is included (if they are on the leaderboard)
-    pub fn user_id(self, user_id: impl Into<types::UserId>) -> Self {
+    pub fn user_id(self, user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            user_id: Some(user_id.into()),
+            user_id: Some(user_id.to_cow()),
             ..self
         }
     }
@@ -146,7 +149,7 @@ pub struct LeaderboardUser {
     pub user_login: types::UserName,
 }
 
-impl Request for GetBitsLeaderboardRequest {
+impl Request for GetBitsLeaderboardRequest<'_> {
     type Response = BitsLeaderboard;
 
     const PATH: &'static str = "bits/leaderboard";
@@ -154,7 +157,7 @@ impl Request for GetBitsLeaderboardRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetBitsLeaderboardRequest {
+impl RequestGet for GetBitsLeaderboardRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

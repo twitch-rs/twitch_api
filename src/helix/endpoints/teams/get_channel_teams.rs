@@ -3,13 +3,11 @@
 //!
 //! ## Request: [GetChannelTeamsRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelTeamsRequest`] with the [`GetChannelTeamsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelTeamsRequest`] with the [`GetChannelTeamsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::teams::get_channel_teams;
-//! let request = get_channel_teams::GetChannelTeamsRequest::builder()
-//!     .broadcaster_id("1337")
-//!     .build();
+//! let request = get_channel_teams::GetChannelTeamsRequest::broadcaster_id("1337");
 //! ```
 //!
 //! ## Response: [BroadcasterTeam]
@@ -24,9 +22,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_teams::GetChannelTeamsRequest::builder()
-//!     .broadcaster_id("1337")
-//!     .build();
+//! let request = get_channel_teams::GetChannelTeamsRequest::broadcaster_id("1337");
 //! let response: Vec<get_channel_teams::BroadcasterTeam> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -44,17 +40,18 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetChannelTeamsRequest {
+pub struct GetChannelTeamsRequest<'a> {
     /// Team ID.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
-impl GetChannelTeamsRequest {
+impl<'a> GetChannelTeamsRequest<'a> {
     /// Get the team of this specific broadcaster
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -77,7 +74,7 @@ pub struct BroadcasterTeam {
     pub team: TeamInformation,
 }
 
-impl Request for GetChannelTeamsRequest {
+impl Request for GetChannelTeamsRequest<'_> {
     type Response = Vec<BroadcasterTeam>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -87,7 +84,7 @@ impl Request for GetChannelTeamsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChannelTeamsRequest {}
+impl RequestGet for GetChannelTeamsRequest<'_> {}
 
 #[cfg(test)]
 #[test]

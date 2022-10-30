@@ -9,7 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::games::get_games;
-//! let request = get_games::GetGamesRequest::id("4321");
+//! let request = get_games::GetGamesRequest::ids(&["4321".into()][..]);
 //! ```
 //!
 //! ## Response: [Game](types::TwitchCategory)
@@ -18,13 +18,14 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, games::get_games};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_games::GetGamesRequest::id("4321");
+//! let ids: &[&types::CategoryIdRef] = &["4321".into()];
+//! let request = get_games::GetGamesRequest::ids(ids);
 //! let response: Vec<get_games::Game> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -42,44 +43,36 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetGamesRequest {
+pub struct GetGamesRequest<'a> {
     /// Game ID. At most 100 id values can be specified.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub id: Vec<types::CategoryId>,
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
+    #[serde(borrow)]
+    pub id: Cow<'a, [&'a types::CategoryIdRef]>,
     /// Game name. The name must be an exact match. For instance, “Pokemon” will not return a list of Pokemon games; instead, query the specific Pokemon game(s) in which you are interested. At most 100 name values can be specified.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub name: Vec<String>,
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
+    #[serde(borrow)]
+    pub name: Cow<'a, [&'a str]>,
 }
 
-impl GetGamesRequest {
-    /// Get game with specific exact name match.
-    pub fn name(name: impl Into<String>) -> Self {
-        Self {
-            name: vec![name.into()],
-            ..Self::empty()
-        }
-    }
-
+impl<'a> GetGamesRequest<'a> {
     /// Get games with specific exact name match.
-    pub fn names(names: impl IntoIterator<Item = String>) -> Self {
+    pub fn names(names: impl Into<Cow<'a, [&'a str]>>) -> Self {
         Self {
-            name: names.into_iter().collect(),
-            ..Self::empty()
-        }
-    }
-
-    /// Get game with specific exact id match.
-    pub fn id(id: impl Into<types::CategoryId>) -> Self {
-        Self {
-            id: vec![id.into()],
+            name: names.into(),
             ..Self::empty()
         }
     }
 
     /// Get games with specific exact id match.
-    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::CategoryId>>) -> Self {
+    pub fn ids(ids: impl Into<Cow<'a, [&'a types::CategoryIdRef]>>) -> Self {
         Self {
-            id: ids.into_iter().map(Into::into).collect(),
+            id: ids.into(),
             ..Self::empty()
         }
     }
@@ -87,8 +80,8 @@ impl GetGamesRequest {
     /// Returns an empty [`GetGamesRequest`]
     fn empty() -> Self {
         Self {
-            id: Default::default(),
-            name: Default::default(),
+            id: Cow::Borrowed(&[]),
+            name: Cow::Borrowed(&[]),
         }
     }
 }
@@ -98,7 +91,7 @@ impl GetGamesRequest {
 /// [`get-games`](https://dev.twitch.tv/docs/api/reference#get-games)
 pub type Game = types::TwitchCategory;
 
-impl Request for GetGamesRequest {
+impl Request for GetGamesRequest<'_> {
     type Response = Vec<Game>;
 
     const PATH: &'static str = "games";
@@ -106,13 +99,13 @@ impl Request for GetGamesRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetGamesRequest {}
+impl RequestGet for GetGamesRequest<'_> {}
 
 #[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetGamesRequest::id("493057");
+    let req = GetGamesRequest::ids(vec!["493057".into()]);
 
     // From twitch docs
     let data = br#"

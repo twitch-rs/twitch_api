@@ -5,14 +5,11 @@
 //!
 //! ## Request: [DeleteCustomRewardRequest]
 //!
-//! To use this endpoint, construct a [`DeleteCustomRewardRequest`] with the [`DeleteCustomRewardRequest::builder()`] method.
+//! To use this endpoint, construct a [`DeleteCustomRewardRequest`] with the [`DeleteCustomRewardRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::delete_custom_reward;
-//! let request = delete_custom_reward::DeleteCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("1234")
-//!     .build();
+//! let request = delete_custom_reward::DeleteCustomRewardRequest::new("274637212", "1234");
 //! ```
 //!
 //! ## Response: [DeleteCustomReward]
@@ -27,10 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = delete_custom_reward::DeleteCustomRewardRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .id("1234")
-//!     .build();
+//! let request = delete_custom_reward::DeleteCustomRewardRequest::new("274637212", "1234");
 //! let response: delete_custom_reward::DeleteCustomReward = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -48,21 +42,26 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct DeleteCustomRewardRequest {
+pub struct DeleteCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of the Custom Reward to delete, must match a Custom Reward on broadcaster_id’s channel.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub id: types::RewardId,
+    #[serde(borrow)]
+    pub id: Cow<'a, types::RewardIdRef>,
 }
 
-impl DeleteCustomRewardRequest {
+impl<'a> DeleteCustomRewardRequest<'a> {
     /// Reward to delete
-    pub fn new(broadcaster_id: impl Into<types::UserId>, id: impl Into<types::RewardId>) -> Self {
+    pub fn new(
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::RewardIdRef> + 'a,
+    ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }
@@ -79,7 +78,7 @@ pub enum DeleteCustomReward {
     Success,
 }
 
-impl Request for DeleteCustomRewardRequest {
+impl Request for DeleteCustomRewardRequest<'_> {
     type Response = DeleteCustomReward;
 
     const PATH: &'static str = "channel_points/custom_rewards";
@@ -88,7 +87,7 @@ impl Request for DeleteCustomRewardRequest {
         &[twitch_oauth2::Scope::ChannelManageRedemptions];
 }
 
-impl RequestDelete for DeleteCustomRewardRequest {
+impl RequestDelete for DeleteCustomRewardRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

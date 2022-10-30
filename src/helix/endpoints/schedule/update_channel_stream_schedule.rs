@@ -10,9 +10,11 @@
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::update_channel_stream_schedule;
-//! let request = update_channel_stream_schedule::UpdateChannelStreamScheduleRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .build();
+//! let mut request =
+//!     update_channel_stream_schedule::UpdateChannelStreamScheduleRequest::broadcaster_id(
+//!         "274637212",
+//!     );
+//! request.is_vacation_enabled = Some(true);
 //! ```
 //!
 //! ## Response: [UpdateChannelStreamSchedule]
@@ -29,10 +31,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = update_channel_stream_schedule::UpdateChannelStreamScheduleRequest::builder()
-//!     .broadcaster_id("274637212")
-//!     .is_vacation_enabled(false)
-//!     .build();
+//! let mut request = update_channel_stream_schedule::UpdateChannelStreamScheduleRequest::broadcaster_id("274637212");
+//! request.is_vacation_enabled = Some(true);
 //! let body = helix::EmptyBody;
 //! let response: update_channel_stream_schedule::UpdateChannelStreamSchedule = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
@@ -49,29 +49,33 @@ use helix::RequestPatch;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UpdateChannelStreamScheduleRequest {
+pub struct UpdateChannelStreamScheduleRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Indicates if Vacation Mode is enabled. Set to true to add a vacation or false to remove vacation from the channel streaming schedule.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_vacation_enabled: Option<bool>,
     /// Start time for vacation specified in RFC3339 format. Required if is_vacation_enabled is set to true.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub vacation_start_time: Option<types::Timestamp>,
+    #[serde(borrow)]
+    pub vacation_start_time: Option<Cow<'a, types::TimestampRef>>,
     /// End time for vacation specified in RFC3339 format. Required if is_vacation_enabled is set to true.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub vacation_end_time: Option<types::Timestamp>,
+    #[serde(borrow)]
+    pub vacation_end_time: Option<Cow<'a, types::TimestampRef>>,
     /// The timezone for when the vacation is being scheduled using the IANA time zone database format. Required if is_vacation_enabled is set to true.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub timezone: Option<String>,
+    #[serde(borrow)]
+    pub timezone: Option<Cow<'a, str>>,
 }
 
-impl UpdateChannelStreamScheduleRequest {
+impl<'a> UpdateChannelStreamScheduleRequest<'a> {
     /// Update the settings for a channel’s stream schedule.
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             is_vacation_enabled: Default::default(),
             vacation_start_time: Default::default(),
             vacation_end_time: Default::default(),
@@ -91,7 +95,7 @@ pub enum UpdateChannelStreamSchedule {
     Success,
 }
 
-impl Request for UpdateChannelStreamScheduleRequest {
+impl Request for UpdateChannelStreamScheduleRequest<'_> {
     type Response = UpdateChannelStreamSchedule;
 
     const PATH: &'static str = "schedule/settings";
@@ -99,7 +103,7 @@ impl Request for UpdateChannelStreamScheduleRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageSchedule];
 }
 
-impl RequestPatch for UpdateChannelStreamScheduleRequest {
+impl RequestPatch for UpdateChannelStreamScheduleRequest<'_> {
     type Body = helix::EmptyBody;
 
     fn parse_inner_response(
@@ -137,13 +141,17 @@ impl RequestPatch for UpdateChannelStreamScheduleRequest {
 #[cfg(test)]
 #[test]
 fn test_request() {
+    use std::convert::TryFrom;
+
     use helix::*;
-    use std::convert::TryInto;
+
+    let start = types::Timestamp::try_from("2021-05-16T00:00:00Z").unwrap();
+    let end = types::Timestamp::try_from("2021-05-23T00:00:00Z").unwrap();
     let req = UpdateChannelStreamScheduleRequest {
         is_vacation_enabled: Some(true),
-        vacation_start_time: Some("2021-05-16T00:00:00Z".try_into().unwrap()),
-        vacation_end_time: Some("2021-05-23T00:00:00Z".try_into().unwrap()),
-        timezone: Some("America/New_York".to_string()),
+        vacation_start_time: Some(types::IntoCow::to_cow(&start)),
+        vacation_end_time: Some(types::IntoCow::to_cow(&end)),
+        timezone: Some("America/New_York".into()),
         ..UpdateChannelStreamScheduleRequest::broadcaster_id("141981764")
     };
 

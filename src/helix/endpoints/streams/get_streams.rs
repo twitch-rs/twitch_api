@@ -10,7 +10,7 @@
 //! ```rust
 //! use twitch_api::helix::streams::get_streams;
 //! let request = get_streams::GetStreamsRequest::builder()
-//!     .user_login(vec!["justintvfan".into()])
+//!     .user_login(&["justintvfan".into()][..])
 //!     .build();
 //! ```
 //!
@@ -20,14 +20,16 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, streams::get_streams};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-//! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
+//! let client: helix::HelixClient<'static, client::DummyHttpClient> =
+//!     helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+//! let logins: &[&types::UserNameRef] = &["justintvfan".into()];
 //! let request = get_streams::GetStreamsRequest::builder()
-//!     .user_login(vec!["justintvfan".into()])
+//!     .user_login(logins)
 //!     .build();
 //! let response: Vec<get_streams::Stream> = client.req_get(request, &token).await?.data;
 //! # Ok(())
@@ -43,62 +45,60 @@ use helix::RequestGet;
 /// Query Parameters for [Get Streams](super::get_streams)
 ///
 /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug, Default)]
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetStreamsRequest {
+pub struct GetStreamsRequest<'a> {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub before: Option<helix::Cursor>,
+    #[serde(borrow)]
+    pub before: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Returns streams broadcasting a specified game ID. You can specify up to 10 IDs.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub game_id: Vec<types::CategoryId>,
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
+    #[serde(borrow)]
+    pub game_id: Cow<'a, [&'a types::CategoryIdRef]>,
     /// Stream language. You can specify up to 100 languages.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub language: Option<String>,
+    #[serde(borrow)]
+    pub language: Option<Cow<'a, str>>,
     /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
-    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub user_id: Vec<types::UserId>,
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
+    #[serde(borrow)]
+    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
     /// Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub user_login: Vec<types::UserName>,
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
+    #[serde(borrow)]
+    pub user_login: Cow<'a, [&'a types::UserNameRef]>,
 }
 
-impl GetStreamsRequest {
-    /// Return stream for specified user id
-    pub fn user_id(user_id: impl Into<types::UserId>) -> Self {
-        Self {
-            user_id: vec![user_id.into()],
-            ..Self::default()
-        }
-    }
-
+impl<'a> GetStreamsRequest<'a> {
     /// Return streams for specified user ids
-    pub fn user_ids(user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
+    pub fn user_ids(user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
         Self {
-            user_id: user_ids.into_iter().map(Into::into).collect(),
-            ..Self::default()
-        }
-    }
-
-    /// Return stream for specified user by [nickname](types::UserName)
-    pub fn user_login(user_login: impl Into<types::UserName>) -> Self {
-        Self {
-            user_login: vec![user_login.into()],
+            user_id: user_ids.into(),
             ..Self::default()
         }
     }
 
     /// Return streams for specified users by [nickname](types::UserName)
-    pub fn user_logins(user_logins: impl IntoIterator<Item = impl Into<types::UserName>>) -> Self {
+    pub fn user_logins(user_logins: impl Into<Cow<'a, [&'a types::UserNameRef]>>) -> Self {
         Self {
-            user_login: user_logins.into_iter().map(Into::into).collect(),
+            user_login: user_logins.into(),
             ..Self::default()
         }
     }
@@ -107,6 +107,20 @@ impl GetStreamsRequest {
     pub fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
         self
+    }
+}
+
+impl Default for GetStreamsRequest<'_> {
+    fn default() -> Self {
+        Self {
+            after: None,
+            before: None,
+            first: None,
+            game_id: Cow::Borrowed(&[]),
+            language: None,
+            user_id: Cow::Borrowed(&[]),
+            user_login: Cow::Borrowed(&[]),
+        }
     }
 }
 
@@ -149,7 +163,7 @@ pub struct Stream {
     pub viewer_count: usize,
 }
 
-impl Request for GetStreamsRequest {
+impl Request for GetStreamsRequest<'_> {
     type Response = Vec<Stream>;
 
     const PATH: &'static str = "streams";
@@ -157,10 +171,12 @@ impl Request for GetStreamsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetStreamsRequest {}
+impl RequestGet for GetStreamsRequest<'_> {}
 
-impl helix::Paginated for GetStreamsRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+impl helix::Paginated for GetStreamsRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

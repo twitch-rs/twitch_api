@@ -74,7 +74,7 @@ pub async fn run(opts: &Opts) -> eyre::Result<()> {
     .await?;
 
     let broadcaster = client
-        .get_user_from_login(&*opts.broadcaster_login, &token)
+        .get_user_from_login(&opts.broadcaster_login, &token)
         .await?
         .ok_or_else(|| eyre::eyre!("broadcaster not found"))?;
 

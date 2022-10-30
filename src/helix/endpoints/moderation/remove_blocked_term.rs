@@ -5,15 +5,11 @@
 //!
 //! ## Request: [RemoveBlockedTermRequest]
 //!
-//! To use this endpoint, construct a [`RemoveBlockedTermRequest`] with the [`RemoveBlockedTermRequest::builder()`] method.
+//! To use this endpoint, construct a [`RemoveBlockedTermRequest`] with the [`RemoveBlockedTermRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::remove_blocked_term;
-//! let request = remove_blocked_term::RemoveBlockedTermRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .id("DEADBEEF")
-//!     .build();
+//! let request = remove_blocked_term::RemoveBlockedTermRequest::new("1234", "5678", "DEADBEEF");
 //! ```
 //!
 //! ## Response: [RemoveBlockedTerm]
@@ -28,11 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = remove_blocked_term::RemoveBlockedTermRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .id("DEADBEEF")
-//!     .build();
+//! let request = remove_blocked_term::RemoveBlockedTermRequest::new("1234", "5678", "DEADBEEF");
 //! let response: remove_blocked_term::RemoveBlockedTerm = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -49,30 +41,33 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct RemoveBlockedTermRequest {
+pub struct RemoveBlockedTermRequest<'a> {
     /// The ID of the broadcaster that owns the list of blocked terms.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     /// If the broadcaster wants to delete the blocked term (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: Cow<'a, types::UserIdRef>,
     /// The ID of the blocked term you want to delete.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub id: types::BlockedTermId,
+    #[serde(borrow)]
+    pub id: Cow<'a, types::BlockedTermIdRef>,
 }
 
-impl RemoveBlockedTermRequest {
+impl<'a> RemoveBlockedTermRequest<'a> {
     /// Remove blocked term
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
-        id: impl Into<types::BlockedTermId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        id: impl types::IntoCow<'a, types::BlockedTermIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }
@@ -87,7 +82,7 @@ pub enum RemoveBlockedTerm {
     Success,
 }
 
-impl Request for RemoveBlockedTermRequest {
+impl Request for RemoveBlockedTermRequest<'_> {
     type Response = RemoveBlockedTerm;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -98,7 +93,7 @@ impl Request for RemoveBlockedTermRequest {
         &[twitch_oauth2::Scope::ModeratorManageBlockedTerms];
 }
 
-impl RequestDelete for RemoveBlockedTermRequest {
+impl RequestDelete for RemoveBlockedTermRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,

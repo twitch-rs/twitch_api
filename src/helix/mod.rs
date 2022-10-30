@@ -5,12 +5,13 @@
 //! you can decide to use this library without any specific client implementation.
 //!
 //! ```rust
-//! use twitch_api::helix::{self, Request, RequestGet, users::{GetUsersRequest, User}};
+//! use twitch_api::{helix::{self, Request, RequestGet, users::{GetUsersRequest, User}}, types};
 //!
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //!
-//! let request = GetUsersRequest::login("justintv123");
+//! let logins: &[&types::UserNameRef] = &["justintv123".into()];
+//! let request = GetUsersRequest::logins(logins);
 //!
 //! // Send it however you want
 //! // Create a [`http::Response<hyper::body::Bytes>`] with RequestGet::create_request, which takes an access token and a client_id
@@ -127,6 +128,16 @@ struct Pagination {
 /// A cursor is a pointer to the current "page" in the twitch api pagination
 #[aliri_braid::braid(serde)]
 pub struct Cursor;
+
+impl CursorRef {
+    /// Get a borrowed [`Cow<'_, CursorRef>`](std::borrow::Cow::Borrowed)
+    pub fn as_cow(&self) -> ::std::borrow::Cow<'_, CursorRef> { self.into() }
+}
+
+impl Cursor {
+    /// Get a owned [`Cow<'_, CursorRef>`](std::borrow::Cow::Owned)
+    fn into_cow<'a>(self) -> std::borrow::Cow<'a, CursorRef> { std::borrow::Cow::Owned(self) }
+}
 
 /// Errors that can happen when creating a body
 #[derive(thiserror::Error, Debug, displaydoc::Display)]

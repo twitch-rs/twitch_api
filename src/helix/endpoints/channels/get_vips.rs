@@ -43,27 +43,29 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetVipsRequest {
+pub struct GetVipsRequest<'a> {
     /// The ID of the broadcaster whose list of VIPs you want to get.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Filters the list for specific VIPs. To specify more than one user, include the user_id parameter for each user to get. For example, &user_id=1234&user_id=5678. The maximum number of IDs that you may specify is 100. Ignores those users in the list that aren’t VIPs.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub user_id: Vec<types::UserId>,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
     /// The maximum number of items to return per page in the response. The minimum page size is 1 item per page and the maximum is 100. The default is 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value. Read more.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
 }
 
-impl GetVipsRequest {
+impl<'a> GetVipsRequest<'a> {
     /// Get channel VIPs in channel
-    pub fn broadcaster_id(broadcaster_id: impl Into<types::UserId>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            user_id: vec![],
+            broadcaster_id: broadcaster_id.to_cow(),
+            user_id: Cow::Borrowed(&[]),
             first: None,
             after: None,
         }
@@ -75,18 +77,10 @@ impl GetVipsRequest {
         self
     }
 
-    /// Filter response with this ID
-    pub fn user_id(self, user_id: impl Into<types::UserId>) -> Self {
-        Self {
-            user_id: vec![user_id.into()],
-            ..self
-        }
-    }
-
     /// Filter response with these IDs
-    pub fn user_ids(self, user_ids: impl IntoIterator<Item = impl Into<types::UserId>>) -> Self {
+    pub fn user_ids(self, user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
         Self {
-            user_id: user_ids.into_iter().map(Into::into).collect(),
+            user_id: user_ids.into(),
             ..self
         }
     }
@@ -107,7 +101,7 @@ pub struct Vip {
     pub user_login: types::UserName,
 }
 
-impl Request for GetVipsRequest {
+impl Request for GetVipsRequest<'_> {
     type Response = Vec<Vip>;
 
     const PATH: &'static str = "channels/vips";
@@ -115,11 +109,13 @@ impl Request for GetVipsRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadVips];
 }
 
-impl helix::Paginated for GetVipsRequest {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor; }
+impl helix::Paginated for GetVipsRequest<'_> {
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
-impl RequestGet for GetVipsRequest {}
+impl RequestGet for GetVipsRequest<'_> {}
 
 #[cfg(test)]
 #[test]
@@ -159,7 +155,9 @@ fn test_request_all() {
 #[test]
 fn test_request_multiple() {
     use helix::*;
-    let req = GetVipsRequest::broadcaster_id("123").user_ids(["456", "678"]);
+
+    let ids: &[&types::UserIdRef] = &["456".into(), "678".into()];
+    let req = GetVipsRequest::broadcaster_id("123").user_ids(ids);
 
     // From twitch docs
     // FIXME: Example has ...

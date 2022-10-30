@@ -10,7 +10,7 @@
 //! ```rust
 //! use twitch_api::helix::videos::delete_videos;
 //! let request = delete_videos::DeleteVideosRequest::builder()
-//!     .id(vec!["1234".into()])
+//!     .id(&["1234".into()][..])
 //!     .build();
 //! ```
 //!
@@ -20,14 +20,15 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, videos::delete_videos};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+//! let ids: &[&types::VideoIdRef] = &["1234".into()];
 //! let request = delete_videos::DeleteVideosRequest::builder()
-//!     .id(vec!["1234".into()])
+//!     .id(ids)
 //!     .build();
 //! let response: delete_videos::DeleteVideo = client.req_delete(request, &token).await?.data;
 //! # Ok(())
@@ -47,26 +48,19 @@ use helix::RequestDelete;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct DeleteVideosRequest {
+pub struct DeleteVideosRequest<'a> {
     /// ID of the video(s) to be deleted. Limit: 5.
-    #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub id: Vec<types::VideoId>,
+    #[cfg_attr(
+        feature = "typed-builder",
+        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+    )]
+    #[serde(borrow)]
+    pub id: Cow<'a, [&'a types::VideoIdRef]>,
 }
 
-impl DeleteVideosRequest {
-    /// ID of the video to be deleted
-    pub fn id(id: impl Into<types::VideoId>) -> Self {
-        Self {
-            id: vec![id.into()],
-        }
-    }
-
+impl<'a> DeleteVideosRequest<'a> {
     /// ID of the videos to be deleted
-    pub fn ids(ids: impl IntoIterator<Item = impl Into<types::VideoId>>) -> Self {
-        Self {
-            id: ids.into_iter().map(Into::into).collect(),
-        }
-    }
+    pub fn ids(ids: impl Into<Cow<'a, [&'a types::VideoIdRef]>>) -> Self { Self { id: ids.into() } }
 }
 // FIXME: Should return VideoIds
 /// Return Values for [Delete Videos](super::delete_videos)
@@ -79,7 +73,7 @@ pub enum DeleteVideo {
     Success,
 }
 
-impl Request for DeleteVideosRequest {
+impl Request for DeleteVideosRequest<'_> {
     type Response = DeleteVideo;
 
     const PATH: &'static str = "videos";
@@ -87,7 +81,7 @@ impl Request for DeleteVideosRequest {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageVideos];
 }
 
-impl RequestDelete for DeleteVideosRequest {
+impl RequestDelete for DeleteVideosRequest<'_> {
     fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
@@ -119,7 +113,7 @@ impl RequestDelete for DeleteVideosRequest {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = DeleteVideosRequest::id("234482848");
+    let req = DeleteVideosRequest::ids(vec!["234482848".into()]);
 
     // From twitch docs
     let data = br#""#.to_vec();

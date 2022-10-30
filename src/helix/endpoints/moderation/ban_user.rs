@@ -5,14 +5,11 @@
 //!
 //! ## Request: [BanUserRequest]
 //!
-//! To use this endpoint, construct a [`BanUserRequest`] with the [`BanUserRequest::builder()`] method.
+//! To use this endpoint, construct a [`BanUserRequest`] with the [`BanUserRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::ban_user;
-//! let request = ban_user::BanUserRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
+//! let request = ban_user::BanUserRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Body: [BanUserBody]
@@ -21,7 +18,7 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::ban_user;
-//! let body = ban_user::BanUserBody::new("9876", "no reason".to_string(), 120);
+//! let body = ban_user::BanUserBody::new("9876", "no reason", 120);
 //! ```
 //!
 //! ## Response: [BanUser]
@@ -38,11 +35,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = ban_user::BanUserRequest::builder()
-//!     .broadcaster_id("1234")
-//!     .moderator_id("5678")
-//!     .build();
-//! let body = ban_user::BanUserBody::new("9876", "no reason".to_string(), 120);
+//! let request = ban_user::BanUserRequest::new("1234", "5678");
+//! let body = ban_user::BanUserBody::new("9876", "no reason", 120);
 //! let response: ban_user::BanUser = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -59,28 +53,30 @@ use helix::RequestPost;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct BanUserRequest {
+pub struct BanUserRequest<'a> {
     /// The ID of the broadcaster whose chat room the user is being banned from.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     /// This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster wants to ban the user (instead of having the moderator do it),
     /// set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub moderator_id: types::UserId,
+    #[serde(borrow)]
+    pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
-impl BanUserRequest {
+impl<'a> BanUserRequest<'a> {
     /// Ban a user on this channel
     pub fn new(
-        broadcaster_id: impl Into<types::UserId>,
-        moderator_id: impl Into<types::UserId>,
+        broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
         }
     }
 }
@@ -91,7 +87,7 @@ impl BanUserRequest {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct BanUserBody {
+pub struct BanUserBody<'a> {
     /// Duration of the (optional) timeout in seconds.
     ///
     /// To ban a user indefinitely, don’t include this field.
@@ -104,32 +100,34 @@ pub struct BanUserBody {
     pub duration: Option<u32>,
     /// The reason the user is being banned or put in a timeout. The text is user defined and limited to a maximum of 500 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub reason: String,
+    #[serde(borrow)]
+    pub reason: Cow<'a, str>,
     /// The ID of the user to ban or put in a timeout.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub user_id: types::UserId,
+    #[serde(borrow)]
+    pub user_id: Cow<'a, types::UserIdRef>,
 }
 
-impl BanUserBody {
+impl<'a> BanUserBody<'a> {
     /// Create a new [`BanUserBody`]
     pub fn new(
-        user_id: impl Into<types::UserId>,
-        reason: String,
+        user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
+        reason: impl Into<Cow<'a, str>>,
         duration: impl Into<Option<u32>>,
     ) -> Self {
         Self {
             duration: duration.into(),
-            reason,
-            user_id: user_id.into(),
+            reason: reason.into(),
+            user_id: user_id.to_cow(),
         }
     }
 }
 
-impl helix::HelixRequestBody for BanUserBody {
+impl helix::HelixRequestBody for BanUserBody<'_> {
     fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
-            data: &'a BanUserBody,
+            data: &'a BanUserBody<'a>,
         }
         serde_json::to_vec(&InnerBody { data: self })
             .map_err(Into::into)
@@ -156,7 +154,7 @@ pub struct BanUser {
     pub user_id: types::UserId,
 }
 
-impl Request for BanUserRequest {
+impl Request for BanUserRequest<'_> {
     type Response = BanUser;
 
     const PATH: &'static str = "moderation/bans";
@@ -165,8 +163,8 @@ impl Request for BanUserRequest {
         &[twitch_oauth2::Scope::ModeratorManageBannedUsers];
 }
 
-impl RequestPost for BanUserRequest {
-    type Body = BanUserBody;
+impl<'a> RequestPost for BanUserRequest<'a> {
+    type Body = BanUserBody<'a>;
 
     fn parse_inner_response(
         request: Option<Self>,
@@ -212,7 +210,7 @@ fn test_request() {
     use helix::*;
     let req = BanUserRequest::new("1234", "5678");
 
-    let body = BanUserBody::new("9876", "no reason".to_string(), 300);
+    let body = BanUserBody::new("9876", "no reason", 300);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
@@ -249,7 +247,7 @@ fn test_request_error() {
     use helix::*;
     let req = BanUserRequest::new("1234", "5678");
 
-    let body = BanUserBody::new("9876", "no reason".to_string(), 300);
+    let body = BanUserBody::new("9876", "no reason", 300);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
