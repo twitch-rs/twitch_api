@@ -91,6 +91,7 @@ pub struct SendWhisperBody<'a> {
     /// 10,000 characters if the user you're sending the message to has whispered you before.
     ///
     /// Messages that exceed the maximum length are truncated.
+    #[serde(borrow)]
     pub message: Cow<'a, str>,
 }
 

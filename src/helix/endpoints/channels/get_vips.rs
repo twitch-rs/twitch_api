@@ -57,6 +57,7 @@ pub struct GetVipsRequest<'a> {
     pub first: Option<usize>,
     /// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value. Read more.
     #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[serde(borrow)]
     pub after: Option<Cow<'a, helix::CursorRef>>,
 }
 

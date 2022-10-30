@@ -54,6 +54,7 @@ pub struct GetPollsRequest<'a> {
     pub id: Cow<'a, [&'a types::PollIdRef]>,
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(borrow)]
     pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 20. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
