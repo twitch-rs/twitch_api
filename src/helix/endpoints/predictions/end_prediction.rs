@@ -85,11 +85,11 @@ impl EndPredictionRequest<'_> {
 pub struct EndPredictionBody<'a> {
     /// The broadcaster running predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of the prediction.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub id: Cow<'a, types::PredictionIdRef>,
     /// The Prediction status to be set. Valid values:
     ///
@@ -99,7 +99,7 @@ pub struct EndPredictionBody<'a> {
     pub status: types::PredictionStatus,
     /// ID of the winning outcome for the Prediction. This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub winning_outcome_id: Option<Cow<'a, types::PredictionIdRef>>,
 }
 

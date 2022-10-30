@@ -46,11 +46,11 @@ use helix::RequestDelete;
 pub struct RemoveChannelModeratorRequest<'a> {
     /// The ID of the broadcaster that owns the chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to remove as a moderator from the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 

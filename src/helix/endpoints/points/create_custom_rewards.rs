@@ -56,7 +56,7 @@ use helix::RequestPost;
 pub struct CreateCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
@@ -78,11 +78,12 @@ impl<'a> CreateCustomRewardRequest<'a> {
 pub struct CreateCustomRewardBody<'a> {
     /// The title of the reward
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Cow<'a, str>,
     /// The prompt for the viewer when they are redeeming the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub prompt: Option<Cow<'a, str>>,
     /// The cost of the reward
     pub cost: usize,
@@ -92,7 +93,8 @@ pub struct CreateCustomRewardBody<'a> {
     pub is_enabled: Option<bool>,
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub background_color: Option<Cow<'a, str>>,
     /// Does the user need to enter information when redeeming the reward. Defaults false
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]

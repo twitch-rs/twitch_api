@@ -46,11 +46,11 @@ use helix::RequestPost;
 pub struct StartARaidRequest<'a> {
     /// The ID of the broadcaster that’s sending the raiding party.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     from_broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the broadcaster to raid.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     to_broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 

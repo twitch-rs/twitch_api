@@ -43,11 +43,11 @@ use helix::RequestGet;
 pub struct GetTeamsRequest<'a> {
     /// Team ID.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub id: Option<Cow<'a, types::TeamIdRef>>,
     /// Team name.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub name: Option<Cow<'a, str>>,
 }
 

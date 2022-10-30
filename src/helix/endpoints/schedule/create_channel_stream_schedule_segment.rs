@@ -77,7 +77,7 @@ use helix::RequestPost;
 pub struct CreateChannelStreamScheduleSegmentRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
@@ -99,26 +99,29 @@ impl<'a> CreateChannelStreamScheduleSegmentRequest<'a> {
 pub struct CreateChannelStreamScheduleSegmentBody<'a> {
     /// Start time for the scheduled broadcast specified in RFC3339 format.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub start_time: Cow<'a, types::TimestampRef>,
     // FIXME: specific braid?
     /// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub timezone: Cow<'a, str>,
     /// Indicates if the scheduled broadcast is recurring weekly.
     pub is_recurring: bool,
     /// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub duration: Option<Cow<'a, str>>,
     /// Game/Category ID for the scheduled broadcast.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub category_id: Option<Cow<'a, types::CategoryIdRef>>,
     /// Title for the scheduled broadcast. Maximum: 140 characters.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Option<Cow<'a, str>>,
 }
 

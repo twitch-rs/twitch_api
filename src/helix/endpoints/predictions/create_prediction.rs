@@ -88,11 +88,11 @@ impl CreatePredictionRequest<'_> {
 pub struct CreatePredictionBody<'a> {
     /// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Title for the Prediction. Maximum: 45 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Cow<'a, str>,
     /// Array of outcome objects with titles for the Prediction. Array size must be 2.
     pub outcomes: (NewPredictionOutcome<'a>, NewPredictionOutcome<'a>),
@@ -125,7 +125,7 @@ impl helix::private::SealedSerialize for CreatePredictionBody<'_> {}
 #[non_exhaustive]
 pub struct NewPredictionOutcome<'a> {
     /// Text displayed for the choice. Maximum: 25 characters.
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Cow<'a, str>,
 }
 

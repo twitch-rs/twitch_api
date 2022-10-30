@@ -59,7 +59,7 @@ use helix::RequestPatch;
 pub struct ModifyChannelInformationRequest<'a> {
     /// ID of the channel
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
@@ -82,15 +82,18 @@ impl<'a> ModifyChannelInformationRequest<'a> {
 pub struct ModifyChannelInformationBody<'a> {
     /// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub game_id: Option<Cow<'a, types::CategoryIdRef>>,
     /// Language of the channel
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_language: Option<Cow<'a, str>>,
     /// Title of the stream. Value must not be an empty string.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Option<Cow<'a, str>>,
 }
 

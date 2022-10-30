@@ -44,7 +44,7 @@ use helix::RequestDelete;
 pub struct UnblockUserRequest<'a> {
     /// User ID of the follower
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub target_user_id: Cow<'a, types::UserIdRef>,
 }
 

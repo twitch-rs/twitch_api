@@ -64,11 +64,11 @@ use helix::RequestPatch;
 pub struct UpdateCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of the Custom Reward to update, must match a Custom Reward on broadcaster_id’s channel.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub id: Cow<'a, types::RewardIdRef>,
 }
 
@@ -94,11 +94,13 @@ impl<'a> UpdateCustomRewardRequest<'a> {
 pub struct UpdateCustomRewardBody<'a> {
     /// The title of the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Option<Cow<'a, str>>,
     /// The prompt for the viewer when they are redeeming the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub prompt: Option<Cow<'a, str>>,
     /// The cost of the reward
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -106,7 +108,8 @@ pub struct UpdateCustomRewardBody<'a> {
     pub cost: Option<usize>,
     /// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub background_color: Option<Cow<'a, str>>,
     /// Is the reward currently enabled, if false the reward won’t show up to viewers
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]

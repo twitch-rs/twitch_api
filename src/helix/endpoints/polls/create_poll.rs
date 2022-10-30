@@ -87,11 +87,11 @@ impl CreatePollRequest<'_> {
 pub struct CreatePollBody<'a> {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Question displayed for the poll. Maximum: 60 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Cow<'a, str>,
     /// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.
     pub duration: i64,
@@ -100,7 +100,7 @@ pub struct CreatePollBody<'a> {
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
     )]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub choices: Cow<'a, [NewPollChoice<'a>]>,
     /// Indicates if Bits can be used for voting. Default: false
     #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
@@ -161,7 +161,7 @@ impl helix::private::SealedSerialize for CreatePollBody<'_> {}
 #[non_exhaustive]
 pub struct NewPollChoice<'a> {
     /// Text displayed for the choice. Maximum: 25 characters.
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Cow<'a, str>,
 }
 

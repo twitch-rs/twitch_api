@@ -44,11 +44,11 @@ use helix::RequestPost;
 pub struct AddChannelVipRequest<'a> {
     /// The ID of the broadcaster that’s granting VIP status to the user.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to add as a VIP in the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub user_id: Cow<'a, types::UserIdRef>,
 }
 
