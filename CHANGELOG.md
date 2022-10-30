@@ -8,6 +8,10 @@
 
 ### Breaking changes
 
+- Requests for helix endpoints have been converted to take `Cow`s.
+  This change means the `builder()` methods are harder to use, consider using the new methods on
+  each request which provide the same functionality but with better ergonomics.
+  See the top-level documentation for a endpoint for more examples.
 - Crate name changed: `twitch_api2` -> `twitch_api`, also changed to new org `twitch-rs`
 - All (most) types are now living in their own crate `twitch_types`
 - Features for clients are now named after the client, e.g feature `reqwest_client` is now simply `reqwest`
