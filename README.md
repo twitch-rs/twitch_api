@@ -66,7 +66,7 @@ There are no current plans to support
 
 - [GraphQL](https://github.com/mauricew/twitch-graphql-api)
 - [Drops](https://dev.twitch.tv/docs/drops) (except what is in Helix)
-- [Twitch IRC Chat](https://dev.twitch.tv/docs/irc), use [museun/twitchchat](https://github.com/museun/twitchchat)
+- [Twitch IRC Chat](https://dev.twitch.tv/docs/irc), use [museun/twitchchat](https://github.com/museun/twitchchat) or [robotty/twitch-irc](https://github.com/robotty/twitch-irc-rs/)
 - [Authentication](https://dev.twitch.tv/docs/authentication), use [twitch-rs/twitch_oauth2](https://github.com/twitch-rs/twitch_oauth2)
 - Undocumented Helix endpoints, i.e endpoints mobile Twitch app uses. Including [working "hidden" endpoints](https://thomassen.sh/twitch-api-endpoints/)
 
