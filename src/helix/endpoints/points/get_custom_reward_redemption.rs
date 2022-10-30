@@ -68,6 +68,7 @@ pub struct GetCustomRewardRedemptionRequest<'a> {
 
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries without ID. If an ID is specified, it supersedes any cursor/offset combinations. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[serde(borrow)]
     pub after: Option<Cow<'a, helix::CursorRef>>,
 
     /// Number of results to be returned when getting the paginated Custom Reward Redemption objects for a reward. Limit: 50. Default: 20.

@@ -27,6 +27,7 @@ pub struct GetEventSubSubscriptionsRequest<'a> {
     // FIXME: https://github.com/twitchdev/issues/issues/272
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(borrow)]
     pub after: Option<Cow<'a, helix::CursorRef>>,
     // FIXME: https://github.com/twitchdev/issues/issues/271
     /// Maximum number of objects to return. Maximum: 100. Default: 20.

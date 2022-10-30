@@ -55,6 +55,7 @@ pub struct GetBroadcasterSubscriptionsRequest<'a> {
     pub user_id: Cow<'a, [&'a types::UserIdRef]>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
+    #[serde(borrow)]
     pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Number of values to be returned per page. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
