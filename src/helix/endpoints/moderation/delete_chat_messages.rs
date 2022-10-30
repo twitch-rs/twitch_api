@@ -46,13 +46,13 @@ use helix::RequestDelete;
 pub struct DeleteChatMessagesRequest<'a> {
     /// The ID of the broadcaster that owns the chat room to remove messages from.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     ///
     /// This ID must match the user ID in the OAuth token. If the broadcaster wants to remove messages themselves, set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub moderator_id: Cow<'a, types::UserIdRef>,
     /// The ID of the message to remove.
     ///
@@ -66,7 +66,7 @@ pub struct DeleteChatMessagesRequest<'a> {
     ///
     /// If not specified, the request removes all messages in the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub message_id: Option<Cow<'a, types::MsgIdRef>>,
 }
 

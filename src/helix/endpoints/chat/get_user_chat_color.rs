@@ -53,7 +53,7 @@ pub struct GetUserChatColorRequest<'a> {
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
     )]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub user_id: Cow<'a, [&'a types::UserIdRef]>,
 }
 

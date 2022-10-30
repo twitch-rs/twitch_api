@@ -46,15 +46,15 @@ pub use types::{PollChoice, PollStatus};
 pub struct GetPollsRequest<'a> {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of a poll. Filters results to one or more specific polls. Not providing one or more IDs will return the full list of polls for the authenticated channel.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub id: Cow<'a, [&'a types::PollIdRef]>,
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 20. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]

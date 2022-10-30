@@ -46,18 +46,18 @@ pub use types::{PredictionOutcome, PredictionOutcomeId, PredictionStatus};
 pub struct GetPredictionsRequest<'a> {
     /// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of a Prediction. Filters results to one or more specific Predictions.
     /// Not providing one or more IDs will return the full list of Predictions for the authenticated channel.
     ///
     /// Maximum: 100
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub id: Cow<'a, [&'a types::PredictionIdRef]>,
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 20. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]

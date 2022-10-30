@@ -82,11 +82,11 @@ impl ManageHeldAutoModMessagesRequest<'_> {
 pub struct ManageHeldAutoModMessagesBody<'a> {
     /// The moderator who is approving or rejecting the held message. Must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub user_id: Cow<'a, types::UserIdRef>,
     /// ID of the message to be allowed or denied. These message IDs are retrieved from IRC or PubSub. Only one message ID can be provided.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub msg_id: Cow<'a, types::MsgIdRef>,
     /// The action to take for the message. Must be "ALLOW" or "DENY".
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]

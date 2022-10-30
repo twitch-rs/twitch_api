@@ -46,11 +46,11 @@ use helix::RequestPost;
 pub struct AddChannelModeratorRequest<'a> {
     /// The ID of the broadcaster that owns the chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to add as a moderator in the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 

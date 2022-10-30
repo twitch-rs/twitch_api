@@ -60,7 +60,7 @@ use helix::RequestGet;
 pub struct GetChatSettingsRequest<'a> {
     /// The ID of the broadcaster whose chat settings you want to get.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Required only to access the [`non_moderator_chat_delay`](ChatSettings::non_moderator_chat_delay)
     /// or [`non_moderator_chat_delay_duration`](ChatSettings::non_moderator_chat_delay_duration) settings.
@@ -74,7 +74,7 @@ pub struct GetChatSettingsRequest<'a> {
     /// If the broadcaster wants to get their own settings (instead of having the moderator do it),
     /// set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub moderator_id: Option<Cow<'a, types::UserIdRef>>,
 }
 

@@ -59,13 +59,13 @@ use helix::RequestPost;
 pub struct SendChatAnnouncementRequest<'a> {
     /// The ID of the broadcaster that owns the chat room to send the announcement to.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user who has permission to moderate the broadcaster’s chat room.
     ///
     /// This ID must match the user ID in the OAuth token, which can be a moderator or the broadcaster.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
@@ -90,7 +90,7 @@ impl<'a> SendChatAnnouncementRequest<'a> {
 #[non_exhaustive]
 pub struct SendChatAnnouncementBody<'a> {
     /// The announcement to make in the broadcaster’s chat room. Announcements are limited to a maximum of 500 characters; announcements longer than 500 characters are truncated.
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub message: Cow<'a, str>,
     // FIXME: Enumify?
     /// The color used to highlight the announcement. Possible case-sensitive values are:

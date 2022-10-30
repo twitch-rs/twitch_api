@@ -22,12 +22,12 @@ pub struct GetEventSubSubscriptionsRequest<'a> {
     /// The response contains subscriptions where the user ID
     /// matches a user ID that you specified in the Condition object when you created the subscription.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub user_id: Option<Cow<'a, types::UserIdRef>>,
     // FIXME: https://github.com/twitchdev/issues/issues/272
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub after: Option<Cow<'a, helix::CursorRef>>,
     // FIXME: https://github.com/twitchdev/issues/issues/271
     /// Maximum number of objects to return. Maximum: 100. Default: 20.

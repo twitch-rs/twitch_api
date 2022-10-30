@@ -86,11 +86,11 @@ impl EndPollRequest<'_> {
 pub struct EndPollBody<'a> {
     /// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of the poll.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub id: Cow<'a, types::PollIdRef>,
     /// The poll status to be set.
     ///

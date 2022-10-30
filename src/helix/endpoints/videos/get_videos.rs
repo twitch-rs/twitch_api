@@ -49,30 +49,30 @@ pub struct GetVideosRequest<'a> {
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
     )]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub id: Cow<'a, [&'a types::VideoIdRef]>,
     /// ID of the user who owns the video.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub user_id: Option<Cow<'a, types::UserIdRef>>,
     /// ID of the game the video is of.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub game_id: Option<Cow<'a, types::CategoryIdRef>>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub before: Option<Cow<'a, helix::CursorRef>>,
     /// Number of values to be returned when getting videos by user or game ID. Limit: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// Language of the video being queried. Limit: 1.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub language: Option<Cow<'a, str>>,
     /// Period during which the video was created. Valid values: "all", "day", "week", "month". Default: "all".
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]

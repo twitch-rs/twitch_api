@@ -45,11 +45,11 @@ use helix::RequestDelete;
 pub struct RemoveChannelVipRequest<'a> {
     /// The ID of the broadcaster that’s removing VIP status from the user.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to remove as a VIP from the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub user_id: Cow<'a, types::UserIdRef>,
 }
 

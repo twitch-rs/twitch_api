@@ -51,7 +51,7 @@ pub struct GetEmoteSetsRequest<'a> {
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
     )]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub emote_set_id: Cow<'a, [&'a types::EmoteSetIdRef]>,
 }
 

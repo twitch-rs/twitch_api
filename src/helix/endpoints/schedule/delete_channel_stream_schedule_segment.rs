@@ -53,11 +53,11 @@ use helix::RequestDelete;
 pub struct DeleteChannelStreamScheduleSegmentRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the streaming segment to delete.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub id: Cow<'a, types::StreamSegmentIdRef>,
 }
 

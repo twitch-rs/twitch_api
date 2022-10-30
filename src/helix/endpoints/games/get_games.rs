@@ -49,14 +49,14 @@ pub struct GetGamesRequest<'a> {
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
     )]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub id: Cow<'a, [&'a types::CategoryIdRef]>,
     /// Game name. The name must be an exact match. For instance, “Pokemon” will not return a list of Pokemon games; instead, query the specific Pokemon game(s) in which you are interested. At most 100 name values can be specified.
     #[cfg_attr(
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
     )]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub name: Cow<'a, [&'a str]>,
 }
 

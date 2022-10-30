@@ -45,11 +45,11 @@ use helix::RequestDelete;
 pub struct DeleteCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// ID of the Custom Reward to delete, must match a Custom Reward on broadcaster_id’s channel.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub id: Cow<'a, types::RewardIdRef>,
 }
 

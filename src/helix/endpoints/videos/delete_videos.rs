@@ -54,7 +54,7 @@ pub struct DeleteVideosRequest<'a> {
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
     )]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub id: Cow<'a, [&'a types::VideoIdRef]>,
 }
 

@@ -62,7 +62,7 @@ use helix::RequestPut;
 pub struct ReplaceStreamTagsRequest<'a> {
     /// ID of the stream for which tags are to be replaced.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
@@ -88,7 +88,7 @@ impl<'a> ReplaceStreamTagsRequest<'a> {
 pub struct ReplaceStreamTagsBody<'a> {
     /// IDs of tags to be applied to the stream.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub tag_ids: Cow<'a, [&'a types::TagIdRef]>,
 }
 

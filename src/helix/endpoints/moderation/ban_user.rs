@@ -56,7 +56,7 @@ use helix::RequestPost;
 pub struct BanUserRequest<'a> {
     /// The ID of the broadcaster whose chat room the user is being banned from.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     /// This ID must match the user ID associated with the user OAuth token.
@@ -64,7 +64,7 @@ pub struct BanUserRequest<'a> {
     /// If the broadcaster wants to ban the user (instead of having the moderator do it),
     /// set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
@@ -100,11 +100,11 @@ pub struct BanUserBody<'a> {
     pub duration: Option<u32>,
     /// The reason the user is being banned or put in a timeout. The text is user defined and limited to a maximum of 500 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub reason: Cow<'a, str>,
     /// The ID of the user to ban or put in a timeout.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub user_id: Cow<'a, types::UserIdRef>,
 }
 

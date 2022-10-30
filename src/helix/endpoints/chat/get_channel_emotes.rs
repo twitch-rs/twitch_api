@@ -45,7 +45,7 @@ use helix::RequestGet;
 pub struct GetChannelEmotesRequest<'a> {
     /// The broadcaster whose emotes are being requested.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 

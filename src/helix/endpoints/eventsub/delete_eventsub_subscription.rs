@@ -12,7 +12,7 @@ use helix::RequestDelete;
 pub struct DeleteEventSubSubscriptionRequest<'a> {
     /// The subscription ID for the subscription you want to delete.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub id: Cow<'a, types::EventSubIdRef>,
 }
 

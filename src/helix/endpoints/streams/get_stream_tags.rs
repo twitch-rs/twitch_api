@@ -46,7 +46,7 @@ pub struct GetStreamTagsRequest<'a> {
     // FIXME: twitch docs sucks
     /// ID of the stream whose tags are going to be fetched
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 

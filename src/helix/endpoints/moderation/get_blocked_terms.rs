@@ -45,19 +45,19 @@ use helix::RequestGet;
 pub struct GetBlockedTerms<'a> {
     /// The ID of the broadcaster whose blocked terms you’re getting.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     /// If the broadcaster wants to get their own block terms (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub moderator_id: Cow<'a, types::UserIdRef>,
     /// The maximum number of blocked terms to return per page in the response. The minimum page size is 1 blocked term per page and the maximum is 100. The default is 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<u32>,
     /// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub after: Option<Cow<'a, helix::CursorRef>>,
 }
 

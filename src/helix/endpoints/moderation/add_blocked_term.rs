@@ -56,13 +56,13 @@ use helix::RequestPost;
 pub struct AddBlockedTermRequest<'a> {
     /// The ID of the broadcaster that owns the list of blocked terms.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room. This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster wants to add the blocked term (instead of having the moderator do it), set this parameter to the broadcaster’s ID, too.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
@@ -90,7 +90,7 @@ pub struct AddBlockedTermBody<'a> {
     ///
     /// The term must contain a minimum of 2 characters and may contain up to a maximum of 500 characters.
     /// Terms can use a wildcard character (*). The wildcard character must appear at the beginning or end of a word, or set of characters. For example, *foo or foo*.
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub text: Cow<'a, str>,
 }
 

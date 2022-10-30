@@ -60,7 +60,7 @@ use helix::RequestPost;
 pub struct CheckAutoModStatusRequest<'a> {
     /// Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 
@@ -82,11 +82,11 @@ impl<'a> CheckAutoModStatusRequest<'a> {
 pub struct CheckAutoModStatusBody<'a> {
     /// Developer-generated identifier for mapping messages to results.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub msg_id: Cow<'a, types::MsgIdRef>,
     /// Message text.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow)]
+    #[serde(borrow="'a")]
     pub msg_text: Cow<'a, str>,
     /// User ID of the sender.
     #[deprecated(since = "0.7.0", note = "user_id in automod check is no longer read")]
@@ -94,7 +94,7 @@ pub struct CheckAutoModStatusBody<'a> {
         feature = "typed-builder",
         builder(setter(into, strip_option), default)
     )]
-    #[serde(skip_serializing_if = "Option::is_none", borrow)]
+    #[serde(skip_serializing_if = "Option::is_none", borrow="'a")]
     pub user_id: Option<Cow<'a, types::UserIdRef>>,
 }
 
