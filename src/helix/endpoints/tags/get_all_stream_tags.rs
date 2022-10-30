@@ -48,14 +48,16 @@ use helix::RequestGet;
 pub struct GetAllStreamTagsRequest<'a> {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
     /// ID of a tag. Multiple IDs can be specified. If provided, only the specified tag(s) is(are) returned. Maximum of 100.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    // FIXME: This is essentially the same as borrow, but worse
+    #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
     pub tag_id: Cow<'a, [&'a types::TagIdRef]>,
 }
 

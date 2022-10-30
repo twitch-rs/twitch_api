@@ -51,11 +51,11 @@ use helix::RequestGet;
 pub struct GetStreamsRequest<'a> {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub before: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -65,25 +65,27 @@ pub struct GetStreamsRequest<'a> {
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
     )]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    // FIXME: This is essentially the same as borrow, but worse
+    #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
     pub game_id: Cow<'a, [&'a types::CategoryIdRef]>,
     /// Stream language. You can specify up to 100 languages.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub language: Option<Cow<'a, str>>,
     /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
     #[cfg_attr(
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
     )]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub user_id: Cow<'a, [&'a types::UserIdRef]>,
     /// Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.
     #[cfg_attr(
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
     )]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub user_login: Cow<'a, [&'a types::UserNameRef]>,
 }
 

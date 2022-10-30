@@ -67,11 +67,11 @@ use helix::RequestPatch;
 pub struct UpdateChannelStreamScheduleSegmentRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the streaming segment to update.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub id: Cow<'a, types::StreamSegmentIdRef>,
 }
 
@@ -97,19 +97,23 @@ impl<'a> UpdateChannelStreamScheduleSegmentRequest<'a> {
 pub struct UpdateChannelStreamScheduleSegmentBody<'a> {
     /// Start time for the scheduled broadcast specified in RFC3339 format.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow="'a")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub start_time: Option<Cow<'a, str>>,
     /// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow="'a")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub duration: Option<Cow<'a, str>>,
     /// Game/Category ID for the scheduled broadcast.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow="'a")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub category_id: Option<Cow<'a, types::CategoryIdRef>>,
     /// Title for the scheduled broadcast. Maximum: 140 characters.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow="'a")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Option<Cow<'a, str>>,
     /// Indicated if the scheduled broadcast is canceled.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -118,7 +122,8 @@ pub struct UpdateChannelStreamScheduleSegmentBody<'a> {
     // FIXME: Enum?
     /// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none", borrow="'a")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub timezone: Option<Cow<'a, str>>,
 }
 

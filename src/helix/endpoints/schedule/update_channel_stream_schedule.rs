@@ -52,22 +52,22 @@ use helix::RequestPatch;
 pub struct UpdateChannelStreamScheduleRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Indicates if Vacation Mode is enabled. Set to true to add a vacation or false to remove vacation from the channel streaming schedule.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub is_vacation_enabled: Option<bool>,
     /// Start time for vacation specified in RFC3339 format. Required if is_vacation_enabled is set to true.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub vacation_start_time: Option<Cow<'a, types::TimestampRef>>,
     /// End time for vacation specified in RFC3339 format. Required if is_vacation_enabled is set to true.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub vacation_end_time: Option<Cow<'a, types::TimestampRef>>,
     /// The timezone for when the vacation is being scheduled using the IANA time zone database format. Required if is_vacation_enabled is set to true.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub timezone: Option<Cow<'a, str>>,
 }
 

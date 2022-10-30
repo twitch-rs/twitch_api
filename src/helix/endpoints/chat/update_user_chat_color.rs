@@ -51,11 +51,13 @@ use helix::RequestPut;
 pub struct UpdateUserChatColorRequest<'a> {
     /// The ID of the user whose chat color you want to update.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    // FIXME: This is essentially the same as borrow, but worse
+    #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
     pub user_id: Cow<'a, types::UserIdRef>,
     /// The color to use for the user’s name in chat.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub color: types::NamedUserColor<'a>,
 }
 

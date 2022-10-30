@@ -47,23 +47,23 @@ use helix::RequestGet;
 pub struct GetChannelStreamScheduleRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of the stream segment to return. Maximum: 100.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub id: Option<Cow<'a, types::StreamSegmentIdRef>>,
     /// A timestamp in RFC3339 format to start returning stream segments from. If not specified, the current date and time is used.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub start_time: Option<Cow<'a, types::TimestampRef>>,
     /// A timezone offset for the requester specified in minutes. This is recommended to ensure stream segments are returned for the correct week. For example, a timezone that is +4 hours from GMT would be “240.” If not specified, “0” is used for GMT.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub utc_offset: Option<Cow<'a, str>>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of stream segments to return. Maximum: 25. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]

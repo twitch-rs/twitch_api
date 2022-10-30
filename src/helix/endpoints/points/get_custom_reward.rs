@@ -48,11 +48,13 @@ use helix::RequestGet;
 pub struct GetCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// When used, this parameter filters the results and only returns reward objects for the Custom Rewards with matching ID. Maximum: 50
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    // FIXME: This is essentially the same as borrow, but worse
+    #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
     pub id: Cow<'a, [&'a types::RewardIdRef]>,
     /// When set to true, only returns custom rewards that the calling client_id can manage. Defaults false.
     #[cfg_attr(feature = "typed-builder", builder(default))]

@@ -64,14 +64,14 @@ use helix::RequestPatch;
 pub struct UpdateChatSettingsRequest<'a> {
     /// The ID of the broadcaster whose chat settings you want to update.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// The ID of a user that has permission to moderate the broadcaster’s chat room.
     /// This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster is making the update, also set this parameter to the broadcaster’s ID.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 

@@ -46,7 +46,7 @@ use helix::RequestGet;
 pub struct GetChannelEditorsRequest<'a> {
     /// Broadcaster’s user ID associated with the channel.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 

@@ -60,7 +60,7 @@ hyper = { version = "0.14.20", optional = true }
 twitch_types = { version = "0.3.6", path = "./twitch_types" }
 
 [features]
-default = []
+default = ["deser_borrow"]
 
 client = ["twitch_oauth2/client", "dep:futures", "dep:hyper"]
 
@@ -82,6 +82,8 @@ helix = [
     "serde_json",
     "dep:hyper",
 ]
+
+deser_borrow = []
 
 tmi = ["serde_json", "dep:serde_path_to_error", "dep:hyper"]
 

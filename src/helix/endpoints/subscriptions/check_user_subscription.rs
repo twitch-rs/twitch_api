@@ -44,11 +44,13 @@ use helix::RequestGet;
 pub struct CheckUserSubscriptionRequest<'a> {
     /// User ID of the broadcaster. Must match the User ID in the Bearer token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// Unique identifier of account to get subscription status of. Accepts up to 100 values.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    // FIXME: This is essentially the same as borrow, but worse
+    #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
     pub user_id: Cow<'a, [&'a types::UserIdRef]>,
 }
 

@@ -44,7 +44,7 @@ use helix::RequestDelete;
 pub struct CancelARaidRequest<'a> {
     /// The ID of the broadcaster that sent the raiding party.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
 }
 

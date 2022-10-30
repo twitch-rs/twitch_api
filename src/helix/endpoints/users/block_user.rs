@@ -49,7 +49,7 @@ use helix::RequestPut;
 pub struct BlockUserRequest<'a> {
     /// User ID of the follower
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub target_user_id: Cow<'a, types::UserIdRef>,
     /// Source context for blocking the user. Valid values: "chat", "whisper".
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]

@@ -56,11 +56,11 @@ use helix::RequestPost;
 pub struct SendWhisperRequest<'a> {
     /// The ID of the user sending the whisper. This user must have a verified phone number.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub from_user_id: Cow<'a, types::UserIdRef>,
     /// The ID of the user to receive the whisper.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub to_user_id: Cow<'a, types::UserIdRef>,
 }
 
@@ -91,7 +91,7 @@ pub struct SendWhisperBody<'a> {
     /// 10,000 characters if the user you're sending the message to has whispered you before.
     ///
     /// Messages that exceed the maximum length are truncated.
-    #[serde(borrow="'a")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub message: Cow<'a, str>,
 }
 
