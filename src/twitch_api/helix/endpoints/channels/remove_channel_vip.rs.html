@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/channels/remove_channel_vip.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>remove_channel_vip.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/channels/remove_channel_vip.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>remove_channel_vip.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -133,10 +133,6 @@
 <span id="133">133</span>
 <span id="134">134</span>
 <span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
-<span id="139">139</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Removes a VIP from the broadcaster’s chat room.
 //! [`remove-channel-vip`](https://dev.twitch.tv/docs/api/reference#remove-channel-vip)
 //!
@@ -144,14 +140,11 @@
 //!
 //! ## Request: [RemoveChannelVipRequest]
 //!
-//! To use this endpoint, construct a [`RemoveChannelVipRequest`] with the [`RemoveChannelVipRequest::builder()`] method.
+//! To use this endpoint, construct a [`RemoveChannelVipRequest`] with the [`RemoveChannelVipRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::remove_channel_vip;
-//! let request = remove_channel_vip::RemoveChannelVipRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .user_id(&quot;1337&quot;)
-//!     .build();
+//! let request = remove_channel_vip::RemoveChannelVipRequest::new(&quot;1234&quot;, &quot;1337&quot;);
 //! ```
 //!
 //! ## Response: [RemoveChannelVipResponse]
@@ -166,10 +159,7 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = remove_channel_vip::RemoveChannelVipRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .user_id(&quot;1337&quot;)
-//!     .build();
+//! let request = remove_channel_vip::RemoveChannelVipRequest::new(&quot;1234&quot;, &quot;1337&quot;);
 //! let response: remove_channel_vip::RemoveChannelVipResponse = client.req_delete(request, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -187,24 +177,26 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>RemoveChannelVipRequest {
+</span><span class="kw">pub struct </span>RemoveChannelVipRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster that’s removing VIP status from the user.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
     <span class="doccomment">/// The ID of the user to remove as a VIP from the broadcaster’s chat room.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>user_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>user_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
 }
 
-<span class="kw">impl </span>RemoveChannelVipRequest {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RemoveChannelVipRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Remove channel VIP
     </span><span class="kw">pub fn </span>new(
-        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
-        user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>,
+        user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            broadcaster_id: broadcaster_id.into(),
-            user_id: user_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            user_id: user_id.to_cow(),
         }
     }
 }
@@ -219,7 +211,7 @@
     </span>Success,
 }
 
-<span class="kw">impl </span>Request <span class="kw">for </span>RemoveChannelVipRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>RemoveChannelVipRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = RemoveChannelVipResponse;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;channels/vips&quot;</span>;
@@ -227,7 +219,7 @@
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ChannelManageVips];
 }
 
-<span class="kw">impl </span>RequestDelete <span class="kw">for </span>RemoveChannelVipRequest {
+<span class="kw">impl </span>RequestDelete <span class="kw">for </span>RemoveChannelVipRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
         uri: <span class="kw-2">&amp;</span>http::Uri,
@@ -277,4 +269,4 @@
     <span class="macro">dbg!</span>(RemoveChannelVipRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

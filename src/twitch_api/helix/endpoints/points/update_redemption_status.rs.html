@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/points/update_redemption_status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>update_redemption_status.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/points/update_redemption_status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>update_redemption_status.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -243,7 +243,6 @@
 <span id="243">243</span>
 <span id="244">244</span>
 <span id="245">245</span>
-<span id="246">246</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Updates the status of Custom Reward Redemption objects on a channel that are in the UNFULFILLED status.
 //!
 //! Only redemptions for a reward created by the same client_id as attached to the access token can be updated.
@@ -253,15 +252,15 @@
 //!
 //! ## Request: [UpdateRedemptionStatusRequest]
 //!
-//! To use this endpoint, construct a [`UpdateRedemptionStatusRequest`] with the [`UpdateRedemptionStatusRequest::builder()`] method.
+//! To use this endpoint, construct a [`UpdateRedemptionStatusRequest`] with the [`UpdateRedemptionStatusRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::UpdateRedemptionStatusRequest;
-//! let request = UpdateRedemptionStatusRequest::builder()
-//!     .broadcaster_id(&quot;274637212&quot;.to_string())
-//!     .reward_id(&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;.to_string())
-//!     .id(&quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;.to_string())
-//!     .build();
+//! let request = UpdateRedemptionStatusRequest::new(
+//!     &quot;274637212&quot;,
+//!     &quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;,
+//!     &quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;,
+//! );
 //! ```
 //!
 //! ## Body: [UpdateRedemptionStatusBody]
@@ -270,9 +269,7 @@
 //!
 //! ```
 //! use twitch_api::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};
-//! let body = UpdateRedemptionStatusBody::builder()
-//!     .status(CustomRewardRedemptionStatus::Canceled)
-//!     .build();
+//! let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
 //! ```
 //!
 //! ## Response: [UpdateRedemptionStatusInformation]
@@ -292,14 +289,12 @@
 //!     helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = UpdateRedemptionStatusRequest::builder()
-//!     .broadcaster_id(&quot;274637212&quot;.to_string())
-//!     .reward_id(&quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;.to_string())
-//!     .id(&quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;.to_string())
-//!     .build();
-//! let body = UpdateRedemptionStatusBody::builder()
-//!     .status(CustomRewardRedemptionStatus::Canceled)
-//!     .build();
+//! let request = UpdateRedemptionStatusRequest::new(
+//!     &quot;274637212&quot;,
+//!     &quot;92af127c-7326-4483-a52b-b0da0be61c01&quot;,
+//!     &quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;,
+//! );
+//! let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
 //! let response: UpdateRedemptionStatusInformation =
 //!     client.req_patch(request, body, &amp;token).await?.data;
 //! # Ok(())
@@ -321,31 +316,34 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>UpdateRedemptionStatusRequest {
+</span><span class="kw">pub struct </span>UpdateRedemptionStatusRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Provided broadcaster_id must match the user_id in the auth token.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
 
     <span class="doccomment">/// ID of the Custom Reward the redemptions to be updated are for.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>reward_id: types::RewardId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>reward_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::RewardIdRef&gt;,
 
     <span class="doccomment">/// ID of the Custom Reward Redemption to update, must match a Custom Reward Redemption on broadcaster_id’s channel
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>id: types::RedemptionId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>id: Cow&lt;<span class="lifetime">&#39;a</span>, types::RedemptionIdRef&gt;,
 }
 
-<span class="kw">impl </span>UpdateRedemptionStatusRequest {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; UpdateRedemptionStatusRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Update the status of Custom Reward Redemption object on a channel that are in the UNFULFILLED status.
     </span><span class="kw">pub fn </span>new(
-        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
-        reward_id: <span class="kw">impl </span>Into&lt;types::RewardId&gt;,
-        id: <span class="kw">impl </span>Into&lt;types::RedemptionId&gt;,
+        broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>,
+        reward_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::RewardIdRef&gt; + <span class="lifetime">&#39;a</span>,
+        id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::RedemptionIdRef&gt; + <span class="lifetime">&#39;a</span>,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            broadcaster_id: broadcaster_id.into(),
-            reward_id: reward_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            reward_id: reward_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }
@@ -378,7 +376,7 @@
     </span>Success(CustomRewardRedemption),
 }
 
-<span class="kw">impl </span>Request <span class="kw">for </span>UpdateRedemptionStatusRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>UpdateRedemptionStatusRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = UpdateRedemptionStatusInformation;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;channel_points/custom_rewards/redemptions&quot;</span>;
@@ -387,7 +385,7 @@
         <span class="kw-2">&amp;</span>[twitch_oauth2::scopes::Scope::ChannelManageBroadcast];
 }
 
-<span class="kw">impl </span>RequestPatch <span class="kw">for </span>UpdateRedemptionStatusRequest {
+<span class="kw">impl </span>RequestPatch <span class="kw">for </span>UpdateRedemptionStatusRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Body = UpdateRedemptionStatusBody;
 
     <span class="kw">fn </span>parse_inner_response(
@@ -491,4 +489,4 @@
     <span class="macro">dbg!</span>(UpdateRedemptionStatusRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

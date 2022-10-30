@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/moderation/ban_user.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ban_user.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/moderation/ban_user.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ban_user.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -271,8 +271,6 @@
 <span id="271">271</span>
 <span id="272">272</span>
 <span id="273">273</span>
-<span id="274">274</span>
-<span id="275">275</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Bans a user from participating in a broadcaster’s chat room, or puts them in a timeout.
 //! [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 //!
@@ -280,14 +278,11 @@
 //!
 //! ## Request: [BanUserRequest]
 //!
-//! To use this endpoint, construct a [`BanUserRequest`] with the [`BanUserRequest::builder()`] method.
+//! To use this endpoint, construct a [`BanUserRequest`] with the [`BanUserRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::ban_user;
-//! let request = ban_user::BanUserRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .moderator_id(&quot;5678&quot;)
-//!     .build();
+//! let request = ban_user::BanUserRequest::new(&quot;1234&quot;, &quot;5678&quot;);
 //! ```
 //!
 //! ## Body: [BanUserBody]
@@ -296,7 +291,7 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::ban_user;
-//! let body = ban_user::BanUserBody::new(&quot;9876&quot;, &quot;no reason&quot;.to_string(), 120);
+//! let body = ban_user::BanUserBody::new(&quot;9876&quot;, &quot;no reason&quot;, 120);
 //! ```
 //!
 //! ## Response: [BanUser]
@@ -313,11 +308,8 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = ban_user::BanUserRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .moderator_id(&quot;5678&quot;)
-//!     .build();
-//! let body = ban_user::BanUserBody::new(&quot;9876&quot;, &quot;no reason&quot;.to_string(), 120);
+//! let request = ban_user::BanUserRequest::new(&quot;1234&quot;, &quot;5678&quot;);
+//! let body = ban_user::BanUserBody::new(&quot;9876&quot;, &quot;no reason&quot;, 120);
 //! let response: ban_user::BanUser = client.req_post(request, body, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -334,28 +326,30 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>BanUserRequest {
+</span><span class="kw">pub struct </span>BanUserRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster whose chat room the user is being banned from.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
     <span class="doccomment">/// The ID of a user that has permission to moderate the broadcaster’s chat room.
     /// This ID must match the user ID associated with the user OAuth token.
     ///
     /// If the broadcaster wants to ban the user (instead of having the moderator do it),
     /// set this parameter to the broadcaster’s ID, too.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>moderator_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>moderator_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
 }
 
-<span class="kw">impl </span>BanUserRequest {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; BanUserRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Ban a user on this channel
     </span><span class="kw">pub fn </span>new(
-        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
-        moderator_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
+        broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>,
+        moderator_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            broadcaster_id: broadcaster_id.into(),
-            moderator_id: moderator_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            moderator_id: moderator_id.to_cow(),
         }
     }
 }
@@ -366,7 +360,7 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>BanUserBody {
+</span><span class="kw">pub struct </span>BanUserBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Duration of the (optional) timeout in seconds.
     ///
     /// To ban a user indefinitely, don’t include this field.
@@ -379,32 +373,34 @@
     </span><span class="kw">pub </span>duration: <span class="prelude-ty">Option</span>&lt;u32&gt;,
     <span class="doccomment">/// The reason the user is being banned or put in a timeout. The text is user defined and limited to a maximum of 500 characters.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>reason: String,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>reason: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
     <span class="doccomment">/// The ID of the user to ban or put in a timeout.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>user_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>user_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
 }
 
-<span class="kw">impl </span>BanUserBody {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; BanUserBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Create a new [`BanUserBody`]
     </span><span class="kw">pub fn </span>new(
-        user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
-        reason: String,
+        user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>,
+        reason: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
         duration: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;u32&gt;&gt;,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             duration: duration.into(),
-            reason,
-            user_id: user_id.into(),
+            reason: reason.into(),
+            user_id: user_id.to_cow(),
         }
     }
 }
 
-<span class="kw">impl </span>helix::HelixRequestBody <span class="kw">for </span>BanUserBody {
+<span class="kw">impl </span>helix::HelixRequestBody <span class="kw">for </span>BanUserBody&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">fn </span>try_to_body(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;hyper::body::Bytes, helix::BodyError&gt; {
         <span class="attribute">#[derive(Serialize)]
         </span><span class="kw">struct </span>InnerBody&lt;<span class="lifetime">&#39;a</span>&gt; {
-            data: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>BanUserBody,
+            data: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>BanUserBody&lt;<span class="lifetime">&#39;a</span>&gt;,
         }
         serde_json::to_vec(<span class="kw-2">&amp;</span>InnerBody { data: <span class="self">self </span>})
             .map_err(Into::into)
@@ -431,7 +427,7 @@
     </span><span class="kw">pub </span>user_id: types::UserId,
 }
 
-<span class="kw">impl </span>Request <span class="kw">for </span>BanUserRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>BanUserRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = BanUser;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;moderation/bans&quot;</span>;
@@ -440,8 +436,8 @@
         <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ModeratorManageBannedUsers];
 }
 
-<span class="kw">impl </span>RequestPost <span class="kw">for </span>BanUserRequest {
-    <span class="kw">type </span>Body = BanUserBody;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RequestPost <span class="kw">for </span>BanUserRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">type </span>Body = BanUserBody&lt;<span class="lifetime">&#39;a</span>&gt;;
 
     <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
@@ -487,7 +483,7 @@
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">let </span>req = BanUserRequest::new(<span class="string">&quot;1234&quot;</span>, <span class="string">&quot;5678&quot;</span>);
 
-    <span class="kw">let </span>body = BanUserBody::new(<span class="string">&quot;9876&quot;</span>, <span class="string">&quot;no reason&quot;</span>.to_string(), <span class="number">300</span>);
+    <span class="kw">let </span>body = BanUserBody::new(<span class="string">&quot;9876&quot;</span>, <span class="string">&quot;no reason&quot;</span>, <span class="number">300</span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
@@ -524,7 +520,7 @@
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">let </span>req = BanUserRequest::new(<span class="string">&quot;1234&quot;</span>, <span class="string">&quot;5678&quot;</span>);
 
-    <span class="kw">let </span>body = BanUserBody::new(<span class="string">&quot;9876&quot;</span>, <span class="string">&quot;no reason&quot;</span>.to_string(), <span class="number">300</span>);
+    <span class="kw">let </span>body = BanUserBody::new(<span class="string">&quot;9876&quot;</span>, <span class="string">&quot;no reason&quot;</span>, <span class="number">300</span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
@@ -549,4 +545,4 @@
     <span class="macro">dbg!</span>(BanUserRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap_err());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

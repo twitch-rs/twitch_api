@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/channels/modify_channel_information.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>modify_channel_information.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/channels/modify_channel_information.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>modify_channel_information.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -216,13 +216,12 @@
 //!
 //! ## Request: [ModifyChannelInformationRequest]
 //!
-//! To use this endpoint, construct a [`ModifyChannelInformationRequest`] with the [`ModifyChannelInformationRequest::builder()`] method.
+//! To use this endpoint, construct a [`ModifyChannelInformationRequest`] with the [`ModifyChannelInformationRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::modify_channel_information;
-//! let request = modify_channel_information::ModifyChannelInformationRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
+//! let request =
+//!     modify_channel_information::ModifyChannelInformationRequest::broadcaster_id(&quot;1234&quot;);
 //! ```
 //!
 //! ## Body: [ModifyChannelInformationBody]
@@ -231,9 +230,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::channels::modify_channel_information;
-//! let body = modify_channel_information::ModifyChannelInformationBody::builder()
-//!     .title(&quot;Hello World!&quot;.to_string())
-//!     .build();
+//! let mut body = modify_channel_information::ModifyChannelInformationBody::new();
+//! body.title(&quot;Hello World!&quot;);
 //! ```
 //!
 //! ## Response: [ModifyChannelInformation]
@@ -250,12 +248,9 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = modify_channel_information::ModifyChannelInformationRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
-//! let body = modify_channel_information::ModifyChannelInformationBody::builder()
-//!     .title(&quot;Hello World!&quot;.to_string())
-//!     .build();
+//! let request = modify_channel_information::ModifyChannelInformationRequest::broadcaster_id(&quot;1234&quot;);
+//! let mut body = modify_channel_information::ModifyChannelInformationBody::new();
+//! body.title(&quot;Hello World!&quot;);
 //! let response: modify_channel_information::ModifyChannelInformation = client.req_patch(request, body, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -272,17 +267,18 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>ModifyChannelInformationRequest {
+</span><span class="kw">pub struct </span>ModifyChannelInformationRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// ID of the channel
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
 }
 
-<span class="kw">impl </span>ModifyChannelInformationRequest {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ModifyChannelInformationRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Modify specified broadcasters channel
-    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>) -&gt; <span class="self">Self </span>{
         ModifyChannelInformationRequest {
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -294,22 +290,22 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>ModifyChannelInformationBody {
+</span><span class="kw">pub struct </span>ModifyChannelInformationBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>game_id: <span class="prelude-ty">Option</span>&lt;types::CategoryId&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>game_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::CategoryIdRef&gt;&gt;,
     <span class="doccomment">/// Language of the channel
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>broadcaster_language: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>broadcaster_language: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
     <span class="doccomment">/// Title of the stream. Value must not be an empty string.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>title: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>title: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
 }
 
-<span class="kw">impl </span>ModifyChannelInformationBody {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ModifyChannelInformationBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Data to set on the stream.
     ///
     ///  # Examples
@@ -322,25 +318,31 @@
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ Default::default() }
 
     <span class="doccomment">/// Current game ID being played on the channel. Use “0” or “” (an empty string) to unset the game.
-    </span><span class="kw">pub fn </span>game_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, game_id: <span class="kw">impl </span>Into&lt;types::CategoryId&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.game_id = <span class="prelude-val">Some</span>(game_id.into());
+    </span><span class="kw">pub fn </span>game_id(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        game_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::CategoryIdRef&gt; + <span class="lifetime">&#39;a</span>,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.game_id = <span class="prelude-val">Some</span>(game_id.to_cow());
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Language of the channel
-    </span><span class="kw">pub fn </span>broadcaster_language(<span class="kw-2">&amp;mut </span><span class="self">self</span>, broadcaster_language: <span class="kw">impl </span>Into&lt;String&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>broadcaster_language(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        broadcaster_language: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.broadcaster_language = <span class="prelude-val">Some</span>(broadcaster_language.into());
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Title of the stream. Value must not be an empty string.
-    </span><span class="kw">pub fn </span>title(<span class="kw-2">&amp;mut </span><span class="self">self</span>, title: <span class="kw">impl </span>Into&lt;String&gt;) -&gt; <span class="kw-2">&amp;mut </span>ModifyChannelInformationBody {
+    </span><span class="kw">pub fn </span>title(<span class="kw-2">&amp;mut </span><span class="self">self</span>, title: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.title = <span class="prelude-val">Some</span>(title.into());
         <span class="self">self
     </span>}
 }
 
-<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>ModifyChannelInformationBody {}
+<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>ModifyChannelInformationBody&lt;<span class="lifetime">&#39;_</span>&gt; {}
 
 <span class="doccomment">/// Return Values for [Modify Channel Information](super::modify_channel_information)
 ///
@@ -352,7 +354,7 @@
     </span>Success,
 }
 
-<span class="kw">impl </span>Request <span class="kw">for </span>ModifyChannelInformationRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>ModifyChannelInformationRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = ModifyChannelInformation;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;channels&quot;</span>;
@@ -360,8 +362,8 @@
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::UserEditBroadcast];
 }
 
-<span class="kw">impl </span>RequestPatch <span class="kw">for </span>ModifyChannelInformationRequest {
-    <span class="kw">type </span>Body = ModifyChannelInformationBody;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RequestPatch <span class="kw">for </span>ModifyChannelInformationRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">type </span>Body = ModifyChannelInformationBody&lt;<span class="lifetime">&#39;a</span>&gt;;
 
     <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
@@ -400,10 +402,8 @@
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">let </span>req = ModifyChannelInformationRequest::broadcaster_id(<span class="string">&quot;0&quot;</span>);
 
-    <span class="kw">let </span>body = ModifyChannelInformationBody {
-        title: <span class="prelude-val">Some</span>(<span class="string">&quot;Hello World!&quot;</span>.to_string()),
-        ..Default::default()
-    };
+    <span class="kw">let </span><span class="kw-2">mut </span>body = ModifyChannelInformationBody::new();
+    body.title(<span class="string">&quot;Hello World!&quot;</span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
@@ -421,4 +421,4 @@
     <span class="macro">dbg!</span>(ModifyChannelInformationRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

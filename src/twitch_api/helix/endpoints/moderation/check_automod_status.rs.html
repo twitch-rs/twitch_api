@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/moderation/check_automod_status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>check_automod_status.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/moderation/check_automod_status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>check_automod_status.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -191,6 +191,11 @@
 <span id="191">191</span>
 <span id="192">192</span>
 <span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
 </pre><pre class="rust"><code><span class="attribute">#![allow(deprecated_in_future, deprecated)]
 </span><span class="doccomment">//! Determines whether a string message meets the channel’s AutoMod requirements.
 //! [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
@@ -199,13 +204,11 @@
 //!
 //! ## Request: [CheckAutoModStatusRequest]
 //!
-//! To use this endpoint, construct a [`CheckAutoModStatusRequest`] with the [`CheckAutoModStatusRequest::builder()`] method.
+//! To use this endpoint, construct a [`CheckAutoModStatusRequest`] with the [`CheckAutoModStatusRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::check_automod_status;
-//! let request = check_automod_status::CheckAutoModStatusRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
+//! let request = check_automod_status::CheckAutoModStatusRequest::broadcaster_id(&quot;1234&quot;);
 //! ```
 //!
 //! ## Body: [CheckAutoModStatusBody]
@@ -214,10 +217,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::check_automod_status;
-//! let body = check_automod_status::CheckAutoModStatusBody::builder()
-//!     .msg_id(&quot;test1&quot;)
-//!     .msg_text(&quot;automod please approve this!&quot;)
-//!     .build();
+//! let body =
+//!     check_automod_status::CheckAutoModStatusBody::new(&quot;test1&quot;, &quot;automod please approve this!&quot;);
 //! ```
 //!
 //! ## Response: [CheckAutoModStatus]
@@ -234,14 +235,10 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = check_automod_status::CheckAutoModStatusRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
-//! let body = vec![check_automod_status::CheckAutoModStatusBody::builder()
-//!     .msg_id(&quot;test1&quot;)
-//!     .msg_text(&quot;automod please approve this!&quot;)
-//!     .build()];
-//! let response: Vec&lt;check_automod_status::CheckAutoModStatus&gt; = client.req_post(request, body, &amp;token).await?.data;
+//! let request = check_automod_status::CheckAutoModStatusRequest::broadcaster_id(&quot;1234&quot;);
+//! let body =
+//!     check_automod_status::CheckAutoModStatusBody::new(&quot;test1&quot;, &quot;automod please approve this!&quot;);
+//! let response: Vec&lt;check_automod_status::CheckAutoModStatus&gt; = client.req_post(request, &amp;[&amp;body].as_slice(), &amp;token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -251,23 +248,25 @@
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span>helix::RequestPost;
+
 <span class="doccomment">/// Query Parameters for [Check AutoMod Status](super::check_automod_status)
 ///
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>CheckAutoModStatusRequest {
+</span><span class="kw">pub struct </span>CheckAutoModStatusRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Must match the User ID in the Bearer token.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
 }
 
-<span class="kw">impl </span>CheckAutoModStatusRequest {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; CheckAutoModStatusRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Check automod status in this broadcasters channel.
-    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -278,39 +277,44 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>CheckAutoModStatusBody {
+</span><span class="kw">pub struct </span>CheckAutoModStatusBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Developer-generated identifier for mapping messages to results.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>msg_id: types::MsgId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>msg_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::MsgIdRef&gt;,
     <span class="doccomment">/// Message text.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>msg_text: String,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>msg_text: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
     <span class="doccomment">/// User ID of the sender.
     </span><span class="attribute">#[deprecated(since = <span class="string">&quot;0.7.0&quot;</span>, note = <span class="string">&quot;user_id in automod check is no longer read&quot;</span>)]
     #[cfg_attr(
         feature = <span class="string">&quot;typed-builder&quot;</span>,
         builder(setter(into, strip_option), default)
     )]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>user_id: <span class="prelude-ty">Option</span>&lt;types::UserId&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>user_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;&gt;,
 }
 
-<span class="kw">impl </span>CheckAutoModStatusBody {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; CheckAutoModStatusBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Create a new [`CheckAutoModStatusBody`]
-    </span><span class="kw">pub fn </span>new(msg_id: <span class="kw">impl </span>Into&lt;types::MsgId&gt;, msg_text: String) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(
+        msg_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::MsgIdRef&gt; + <span class="lifetime">&#39;a</span>,
+        msg_text: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
+    ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            msg_id: msg_id.into(),
-            msg_text,
+            msg_id: msg_id.to_cow(),
+            msg_text: msg_text.into(),
             user_id: <span class="prelude-val">None</span>,
         }
     }
 }
 
-<span class="kw">impl </span>helix::HelixRequestBody <span class="kw">for </span>Vec&lt;CheckAutoModStatusBody&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; helix::HelixRequestBody <span class="kw">for </span>[CheckAutoModStatusBody&lt;<span class="lifetime">&#39;a</span>&gt;] {
     <span class="kw">fn </span>try_to_body(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;hyper::body::Bytes, helix::BodyError&gt; {
         <span class="attribute">#[derive(Serialize)]
         </span><span class="kw">struct </span>InnerBody&lt;<span class="lifetime">&#39;a</span>&gt; {
-            data: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Vec&lt;CheckAutoModStatusBody&gt;,
+            data: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[CheckAutoModStatusBody&lt;<span class="lifetime">&#39;a</span>&gt;],
         }
 
         serde_json::to_vec(<span class="kw-2">&amp;</span>InnerBody { data: <span class="self">self </span>})
@@ -332,7 +336,7 @@
     </span><span class="kw">pub </span>is_permitted: bool,
 }
 
-<span class="kw">impl </span>Request <span class="kw">for </span>CheckAutoModStatusRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>CheckAutoModStatusRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = Vec&lt;CheckAutoModStatus&gt;;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;moderation/enforcements/status&quot;</span>;
@@ -340,9 +344,11 @@
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ModerationRead];
 }
 
-<span class="kw">impl </span>RequestPost <span class="kw">for </span>CheckAutoModStatusRequest {
-    <span class="kw">type </span>Body = Vec&lt;CheckAutoModStatusBody&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RequestPost <span class="kw">for </span>CheckAutoModStatusRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">type </span>Body = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>CheckAutoModStatusBody&lt;<span class="lifetime">&#39;a</span>&gt;];
 }
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; helix::private::SealedSerialize <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>CheckAutoModStatusBody&lt;<span class="lifetime">&#39;a</span>&gt;] {}
 
 <span class="attribute">#[cfg(test)]
 #[test]
@@ -350,12 +356,16 @@
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">let </span>req = CheckAutoModStatusRequest::broadcaster_id(<span class="string">&quot;198704263&quot;</span>);
 
-    <span class="kw">let </span>body = <span class="macro">vec!</span>[
-        CheckAutoModStatusBody::new(<span class="string">&quot;123&quot;</span>, <span class="string">&quot;hello world&quot;</span>.to_string()),
-        CheckAutoModStatusBody::new(<span class="string">&quot;393&quot;</span>, <span class="string">&quot;automoded word&quot;</span>.to_string()),
-    ];
-
-    <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
+    <span class="macro">dbg!</span>(req
+        .create_request(
+            <span class="kw-2">&amp;</span>[
+                <span class="kw-2">&amp;</span>CheckAutoModStatusBody::new(<span class="string">&quot;123&quot;</span>, <span class="string">&quot;hello world&quot;</span>),
+                <span class="kw-2">&amp;</span>CheckAutoModStatusBody::new(<span class="string">&quot;393&quot;</span>, <span class="string">&quot;automoded word&quot;</span>),
+            ],
+            <span class="string">&quot;token&quot;</span>,
+            <span class="string">&quot;clientid&quot;
+        </span>)
+        .unwrap());
 
     <span class="comment">// From twitch docs
     </span><span class="kw">let </span>data = <span class="string">br#&quot;
@@ -385,4 +395,4 @@
     <span class="macro">dbg!</span>(CheckAutoModStatusRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

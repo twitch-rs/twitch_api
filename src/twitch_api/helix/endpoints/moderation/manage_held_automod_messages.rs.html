@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/moderation/manage_held_automod_messages.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>manage_held_automod_messages.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/moderation/manage_held_automod_messages.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>manage_held_automod_messages.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -207,6 +207,9 @@
 <span id="207">207</span>
 <span id="208">208</span>
 <span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Allow or deny a message that was held for review by AutoMod.
 //! [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
 //!
@@ -214,7 +217,7 @@
 //!
 //! ## Request: [ManageHeldAutoModMessagesRequest]
 //!
-//! To use this endpoint, construct a [`ManageHeldAutoModMessagesRequest`] with the [`ManageHeldAutoModMessagesRequest::builder()`] method.
+//! To use this endpoint, construct a [`ManageHeldAutoModMessagesRequest`] with the [`ManageHeldAutoModMessagesRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::manage_held_automod_messages;
@@ -227,11 +230,11 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::manage_held_automod_messages;
-//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::builder()
-//!     .action(true)
-//!     .user_id(&quot;9327994&quot;)
-//!     .msg_id(&quot;836013710&quot;)
-//!     .build();
+//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::new(
+//!     &quot;9327994&quot;,
+//!     &quot;836013710&quot;,
+//!     true,
+//! );
 //! ```
 //!
 //! ## Response: [ManageHeldAutoModMessages]
@@ -249,11 +252,11 @@
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
 //! let request = manage_held_automod_messages::ManageHeldAutoModMessagesRequest::new();
-//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::builder()
-//!     .action(true)
-//!     .user_id(&quot;9327994&quot;)
-//!     .msg_id(&quot;836013710&quot;)
-//!     .build();
+//! let body = manage_held_automod_messages::ManageHeldAutoModMessagesBody::new(
+//!     &quot;9327994&quot;,
+//!     &quot;836013710&quot;,
+//!     true,
+//! );
 //! let response: manage_held_automod_messages::ManageHeldAutoModMessages = client.req_post(request, body, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -262,23 +265,24 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`ManageHeldAutoModMessagesRequest::parse_response(None, &amp;request.get_uri(), response)`](ManageHeldAutoModMessagesRequest::parse_response)
 
-</span><span class="kw">use super</span>::<span class="kw-2">*</span>;
+</span><span class="kw">use </span>std::marker::PhantomData;
+
+<span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span>helix::RequestPost;
 <span class="doccomment">/// Query Parameters for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
-</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>ManageHeldAutoModMessagesRequest {}
-
-<span class="kw">impl </span>ManageHeldAutoModMessagesRequest {
-    <span class="doccomment">/// Create a new [`ManageHeldAutoModMessagesRequest`]
-    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ <span class="self">Self </span>{} }
+</span><span class="kw">pub struct </span>ManageHeldAutoModMessagesRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="attribute">#[serde(skip)]
+    </span>_marker: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>()&gt;,
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>ManageHeldAutoModMessagesRequest {
-    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::new() }
+<span class="kw">impl </span>ManageHeldAutoModMessagesRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="doccomment">/// Create a new [`ManageHeldAutoModMessagesRequest`]
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::default() }
 }
 
 <span class="doccomment">/// Body Parameters for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
@@ -287,19 +291,21 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>ManageHeldAutoModMessagesBody {
+</span><span class="kw">pub struct </span>ManageHeldAutoModMessagesBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The moderator who is approving or rejecting the held message. Must match the user_id in the user OAuth token.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>user_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>user_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
     <span class="doccomment">/// ID of the message to be allowed or denied. These message IDs are retrieved from IRC or PubSub. Only one message ID can be provided.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>msg_id: types::MsgId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>msg_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::MsgIdRef&gt;,
     <span class="doccomment">/// The action to take for the message. Must be &quot;ALLOW&quot; or &quot;DENY&quot;.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     </span><span class="kw">pub </span>action: AutoModAction,
 }
 
-<span class="kw">impl </span>ManageHeldAutoModMessagesBody {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ManageHeldAutoModMessagesBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Create a new [`ManageHeldAutoModMessagesBody`]
     ///
     /// # Examples
@@ -310,20 +316,20 @@
     /// let body = ManageHeldAutoModMessagesBody::new(&quot;1234&quot;, &quot;5678&quot;, true);
     /// ```
     </span><span class="kw">pub fn </span>new(
-        user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
-        msg_id: <span class="kw">impl </span>Into&lt;types::MsgId&gt;,
+        user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>,
+        msg_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::MsgIdRef&gt; + <span class="lifetime">&#39;a</span>,
         action: <span class="kw">impl </span>Into&lt;AutoModAction&gt;,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            user_id: user_id.into(),
-            msg_id: msg_id.into(),
+            user_id: user_id.to_cow(),
+            msg_id: msg_id.to_cow(),
             action: action.into(),
         }
     }
 }
 
 <span class="doccomment">/// Action to take for a message.
-</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Copy, Clone, Debug)]
 #[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>AutoModAction {
@@ -342,7 +348,7 @@
     }
 }
 
-<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>ManageHeldAutoModMessagesBody {}
+<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>ManageHeldAutoModMessagesBody&lt;<span class="lifetime">&#39;_</span>&gt; {}
 
 <span class="doccomment">/// Return Values for [Manage Held AutoMod Messages](super::manage_held_automod_messages)
 ///
@@ -355,7 +361,7 @@
     </span>Success,
 }
 
-<span class="kw">impl </span>Request <span class="kw">for </span>ManageHeldAutoModMessagesRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>ManageHeldAutoModMessagesRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = ManageHeldAutoModMessages;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;moderation/automod/message&quot;</span>;
@@ -363,8 +369,8 @@
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ModerationRead];
 }
 
-<span class="kw">impl </span>RequestPost <span class="kw">for </span>ManageHeldAutoModMessagesRequest {
-    <span class="kw">type </span>Body = ManageHeldAutoModMessagesBody;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RequestPost <span class="kw">for </span>ManageHeldAutoModMessagesRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">type </span>Body = ManageHeldAutoModMessagesBody&lt;<span class="lifetime">&#39;a</span>&gt;;
 
     <span class="kw">fn </span>parse_inner_response&lt;<span class="lifetime">&#39;d</span>&gt;(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
@@ -417,4 +423,4 @@
     <span class="macro">dbg!</span>(ManageHeldAutoModMessagesRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

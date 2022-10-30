@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/streams/get_streams.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_streams.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/streams/get_streams.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_streams.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -266,6 +266,22 @@
 <span id="266">266</span>
 <span id="267">267</span>
 <span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets information about active streams.
 //! [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
 //!
@@ -278,7 +294,7 @@
 //! ```rust
 //! use twitch_api::helix::streams::get_streams;
 //! let request = get_streams::GetStreamsRequest::builder()
-//!     .user_login(vec![&quot;justintvfan&quot;.into()])
+//!     .user_login(&amp;[&quot;justintvfan&quot;.into()][..])
 //!     .build();
 //! ```
 //!
@@ -288,14 +304,16 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, streams::get_streams};
-//! # use twitch_api::client;
+//! # use twitch_api::{client, types};
 //! # #[tokio::main]
 //! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
-//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+//! let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; =
+//!     helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+//! let logins: &amp;[&amp;types::UserNameRef] = &amp;[&quot;justintvfan&quot;.into()];
 //! let request = get_streams::GetStreamsRequest::builder()
-//!     .user_login(vec![&quot;justintvfan&quot;.into()])
+//!     .user_login(logins)
 //!     .build();
 //! let response: Vec&lt;get_streams::Stream&gt; = client.req_get(request, &amp;token).await?.data;
 //! # Ok(())
@@ -311,62 +329,60 @@
 <span class="doccomment">/// Query Parameters for [Get Streams](super::get_streams)
 ///
 /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
-</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Clone, Debug, Default)]
+</span><span class="attribute">#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>GetStreamsRequest {
+</span><span class="kw">pub struct </span>GetStreamsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;,
+    </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
     <span class="doccomment">/// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    </span><span class="kw">pub </span>before: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>before: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
     <span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// Returns streams broadcasting a specified game ID. You can specify up to 10 IDs.
-    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    </span><span class="kw">pub </span>game_id: Vec&lt;types::CategoryId&gt;,
+    </span><span class="attribute">#[cfg_attr(
+        feature = <span class="string">&quot;typed-builder&quot;</span>,
+        builder(default_code = <span class="string">&quot;Cow::Borrowed(&amp;[])&quot;</span>, setter(into))
+    )]
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>game_id: Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>types::CategoryIdRef]&gt;,
     <span class="doccomment">/// Stream language. You can specify up to 100 languages.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    </span><span class="kw">pub </span>language: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>language: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
     <span class="doccomment">/// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
-    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    </span><span class="kw">pub </span>user_id: Vec&lt;types::UserId&gt;,
+    </span><span class="attribute">#[cfg_attr(
+        feature = <span class="string">&quot;typed-builder&quot;</span>,
+        builder(default_code = <span class="string">&quot;Cow::Borrowed(&amp;[])&quot;</span>, setter(into))
+    )]
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>user_id: Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>types::UserIdRef]&gt;,
     <span class="doccomment">/// Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.
-    </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    </span><span class="kw">pub </span>user_login: Vec&lt;types::UserName&gt;,
+    </span><span class="attribute">#[cfg_attr(
+        feature = <span class="string">&quot;typed-builder&quot;</span>,
+        builder(default_code = <span class="string">&quot;Cow::Borrowed(&amp;[])&quot;</span>, setter(into))
+    )]
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>user_login: Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>types::UserNameRef]&gt;,
 }
 
-<span class="kw">impl </span>GetStreamsRequest {
-    <span class="doccomment">/// Return stream for specified user id
-    </span><span class="kw">pub fn </span>user_id(user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            user_id: <span class="macro">vec!</span>[user_id.into()],
-            ..<span class="self">Self</span>::default()
-        }
-    }
-
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; GetStreamsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Return streams for specified user ids
-    </span><span class="kw">pub fn </span>user_ids(user_ids: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>Into&lt;types::UserId&gt;&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>user_ids(user_ids: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>types::UserIdRef]&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            user_id: user_ids.into_iter().map(Into::into).collect(),
-            ..<span class="self">Self</span>::default()
-        }
-    }
-
-    <span class="doccomment">/// Return stream for specified user by [nickname](types::UserName)
-    </span><span class="kw">pub fn </span>user_login(user_login: <span class="kw">impl </span>Into&lt;types::UserName&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            user_login: <span class="macro">vec!</span>[user_login.into()],
+            user_id: user_ids.into(),
             ..<span class="self">Self</span>::default()
         }
     }
 
     <span class="doccomment">/// Return streams for specified users by [nickname](types::UserName)
-    </span><span class="kw">pub fn </span>user_logins(user_logins: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>Into&lt;types::UserName&gt;&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>user_logins(user_logins: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>types::UserNameRef]&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            user_login: user_logins.into_iter().map(Into::into).collect(),
+            user_login: user_logins.into(),
             ..<span class="self">Self</span>::default()
         }
     }
@@ -376,6 +392,20 @@
         <span class="self">self</span>.first = <span class="prelude-val">Some</span>(first);
         <span class="self">self
     </span>}
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>GetStreamsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            after: <span class="prelude-val">None</span>,
+            before: <span class="prelude-val">None</span>,
+            first: <span class="prelude-val">None</span>,
+            game_id: Cow::Borrowed(<span class="kw-2">&amp;</span>[]),
+            language: <span class="prelude-val">None</span>,
+            user_id: Cow::Borrowed(<span class="kw-2">&amp;</span>[]),
+            user_login: Cow::Borrowed(<span class="kw-2">&amp;</span>[]),
+        }
+    }
 }
 
 <span class="doccomment">/// Return Values for [Get Streams](super::get_streams)
@@ -417,7 +447,7 @@
     </span><span class="kw">pub </span>viewer_count: usize,
 }
 
-<span class="kw">impl </span>Request <span class="kw">for </span>GetStreamsRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>GetStreamsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = Vec&lt;Stream&gt;;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;streams&quot;</span>;
@@ -425,10 +455,12 @@
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
 }
 
-<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetStreamsRequest {}
+<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetStreamsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {}
 
-<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetStreamsRequest {
-    <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) { <span class="self">self</span>.after = cursor }
+<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetStreamsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
+        <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 <span class="attribute">#[cfg(test)]
@@ -535,4 +567,4 @@
     <span class="macro">dbg!</span>(GetStreamsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

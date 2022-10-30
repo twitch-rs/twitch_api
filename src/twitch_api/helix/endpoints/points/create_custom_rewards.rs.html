@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/points/create_custom_rewards.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>create_custom_rewards.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/points/create_custom_rewards.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>create_custom_rewards.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -270,14 +270,6 @@
 <span id="270">270</span>
 <span id="271">271</span>
 <span id="272">272</span>
-<span id="273">273</span>
-<span id="274">274</span>
-<span id="275">275</span>
-<span id="276">276</span>
-<span id="277">277</span>
-<span id="278">278</span>
-<span id="279">279</span>
-<span id="280">280</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Adds a specified user to the followers of a specified channel.
 //! [`create-custom-rewards`](https://dev.twitch.tv/docs/api/reference#create-custom-rewards)
 //!
@@ -285,13 +277,11 @@
 //!
 //! ## Request: [CreateCustomRewardRequest]
 //!
-//! To use this endpoint, construct a [`CreateCustomRewardRequest`] with the [`CreateCustomRewardRequest::builder()`] method.
+//! To use this endpoint, construct a [`CreateCustomRewardRequest`] with the [`CreateCustomRewardRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::create_custom_rewards;
-//! let request = create_custom_rewards::CreateCustomRewardRequest::builder()
-//!     .broadcaster_id(&quot;274637212&quot;)
-//!     .build();
+//! let request = create_custom_rewards::CreateCustomRewardRequest::broadcaster_id(&quot;274637212&quot;);
 //! ```
 //!
 //! ## Body: [CreateCustomRewardBody]
@@ -300,10 +290,7 @@
 //!
 //! ```
 //! # use twitch_api::helix::points::create_custom_rewards;
-//! let body = create_custom_rewards::CreateCustomRewardBody::builder()
-//!     .cost(500)
-//!     .title(&quot;hydrate!&quot;)
-//!     .build();
+//! let mut body = create_custom_rewards::CreateCustomRewardBody::new(&quot;hydrate&quot;, 500);
 //! ```
 //!
 //! ## Response: [CreateCustomRewardResponse]
@@ -320,13 +307,8 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = create_custom_rewards::CreateCustomRewardRequest::builder()
-//!     .broadcaster_id(&quot;274637212&quot;)
-//!     .build();
-//! let body = create_custom_rewards::CreateCustomRewardBody::builder()
-//!     .cost(500)
-//!     .title(&quot;hydrate!&quot;)
-//!     .build();
+//! let request = create_custom_rewards::CreateCustomRewardRequest::broadcaster_id(&quot;274637212&quot;);
+//! let mut body = create_custom_rewards::CreateCustomRewardBody::new(&quot;hydrate&quot;, 500);
 //! let response: create_custom_rewards::CreateCustomRewardResponse = client.req_post(request, body, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -343,17 +325,18 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>CreateCustomRewardRequest {
+</span><span class="kw">pub struct </span>CreateCustomRewardRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Provided broadcaster_id must match the user_id in the auth token
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
 }
 
-<span class="kw">impl </span>CreateCustomRewardRequest {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; CreateCustomRewardRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Channel to create reward on
-    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
         }
     }
 }
@@ -364,14 +347,15 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>CreateCustomRewardBody {
+</span><span class="kw">pub struct </span>CreateCustomRewardBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The title of the reward
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>title: String,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>title: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
     <span class="doccomment">/// The prompt for the viewer when they are redeeming the reward
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>prompt: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>prompt: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
     <span class="doccomment">/// The cost of the reward
     </span><span class="kw">pub </span>cost: usize,
     <span class="doccomment">/// Is the reward currently enabled, if false the reward won’t show up to viewers. Defaults true
@@ -380,8 +364,8 @@
     </span><span class="kw">pub </span>is_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// Custom background color for the reward. Format: Hex with # prefix. Example: #00E5CB.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>background_color: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>background_color: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
     <span class="doccomment">/// Does the user need to enter information when redeeming the reward. Defaults false
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
@@ -416,12 +400,12 @@
     </span><span class="kw">pub </span>should_redemptions_skip_request_queue: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 }
 
-<span class="kw">impl </span>CreateCustomRewardBody {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; CreateCustomRewardBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="comment">// FIXME: need to add more here
     </span><span class="doccomment">/// Reward to create with title.
-    </span><span class="kw">pub fn </span>new(title: String, cost: usize) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(title: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;, cost: usize) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            title,
+            title: title.into(),
             prompt: Default::default(),
             cost,
             is_enabled: Default::default(),
@@ -438,14 +422,14 @@
     }
 }
 
-<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>CreateCustomRewardBody {}
+<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>CreateCustomRewardBody&lt;<span class="lifetime">&#39;_</span>&gt; {}
 
 <span class="doccomment">/// Return Values for [Create Custom Rewards](super::create_custom_rewards)
 ///
 /// [`create-custom-rewards`](https://dev.twitch.tv/docs/api/reference#create-custom-rewards)
 </span><span class="kw">pub type </span>CreateCustomRewardResponse = <span class="kw">super</span>::CustomReward;
 
-<span class="kw">impl </span>Request <span class="kw">for </span>CreateCustomRewardRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>CreateCustomRewardRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = CreateCustomRewardResponse;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;channel_points/custom_rewards&quot;</span>;
@@ -454,8 +438,8 @@
         <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ChannelManageRedemptions];
 }
 
-<span class="kw">impl </span>RequestPost <span class="kw">for </span>CreateCustomRewardRequest {
-    <span class="kw">type </span>Body = CreateCustomRewardBody;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RequestPost <span class="kw">for </span>CreateCustomRewardRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">type </span>Body = CreateCustomRewardBody&lt;<span class="lifetime">&#39;a</span>&gt;;
 
     <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
@@ -499,7 +483,7 @@
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">let </span>req = CreateCustomRewardRequest::broadcaster_id(<span class="string">&quot;274637212&quot;</span>);
 
-    <span class="kw">let </span>body = CreateCustomRewardBody::new(<span class="string">&quot;game analysis 1v1&quot;</span>.to_owned(), <span class="number">50000</span>);
+    <span class="kw">let </span>body = CreateCustomRewardBody::new(<span class="string">&quot;game analysis 1v1&quot;</span>, <span class="number">50000</span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
@@ -559,4 +543,4 @@
     <span class="macro">dbg!</span>(CreateCustomRewardRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

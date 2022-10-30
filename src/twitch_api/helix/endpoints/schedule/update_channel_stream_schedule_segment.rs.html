@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/schedule/update_channel_stream_schedule_segment.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>update_channel_stream_schedule_segment.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/schedule/update_channel_stream_schedule_segment.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>update_channel_stream_schedule_segment.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -220,6 +220,8 @@
 <span id="220">220</span>
 <span id="221">221</span>
 <span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Update a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
 //! [`update-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment)
 //!
@@ -227,14 +229,14 @@
 //!
 //! ## Request: [UpdateChannelStreamScheduleSegmentRequest]
 //!
-//! To use this endpoint, construct a [`UpdateChannelStreamScheduleSegmentRequest`] with the [`UpdateChannelStreamScheduleSegmentRequest::builder()`] method.
+//! To use this endpoint, construct a [`UpdateChannelStreamScheduleSegmentRequest`] with the [`UpdateChannelStreamScheduleSegmentRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::update_channel_stream_schedule_segment;
-//! let request = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentRequest::builder()
-//!     .broadcaster_id(&quot;141981764&quot;)
-//!     .id(&quot;eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=&quot;)
-//!     .build();
+//! let request = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentRequest::new(
+//!     &quot;141981764&quot;,
+//!     &quot;eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=&quot;,
+//! );
 //! ```
 //!
 //! ## Body: [UpdateChannelStreamScheduleSegmentBody]
@@ -245,7 +247,7 @@
 //! # use twitch_api::helix::schedule::update_channel_stream_schedule_segment;
 //! let body =
 //!     update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::builder()
-//!         .duration(&quot;120&quot;.to_string())
+//!         .duration(Some(&quot;120&quot;.into()))
 //!         .build();
 //! ```
 //!
@@ -263,12 +265,12 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentRequest::builder()
-//!     .broadcaster_id(&quot;141981764&quot;)
-//!     .id(&quot;eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=&quot;)
-//!     .build();
+//! let request = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentRequest::new(
+//!     &quot;141981764&quot;,
+//!     &quot;eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=&quot;,
+//! );
 //! let body = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::builder()
-//!     .duration(&quot;120&quot;.to_string())
+//!     .duration(Some(&quot;120&quot;.into()))
 //!     .build();
 //! let response: update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentResponse = client.req_patch(request, body, &amp;token).await?.data;
 //! # Ok(())
@@ -286,24 +288,26 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>UpdateChannelStreamScheduleSegmentRequest {
+</span><span class="kw">pub struct </span>UpdateChannelStreamScheduleSegmentRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
     <span class="doccomment">/// The ID of the streaming segment to update.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>id: types::StreamSegmentId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>id: Cow&lt;<span class="lifetime">&#39;a</span>, types::StreamSegmentIdRef&gt;,
 }
 
-<span class="kw">impl </span>UpdateChannelStreamScheduleSegmentRequest {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; UpdateChannelStreamScheduleSegmentRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Update a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     </span><span class="kw">pub fn </span>new(
-        broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;,
-        id: <span class="kw">impl </span>Into&lt;types::StreamSegmentId&gt;,
+        broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>,
+        id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::StreamSegmentIdRef&gt; + <span class="lifetime">&#39;a</span>,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            broadcaster_id: broadcaster_id.into(),
-            id: id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
+            id: id.to_cow(),
         }
     }
 }
@@ -314,23 +318,23 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>UpdateChannelStreamScheduleSegmentBody {
+</span><span class="kw">pub struct </span>UpdateChannelStreamScheduleSegmentBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Start time for the scheduled broadcast specified in RFC3339 format.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>start_time: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>start_time: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
     <span class="doccomment">/// Duration of the scheduled broadcast in minutes from the start_time. Default: 240.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>duration: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>duration: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
     <span class="doccomment">/// Game/Category ID for the scheduled broadcast.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>category_id: <span class="prelude-ty">Option</span>&lt;types::CategoryId&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>category_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::CategoryIdRef&gt;&gt;,
     <span class="doccomment">/// Title for the scheduled broadcast. Maximum: 140 characters.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>title: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>title: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
     <span class="doccomment">/// Indicated if the scheduled broadcast is canceled.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
@@ -338,18 +342,18 @@
     <span class="comment">// FIXME: Enum?
     </span><span class="doccomment">/// The timezone of the application creating the scheduled broadcast using the IANA time zone database format.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>timezone: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    </span><span class="kw">pub </span>timezone: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
 }
 
-<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>UpdateChannelStreamScheduleSegmentBody {}
+<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>UpdateChannelStreamScheduleSegmentBody&lt;<span class="lifetime">&#39;_</span>&gt; {}
 
 <span class="doccomment">/// Return Values for [Update Channel Stream Schedule Segment](super::update_channel_stream_schedule_segment)
 ///
 /// [`update-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment)
 </span><span class="kw">pub type </span>UpdateChannelStreamScheduleSegmentResponse = ScheduledBroadcasts;
 
-<span class="kw">impl </span>Request <span class="kw">for </span>UpdateChannelStreamScheduleSegmentRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>UpdateChannelStreamScheduleSegmentRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = UpdateChannelStreamScheduleSegmentResponse;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;schedule/segment&quot;</span>;
@@ -357,8 +361,8 @@
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ChannelManageSchedule];
 }
 
-<span class="kw">impl </span>RequestPatch <span class="kw">for </span>UpdateChannelStreamScheduleSegmentRequest {
-    <span class="kw">type </span>Body = UpdateChannelStreamScheduleSegmentBody;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RequestPatch <span class="kw">for </span>UpdateChannelStreamScheduleSegmentRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">type </span>Body = UpdateChannelStreamScheduleSegmentBody&lt;<span class="lifetime">&#39;a</span>&gt;;
 
     <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
@@ -397,7 +401,7 @@
         <span class="string">&quot;eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=&quot;</span>);
 
     <span class="kw">let </span>body = UpdateChannelStreamScheduleSegmentBody {
-        duration: <span class="prelude-val">Some</span>(<span class="string">&quot;120&quot;</span>.to_string()),
+        duration: <span class="prelude-val">Some</span>(<span class="string">&quot;120&quot;</span>.into()),
         ..&lt;<span class="kw">_</span>&gt;::default()
     };
 
@@ -443,4 +447,4 @@
     );
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

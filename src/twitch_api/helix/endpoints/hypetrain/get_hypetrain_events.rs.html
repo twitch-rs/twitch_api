@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/hypetrain/get_hypetrain_events.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_hypetrain_events.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/hypetrain/get_hypetrain_events.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_hypetrain_events.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -202,8 +202,6 @@
 <span id="202">202</span>
 <span id="203">203</span>
 <span id="204">204</span>
-<span id="205">205</span>
-<span id="206">206</span>
 </pre><pre class="rust"><code><span class="attribute">#![allow(deprecated_in_future, deprecated)]
 </span><span class="doccomment">//! Gets the information of the most recent Hype Train of the given channel ID.
 //! [`get-hype-train-events`](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)
@@ -212,13 +210,11 @@
 //!
 //! ## Request: [GetHypeTrainEventsRequest]
 //!
-//! To use this endpoint, construct a [`GetHypeTrainEventsRequest`] with the [`GetHypeTrainEventsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetHypeTrainEventsRequest`] with the [`GetHypeTrainEventsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::hypetrain::get_hypetrain_events;
-//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::builder()
-//!     .broadcaster_id(&quot;4321&quot;.to_string())
-//!     .build();
+//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::broadcaster_id(&quot;4321&quot;);
 //! ```
 //!
 //! ## Response: [HypeTrainEvent](types::TwitchCategory)
@@ -233,9 +229,7 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::builder()
-//!     .broadcaster_id(&quot;4321&quot;.to_string())
-//!     .build();
+//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::broadcaster_id(&quot;4321&quot;);
 //! let response: Vec&lt;get_hypetrain_events::HypeTrainEvent&gt; = client.req_get(request, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -253,10 +247,11 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>GetHypeTrainEventsRequest {
+</span><span class="kw">pub struct </span>GetHypeTrainEventsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Must match the User ID in the Bearer token.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
     </span><span class="kw">pub </span>cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;,
@@ -269,14 +264,15 @@
         note = <span class="string">&quot;this does nothing, see https://discuss.dev.twitch.tv/t/get-hype-train-events-api-endpoint-id-query-parameter-deprecation/37613&quot;
     </span>)]
     #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    </span><span class="kw">pub </span>id: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
 }
 
-<span class="kw">impl </span>GetHypeTrainEventsRequest {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; GetHypeTrainEventsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Get hypetrain evens
-    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             cursor: Default::default(),
             first: Default::default(),
             id: Default::default(),
@@ -340,7 +336,7 @@
     </span><span class="kw">pub </span>id: types::HypeTrainId,
 }
 
-<span class="kw">impl </span>Request <span class="kw">for </span>GetHypeTrainEventsRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>GetHypeTrainEventsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = Vec&lt;HypeTrainEvent&gt;;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;hypetrain/events&quot;</span>;
@@ -348,9 +344,9 @@
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
 }
 
-<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetHypeTrainEventsRequest {}
+<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetHypeTrainEventsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {}
 
-<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetHypeTrainEventsRequest {
+<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetHypeTrainEventsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) { <span class="self">self</span>.cursor = cursor }
 }
 
@@ -411,4 +407,4 @@
     <span class="macro">dbg!</span>(GetHypeTrainEventsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

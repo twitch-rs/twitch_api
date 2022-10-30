@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/schedule/get_channel_stream_schedule.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_channel_stream_schedule.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/schedule/get_channel_stream_schedule.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>get_channel_stream_schedule.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -169,6 +169,12 @@
 <span id="169">169</span>
 <span id="170">170</span>
 <span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets all scheduled broadcasts or specific scheduled broadcasts from a channel’s stream schedule. Scheduled broadcasts are defined as “stream segments” in the API.
 //! [`get-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule)
 //!
@@ -177,13 +183,12 @@
 //! See also [`get_channel_schedule`](helix::HelixClient::get_channel_schedule)
 //! ## Request: [GetChannelStreamScheduleRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelStreamScheduleRequest`] with the [`GetChannelStreamScheduleRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelStreamScheduleRequest`] with the [`GetChannelStreamScheduleRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::get_channel_stream_schedule;
-//! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
+//! let request =
+//!     get_channel_stream_schedule::GetChannelStreamScheduleRequest::broadcaster_id(&quot;1234&quot;);
 //! ```
 //!
 //! ## Response: [ScheduledBroadcasts]
@@ -198,9 +203,7 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::builder()
-//!     .broadcaster_id(&quot;1234&quot;)
-//!     .build();
+//! let request = get_channel_stream_schedule::GetChannelStreamScheduleRequest::broadcaster_id(&quot;1234&quot;);
 //! let response: helix::schedule::ScheduledBroadcasts = client.req_get(request, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -218,32 +221,36 @@
 </span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>GetChannelStreamScheduleRequest {
+</span><span class="kw">pub struct </span>GetChannelStreamScheduleRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    </span><span class="kw">pub </span>broadcaster_id: types::UserId,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
     <span class="doccomment">/// The ID of the stream segment to return. Maximum: 100.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    </span><span class="kw">pub </span>id: <span class="prelude-ty">Option</span>&lt;types::StreamSegmentId&gt;,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::StreamSegmentIdRef&gt;&gt;,
     <span class="doccomment">/// A timestamp in RFC3339 format to start returning stream segments from. If not specified, the current date and time is used.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    </span><span class="kw">pub </span>start_time: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>start_time: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::TimestampRef&gt;&gt;,
     <span class="doccomment">/// A timezone offset for the requester specified in minutes. This is recommended to ensure stream segments are returned for the correct week. For example, a timezone that is +4 hours from GMT would be “240.” If not specified, “0” is used for GMT.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    </span><span class="kw">pub </span>utc_offset: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    #[serde(borrow)]
+    </span><span class="kw">pub </span>utc_offset: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;,
+    </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
     <span class="doccomment">/// Maximum number of stream segments to return. Maximum: 25. Default: 20.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;usize&gt;,
 }
 
-<span class="kw">impl </span>GetChannelStreamScheduleRequest {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; GetChannelStreamScheduleRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Get a broadcasters schedule
-    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>broadcaster_id(broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            broadcaster_id: broadcaster_id.into(),
+            broadcaster_id: broadcaster_id.to_cow(),
             id: Default::default(),
             start_time: Default::default(),
             utc_offset: Default::default(),
@@ -253,19 +260,22 @@
     }
 
     <span class="doccomment">/// Set the id for the request.
-    </span><span class="kw">pub fn </span>id(<span class="kw-2">mut </span><span class="self">self</span>, id: <span class="kw">impl </span>Into&lt;types::StreamSegmentId&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.id = <span class="prelude-val">Some</span>(id.into());
+    </span><span class="kw">pub fn </span>id(<span class="kw-2">mut </span><span class="self">self</span>, id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::StreamSegmentIdRef&gt; + <span class="lifetime">&#39;a</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.id = <span class="prelude-val">Some</span>(id.to_cow());
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Set the start_time for the request.
-    </span><span class="kw">pub fn </span>start_time(<span class="kw-2">mut </span><span class="self">self</span>, start_time: <span class="kw">impl </span>Into&lt;types::Timestamp&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.start_time = <span class="prelude-val">Some</span>(start_time.into());
+    </span><span class="kw">pub fn </span>start_time(
+        <span class="kw-2">mut </span><span class="self">self</span>,
+        start_time: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::TimestampRef&gt; + <span class="lifetime">&#39;a</span>,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.start_time = <span class="prelude-val">Some</span>(start_time.to_cow());
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Set the utc_offset for the request.
-    </span><span class="kw">pub fn </span>utc_offset(<span class="kw-2">mut </span><span class="self">self</span>, utc_offset: <span class="kw">impl </span>Into&lt;String&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>utc_offset(<span class="kw-2">mut </span><span class="self">self</span>, utc_offset: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.utc_offset = <span class="prelude-val">Some</span>(utc_offset.into());
         <span class="self">self
     </span>}
@@ -282,7 +292,7 @@
 /// [`get-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule)
 </span><span class="kw">pub type </span>GetChannelStreamScheduleResponse = ScheduledBroadcasts;
 
-<span class="kw">impl </span>Request <span class="kw">for </span>GetChannelStreamScheduleRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>GetChannelStreamScheduleRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = ScheduledBroadcasts;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;schedule&quot;</span>;
@@ -290,10 +300,12 @@
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
 }
 
-<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetChannelStreamScheduleRequest {}
+<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetChannelStreamScheduleRequest&lt;<span class="lifetime">&#39;_</span>&gt; {}
 
-<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetChannelStreamScheduleRequest {
-    <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) { <span class="self">self</span>.after = cursor; }
+<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetChannelStreamScheduleRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
+        <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 <span class="attribute">#[cfg(test)]
@@ -341,4 +353,4 @@
     <span class="macro">dbg!</span>(GetChannelStreamScheduleRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (1898c34e9 2022-10-26)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>
