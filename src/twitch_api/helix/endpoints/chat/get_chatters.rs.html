@@ -148,6 +148,7 @@
 <span id="148">148</span>
 <span id="149">149</span>
 <span id="150">150</span>
+<span id="151">151</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets the list of users that are connected to the specified broadcaster’s chat session.
 //! [`get-chatters`](https://dev.twitch.tv/docs/api/reference#get-chatters)
 //!
@@ -212,6 +213,7 @@
     </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
+    #[serde(borrow)]
     </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
 }
 

@@ -175,6 +175,7 @@
 <span id="175">175</span>
 <span id="176">176</span>
 <span id="177">177</span>
+<span id="178">178</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets the list of all stream tags defined by Twitch, optionally filtered by tag ID(s).
 //! [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
 //!
@@ -225,6 +226,7 @@
 </span><span class="kw">pub struct </span>GetAllStreamTagsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
+    #[serde(borrow)]
     </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
     <span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]

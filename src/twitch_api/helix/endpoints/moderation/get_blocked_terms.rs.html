@@ -140,6 +140,7 @@
 <span id="140">140</span>
 <span id="141">141</span>
 <span id="142">142</span>
+<span id="143">143</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets the broadcaster’s list of non-private, blocked words or phrases. These are the terms that the broadcaster or moderator added manually, or that were denied by AutoMod.
 //! [`get-blocked-terms`](https://dev.twitch.tv/docs/api/reference#get-blocked-terms)
 //!
@@ -199,6 +200,7 @@
     </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;u32&gt;,
     <span class="doccomment">/// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
+    #[serde(borrow)]
     </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
 }
 

@@ -181,6 +181,7 @@
 <span id="181">181</span>
 <span id="182">182</span>
 <span id="183">183</span>
+<span id="184">184</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Sends a whisper message to the specified user.
 //! [`send-whisper`](https://dev.twitch.tv/docs/api/reference#send-whisper)
 //!
@@ -274,6 +275,7 @@
     /// 10,000 characters if the user you&#39;re sending the message to has whispered you before.
     ///
     /// Messages that exceed the maximum length are truncated.
+    </span><span class="attribute">#[serde(borrow)]
     </span><span class="kw">pub </span>message: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
 }
 

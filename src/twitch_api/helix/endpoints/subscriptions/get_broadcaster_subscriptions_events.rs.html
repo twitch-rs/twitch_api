@@ -267,6 +267,7 @@
 <span id="267">267</span>
 <span id="268">268</span>
 <span id="269">269</span>
+<span id="270">270</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Returns a list of subscription events.
 //! [`get-broadcaster-subscriptions-events`](https://twitch.uservoice.com/forums/310213-developers/suggestions/39847468-get-broadcaster-subscriptions-events)
 //!
@@ -331,6 +332,7 @@
     </span><span class="kw">pub </span>user_id: Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>types::UserIdRef]&gt;,
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
+    #[serde(borrow)]
     </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
     <span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]

@@ -190,6 +190,7 @@
 <span id="190">190</span>
 <span id="191">191</span>
 <span id="192">192</span>
+<span id="193">193</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Get a list of your EventSub subscriptions.
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
@@ -219,6 +220,7 @@
     <span class="comment">// FIXME: https://github.com/twitchdev/issues/issues/272
     </span><span class="doccomment">/// Cursor for forward pagination
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    #[serde(borrow)]
     </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
     <span class="comment">// FIXME: https://github.com/twitchdev/issues/issues/271
     </span><span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.

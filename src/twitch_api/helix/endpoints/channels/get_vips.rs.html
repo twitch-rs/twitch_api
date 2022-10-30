@@ -186,6 +186,7 @@
 <span id="186">186</span>
 <span id="187">187</span>
 <span id="188">188</span>
+<span id="189">189</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets a list of the channel’s VIPs.
 //! [`get-vips`](https://dev.twitch.tv/docs/api/reference#get-vips)
 //!
@@ -245,6 +246,7 @@
     </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value. Read more.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
+    #[serde(borrow)]
     </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
 }
 
