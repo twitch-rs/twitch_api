@@ -54,7 +54,7 @@ pub struct GetPollsRequest<'a> {
     pub id: Cow<'a, [&'a types::PollIdRef]>,
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 20. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
@@ -128,7 +128,9 @@ impl Request for GetPollsRequest<'_> {
 impl RequestGet for GetPollsRequest<'_> {}
 
 impl helix::Paginated for GetPollsRequest<'_> {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor; }
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

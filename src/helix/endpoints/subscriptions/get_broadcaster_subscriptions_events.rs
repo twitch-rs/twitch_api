@@ -62,7 +62,7 @@ pub struct GetBroadcasterSubscriptionsEventsRequest<'a> {
     pub user_id: Cow<'a, [&'a types::UserIdRef]>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
@@ -184,7 +184,9 @@ impl Request for GetBroadcasterSubscriptionsEventsRequest<'_> {
 impl RequestGet for GetBroadcasterSubscriptionsEventsRequest<'_> {}
 
 impl helix::Paginated for GetBroadcasterSubscriptionsEventsRequest<'_> {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

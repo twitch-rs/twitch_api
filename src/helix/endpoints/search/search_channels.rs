@@ -53,7 +53,7 @@ pub struct SearchChannelsRequest<'a> {
     pub query: Cow<'a, str>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100 Default: 20
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     // FIXME: No setter because int
@@ -134,7 +134,9 @@ impl Request for SearchChannelsRequest<'_> {
 impl RequestGet for SearchChannelsRequest<'_> {}
 
 impl helix::Paginated for SearchChannelsRequest<'_> {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

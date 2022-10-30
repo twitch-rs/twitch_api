@@ -57,7 +57,7 @@ pub struct GetVipsRequest<'a> {
     pub first: Option<usize>,
     /// The cursor used to get the next page of results. The Pagination object in the response contains the cursor’s value. Read more.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
 }
 
 impl<'a> GetVipsRequest<'a> {
@@ -110,7 +110,9 @@ impl Request for GetVipsRequest<'_> {
 }
 
 impl helix::Paginated for GetVipsRequest<'_> {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor; }
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 impl RequestGet for GetVipsRequest<'_> {}

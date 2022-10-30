@@ -59,11 +59,11 @@ pub struct GetClipsRequest<'a> {
     // one of above is needed.
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[serde(borrow)]
-    pub before: Option<&'a helix::CursorRef>,
+    pub before: Option<Cow<'a, helix::CursorRef>>,
     /// Ending date/time for returned clips, in RFC3339 format. (Note that the seconds value is ignored.) If this is specified, started_at also must be specified; otherwise, the time period is ignored.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[serde(borrow)]
@@ -199,7 +199,9 @@ impl Request for GetClipsRequest<'_> {
 impl RequestGet for GetClipsRequest<'_> {}
 
 impl helix::Paginated for GetClipsRequest<'_> {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

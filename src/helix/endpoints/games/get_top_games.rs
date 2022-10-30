@@ -48,11 +48,11 @@ use helix::RequestGet;
 pub struct GetTopGamesRequest<'a> {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     /// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(borrow)]
-    pub before: Option<&'a helix::CursorRef>,
+    pub before: Option<Cow<'a, helix::CursorRef>>,
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
@@ -82,7 +82,9 @@ impl Request for GetTopGamesRequest<'_> {
 impl RequestGet for GetTopGamesRequest<'_> {}
 
 impl helix::Paginated for GetTopGamesRequest<'_> {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]

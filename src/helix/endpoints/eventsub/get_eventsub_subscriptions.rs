@@ -27,7 +27,7 @@ pub struct GetEventSubSubscriptionsRequest<'a> {
     // FIXME: https://github.com/twitchdev/issues/issues/272
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub after: Option<helix::Cursor>,
+    pub after: Option<Cow<'a, helix::CursorRef>>,
     // FIXME: https://github.com/twitchdev/issues/issues/271
     /// Maximum number of objects to return. Maximum: 100. Default: 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -124,7 +124,9 @@ impl RequestGet for GetEventSubSubscriptionsRequest<'_> {
 }
 
 impl helix::Paginated for GetEventSubSubscriptionsRequest<'_> {
-    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) { self.after = cursor }
+    fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
+        self.after = cursor.map(|c| c.into_cow())
+    }
 }
 
 #[cfg(test)]
