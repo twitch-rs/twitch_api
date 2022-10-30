@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/moderation/check_automod_status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>check_automod_status.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><script defer src="../../../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/moderation/check_automod_status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>check_automod_status.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -196,6 +196,7 @@
 <span id="196">196</span>
 <span id="197">197</span>
 <span id="198">198</span>
+<span id="199">199</span>
 </pre><pre class="rust"><code><span class="attribute">#![allow(deprecated_in_future, deprecated)]
 </span><span class="doccomment">//! Determines whether a string message meets the channel’s AutoMod requirements.
 //! [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
@@ -258,7 +259,7 @@
 </span><span class="kw">pub struct </span>CheckAutoModStatusRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Must match the User ID in the Bearer token.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
     </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
 }
 
@@ -280,11 +281,11 @@
 </span><span class="kw">pub struct </span>CheckAutoModStatusBody&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Developer-generated identifier for mapping messages to results.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
     </span><span class="kw">pub </span>msg_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::MsgIdRef&gt;,
     <span class="doccomment">/// Message text.
     </span><span class="attribute">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    #[serde(borrow)]
+    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
     </span><span class="kw">pub </span>msg_text: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
     <span class="doccomment">/// User ID of the sender.
     </span><span class="attribute">#[deprecated(since = <span class="string">&quot;0.7.0&quot;</span>, note = <span class="string">&quot;user_id in automod check is no longer read&quot;</span>)]
@@ -292,7 +293,8 @@
         feature = <span class="string">&quot;typed-builder&quot;</span>,
         builder(setter(into, strip_option), default)
     )]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, borrow)]
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
     </span><span class="kw">pub </span>user_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;&gt;,
 }
 
