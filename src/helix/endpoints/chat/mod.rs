@@ -10,6 +10,7 @@ use std::borrow::Cow;
 pub mod get_channel_chat_badges;
 pub mod get_channel_emotes;
 pub mod get_chat_settings;
+#[cfg(feature = "unsupported")]
 pub mod get_chatters;
 pub mod get_emote_sets;
 pub mod get_global_chat_badges;
@@ -26,6 +27,7 @@ pub use get_channel_emotes::GetChannelEmotesRequest;
 #[doc(inline)]
 pub use get_chat_settings::GetChatSettingsRequest;
 #[doc(inline)]
+#[cfg(feature = "unsupported")]
 pub use get_chatters::{Chatter, GetChattersRequest};
 #[doc(inline)]
 pub use get_emote_sets::GetEmoteSetsRequest;
