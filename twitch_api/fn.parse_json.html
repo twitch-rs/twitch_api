@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Parse a string as `T`, logging ignored fields and giving a more detailed error message on parse errors"><meta name="keywords" content="rust, rustlang, rust-lang, parse_json"><title>parse_json in twitch_api - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../normalize.css"><link rel="stylesheet" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../ayu.css" disabled><link rel="stylesheet" href="../dark.css" disabled><link rel="stylesheet" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../main.js"></script><script defer src="../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div></a><h2></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div></a><div class="sidebar-elems"><h2><a href="index.html">In twitch_api</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1 class="fqn">Function <a href="index.html">twitch_api</a>::<wbr><a class="fn" href="#">parse_json</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../src/twitch_api/lib.rs.html#263-295">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="item-decl"><pre class="rust fn"><code>pub fn parse_json&lt;'a, T:&nbsp;<a class="trait" href="https://docs.rs/serde/1.0.147/serde/de/trait.Deserialize.html" title="trait serde::de::Deserialize">Deserialize</a>&lt;'a&gt;&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;s: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;log_ignored: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;T, <a class="enum" href="enum.DeserError.html" title="enum twitch_api::DeserError">DeserError</a>&gt;</code></pre></div><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>serde_json</code></strong> only.</div></span><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Parse a string as <code>T</code>, logging ignored fields and giving a more detailed error message on parse errors</p>
 <p>The log_ignored argument decides if a trace of ignored value should be emitted</p>
-</div></details><div class="docblock scraped-example-list"><span></span><h5 id="scraped-examples"><a href="#scraped-examples">Examples found in repository</a><a class="scrape-help" href="../scrape-examples-help.html">?</a></h5><div class="scraped-example " data-locs="[[[13,13],&quot;../src/twitch_api/eventsub/mod.rs.html#187&quot;,&quot;line 187&quot;],[[30,30],&quot;../src/twitch_api/eventsub/mod.rs.html#204&quot;,&quot;line 204&quot;],[[52,52],&quot;../src/twitch_api/eventsub/mod.rs.html#226&quot;,&quot;line 226&quot;]]"><div class="scraped-example-title">src/eventsub/mod.rs (<a href="../src/twitch_api/eventsub/mod.rs.html#187">line 187</a>)</div><div class="code-wrapper"><span class="prev">&pr;</span> <span class="next">&sc;</span><span class="expand">&varr;</span><div class="example-wrap"><pre class="src-line-numbers"><span>174</span>
+</div></details><div class="docblock scraped-example-list"><span></span><h5 id="scraped-examples"><a href="#scraped-examples">Examples found in repository</a><a class="scrape-help" href="../scrape-examples-help.html">?</a></h5><div class="scraped-example " data-locs="[[[13,13],&quot;../src/twitch_api/eventsub/mod.rs.html#187&quot;,&quot;line 187&quot;],[[30,30],&quot;../src/twitch_api/eventsub/mod.rs.html#204&quot;,&quot;line 204&quot;],[[52,52],&quot;../src/twitch_api/eventsub/mod.rs.html#226&quot;,&quot;line 226&quot;]]"><div class="scraped-example-title">src/eventsub/mod.rs (<a href="../src/twitch_api/eventsub/mod.rs.html#187">line 187</a>)</div><div class="code-wrapper"><span class="prev">&pr;</span> <span class="next">&sc;</span><div class="example-wrap"><pre class="src-line-numbers"><span>174</span>
 <span>175</span>
 <span>176</span>
 <span>177</span>
@@ -59,7 +59,7 @@
 <span>230</span>
 <span>231</span>
 <span>232</span>
-</pre><pre class="rust"><code>    <span class="kw">pub fn </span>parse_notification(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
+</pre><pre class="rust"><code><span class="expand">&varr;</span>    <span class="kw">pub fn </span>parse_notification(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
         <span class="attribute">#[derive(Deserialize)]
         #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
         </span><span class="kw">struct </span>Notification&lt;E: EventSubscription&gt; {
@@ -118,7 +118,7 @@
             message: Message::VerificationRequest(VerificationRequest { challenge }),
         })
     }</code></pre></div>
-</div></div><details class="rustdoc-toggle more-examples-toggle"><summary class="hideme"><span>More examples</span></summary><div class="hide-more">Hide additional examples</div><div class="more-scraped-examples"><div class="toggle-line"><div class="toggle-line-inner"></div></div><div class="more-scraped-examples-inner"><div class="scraped-example " data-locs="[[[10,10],&quot;../src/twitch_api/helix/endpoints/schedule/update_channel_stream_schedule_segment.rs.html#158&quot;,&quot;line 158&quot;]]"><div class="scraped-example-title">src/helix/endpoints/schedule/update_channel_stream_schedule_segment.rs (<a href="../src/twitch_api/helix/endpoints/schedule/update_channel_stream_schedule_segment.rs.html#158">line 158</a>)</div><div class="code-wrapper"><span class="expand">&varr;</span><div class="example-wrap"><pre class="src-line-numbers"><span>148</span>
+</div></div><details class="rustdoc-toggle more-examples-toggle"><summary class="hideme"><span>More examples</span></summary><div class="hide-more">Hide additional examples</div><div class="more-scraped-examples"><div class="toggle-line"><div class="toggle-line-inner"></div></div><div class="more-scraped-examples-inner"><div class="scraped-example " data-locs="[[[10,10],&quot;../src/twitch_api/helix/endpoints/schedule/update_channel_stream_schedule_segment.rs.html#158&quot;,&quot;line 158&quot;]]"><div class="scraped-example-title">src/helix/endpoints/schedule/update_channel_stream_schedule_segment.rs (<a href="../src/twitch_api/helix/endpoints/schedule/update_channel_stream_schedule_segment.rs.html#158">line 158</a>)</div><div class="code-wrapper"><div class="example-wrap"><pre class="src-line-numbers"><span>148</span>
 <span>149</span>
 <span>150</span>
 <span>151</span>
@@ -144,7 +144,7 @@
 <span>171</span>
 <span>172</span>
 <span>173</span>
-</pre><pre class="rust"><code>    <span class="kw">fn </span>parse_inner_response(
+</pre><pre class="rust"><code><span class="expand">&varr;</span>    <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
         uri: <span class="kw-2">&amp;</span>http::Uri,
         response: <span class="kw-2">&amp;</span>str,
@@ -170,7 +170,7 @@
             other: <span class="prelude-val">None</span>,
         })
     }</code></pre></div>
-</div></div><div class="scraped-example " data-locs="[[[10,10],&quot;../src/twitch_api/helix/endpoints/channels/get_channel_information.rs.html#110&quot;,&quot;line 110&quot;]]"><div class="scraped-example-title">src/helix/endpoints/channels/get_channel_information.rs (<a href="../src/twitch_api/helix/endpoints/channels/get_channel_information.rs.html#110">line 110</a>)</div><div class="code-wrapper"><span class="expand">&varr;</span><div class="example-wrap"><pre class="src-line-numbers"><span>100</span>
+</div></div><div class="scraped-example " data-locs="[[[10,10],&quot;../src/twitch_api/helix/endpoints/channels/get_channel_information.rs.html#110&quot;,&quot;line 110&quot;]]"><div class="scraped-example-title">src/helix/endpoints/channels/get_channel_information.rs (<a href="../src/twitch_api/helix/endpoints/channels/get_channel_information.rs.html#110">line 110</a>)</div><div class="code-wrapper"><div class="example-wrap"><pre class="src-line-numbers"><span>100</span>
 <span>101</span>
 <span>102</span>
 <span>103</span>
@@ -196,7 +196,7 @@
 <span>123</span>
 <span>124</span>
 <span>125</span>
-</pre><pre class="rust"><code>    <span class="kw">fn </span>parse_inner_response(
+</pre><pre class="rust"><code><span class="expand">&varr;</span>    <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
         uri: <span class="kw-2">&amp;</span>http::Uri,
         response: <span class="kw-2">&amp;</span>str,
@@ -222,7 +222,7 @@
             other: <span class="prelude-val">None</span>,
         })
     }</code></pre></div>
-</div></div><div class="scraped-example " data-locs="[[[10,10],&quot;../src/twitch_api/helix/endpoints/search/search_categories.rs.html#109&quot;,&quot;line 109&quot;]]"><div class="scraped-example-title">src/helix/endpoints/search/search_categories.rs (<a href="../src/twitch_api/helix/endpoints/search/search_categories.rs.html#109">line 109</a>)</div><div class="code-wrapper"><span class="expand">&varr;</span><div class="example-wrap"><pre class="src-line-numbers"><span>99</span>
+</div></div><div class="scraped-example " data-locs="[[[10,10],&quot;../src/twitch_api/helix/endpoints/search/search_categories.rs.html#109&quot;,&quot;line 109&quot;]]"><div class="scraped-example-title">src/helix/endpoints/search/search_categories.rs (<a href="../src/twitch_api/helix/endpoints/search/search_categories.rs.html#109">line 109</a>)</div><div class="code-wrapper"><div class="example-wrap"><pre class="src-line-numbers"><span>99</span>
 <span>100</span>
 <span>101</span>
 <span>102</span>
@@ -248,7 +248,7 @@
 <span>122</span>
 <span>123</span>
 <span>124</span>
-</pre><pre class="rust"><code>    <span class="kw">fn </span>parse_inner_response(
+</pre><pre class="rust"><code><span class="expand">&varr;</span>    <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
         uri: <span class="kw-2">&amp;</span>http::Uri,
         response: <span class="kw-2">&amp;</span>str,
@@ -274,7 +274,7 @@
             other: <span class="prelude-val">None</span>,
         })
     }</code></pre></div>
-</div></div><div class="scraped-example " data-locs="[[[23,23],&quot;../src/twitch_api/tmi/mod.rs.html#94&quot;,&quot;line 94&quot;]]"><div class="scraped-example-title">src/tmi/mod.rs (<a href="../src/twitch_api/tmi/mod.rs.html#94">line 94</a>)</div><div class="code-wrapper"><span class="expand">&varr;</span><div class="example-wrap"><pre class="src-line-numbers"><span>71</span>
+</div></div><div class="scraped-example " data-locs="[[[23,23],&quot;../src/twitch_api/tmi/mod.rs.html#94&quot;,&quot;line 94&quot;]]"><div class="scraped-example-title">src/tmi/mod.rs (<a href="../src/twitch_api/tmi/mod.rs.html#94">line 94</a>)</div><div class="code-wrapper"><div class="example-wrap"><pre class="src-line-numbers"><span>71</span>
 <span>72</span>
 <span>73</span>
 <span>74</span>
@@ -299,7 +299,7 @@
 <span>93</span>
 <span>94</span>
 <span>95</span>
-</pre><pre class="rust"><code>    <span class="kw">pub async fn </span>get_chatters(
+</pre><pre class="rust"><code><span class="expand">&varr;</span>    <span class="kw">pub async fn </span>get_chatters(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
         broadcaster: <span class="kw-2">&amp;</span>types::UserNameRef,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GetChatters, RequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&lt;<span class="lifetime">&#39;a</span>&gt;&gt;::Error&gt;&gt; {
@@ -324,7 +324,7 @@
             .map_err(|e| RequestError::Utf8Error(resp.body().to_vec(), e))<span class="question-mark">?</span>;
         <span class="highlight focus"><span class="kw">crate</span>::parse_json</span>(text, <span class="bool-val">true</span>).map_err(Into::into)
     }</code></pre></div>
-</div></div><div class="scraped-example " data-locs="[[[17,17],&quot;../src/twitch_api/helix/endpoints/users/get_users_follows.rs.html#171&quot;,&quot;line 171&quot;]]"><div class="scraped-example-title">src/helix/endpoints/users/get_users_follows.rs (<a href="../src/twitch_api/helix/endpoints/users/get_users_follows.rs.html#171">line 171</a>)</div><div class="code-wrapper"><span class="expand">&varr;</span><div class="example-wrap"><pre class="src-line-numbers"><span>154</span>
+</div></div><div class="scraped-example " data-locs="[[[17,17],&quot;../src/twitch_api/helix/endpoints/users/get_users_follows.rs.html#171&quot;,&quot;line 171&quot;]]"><div class="scraped-example-title">src/helix/endpoints/users/get_users_follows.rs (<a href="../src/twitch_api/helix/endpoints/users/get_users_follows.rs.html#171">line 171</a>)</div><div class="code-wrapper"><div class="example-wrap"><pre class="src-line-numbers"><span>154</span>
 <span>155</span>
 <span>156</span>
 <span>157</span>
@@ -360,7 +360,7 @@
 <span>187</span>
 <span>188</span>
 <span>189</span>
-</pre><pre class="rust"><code>    <span class="kw">fn </span>parse_inner_response(
+</pre><pre class="rust"><code><span class="expand">&varr;</span>    <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
         uri: <span class="kw-2">&amp;</span>http::Uri,
         response: <span class="kw-2">&amp;</span>str,
@@ -396,4 +396,4 @@
             other: <span class="prelude-val">None</span>,
         })
     }</code></pre></div>
-</div></div><div class="example-links">Additional examples can be found in:<br><ul><li><a href="../src/twitch_api/helix/endpoints/raids/start_a_raid.rs.html#103">src/helix/endpoints/raids/start_a_raid.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/polls/create_poll.rs.html#203">src/helix/endpoints/polls/create_poll.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/predictions/create_prediction.rs.html#173">src/helix/endpoints/predictions/create_prediction.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/subscriptions/check_user_subscription.rs.html#115">src/helix/endpoints/subscriptions/check_user_subscription.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/points/create_custom_rewards.rs.html#184">src/helix/endpoints/points/create_custom_rewards.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/moderation/ban_user.rs.html#182">src/helix/endpoints/moderation/ban_user.rs</a></li><li><a href="../src/twitch_api/helix/request.rs.html#96">src/helix/request.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/bits/get_bits_leaderboard.rs.html#177">src/helix/endpoints/bits/get_bits_leaderboard.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/chat/get_chat_settings.rs.html#127">src/helix/endpoints/chat/get_chat_settings.rs</a></li><li><a href="../src/twitch_api/eventsub/event.rs.html#488">src/eventsub/event.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/eventsub/get_eventsub_subscriptions.rs.html#103">src/helix/endpoints/eventsub/get_eventsub_subscriptions.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/chat/update_chat_settings.rs.html#197">src/helix/endpoints/chat/update_chat_settings.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/points/update_custom_reward.rs.html#192">src/helix/endpoints/points/update_custom_reward.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/points/update_redemption_status.rs.html#158">src/helix/endpoints/points/update_redemption_status.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/polls/end_poll.rs.html#159">src/helix/endpoints/polls/end_poll.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/predictions/end_prediction.rs.html#174">src/helix/endpoints/predictions/end_prediction.rs</a></li><li><a href="../src/twitch_api/helix/client/custom.rs.html#69">src/helix/client/custom.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/eventsub/create_eventsub_subscription.rs.html#155">src/helix/endpoints/eventsub/create_eventsub_subscription.rs</a></li><li><a href="../src/twitch_api/pubsub/mod.rs.html#497">src/pubsub/mod.rs</a></li></ul></div></div></div></details></div></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>
+</div></div><div class="example-links">Additional examples can be found in:<br><ul><li><a href="../src/twitch_api/helix/endpoints/raids/start_a_raid.rs.html#103">src/helix/endpoints/raids/start_a_raid.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/polls/create_poll.rs.html#203">src/helix/endpoints/polls/create_poll.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/predictions/create_prediction.rs.html#173">src/helix/endpoints/predictions/create_prediction.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/subscriptions/check_user_subscription.rs.html#115">src/helix/endpoints/subscriptions/check_user_subscription.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/points/create_custom_rewards.rs.html#184">src/helix/endpoints/points/create_custom_rewards.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/moderation/ban_user.rs.html#182">src/helix/endpoints/moderation/ban_user.rs</a></li><li><a href="../src/twitch_api/helix/request.rs.html#96">src/helix/request.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/bits/get_bits_leaderboard.rs.html#177">src/helix/endpoints/bits/get_bits_leaderboard.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/chat/get_chat_settings.rs.html#127">src/helix/endpoints/chat/get_chat_settings.rs</a></li><li><a href="../src/twitch_api/eventsub/event.rs.html#488">src/eventsub/event.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/eventsub/get_eventsub_subscriptions.rs.html#103">src/helix/endpoints/eventsub/get_eventsub_subscriptions.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/chat/update_chat_settings.rs.html#197">src/helix/endpoints/chat/update_chat_settings.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/points/update_custom_reward.rs.html#192">src/helix/endpoints/points/update_custom_reward.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/points/update_redemption_status.rs.html#158">src/helix/endpoints/points/update_redemption_status.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/polls/end_poll.rs.html#159">src/helix/endpoints/polls/end_poll.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/predictions/end_prediction.rs.html#174">src/helix/endpoints/predictions/end_prediction.rs</a></li><li><a href="../src/twitch_api/helix/client/custom.rs.html#69">src/helix/client/custom.rs</a></li><li><a href="../src/twitch_api/helix/endpoints/eventsub/create_eventsub_subscription.rs.html#155">src/helix/endpoints/eventsub/create_eventsub_subscription.rs</a></li><li><a href="../src/twitch_api/pubsub/mod.rs.html#497">src/pubsub/mod.rs</a></li></ul></div></div></div></details></div></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (77e57db38 2022-10-30)" ></div></body></html>

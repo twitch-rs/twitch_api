@@ -240,6 +240,8 @@
 <span id="240">240</span>
 <span id="241">241</span>
 <span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding chat
 
 </span><span class="kw">use crate</span>::{
@@ -252,7 +254,8 @@
 <span class="kw">pub mod </span>get_channel_chat_badges;
 <span class="kw">pub mod </span>get_channel_emotes;
 <span class="kw">pub mod </span>get_chat_settings;
-<span class="kw">pub mod </span>get_chatters;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+</span><span class="kw">pub mod </span>get_chatters;
 <span class="kw">pub mod </span>get_emote_sets;
 <span class="kw">pub mod </span>get_global_chat_badges;
 <span class="kw">pub mod </span>get_global_emotes;
@@ -268,6 +271,7 @@
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>get_chat_settings::GetChatSettingsRequest;
 <span class="attribute">#[doc(inline)]
+#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
 </span><span class="kw">pub use </span>get_chatters::{Chatter, GetChattersRequest};
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>get_emote_sets::GetEmoteSetsRequest;
@@ -483,4 +487,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (77e57db38 2022-10-30)" ></div></body></html>
