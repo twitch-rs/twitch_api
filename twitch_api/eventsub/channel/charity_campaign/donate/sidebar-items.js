@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["ChannelCharityCampaignDonateBeta","`channel.charity_campaign.donate`: a user donates to the broadcaster’s charity campaign."],["ChannelCharityCampaignDonateBetaPayload","`channel.charity_campaign.donate` response payload."]]};

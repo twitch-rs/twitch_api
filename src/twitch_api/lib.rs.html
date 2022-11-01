@@ -353,6 +353,9 @@
 <span id="353">353</span>
 <span id="354">354</span>
 <span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
 </pre><pre class="rust"><code><span class="attribute">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
@@ -464,6 +467,9 @@
 <span class="attribute">#[cfg(all(feature = <span class="string">&quot;tmi&quot;</span>, feature = <span class="string">&quot;client&quot;</span>))]
 #[doc(inline)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::tmi::TmiClient;
+
+<span class="doccomment">/// Extra types not defined in [`twitch_types`](types)
+</span><span class="kw">pub mod </span>extra;
 
 <span class="attribute">#[cfg(any(feature = <span class="string">&quot;twitch_oauth2&quot;</span>, all(feature = <span class="string">&quot;helix&quot;</span>, feature = <span class="string">&quot;client&quot;</span>)))]
 #[doc(no_inline)]
@@ -709,4 +715,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (77e57db38 2022-10-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (95a3a7277 2022-10-31)" ></div></body></html>

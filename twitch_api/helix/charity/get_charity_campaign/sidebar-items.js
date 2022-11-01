@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["CharityCampaign","Return Values for Get Charity Campaign"],["GetCharityCampaignRequest","Query Parameters for Get Charity Campaign"]]};

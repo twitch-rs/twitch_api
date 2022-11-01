@@ -85,6 +85,13 @@
 <span id="85">85</span>
 <span id="86">86</span>
 <span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
 </pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;channels&quot;</span>)]
 </span><span class="doccomment">//! Subscription types regarding channels
 </span><span class="kw">use super</span>::{EventSubscription, EventType};
@@ -94,6 +101,8 @@
 <span class="kw">pub mod </span>ban;
 <span class="kw">pub mod </span>channel_points_custom_reward;
 <span class="kw">pub mod </span>channel_points_custom_reward_redemption;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+</span><span class="kw">pub mod </span>charity_campaign;
 <span class="kw">pub mod </span>cheer;
 <span class="kw">pub mod </span>follow;
 <span class="kw">pub mod </span>goal;
@@ -127,6 +136,11 @@
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>channel_points_custom_reward_redemption::{
     ChannelPointsCustomRewardRedemptionUpdateV1, ChannelPointsCustomRewardRedemptionUpdateV1Payload,
+};
+<span class="attribute">#[doc(inline)]
+#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+</span><span class="kw">pub use </span>charity_campaign::{
+    ChannelCharityCampaignDonateBeta, ChannelCharityCampaignDonateBetaPayload,
 };
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>cheer::{ChannelCheerV1, ChannelCheerV1Payload};
@@ -173,4 +187,4 @@
 <span class="attribute">#[doc(inline)]
 </span><span class="kw">pub use </span>update::{ChannelUpdateV1, ChannelUpdateV1Payload};
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (77e57db38 2022-10-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (95a3a7277 2022-10-31)" ></div></body></html>

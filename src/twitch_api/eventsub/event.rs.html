@@ -615,6 +615,18 @@
 <span id="615">615</span>
 <span id="616">616</span>
 <span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
 </pre><pre class="rust"><code><span class="doccomment">//! EventSub events and their types
 
 </span><span class="kw">use </span>std::borrow::Cow;
@@ -727,6 +739,8 @@
 </span><span class="kw">pub struct </span>EventTypeParseError;
 
 <span class="macro">make_event_type!</span>(<span class="string">&quot;Event Types&quot;</span>: <span class="kw">pub enum </span>EventType {
+    <span class="string">&quot;a user donates to the broadcaster’s charity campaign.&quot;</span>:
+    ChannelCharityCampaignDonate =&gt; <span class="string">&quot;channel.charity_campaign.donate&quot;</span>,
     <span class="string">&quot;subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.&quot;</span>:
     ChannelUpdate =&gt; <span class="string">&quot;channel.update&quot;</span>,
     <span class="string">&quot;a specified channel receives a follow.&quot;</span>:
@@ -811,6 +825,9 @@ fn main() {
 </span><span class="attribute">#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 #[allow(clippy::large_enum_variant)]
 </span><span class="kw">pub enum </span>Event {
+    <span class="doccomment">/// Channel Charity Campaign Donate Beta Event
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span>ChannelCharityCampaignDonateBeta(Payload&lt;channel::ChannelCharityCampaignDonateBeta&gt;),
     <span class="doccomment">/// Channel Update V1 Event
     </span>ChannelUpdateV1(Payload&lt;channel::ChannelUpdateV1&gt;),
     <span class="doccomment">/// Channel Follow V1 Event
@@ -891,9 +908,9 @@ fn main() {
         <span class="self">Self</span>::parse_request(version, <span class="kw-2">&amp;</span>ty, message_type, source.as_bytes().into())
     }
 
-    <span class="doccomment">/// Returns `true` if the message in the [`Payload`] is [`Revocation`].
+    <span class="doccomment">/// Returns `true` if the message in the [`Payload`] is [`Notification`].
     ///
-    /// [`Revocation`]: Message::Revocation
+    /// [`Notification`]: Message::Notification
     </span><span class="kw">pub fn </span>is_notification(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool { <span class="macro">is_thing!</span>(<span class="self">self</span>, Notification) }
 
     <span class="doccomment">/// Returns `true` if the message in the [`Payload`] is [`Revocation`].
@@ -901,9 +918,9 @@ fn main() {
     /// [`Revocation`]: Message::Revocation
     </span><span class="kw">pub fn </span>is_revocation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool { <span class="macro">is_thing!</span>(<span class="self">self</span>, Revocation) }
 
-    <span class="doccomment">/// Returns `true` if the message in the [`Payload`] is [`Revocation`].
+    <span class="doccomment">/// Returns `true` if the message in the [`Payload`] is [`VerificationRequest`].
     ///
-    /// [`Revocation`]: Message::Revocation
+    /// [`VerificationRequest`]: Message::VerificationRequest
     </span><span class="kw">pub fn </span>is_verification_request(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool { <span class="macro">is_thing!</span>(<span class="self">self</span>, VerificationRequest) }
 
     <span class="doccomment">/// If this event is a [`VerificationRequest`], return the [`VerificationRequest`] message, including the message.
@@ -917,6 +934,8 @@ fn main() {
             Event::ChannelCheerV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
             Event::ChannelBanV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
             Event::ChannelUnbanV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>Event::ChannelCharityCampaignDonateBeta(Payload {message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
             Event::ChannelPointsCustomRewardAddV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
             Event::ChannelPointsCustomRewardUpdateV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
             Event::ChannelPointsCustomRewardRemoveV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
@@ -951,9 +970,10 @@ fn main() {
     <span class="doccomment">/// Make a [`EventSubSubscription`] from this notification.
     </span><span class="kw">pub fn </span>subscription(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;EventSubSubscription, serde_json::Error&gt; {
         <span class="macro">macro_rules! </span>match_event {
-        ($(<span class="macro-nonterminal">$module</span>:ident::<span class="macro-nonterminal">$event</span>:ident);* $(;)<span class="question-mark">?</span>) =&gt; {{
+        ($($(<span class="attribute">#[<span class="macro-nonterminal">$meta</span>:meta]</span>)* <span class="macro-nonterminal">$module</span>:ident::<span class="macro-nonterminal">$event</span>:ident);* $(;)<span class="question-mark">?</span>) =&gt; {{
             <span class="kw">match </span><span class="kw-2">&amp;</span><span class="self">self </span>{
                 $(
+                    $(<span class="attribute">#[<span class="macro-nonterminal">$meta</span>]</span>)*
                     Event::<span class="macro-nonterminal">$event</span>(notif) =&gt; <span class="prelude-val">Ok</span>({
                         <span class="kw">let </span><span class="self">self</span>::Payload {subscription, ..} = notif; <span class="comment">// FIXME: Use @ pattern-binding, currently stable
 
@@ -979,6 +999,8 @@ fn main() {
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
             channel::ChannelUnbanV1;
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>channel::ChannelCharityCampaignDonateBeta;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardUpdateV1;
             channel::ChannelPointsCustomRewardRemoveV1;
@@ -1183,11 +1205,11 @@ fn main() {
         ///
         /// If this is not done, we&#39;d get a much worse error message.
         </span><span class="macro">macro_rules! </span>match_event {
-            ($(<span class="macro-nonterminal">$module</span>:ident::<span class="macro-nonterminal">$event</span>:ident);* $(;)<span class="question-mark">?</span>) =&gt; {{
+            ($($(<span class="attribute">#[<span class="macro-nonterminal">$meta</span>:meta]</span>)* <span class="macro-nonterminal">$module</span>:ident::<span class="macro-nonterminal">$event</span>:ident);* $(;)<span class="question-mark">?</span>) =&gt; {{
 
                 <span class="attribute">#[deny(unreachable_patterns)]
                 </span><span class="kw">match </span>(version.as_ref(), event_type) {
-                    $(  (&lt;<span class="macro-nonterminal">$module</span>::<span class="macro-nonterminal">$event </span><span class="kw">as </span>EventSubscription&gt;::VERSION, <span class="kw-2">&amp;</span>&lt;<span class="macro-nonterminal">$module</span>::<span class="macro-nonterminal">$event </span><span class="kw">as </span>EventSubscription&gt;::EVENT_TYPE) =&gt; {
+                    $(  $(<span class="attribute">#[<span class="macro-nonterminal">$meta</span>]</span>)* (&lt;<span class="macro-nonterminal">$module</span>::<span class="macro-nonterminal">$event </span><span class="kw">as </span>EventSubscription&gt;::VERSION, <span class="kw-2">&amp;</span>&lt;<span class="macro-nonterminal">$module</span>::<span class="macro-nonterminal">$event </span><span class="kw">as </span>EventSubscription&gt;::EVENT_TYPE) =&gt; {
                         Event::<span class="macro-nonterminal">$event</span>(Payload::parse_request(message_type, source)<span class="question-mark">?</span>)
                     }  )*
                     (v, e) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(PayloadParseError::UnimplementedEvent{version: v.to_owned(), event_type: e.clone()})
@@ -1202,6 +1224,8 @@ fn main() {
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
             channel::ChannelUnbanV1;
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            </span>channel::ChannelCharityCampaignDonateBeta;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardUpdateV1;
             channel::ChannelPointsCustomRewardRemoveV1;
@@ -1233,4 +1257,4 @@ fn main() {
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (77e57db38 2022-10-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (95a3a7277 2022-10-31)" ></div></body></html>
