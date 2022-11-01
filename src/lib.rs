@@ -110,6 +110,9 @@ pub use crate::helix::HelixClient;
 #[doc(inline)]
 pub use crate::tmi::TmiClient;
 
+/// Extra types not defined in [`twitch_types`](types)
+pub mod extra;
+
 #[cfg(any(feature = "twitch_oauth2", all(feature = "helix", feature = "client")))]
 #[doc(no_inline)]
 pub use twitch_oauth2;
