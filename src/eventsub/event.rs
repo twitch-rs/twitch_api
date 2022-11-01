@@ -110,6 +110,8 @@ macro_rules! make_event_type {
 pub struct EventTypeParseError;
 
 make_event_type!("Event Types": pub enum EventType {
+    "a user donates to the broadcaster’s charity campaign.":
+    ChannelCharityCampaignDonate => "channel.charity_campaign.donate",
     "subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.":
     ChannelUpdate => "channel.update",
     "a specified channel receives a follow.":
@@ -194,6 +196,9 @@ fn main() {
 #[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 #[allow(clippy::large_enum_variant)]
 pub enum Event {
+    /// Channel Charity Campaign Donate Beta Event
+    #[cfg(feature = "unsupported")]
+    ChannelCharityCampaignDonateBeta(Payload<channel::ChannelCharityCampaignDonateBeta>),
     /// Channel Update V1 Event
     ChannelUpdateV1(Payload<channel::ChannelUpdateV1>),
     /// Channel Follow V1 Event
@@ -274,9 +279,9 @@ impl Event {
         Self::parse_request(version, &ty, message_type, source.as_bytes().into())
     }
 
-    /// Returns `true` if the message in the [`Payload`] is [`Revocation`].
+    /// Returns `true` if the message in the [`Payload`] is [`Notification`].
     ///
-    /// [`Revocation`]: Message::Revocation
+    /// [`Notification`]: Message::Notification
     pub fn is_notification(&self) -> bool { is_thing!(self, Notification) }
 
     /// Returns `true` if the message in the [`Payload`] is [`Revocation`].
@@ -284,9 +289,9 @@ impl Event {
     /// [`Revocation`]: Message::Revocation
     pub fn is_revocation(&self) -> bool { is_thing!(self, Revocation) }
 
-    /// Returns `true` if the message in the [`Payload`] is [`Revocation`].
+    /// Returns `true` if the message in the [`Payload`] is [`VerificationRequest`].
     ///
-    /// [`Revocation`]: Message::Revocation
+    /// [`VerificationRequest`]: Message::VerificationRequest
     pub fn is_verification_request(&self) -> bool { is_thing!(self, VerificationRequest) }
 
     /// If this event is a [`VerificationRequest`], return the [`VerificationRequest`] message, including the message.
@@ -300,6 +305,8 @@ impl Event {
             Event::ChannelCheerV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
             Event::ChannelBanV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
             Event::ChannelUnbanV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
+            #[cfg(feature = "unsupported")]
+            Event::ChannelCharityCampaignDonateBeta(Payload {message: Message::VerificationRequest(v), ..}) => Some(v),
             Event::ChannelPointsCustomRewardAddV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
             Event::ChannelPointsCustomRewardUpdateV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
             Event::ChannelPointsCustomRewardRemoveV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
@@ -334,9 +341,10 @@ impl Event {
     /// Make a [`EventSubSubscription`] from this notification.
     pub fn subscription(&self) -> Result<EventSubSubscription, serde_json::Error> {
         macro_rules! match_event {
-        ($($module:ident::$event:ident);* $(;)?) => {{
+        ($($(#[$meta:meta])* $module:ident::$event:ident);* $(;)?) => {{
             match &self {
                 $(
+                    $(#[$meta])*
                     Event::$event(notif) => Ok({
                         let self::Payload {subscription, ..} = notif; // FIXME: Use @ pattern-binding, currently stable
 
@@ -362,6 +370,8 @@ impl Event {
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
             channel::ChannelUnbanV1;
+            #[cfg(feature = "unsupported")]
+            channel::ChannelCharityCampaignDonateBeta;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardUpdateV1;
             channel::ChannelPointsCustomRewardRemoveV1;
@@ -566,11 +576,11 @@ impl Event {
         ///
         /// If this is not done, we'd get a much worse error message.
         macro_rules! match_event {
-            ($($module:ident::$event:ident);* $(;)?) => {{
+            ($($(#[$meta:meta])* $module:ident::$event:ident);* $(;)?) => {{
 
                 #[deny(unreachable_patterns)]
                 match (version.as_ref(), event_type) {
-                    $(  (<$module::$event as EventSubscription>::VERSION, &<$module::$event as EventSubscription>::EVENT_TYPE) => {
+                    $(  $(#[$meta])* (<$module::$event as EventSubscription>::VERSION, &<$module::$event as EventSubscription>::EVENT_TYPE) => {
                         Event::$event(Payload::parse_request(message_type, source)?)
                     }  )*
                     (v, e) => return Err(PayloadParseError::UnimplementedEvent{version: v.to_owned(), event_type: e.clone()})
@@ -585,6 +595,8 @@ impl Event {
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
             channel::ChannelUnbanV1;
+            #[cfg(feature = "unsupported")]
+            channel::ChannelCharityCampaignDonateBeta;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardUpdateV1;
             channel::ChannelPointsCustomRewardRemoveV1;

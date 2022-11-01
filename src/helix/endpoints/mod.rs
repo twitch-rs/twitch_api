@@ -1,5 +1,7 @@
 pub mod bits;
 pub mod channels;
+#[cfg(feature = "unsupported")]
+pub mod charity;
 pub mod chat;
 pub mod clips;
 #[cfg(feature = "eventsub")]
