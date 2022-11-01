@@ -6,15 +6,17 @@ use serde::{Deserialize, Serialize};
 
 use super::*;
 
-macro_rules! is_thing {
-    ($s:expr, $thing:ident) => {
-        is_thing!(@inner $s, $thing;
+macro_rules! fill_events {
+    ($callback:ident( $($args:tt)* )) => {
+        $callback!($($args)*
             channel::ChannelUpdateV1;
             channel::ChannelFollowV1;
             channel::ChannelSubscribeV1;
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
             channel::ChannelUnbanV1;
+            #[cfg(feature = "unsupported")]
+            channel::ChannelCharityCampaignDonateBeta;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardUpdateV1;
             channel::ChannelPointsCustomRewardRemoveV1;
@@ -44,11 +46,17 @@ macro_rules! is_thing {
             user::UserAuthorizationRevokeV1;
         )
     };
-    (@inner $s:expr, $thing:ident; $($module:ident::$event:ident);* $(;)?) => {
+}
+
+macro_rules! is_thing {
+    (@inner $s:expr, $thing:ident; $( $(#[$meta:meta])* $module:ident::$event:ident);* $(;)?) => {
         match $s {
-            $(Event::$event(Payload { message : Message::$thing(..), ..}) => true,)*
+            $( $(#[$meta])* Event::$event(Payload { message : Message::$thing(..), ..}) => true,)*
             _ => false,
         }
+    };
+    ($s:expr, $thing:ident) => {
+        fill_events!(is_thing(@inner $s, $thing;))
     };
 }
 
@@ -297,109 +305,45 @@ impl Event {
     /// If this event is a [`VerificationRequest`], return the [`VerificationRequest`] message, including the message.
     #[rustfmt::skip]
     pub fn get_verification_request(&self) -> Option<&VerificationRequest> {
-        // FIXME: Replace with proc_macro if a proc_macro crate is ever made
-        match &self {
-            Event::ChannelUpdateV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelFollowV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelSubscribeV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelCheerV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelBanV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelUnbanV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            #[cfg(feature = "unsupported")]
-            Event::ChannelCharityCampaignDonateBeta(Payload {message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPointsCustomRewardAddV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPointsCustomRewardUpdateV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPointsCustomRewardRemoveV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPointsCustomRewardRedemptionAddV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPointsCustomRewardRedemptionUpdateV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPollBeginV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPollProgressV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPollEndV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPredictionBeginV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPredictionProgressV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPredictionLockV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelPredictionEndV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelGoalBeginV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelGoalProgressV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelGoalEndV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelHypeTrainBeginV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelHypeTrainProgressV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelHypeTrainEndV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::StreamOnlineV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::StreamOfflineV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::UserUpdateV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::UserAuthorizationGrantV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::UserAuthorizationRevokeV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelRaidV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelSubscriptionEndV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelSubscriptionGiftV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            Event::ChannelSubscriptionMessageV1(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),
-            _ => None,
+        macro_rules! match_event {
+            ($($(#[$meta:meta])* $module:ident::$event:ident);* $(;)?) => {{
+
+                #[deny(unreachable_patterns)]
+                match &self {
+                    $(  $(#[$meta])* Event::$event(Payload { message: Message::VerificationRequest(v), ..}) => Some(v),)*
+                    _ => None,
+                }
+            }}
         }
+        fill_events!(match_event())
     }
 
     /// Make a [`EventSubSubscription`] from this notification.
     pub fn subscription(&self) -> Result<EventSubSubscription, serde_json::Error> {
         macro_rules! match_event {
-        ($($(#[$meta:meta])* $module:ident::$event:ident);* $(;)?) => {{
-            match &self {
-                $(
-                    $(#[$meta])*
-                    Event::$event(notif) => Ok({
-                        let self::Payload {subscription, ..} = notif; // FIXME: Use @ pattern-binding, currently stable
+            ($($(#[$meta:meta])* $module:ident::$event:ident);* $(;)?) => {{
+                match &self {
+                    $(
+                        $(#[$meta])*
+                        Event::$event(notif) => Ok({
+                            let self::Payload {subscription, ..} = notif; // FIXME: Use @ pattern-binding, currently stable
 
-                        EventSubSubscription {
-                        cost: subscription.cost,
-                        condition: subscription.condition.condition()?,
-                        created_at: subscription.created_at.clone(),
-                        id: subscription.id.clone(),
-                        status: subscription.status.clone(),
-                        transport: subscription.transport.clone(),
-                        type_: notif.get_event_type(),
-                        version: notif.get_event_version().to_owned(),
-                    }}),
-                )*
-            }
-        }}
-    }
+                            EventSubSubscription {
+                            cost: subscription.cost,
+                            condition: subscription.condition.condition()?,
+                            created_at: subscription.created_at.clone(),
+                            id: subscription.id.clone(),
+                            status: subscription.status.clone(),
+                            transport: subscription.transport.clone(),
+                            type_: notif.get_event_type(),
+                            version: notif.get_event_version().to_owned(),
+                        }}),
+                    )*
+                }
+            }}
+        }
 
-        match_event!(
-            channel::ChannelUpdateV1;
-            channel::ChannelFollowV1;
-            channel::ChannelSubscribeV1;
-            channel::ChannelCheerV1;
-            channel::ChannelBanV1;
-            channel::ChannelUnbanV1;
-            #[cfg(feature = "unsupported")]
-            channel::ChannelCharityCampaignDonateBeta;
-            channel::ChannelPointsCustomRewardAddV1;
-            channel::ChannelPointsCustomRewardUpdateV1;
-            channel::ChannelPointsCustomRewardRemoveV1;
-            channel::ChannelPointsCustomRewardRedemptionAddV1;
-            channel::ChannelPointsCustomRewardRedemptionUpdateV1;
-            channel::ChannelPollBeginV1;
-            channel::ChannelPollProgressV1;
-            channel::ChannelPollEndV1;
-            channel::ChannelPredictionBeginV1;
-            channel::ChannelPredictionProgressV1;
-            channel::ChannelPredictionLockV1;
-            channel::ChannelPredictionEndV1;
-            channel::ChannelRaidV1;
-            channel::ChannelSubscriptionEndV1;
-            channel::ChannelSubscriptionGiftV1;
-            channel::ChannelSubscriptionMessageV1;
-            channel::ChannelGoalBeginV1;
-            channel::ChannelGoalProgressV1;
-            channel::ChannelGoalEndV1;
-            channel::ChannelHypeTrainBeginV1;
-            channel::ChannelHypeTrainProgressV1;
-            channel::ChannelHypeTrainEndV1;
-            stream::StreamOnlineV1;
-            stream::StreamOfflineV1;
-            user::UserUpdateV1;
-            user::UserAuthorizationGrantV1;
-            user::UserAuthorizationRevokeV1;
-        )
+        fill_events!(match_event())
     }
 
     /// Verify that this event is authentic using `HMAC-SHA256`.
@@ -588,42 +532,6 @@ impl Event {
             }}
         }
 
-        Ok(match_event! {
-            channel::ChannelUpdateV1;
-            channel::ChannelFollowV1;
-            channel::ChannelSubscribeV1;
-            channel::ChannelCheerV1;
-            channel::ChannelBanV1;
-            channel::ChannelUnbanV1;
-            #[cfg(feature = "unsupported")]
-            channel::ChannelCharityCampaignDonateBeta;
-            channel::ChannelPointsCustomRewardAddV1;
-            channel::ChannelPointsCustomRewardUpdateV1;
-            channel::ChannelPointsCustomRewardRemoveV1;
-            channel::ChannelPointsCustomRewardRedemptionAddV1;
-            channel::ChannelPointsCustomRewardRedemptionUpdateV1;
-            channel::ChannelPollBeginV1;
-            channel::ChannelPollProgressV1;
-            channel::ChannelPollEndV1;
-            channel::ChannelPredictionBeginV1;
-            channel::ChannelPredictionProgressV1;
-            channel::ChannelPredictionLockV1;
-            channel::ChannelPredictionEndV1;
-            channel::ChannelRaidV1;
-            channel::ChannelSubscriptionEndV1;
-            channel::ChannelSubscriptionGiftV1;
-            channel::ChannelSubscriptionMessageV1;
-            channel::ChannelGoalBeginV1;
-            channel::ChannelGoalProgressV1;
-            channel::ChannelGoalEndV1;
-            channel::ChannelHypeTrainBeginV1;
-            channel::ChannelHypeTrainProgressV1;
-            channel::ChannelHypeTrainEndV1;
-            stream::StreamOnlineV1;
-            stream::StreamOfflineV1;
-            user::UserUpdateV1;
-            user::UserAuthorizationGrantV1;
-            user::UserAuthorizationRevokeV1;
-        })
+        Ok(fill_events!(match_event()))
     }
 }
