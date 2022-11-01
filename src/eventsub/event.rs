@@ -1,5 +1,8 @@
 //! EventSub events and their types
 
+#[cfg(feature = "unsupported")]
+pub mod websocket;
+
 use std::borrow::Cow;
 
 use serde::{Deserialize, Serialize};
@@ -533,5 +536,110 @@ impl Event {
         }
 
         Ok(fill_events!(match_event()))
+    }
+
+    /// Parse a websocket frame as an [`EventsubWebsocketData`]
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::eventsub::{Event, EventsubWebsocketData};
+    /// let notification = r#"
+    /// {
+    ///     "metadata": {
+    ///         "message_id": "befa7b53-d79d-478f-86b9-120f112b044e",
+    ///         "message_type": "notification",
+    ///         "message_timestamp": "2019-11-16T10:11:12.123Z",
+    ///         "subscription_type": "channel.follow",
+    ///         "subscription_version": "1"
+    ///     },
+    ///     "payload": {
+    ///         "subscription": {
+    ///             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+    ///             "status": "enabled",
+    ///             "type": "channel.follow",
+    ///             "version": "1",
+    ///             "cost": 1,
+    ///             "condition": {
+    ///                 "broadcaster_user_id": "12826"
+    ///             },
+    ///             "transport": {
+    ///                 "method": "websocket",
+    ///                 "session_id": "AQoQexAWVYKSTIu4ec_2VAxyuhAB"
+    ///             },
+    ///             "created_at": "2019-11-16T10:11:12.123Z"
+    ///         },
+    ///         "event": {
+    ///             "user_id": "1337",
+    ///             "user_login": "awesome_user",
+    ///             "user_name": "Awesome_User",
+    ///             "broadcaster_user_id": "12826",
+    ///             "broadcaster_user_login": "twitch",
+    ///             "broadcaster_user_name": "Twitch",
+    ///             "followed_at": "2020-07-15T18:16:11.17106713Z"
+    ///         }
+    ///     }
+    /// }
+    /// "#;
+    /// let event: EventsubWebsocketData<'_> = Event::parse_websocket(notification)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    #[cfg(feature = "unsupported")]
+    pub fn parse_websocket(frame: &str) -> Result<EventsubWebsocketData<'_>, PayloadParseError> {
+        #[derive(Deserialize)]
+        #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+        struct EventsubWebsocketFrame<'a> {
+            metadata: EventsubWebsocketMetadata<'a>,
+            #[serde(borrow)]
+            payload: &'a serde_json::value::RawValue,
+        }
+
+        let frame: EventsubWebsocketFrame = crate::parse_json(frame, true)?;
+
+        macro_rules! match_event {
+            ($metadata:expr, $message_type:literal, $($(#[$meta:meta])* $module:ident::$event:ident);* $(;)?) => {{
+
+                #[deny(unreachable_patterns)]
+                match ($metadata.subscription_version.as_ref(), &$metadata.subscription_type) {
+                    $(  $(#[$meta])* (<$module::$event as EventSubscription>::VERSION, &<$module::$event as EventSubscription>::EVENT_TYPE) => {
+                        Event::$event(Payload::parse_request_str($message_type.as_ref(), frame.payload.get())?)
+                    }  )*
+                    (v, e) => return Err(PayloadParseError::UnimplementedEvent{version: v.to_owned(), event_type: e.clone()})
+                }
+            }}
+        }
+
+        match frame.metadata {
+            EventsubWebsocketMetadata::Notification(notification) => {
+                let event = fill_events!(match_event(notification, "notification",));
+                Ok(EventsubWebsocketData::Notification {
+                    metadata: notification,
+                    payload: event,
+                })
+            }
+            EventsubWebsocketMetadata::Revocation(revocation) => {
+                let event = fill_events!(match_event(revocation, "revocation",));
+                Ok(EventsubWebsocketData::Revocation {
+                    metadata: revocation,
+                    payload: event,
+                })
+            }
+            EventsubWebsocketMetadata::Welcome(welcome) => Ok(EventsubWebsocketData::Welcome {
+                metadata: welcome,
+                payload: crate::parse_json(frame.payload.get(), true)?,
+            }),
+            EventsubWebsocketMetadata::Keepalive(keepalive) => {
+                Ok(EventsubWebsocketData::Keepalive {
+                    metadata: keepalive,
+                    payload: (),
+                })
+            }
+            EventsubWebsocketMetadata::Reconnect(reconnect) => {
+                Ok(EventsubWebsocketData::Reconnect {
+                    metadata: reconnect,
+                    payload: crate::parse_json(frame.payload.get(), true)?,
+                })
+            }
+        }
     }
 }

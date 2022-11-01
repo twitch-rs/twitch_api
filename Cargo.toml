@@ -117,6 +117,8 @@ eventsub = [
     "twitch_types/points",
     "twitch_types/stream",
     "twitch_types/timestamp",
+    # insert when websockets are stable
+    # "serde_json/raw_value",
 ]
 
 hmac = ["dep:crypto_hmac", "dep:sha2"]

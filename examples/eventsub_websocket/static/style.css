@@ -1,0 +1,72 @@
+:root {
+    --offline-color: #5c5c5c;
+    --online-color: pink;
+    --offline-text-color: rgb(26, 17, 56);
+    --online-text-color: rgb(26, 17, 56);
+  }
+
+  @media screen and (prefers-color-scheme: light) {
+    :root {
+      --offline-color: white;
+      --online-color: pink;
+      --offline-text-color: rgb(26, 17, 56);
+      --online-text-color: rgb(26, 17, 56);
+    }
+  }
+
+  @keyframes wiggle {
+    0% {
+      transform: rotate(0deg);
+    }
+    80% {
+      transform: rotate(0deg);
+    }
+    85% {
+      transform: rotate(5deg);
+    }
+    95% {
+      transform: rotate(-5deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  a {
+    text-decoration: none;
+    font-size: 10vw;
+  }
+
+  body.online > a {
+    text-decoration: underline;
+    animation: wiggle 2.5s infinite;
+  }
+
+  a,
+  a:visited,
+  a:hover,
+  a:active {
+    color: inherit;
+    display: block;
+  }
+
+  body {
+    color: var(--offline-text-color);
+    -webkit-transition: background-color 1000ms linear;
+    -ms-transition: background-color 1000ms linear;
+    transition: background-color 1000ms linear;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  body.offline {
+    background-color: var(--offline-color);
+    color: var(--offline-text-color);
+  }
+
+  body.online {
+    background-color: var(--online-color);
+    color: var(--online-text-color);
+  }

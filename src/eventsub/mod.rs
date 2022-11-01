@@ -97,6 +97,9 @@ pub mod user;
 #[doc(inline)]
 pub use event::{Event, EventType};
 
+#[cfg(feature = "unsupported")]
+pub use event::websocket::*;
+
 /// An EventSub subscription.
 pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq + Clone {
     /// Payload for given subscription
@@ -166,6 +169,42 @@ impl<E: EventSubscription + Clone> Message<E> {
 
 impl<E: EventSubscription> Payload<E> {
     /// Parse string slice as a [`Payload`], this will assume your string is from an eventsub message with type `notification`
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::eventsub::{channel::ChannelFollowV1, Payload};
+    /// let notification = r#"
+    /// {
+    ///     "subscription": {
+    ///         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+    ///         "status": "enabled",
+    ///         "type": "channel.follow",
+    ///         "version": "1",
+    ///         "cost": 1,
+    ///         "condition": {
+    ///             "broadcaster_user_id": "12826"
+    ///         },
+    ///         "transport": {
+    ///             "method": "webhook",
+    ///             "callback": "https://example.com/webhooks/callback"
+    ///         },
+    ///         "created_at": "2019-11-16T10:11:12.123Z"
+    ///     },
+    ///     "event": {
+    ///         "user_id": "1337",
+    ///         "user_login": "awesome_user",
+    ///         "user_name": "Awesome_User",
+    ///         "broadcaster_user_id":     "12826",
+    ///         "broadcaster_user_login":  "twitch",
+    ///         "broadcaster_user_name":   "Twitch",
+    ///         "followed_at": "2020-07-15T18:16:11.17106713Z"
+    ///     }
+    /// }
+    /// "#;
+    /// let payload: Payload<ChannelFollowV1> = Payload::parse(notification)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
     pub fn parse(source: &str) -> Result<Payload<E>, PayloadParseError> {
         Self::parse_notification(source)
     }
@@ -193,6 +232,33 @@ impl<E: EventSubscription> Payload<E> {
     }
 
     /// Parse string slice as a [`Payload`] with a message of [`Message::Revocation`].
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::eventsub::{channel::ChannelFollowV1, Payload};
+    /// let notification = r#"
+    /// {
+    ///     "subscription": {
+    ///         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+    ///         "status": "authorization_revoked",
+    ///         "type": "channel.follow",
+    ///         "cost": 1,
+    ///         "version": "1",
+    ///         "condition": {
+    ///             "broadcaster_user_id": "12826"
+    ///         },
+    ///         "transport": {
+    ///             "method": "webhook",
+    ///             "callback": "https://example.com/webhooks/callback"
+    ///         },
+    ///         "created_at": "2019-11-16T10:11:12.123Z"
+    ///     }
+    /// }
+    /// "#;
+    /// let payload: Payload<ChannelFollowV1> = Payload::parse_revocation(notification)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
     pub fn parse_revocation(source: &str) -> Result<Payload<E>, PayloadParseError> {
         #[derive(Deserialize)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -210,6 +276,34 @@ impl<E: EventSubscription> Payload<E> {
     }
 
     /// Parse string slice as a [`Payload`] with a message of [`Message::VerificationRequest`].
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::eventsub::{channel::ChannelFollowV1, Payload};
+    /// let notification = r#"
+    /// {
+    ///     "challenge": "pogchamp-kappa-360noscope-vohiyo",
+    ///     "subscription": {
+    ///         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+    ///         "status": "webhook_callback_verification_pending",
+    ///         "type": "channel.follow",
+    ///         "version": "1",
+    ///         "cost": 1,
+    ///         "condition": {
+    ///             "broadcaster_user_id": "12826"
+    ///         },
+    ///         "transport": {
+    ///             "method": "webhook",
+    ///             "callback": "https://example.com/webhooks/callback"
+    ///         },
+    ///         "created_at": "2019-11-16T10:11:12.123Z"
+    ///     }
+    /// }
+    /// "#;
+    /// let payload: Payload<ChannelFollowV1> = Payload::parse_verification_request(notification)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
     pub fn parse_verification_request(source: &str) -> Result<Payload<E>, PayloadParseError> {
         #[derive(Deserialize)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -263,14 +357,23 @@ impl<E: EventSubscription> Payload<E> {
         Self::parse_request(ty, source)
     }
 
-    /// Parse a string slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or [`Payload::parse`].
+    /// Parse a slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or [`Payload::parse`].
     #[doc(hidden)]
     pub fn parse_request<'a>(
         ty: Cow<'a, [u8]>,
         source: Cow<'a, [u8]>,
     ) -> Result<Payload<E>, PayloadParseError> {
         let source = std::str::from_utf8(&source)?;
-        match ty.as_ref() {
+        Self::parse_request_str(ty.as_ref(), source)
+    }
+
+    /// Parse a string slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or [`Payload::parse`].
+    #[doc(hidden)]
+    pub fn parse_request_str<'a>(
+        ty: &'a [u8],
+        source: &'a str,
+    ) -> Result<Payload<E>, PayloadParseError> {
+        match ty {
             b"notification" => Payload::parse_notification(source),
             b"webhook_callback_verification" => Payload::parse_verification_request(source),
             b"revocation" => Payload::parse_revocation(source),
@@ -349,14 +452,11 @@ pub struct EventSubscriptionInformation<E: EventSubscription> {
     pub version: String,
 }
 
-/// Transport setting for event notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct Transport {
-    /// Method for transport
-    pub method: TransportMethod,
+/// Webhook transport
+pub struct WebhookTransport {
     /// Callback
     pub callback: String,
     /// Secret attached to the subscription.
@@ -367,28 +467,198 @@ pub struct Transport {
     pub secret: String,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[cfg(feature = "unsupported")]
+#[non_exhaustive]
+/// Websocket transport
+pub struct WebsocketTransport {
+    /// An ID that identifies the WebSocket to send notifications to.
+    ///
+    /// When you connect to EventSub using WebSockets, the server returns the ID in the Welcome message.
+    pub session_id: String,
+}
+
+/// Transport setting for event notification
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "method", rename_all = "lowercase")]
+#[non_exhaustive]
+pub enum Transport {
+    /// Webhook transport
+    Webhook(WebhookTransport),
+    /// Websocket transport
+    #[cfg(feature = "unsupported")]
+    Websocket(WebsocketTransport),
+}
+
 impl Transport {
     /// Convenience method for making a webhook transport
-    pub fn webhook(callback: impl std::string::ToString, secret: String) -> Transport {
-        Transport {
-            method: TransportMethod::Webhook,
+    pub fn webhook(
+        callback: impl std::string::ToString,
+        secret: impl std::string::ToString,
+    ) -> Transport {
+        Transport::Webhook(WebhookTransport {
             callback: callback.to_string(),
-            secret,
+            secret: secret.to_string(),
+        })
+    }
+
+    /// Convenience method for making a websocket transport
+    #[cfg(feature = "unsupported")]
+    pub fn websocket(session_id: impl std::string::ToString) -> Transport {
+        Transport::Websocket(WebsocketTransport {
+            session_id: session_id.to_string(),
+        })
+    }
+
+    /// Returns `true` if the transport is [`Webhook`].
+    ///
+    /// [`Webhook`]: Transport::Webhook
+    #[must_use]
+    pub fn is_webhook(&self) -> bool { matches!(self, Self::Webhook(..)) }
+
+    /// Returns `true` if the transport is [`Websocket`].
+    ///
+    /// [`Websocket`]: Transport::Websocket
+    #[must_use]
+    #[cfg(feature = "unsupported")]
+    pub fn is_websocket(&self) -> bool { matches!(self, Self::Websocket(..)) }
+
+    /// Returns `Some(&WebhookTransport)` if this transport is a [webhook](WebhookTransport)
+    pub fn as_webhook(&self) -> Option<&WebhookTransport> {
+        if let Self::Webhook(v) = self {
+            Some(v)
+        } else {
+            None
         }
     }
+
+    /// Returns `Some(&WebsocketTransport)` if this transport is a [websocket](WebsocketTransport)
+    #[cfg(feature = "unsupported")]
+    pub fn as_websocket(&self) -> Option<&WebsocketTransport> {
+        if let Self::Websocket(v) = self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    /// Returns `Some(WebhookTransport)` if this transport is a [webhook](WebhookTransport), `None` if not
+    pub fn try_into_webhook(self) -> Option<WebhookTransport> {
+        if let Self::Webhook(v) = self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    /// Returns `Some(WebsocketTransport)` if this transport is a [websocket](WebsocketTransport), `Err(())` if not
+    #[cfg(feature = "unsupported")]
+    pub fn try_into_websocket(self) -> Option<WebsocketTransport> {
+        if let Self::Websocket(v) = self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[cfg(feature = "unsupported")]
+#[non_exhaustive]
+/// Websocket transport
+pub struct WebsocketTransportResponse {
+    /// An ID that identifies the WebSocket that notifications are sent to.
+    pub session_id: String,
+    /// The UTC date and time that the WebSocket connection was established.
+    ///
+    /// # Notes
+    ///
+    /// Only returned on helix response
+    pub connected_at: Option<types::Timestamp>,
+    /// The UTC date and time that the WebSocket connection was lost.
+    ///
+    /// # Notes
+    ///
+    /// Only returned on helix response
+    pub disconnected_at: Option<types::Timestamp>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+/// Webhook transport
+pub struct WebhookTransportResponse {
+    /// Callback
+    pub callback: String,
 }
 
 /// Transport response on event notification
 ///
 /// Does not include secret.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[serde(tag = "method", rename_all = "lowercase")]
 #[non_exhaustive]
-pub struct TransportResponse {
-    /// Method for transport
-    pub method: TransportMethod,
-    /// Callback
-    pub callback: String,
+pub enum TransportResponse {
+    /// Webhook transport response
+    Webhook(WebhookTransportResponse),
+    /// Websocket transport response
+    #[cfg(feature = "unsupported")]
+    Websocket(WebsocketTransportResponse),
+}
+
+impl TransportResponse {
+    /// Returns `true` if the transport response is [`Webhook`].
+    ///
+    /// [`Webhook`]: TransportResponse::Webhook
+    #[must_use]
+    pub fn is_webhook(&self) -> bool { matches!(self, Self::Webhook(..)) }
+
+    /// Returns `true` if the transport response is [`Websocket`].
+    ///
+    /// [`Websocket`]: TransportResponse::Websocket
+    #[must_use]
+    #[cfg(feature = "unsupported")]
+    pub fn is_websocket(&self) -> bool { matches!(self, Self::Websocket(..)) }
+
+    /// Returns `Some(&WebhookTransport)` if this transport response is a [webhook](WebhookTransportResponse)
+    pub fn as_webhook(&self) -> Option<&WebhookTransportResponse> {
+        if let Self::Webhook(v) = self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    /// Returns `Some(&WebsocketTransport)` if this transport response is a [websocket](WebsocketTransportResponse)
+    #[cfg(feature = "unsupported")]
+    pub fn as_websocket(&self) -> Option<&WebsocketTransportResponse> {
+        if let Self::Websocket(v) = self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    /// Returns `Some(WebhookTransport)` if this transport response is a [webhook](WebhookTransportResponse)
+    pub fn try_into_webhook(self) -> Result<WebhookTransportResponse, Self> {
+        if let Self::Webhook(v) = self {
+            Ok(v)
+        } else {
+            Err(self)
+        }
+    }
+
+    /// Returns `Some(WebsocketTransport)` if this transport response is a [websocket](WebsocketTransportResponse)
+    #[cfg(feature = "unsupported")]
+    pub fn try_into_websocket(self) -> Result<WebsocketTransportResponse, Self> {
+        if let Self::Websocket(v) = self {
+            Ok(v)
+        } else {
+            Err(self)
+        }
+    }
 }
 
 /// Transport method
@@ -400,6 +670,8 @@ pub struct TransportResponse {
 pub enum TransportMethod {
     /// Webhook
     Webhook,
+    /// Eventsub
+    Websocket,
 }
 
 ///  Subscription request status
@@ -407,18 +679,20 @@ pub enum TransportMethod {
 #[non_exhaustive]
 #[serde(rename_all = "snake_case")] // FIXME: Most examples use kebab-case... but reality seems to be snake_case
 pub enum Status {
-    /// Designates that the subscription is in an operable state and is valid.
+    /// Twitch has verified your callback and is able to send you notifications.
     Enabled,
-    /// Webhook is pending verification of the callback specified in the subscription creation request.
+    /// Twitch is verifying that you own the callback specified in the create subscription request. For information about how it does this, see Verifying your callback. Used only for webhook subscriptions.
     WebhookCallbackVerificationPending,
-    /// Webhook failed verification of the callback specified in the subscription creation request.
+    /// Twitch failed to verify that you own the callback specified in the create subscription request. Fix your event handler to correctly respond to the challenge, and then try subscribing again. Used only for webhook subscriptions.
     WebhookCallbackVerificationFailed,
-    /// Notification delivery failure rate was too high.
+    /// Twitch revoked your subscription because the notification delivery failure rate was too high. Used only for webhook subscriptions.
     NotificationFailuresExceeded,
-    /// Authorization for user(s) in the condition was revoked.
+    /// Twitch revoked your subscription because the users in the `condition` object revoked their authorization letting you get events on their behalf, or changed their password.
     AuthorizationRevoked,
-    /// A user in the condition of the subscription was removed.
+    /// Twitch revoked your subscription because the users in the `condition` object are no longer Twitch users.
     UserRemoved,
+    /// Twitch revoked your subscription because the subscribed to subscription type and version is no longer supported.
+    VersionRemoved,
 }
 
 /// General information about an EventSub subscription.
@@ -451,6 +725,48 @@ pub struct EventSubSubscription {
 
 #[cfg(test)]
 mod test {
+
+    #[test]
+    fn test_websocket_notification() {
+        let frame = r#"
+        {
+            "metadata": {
+                "message_id": "befa7b53-d79d-478f-86b9-120f112b044e",
+                "message_type": "notification",
+                "message_timestamp": "2019-11-16T10:11:12.123Z",
+                "subscription_type": "channel.follow",
+                "subscription_version": "1"
+            },
+            "payload": {
+                "subscription": {
+                    "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+                    "status": "enabled",
+                    "type": "channel.follow",
+                    "version": "1",
+                    "cost": 1,
+                    "condition": {
+                        "broadcaster_user_id": "12826"
+                    },
+                    "transport": {
+                        "method": "websocket",
+                        "session_id": "AQoQexAWVYKSTIu4ec_2VAxyuhAB"
+                    },
+                    "created_at": "2019-11-16T10:11:12.123Z"
+                },
+                "event": {
+                    "user_id": "1337",
+                    "user_login": "awesome_user",
+                    "user_name": "Awesome_User",
+                    "broadcaster_user_id": "12826",
+                    "broadcaster_user_login": "twitch",
+                    "broadcaster_user_name": "Twitch",
+                    "followed_at": "2020-07-15T18:16:11.17106713Z"
+                }
+            }
+        }"#;
+
+        crate::eventsub::Event::parse_websocket(frame).unwrap();
+    }
 
     #[test]
     fn test_verification_response() {

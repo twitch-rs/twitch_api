@@ -195,11 +195,8 @@ fn test_request() {
         CreateEventSubSubscriptionRequest::default();
 
     let sub = UserUpdateV1::new("1234");
-    let transport = eventsub::Transport {
-        method: eventsub::TransportMethod::Webhook,
-        callback: "example.com".to_string(),
-        secret: "heyhey13".to_string(),
-    };
+    let transport = eventsub::Transport::webhook("example.com", "heyhey13".to_string());
+
     let body = CreateEventSubSubscriptionBody::new(sub, transport);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
