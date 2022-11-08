@@ -32,7 +32,7 @@ pub struct WelcomeMetadata<'a> {
     pub message_id: Cow<'a, str>,
     /// The UTC date and time that the message was sent.
     #[serde(borrow = "'a")]
-    pub message_timestamp: Cow<'a, str>,
+    pub message_timestamp: Cow<'a, types::TimestampRef>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -118,7 +118,8 @@ pub struct RevocationMetadata<'a> {
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[serde(tag = "message_type")]
 #[non_exhaustive]
-pub(crate) enum EventsubWebsocketMetadata<'a> {
+/// Metadata for a websocket event
+pub enum EventsubWebsocketMetadata<'a> {
     /// Defines a message that the EventSub WebSocket server sends your client when an event that you subscribe to occurs.
     #[serde(rename = "notification")]
     Notification(#[serde(borrow = "'a")] NotificationMetadata<'a>),
@@ -134,6 +135,45 @@ pub(crate) enum EventsubWebsocketMetadata<'a> {
     /// Defines the message that the EventSub WebSocket server sends if the user no longer exists or they revoked the authorization token that the subscription relied on.
     #[serde(rename = "revocation")]
     Revocation(#[serde(borrow = "'a")] RevocationMetadata<'a>),
+}
+
+impl<'d> EventsubWebsocketMetadata<'d> {
+    /// Get message id
+    pub fn message_id(&self) -> Cow<'d, str> {
+        match self {
+            EventsubWebsocketMetadata::Welcome(WelcomeMetadata { message_id, .. })
+            | EventsubWebsocketMetadata::Keepalive(KeepaliveMetadata { message_id, .. })
+            | EventsubWebsocketMetadata::Notification(NotificationMetadata {
+                message_id, ..
+            })
+            | EventsubWebsocketMetadata::Revocation(RevocationMetadata { message_id, .. })
+            | EventsubWebsocketMetadata::Reconnect(ReconnectMetadata { message_id, .. }) => {
+                message_id.clone()
+            }
+        }
+    }
+
+    /// Get message timestamp
+    pub fn message_timestamp(&self) -> Cow<'d, types::TimestampRef> {
+        match self {
+            EventsubWebsocketMetadata::Welcome(WelcomeMetadata {
+                message_timestamp, ..
+            })
+            | EventsubWebsocketMetadata::Keepalive(KeepaliveMetadata {
+                message_timestamp, ..
+            })
+            | EventsubWebsocketMetadata::Notification(NotificationMetadata {
+                message_timestamp,
+                ..
+            })
+            | EventsubWebsocketMetadata::Revocation(RevocationMetadata {
+                message_timestamp, ..
+            })
+            | EventsubWebsocketMetadata::Reconnect(ReconnectMetadata {
+                message_timestamp, ..
+            }) => message_timestamp.clone(),
+        }
+    }
 }
 
 #[allow(missing_docs)]
@@ -170,30 +210,33 @@ pub enum EventsubWebsocketData<'a> {
     },
 }
 
-impl EventsubWebsocketData<'_> {
+impl<'d> EventsubWebsocketData<'d> {
     /// Get message id
-    pub fn message_id(&self) -> &'_ str {
+    pub fn message_id(&self) -> Cow<'d, str> { self.metadata().message_id() }
+
+    /// Get message timestamp
+    pub fn message_timestamp(&self) -> Cow<'d, types::TimestampRef> {
+        self.metadata().message_timestamp()
+    }
+
+    /// Get metadata for the event
+    pub fn metadata(&self) -> EventsubWebsocketMetadata<'d> {
         match self {
-            EventsubWebsocketData::Welcome {
-                metadata: WelcomeMetadata { message_id, .. },
-                ..
+            EventsubWebsocketData::Welcome { metadata, .. } => {
+                EventsubWebsocketMetadata::Welcome(metadata.clone())
             }
-            | EventsubWebsocketData::Keepalive {
-                metadata: KeepaliveMetadata { message_id, .. },
-                ..
+            EventsubWebsocketData::Keepalive { metadata, .. } => {
+                EventsubWebsocketMetadata::Keepalive(metadata.clone())
             }
-            | EventsubWebsocketData::Notification {
-                metadata: NotificationMetadata { message_id, .. },
-                ..
+            EventsubWebsocketData::Notification { metadata, .. } => {
+                EventsubWebsocketMetadata::Notification(metadata.clone())
             }
-            | EventsubWebsocketData::Revocation {
-                metadata: RevocationMetadata { message_id, .. },
-                ..
+            EventsubWebsocketData::Revocation { metadata, .. } => {
+                EventsubWebsocketMetadata::Revocation(metadata.clone())
             }
-            | EventsubWebsocketData::Reconnect {
-                metadata: ReconnectMetadata { message_id, .. },
-                ..
-            } => message_id.as_ref(),
+            EventsubWebsocketData::Reconnect { metadata, .. } => {
+                EventsubWebsocketMetadata::Reconnect(metadata.clone())
+            }
         }
     }
 }
@@ -230,7 +273,7 @@ mod tests {
                 metadata: _,
                 payload: _,
             }
-        ))
+        ));
     }
 
     #[test]
