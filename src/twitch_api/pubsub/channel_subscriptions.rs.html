@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_subscriptions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>channel_subscriptions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><script defer src="../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_subscriptions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>channel_subscriptions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ef244fc9943488f7.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-c11f492748536797.css"><link rel="stylesheet" disabled href="../../../static.files/dark-a78f946771c40031.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-70b683d68cb31790.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-74087aa2e88f4475.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0dede64717b247ca.js"></script><script defer src="../../../scrape-examples-1f45318ad6bd2a81.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-201a7e04dc4c6fce.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -590,7 +590,7 @@
 <span id="590">590</span>
 <span id="591">591</span>
 <span id="592">592</span>
-</pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;subscription&quot;</span>)]
+</pre><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;subscription&quot;</span>)]
 #![doc(alias = <span class="string">&quot;subscriptions&quot;</span>)]
 #![doc(alias = <span class="string">&quot;channel-subscribe-events-v1&quot;</span>)]
 </span><span class="doccomment">//! PubSub messages for subscriptions
@@ -598,7 +598,7 @@
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="doccomment">/// A subscription event happens in channel
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
 </span><span class="kw">pub struct </span>ChannelSubscribeEventsV1 {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
@@ -612,14 +612,14 @@
 </span>);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>ChannelSubscribeEventsV1 {
-    <span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ChannelSubscriptions];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::ChannelSubscribeEventsV1(<span class="self">self</span>) }
 }
 
 <span class="doccomment">/// A subscription
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Sub {
@@ -634,7 +634,7 @@
     </span><span class="kw">pub </span>cumulative_months: i64,
     <span class="doccomment">/// Resubscription is a gift
     </span><span class="kw">pub </span>is_gift: bool,
-    <span class="attribute">#[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     </span><span class="kw">pub </span>months: i64,
     <span class="comment">// FIXME: should be a enum
     </span><span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6
@@ -656,7 +656,7 @@
 }
 
 <span class="doccomment">/// A resubscription
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ReSub {
@@ -674,7 +674,7 @@
     </span><span class="kw">pub </span>is_gift: bool,
     <span class="doccomment">/// Months the user has been subscribed for in a row.
     </span><span class="kw">pub </span>streak_months: <span class="prelude-ty">Option</span>&lt;i64&gt;,
-    <span class="attribute">#[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     </span><span class="kw">pub </span>months: i64,
     <span class="doccomment">/// Duration of subscription, e.g 1, 3 or 6
     </span><span class="kw">pub </span>multi_month_duration: <span class="prelude-ty">Option</span>&lt;i64&gt;,
@@ -695,7 +695,7 @@
 }
 
 <span class="doccomment">/// A gifted subscription happened
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SubGift {
@@ -707,7 +707,7 @@
     </span><span class="kw">pub </span>channel_id: types::UserId,
     <span class="doccomment">/// Name of the channel that has been subscribed or subgifted
     </span><span class="kw">pub </span>channel_name: types::UserName,
-    <span class="attribute">#[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     </span><span class="kw">pub </span>is_gift: bool,
     <span class="doccomment">/// Months
     </span><span class="kw">pub </span>months: i64,
@@ -721,7 +721,7 @@
     <span class="doccomment">/// Username of user that received gifted subscription
     </span><span class="kw">pub </span>recipient_user_name: types::UserName,
     <span class="doccomment">/// Message sent with this subscription
-    </span><span class="attribute">#[doc(hidden)]
+    </span><span class="attr">#[doc(hidden)]
     </span><span class="kw">pub </span>sub_message: SubMessage,
     <span class="doccomment">/// Subscription plan
     </span><span class="kw">pub </span>sub_plan: types::SubscriptionTier,
@@ -738,7 +738,7 @@
 }
 
 <span class="doccomment">/// Gifted resubscription with optional message
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ResubGift {
@@ -752,7 +752,7 @@
     </span><span class="kw">pub </span>channel_name: types::UserName,
     <span class="doccomment">/// Cumulative months that user has been subscribed
     </span><span class="kw">pub </span>cumulative_months: i64,
-    <span class="attribute">#[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     </span><span class="kw">pub </span>is_gift: bool,
     <span class="doccomment">/// Months
     </span><span class="kw">pub </span>months: i64,
@@ -784,7 +784,7 @@
 }
 
 <span class="doccomment">/// User extends a (gifted) sub
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ExtendSub {
@@ -796,7 +796,7 @@
     </span><span class="kw">pub </span>channel_name: types::UserName,
     <span class="doccomment">/// Cumulative months that user has been subscribed
     </span><span class="kw">pub </span>cumulative_months: i64,
-    <span class="attribute">#[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     </span><span class="kw">pub </span>is_gift: bool,
     <span class="doccomment">/// Months
     </span><span class="kw">pub </span>months: i64,
@@ -822,32 +822,32 @@
 <span class="comment">// FIXME: Missing anonsubgift and anonresubgift
 // Should probably share fields.
 </span><span class="doccomment">/// Reply from [ChannelSubscribeEventsV1]
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = <span class="string">&quot;context&quot;</span>)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ChannelSubscribeEventsV1Reply {
     <span class="doccomment">/// A subscription
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;sub&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;sub&quot;</span>)]
     </span>Sub(Sub),
     <span class="doccomment">/// A resubscription
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;resub&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;resub&quot;</span>)]
     </span>ReSub(ReSub),
     <span class="doccomment">/// A gifted subscription happened
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;subgift&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;subgift&quot;</span>)]
     </span>SubGift(SubGift),
     <span class="doccomment">/// Gifted resubscription with optional message
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;resubgift&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;resubgift&quot;</span>)]
     </span>ResubGift(ResubGift),
     <span class="doccomment">/// User extends sub through the month.
     ///
     /// Message emited in web chat is something like: `User Extended their Tier 1 subscription through June!`
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;extendsub&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;extendsub&quot;</span>)]
     </span>ExtendSub(ExtendSub),
 }
 
 <span class="doccomment">/// Described where in a message an emote is
-</span><span class="attribute">#[derive(Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize)]
+</span><span class="attr">#[derive(Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Emote {
     <span class="comment">// FIXME: Mention how to get the emote picture
@@ -860,23 +860,23 @@
 }
 
 <span class="doccomment">/// Message sent with subscription
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SubMessage {
     <span class="doccomment">/// Emotes in subscription message
-    </span><span class="attribute">#[serde(deserialize_with = <span class="string">&quot;pubsub::deserialize_default_from_null&quot;</span>)]
+    </span><span class="attr">#[serde(deserialize_with = <span class="string">&quot;pubsub::deserialize_default_from_null&quot;</span>)]
     </span><span class="kw">pub </span>emotes: Vec&lt;Emote&gt;,
     <span class="doccomment">/// Message in subscription
     </span><span class="kw">pub </span>message: String,
 }
 
-<span class="attribute">#[cfg(test)]
+<span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
     <span class="kw">use </span><span class="kw">super</span>::<span class="kw">super</span>::{Response, TopicData};
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>subscription_doc_example_resub() {
         <span class="comment">// twitch docs broken as usual. /emotes/id  is a string and /months is missing
         </span><span class="kw">let </span>message = <span class="string">r##&quot;
@@ -920,7 +920,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>subscription_doc_example_subgift() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -958,7 +958,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>new_sub() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -996,7 +996,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>gifted_sub() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -1036,7 +1036,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>resub() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -1081,7 +1081,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>resub_gift() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -1127,7 +1127,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>extendsub() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -1165,7 +1165,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
         <span class="kw">let </span>s = <span class="string">&quot;channel-subscribe-events-v1.1234&quot;</span>;
@@ -1175,7 +1175,7 @@
         );
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
         <span class="kw">let </span>s = <span class="string">&quot;channel-subscribe-events-v1.1234&quot;</span>;
         <span class="kw">let </span>right: String = ChannelSubscribeEventsV1 { channel_id: <span class="number">1234 </span>}.into();
@@ -1183,4 +1183,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (95a3a7277 2022-10-31)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (73c9eaf21 2022-11-07)" data-search-js="search-39ee4160c7dc16c9.js" data-settings-js="settings-3a0b9947ba1bd99a.js" data-settings-css="settings-a66f7524084a489a.css" ></div></body></html>

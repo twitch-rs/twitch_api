@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><script defer src="../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ef244fc9943488f7.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-c11f492748536797.css"><link rel="stylesheet" disabled href="../../../static.files/dark-a78f946771c40031.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-70b683d68cb31790.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-74087aa2e88f4475.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0dede64717b247ca.js"></script><script defer src="../../../scrape-examples-1f45318ad6bd2a81.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-201a7e04dc4c6fce.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -691,20 +691,20 @@
         to_str: <span class="macro-nonterminal">$to_str_docs</span>:literal,
         from_str_error: <span class="macro-nonterminal">$from_str_error</span>:ident,
     ) =&gt; {
-        <span class="attribute">#[doc = <span class="macro-nonterminal">$enum_docs</span>]
+        <span class="attr">#[doc = <span class="macro-nonterminal">$enum_docs</span>]
         #[derive(Copy, Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
         #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
         #[non_exhaustive]
         </span><span class="kw">pub enum </span><span class="macro-nonterminal">$enum_name </span>{
             $(
-                <span class="attribute">#[doc = <span class="macro">concat!</span>(<span class="string">&quot;`&quot;</span>, <span class="macro-nonterminal">$event_name</span>, <span class="string">&quot;`: &quot;</span>, <span class="macro-nonterminal">$event_docs</span>)]
+                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">&quot;`&quot;</span>, <span class="macro-nonterminal">$event_name</span>, <span class="string">&quot;`: &quot;</span>, <span class="macro-nonterminal">$event_docs</span>)]
                 #[serde(rename = <span class="macro-nonterminal">$event_name</span>)]
                 </span><span class="macro-nonterminal">$variant_name</span>,
             )*
         }
 
         <span class="kw">impl </span><span class="macro-nonterminal">$enum_name </span>{
-            <span class="attribute">#[doc = <span class="macro-nonterminal">$to_str_docs</span>]
+            <span class="attr">#[doc = <span class="macro-nonterminal">$to_str_docs</span>]
             </span><span class="kw">pub const fn </span>to_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
                 <span class="kw">use </span><span class="macro-nonterminal">$enum_name</span>::<span class="kw-2">*</span>;
                 <span class="kw">match </span><span class="self">self </span>{
@@ -734,7 +734,7 @@
 }
 
 <span class="doccomment">/// Error when parsing an event-type string.
-</span><span class="attribute">#[derive(thiserror::Error, Debug, Clone)]
+</span><span class="attr">#[derive(thiserror::Error, Debug, Clone)]
 #[error(<span class="string">&quot;Unknown event type&quot;</span>)]
 </span><span class="kw">pub struct </span>EventTypeParseError;
 
@@ -822,11 +822,11 @@ fn main() {
 <span class="doccomment">/// A notification with an event payload. Enumerates all possible [`Payload`s](Payload)
 ///
 /// Parse with [`Event::parse`] or parse the whole http request your server receives with [`Payload::parse_http`]
-</span><span class="attribute">#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
+</span><span class="attr">#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 #[allow(clippy::large_enum_variant)]
 </span><span class="kw">pub enum </span>Event {
     <span class="doccomment">/// Channel Charity Campaign Donate Beta Event
-    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
     </span>ChannelCharityCampaignDonateBeta(Payload&lt;channel::ChannelCharityCampaignDonateBeta&gt;),
     <span class="doccomment">/// Channel Update V1 Event
     </span>ChannelUpdateV1(Payload&lt;channel::ChannelUpdateV1&gt;),
@@ -924,7 +924,7 @@ fn main() {
     </span><span class="kw">pub fn </span>is_verification_request(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool { <span class="macro">is_thing!</span>(<span class="self">self</span>, VerificationRequest) }
 
     <span class="doccomment">/// If this event is a [`VerificationRequest`], return the [`VerificationRequest`] message, including the message.
-    </span><span class="attribute">#[rustfmt::skip]
+    </span><span class="attr">#[rustfmt::skip]
     </span><span class="kw">pub fn </span>get_verification_request(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>VerificationRequest&gt; {
         <span class="comment">// FIXME: Replace with proc_macro if a proc_macro crate is ever made
         </span><span class="kw">match </span><span class="kw-2">&amp;</span><span class="self">self </span>{
@@ -934,7 +934,7 @@ fn main() {
             Event::ChannelCheerV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
             Event::ChannelBanV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
             Event::ChannelUnbanV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
-            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
             </span>Event::ChannelCharityCampaignDonateBeta(Payload {message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
             Event::ChannelPointsCustomRewardAddV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
             Event::ChannelPointsCustomRewardUpdateV1(Payload { message: Message::VerificationRequest(v), ..}) =&gt; <span class="prelude-val">Some</span>(v),
@@ -970,10 +970,10 @@ fn main() {
     <span class="doccomment">/// Make a [`EventSubSubscription`] from this notification.
     </span><span class="kw">pub fn </span>subscription(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;EventSubSubscription, serde_json::Error&gt; {
         <span class="macro">macro_rules! </span>match_event {
-        ($($(<span class="attribute">#[<span class="macro-nonterminal">$meta</span>:meta]</span>)* <span class="macro-nonterminal">$module</span>:ident::<span class="macro-nonterminal">$event</span>:ident);* $(;)<span class="question-mark">?</span>) =&gt; {{
+        ($($(<span class="attr">#[<span class="macro-nonterminal">$meta</span>:meta]</span>)* <span class="macro-nonterminal">$module</span>:ident::<span class="macro-nonterminal">$event</span>:ident);* $(;)<span class="question-mark">?</span>) =&gt; {{
             <span class="kw">match </span><span class="kw-2">&amp;</span><span class="self">self </span>{
                 $(
-                    $(<span class="attribute">#[<span class="macro-nonterminal">$meta</span>]</span>)*
+                    $(<span class="attr">#[<span class="macro-nonterminal">$meta</span>]</span>)*
                     Event::<span class="macro-nonterminal">$event</span>(notif) =&gt; <span class="prelude-val">Ok</span>({
                         <span class="kw">let </span><span class="self">self</span>::Payload {subscription, ..} = notif; <span class="comment">// FIXME: Use @ pattern-binding, currently stable
 
@@ -999,7 +999,7 @@ fn main() {
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
             channel::ChannelUnbanV1;
-            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
             </span>channel::ChannelCharityCampaignDonateBeta;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardUpdateV1;
@@ -1035,7 +1035,7 @@ fn main() {
     ///
     /// HMAC key is `secret`, HMAC message is a concatenation of `Twitch-Eventsub-Message-Id` header, `Twitch-Eventsub-Message-Timestamp` header and the request body.
     /// HMAC signature is `Twitch-Eventsub-Message-Signature` header.
-    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;hmac&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">&quot;hmac&quot;</span>)]
     #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;hmac&quot;</span>)))]
     #[must_use]
     </span><span class="kw">pub fn </span>verify_payload&lt;B&gt;(request: <span class="kw-2">&amp;</span>http::Request&lt;B&gt;, secret: <span class="kw-2">&amp;</span>[u8]) -&gt; bool
@@ -1097,11 +1097,11 @@ fn main() {
 }
 
 <span class="doccomment">/// Helper function to get version and type of event from text.
-</span><span class="attribute">#[allow(clippy::type_complexity)]
+</span><span class="attr">#[allow(clippy::type_complexity)]
 </span><span class="kw">fn </span>get_version_event_type_and_message_type_from_text(
     source: <span class="kw-2">&amp;</span>str,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(Cow&lt;<span class="lifetime">&#39;_</span>, str&gt;, EventType, Cow&lt;<span class="lifetime">&#39;_</span>, [u8]&gt;), PayloadParseError&gt; {
-    <span class="attribute">#[derive(Deserialize)]
+    <span class="attr">#[derive(Deserialize)]
     </span><span class="kw">struct </span>IEventSubscripionInformation {
         <span class="comment">// condition: serde_json::Value,
         // created_at: types::Timestamp,
@@ -1109,11 +1109,11 @@ fn main() {
         // cost: usize,
         // id: types::EventSubId,
         // transport: TransportResponse,
-        </span><span class="attribute">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
         </span>type_: EventType,
         version: String,
     }
-    <span class="attribute">#[derive(Deserialize)]
+    <span class="attr">#[derive(Deserialize)]
     </span><span class="kw">struct </span>IEvent {
         subscription: IEventSubscripionInformation,
         challenge: <span class="prelude-ty">Option</span>&lt;serde_json::Value&gt;,
@@ -1148,7 +1148,7 @@ fn main() {
 }
 
 <span class="doccomment">/// Helper function to get version and type of event from http.
-</span><span class="attribute">#[allow(clippy::type_complexity)]
+</span><span class="attr">#[allow(clippy::type_complexity)]
 </span><span class="kw">fn </span>get_version_event_type_and_message_type_from_http&lt;B&gt;(
     request: <span class="kw-2">&amp;</span>http::Request&lt;B&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(Cow&lt;<span class="lifetime">&#39;_</span>, str&gt;, EventType, Cow&lt;<span class="lifetime">&#39;_</span>, [u8]&gt;), PayloadParseError&gt;
@@ -1194,7 +1194,7 @@ fn main() {
     }
 
     <span class="doccomment">/// Parse a string slice as an [`Event`]. You should not use this, instead, use [`Event::parse_http`] or [`Event::parse`].
-    </span><span class="attribute">#[doc(hidden)]
+    </span><span class="attr">#[doc(hidden)]
     </span><span class="kw">pub fn </span>parse_request&lt;<span class="lifetime">&#39;a</span>&gt;(
         version: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
         event_type: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>EventType,
@@ -1205,11 +1205,11 @@ fn main() {
         ///
         /// If this is not done, we&#39;d get a much worse error message.
         </span><span class="macro">macro_rules! </span>match_event {
-            ($($(<span class="attribute">#[<span class="macro-nonterminal">$meta</span>:meta]</span>)* <span class="macro-nonterminal">$module</span>:ident::<span class="macro-nonterminal">$event</span>:ident);* $(;)<span class="question-mark">?</span>) =&gt; {{
+            ($($(<span class="attr">#[<span class="macro-nonterminal">$meta</span>:meta]</span>)* <span class="macro-nonterminal">$module</span>:ident::<span class="macro-nonterminal">$event</span>:ident);* $(;)<span class="question-mark">?</span>) =&gt; {{
 
-                <span class="attribute">#[deny(unreachable_patterns)]
+                <span class="attr">#[deny(unreachable_patterns)]
                 </span><span class="kw">match </span>(version.as_ref(), event_type) {
-                    $(  $(<span class="attribute">#[<span class="macro-nonterminal">$meta</span>]</span>)* (&lt;<span class="macro-nonterminal">$module</span>::<span class="macro-nonterminal">$event </span><span class="kw">as </span>EventSubscription&gt;::VERSION, <span class="kw-2">&amp;</span>&lt;<span class="macro-nonterminal">$module</span>::<span class="macro-nonterminal">$event </span><span class="kw">as </span>EventSubscription&gt;::EVENT_TYPE) =&gt; {
+                    $(  $(<span class="attr">#[<span class="macro-nonterminal">$meta</span>]</span>)* (&lt;<span class="macro-nonterminal">$module</span>::<span class="macro-nonterminal">$event </span><span class="kw">as </span>EventSubscription&gt;::VERSION, <span class="kw-2">&amp;</span>&lt;<span class="macro-nonterminal">$module</span>::<span class="macro-nonterminal">$event </span><span class="kw">as </span>EventSubscription&gt;::EVENT_TYPE) =&gt; {
                         Event::<span class="macro-nonterminal">$event</span>(Payload::parse_request(message_type, source)<span class="question-mark">?</span>)
                     }  )*
                     (v, e) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(PayloadParseError::UnimplementedEvent{version: v.to_owned(), event_type: e.clone()})
@@ -1224,7 +1224,7 @@ fn main() {
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
             channel::ChannelUnbanV1;
-            <span class="attribute">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
             </span>channel::ChannelCharityCampaignDonateBeta;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardUpdateV1;
@@ -1257,4 +1257,4 @@ fn main() {
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (95a3a7277 2022-10-31)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (73c9eaf21 2022-11-07)" data-search-js="search-39ee4160c7dc16c9.js" data-settings-js="settings-3a0b9947ba1bd99a.js" data-settings-css="settings-a66f7524084a489a.css" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/time.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>time.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../twitch_types/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/time.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>time.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ef244fc9943488f7.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-c11f492748536797.css"><link rel="stylesheet" disabled href="../../static.files/dark-a78f946771c40031.css"><link rel="stylesheet" disabled href="../../static.files/ayu-70b683d68cb31790.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/source-script-74087aa2e88f4475.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0dede64717b247ca.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-201a7e04dc4c6fce.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../twitch_types/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -398,7 +398,7 @@
 <span id="398">398</span>
 <span id="399">399</span>
 </pre><pre class="rust"><code><span class="doccomment">/// RFC3339 timestamp
-</span><span class="attribute">#[aliri_braid::braid(serde, validator, ord = <span class="string">&quot;omit&quot;</span>)]
+</span><span class="attr">#[aliri_braid::braid(serde, validator, ord = <span class="string">&quot;omit&quot;</span>)]
 </span><span class="kw">pub struct </span>Timestamp;
 
 <span class="macro">impl_extra!</span>(validated, Timestamp, TimestampRef, TimestampParseError);
@@ -407,12 +407,12 @@
     <span class="kw">type </span>Error = TimestampParseError;
 
     <span class="kw">fn </span>validate(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
-        <span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
         </span>{
             <span class="kw">let _ </span>= time::OffsetDateTime::parse(s, <span class="kw-2">&amp;</span>time::format_description::well_known::Rfc3339)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(())
         }
-        <span class="attribute">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
+        <span class="attr">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
         </span>{
             <span class="comment">// This validator is lacking some features for now
             </span><span class="kw">if </span>!s.chars().all(|c| {
@@ -474,18 +474,18 @@
 }
 
 <span class="doccomment">/// Errors that can occur when parsing a timestamp.
-</span><span class="attribute">#[derive(Debug, thiserror::Error, displaydoc::Display)]
+</span><span class="attr">#[derive(Debug, thiserror::Error, displaydoc::Display)]
 #[ignore_extra_doc_attributes]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>TimestampParseError {
     <span class="doccomment">/// Could not parse the timestamp using `time`
-    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
     #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
-    </span>TimeError(<span class="attribute">#[from] </span>time::error::Parse),
+    </span>TimeError(<span class="attr">#[from] </span>time::error::Parse),
     <span class="doccomment">/// Could not format the timestamp using `time`
-    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
     #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
-    </span>TimeFormatError(<span class="attribute">#[from] </span>time::error::Format),
+    </span>TimeFormatError(<span class="attr">#[from] </span>time::error::Format),
     <span class="doccomment">/// {0}
     </span>Other(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
     <span class="doccomment">/// timestamp has an invalid format. {s:?} - {location}
@@ -498,7 +498,7 @@
 }
 
 <span class="kw">impl </span>TimestampParseError {
-    <span class="attribute">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
+    <span class="attr">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
     #[track_caller]
     </span><span class="kw">fn </span>invalid() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::InvalidFormat {
@@ -507,7 +507,7 @@
         }
     }
 
-    <span class="attribute">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
+    <span class="attr">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
     #[track_caller]
     </span><span class="kw">fn </span>invalid_s(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::InvalidFormat {
@@ -524,7 +524,7 @@
     ///
     /// Internally, without the `time` feature, this uses `unsafe` to deal with the raw string bytes. To ensure safety, the method will panic on invalid input and source.
     </span><span class="kw">fn </span>set_time(<span class="kw-2">&amp;mut </span><span class="self">self</span>, hours: u8, minutes: u8, seconds: u8) {
-        <span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
         </span>{
             <span class="kw">let _ </span>= std::mem::replace(
                 <span class="self">self</span>,
@@ -537,14 +537,14 @@
                     .expect(<span class="string">&quot;could not make timestamp&quot;</span>),
             );
         }
-        <span class="attribute">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
+        <span class="attr">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
         </span>{
             <span class="kw">const </span>ERROR_MSG: <span class="kw-2">&amp;</span>str = <span class="string">&quot;malformed timestamp&quot;</span>;
             <span class="macro">assert!</span>(hours &lt; <span class="number">24</span>);
             <span class="macro">assert!</span>(minutes &lt; <span class="number">60</span>);
             <span class="macro">assert!</span>(seconds &lt; <span class="number">60</span>);
 
-            <span class="attribute">#[inline]
+            <span class="attr">#[inline]
             </span><span class="kw">fn </span>replace_len2(s: <span class="kw-2">&amp;mut </span>str, replace: <span class="kw-2">&amp;</span>str) {
                 <span class="macro">assert!</span>(replace.as_bytes().len() == <span class="number">2</span>);
                 <span class="macro">assert!</span>(s.as_bytes().len() == <span class="number">2</span>);
@@ -586,7 +586,7 @@
     }
 }
 
-<span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
 </span><span class="kw">impl </span>Timestamp {
     <span class="doccomment">/// Create a timestamp corresponding to current time
@@ -619,13 +619,13 @@
     /// assert_ne!(time2.normalize()?.as_ref(), &amp;time2);
     /// # Ok::&lt;(), std::boxed::Box&lt;dyn std::error::Error + &#39;static&gt;&gt;(())
     /// ```
-    </span><span class="attribute">#[allow(unreachable_code)]
+    </span><span class="attr">#[allow(unreachable_code)]
     </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;std::borrow::Cow&lt;<span class="lifetime">&#39;_</span>, TimestampRef&gt;, TimestampParseError&gt; {
         <span class="kw">let </span>s = <span class="self">self</span>.as_str();
         <span class="kw">if </span>s.ends_with(<span class="string">&#39;Z&#39;</span>) {
             <span class="prelude-val">Ok</span>(<span class="self">self</span>.into())
         } <span class="kw">else </span>{
-            <span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
             </span>{
                 <span class="kw">let </span>utc = <span class="self">self</span>.to_utc();
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(std::borrow::Cow::Owned(utc.try_into()<span class="question-mark">?</span>));
@@ -667,7 +667,7 @@
     }
 }
 
-<span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
 </span><span class="kw">impl </span>TimestampRef {
     <span class="doccomment">/// Construct into a [`OffsetDateTime`](time::OffsetDateTime) time with a guaranteed UTC offset.
@@ -719,13 +719,13 @@
             .normalize()
             .expect(<span class="string">&quot;normalization of other failed, this is a bug&quot;</span>);
         <span class="comment">// If a punctuation exists in only one, we can&#39;t order.
-        </span><span class="attribute">#[allow(clippy::if_same_then_else)]
+        </span><span class="attr">#[allow(clippy::if_same_then_else)]
         </span><span class="kw">if </span>this.as_ref().as_str().contains(<span class="string">&#39;.&#39;</span>) ^ other.as_ref().as_str().contains(<span class="string">&#39;.&#39;</span>) {
-            <span class="attribute">#[cfg(feature = <span class="string">&quot;tracing&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">&quot;tracing&quot;</span>)]
             </span><span class="macro">tracing::warn!</span>(<span class="string">&quot;comparing two `Timestamps` with differing punctuation&quot;</span>);
             <span class="kw">return </span><span class="prelude-val">None</span>;
         } <span class="kw">else if </span>this.<span class="number">0</span>.len() != other.<span class="number">0</span>.len() {
-            <span class="attribute">#[cfg(feature = <span class="string">&quot;tracing&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">&quot;tracing&quot;</span>)]
             </span><span class="macro">tracing::warn!</span>(<span class="string">&quot;comparing two `Timestamps` with differing length&quot;</span>);
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
@@ -733,7 +733,7 @@
     }
 }
 
-<span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
 </span><span class="kw">impl </span>PartialEq&lt;time::OffsetDateTime&gt; <span class="kw">for </span>Timestamp {
     <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>time::OffsetDateTime) -&gt; bool {
@@ -743,7 +743,7 @@
     }
 }
 
-<span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
 </span><span class="kw">impl </span>PartialOrd&lt;time::OffsetDateTime&gt; <span class="kw">for </span>Timestamp {
     <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>time::OffsetDateTime) -&gt; <span class="prelude-ty">Option</span>&lt;std::cmp::Ordering&gt; {
@@ -753,13 +753,13 @@
     }
 }
 
-<span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
 </span><span class="kw">impl </span>PartialEq&lt;time::OffsetDateTime&gt; <span class="kw">for </span>TimestampRef {
     <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>time::OffsetDateTime) -&gt; bool { <span class="kw-2">&amp;</span><span class="self">self</span>.to_utc() == other }
 }
 
-<span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
 </span><span class="kw">impl </span>PartialOrd&lt;time::OffsetDateTime&gt; <span class="kw">for </span>TimestampRef {
     <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>time::OffsetDateTime) -&gt; <span class="prelude-ty">Option</span>&lt;std::cmp::Ordering&gt; {
@@ -767,7 +767,7 @@
     }
 }
 
-<span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
 </span><span class="kw">impl </span>std::convert::TryFrom&lt;time::OffsetDateTime&gt; <span class="kw">for </span>Timestamp {
     <span class="kw">type </span>Error = time::error::Format;
@@ -779,22 +779,22 @@
     }
 }
 
-<span class="attribute">#[cfg(test)]
+<span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">pub fn </span>time_test() {
         <span class="kw">let </span><span class="kw-2">mut </span>time1 = Timestamp::try_from(<span class="string">&quot;2021-11-11T10:00:00Z&quot;</span>).unwrap();
         time1.set_time(<span class="number">10</span>, <span class="number">0</span>, <span class="number">32</span>);
         <span class="kw">let </span>time2 = Timestamp::try_from(<span class="string">&quot;2021-11-10T10:00:00Z&quot;</span>).unwrap();
         <span class="macro">assert!</span>(time2.is_before(<span class="kw-2">&amp;</span>time1));
         <span class="macro">dbg!</span>(time1.normalize().unwrap());
-        <span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
         </span><span class="kw">let </span>time = Timestamp::try_from(<span class="string">&quot;2021-11-11T13:37:00-01:00&quot;</span>).unwrap();
-        <span class="attribute">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
         </span><span class="macro">dbg!</span>(time.normalize().unwrap());
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="twitch_types" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (95a3a7277 2022-10-31)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (73c9eaf21 2022-11-07)" data-search-js="search-39ee4160c7dc16c9.js" data-settings-js="settings-3a0b9947ba1bd99a.js" data-settings-css="settings-a66f7524084a489a.css" ></div></body></html>

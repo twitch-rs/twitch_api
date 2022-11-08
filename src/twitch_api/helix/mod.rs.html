@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><script defer src="../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ef244fc9943488f7.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-c11f492748536797.css"><link rel="stylesheet" disabled href="../../../static.files/dark-a78f946771c40031.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-70b683d68cb31790.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-74087aa2e88f4475.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0dede64717b247ca.js"></script><script defer src="../../../scrape-examples-1f45318ad6bd2a81.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-201a7e04dc4c6fce.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -211,67 +211,67 @@
 //! ```
 
 </span><span class="kw">use </span>serde::Deserialize;
-<span class="attribute">#[doc(no_inline)]
+<span class="attr">#[doc(no_inline)]
 #[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
 </span><span class="kw">pub use </span>twitch_oauth2::Scope;
-<span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
 </span><span class="kw">use </span>twitch_oauth2::TwitchToken;
 
-<span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
 </span><span class="kw">pub mod </span>client;
 <span class="kw">mod </span>endpoints;
 <span class="kw">pub mod </span>request;
 <span class="kw">pub mod </span>response;
 
-<span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
 #[doc(inline)]
 </span><span class="kw">pub use </span>client::{client_ext::make_stream, <span class="kw-2">*</span>};
 <span class="kw">pub use </span>endpoints::<span class="kw-2">*</span>;
-<span class="attribute">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
 #[doc(inline)]
 </span><span class="kw">pub use </span>request::errors::ClientRequestError;
-<span class="attribute">#[doc(inline)]
+<span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>request::errors::{
     CreateRequestError, HelixRequestDeleteError, HelixRequestGetError, HelixRequestPatchError,
     HelixRequestPostError, HelixRequestPutError, InvalidUri, SerializeError,
 };
-<span class="attribute">#[doc(inline)]
+<span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>request::{Request, RequestDelete, RequestGet, RequestPatch, RequestPost, RequestPut};
-<span class="attribute">#[doc(inline)]
+<span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>response::Response;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>ser;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span><span class="kw">crate</span>::deserialize_default_from_null;
 <span class="kw">use crate</span>::{parse_json, parse_json_value};
 
-<span class="attribute">#[derive(PartialEq, Deserialize, Debug)]
+<span class="attr">#[derive(PartialEq, Deserialize, Debug)]
 </span><span class="kw">struct </span>InnerResponse&lt;D&gt; {
     data: D,
     <span class="doccomment">/// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
-    </span><span class="attribute">#[serde(default)]
+    </span><span class="attr">#[serde(default)]
     </span>pagination: Pagination,
-    <span class="attribute">#[serde(default)]
+    <span class="attr">#[serde(default)]
     </span>total: <span class="prelude-ty">Option</span>&lt;i64&gt;,
-    <span class="attribute">#[serde(default, flatten)]
+    <span class="attr">#[serde(default, flatten)]
     </span>other: <span class="prelude-ty">Option</span>&lt;serde_json::Map&lt;String, serde_json::Value&gt;&gt;,
 }
 
-<span class="attribute">#[derive(Deserialize, Debug)]
+<span class="attr">#[derive(Deserialize, Debug)]
 #[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
 </span><span class="kw">struct </span>CustomInnerResponse&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="attribute">#[serde(borrow)]
+    <span class="attr">#[serde(borrow)]
     </span>data: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>serde_json::value::RawValue,
-    <span class="attribute">#[serde(default)]
+    <span class="attr">#[serde(default)]
     </span>pagination: Pagination,
-    <span class="attribute">#[serde(default)]
+    <span class="attr">#[serde(default)]
     </span>total: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="comment">// FIXME: There is an issue with RawValue on flatten maps. https://github.com/serde-rs/json/issues/599
-    </span><span class="attribute">#[serde(flatten, default)]
+    </span><span class="attr">#[serde(flatten, default)]
     </span>other: serde_json::Map&lt;String, serde_json::Value&gt;,
 }
 
-<span class="attribute">#[derive(Deserialize, Clone, Debug)]
+<span class="attr">#[derive(Deserialize, Clone, Debug)]
 </span><span class="kw">struct </span>HelixRequestError {
     error: String,
     status: u16,
@@ -301,14 +301,14 @@
 }
 
 <span class="doccomment">/// A cursor for pagination. This is needed because of how pagination is represented in the [New Twitch API](https://dev.twitch.tv/docs/api)
-</span><span class="attribute">#[derive(PartialEq, Deserialize, Debug, Clone, Default)]
+</span><span class="attr">#[derive(PartialEq, Deserialize, Debug, Clone, Default)]
 </span><span class="kw">struct </span>Pagination {
-    <span class="attribute">#[serde(default)]
+    <span class="attr">#[serde(default)]
     </span>cursor: <span class="prelude-ty">Option</span>&lt;Cursor&gt;,
 }
 
 <span class="doccomment">/// A cursor is a pointer to the current &quot;page&quot; in the twitch api pagination
-</span><span class="attribute">#[aliri_braid::braid(serde)]
+</span><span class="attr">#[aliri_braid::braid(serde)]
 </span><span class="kw">pub struct </span>Cursor;
 
 <span class="kw">impl </span>CursorRef {
@@ -322,14 +322,14 @@
 }
 
 <span class="doccomment">/// Errors that can happen when creating a body
-</span><span class="attribute">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+</span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
 </span><span class="kw">pub enum </span>BodyError {
     <span class="doccomment">/// could not serialize as json
-    </span>JsonError(<span class="attribute">#[from] </span>serde_json::Error),
+    </span>JsonError(<span class="attr">#[from] </span>serde_json::Error),
     <span class="doccomment">/// could not serialize to query
-    </span>QuerySerializeError(<span class="attribute">#[from] </span>ser::Error),
+    </span>QuerySerializeError(<span class="attr">#[from] </span>ser::Error),
     <span class="doccomment">/// uri is invalid
-    </span>InvalidUri(<span class="attribute">#[from] </span>InvalidUri),
+    </span>InvalidUri(<span class="attr">#[from] </span>InvalidUri),
 }
 
 <span class="doccomment">/// Create a body. Used for specializing request bodies
@@ -341,7 +341,7 @@
 <span class="doccomment">/// An empty body.
 ///
 /// Implements [`HelixRequestBody::try_to_body`], returning an empty vector
-</span><span class="attribute">#[derive(Default, Clone, Copy)]
+</span><span class="attr">#[derive(Default, Clone, Copy)]
 </span><span class="kw">pub struct </span>EmptyBody;
 
 <span class="kw">impl </span>HelixRequestBody <span class="kw">for </span>EmptyBody {
@@ -363,4 +363,4 @@
     <span class="kw">pub trait </span>SealedSerialize {}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (95a3a7277 2022-10-31)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (73c9eaf21 2022-11-07)" data-search-js="search-39ee4160c7dc16c9.js" data-settings-js="settings-3a0b9947ba1bd99a.js" data-settings-css="settings-a66f7524084a489a.css" ></div></body></html>

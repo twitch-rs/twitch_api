@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/hypetrain.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>hypetrain.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><script defer src="../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/hypetrain.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>hypetrain.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ef244fc9943488f7.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-c11f492748536797.css"><link rel="stylesheet" disabled href="../../../static.files/dark-a78f946771c40031.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-70b683d68cb31790.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-74087aa2e88f4475.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0dede64717b247ca.js"></script><script defer src="../../../scrape-examples-1f45318ad6bd2a81.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-201a7e04dc4c6fce.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -2063,13 +2063,13 @@
 <span id="2063">2063</span>
 <span id="2064">2064</span>
 <span id="2065">2065</span>
-</pre><pre class="rust"><code><span class="attribute">#![doc(alias = <span class="string">&quot;hype-train-events-v1&quot;</span>)]
+</pre><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;hype-train-events-v1&quot;</span>)]
 </span><span class="doccomment">//! PubSub messages for hype-trains
 </span><span class="kw">use crate</span>::{pubsub, types};
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="doccomment">/// A user redeems an reward using channel points.
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
 </span><span class="kw">pub struct </span>HypeTrainEventsV1 {
@@ -2084,14 +2084,14 @@
 </span>);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>HypeTrainEventsV1 {
-    <span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::HypeTrainEventsV1(<span class="self">self</span>) }
 }
 
 <span class="doccomment">/// A user redeems an reward using channel points.
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
 </span><span class="kw">pub struct </span>HypeTrainEventsV1Rewards {
@@ -2106,14 +2106,14 @@
 </span>);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>HypeTrainEventsV1Rewards {
-    <span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::HypeTrainEventsV1Rewards(<span class="self">self</span>) }
 }
 
 <span class="doccomment">/// Hype train rewards
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainRewards {
@@ -2127,7 +2127,7 @@
 }
 
 <span class="doccomment">/// Hype train started in channel
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainStart {
@@ -2135,14 +2135,14 @@
     </span><span class="doccomment">/// ID of channel where hype-train was initiated
     </span><span class="kw">pub </span>channel_id: <span class="prelude-ty">Option</span>&lt;types::UserId&gt;,
     <span class="doccomment">/// Current conductors of this hype-train
-    </span><span class="attribute">#[doc(hidden)]
+    </span><span class="attr">#[doc(hidden)]
     </span><span class="kw">pub </span>conductors: Conductors,
     <span class="doccomment">/// Config of this hype-train
     </span><span class="kw">pub </span>config: Box&lt;Config&gt;,
-    <span class="attribute">#[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     #[serde(default)]
     </span><span class="kw">pub </span>ended_at: (),
-    <span class="attribute">#[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     #[serde(default)]
     </span><span class="kw">pub </span>ending_reason: (),
     <span class="doccomment">/// Server time epoch in milliseconds when hype train ends
@@ -2161,7 +2161,7 @@
 }
 
 <span class="doccomment">/// Hype train ended
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainEnd {
@@ -2172,13 +2172,13 @@
 }
 
 <span class="doccomment">/// Hype train cooldown expired
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainCooldownExpiration {}
 
 <span class="doccomment">/// Hype train conductor updated
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainConductorUpdate {
@@ -2191,7 +2191,7 @@
 }
 
 <span class="doccomment">/// Hype train progression. Akin to [Participations]
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainProgression {
@@ -2218,7 +2218,7 @@
 }
 
 <span class="doccomment">/// Hype train leveled up
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainLevelUp {
@@ -2229,7 +2229,7 @@
 }
 
 <span class="doccomment">/// Hype train is approaching
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainApproaching {
@@ -2237,7 +2237,7 @@
     </span><span class="doccomment">/// ID of channel where hype-train was initiated
     </span><span class="kw">pub </span>channel_id: <span class="prelude-ty">Option</span>&lt;types::UserId&gt;,
     <span class="doccomment">/// Creator color
-    </span><span class="attribute">#[serde(
+    </span><span class="attr">#[serde(
         default,
         deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
     </span>)]
@@ -2257,43 +2257,43 @@
 }
 
 <span class="doccomment">/// Reply from [HypeTrainEventsV1] or [HypeTrainEventsV1Rewards]
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[serde(tag = <span class="string">&quot;type&quot;</span>, content = <span class="string">&quot;data&quot;</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>HypeTrainEventsV1Reply {
     <span class="doccomment">/// Hype train rewards
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;hype-train-rewards&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-rewards&quot;</span>)]
     </span>HypeTrainRewards(HypeTrainRewards),
     <span class="doccomment">/// Hype train started in channel
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;hype-train-start&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-start&quot;</span>)]
     </span>HypeTrainStart(HypeTrainStart),
     <span class="doccomment">/// Hype train ended
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;hype-train-end&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-end&quot;</span>)]
     </span>HypeTrainEnd(HypeTrainEnd),
     <span class="doccomment">/// Hype train cooldown expired
     ///
     /// # Note
     ///
     /// There is no data associated with this event.
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;hype-train-cooldown-expiration&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-cooldown-expiration&quot;</span>)]
     </span>HypeTrainCooldownExpiration(<span class="prelude-ty">Option</span>&lt;HypeTrainCooldownExpiration&gt;),
     <span class="doccomment">/// Hype train conductor updated
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;hype-train-conductor-update&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-conductor-update&quot;</span>)]
     </span>HypeTrainConductorUpdate(HypeTrainConductorUpdate),
     <span class="doccomment">/// Hype train progression. Akin to [Participations]
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;hype-train-progression&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-progression&quot;</span>)]
     </span>HypeTrainProgression(HypeTrainProgression),
     <span class="doccomment">/// Hype train leveled up
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;hype-train-level-up&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-level-up&quot;</span>)]
     </span>HypeTrainLevelUp(HypeTrainLevelUp),
     <span class="doccomment">/// Hype train is approaching
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;hype-train-approaching&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-approaching&quot;</span>)]
     </span>HypeTrainApproaching(HypeTrainApproaching),
 }
 
 <span class="doccomment">/// Configuration of hype train
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Config {
@@ -2312,12 +2312,12 @@
     </span><span class="kw">pub </span>difficulty: HypeTrainDifficulty,
     <span class="doccomment">/// Difficulty settings
     </span><span class="kw">pub </span>difficulty_settings: std::collections::HashMap&lt;HypeTrainDifficulty, Vec&lt;Level&gt;&gt;,
-    <span class="attribute">#[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     #[serde(default = <span class="string">&quot;bool_true&quot;</span>)]
     </span><span class="kw">pub </span>has_conductor_badges: bool,
     <span class="doccomment">/// Whether or not Hype Train is enabled in channel
     </span><span class="kw">pub </span>is_enabled: bool,
-    <span class="attribute">#[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     </span><span class="kw">pub </span>is_whitelisted: bool,
     <span class="doccomment">/// Support events that must occur within a duration of time to kick off a Hype Train.
     </span><span class="kw">pub </span>kickoff: Kickoff,
@@ -2327,7 +2327,7 @@
     </span><span class="kw">pub </span>notification_thresholds: NotificationThresholds,
     <span class="doccomment">/// Conversion rates for participations
     </span><span class="kw">pub </span>participation_conversion_rates: ParticipationConversionRates,
-    <span class="attribute">#[doc(hidden)]
+    <span class="attr">#[doc(hidden)]
     </span><span class="kw">pub </span>reward_end_date: (),
     <span class="doccomment">/// Theme color of channel
     ///
@@ -2345,33 +2345,33 @@
 }
 
 <span class="doccomment">/// Difficulty of Hype Train
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>HypeTrainDifficulty {
     <span class="doccomment">/// Easy difficulty
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;EASY&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;EASY&quot;</span>)]
     </span>Easy,
     <span class="doccomment">/// Medium difficulty
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;MEDIUM&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;MEDIUM&quot;</span>)]
     </span>Medium,
     <span class="doccomment">/// Hard difficulty
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;HARD&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;HARD&quot;</span>)]
     </span>Hard,
     <span class="doccomment">/// Super Hard difficulty
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUPER HARD&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUPER HARD&quot;</span>)]
     </span>SuperHard,
     <span class="doccomment">/// Insane difficulty
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;INSANE&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;INSANE&quot;</span>)]
     </span>Insane,
 }
 
 <span class="doccomment">/// How many support events needed to start Hype Train
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Kickoff {
     <span class="doccomment">/// Period in nanoseconds that events must occur
-    </span><span class="attribute">#[serde(default)]
+    </span><span class="attr">#[serde(default)]
     </span><span class="kw">pub </span>duration: i64,
     <span class="doccomment">/// Minimum participation points needed to kickoff hypetrain
     </span><span class="kw">pub </span>min_points: i64,
@@ -2380,178 +2380,178 @@
 }
 
 <span class="doccomment">/// Conversion table of event to participation points
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ParticipationConversionRates {
     <span class="doccomment">/// Bits
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BITS.CHEER&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.CHEER&quot;</span>)]
     </span><span class="kw">pub </span>bits_cheer: i64,
     <span class="doccomment">/// Bits by extension
     ///
     /// # Notes
     ///
     /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BITS.EXTENSION&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.EXTENSION&quot;</span>)]
     </span><span class="kw">pub </span>bits_extension: i64,
     <span class="doccomment">/// Bits by poll
     ///
     /// # Notes
     ///
     /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BITS.POLL&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.POLL&quot;</span>)]
     </span><span class="kw">pub </span>bits_poll: i64,
     <span class="doccomment">/// Tier 1 gifted subs
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_GIFTED_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_1_gifted_sub: i64,
     <span class="doccomment">/// Tier 1 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_1_sub: i64,
     <span class="doccomment">/// Tier 2 gifted subs
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_GIFTED_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_2_gifted_sub: i64,
     <span class="doccomment">/// Tier 2 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_2_sub: i64,
     <span class="doccomment">/// Tier 3 gifted subs
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_GIFTED_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_3_gifted_sub: i64,
     <span class="doccomment">/// Tier 3 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_3_sub: i64,
 }
 
 <span class="doccomment">/// Thresholds for notifications
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>NotificationThresholds {
     <span class="doccomment">/// Bits
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BITS.CHEER&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.CHEER&quot;</span>)]
     </span><span class="kw">pub </span>bits_cheer: i64,
     <span class="doccomment">/// Bits by extension
     ///
     /// # Notes
     ///
     /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BITS.EXTENSION&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.EXTENSION&quot;</span>)]
     </span><span class="kw">pub </span>bits_extension: i64,
     <span class="doccomment">/// Bits by poll
     ///
     /// # Notes
     ///
     /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BITS.POLL&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.POLL&quot;</span>)]
     </span><span class="kw">pub </span>bits_poll: i64,
     <span class="doccomment">/// Tier 1 gifted subs
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_GIFTED_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_1_gifted_sub: i64,
     <span class="doccomment">/// Tier 1 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_1_sub: i64,
     <span class="doccomment">/// Tier 2 gifted subs
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_GIFTED_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_2_gifted_sub: i64,
     <span class="doccomment">/// Tier 2 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_2_sub: i64,
     <span class="doccomment">/// Tier 3 gifted subs
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_GIFTED_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_3_gifted_sub: i64,
     <span class="doccomment">/// Tier 3 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_3_sub: i64,
 }
 
 <span class="doccomment">/// Reward given to conductors
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ConductorRewards {
     <span class="doccomment">/// Reward to conductor of bits
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BITS&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS&quot;</span>)]
     </span><span class="kw">pub </span>bits: BitsRewards,
     <span class="doccomment">/// Reward to conductor of subscriptions
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS&quot;</span>)]
     </span><span class="kw">pub </span>subs: SubsRewards,
 }
 
 <span class="doccomment">/// Rewards
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>BitsRewards {
     <span class="doccomment">/// Rewards to bits conductor
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;CURRENT&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;CURRENT&quot;</span>)]
     </span><span class="kw">pub </span>current: Vec&lt;Reward&gt;,
     <span class="doccomment">/// Rewards to former bits conductor
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;FORMER&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;FORMER&quot;</span>)]
     </span><span class="kw">pub </span>former: Vec&lt;Reward&gt;,
 }
 
 <span class="doccomment">/// Rewards
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SubsRewards {
     <span class="doccomment">/// Rewards to subscriptions conductor
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;CURRENT&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;CURRENT&quot;</span>)]
     </span><span class="kw">pub </span>current: Vec&lt;Reward&gt;,
     <span class="doccomment">/// Rewards to former subscriptions conductor
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;FORMER&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;FORMER&quot;</span>)]
     </span><span class="kw">pub </span>former: Vec&lt;Reward&gt;,
 }
 
 <span class="doccomment">/// Participations in hype train
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Participations {
     <span class="doccomment">/// Bits
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BITS.CHEER&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.CHEER&quot;</span>)]
     </span><span class="kw">pub </span>bits_cheer: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Bits by extension
     ///
     /// # Notes
     ///
     /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BITS.EXTENSION&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.EXTENSION&quot;</span>)]
     </span><span class="kw">pub </span>bits_extension: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Bits by poll
     ///
     /// # Notes
     ///
     /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BITS.POLL&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.POLL&quot;</span>)]
     </span><span class="kw">pub </span>bits_poll: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 1 gifted subs
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_GIFTED_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_1_gifted_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 1 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_1_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 2 gifted subs
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_GIFTED_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_2_gifted_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 2 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_2_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 3 gifted subs
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_GIFTED_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_3_gifted_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 3 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_SUB&quot;</span>)]
     </span><span class="kw">pub </span>subs_tier_3_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
 }
 
 <span class="doccomment">/// Unknown
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Conductors {}
 
 <span class="doccomment">/// Progress of hype train
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainProgress {
@@ -2560,7 +2560,7 @@
     <span class="doccomment">/// Current level
     </span><span class="kw">pub </span>level: Level,
     <span class="doccomment">/// Time left
-    </span><span class="attribute">#[serde(default)]
+    </span><span class="attr">#[serde(default)]
     </span><span class="kw">pub </span>remaining_seconds: i64,
     <span class="doccomment">/// Current amassed participation points in this level
     </span><span class="kw">pub </span>total: i64,
@@ -2569,7 +2569,7 @@
 }
 
 <span class="doccomment">/// Description of a hype-train level
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Level {
@@ -2583,13 +2583,13 @@
 }
 
 <span class="doccomment">/// A reward
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[serde(tag = <span class="string">&quot;type&quot;</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Reward {
     <span class="doccomment">/// Reward is a emote
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;EMOTE&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;EMOTE&quot;</span>)]
     </span>Emote {
         <span class="doccomment">/// Group ID of emote
         </span>group_id: String,
@@ -2604,7 +2604,7 @@
         </span>set_id: <span class="prelude-ty">Option</span>&lt;types::EmoteSetId&gt;,
     },
     <span class="doccomment">/// Reward is a badge
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;BADGE&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;BADGE&quot;</span>)]
     </span>Badge {
         <span class="comment">// FIXME: Is this the same as in get chat badges?
         </span><span class="doccomment">/// ID of badge
@@ -2623,7 +2623,7 @@
 
 <span class="comment">// FIXME: intradoclink to helix
 </span><span class="doccomment">/// Source type, same as helix hype-train events type
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
 </span><span class="kw">pub enum </span>SourceType {
     <span class="doccomment">/// Bits
@@ -2634,33 +2634,33 @@
 
 <span class="doccomment">/// The specific action that was used
 </span><span class="comment">// FIXME: Might be the same as channel_bits::BitsContext or channel_cheer::TriggerType
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
 </span><span class="kw">pub enum </span>ActionType {
     <span class="doccomment">/// A cheer
     </span>Cheer,
     <span class="doccomment">/// Tier 1 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;TIER_1_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_1_SUB&quot;</span>)]
     </span>Tier1,
     <span class="doccomment">/// Tier 2 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;TIER_2_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_2_SUB&quot;</span>)]
     </span>Tier2,
     <span class="doccomment">/// Tier 3 sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;TIER_3_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_3_SUB&quot;</span>)]
     </span>Tier3,
     <span class="doccomment">/// Tier 1 gifted sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;TIER_1_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_1_GIFTED_SUB&quot;</span>)]
     </span>Tier1GiftedSub,
     <span class="doccomment">/// Tier 2 gifted sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;TIER_2_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_2_GIFTED_SUB&quot;</span>)]
     </span>Tier2GiftedSub,
     <span class="doccomment">/// Tier 3 gifted sub
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;TIER_3_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_3_GIFTED_SUB&quot;</span>)]
     </span>Tier3GiftedSub,
 }
 
 <span class="doccomment">/// Reason hype-train ended
-</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
 </span><span class="kw">pub enum </span>EndingReason {
     <span class="doccomment">/// Hype train was completed
@@ -2671,12 +2671,12 @@
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>bool_true() -&gt; bool { <span class="bool-val">true </span>}
 
-<span class="attribute">#[cfg(test)]
+<span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
     <span class="kw">use </span><span class="kw">super</span>::<span class="kw">super</span>::{Response, TopicData};
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_start1() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -3084,7 +3084,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_start2() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -3486,7 +3486,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_conductor_update() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -3520,7 +3520,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_progression1() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -3602,7 +3602,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_progression2() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -3693,7 +3693,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_level_up() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -3768,7 +3768,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_end_completed() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -3793,7 +3793,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_end_expired() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -3818,7 +3818,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_rewards() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -3851,7 +3851,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_redeemed_settings() {
         <span class="kw">let </span>message = <span class="string">r##&quot;
 {
@@ -4067,7 +4067,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_cooldown() {
         <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;hype-train-events-v1.233300375&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;hype-train-cooldown-expiration\&quot;}&quot;}}&quot;#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
@@ -4079,7 +4079,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_approaching() {
         <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;hype-train-events-v1.1337&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;hype-train-approaching\&quot;,\&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;1337\&quot;,\&quot;goal\&quot;:3,\&quot;events_remaining_durations\&quot;:{\&quot;1\&quot;:47},\&quot;level_one_rewards\&quot;:[{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_6d27dcab0df7442b88260a25d60bd807\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypeCozy1\&quot;},{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_e7a6e7e24a844e709c4d93c0845422e1\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypeLUL\&quot;},{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_e2a11d74a4824cbf9a8b28079e5e67dd\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypeCool\&quot;},{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_036fd741be4141198999b2ca4300668e\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypeLove1\&quot;},{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_3114c3d12dc44f53810140f632128b54\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypeSleep\&quot;},{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_7d457ecda087479f98501f80e23b5a04\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypePat\&quot;}],\&quot;creator_color\&quot;:\&quot;5247FF\&quot;,\&quot;participants\&quot;:[\&quot;123\&quot;,\&quot;1234\&quot;],\&quot;approaching_hype_train_id\&quot;:\&quot;1d76561e-a477-4418-a43c-6e8f0441f8c1\&quot;}}&quot;}}&quot;#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
@@ -4091,7 +4091,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_conductor() {
         <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;hype-train-events-v1.159498717&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;hype-train-conductor-update\&quot;,\&quot;data\&quot;:{\&quot;source\&quot;:\&quot;SUBS\&quot;,\&quot;user\&quot;:{\&quot;id\&quot;:\&quot;478358701\&quot;,\&quot;login\&quot;:\&quot;darkscarlatti\&quot;,\&quot;display_name\&quot;:\&quot;DarkScarlatti\&quot;,\&quot;profile_image_url\&quot;:\&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/b332ddad-b1a6-42b2-ab03-ef157ab89f1c-profile_image-50x50.png\&quot;},\&quot;participations\&quot;:{\&quot;SUBS.TIER_3_SUB\&quot;:1}}}&quot;}}&quot;#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
@@ -4103,7 +4103,7 @@
         ));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
         <span class="kw">let </span>s = <span class="string">&quot;hype-train-events-v1.1234&quot;</span>;
@@ -4118,7 +4118,7 @@
         );
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
         <span class="kw">let </span>s = <span class="string">&quot;hype-train-events-v1.1234&quot;</span>;
         <span class="kw">let </span>right: String = HypeTrainEventsV1 { channel_id: <span class="number">1234 </span>}.into();
@@ -4129,4 +4129,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (95a3a7277 2022-10-31)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (73c9eaf21 2022-11-07)" data-search-js="search-39ee4160c7dc16c9.js" data-settings-js="settings-3a0b9947ba1bd99a.js" data-settings-css="settings-a66f7524084a489a.css" ></div></body></html>

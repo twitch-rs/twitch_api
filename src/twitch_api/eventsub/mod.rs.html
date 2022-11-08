@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><script defer src="../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ef244fc9943488f7.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-c11f492748536797.css"><link rel="stylesheet" disabled href="../../../static.files/dark-a78f946771c40031.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-70b683d68cb31790.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-74087aa2e88f4475.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0dede64717b247ca.js"></script><script defer src="../../../scrape-examples-1f45318ad6bd2a81.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-201a7e04dc4c6fce.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -701,7 +701,7 @@
 <span class="kw">pub mod </span>stream;
 <span class="kw">pub mod </span>user;
 
-<span class="attribute">#[doc(inline)]
+<span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>event::{Event, EventType};
 
 <span class="doccomment">/// An EventSub subscription.
@@ -710,10 +710,10 @@
     </span><span class="kw">type </span>Payload: PartialEq + std::fmt::Debug + DeserializeOwned + Serialize + Clone;
 
     <span class="doccomment">/// Scopes needed by this subscription
-    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope];
     <span class="doccomment">/// Optional scopes needed by this subscription
-    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
     </span><span class="kw">const </span>OPT_SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
     <span class="doccomment">/// Subscription type version
     </span><span class="kw">const </span>VERSION: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str;
@@ -727,7 +727,7 @@
 }
 
 <span class="doccomment">/// Verification Request
-</span><span class="attribute">#[derive(PartialEq, Eq, Debug, Serialize, Deserialize, Clone)]
+</span><span class="attr">#[derive(PartialEq, Eq, Debug, Serialize, Deserialize, Clone)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>VerificationRequest {
@@ -741,7 +741,7 @@
 <span class="doccomment">/// Subscription message/payload. Received on events and other messages.
 ///
 /// Use [`Event::parse_http`] to construct
-</span><span class="attribute">#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
+</span><span class="attr">#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 #[allow(clippy::large_enum_variant)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Message&lt;E: EventSubscription + Clone&gt; {
@@ -750,7 +750,7 @@
     <span class="doccomment">/// A [subscription revocation](https://dev.twitch.tv/docs/eventsub#subscription-revocation)
     </span>Revocation(),
     <span class="doccomment">/// A notification holding some event data.
-    </span><span class="attribute">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+    </span><span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
     </span>Notification(&lt;E <span class="kw">as </span>EventSubscription&gt;::Payload),
 }
 
@@ -779,12 +779,12 @@
 
     <span class="doccomment">/// Parse string slice as a [`Payload`] with a message of [`Message::Notification`].
     </span><span class="kw">pub fn </span>parse_notification(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
-        <span class="attribute">#[derive(Deserialize)]
+        <span class="attr">#[derive(Deserialize)]
         #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
         </span><span class="kw">struct </span>Notification&lt;E: EventSubscription&gt; {
-            <span class="attribute">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+            <span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
             </span><span class="kw">pub </span>subscription: EventSubscriptionInformation&lt;E&gt;,
-            <span class="attribute">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+            <span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
             </span><span class="kw">pub </span>event: &lt;E <span class="kw">as </span>EventSubscription&gt;::Payload,
         }
 
@@ -801,10 +801,10 @@
 
     <span class="doccomment">/// Parse string slice as a [`Payload`] with a message of [`Message::Revocation`].
     </span><span class="kw">pub fn </span>parse_revocation(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
-        <span class="attribute">#[derive(Deserialize)]
+        <span class="attr">#[derive(Deserialize)]
         #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
         </span><span class="kw">struct </span>Notification&lt;E: EventSubscription&gt; {
-            <span class="attribute">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+            <span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
             </span><span class="kw">pub </span>subscription: EventSubscriptionInformation&lt;E&gt;,
         }
 
@@ -818,12 +818,12 @@
 
     <span class="doccomment">/// Parse string slice as a [`Payload`] with a message of [`Message::VerificationRequest`].
     </span><span class="kw">pub fn </span>parse_verification_request(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
-        <span class="attribute">#[derive(Deserialize)]
+        <span class="attr">#[derive(Deserialize)]
         #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
         </span><span class="kw">struct </span>Notification&lt;E: EventSubscription&gt; {
-            <span class="attribute">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+            <span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
             </span><span class="kw">pub </span>subscription: EventSubscriptionInformation&lt;E&gt;,
-            <span class="attribute">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+            <span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
             </span><span class="kw">pub </span>challenge: String,
         }
 
@@ -871,7 +871,7 @@
     }
 
     <span class="doccomment">/// Parse a string slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or [`Payload::parse`].
-    </span><span class="attribute">#[doc(hidden)]
+    </span><span class="attr">#[doc(hidden)]
     </span><span class="kw">pub fn </span>parse_request&lt;<span class="lifetime">&#39;a</span>&gt;(
         ty: Cow&lt;<span class="lifetime">&#39;a</span>, [u8]&gt;,
         source: Cow&lt;<span class="lifetime">&#39;a</span>, [u8]&gt;,
@@ -889,12 +889,12 @@
 }
 
 <span class="doccomment">/// Errors that can happen when parsing payload
-</span><span class="attribute">#[derive(thiserror::Error, displaydoc::Display, Debug)]
+</span><span class="attr">#[derive(thiserror::Error, displaydoc::Display, Debug)]
 </span><span class="kw">pub enum </span>PayloadParseError {
     <span class="doccomment">/// could not parse [`http::Request::body()`] as UTF8
-    </span>Utf8Error(<span class="attribute">#[from] </span>std::str::Utf8Error),
+    </span>Utf8Error(<span class="attr">#[from] </span>std::str::Utf8Error),
     <span class="doccomment">/// could not parse [`http::Request::body()`] as a [`Payload`]
-    </span>DeserializeError(<span class="attribute">#[from] </span><span class="kw">crate</span>::DeserError),
+    </span>DeserializeError(<span class="attr">#[from] </span><span class="kw">crate</span>::DeserError),
     <span class="doccomment">/// unknown message type encountered: {0}
     </span>UnknownMessageType(String),
     <span class="doccomment">/// unknown event type encountered: {0}
@@ -911,15 +911,15 @@
 }
 
 <span class="doccomment">/// Notification received
-</span><span class="attribute">#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
+</span><span class="attr">#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Payload&lt;E: EventSubscription + Clone&gt; {
     <span class="doccomment">/// Subscription information.
-    </span><span class="attribute">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+    </span><span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
     </span><span class="kw">pub </span>subscription: EventSubscriptionInformation&lt;E&gt;,
     <span class="doccomment">/// Event information.
-    </span><span class="attribute">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+    </span><span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
     </span><span class="kw">pub </span>message: Message&lt;E&gt;,
 }
 
@@ -932,7 +932,7 @@
 }
 
 <span class="doccomment">/// Metadata about the subscription.
-</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>EventSubscriptionInformation&lt;E: EventSubscription&gt; {
@@ -943,21 +943,21 @@
     <span class="doccomment">/// How much the subscription counts against your limit.
     </span><span class="kw">pub </span>cost: usize,
     <span class="doccomment">/// Subscription-specific parameters.
-    </span><span class="attribute">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+    </span><span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
     </span><span class="kw">pub </span>condition: E,
     <span class="doccomment">/// The time the notification was created.
     </span><span class="kw">pub </span>created_at: types::Timestamp,
     <span class="doccomment">/// Transport method
     </span><span class="kw">pub </span>transport: TransportResponse,
     <span class="doccomment">/// Event type. Consider using [`E::EVENT_TYPE`](EventSubscription::EVENT_TYPE) instead.
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
     </span><span class="kw">pub </span>type_: EventType,
     <span class="doccomment">/// Event version. Consider using [`E::VERSION`](EventSubscription::VERSION) instead.
     </span><span class="kw">pub </span>version: String,
 }
 
 <span class="doccomment">/// Transport setting for event notification
-</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -988,7 +988,7 @@
 <span class="doccomment">/// Transport response on event notification
 ///
 /// Does not include secret.
-</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>TransportResponse {
@@ -1001,7 +1001,7 @@
 <span class="doccomment">/// Transport method
 ///
 /// Currently, only webhooks are supported
-</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 #[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
 </span><span class="kw">pub enum </span>TransportMethod {
@@ -1010,7 +1010,7 @@
 }
 
 <span class="doccomment">///  Subscription request status
-</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 #[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)] </span><span class="comment">// FIXME: Most examples use kebab-case... but reality seems to be snake_case
 </span><span class="kw">pub enum </span>Status {
@@ -1031,7 +1031,7 @@
 <span class="doccomment">/// General information about an EventSub subscription.
 ///
 /// See also [`EventSubscriptionInformation`]
-</span><span class="attribute">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+</span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
 #[cfg(feature = <span class="string">&quot;eventsub&quot;</span>)]
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;eventsub&quot;</span>)))]
@@ -1050,20 +1050,20 @@
     <span class="doccomment">/// Notification delivery specific information. Includes the transport method and callback URL.
     </span><span class="kw">pub </span>transport: TransportResponse,
     <span class="doccomment">/// The category of the subscription.
-    </span><span class="attribute">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
     </span><span class="kw">pub </span>type_: EventType,
     <span class="doccomment">/// The version of the subscription.
     </span><span class="kw">pub </span>version: String,
 }
 
-<span class="attribute">#[cfg(test)]
+<span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>test {
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>test_verification_response() {
         <span class="kw">use </span>http::header::{HeaderMap, HeaderName, HeaderValue};
 
-        <span class="attribute">#[rustfmt::skip]
+        <span class="attr">#[rustfmt::skip]
         </span><span class="kw">let </span>headers: HeaderMap = <span class="macro">vec!</span>[
             (<span class="string">&quot;Twitch-Eventsub-Message-Id&quot;</span>, <span class="string">&quot;e76c6bd4-55c9-4987-8304-da1588d8988b&quot;</span>),
             (<span class="string">&quot;Twitch-Eventsub-Message-Retry&quot;</span>, <span class="string">&quot;0&quot;</span>),
@@ -1111,11 +1111,11 @@
         <span class="kw">crate</span>::tests::roundtrip(<span class="kw-2">&amp;</span>payload)
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>test_revoke() {
         <span class="kw">use </span>http::header::{HeaderMap, HeaderName, HeaderValue};
 
-        <span class="attribute">#[rustfmt::skip]
+        <span class="attr">#[rustfmt::skip]
         </span><span class="kw">let </span>headers: HeaderMap = <span class="macro">vec!</span>[
             (<span class="string">&quot;Content-Length&quot;</span>, <span class="string">&quot;458&quot;</span>),
             (<span class="string">&quot;Twitch-Eventsub-Message-Id&quot;</span>, <span class="string">&quot;84c1e79a-2a4b-4c13-ba0b-4312293e9308&quot;</span>),
@@ -1145,13 +1145,13 @@
         .unwrap());
         <span class="kw">crate</span>::tests::roundtrip(<span class="kw-2">&amp;</span>payload)
     }
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     #[cfg(feature = <span class="string">&quot;hmac&quot;</span>)]
     </span><span class="kw">fn </span>verify_request() {
         <span class="kw">use </span>http::header::{HeaderMap, HeaderName, HeaderValue};
 
         <span class="kw">let </span>secret = <span class="string">b&quot;secretabcd&quot;</span>;
-        <span class="attribute">#[rustfmt::skip]
+        <span class="attr">#[rustfmt::skip]
     </span><span class="kw">let </span>headers: HeaderMap = <span class="macro">vec!</span>[
         (<span class="string">&quot;Content-Length&quot;</span>, <span class="string">&quot;458&quot;</span>),
         (<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>),
@@ -1179,13 +1179,13 @@
         <span class="macro">assert!</span>(<span class="kw">crate</span>::eventsub::Event::verify_payload(<span class="kw-2">&amp;</span>request, secret));
     }
 
-    <span class="attribute">#[test]
+    <span class="attr">#[test]
     #[cfg(feature = <span class="string">&quot;hmac&quot;</span>)]
     </span><span class="kw">fn </span>verify_request_challenge() {
         <span class="kw">use </span>http::header::{HeaderMap, HeaderName, HeaderValue};
 
         <span class="kw">let </span>secret = <span class="string">b&quot;HELLOabc2321&quot;</span>;
-        <span class="attribute">#[rustfmt::skip]
+        <span class="attr">#[rustfmt::skip]
         </span><span class="kw">let </span>headers: HeaderMap = <span class="macro">vec!</span>[
             (<span class="string">&quot;Twitch-Eventsub-Message-Id&quot;</span>, <span class="string">&quot;8d8fa82b-9792-79da-4e11-a6fa58a7a582&quot;</span>),
             (<span class="string">&quot;Twitch-Eventsub-Message-Retry&quot;</span>, <span class="string">&quot;0&quot;</span>),
@@ -1213,4 +1213,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="twitch_api" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (95a3a7277 2022-10-31)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (73c9eaf21 2022-11-07)" data-search-js="search-39ee4160c7dc16c9.js" data-settings-js="settings-3a0b9947ba1bd99a.js" data-settings-css="settings-a66f7524084a489a.css" ></div></body></html>
