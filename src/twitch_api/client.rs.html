@@ -367,6 +367,10 @@
 <span id="367">367</span>
 <span id="368">368</span>
 <span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Different clients you can use with this crate to call endpoints.
 //!
 //! This enables you to use your own http client/implementation.
@@ -454,8 +458,12 @@
 </span><span class="kw">pub use </span>reqwest_impl::ReqwestClientDefaultError;
 
 <span class="doccomment">/// The User-Agent `product` of this crate.
-</span><span class="kw">pub static </span>TWITCH_API_USER_AGENT: <span class="kw-2">&amp;</span>str =
-    <span class="macro">concat!</span>(<span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>), <span class="string">&quot;/&quot;</span>, <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>),);
+</span><span class="kw">pub static </span>TWITCH_API_USER_AGENT: <span class="kw-2">&amp;</span>str = <span class="macro">concat!</span>(
+    <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>),
+    <span class="string">&quot;/&quot;</span>,
+    <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>),
+    <span class="string">&quot; (+https://github.com/twitch-rs)&quot;
+</span>);
 
 <span class="doccomment">/// A boxed future, mimics `futures::future::BoxFuture`
 </span><span class="kw">pub type </span>BoxedFuture&lt;<span class="lifetime">&#39;a</span>, T&gt; = std::pin::Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = T&gt; + Send + <span class="lifetime">&#39;a</span>&gt;&gt;;
@@ -555,7 +563,7 @@
     ///
     /// Specifically, one should
     ///
-    /// * Set User-Agent to `{product} twitch_api/{version_of_twitch_api}` (According to RFC7231)
+    /// * Set User-Agent to `{product} twitch_api/{version_of_twitch_api} (+https://github.com/twitch-rs)` (According to RFC7231)
     ///   See [`TWITCH_API_USER_AGENT`] for the product of this crate
     /// * Disallow redirects
     ///
