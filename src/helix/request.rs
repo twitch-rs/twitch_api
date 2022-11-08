@@ -54,7 +54,7 @@ pub trait RequestPost: Request {
         let uri = self.get_uri()?;
 
         let body = body.try_to_body()?;
-        eprintln!("\n\nbody is ------------ {:?} ------------", body);
+        //eprintln!("\n\nbody is ------------ {:?} ------------", body);
 
         let mut bearer =
             http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
