@@ -85,8 +85,12 @@ mod reqwest_impl;
 pub use reqwest_impl::ReqwestClientDefaultError;
 
 /// The User-Agent `product` of this crate.
-pub static TWITCH_API_USER_AGENT: &str =
-    concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"),);
+pub static TWITCH_API_USER_AGENT: &str = concat!(
+    env!("CARGO_PKG_NAME"),
+    "/",
+    env!("CARGO_PKG_VERSION"),
+    " (+https://github.com/twitch-rs)"
+);
 
 /// A boxed future, mimics `futures::future::BoxFuture`
 pub type BoxedFuture<'a, T> = std::pin::Pin<Box<dyn Future<Output = T> + Send + 'a>>;
@@ -186,7 +190,7 @@ pub trait ClientDefault<'a>: Clone + Sized {
     ///
     /// Specifically, one should
     ///
-    /// * Set User-Agent to `{product} twitch_api/{version_of_twitch_api}` (According to RFC7231)
+    /// * Set User-Agent to `{product} twitch_api/{version_of_twitch_api} (+https://github.com/twitch-rs)` (According to RFC7231)
     ///   See [`TWITCH_API_USER_AGENT`] for the product of this crate
     /// * Disallow redirects
     ///
