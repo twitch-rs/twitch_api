@@ -104,8 +104,12 @@ impl helix::Paginated for GetChattersRequest<'_> {
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Chatter {
-    /// The login name of a user that’s connected to the broadcaster’s chat room.
+    /// The ID of a user that’s connected to the broadcaster’s chat room.
+    pub user_id: types::UserId,
+    /// The user’s login name.
     pub user_login: types::UserName,
+    /// The user’s display name.
+    pub user_name: types::DisplayName,
 }
 
 impl Request for GetChattersRequest<'_> {
@@ -129,7 +133,9 @@ fn test_request() {
     let data = br#"
     {
         "data": [{
-                "user_login": "smittysmithers"
+                "user_id": "128393656",
+                "user_login": "smittysmithers",
+                "user_name": "smittysmithers"
             }],
         "pagination": {
             "cursor": "eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6NX19"
