@@ -114,14 +114,16 @@ fn test_request() {
 {
     "data": [
         {
-            "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-52x72.jpg",
             "id": "33214",
-            "name": "Fortnite"
+            "name": "Fortnite",
+            "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/33214-{width}x{height}.jpg",
+            "igdb_id": "1905"
         },
         {
-            "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-52x72.jpg",
             "id": "33214",
-            "name": "Fortnite"
+            "name": "Fortnite",
+            "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/33214-{width}x{height}.jpg",
+            "igdb_id": "1905"
         }
     ],
     "pagination": {
