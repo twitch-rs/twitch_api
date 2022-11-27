@@ -66,6 +66,15 @@ pub struct GetCustomRewardRedemptionRequest<'a> {
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub status: Option<CustomRewardRedemptionStatus>,
 
+    /// A list of IDs to filter the redemptions by.
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    pub id: Cow<'a, [&'a types::RedemptionIdRef]>,
+
+    /// The order to sort redemptions by.
+    #[cfg_attr(feature = "typed-builder", builder(default))]
+    pub sort: Option<GetCustomRewardRedemptionSortOrder>,
+
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries without ID. If an ID is specified, it supersedes any cursor/offset combinations. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
@@ -85,6 +94,8 @@ impl<'a> GetCustomRewardRedemptionRequest<'a> {
             status: Default::default(),
             after: Default::default(),
             first: Default::default(),
+            id: Default::default(),
+            sort: None,
         }
     }
 
@@ -102,6 +113,29 @@ impl<'a> GetCustomRewardRedemptionRequest<'a> {
         self.status = Some(status.into());
         self
     }
+
+    /// The order to sort redemptions by.
+    pub fn sort(mut self, sort: impl Into<GetCustomRewardRedemptionSortOrder>) -> Self {
+        self.sort = Some(sort.into());
+        self
+    }
+
+    /// Get redemptions with these ids
+    pub fn ids(mut self, id: impl Into<Cow<'a, [&'a types::RedemptionIdRef]>>) -> Self {
+        self.id = id.into();
+        self
+    }
+}
+
+/// The order to sort redemptions by.
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[serde(rename_all = "UPPERCASE")]
+#[non_exhaustive]
+pub enum GetCustomRewardRedemptionSortOrder {
+    /// Sort by oldest
+    Oldest,
+    /// Sort by newest
+    Newest,
 }
 
 /// Return Values for [Get Custom Reward Redemption](super::get_custom_reward_redemption)
