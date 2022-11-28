@@ -67,8 +67,7 @@ pub struct GetCustomRewardRedemptionRequest<'a> {
     pub status: Option<CustomRewardRedemptionStatus>,
 
     /// A list of IDs to filter the redemptions by.
-    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
     pub id: Cow<'a, [&'a types::RedemptionIdRef]>,
 
     /// The order to sort redemptions by.
