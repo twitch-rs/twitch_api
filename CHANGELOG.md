@@ -45,6 +45,7 @@
 - Added `Get VIPs`, `Add Channel VIP` and `Remove Channel VIP` endpoint
 - Added `Send Whisper` endpoint
 - Added `Delete Channel Stream Schedule Segment` that was accidentally not included in `0.6.0`
+- Added `sort` and `id` to `Get Custom Reward Redemption`
 
 ## [v0.6.1] - 2022-04-29
 
