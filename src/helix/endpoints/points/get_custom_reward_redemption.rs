@@ -67,6 +67,9 @@ pub struct GetCustomRewardRedemptionRequest<'a> {
     pub status: Option<CustomRewardRedemptionStatus>,
 
     /// A list of IDs to filter the redemptions by.
+    #[cfg_attr(feature = "typed-builder", builder(setter(into), default))]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
     pub id: Cow<'a, [&'a types::RedemptionIdRef]>,
 
