@@ -42,6 +42,24 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
             .map(|response| response.first())
     }
 
+    /// Get multiple [User](helix::users::User)s from user ids.
+    pub async fn get_users_from_ids<T>(
+        &'client self,
+        ids: impl AsRef<[&types::UserIdRef]>,
+        token: &T,
+    ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let ids = ids.as_ref();
+        if ids.len() > 100 {
+            return Err(ClientRequestError::Custom("too many IDs, max 100".into()));
+        }
+        self.req_get(helix::users::GetUsersRequest::ids(ids), token)
+            .await
+            .map(|response| response.first())
+    }
+
     /// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters login
     pub async fn get_channel_from_login<T>(
         &'client self,
@@ -59,20 +77,42 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
     }
 
     /// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters id
-    pub async fn get_channel_from_id<'b, T>(
+    pub async fn get_channel_from_id<T>(
         &'client self,
-        id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        id: impl Into<&types::UserIdRef>,
         token: &T,
     ) -> Result<Option<helix::channels::ChannelInformation>, ClientError<'client, C>>
     where
         T: TwitchToken + ?Sized,
     {
+        let ids: &[_] = &[id.into()];
         self.req_get(
-            helix::channels::GetChannelInformationRequest::broadcaster_id(id),
+            helix::channels::GetChannelInformationRequest::broadcaster_ids(ids),
             token,
         )
         .await
         .map(|response| response.first())
+    }
+
+    /// Get multiple [ChannelInformation](helix::channels::ChannelInformation) from broadcasters ids
+    pub async fn get_channels_from_ids<'b, T>(
+        &'client self,
+        ids: impl AsRef<[&types::UserIdRef]>,
+        token: &T,
+    ) -> Result<Vec<helix::channels::ChannelInformation>, ClientError<'client, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        let ids = ids.as_ref();
+        if ids.len() > 100 {
+            return Err(ClientRequestError::Custom("too many IDs, max 100".into()));
+        }
+        self.req_get(
+            helix::channels::GetChannelInformationRequest::broadcaster_ids(ids),
+            token,
+        )
+        .await
+        .map(|response| response.data)
     }
 
     /// Get chatters in a stream [Chatter][helix::chat::Chatter]
@@ -645,13 +685,14 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
     /// Get emotes in emote set
     pub async fn get_emote_sets<T>(
         &'client self,
-        emote_sets: &[&types::EmoteSetIdRef],
+        emote_sets: impl AsRef<[&types::EmoteSetIdRef]>,
         token: &T,
     ) -> Result<Vec<helix::chat::get_emote_sets::Emote>, ClientError<'client, C>>
     where
         T: TwitchToken + ?Sized,
     {
-        let req = helix::chat::GetEmoteSetsRequest::emote_set_ids(emote_sets.as_ref());
+        let emote_sets = emote_sets.as_ref();
+        let req = helix::chat::GetEmoteSetsRequest::emote_set_ids(emote_sets);
         Ok(self.req_get(req, token).await?.data)
     }
 
@@ -789,12 +830,16 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
     /// Get multiple users chat colors
     pub async fn get_users_chat_colors<T>(
         &'client self,
-        user_ids: &[&types::UserIdRef],
+        user_ids: impl AsRef<[&types::UserIdRef]>,
         token: &T,
     ) -> Result<Vec<helix::chat::UserChatColor>, ClientError<'client, C>>
     where
         T: TwitchToken + ?Sized,
     {
+        let user_ids = user_ids.as_ref();
+        if user_ids.len() > 100 {
+            return Err(ClientRequestError::Custom("too many IDs, max 100".into()));
+        }
         let req = helix::chat::GetUserChatColorRequest::user_ids(user_ids);
 
         Ok(self.req_get(req, token).await?.data)
@@ -965,6 +1010,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         only_managable_rewards: bool,
+        // FIXME: This should be `impl AsRef<[&'b T]> + 'b`
         ids: &'b [&'b types::RewardIdRef],
         token: &T,
     ) -> Result<Vec<helix::points::CustomReward>, ClientError<'client, C>>

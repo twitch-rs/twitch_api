@@ -5,11 +5,12 @@
 //!
 //! ## Request: [GetChannelInformationRequest]
 //!
-//! To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::broadcaster_id()`] or [`GetChannelInformationRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetChannelInformationRequest`] with the [`GetChannelInformationRequest::broadcaster_ids`] or [`GetChannelInformationRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::get_channel_information;
-//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_id("1234");
+//! let ids: &[&twitch_types::UserIdRef] = &["1234".into()];
+//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_ids(ids);
 //! ```
 //!
 //! ## Response: [ChannelInformation]
@@ -26,8 +27,9 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_id("1234");
-//! let response: Option<get_channel_information::ChannelInformation> = client.req_get(request, &token).await?.data;
+//! let ids: &[&twitch_types::UserIdRef] = &["1234".into()];
+//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_ids(ids);
+//! let response: Vec<get_channel_information::ChannelInformation> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -45,16 +47,25 @@ use helix::RequestGet;
 #[non_exhaustive]
 pub struct GetChannelInformationRequest<'a> {
     /// ID of the channel
-    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
-    pub broadcaster_id: Cow<'a, types::UserIdRef>,
+    // FIXME: This is essentially the same as borrow, but worse
+    #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
+    pub broadcaster_id: Cow<'a, [&'a types::UserIdRef]>,
 }
 
 impl<'a> GetChannelInformationRequest<'a> {
     /// Get channel information for a specific broadcaster.
-    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::get_channel_information;
+    /// let ids: &[&twitch_types::UserIdRef] = &["1234".into()];
+    /// let request = get_channel_information::GetChannelInformationRequest::broadcaster_ids(ids);
+    /// ```
+    pub fn broadcaster_ids(broadcaster_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_ids.into(),
         }
     }
 }
@@ -89,60 +100,34 @@ pub struct ChannelInformation {
 }
 
 impl Request for GetChannelInformationRequest<'_> {
-    type Response = Option<ChannelInformation>;
+    type Response = Vec<ChannelInformation>;
 
     const PATH: &'static str = "channels";
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChannelInformationRequest<'_> {
-    fn parse_inner_response(
-        request: Option<Self>,
-        uri: &http::Uri,
-        response: &str,
-        status: http::StatusCode,
-    ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestGetError>
-    where
-        Self: Sized,
-    {
-        let response: helix::InnerResponse<Vec<ChannelInformation>> =
-            helix::parse_json(response, true).map_err(|e| {
-                helix::HelixRequestGetError::DeserializeError(
-                    response.to_string(),
-                    e,
-                    uri.clone(),
-                    status,
-                )
-            })?;
-        Ok(helix::Response {
-            data: response.data.into_iter().next(),
-            pagination: response.pagination.cursor,
-            request,
-            total: None,
-            other: None,
-        })
-    }
-}
+impl RequestGet for GetChannelInformationRequest<'_> {}
 
 #[cfg(test)]
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetChannelInformationRequest::broadcaster_id("44445592");
+    let ids: &[&types::UserIdRef] = &["141981764".into()];
+    let req = GetChannelInformationRequest::broadcaster_ids(ids);
 
     // From twitch docs
     let data = br#"
         {
           "data": [
             {
-              "broadcaster_id": "44445592",
-              "broadcaster_name": "pokimane",
-              "broadcaster_login": "pokimane",
+              "broadcaster_id": "141981764",
+              "broadcaster_login": "twitchdev",
+              "broadcaster_name": "TwitchDev",
               "broadcaster_language": "en",
-              "game_id": "21779",
-              "game_name": "League of Legends",
-              "title": "title",
+              "game_id": "509670",
+              "game_name": "Science & Technology",
+              "title": "TwitchDev Monthly Update // May 6, 2021",
               "delay": 0
             }
           ]
@@ -155,7 +140,7 @@ fn test_request() {
     let uri = req.get_uri().unwrap();
     assert_eq!(
         uri.to_string(),
-        "https://api.twitch.tv/helix/channels?broadcaster_id=44445592"
+        "https://api.twitch.tv/helix/channels?broadcaster_id=141981764"
     );
 
     dbg!(GetChannelInformationRequest::parse_response(Some(req), &uri, http_response).unwrap());
