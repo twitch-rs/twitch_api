@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/client_ext.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client_ext.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-75894291877b32c0.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../static.files/light-3bcdcab5f4113412.css"><link rel="stylesheet" disabled href="../../../../static.files/dark-091ecdca18d5df85.css"><link rel="stylesheet" disabled href="../../../../static.files/ayu-45445754dcd01ab2.css"><script id="default-settings" ></script><script src="../../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../../static.files/source-script-5cf2e01a42cc9858.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-d2f7777684990013.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/client_ext.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client_ext.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-bc83104505b8ebd3.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../static.files/light-046227e470cd3629.css"><link rel="stylesheet" disabled href="../../../../static.files/dark-800f2ee593c8e6f7.css"><link rel="stylesheet" disabled href="../../../../static.files/ayu-9edae3c387f5a5b3.css"><script id="default-settings" ></script><script src="../../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../../static.files/source-script-5cf2e01a42cc9858.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-287cecec4dbb45b0.js"></script><script defer src="../../../../static.files/scrape-examples-1f45318ad6bd2a81.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1164,6 +1164,52 @@
 <a href="#1164" id="1164">1164</a>
 <a href="#1165" id="1165">1165</a>
 <a href="#1166" id="1166">1166</a>
+<a href="#1167" id="1167">1167</a>
+<a href="#1168" id="1168">1168</a>
+<a href="#1169" id="1169">1169</a>
+<a href="#1170" id="1170">1170</a>
+<a href="#1171" id="1171">1171</a>
+<a href="#1172" id="1172">1172</a>
+<a href="#1173" id="1173">1173</a>
+<a href="#1174" id="1174">1174</a>
+<a href="#1175" id="1175">1175</a>
+<a href="#1176" id="1176">1176</a>
+<a href="#1177" id="1177">1177</a>
+<a href="#1178" id="1178">1178</a>
+<a href="#1179" id="1179">1179</a>
+<a href="#1180" id="1180">1180</a>
+<a href="#1181" id="1181">1181</a>
+<a href="#1182" id="1182">1182</a>
+<a href="#1183" id="1183">1183</a>
+<a href="#1184" id="1184">1184</a>
+<a href="#1185" id="1185">1185</a>
+<a href="#1186" id="1186">1186</a>
+<a href="#1187" id="1187">1187</a>
+<a href="#1188" id="1188">1188</a>
+<a href="#1189" id="1189">1189</a>
+<a href="#1190" id="1190">1190</a>
+<a href="#1191" id="1191">1191</a>
+<a href="#1192" id="1192">1192</a>
+<a href="#1193" id="1193">1193</a>
+<a href="#1194" id="1194">1194</a>
+<a href="#1195" id="1195">1195</a>
+<a href="#1196" id="1196">1196</a>
+<a href="#1197" id="1197">1197</a>
+<a href="#1198" id="1198">1198</a>
+<a href="#1199" id="1199">1199</a>
+<a href="#1200" id="1200">1200</a>
+<a href="#1201" id="1201">1201</a>
+<a href="#1202" id="1202">1202</a>
+<a href="#1203" id="1203">1203</a>
+<a href="#1204" id="1204">1204</a>
+<a href="#1205" id="1205">1205</a>
+<a href="#1206" id="1206">1206</a>
+<a href="#1207" id="1207">1207</a>
+<a href="#1208" id="1208">1208</a>
+<a href="#1209" id="1209">1209</a>
+<a href="#1210" id="1210">1210</a>
+<a href="#1211" id="1211">1211</a>
+<a href="#1212" id="1212">1212</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]
 
 </span><span class="kw">use </span>std::borrow::Cow;
@@ -1208,6 +1254,24 @@
             </span>.map(|response| response.first())
     }
 
+    <span class="doccomment">/// Get multiple [User](helix::users::User)s from user ids.
+    </span><span class="kw">pub async fn </span>get_users_from_ids&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
+        ids: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::UserIdRef]&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::users::User&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
+    {
+        <span class="kw">let </span>ids = ids.as_ref();
+        <span class="kw">if </span>ids.len() &gt; <span class="number">100 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(ClientRequestError::Custom(<span class="string">&quot;too many IDs, max 100&quot;</span>.into()));
+        }
+        <span class="self">self</span>.req_get(helix::users::GetUsersRequest::ids(ids), token)
+            .<span class="kw">await
+            </span>.map(|response| response.first())
+    }
+
     <span class="doccomment">/// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters login
     </span><span class="kw">pub async fn </span>get_channel_from_login&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
@@ -1225,20 +1289,42 @@
     }
 
     <span class="doccomment">/// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters id
-    </span><span class="kw">pub async fn </span>get_channel_from_id&lt;<span class="lifetime">&#39;b</span>, T&gt;(
+    </span><span class="kw">pub async fn </span>get_channel_from_id&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
-        id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
+        id: <span class="kw">impl </span>Into&lt;<span class="kw-2">&amp;</span>types::UserIdRef&gt;,
         token: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::channels::ChannelInformation&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
+        <span class="kw">let </span>ids: <span class="kw-2">&amp;</span>[<span class="kw">_</span>] = <span class="kw-2">&amp;</span>[id.into()];
         <span class="self">self</span>.req_get(
-            helix::channels::GetChannelInformationRequest::broadcaster_id(id),
+            helix::channels::GetChannelInformationRequest::broadcaster_ids(ids),
             token,
         )
         .<span class="kw">await
         </span>.map(|response| response.first())
+    }
+
+    <span class="doccomment">/// Get multiple [ChannelInformation](helix::channels::ChannelInformation) from broadcasters ids
+    </span><span class="kw">pub async fn </span>get_channels_from_ids&lt;<span class="lifetime">&#39;b</span>, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
+        ids: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::UserIdRef]&gt;,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::channels::ChannelInformation&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
+    {
+        <span class="kw">let </span>ids = ids.as_ref();
+        <span class="kw">if </span>ids.len() &gt; <span class="number">100 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(ClientRequestError::Custom(<span class="string">&quot;too many IDs, max 100&quot;</span>.into()));
+        }
+        <span class="self">self</span>.req_get(
+            helix::channels::GetChannelInformationRequest::broadcaster_ids(ids),
+            token,
+        )
+        .<span class="kw">await
+        </span>.map(|response| response.data)
     }
 
     <span class="doccomment">/// Get chatters in a stream [Chatter][helix::chat::Chatter]
@@ -1811,13 +1897,14 @@
     <span class="doccomment">/// Get emotes in emote set
     </span><span class="kw">pub async fn </span>get_emote_sets&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
-        emote_sets: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>types::EmoteSetIdRef],
+        emote_sets: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::EmoteSetIdRef]&gt;,
         token: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::get_emote_sets::Emote&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>req = helix::chat::GetEmoteSetsRequest::emote_set_ids(emote_sets.as_ref());
+        <span class="kw">let </span>emote_sets = emote_sets.as_ref();
+        <span class="kw">let </span>req = helix::chat::GetEmoteSetsRequest::emote_set_ids(emote_sets);
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
@@ -1955,12 +2042,16 @@
     <span class="doccomment">/// Get multiple users chat colors
     </span><span class="kw">pub async fn </span>get_users_chat_colors&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
-        user_ids: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>types::UserIdRef],
+        user_ids: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::UserIdRef]&gt;,
         token: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::UserChatColor&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
+        <span class="kw">let </span>user_ids = user_ids.as_ref();
+        <span class="kw">if </span>user_ids.len() &gt; <span class="number">100 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(ClientRequestError::Custom(<span class="string">&quot;too many IDs, max 100&quot;</span>.into()));
+        }
         <span class="kw">let </span>req = helix::chat::GetUserChatColorRequest::user_ids(user_ids);
 
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
@@ -2131,7 +2222,8 @@
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         only_managable_rewards: bool,
-        ids: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>types::RewardIdRef],
+        <span class="comment">// FIXME: This should be `impl AsRef&lt;[&amp;&#39;b T]&gt; + &#39;b`
+        </span>ids: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>types::RewardIdRef],
         token: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::points::CustomReward&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
     <span class="kw">where
@@ -2331,4 +2423,4 @@
     .boxed()
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (2585bcea0 2022-11-28)" data-search-js="search-df80cc3cb87b6482.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (32e613bba 2022-12-02)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
