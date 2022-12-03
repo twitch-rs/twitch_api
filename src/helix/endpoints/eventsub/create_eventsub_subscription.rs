@@ -1,4 +1,6 @@
 //! Creates an EventSub subscription.
+//!
+//! See also [`HelixClient::create_eventsub_subscription`](crate::helix::HelixClient::create_eventsub_subscription)
 use super::*;
 use crate::eventsub::{EventSubscription, EventType, Status, Transport, TransportResponse};
 

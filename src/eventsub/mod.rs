@@ -1,7 +1,7 @@
 //! Holds serializable EventSub stuff
 //!
 //! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).
-//! Parse the response payload text with [`Payload::parse`] or [`Payload::parse_http`].
+//! Parse the response payload text with [`Event::parse_http`] or [`Event::parse_websocket`]
 //!
 //! # Examples
 //!

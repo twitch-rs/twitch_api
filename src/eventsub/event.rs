@@ -503,6 +503,8 @@ where B: AsRef<[u8]> {
 
 impl Event {
     /// Parse a http payload as an [`Event`]
+    ///
+    /// Create the webhook via [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) according to the [Eventsub WebHooks guide](https://dev.twitch.tv/docs/eventsub/handling-webhook-events)
     pub fn parse_http<B>(request: &http::Request<B>) -> Result<Event, PayloadParseError>
     where B: AsRef<[u8]> {
         let (version, ty, message_type) =
@@ -539,6 +541,8 @@ impl Event {
     }
 
     /// Parse a websocket frame as an [`EventsubWebsocketData`]
+    ///
+    /// Create the websocket via [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) according to the [Eventsub WebSocket guide](https://dev.twitch.tv/docs/eventsub/handling-websocket-events)
     ///
     /// # Examples
     ///
