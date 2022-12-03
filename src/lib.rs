@@ -220,9 +220,10 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
     #[cfg(any(feature = "helix", feature = "tmi"))]
     pub fn with_client(client: C) -> TwitchClient<'a, C>
     where C: Clone {
-        // FIXME: This Clone is not used when only using one of the endpoints
         TwitchClient {
-            #[cfg(feature = "tmi")]
+            #[cfg(all(feature = "tmi", not(feature = "helix")))]
+            tmi: TmiClient::with_client(client),
+            #[cfg(all(feature = "tmi", feature = "helix"))]
             tmi: TmiClient::with_client(client.clone()),
             #[cfg(feature = "helix")]
             helix: HelixClient::with_client(client),

@@ -285,6 +285,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[cfg(feature = "time")]
     fn subscription_doc_example_resub() {
         // twitch docs broken as usual. /emotes/id  is a string and /months is missing
         let message = r##"
@@ -329,6 +330,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "time")]
     fn subscription_doc_example_subgift() {
         let message = r##"
 {
@@ -367,6 +369,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "time")]
     fn new_sub() {
         let message = r##"
 {

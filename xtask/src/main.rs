@@ -1,15 +1,36 @@
+pub mod check;
+pub mod test;
+
 use std::path::{Path, PathBuf};
 
 use clap::Parser;
 use color_eyre::Help;
+use itertools::Itertools;
 use once_cell::sync::OnceCell;
 use serde::Deserialize;
 use xshell::{cmd, Shell};
 
 static RUSTDOCFLAGS: &[&str] = &["--cfg", "nightly"];
 static RUSTFLAGS: &[&str] = &["--cfg", "nightly"];
-static TWITCH_API_FEATURES: &str =
+static TWITCH_API_DOC_FEATURES: &str =
     "twitch_oauth2/all twitch_oauth2/mock_api all unsupported deny_unknown_fields _all";
+static FEATURE_SETS: &[&[&str]] = &[
+    &["helix"],
+    &["tmi"],
+    &["helix", "pubsub", "eventsub", "hmac"],
+];
+static OPT_FEATURES: &[&[&str]] = &[
+    &["unsupported"],
+    &["twitch_oauth2"],
+    &["client", "deny_unknown_fields"],
+    &["client", "deny_unknown_fields", "unsupported"],
+];
+static EXTRA_FEATURES: &[&[&str]] = &[
+    &["pubsub", "twitch_types/time", "deny_unknown_fields"],
+    &["trace_unknown_fields", "deny_unknown_fields", "helix"],
+    &["helix", "tmi"],
+    &["helix", "eventsub"],
+];
 
 #[derive(Debug, Parser)]
 pub enum Args {
@@ -22,6 +43,8 @@ pub enum Args {
         #[clap(last = true)]
         last: Option<String>,
     },
+    Check(check::Check),
+    Test(test::Test),
 }
 
 fn main() -> color_eyre::Result<()> {
@@ -125,6 +148,8 @@ fn main() -> color_eyre::Result<()> {
                 .run()?;
             }
         }
+        Args::Check(check) => check.run(&sh)?,
+        Args::Test(test) => test.run(&sh)?,
     }
     Ok(())
 }
@@ -195,6 +220,70 @@ pub fn get_cargo_workspace() -> &'static Path {
             .unwrap()
             .workspace_root
     })
+}
+
+fn features() -> Vec<Vec<&'static str>> {
+    let mut set: Vec<Vec<_>> = vec![all_features()];
+    for feats in FEATURE_SETS.iter() {
+        set.push(feats.iter().copied().sorted().collect());
+        for opt in OPT_FEATURES.iter() {
+            set.push(
+                feats
+                    .iter()
+                    .copied()
+                    .chain(opt.iter().copied())
+                    .sorted()
+                    .collect(),
+            );
+        }
+    }
+    // extras
+    for extra in EXTRA_FEATURES {
+        set.push(extra.to_vec())
+    }
+    set.sort_by_key(|f| -(f.len() as i32));
+    set.insert(0, vec![]);
+    set.into_iter().unique().collect()
+}
+
+fn all_features() -> Vec<&'static str> {
+    crate::FEATURE_SETS
+        .iter()
+        .copied()
+        .flatten()
+        .chain(crate::OPT_FEATURES.iter().copied().flatten())
+        .unique()
+        .copied()
+        .collect()
+}
+
+fn section(name: impl Into<String>) -> impl Drop {
+    use std::time::Instant;
+    let ci = std::env::var("CI").is_ok();
+    let name = name.into();
+    if ci {
+        println!("::group::{name}");
+    }
+    let start = Instant::now();
+    defer(move || {
+        let elapsed = start.elapsed();
+        eprintln!("{name}: {elapsed:.2?}");
+        if ci {
+            println!("::endgroup::");
+        }
+    })
+}
+
+fn defer<F: FnOnce()>(f: F) -> impl Drop {
+    struct D<F: FnOnce()>(Option<F>);
+    impl<F: FnOnce()> Drop for D<F> {
+        fn drop(&mut self) {
+            if let Some(f) = self.0.take() {
+                f()
+            }
+        }
+    }
+    D(Some(f))
 }
 
 #[cfg(test)]

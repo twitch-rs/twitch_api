@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [ubuntu-latest]
         rust: [1.64.0, nightly]
     runs-on: ${{ matrix.os }}
     steps:
@@ -47,11 +47,9 @@ jobs:
           toolchain: ${{ matrix.rust }}
           override: true
       - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@nextest
       - name: Test twitch_api
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}" --workspace
+        run: cargo xtask test
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
@@ -84,46 +82,8 @@ jobs:
           override: true
           components: clippy
       - uses: Swatinem/rust-cache@v2
-      - name: Run clippy --all-targets --no-default-features
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --locked --all-targets --no-default-features -p twitch_api
-      - name: Run clippy --all-targets --no-default-features --features "helix"
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --locked --all-targets --no-default-features --features "helix" -p twitch_api
-      - name: Run clippy --all-targets --no-default-features --features "helix client"
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --locked --all-targets --no-default-features --features "helix client" -p twitch_api
-      - name: Run clippy --all-targets --no-default-features --features "tmi"
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --locked --all-targets --no-default-features --features "tmi" -p twitch_api
-      - name: Run clippy --all-targets --no-default-features --features "pubsub"
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --locked --all-targets --no-default-features --features "pubsub" -p twitch_api
-      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} trace_unknown_fields"
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} trace_unknown_fields" -p twitch_api
-      - name: Run clippy --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}"
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} _all" -p twitch_api
-      - name: Run clippy --all-targets --all-features --workspace
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --locked --all-targets --all-features --workspace
+      - name: Clippy
+        run: cargo xtask check --locked -- --deny warnings
   docs:
     name: Docs
     runs-on: ubuntu-latest
@@ -136,11 +96,5 @@ jobs:
           toolchain: nightly
           override: true
       - uses: Swatinem/rust-cache@v2
-      # We do the following to make sure docs.rs can document properly without anything broken, and that docs are working.
-      - name: Run doc tests
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --doc --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
       - name: Check twitch_api docs
         run: cargo xtask doc
