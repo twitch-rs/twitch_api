@@ -452,7 +452,7 @@ pub struct EventSubscriptionInformation<E: EventSubscription> {
     pub version: String,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 /// Webhook transport
@@ -465,6 +465,15 @@ pub struct WebhookTransport {
     ///
     /// Secret must be between 10 and 100 characters
     pub secret: String,
+}
+
+impl std::fmt::Debug for WebhookTransport {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("WebhookTransport")
+            .field("callback", &self.callback)
+            .field("secret", &"[redacted]")
+            .finish()
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -493,13 +502,10 @@ pub enum Transport {
 
 impl Transport {
     /// Convenience method for making a webhook transport
-    pub fn webhook(
-        callback: impl std::string::ToString,
-        secret: impl std::string::ToString,
-    ) -> Transport {
+    pub fn webhook(callback: impl std::string::ToString, secret: String) -> Transport {
         Transport::Webhook(WebhookTransport {
             callback: callback.to_string(),
-            secret: secret.to_string(),
+            secret,
         })
     }
 
