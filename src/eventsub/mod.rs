@@ -170,6 +170,8 @@ impl<E: EventSubscription + Clone> Message<E> {
 impl<E: EventSubscription> Payload<E> {
     /// Parse string slice as a [`Payload`], this will assume your string is from an eventsub message with type `notification`
     ///
+    /// The string should be a
+    ///
     /// # Examples
     ///
     /// ```rust
@@ -202,14 +204,9 @@ impl<E: EventSubscription> Payload<E> {
     ///     }
     /// }
     /// "#;
-    /// let payload: Payload<ChannelFollowV1> = Payload::parse(notification)?;
+    /// let payload: Payload<ChannelFollowV1> = Payload::parse_notification(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    pub fn parse(source: &str) -> Result<Payload<E>, PayloadParseError> {
-        Self::parse_notification(source)
-    }
-
-    /// Parse string slice as a [`Payload`] with a message of [`Message::Notification`].
     pub fn parse_notification(source: &str) -> Result<Payload<E>, PayloadParseError> {
         #[derive(Deserialize)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
