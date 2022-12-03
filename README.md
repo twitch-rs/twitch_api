@@ -32,7 +32,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>
     .await?;
 
     println!("Channel: {:?}",
-            client.get_channel_from_login("twitchdev", &token).await?
+        client.get_channel_from_login("twitchdev", &token).await?
     );
 
     Ok(())

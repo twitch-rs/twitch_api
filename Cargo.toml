@@ -211,7 +211,7 @@ required-features = ["reqwest", "helix", "mock_api", "twitch_oauth2/mock_api"]
 features = ["all", "unsupported", "_all"]
 rustc-args = ["--cfg", "nightly"]
 rustdoc-args = ["--cfg", "nightly"]
-cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples=all"]
+cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
 
 [profile.dev.package.backtrace]
 opt-level = 3

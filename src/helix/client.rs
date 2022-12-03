@@ -104,11 +104,12 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
     /// #       twitch_oauth2::AccessToken::new("totallyvalidtoken".to_string()), None,
     /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, "justintv".into(), "1337".into(), None, None));
-    ///     let req = channels::GetChannelInformationRequest::broadcaster_id("123456");
-    ///     let client = HelixClient::new();
+    /// let ids: &[&twitch_types::UserIdRef] = &["123456".into()];
+    /// let req = channels::GetChannelInformationRequest::broadcaster_ids(ids);
+    /// let client = HelixClient::new();
     /// # let _: &HelixClient<twitch_api::DummyHttpClient> = &client;
     ///
-    ///     let response = client.req_get(req, &token).await;
+    /// let response = client.req_get(req, &token).await;
     /// # }
     /// # // fn main() {run()}
     /// ```

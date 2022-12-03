@@ -30,16 +30,17 @@
 //! let token =
 //!     AppAccessToken::get_app_access_token(&client, client_id, client_secret, Scope::all())
 //!         .await?;
-//! let req = GetChannelInformationRequest::broadcaster_id("27620241");
+//! let ids: &[&twitch_types::UserIdRef] = &["27620241".into()];
+//! let req = GetChannelInformationRequest::broadcaster_ids(ids);
 //! println!(
 //!     "{:?}",
-//!     &client.helix.req_get(req, &token).await?.data.unwrap().title
+//!     &client.helix.req_get(req, &token).await?.data[0].title
 //! );
 //! # Ok(())
 //! # }
 //! ```
 //!
-//! There is also a convenience function for accessing channel information with a specified login name
+//! There is also convenience functions, like accessing channel information with a specified login name
 //!
 //! ```rust,no_run
 //! # use twitch_api::{TwitchClient, helix::channels::GetChannelInformationRequest};
