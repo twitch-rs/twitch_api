@@ -109,7 +109,7 @@ fn main() -> color_eyre::Result<()> {
 
             let res = cmd!(
                 sh,
-                "cargo doc {target_dir...} -v --no-deps --features {TWITCH_API_FEATURES} -Zunstable-options -Zrustdoc-scrape-examples=all -p twitch_api -p twitch_oauth2 -p twitch_types -Zrustdoc-map {last...}"
+                "cargo doc {target_dir...} -v --no-deps --features {TWITCH_API_FEATURES} -Zunstable-options -Zrustdoc-scrape-examples -p twitch_api -p twitch_oauth2 -p twitch_types -Zrustdoc-map {last...}"
             )
             .run();
             std::mem::drop(_section);
