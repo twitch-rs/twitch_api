@@ -647,6 +647,7 @@
 <a href="#647" id="647">647</a>
 <a href="#648" id="648">648</a>
 <a href="#649" id="649">649</a>
+<a href="#650" id="650">650</a>
 </pre><pre class="rust"><code><span class="doccomment">//! EventSub events and their types
 
 </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
@@ -1234,7 +1235,8 @@ fn main() {
     ///     }
     /// }
     /// &quot;#;
-    /// let event: EventsubWebsocketData&lt;&#39;_&gt; = Event::parse_websocket(notification)?;
+    /// let event: EventsubWebsocketData&lt;&#39;_&gt; =
+    ///     Event::parse_websocket(notification)?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]

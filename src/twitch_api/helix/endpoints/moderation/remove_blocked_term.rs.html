@@ -140,6 +140,8 @@
 <a href="#140" id="140">140</a>
 <a href="#141" id="141">141</a>
 <a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Removes the word or phrase that the broadcaster is blocking users from using in their chat room.
 //! [`remove-blocked-term`](https://dev.twitch.tv/docs/api/reference#remove-blocked-term)
 //!
@@ -151,7 +153,9 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::remove_blocked_term;
-//! let request = remove_blocked_term::RemoveBlockedTermRequest::new(&quot;1234&quot;, &quot;5678&quot;, &quot;DEADBEEF&quot;);
+//! let request = remove_blocked_term::RemoveBlockedTermRequest::new(
+//!     &quot;1234&quot;, &quot;5678&quot;, &quot;DEADBEEF&quot;,
+//! );
 //! ```
 //!
 //! ## Response: [RemoveBlockedTerm]

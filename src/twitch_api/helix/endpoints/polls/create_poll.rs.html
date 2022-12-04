@@ -286,6 +286,11 @@
 <a href="#286" id="286">286</a>
 <a href="#287" id="287">287</a>
 <a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Create a poll for a specific Twitch channel.
 //! [`create-poll`](https://dev.twitch.tv/docs/api/reference#create-poll)
 //!
@@ -310,7 +315,12 @@
 //!     create_poll::NewPollChoice::new(&quot;Heads&quot;),
 //!     create_poll::NewPollChoice::new(&quot;Tails&quot;),
 //! ];
-//! let mut body = create_poll::CreatePollBody::new(&quot;141981764&quot;, &quot;Heads or Tails?&quot;, 1800, choices);
+//! let mut body = create_poll::CreatePollBody::new(
+//!     &quot;141981764&quot;,
+//!     &quot;Heads or Tails?&quot;,
+//!     1800,
+//!     choices,
+//! );
 //! body.channel_points_voting_enabled = Some(true);
 //! body.channel_points_per_vote = Some(100);
 //! ```

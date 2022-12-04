@@ -192,6 +192,7 @@
 <a href="#192" id="192">192</a>
 <a href="#193" id="193">193</a>
 <a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Get information about all predictions or specific predictions for a Twitch channel. Prediction information is available for 90 days.
 //! [`get-predictions`](https://dev.twitch.tv/docs/api/reference#get-predictions)
 //!
@@ -201,8 +202,9 @@
 //!
 //! ```rust
 //! use twitch_api::helix::predictions::get_predictions;
-//! let request = get_predictions::GetPredictionsRequest::broadcaster_id(&quot;1234&quot;)
-//!     .ids(vec![&quot;ed961efd-8a3f-4cf5-a9d0-e616c590cd2a&quot;.into()]);
+//! let request =
+//!     get_predictions::GetPredictionsRequest::broadcaster_id(&quot;1234&quot;)
+//!         .ids(vec![&quot;ed961efd-8a3f-4cf5-a9d0-e616c590cd2a&quot;.into()]);
 //! ```
 //!
 //! ## Response: [Prediction]

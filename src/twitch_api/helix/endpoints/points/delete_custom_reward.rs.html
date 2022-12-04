@@ -134,6 +134,9 @@
 <a href="#134" id="134">134</a>
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Deletes a Custom Reward on a channel.
 //! [`delete-custom-reward`](https://dev.twitch.tv/docs/api/reference#delete-custom-reward)
 //!
@@ -145,7 +148,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::points::delete_custom_reward;
-//! let request = delete_custom_reward::DeleteCustomRewardRequest::new(&quot;274637212&quot;, &quot;1234&quot;);
+//! let request = delete_custom_reward::DeleteCustomRewardRequest::new(
+//!     &quot;274637212&quot;,
+//!     &quot;1234&quot;,
+//! );
 //! ```
 //!
 //! ## Response: [DeleteCustomReward]

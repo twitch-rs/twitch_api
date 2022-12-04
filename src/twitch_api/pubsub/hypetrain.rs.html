@@ -2053,16 +2053,6 @@
 <a href="#2053" id="2053">2053</a>
 <a href="#2054" id="2054">2054</a>
 <a href="#2055" id="2055">2055</a>
-<a href="#2056" id="2056">2056</a>
-<a href="#2057" id="2057">2057</a>
-<a href="#2058" id="2058">2058</a>
-<a href="#2059" id="2059">2059</a>
-<a href="#2060" id="2060">2060</a>
-<a href="#2061" id="2061">2061</a>
-<a href="#2062" id="2062">2062</a>
-<a href="#2063" id="2063">2063</a>
-<a href="#2064" id="2064">2064</a>
-<a href="#2065" id="2065">2065</a>
 </pre><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;hype-train-events-v1&quot;</span>)]
 </span><span class="doccomment">//! PubSub messages for hype-trains
 </span><span class="kw">use crate</span>::{pubsub, types};
@@ -3072,9 +3062,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -3474,9 +3463,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -3508,9 +3496,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -3590,9 +3577,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -3681,9 +3667,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -3756,9 +3741,8 @@
 }
 &quot;##</span>;
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -3781,9 +3765,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -3806,9 +3789,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -3839,9 +3821,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.rewards.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.rewards.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -4055,9 +4036,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.rewards.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.rewards.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,

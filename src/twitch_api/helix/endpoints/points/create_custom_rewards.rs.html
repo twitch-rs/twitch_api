@@ -272,6 +272,10 @@
 <a href="#272" id="272">272</a>
 <a href="#273" id="273">273</a>
 <a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Adds a specified user to the followers of a specified channel.
 //! [`create-custom-rewards`](https://dev.twitch.tv/docs/api/reference#create-custom-rewards)
 //!
@@ -283,7 +287,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::points::create_custom_rewards;
-//! let request = create_custom_rewards::CreateCustomRewardRequest::broadcaster_id(&quot;274637212&quot;);
+//! let request =
+//!     create_custom_rewards::CreateCustomRewardRequest::broadcaster_id(
+//!         &quot;274637212&quot;,
+//!     );
 //! ```
 //!
 //! ## Body: [CreateCustomRewardBody]
@@ -292,7 +299,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::points::create_custom_rewards;
-//! let mut body = create_custom_rewards::CreateCustomRewardBody::new(&quot;hydrate&quot;, 500);
+//! let mut body =
+//!     create_custom_rewards::CreateCustomRewardBody::new(&quot;hydrate&quot;, 500);
 //! ```
 //!
 //! ## Response: [CreateCustomRewardResponse]

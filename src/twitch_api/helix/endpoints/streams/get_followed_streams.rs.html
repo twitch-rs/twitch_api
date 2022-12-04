@@ -167,6 +167,7 @@
 <a href="#167" id="167">167</a>
 <a href="#168" id="168">168</a>
 <a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets information about active streams belonging to channels that the authenticated user follows.
 //! [`get-followed-streams`](https://dev.twitch.tv/docs/api/reference#get-followed-streams)
 //!
@@ -178,7 +179,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::streams::get_followed_streams;
-//! let request = get_followed_streams::GetFollowedStreamsRequest::user_id(&quot;1234&quot;);
+//! let request =
+//!     get_followed_streams::GetFollowedStreamsRequest::user_id(&quot;1234&quot;);
 //! ```
 //!
 //! ## Response: [Stream]

@@ -259,6 +259,9 @@
 <a href="#259" id="259">259</a>
 <a href="#260" id="260">260</a>
 <a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Create a Channel Points Prediction for a specific Twitch channel.
 //!
 //! Results are ordered by most recent, so it can be assumed that the currently active or locked Prediction will be the first item.
@@ -284,7 +287,10 @@
 //! let body = create_prediction::CreatePredictionBody::new(
 //!     &quot;141981764&quot;,
 //!     &quot;Any leeks in the stream?&quot;,
-//!     create_prediction::NewPredictionOutcome::new_tuple(&quot;Yes, give it time.&quot;, &quot;Definitely not.&quot;),
+//!     create_prediction::NewPredictionOutcome::new_tuple(
+//!         &quot;Yes, give it time.&quot;,
+//!         &quot;Definitely not.&quot;,
+//!     ),
 //!     120,
 //! );
 //! ```

@@ -135,6 +135,8 @@
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
 <a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Removes a moderator from the broadcaster’s chat room.
 //! [`remove-channel-moderator`](https://dev.twitch.tv/docs/api/reference#remove-channel-moderator)
 //!
@@ -146,7 +148,9 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::remove_channel_moderator;
-//! let request = remove_channel_moderator::RemoveChannelModeratorRequest::new(&quot;1234&quot;, &quot;5678&quot;);
+//! let request = remove_channel_moderator::RemoveChannelModeratorRequest::new(
+//!     &quot;1234&quot;, &quot;5678&quot;,
+//! );
 //! ```
 //!
 //! ## Response: [RemoveChannelModeratorResponse]

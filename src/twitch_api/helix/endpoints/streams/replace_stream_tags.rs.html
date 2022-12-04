@@ -179,6 +179,7 @@
 <a href="#179" id="179">179</a>
 <a href="#180" id="180">180</a>
 <a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Applies specified tags to a specified stream, overwriting any existing tags applied to that stream. If no tags are specified, all tags previously applied to the stream are removed. Automated tags are not affected by this operation.
 //! [`replace-stream-tags`](https://dev.twitch.tv/docs/api/reference#replace-stream-tags)
 //!
@@ -190,7 +191,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::streams::replace_stream_tags;
-//! let request = replace_stream_tags::ReplaceStreamTagsRequest::broadcaster_id(&quot;1234&quot;);
+//! let request =
+//!     replace_stream_tags::ReplaceStreamTagsRequest::broadcaster_id(&quot;1234&quot;);
 //! ```
 //!
 //! ## Body: [ReplaceStreamTagsBody]

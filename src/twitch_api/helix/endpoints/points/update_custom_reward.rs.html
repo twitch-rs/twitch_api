@@ -294,6 +294,9 @@
 <a href="#294" id="294">294</a>
 <a href="#295" id="295">295</a>
 <a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Updates a Custom Reward created on a channel.
 //!
 //! Only rewards created programmatically by the same client_id can be updated.
@@ -307,7 +310,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::points::update_custom_reward;
-//! let request = update_custom_reward::UpdateCustomRewardRequest::new(&quot;274637212&quot;, &quot;reward-id&quot;);
+//! let request = update_custom_reward::UpdateCustomRewardRequest::new(
+//!     &quot;274637212&quot;,
+//!     &quot;reward-id&quot;,
+//! );
 //! ```
 //!
 //! ## Body: [UpdateCustomRewardBody]

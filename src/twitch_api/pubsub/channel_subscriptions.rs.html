@@ -583,13 +583,6 @@
 <a href="#583" id="583">583</a>
 <a href="#584" id="584">584</a>
 <a href="#585" id="585">585</a>
-<a href="#586" id="586">586</a>
-<a href="#587" id="587">587</a>
-<a href="#588" id="588">588</a>
-<a href="#589" id="589">589</a>
-<a href="#590" id="590">590</a>
-<a href="#591" id="591">591</a>
-<a href="#592" id="592">592</a>
 </pre><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;subscription&quot;</span>)]
 #![doc(alias = <span class="string">&quot;subscriptions&quot;</span>)]
 #![doc(alias = <span class="string">&quot;channel-subscribe-events-v1&quot;</span>)]
@@ -908,9 +901,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -946,9 +938,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -984,9 +975,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1024,9 +1014,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1069,9 +1058,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1115,9 +1103,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1153,9 +1140,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,

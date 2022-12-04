@@ -436,11 +436,6 @@
 <a href="#436" id="436">436</a>
 <a href="#437" id="437">437</a>
 <a href="#438" id="438">438</a>
-<a href="#439" id="439">439</a>
-<a href="#440" id="440">440</a>
-<a href="#441" id="441">441</a>
-<a href="#442" id="442">442</a>
-<a href="#443" id="443">443</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Requests for driving the API
 </span><span class="kw">pub mod </span>errors;
 <span class="kw">use </span>std::{convert::TryInto, str::FromStr};
@@ -499,10 +494,9 @@
         <span class="kw">let </span>body = body.try_to_body()<span class="question-mark">?</span>;
         <span class="comment">// eprintln!(&quot;\n\nbody is ------------ {:?} ------------&quot;, body);
 
-        </span><span class="kw">let </span><span class="kw-2">mut </span>bearer =
-            http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, token)).map_err(|<span class="kw">_</span>| {
-                CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
-            })<span class="question-mark">?</span>;
+        </span><span class="kw">let </span><span class="kw-2">mut </span>bearer = http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {token}&quot;</span>)).map_err(|<span class="kw">_</span>| {
+            CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
+        })<span class="question-mark">?</span>;
         bearer.set_sensitive(<span class="bool-val">true</span>);
         http::Request::builder()
             .method(http::Method::POST)
@@ -595,10 +589,9 @@
         <span class="kw">let </span>body = body.try_to_body()<span class="question-mark">?</span>;
         <span class="comment">// eprintln!(&quot;\n\nbody is ------------ {} ------------&quot;, body);
 
-        </span><span class="kw">let </span><span class="kw-2">mut </span>bearer =
-            http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, token)).map_err(|<span class="kw">_</span>| {
-                CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
-            })<span class="question-mark">?</span>;
+        </span><span class="kw">let </span><span class="kw-2">mut </span>bearer = http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {token}&quot;</span>)).map_err(|<span class="kw">_</span>| {
+            CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
+        })<span class="question-mark">?</span>;
         bearer.set_sensitive(<span class="bool-val">true</span>);
         http::Request::builder()
             .method(http::Method::PATCH)
@@ -666,10 +659,9 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;http::Request&lt;hyper::body::Bytes&gt;, CreateRequestError&gt; {
         <span class="kw">let </span>uri = <span class="self">self</span>.get_uri()<span class="question-mark">?</span>;
 
-        <span class="kw">let </span><span class="kw-2">mut </span>bearer =
-            http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, token)).map_err(|<span class="kw">_</span>| {
-                CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
-            })<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>bearer = http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {token}&quot;</span>)).map_err(|<span class="kw">_</span>| {
+            CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
+        })<span class="question-mark">?</span>;
         bearer.set_sensitive(<span class="bool-val">true</span>);
         http::Request::builder()
             .method(http::Method::DELETE)
@@ -742,10 +734,9 @@
         <span class="kw">let </span>body = body.try_to_body()<span class="question-mark">?</span>;
         <span class="comment">// eprintln!(&quot;\n\nbody is ------------ {} ------------&quot;, body);
 
-        </span><span class="kw">let </span><span class="kw-2">mut </span>bearer =
-            http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, token)).map_err(|<span class="kw">_</span>| {
-                CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
-            })<span class="question-mark">?</span>;
+        </span><span class="kw">let </span><span class="kw-2">mut </span>bearer = http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {token}&quot;</span>)).map_err(|<span class="kw">_</span>| {
+            CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
+        })<span class="question-mark">?</span>;
         bearer.set_sensitive(<span class="bool-val">true</span>);
         http::Request::builder()
             .method(http::Method::PUT)
@@ -813,10 +804,9 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;http::Request&lt;hyper::body::Bytes&gt;, CreateRequestError&gt; {
         <span class="kw">let </span>uri = <span class="self">self</span>.get_uri()<span class="question-mark">?</span>;
 
-        <span class="kw">let </span><span class="kw-2">mut </span>bearer =
-            http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {}&quot;</span>, token)).map_err(|<span class="kw">_</span>| {
-                CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
-            })<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>bearer = http::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Bearer {token}&quot;</span>)).map_err(|<span class="kw">_</span>| {
+            CreateRequestError::Custom(<span class="string">&quot;Could not make token into headervalue&quot;</span>.into())
+        })<span class="question-mark">?</span>;
         bearer.set_sensitive(<span class="bool-val">true</span>);
         http::Request::builder()
             .method(http::Method::GET)

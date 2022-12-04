@@ -171,6 +171,9 @@
 <a href="#171" id="171">171</a>
 <a href="#172" id="172">172</a>
 <a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets information about the charity campaign that a broadcaster is running, such as their fundraising goal and the amount that’s been donated so far.
 //! [`get-charity-campaign`](https://dev.twitch.tv/docs/api/reference#get-charity-campaign)
 //!
@@ -182,7 +185,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::charity::get_charity_campaign;
-//! let request = get_charity_campaign::GetCharityCampaignRequest::broadcaster_id(&quot;123456&quot;);
+//! let request =
+//!     get_charity_campaign::GetCharityCampaignRequest::broadcaster_id(
+//!         &quot;123456&quot;,
+//!     );
 //! ```
 //!
 //! ## Response: [CharityCampaign]

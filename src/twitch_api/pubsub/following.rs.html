@@ -83,7 +83,6 @@
 <a href="#83" id="83">83</a>
 <a href="#84" id="84">84</a>
 <a href="#85" id="85">85</a>
-<a href="#86" id="86">86</a>
 </pre><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;follow&quot;</span>)]
 #![doc(alias = <span class="string">&quot;follows&quot;</span>)]
 </span><span class="doccomment">//! PubSub messages for follows
@@ -141,9 +140,8 @@
 &quot;##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;following.27620241&quot;, &quot;message&quot;: {:?} }}}}&quot;#</span>,
-            message
-        );
+            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;following.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+        </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,

@@ -134,6 +134,7 @@
 <a href="#134" id="134">134</a>
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets a specified user’s block list. The list is sorted by when the block occurred in descending order (i.e. most recent block first).
 //! [`get-user-block-list`](https://dev.twitch.tv/docs/api/reference#get-user-block-list)
 //!
@@ -143,7 +144,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::users::get_user_block_list;
-//! let request = get_user_block_list::GetUserBlockListRequest::broadcaster_id(&quot;1234&quot;);
+//! let request =
+//!     get_user_block_list::GetUserBlockListRequest::broadcaster_id(&quot;1234&quot;);
 //! ```
 //!
 //! ## Response: [UserBlock]

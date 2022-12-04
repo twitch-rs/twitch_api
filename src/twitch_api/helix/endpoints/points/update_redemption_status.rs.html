@@ -243,6 +243,10 @@
 <a href="#243" id="243">243</a>
 <a href="#244" id="244">244</a>
 <a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Updates the status of Custom Reward Redemption objects on a channel that are in the UNFULFILLED status.
 //!
 //! Only redemptions for a reward created by the same client_id as attached to the access token can be updated.
@@ -268,8 +272,12 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! use twitch_api::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};
-//! let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
+//! use twitch_api::helix::points::{
+//!     CustomRewardRedemptionStatus, UpdateRedemptionStatusBody,
+//! };
+//! let body = UpdateRedemptionStatusBody::status(
+//!     CustomRewardRedemptionStatus::Canceled,
+//! );
 //! ```
 //!
 //! ## Response: [UpdateRedemptionStatusInformation]

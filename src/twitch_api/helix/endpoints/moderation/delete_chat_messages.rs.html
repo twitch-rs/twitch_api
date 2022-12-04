@@ -178,6 +178,7 @@
 <a href="#178" id="178">178</a>
 <a href="#179" id="179">179</a>
 <a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Removes a single chat message or all chat messages from the broadcaster’s chat room.
 //! [`delete-chat-messages`](https://dev.twitch.tv/docs/api/reference#delete-chat-messages)
 //!
@@ -189,8 +190,9 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::delete_chat_messages;
-//! let request = delete_chat_messages::DeleteChatMessagesRequest::new(&quot;1234&quot;, &quot;5678&quot;)
-//!     .message_id(&quot;abc-123-def&quot;);
+//! let request =
+//!     delete_chat_messages::DeleteChatMessagesRequest::new(&quot;1234&quot;, &quot;5678&quot;)
+//!         .message_id(&quot;abc-123-def&quot;);
 //! ```
 //!
 //! ## Response: [DeleteChatMessagesResponse]

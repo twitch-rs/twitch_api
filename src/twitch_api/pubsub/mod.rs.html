@@ -684,6 +684,8 @@
 <a href="#684" id="684">684</a>
 <a href="#685" id="685">685</a>
 <a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Holds serializable pubsub stuff
 //!
 //! Use [`listen_command()`] to send subscription listen and parse the responses with [`Response::parse`]
@@ -924,7 +926,8 @@
 /// .into_topic();
 ///
 /// // Listen to follows as well
-/// let follows = pubsub::following::Following { channel_id: 1234 }.into_topic();
+/// let follows =
+///     pubsub::following::Following { channel_id: 1234 }.into_topic();
 /// // Create the topic command to send to twitch
 /// let command = pubsub::listen_command(
 ///     &amp;[chat_mod_actions, follows],
@@ -972,7 +975,8 @@
 /// }
 /// .into_topic();
 ///
-/// let follows = pubsub::following::Following { channel_id: 1234 }.into_topic();
+/// let follows =
+///     pubsub::following::Following { channel_id: 1234 }.into_topic();
 /// // Create the command to send to twitch
 /// let command = pubsub::unlisten_command(
 ///     &amp;[chat_mod_actions, follows],
@@ -1175,7 +1179,7 @@
             message: String,
         }
         <span class="kw">let </span>reply = ITopicData::deserialize(deserializer).map_err(|e| {
-            serde::de::Error::custom(<span class="macro">format!</span>(<span class="string">&quot;could not deserialize topic reply: {}&quot;</span>, e))
+            serde::de::Error::custom(<span class="macro">format!</span>(<span class="string">&quot;could not deserialize topic reply: {e}&quot;</span>))
         })<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="kw">match </span>reply.topic {
             Topics::AutoModQueue(topic) =&gt; TopicData::AutoModQueue {

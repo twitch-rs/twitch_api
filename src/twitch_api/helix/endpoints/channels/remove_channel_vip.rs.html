@@ -133,6 +133,7 @@
 <a href="#133" id="133">133</a>
 <a href="#134" id="134">134</a>
 <a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Removes a VIP from the broadcaster’s chat room.
 //! [`remove-channel-vip`](https://dev.twitch.tv/docs/api/reference#remove-channel-vip)
 //!
@@ -144,7 +145,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::channels::remove_channel_vip;
-//! let request = remove_channel_vip::RemoveChannelVipRequest::new(&quot;1234&quot;, &quot;1337&quot;);
+//! let request =
+//!     remove_channel_vip::RemoveChannelVipRequest::new(&quot;1234&quot;, &quot;1337&quot;);
 //! ```
 //!
 //! ## Response: [RemoveChannelVipResponse]

@@ -230,6 +230,7 @@
 <a href="#230" id="230">230</a>
 <a href="#231" id="231">231</a>
 <a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets the broadcaster’s chat settings.
 //! [`get-chat-settings`](https://dev.twitch.tv/docs/api/reference#get-chat-settings)
 //!
@@ -252,9 +253,10 @@
 //!     helix::{self, chat::get_chat_settings},
 //!     types,
 //! };
-//! let request = get_chat_settings::GetChatSettingsRequest::broadcaster_id(&quot;1234567&quot;)
-//!     // optional
-//!     .moderator_id(&quot;9876543&quot;);
+//! let request =
+//!     get_chat_settings::GetChatSettingsRequest::broadcaster_id(&quot;1234567&quot;)
+//!         // optional
+//!         .moderator_id(&quot;9876543&quot;);
 //! ```
 //!
 //! ## Response: [ChatSettings]

@@ -926,6 +926,9 @@
 <a href="#926" id="926">926</a>
 <a href="#927" id="927">927</a>
 <a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Holds serializable EventSub stuff
 //!
 //! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).
@@ -1132,7 +1135,8 @@
     ///     }
     /// }
     /// &quot;#;
-    /// let payload: Payload&lt;ChannelFollowV1&gt; = Payload::parse_notification(notification)?;
+    /// let payload: Payload&lt;ChannelFollowV1&gt; =
+    ///     Payload::parse_notification(notification)?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
     </span><span class="kw">pub fn </span>parse_notification(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
@@ -1181,7 +1185,8 @@
     ///     }
     /// }
     /// &quot;#;
-    /// let payload: Payload&lt;ChannelFollowV1&gt; = Payload::parse_revocation(notification)?;
+    /// let payload: Payload&lt;ChannelFollowV1&gt; =
+    ///     Payload::parse_revocation(notification)?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
     </span><span class="kw">pub fn </span>parse_revocation(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
@@ -1226,7 +1231,8 @@
     ///     }
     /// }
     /// &quot;#;
-    /// let payload: Payload&lt;ChannelFollowV1&gt; = Payload::parse_verification_request(notification)?;
+    /// let payload: Payload&lt;ChannelFollowV1&gt; =
+    ///     Payload::parse_verification_request(notification)?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
     </span><span class="kw">pub fn </span>parse_verification_request(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {

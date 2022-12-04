@@ -194,6 +194,7 @@
 <a href="#194" id="194">194</a>
 <a href="#195" id="195">195</a>
 <a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Returns all banned and timed-out users in a channel.
 //! [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
 //!
@@ -205,7 +206,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::get_banned_users;
-//! let request = get_banned_users::GetBannedUsersRequest::broadcaster_id(&quot;1234&quot;);
+//! let request =
+//!     get_banned_users::GetBannedUsersRequest::broadcaster_id(&quot;1234&quot;);
 //! ```
 //!
 //! ## Response: [BannedUser]

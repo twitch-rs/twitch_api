@@ -171,6 +171,7 @@
 <a href="#171" id="171">171</a>
 <a href="#172" id="172">172</a>
 <a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Adds a word or phrase to the broadcaster’s list of blocked terms. These are the terms that broadcasters don’t want used in their chat room.
 //! [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
 //!
@@ -191,7 +192,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::add_blocked_term;
-//! let body = add_blocked_term::AddBlockedTermBody::new(&quot;A phrase I&#39;m not fond of&quot;);
+//! let body =
+//!     add_blocked_term::AddBlockedTermBody::new(&quot;A phrase I&#39;m not fond of&quot;);
 //! ```
 //!
 //! ## Response: [BlockedTerm]

@@ -202,6 +202,7 @@
 <a href="#202" id="202">202</a>
 <a href="#203" id="203">203</a>
 <a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
 </pre><pre class="rust"><code><span class="attr">#![allow(deprecated_in_future, deprecated)]
 </span><span class="doccomment">//! Gets the information of the most recent Hype Train of the given channel ID.
 //! [`get-hype-train-events`](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)
@@ -214,7 +215,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::hypetrain::get_hypetrain_events;
-//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::broadcaster_id(&quot;4321&quot;);
+//! let request =
+//!     get_hypetrain_events::GetHypeTrainEventsRequest::broadcaster_id(&quot;4321&quot;);
 //! ```
 //!
 //! ## Response: [HypeTrainEvent](types::TwitchCategory)

@@ -240,6 +240,7 @@
 <a href="#240" id="240">240</a>
 <a href="#241" id="241">241</a>
 <a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets a ranked list of Bits leaderboard information for an authorized broadcaster.
 //! [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)
 //!
@@ -252,7 +253,8 @@
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::bits::get_bits_leaderboard;
-//! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new().period(&quot;day&quot;);
+//! let request =
+//!     get_bits_leaderboard::GetBitsLeaderboardRequest::new().period(&quot;day&quot;);
 //! // Get leaderbord for the lifetime of the channel
 //! let request = get_bits_leaderboard::GetBitsLeaderboardRequest::new();
 //! ```

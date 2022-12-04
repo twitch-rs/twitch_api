@@ -119,6 +119,7 @@
 <a href="#119" id="119">119</a>
 <a href="#120" id="120">120</a>
 <a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets a list of users who have editor permissions for a specific channel.
 //! [`get-channel-editors`](https://dev.twitch.tv/docs/api/reference#get-channel-editors)
 //!
@@ -130,7 +131,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::channels::get_channel_editors;
-//! let request = get_channel_editors::GetChannelEditorsRequest::broadcaster_id(&quot;1234&quot;);
+//! let request =
+//!     get_channel_editors::GetChannelEditorsRequest::broadcaster_id(&quot;1234&quot;);
 //! ```
 //!
 //! ## Response: [Editor]
