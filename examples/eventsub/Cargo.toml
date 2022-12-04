@@ -9,20 +9,20 @@ edition = "2021"
 askama = { version = "0.11", features = ["with-axum"], git = "https://github.com/djc/askama", rev = "ea8be44" }
 askama_axum = { version = "0.1", git = "https://github.com/djc/askama", rev = "ea8be44" }
 axum = { version = "0.5.17", features = ["tower-log", "http2", "ws"] }
-clap = { version = "4.0.18", features = ["derive", "env"] }
+clap = { version = "4.0.29", features = ["derive", "env"] }
 color-eyre = { version = "0.6", features = ["capture-spantrace"] }
 dotenvy = "0.15.6"
 eyre = { version = "0.6" }
 futures = "0.3.25"
 hyper = "0.14"
-reqwest = "0.11.12"
+reqwest = "0.11.13"
 retainer = "0.3.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1" }
-tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.22.0", features = ["macros", "rt-multi-thread"] }
 tokio-tungstenite = "0.18.0"
 tower = "0.4"
-tower-http = { version = "0.3.4", features = ["fs", "trace", "catch-panic"] }
+tower-http = { version = "0.3.5", features = ["fs", "trace", "catch-panic"] }
 tracing = "0.1.37"
 tracing-error = "0.2.0"
 tracing-log = "0.1.3"
