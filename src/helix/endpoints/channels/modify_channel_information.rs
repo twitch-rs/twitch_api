@@ -95,6 +95,13 @@ pub struct ModifyChannelInformationBody<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Option<Cow<'a, str>>,
+    /// The number of seconds you want your broadcast buffered before streaming it live.
+    ///
+    /// The delay helps ensure fairness during competitive play.
+    /// Only users with Partner status may set this field. The maximum delay is 900 seconds (15 minutes).
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub delay: Option<i32>,
 }
 
 impl<'a> ModifyChannelInformationBody<'a> {
@@ -130,6 +137,12 @@ impl<'a> ModifyChannelInformationBody<'a> {
     /// Title of the stream. Value must not be an empty string.
     pub fn title(&mut self, title: impl Into<Cow<'a, str>>) -> &mut Self {
         self.title = Some(title.into());
+        self
+    }
+
+    /// The number of seconds you want your broadcast buffered before streaming it live.
+    pub fn delay(&mut self, delay: i32) -> &mut Self {
+        self.delay = Some(delay);
         self
     }
 }
