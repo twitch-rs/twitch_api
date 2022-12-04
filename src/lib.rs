@@ -168,6 +168,15 @@ pub static TWITCH_TMI_URL: once_cell::sync::Lazy<url::Url> =
 pub static TWITCH_PUBSUB_URL: once_cell::sync::Lazy<url::Url> =
     mock_env_url!("TWITCH_PUBSUB_URL", "wss://pubsub-edge.twitch.tv");
 
+/// Location to twitch Eventsub WebSocket
+///
+/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_EVENTSUB_WEBSOCKET_URL`.
+#[cfg(feature = "eventsub")]
+pub static TWITCH_EVENTSUB_WEBSOCKET_URL: once_cell::sync::Lazy<url::Url> = mock_env_url!(
+    "TWITCH_EVENTSUB_WEBSOCKET_URL",
+    "wss://eventsub-beta.wss.twitch.tv/ws"
+);
+
 /// Client for Twitch APIs.
 ///
 /// Most [http clients][crate::HttpClient] will be able to use the `'static` lifetime

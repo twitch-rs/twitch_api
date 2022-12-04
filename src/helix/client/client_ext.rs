@@ -1027,6 +1027,115 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
             .await?
             .data)
     }
+
+    #[cfg(feature = "eventsub")]
+    /// Create an [EventSub](crate::eventsub) subscription
+    pub async fn create_eventsub_subscription<T, E: crate::eventsub::EventSubscription>(
+        &'client self,
+        subscription: E,
+        transport: crate::eventsub::Transport,
+        token: &T,
+    ) -> Result<helix::eventsub::CreateEventSubSubscription<E>, ClientError<'client, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        Ok(self
+            .req_post(
+                helix::eventsub::CreateEventSubSubscriptionRequest::new(),
+                helix::eventsub::CreateEventSubSubscriptionBody::new(subscription, transport),
+                token,
+            )
+            .await?
+            .data)
+    }
+
+    #[cfg(feature = "eventsub")]
+    /// Delete an [EventSub](crate::eventsub) subscription
+    pub async fn delete_eventsub_subscription<'b, T>(
+        &'client self,
+        id: impl types::IntoCow<'b, types::EventSubIdRef> + 'b,
+        token: &T,
+    ) -> Result<helix::eventsub::DeleteEventSubSubscription, ClientError<'client, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        Ok(self
+            .req_delete(
+                helix::eventsub::DeleteEventSubSubscriptionRequest::id(id),
+                token,
+            )
+            .await?
+            .data)
+    }
+
+    #[cfg(feature = "eventsub")]
+    /// Get all [EventSub](crate::eventsub) subscriptions for this [Client](twitch_oauth2::TwitchToken)
+    ///
+    /// # Notes
+    ///
+    /// The return item is a struct [`EventSubSubscriptions`](helix::eventsub::EventSubSubscriptions) which contains the subscriptions.
+    /// See the example for getting only the subscriptions
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::{helix, eventsub};
+    /// use futures::{TryStreamExt, stream};
+    ///
+    /// let mut total_cost = None;
+    ///
+    /// let chatters: Vec<eventsub::EventSubSubscription> = client
+    ///     .get_eventsub_subscriptions(None, None, None, &token)
+    ///     .map_ok(|r| {
+    ///         total_cost = Some(r.total_cost);
+    ///         stream::iter(
+    ///             r.subscriptions
+    ///                 .into_iter()
+    ///                 .map(Ok::<_, twitch_api::helix::ClientRequestError<_>>),
+    ///         )
+    ///     })
+    ///     .try_flatten()
+    ///     .try_collect()
+    ///     .await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub fn get_eventsub_subscriptions<'b: 'client, T>(
+        &'client self,
+        status: impl Into<Option<crate::eventsub::Status>>,
+        event_type: impl Into<Option<crate::eventsub::EventType>>,
+        // FIXME: IntoOptionCow?
+        user_id: Option<&'b types::UserIdRef>,
+        token: &'client T,
+    ) -> std::pin::Pin<
+        Box<
+            dyn futures::Stream<
+                    Item = Result<helix::eventsub::EventSubSubscriptions, ClientError<'client, C>>,
+                > + 'client,
+        >,
+    >
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::eventsub::GetEventSubSubscriptionsRequest {
+            status: status.into(),
+            type_: event_type.into(),
+            user_id: user_id.map(|c| c.as_cow()),
+            after: None,
+            first: None,
+        };
+
+        make_stream(req, token, self, |r| {
+            let mut vec = std::collections::VecDeque::new();
+            vec.push_front(r);
+            vec
+        })
+    }
 }
 
 #[derive(Debug, thiserror::Error)]

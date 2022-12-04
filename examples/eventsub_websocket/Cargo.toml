@@ -1,28 +1,23 @@
 [package]
-name = "eventsub"
+name = "eventsub_websocket"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-askama = { version = "0.11", features = ["with-axum"], git = "https://github.com/djc/askama", rev = "ea8be44" }
-askama_axum = { version = "0.1", git = "https://github.com/djc/askama", rev = "ea8be44" }
-axum = { version = "0.5.17", features = ["tower-log", "http2", "ws"] }
 clap = { version = "4.0.29", features = ["derive", "env"] }
 color-eyre = { version = "0.6", features = ["capture-spantrace"] }
 dotenvy = "0.15.6"
 eyre = { version = "0.6" }
 futures = "0.3.25"
 hyper = "0.14"
-reqwest = "0.11.13"
+reqwest = { version = "0.11.13", features = ["json"] }
 retainer = "0.3.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1" }
 tokio = { version = "1.22.0", features = ["macros", "rt-multi-thread"] }
-tokio-tungstenite = "0.18.0"
-tower = "0.4"
-tower-http = { version = "0.3.5", features = ["fs", "trace", "catch-panic"] }
+tokio-tungstenite = { version = "0.18.0", features = ["native-tls"] }
 tracing = "0.1.37"
 tracing-error = "0.2.0"
 tracing-log = "0.1.3"
@@ -32,5 +27,8 @@ twitch_api = { workspace = true, features = [
     "helix",
     "eventsub",
     "hmac",
+    "unsupported",
+    "deny_unknown_fields",
 ] }
 twitch_oauth2 = { workspace = true }
+url = "2.3.1"

@@ -50,10 +50,13 @@ pub async fn eventsub_register(
         let subs = helix::make_stream(req, &*token.read().await, &client, |resp| {
             VecDeque::from(resp.subscriptions)
         })
+        // filter out websockets
+        .try_filter(|event| futures::future::ready(event.transport.is_webhook()))
         .try_collect::<Vec<_>>()
         .await?;
         let online_exists = subs.iter().any(|sub| {
-            sub.transport.callback == website
+            // we've filtered out websocket transports
+            sub.transport.as_webhook().unwrap().callback == website
                 && sub.type_ == EventType::StreamOnline
                 && sub.version == "1"
                 && sub
@@ -66,7 +69,8 @@ pub async fn eventsub_register(
                     == Some(config.broadcaster.id.as_str())
         });
         let offline_exists = subs.iter().any(|sub| {
-            sub.transport.callback == website
+            // we've filtered out websocket transports
+            sub.transport.as_webhook().unwrap().callback == website
                 && sub.type_ == EventType::StreamOffline
                 && sub.version == "1"
                 && sub

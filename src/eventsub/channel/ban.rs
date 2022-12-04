@@ -56,6 +56,8 @@ pub struct ChannelBanV1Payload {
     pub moderator_user_name: types::DisplayName,
     /// The reason behind the ban.
     pub reason: String,
+    /// The UTC date and time (in RFC3339 format) of when the user was banned or put in a timeout.
+    pub banned_at: types::Timestamp,
     /// Will be null if permanent ban. If it is a timeout, this field shows when the timeout will end.
     pub ends_at: Option<types::Timestamp>,
     /// Indicates whether the ban is permanent (true) or a timeout (false). If true, ends_at will be null.
@@ -92,6 +94,7 @@ fn parse_payload() {
             "moderator_user_login": "mod_user",
             "moderator_user_name": "Mod_User",
             "reason": "Offensive language",
+            "banned_at": "2020-07-15T18:15:11.17106713Z",
             "ends_at": "2020-07-15T18:16:11.17106713Z",
             "is_permanent": false
         }
