@@ -10,7 +10,10 @@
 //! ```rust
 //! use twitch_api::helix::channels::get_channel_information;
 //! let ids: &[&twitch_types::UserIdRef] = &["1234".into()];
-//! let request = get_channel_information::GetChannelInformationRequest::broadcaster_ids(ids);
+//! let request =
+//!     get_channel_information::GetChannelInformationRequest::broadcaster_ids(
+//!         ids,
+//!     );
 //! ```
 //!
 //! ## Response: [ChannelInformation]
@@ -61,7 +64,10 @@ impl<'a> GetChannelInformationRequest<'a> {
     /// ```rust
     /// use twitch_api::helix::channels::get_channel_information;
     /// let ids: &[&twitch_types::UserIdRef] = &["1234".into()];
-    /// let request = get_channel_information::GetChannelInformationRequest::broadcaster_ids(ids);
+    /// let request =
+    ///     get_channel_information::GetChannelInformationRequest::broadcaster_ids(
+    ///         ids,
+    ///     );
     /// ```
     pub fn broadcaster_ids(broadcaster_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
         Self {

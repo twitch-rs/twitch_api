@@ -7,8 +7,9 @@
 //!
 //! ```rust
 //! use twitch_api::helix::predictions::get_predictions;
-//! let request = get_predictions::GetPredictionsRequest::broadcaster_id("1234")
-//!     .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()]);
+//! let request =
+//!     get_predictions::GetPredictionsRequest::broadcaster_id("1234")
+//!         .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()]);
 //! ```
 //!
 //! ## Response: [Prediction]

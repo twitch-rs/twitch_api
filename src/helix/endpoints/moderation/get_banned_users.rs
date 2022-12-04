@@ -9,7 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::get_banned_users;
-//! let request = get_banned_users::GetBannedUsersRequest::broadcaster_id("1234");
+//! let request =
+//!     get_banned_users::GetBannedUsersRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [BannedUser]

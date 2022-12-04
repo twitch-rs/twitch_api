@@ -7,7 +7,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::users::get_user_block_list;
-//! let request = get_user_block_list::GetUserBlockListRequest::broadcaster_id("1234");
+//! let request =
+//!     get_user_block_list::GetUserBlockListRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [UserBlock]

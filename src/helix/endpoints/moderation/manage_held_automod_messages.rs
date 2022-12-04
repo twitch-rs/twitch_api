@@ -9,7 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::manage_held_automod_messages;
-//! let request = manage_held_automod_messages::ManageHeldAutoModMessagesRequest::new();
+//! let request =
+//!     manage_held_automod_messages::ManageHeldAutoModMessagesRequest::new();
 //! ```
 //!
 //! ## Body: [ManageHeldAutoModMessagesBody]

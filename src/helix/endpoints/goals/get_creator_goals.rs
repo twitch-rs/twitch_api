@@ -9,7 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::goals::get_creator_goals;
-//! let request = get_creator_goals::GetCreatorGoalsRequest::broadcaster_id("4321");
+//! let request =
+//!     get_creator_goals::GetCreatorGoalsRequest::broadcaster_id("4321");
 //! ```
 //!
 //! ## Response: [CreatorGoal](types::TwitchCategory)

@@ -4,10 +4,10 @@ use twitch_oauth2::{AccessToken, UserToken};
 fn main() {
     use std::error::Error;
     if let Err(err) = run() {
-        println!("Error: {}", err);
+        println!("Error: {err}");
         let mut e: &'_ dyn Error = err.as_ref();
         while let Some(cause) = e.source() {
-            println!("Caused by: {}", cause);
+            println!("Caused by: {cause}");
             e = cause;
         }
     }
@@ -37,7 +37,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         twitch_api::helix::moderation::CheckAutoModStatusRequest::broadcaster_id(broadcaster_id);
     let text = args.collect::<String>();
     let data = twitch_api::helix::moderation::CheckAutoModStatusBody::new("123", &text);
-    println!("data: {:?}", data);
+    println!("data: {data:?}");
     let response = client.req_post(req, &[&data], &token).await?.data;
     println!("{response:?}");
 

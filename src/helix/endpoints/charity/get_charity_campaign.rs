@@ -9,7 +9,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::charity::get_charity_campaign;
-//! let request = get_charity_campaign::GetCharityCampaignRequest::broadcaster_id("123456");
+//! let request =
+//!     get_charity_campaign::GetCharityCampaignRequest::broadcaster_id(
+//!         "123456",
+//!     );
 //! ```
 //!
 //! ## Response: [CharityCampaign]

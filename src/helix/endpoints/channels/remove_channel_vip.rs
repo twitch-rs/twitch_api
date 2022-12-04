@@ -9,7 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::channels::remove_channel_vip;
-//! let request = remove_channel_vip::RemoveChannelVipRequest::new("1234", "1337");
+//! let request =
+//!     remove_channel_vip::RemoveChannelVipRequest::new("1234", "1337");
 //! ```
 //!
 //! ## Response: [RemoveChannelVipResponse]

@@ -9,7 +9,9 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::remove_blocked_term;
-//! let request = remove_blocked_term::RemoveBlockedTermRequest::new("1234", "5678", "DEADBEEF");
+//! let request = remove_blocked_term::RemoveBlockedTermRequest::new(
+//!     "1234", "5678", "DEADBEEF",
+//! );
 //! ```
 //!
 //! ## Response: [RemoveBlockedTerm]

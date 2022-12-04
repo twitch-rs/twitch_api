@@ -9,7 +9,9 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::send_chat_announcement;
-//! let request = send_chat_announcement::SendChatAnnouncementRequest::new("1234", "5678");
+//! let request = send_chat_announcement::SendChatAnnouncementRequest::new(
+//!     "1234", "5678",
+//! );
 //! ```
 //!
 //! ## Body: [SendChatAnnouncementBody]
@@ -18,8 +20,11 @@
 //!
 //! ```
 //! # use twitch_api::helix::chat::send_chat_announcement;
-//! let body =
-//!     send_chat_announcement::SendChatAnnouncementBody::new("Hello chat!", "purple").unwrap();
+//! let body = send_chat_announcement::SendChatAnnouncementBody::new(
+//!     "Hello chat!",
+//!     "purple",
+//! )
+//! .unwrap();
 //! ```
 //!
 //! ## Response: [SendChatAnnouncementResponse]

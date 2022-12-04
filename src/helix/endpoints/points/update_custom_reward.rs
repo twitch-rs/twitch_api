@@ -11,7 +11,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::points::update_custom_reward;
-//! let request = update_custom_reward::UpdateCustomRewardRequest::new("274637212", "reward-id");
+//! let request = update_custom_reward::UpdateCustomRewardRequest::new(
+//!     "274637212",
+//!     "reward-id",
+//! );
 //! ```
 //!
 //! ## Body: [UpdateCustomRewardBody]

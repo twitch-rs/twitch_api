@@ -585,7 +585,8 @@ impl Event {
     ///     }
     /// }
     /// "#;
-    /// let event: EventsubWebsocketData<'_> = Event::parse_websocket(notification)?;
+    /// let event: EventsubWebsocketData<'_> =
+    ///     Event::parse_websocket(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     #[cfg(feature = "unsupported")]

@@ -55,8 +55,7 @@ mod tests {
 "##;
 
         let source = format!(
-            r#"{{"type": "MESSAGE", "data": {{ "topic": "following.27620241", "message": {:?} }}}}"#,
-            message
+            r#"{{"type": "MESSAGE", "data": {{ "topic": "following.27620241", "message": {message:?} }}}}"#
         );
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(

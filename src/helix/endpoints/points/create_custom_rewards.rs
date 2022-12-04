@@ -9,7 +9,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::points::create_custom_rewards;
-//! let request = create_custom_rewards::CreateCustomRewardRequest::broadcaster_id("274637212");
+//! let request =
+//!     create_custom_rewards::CreateCustomRewardRequest::broadcaster_id(
+//!         "274637212",
+//!     );
 //! ```
 //!
 //! ## Body: [CreateCustomRewardBody]
@@ -18,7 +21,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::points::create_custom_rewards;
-//! let mut body = create_custom_rewards::CreateCustomRewardBody::new("hydrate", 500);
+//! let mut body =
+//!     create_custom_rewards::CreateCustomRewardBody::new("hydrate", 500);
 //! ```
 //!
 //! ## Response: [CreateCustomRewardResponse]

@@ -9,7 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::streams::replace_stream_tags;
-//! let request = replace_stream_tags::ReplaceStreamTagsRequest::broadcaster_id("1234");
+//! let request =
+//!     replace_stream_tags::ReplaceStreamTagsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Body: [ReplaceStreamTagsBody]

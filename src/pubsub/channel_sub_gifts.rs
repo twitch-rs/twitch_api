@@ -80,8 +80,7 @@ mod tests {
 "##;
 
         let source = format!(
-            r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-sub-gifts-v1.27620241", "message": {:?} }}}}"#,
-            message
+            r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-sub-gifts-v1.27620241", "message": {message:?} }}}}"#
         );
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(

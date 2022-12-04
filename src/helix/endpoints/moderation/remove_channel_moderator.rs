@@ -9,7 +9,9 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::remove_channel_moderator;
-//! let request = remove_channel_moderator::RemoveChannelModeratorRequest::new("1234", "5678");
+//! let request = remove_channel_moderator::RemoveChannelModeratorRequest::new(
+//!     "1234", "5678",
+//! );
 //! ```
 //!
 //! ## Response: [RemoveChannelModeratorResponse]

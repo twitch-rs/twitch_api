@@ -22,7 +22,12 @@
 //!     create_poll::NewPollChoice::new("Heads"),
 //!     create_poll::NewPollChoice::new("Tails"),
 //! ];
-//! let mut body = create_poll::CreatePollBody::new("141981764", "Heads or Tails?", 1800, choices);
+//! let mut body = create_poll::CreatePollBody::new(
+//!     "141981764",
+//!     "Heads or Tails?",
+//!     1800,
+//!     choices,
+//! );
 //! body.channel_points_voting_enabled = Some(true);
 //! body.channel_points_per_vote = Some(100);
 //! ```

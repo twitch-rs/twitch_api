@@ -204,7 +204,8 @@ impl<E: EventSubscription> Payload<E> {
     ///     }
     /// }
     /// "#;
-    /// let payload: Payload<ChannelFollowV1> = Payload::parse_notification(notification)?;
+    /// let payload: Payload<ChannelFollowV1> =
+    ///     Payload::parse_notification(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn parse_notification(source: &str) -> Result<Payload<E>, PayloadParseError> {
@@ -253,7 +254,8 @@ impl<E: EventSubscription> Payload<E> {
     ///     }
     /// }
     /// "#;
-    /// let payload: Payload<ChannelFollowV1> = Payload::parse_revocation(notification)?;
+    /// let payload: Payload<ChannelFollowV1> =
+    ///     Payload::parse_revocation(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn parse_revocation(source: &str) -> Result<Payload<E>, PayloadParseError> {
@@ -298,7 +300,8 @@ impl<E: EventSubscription> Payload<E> {
     ///     }
     /// }
     /// "#;
-    /// let payload: Payload<ChannelFollowV1> = Payload::parse_verification_request(notification)?;
+    /// let payload: Payload<ChannelFollowV1> =
+    ///     Payload::parse_verification_request(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn parse_verification_request(source: &str) -> Result<Payload<E>, PayloadParseError> {

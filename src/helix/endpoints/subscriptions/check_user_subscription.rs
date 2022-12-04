@@ -9,7 +9,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::subscriptions::check_user_subscription;
-//! let request = check_user_subscription::CheckUserSubscriptionRequest::broadcaster_id("1234");
+//! let request =
+//!     check_user_subscription::CheckUserSubscriptionRequest::broadcaster_id(
+//!         "1234",
+//!     );
 //! ```
 //!
 //! ## Response: [UserSubscription]

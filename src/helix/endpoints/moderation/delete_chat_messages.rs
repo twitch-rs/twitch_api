@@ -9,8 +9,9 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::delete_chat_messages;
-//! let request = delete_chat_messages::DeleteChatMessagesRequest::new("1234", "5678")
-//!     .message_id("abc-123-def");
+//! let request =
+//!     delete_chat_messages::DeleteChatMessagesRequest::new("1234", "5678")
+//!         .message_id("abc-123-def");
 //! ```
 //!
 //! ## Response: [DeleteChatMessagesResponse]

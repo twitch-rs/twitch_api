@@ -10,7 +10,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::check_automod_status;
-//! let request = check_automod_status::CheckAutoModStatusRequest::broadcaster_id("1234");
+//! let request =
+//!     check_automod_status::CheckAutoModStatusRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Body: [CheckAutoModStatusBody]
@@ -19,8 +20,10 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::check_automod_status;
-//! let body =
-//!     check_automod_status::CheckAutoModStatusBody::new("test1", "automod please approve this!");
+//! let body = check_automod_status::CheckAutoModStatusBody::new(
+//!     "test1",
+//!     "automod please approve this!",
+//! );
 //! ```
 //!
 //! ## Response: [CheckAutoModStatus]
