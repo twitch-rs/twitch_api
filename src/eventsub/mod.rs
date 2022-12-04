@@ -696,6 +696,8 @@ pub enum Status {
     UserRemoved,
     /// Twitch revoked your subscription because the subscribed to subscription type and version is no longer supported.
     VersionRemoved,
+    /// Websocket was disconnected
+    WebsocketDisconnected,
 }
 
 /// General information about an EventSub subscription.
