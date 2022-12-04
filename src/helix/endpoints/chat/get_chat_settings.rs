@@ -20,9 +20,10 @@
 //!     helix::{self, chat::get_chat_settings},
 //!     types,
 //! };
-//! let request = get_chat_settings::GetChatSettingsRequest::broadcaster_id("1234567")
-//!     // optional
-//!     .moderator_id("9876543");
+//! let request =
+//!     get_chat_settings::GetChatSettingsRequest::broadcaster_id("1234567")
+//!         // optional
+//!         .moderator_id("9876543");
 //! ```
 //!
 //! ## Response: [ChatSettings]

@@ -23,8 +23,12 @@
 //! We also need to provide a body to the request containing what we want to change.
 //!
 //! ```
-//! use twitch_api::helix::points::{CustomRewardRedemptionStatus, UpdateRedemptionStatusBody};
-//! let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
+//! use twitch_api::helix::points::{
+//!     CustomRewardRedemptionStatus, UpdateRedemptionStatusBody,
+//! };
+//! let body = UpdateRedemptionStatusBody::status(
+//!     CustomRewardRedemptionStatus::Canceled,
+//! );
 //! ```
 //!
 //! ## Response: [UpdateRedemptionStatusInformation]

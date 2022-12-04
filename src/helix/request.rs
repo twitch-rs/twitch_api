@@ -56,10 +56,9 @@ pub trait RequestPost: Request {
         let body = body.try_to_body()?;
         // eprintln!("\n\nbody is ------------ {:?} ------------", body);
 
-        let mut bearer =
-            http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
-                CreateRequestError::Custom("Could not make token into headervalue".into())
-            })?;
+        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {token}")).map_err(|_| {
+            CreateRequestError::Custom("Could not make token into headervalue".into())
+        })?;
         bearer.set_sensitive(true);
         http::Request::builder()
             .method(http::Method::POST)
@@ -152,10 +151,9 @@ pub trait RequestPatch: Request {
         let body = body.try_to_body()?;
         // eprintln!("\n\nbody is ------------ {} ------------", body);
 
-        let mut bearer =
-            http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
-                CreateRequestError::Custom("Could not make token into headervalue".into())
-            })?;
+        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {token}")).map_err(|_| {
+            CreateRequestError::Custom("Could not make token into headervalue".into())
+        })?;
         bearer.set_sensitive(true);
         http::Request::builder()
             .method(http::Method::PATCH)
@@ -223,10 +221,9 @@ pub trait RequestDelete: Request {
     ) -> Result<http::Request<hyper::body::Bytes>, CreateRequestError> {
         let uri = self.get_uri()?;
 
-        let mut bearer =
-            http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
-                CreateRequestError::Custom("Could not make token into headervalue".into())
-            })?;
+        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {token}")).map_err(|_| {
+            CreateRequestError::Custom("Could not make token into headervalue".into())
+        })?;
         bearer.set_sensitive(true);
         http::Request::builder()
             .method(http::Method::DELETE)
@@ -299,10 +296,9 @@ pub trait RequestPut: Request {
         let body = body.try_to_body()?;
         // eprintln!("\n\nbody is ------------ {} ------------", body);
 
-        let mut bearer =
-            http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
-                CreateRequestError::Custom("Could not make token into headervalue".into())
-            })?;
+        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {token}")).map_err(|_| {
+            CreateRequestError::Custom("Could not make token into headervalue".into())
+        })?;
         bearer.set_sensitive(true);
         http::Request::builder()
             .method(http::Method::PUT)
@@ -370,10 +366,9 @@ pub trait RequestGet: Request {
     ) -> Result<http::Request<hyper::body::Bytes>, CreateRequestError> {
         let uri = self.get_uri()?;
 
-        let mut bearer =
-            http::HeaderValue::from_str(&format!("Bearer {}", token)).map_err(|_| {
-                CreateRequestError::Custom("Could not make token into headervalue".into())
-            })?;
+        let mut bearer = http::HeaderValue::from_str(&format!("Bearer {token}")).map_err(|_| {
+            CreateRequestError::Custom("Could not make token into headervalue".into())
+        })?;
         bearer.set_sensitive(true);
         http::Request::builder()
             .method(http::Method::GET)

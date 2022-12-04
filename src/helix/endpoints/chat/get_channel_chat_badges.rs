@@ -9,7 +9,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_channel_chat_badges;
-//! let request = get_channel_chat_badges::GetChannelChatBadgesRequest::broadcaster_id("1234");
+//! let request =
+//!     get_channel_chat_badges::GetChannelChatBadgesRequest::broadcaster_id(
+//!         "1234",
+//!     );
 //! ```
 //!
 //! ## Response: [BadgeSet]

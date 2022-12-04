@@ -9,7 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::channels::get_channel_editors;
-//! let request = get_channel_editors::GetChannelEditorsRequest::broadcaster_id("1234");
+//! let request =
+//!     get_channel_editors::GetChannelEditorsRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [Editor]

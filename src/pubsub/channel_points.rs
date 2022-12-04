@@ -253,8 +253,7 @@ mod tests {
 "##;
 
         let source = format!(
-            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {:?} }}}}"#,
-            message
+            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {message:?} }}}}"#
         );
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
@@ -313,8 +312,7 @@ mod tests {
         "##;
 
         let source = format!(
-            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {:?} }}}}"#,
-            message
+            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {message:?} }}}}"#
         );
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
@@ -382,8 +380,7 @@ mod tests {
         "##;
 
         let source = format!(
-            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {:?} }}}}"#,
-            message
+            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {message:?} }}}}"#
         );
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
@@ -414,8 +411,7 @@ mod tests {
         "##;
 
         let source = format!(
-            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {:?} }}}}"#,
-            message
+            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {message:?} }}}}"#
         );
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(
@@ -446,8 +442,7 @@ mod tests {
         "##;
 
         let source = format!(
-            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {:?} }}}}"#,
-            message
+            r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {message:?} }}}}"#
         );
         let actual = dbg!(Response::parse(&source).unwrap());
         assert!(matches!(

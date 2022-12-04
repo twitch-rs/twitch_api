@@ -9,7 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::update_chat_settings;
-//! let request = update_chat_settings::UpdateChatSettingsRequest::new("1234", "5678");
+//! let request =
+//!     update_chat_settings::UpdateChatSettingsRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Body: [UpdateChatSettingsBody]

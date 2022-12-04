@@ -7,7 +7,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::teams::get_channel_teams;
-//! let request = get_channel_teams::GetChannelTeamsRequest::broadcaster_id("1337");
+//! let request =
+//!     get_channel_teams::GetChannelTeamsRequest::broadcaster_id("1337");
 //! ```
 //!
 //! ## Response: [BroadcasterTeam]

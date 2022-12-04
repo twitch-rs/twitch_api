@@ -19,7 +19,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::channels::modify_channel_information;
-//! let mut body = modify_channel_information::ModifyChannelInformationBody::new();
+//! let mut body =
+//!     modify_channel_information::ModifyChannelInformationBody::new();
 //! body.title("Hello World!");
 //! ```
 //!

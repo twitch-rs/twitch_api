@@ -9,7 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_channel_emotes;
-//! let request = get_channel_emotes::GetChannelEmotesRequest::broadcaster_id("1234");
+//! let request =
+//!     get_channel_emotes::GetChannelEmotesRequest::broadcaster_id("1234");
 //! ```
 //!
 //! ## Response: [ChannelEmote]

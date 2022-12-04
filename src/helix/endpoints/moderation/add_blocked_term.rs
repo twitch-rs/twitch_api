@@ -18,7 +18,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::add_blocked_term;
-//! let body = add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of");
+//! let body =
+//!     add_blocked_term::AddBlockedTermBody::new("A phrase I'm not fond of");
 //! ```
 //!
 //! ## Response: [BlockedTerm]

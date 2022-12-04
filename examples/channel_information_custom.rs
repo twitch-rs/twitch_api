@@ -4,10 +4,10 @@ use twitch_oauth2::{AccessToken, UserToken};
 fn main() {
     use std::error::Error;
     if let Err(err) = run() {
-        println!("Error: {}", err);
+        println!("Error: {err}");
         let mut e: &'_ dyn Error = err.as_ref();
         while let Some(cause) = e.source() {
-            println!("Caused by: {}", cause);
+            println!("Caused by: {cause}");
             e = cause;
         }
     }
@@ -36,7 +36,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
 
     let channel: Vec<CustomChannelInformation> = resp.data()?;
 
-    println!("Stream information:\n{:#?}", channel);
+    println!("Stream information:\n{channel:#?}");
     Ok(())
 }
 

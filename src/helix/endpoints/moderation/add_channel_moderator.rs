@@ -9,7 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::add_channel_moderator;
-//! let request = add_channel_moderator::AddChannelModeratorRequest::new("1234", "5678");
+//! let request =
+//!     add_channel_moderator::AddChannelModeratorRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Response: [AddChannelModeratorResponse]

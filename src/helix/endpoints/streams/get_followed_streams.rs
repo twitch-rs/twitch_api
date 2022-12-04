@@ -9,7 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::streams::get_followed_streams;
-//! let request = get_followed_streams::GetFollowedStreamsRequest::user_id("1234");
+//! let request =
+//!     get_followed_streams::GetFollowedStreamsRequest::user_id("1234");
 //! ```
 //!
 //! ## Response: [Stream]

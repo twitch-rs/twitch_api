@@ -10,7 +10,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::hypetrain::get_hypetrain_events;
-//! let request = get_hypetrain_events::GetHypeTrainEventsRequest::broadcaster_id("4321");
+//! let request =
+//!     get_hypetrain_events::GetHypeTrainEventsRequest::broadcaster_id("4321");
 //! ```
 //!
 //! ## Response: [HypeTrainEvent](types::TwitchCategory)

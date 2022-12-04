@@ -23,7 +23,10 @@
 //! let body = create_prediction::CreatePredictionBody::new(
 //!     "141981764",
 //!     "Any leeks in the stream?",
-//!     create_prediction::NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+//!     create_prediction::NewPredictionOutcome::new_tuple(
+//!         "Yes, give it time.",
+//!         "Definitely not.",
+//!     ),
 //!     120,
 //! );
 //! ```

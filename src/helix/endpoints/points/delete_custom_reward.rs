@@ -9,7 +9,10 @@
 //!
 //! ```rust
 //! use twitch_api::helix::points::delete_custom_reward;
-//! let request = delete_custom_reward::DeleteCustomRewardRequest::new("274637212", "1234");
+//! let request = delete_custom_reward::DeleteCustomRewardRequest::new(
+//!     "274637212",
+//!     "1234",
+//! );
 //! ```
 //!
 //! ## Response: [DeleteCustomReward]

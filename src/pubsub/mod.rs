@@ -238,7 +238,8 @@ struct ITopicSubscribe<'a> {
 /// .into_topic();
 ///
 /// // Listen to follows as well
-/// let follows = pubsub::following::Following { channel_id: 1234 }.into_topic();
+/// let follows =
+///     pubsub::following::Following { channel_id: 1234 }.into_topic();
 /// // Create the topic command to send to twitch
 /// let command = pubsub::listen_command(
 ///     &[chat_mod_actions, follows],
@@ -286,7 +287,8 @@ where
 /// }
 /// .into_topic();
 ///
-/// let follows = pubsub::following::Following { channel_id: 1234 }.into_topic();
+/// let follows =
+///     pubsub::following::Following { channel_id: 1234 }.into_topic();
 /// // Create the command to send to twitch
 /// let command = pubsub::unlisten_command(
 ///     &[chat_mod_actions, follows],
@@ -489,7 +491,7 @@ impl<'de> Deserialize<'de> for TopicData {
             message: String,
         }
         let reply = ITopicData::deserialize(deserializer).map_err(|e| {
-            serde::de::Error::custom(format!("could not deserialize topic reply: {}", e))
+            serde::de::Error::custom(format!("could not deserialize topic reply: {e}"))
         })?;
         Ok(match reply.topic {
             Topics::AutoModQueue(topic) => TopicData::AutoModQueue {
