@@ -680,30 +680,60 @@ pub enum TransportMethod {
     Websocket,
 }
 
-///  Subscription request status
+/// Subscription request status
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
-#[serde(rename_all = "snake_case")] // FIXME: Most examples use kebab-case... but reality seems to be snake_case
 pub enum Status {
     /// Twitch has verified your callback and is able to send you notifications.
+    #[serde(rename = "enabled")]
     Enabled,
-    /// Twitch is verifying that you own the callback specified in the create subscription request. For information about how it does this, see Verifying your callback. Used only for webhook subscriptions.
+    /// Twitch is verifying that you own the callback specified in the create subscription request. For information about how it does this, see [Verifying your callback](https://dev.twitch.tv/docs/eventsub/handling-webhook-events/#responding-to-a-challenge-request). Used only for webhook subscriptions.
+    #[serde(rename = "webhook_callback_verification_pending")]
     WebhookCallbackVerificationPending,
     /// Twitch failed to verify that you own the callback specified in the create subscription request. Fix your event handler to correctly respond to the challenge, and then try subscribing again. Used only for webhook subscriptions.
+    #[serde(rename = "webhook_callback_verification_failed")]
     WebhookCallbackVerificationFailed,
     /// Twitch revoked your subscription because the notification delivery failure rate was too high. Used only for webhook subscriptions.
+    #[serde(rename = "notification_failures_exceeded")]
     NotificationFailuresExceeded,
-    /// Twitch revoked your subscription because the users in the `condition` object revoked their authorization letting you get events on their behalf, or changed their password.
+    /// Twitch revoked your subscription because the users in the [`condition`](EventSubSubscription::condition) object revoked their authorization letting you get events on their behalf, or changed their password.
+    #[serde(rename = "authorization_revoked")]
     AuthorizationRevoked,
-    /// Twitch revoked your subscription because the users in the `condition` object are no longer Twitch users.
+    /// The moderator that authorized the subscription is no longer one of the broadcaster's moderators.
+    #[serde(rename = "moderator_removed")]
+    ModeratorRemoved,
+    /// Twitch revoked your subscription because the users in the [`condition`](EventSubSubscription::condition) object are no longer Twitch users.
+    #[serde(rename = "user_removed")]
     UserRemoved,
     /// Twitch revoked your subscription because the subscribed to subscription type and version is no longer supported.
+    #[serde(rename = "version_removed")]
     VersionRemoved,
-    /// Websocket was disconnected
+    /// The client closed the connection.
+    #[serde(rename = "websocket_disconnected")]
     WebsocketDisconnected,
+    /// The client failed to respond to a ping message.
+    #[serde(rename = "websocket_failed_ping_pong")]
+    WebsocketFailedPingPong,
+    /// The client sent a non-pong message. Clients may only send pong messages (and only in response to a ping message).
+    #[serde(rename = "websocket_received_inbound_traffic")]
+    WebsocketReceivedInboundTraffic,
+    /// The client failed to subscribe to events within the required time.
+    #[serde(rename = "websocket_connection_unused")]
+    WebsocketConnectionUnused,
+    /// The Twitch WebSocket server experienced an unexpected error.
+    #[serde(rename = "websocket_internal_error")]
+    WebsocketInternalError,
+    /// The Twitch WebSocket server timed out writing the message to the client.
+    #[serde(rename = "websocket_network_timeout")]
+    WebsocketNetworkTimeout,
+    /// The Twitch WebSocket server experienced a network error writing the message to the client.
+    #[serde(rename = "websocket_network_error")]
+    WebsocketNetworkError,
 }
 
 /// General information about an EventSub subscription.
+///
+/// Returned by [`Event::subscription`]
 ///
 /// See also [`EventSubscriptionInformation`]
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
