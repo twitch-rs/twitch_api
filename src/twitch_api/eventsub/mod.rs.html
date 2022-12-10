@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e963ab4a0d0c903e.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-046227e470cd3629.css"><link rel="stylesheet" disabled href="../../../static.files/dark-800f2ee593c8e6f7.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-9edae3c387f5a5b3.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-5cf2e01a42cc9858.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-287cecec4dbb45b0.js"></script><script defer src="../../../static.files/scrape-examples-1f45318ad6bd2a81.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-6827029ac823cab7.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-ebce58d0a40c3431.css"><link rel="stylesheet" disabled href="../../../static.files/dark-f23faae4a2daf9a6.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-8af5e100b21cd173.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-5cf2e01a42cc9858.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-c55e1eb52e1886b4.js"></script><script defer src="../../../static.files/scrape-examples-ef1e698c1d417c0c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -929,6 +929,36 @@
 <a href="#929" id="929">929</a>
 <a href="#930" id="930">930</a>
 <a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
+<a href="#943" id="943">943</a>
+<a href="#944" id="944">944</a>
+<a href="#945" id="945">945</a>
+<a href="#946" id="946">946</a>
+<a href="#947" id="947">947</a>
+<a href="#948" id="948">948</a>
+<a href="#949" id="949">949</a>
+<a href="#950" id="950">950</a>
+<a href="#951" id="951">951</a>
+<a href="#952" id="952">952</a>
+<a href="#953" id="953">953</a>
+<a href="#954" id="954">954</a>
+<a href="#955" id="955">955</a>
+<a href="#956" id="956">956</a>
+<a href="#957" id="957">957</a>
+<a href="#958" id="958">958</a>
+<a href="#959" id="959">959</a>
+<a href="#960" id="960">960</a>
+<a href="#961" id="961">961</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Holds serializable EventSub stuff
 //!
 //! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).
@@ -1611,30 +1641,60 @@
     </span>Websocket,
 }
 
-<span class="doccomment">///  Subscription request status
+<span class="doccomment">/// Subscription request status
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
-#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)] </span><span class="comment">// FIXME: Most examples use kebab-case... but reality seems to be snake_case
 </span><span class="kw">pub enum </span>Status {
     <span class="doccomment">/// Twitch has verified your callback and is able to send you notifications.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;enabled&quot;</span>)]
     </span>Enabled,
-    <span class="doccomment">/// Twitch is verifying that you own the callback specified in the create subscription request. For information about how it does this, see Verifying your callback. Used only for webhook subscriptions.
+    <span class="doccomment">/// Twitch is verifying that you own the callback specified in the create subscription request. For information about how it does this, see [Verifying your callback](https://dev.twitch.tv/docs/eventsub/handling-webhook-events/#responding-to-a-challenge-request). Used only for webhook subscriptions.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;webhook_callback_verification_pending&quot;</span>)]
     </span>WebhookCallbackVerificationPending,
     <span class="doccomment">/// Twitch failed to verify that you own the callback specified in the create subscription request. Fix your event handler to correctly respond to the challenge, and then try subscribing again. Used only for webhook subscriptions.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;webhook_callback_verification_failed&quot;</span>)]
     </span>WebhookCallbackVerificationFailed,
     <span class="doccomment">/// Twitch revoked your subscription because the notification delivery failure rate was too high. Used only for webhook subscriptions.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;notification_failures_exceeded&quot;</span>)]
     </span>NotificationFailuresExceeded,
-    <span class="doccomment">/// Twitch revoked your subscription because the users in the `condition` object revoked their authorization letting you get events on their behalf, or changed their password.
+    <span class="doccomment">/// Twitch revoked your subscription because the users in the [`condition`](EventSubSubscription::condition) object revoked their authorization letting you get events on their behalf, or changed their password.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;authorization_revoked&quot;</span>)]
     </span>AuthorizationRevoked,
-    <span class="doccomment">/// Twitch revoked your subscription because the users in the `condition` object are no longer Twitch users.
+    <span class="doccomment">/// The moderator that authorized the subscription is no longer one of the broadcaster&#39;s moderators.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;moderator_removed&quot;</span>)]
+    </span>ModeratorRemoved,
+    <span class="doccomment">/// Twitch revoked your subscription because the users in the [`condition`](EventSubSubscription::condition) object are no longer Twitch users.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;user_removed&quot;</span>)]
     </span>UserRemoved,
     <span class="doccomment">/// Twitch revoked your subscription because the subscribed to subscription type and version is no longer supported.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;version_removed&quot;</span>)]
     </span>VersionRemoved,
-    <span class="doccomment">/// Websocket was disconnected
+    <span class="doccomment">/// The client closed the connection.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_disconnected&quot;</span>)]
     </span>WebsocketDisconnected,
+    <span class="doccomment">/// The client failed to respond to a ping message.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_failed_ping_pong&quot;</span>)]
+    </span>WebsocketFailedPingPong,
+    <span class="doccomment">/// The client sent a non-pong message. Clients may only send pong messages (and only in response to a ping message).
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_received_inbound_traffic&quot;</span>)]
+    </span>WebsocketReceivedInboundTraffic,
+    <span class="doccomment">/// The client failed to subscribe to events within the required time.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_connection_unused&quot;</span>)]
+    </span>WebsocketConnectionUnused,
+    <span class="doccomment">/// The Twitch WebSocket server experienced an unexpected error.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_internal_error&quot;</span>)]
+    </span>WebsocketInternalError,
+    <span class="doccomment">/// The Twitch WebSocket server timed out writing the message to the client.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_network_timeout&quot;</span>)]
+    </span>WebsocketNetworkTimeout,
+    <span class="doccomment">/// The Twitch WebSocket server experienced a network error writing the message to the client.
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_network_error&quot;</span>)]
+    </span>WebsocketNetworkError,
 }
 
 <span class="doccomment">/// General information about an EventSub subscription.
+///
+/// Returned by [`Event::subscription`]
 ///
 /// See also [`EventSubscriptionInformation`]
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
@@ -1861,4 +1921,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (234151769 2022-12-03)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (dfe3fe710 2022-12-09)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
