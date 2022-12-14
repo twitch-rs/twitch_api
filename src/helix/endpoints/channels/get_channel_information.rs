@@ -101,6 +101,10 @@ pub struct ChannelInformation {
     #[serde(default)]
     pub description: String,
     /// Stream delay in seconds
+    ///
+    /// # Notes
+    ///
+    /// This value may not be accurate, it'll only be accurate when the token belongs to the broadcaster and they are partnered.
     #[serde(default)]
     pub delay: i64,
 }
