@@ -393,8 +393,7 @@ where Self::Response: for<'y> yoke::Yokeable<'y> {
     ) -> Result<Response<Self, <Self::Response as yoke::Yokeable<'r>>::Output>, HelixRequestGetError>
     where
         Self: Sized,
-        for<'y> yoke::trait_hack::YokeTraitHack<<Self::Response as yoke::Yokeable<'y>>::Output>:
-            serde::Deserialize<'y>,
+        <Self::Response as yoke::Yokeable<'r>>::Output: serde::Deserialize<'r>,
     {
         let text = std::str::from_utf8(response.body()).map_err(|e| {
             HelixRequestGetError::Utf8Error(response.body().to_vec(), e, uri.clone())
@@ -425,8 +424,7 @@ where Self::Response: for<'y> yoke::Yokeable<'y> {
     ) -> Result<Response<Self, <Self::Response as yoke::Yokeable<'r>>::Output>, HelixRequestGetError>
     where
         Self: Sized,
-        yoke::trait_hack::YokeTraitHack<<Self::Response as yoke::Yokeable<'r>>::Output>:
-            serde::Deserialize<'r>,
+        <Self::Response as yoke::Yokeable<'r>>::Output: serde::Deserialize<'r>,
     {
         let response: InnerResponse<_> = parse_json(response, true).map_err(|e| {
             HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone(), status)
