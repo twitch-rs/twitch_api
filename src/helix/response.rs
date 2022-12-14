@@ -2,12 +2,9 @@
 use super::{Cursor, Request};
 
 /// Response retrieved from endpoint. Data is the type in [`Request::Response`]
-#[derive(PartialEq, Eq, Debug)]
 #[non_exhaustive]
 pub struct Response<R, D>
-where
-    R: Request,
-    D: serde::de::DeserializeOwned + PartialEq, {
+where R: Request {
     /// Twitch's response field for `data`.
     pub data: D,
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
@@ -22,10 +19,45 @@ where
     pub other: Option<serde_json::Map<String, serde_json::Value>>,
 }
 
-impl<R, D> Response<R, D>
+impl<R, D> Eq for Response<R, D>
 where
-    R: Request,
-    D: serde::de::DeserializeOwned + PartialEq,
+    R: Request + Eq,
+    D: PartialEq + Eq,
+{
+}
+
+impl<R, D> PartialEq for Response<R, D>
+where
+    R: Request + PartialEq,
+    D: PartialEq,
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.data == other.data
+            && self.pagination == other.pagination
+            && self.request == other.request
+            && self.total == other.total
+            && self.other == other.other
+    }
+}
+
+impl<R, D> std::fmt::Debug for Response<R, D>
+where
+    R: Request + std::fmt::Debug,
+    D: std::fmt::Debug,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Response")
+            .field("data", &self.data)
+            .field("pagination", &self.pagination)
+            .field("request", &self.request)
+            .field("total", &self.total)
+            .field("other", &self.other)
+            .finish()
+    }
+}
+
+impl<R, D> Response<R, D>
+where R: Request
 {
     /// Get a field from the response that is not part of `data`.
     pub fn get_other<Q, V>(&self, key: &Q) -> Result<Option<V>, serde_json::Error>
@@ -53,14 +85,29 @@ where
     }
 }
 
-// impl<R, D, T> Response<R, D>
-// where
-//     R: Request,
-//     D: IntoIterator<Item = T> + PartialEq + serde::de::DeserializeOwned,
-// {
-//     /// Get first result of this response.
-//     pub fn first(self) -> Option<T> { self.data.into_iter().next() }
-// }
+impl<R, D, T> Response<R, D>
+where
+    R: Request,
+    D: IntoIterator<Item = T>,
+{
+    /// Get first result of this response.
+    pub fn first(self) -> Option<T> { self.data.into_iter().next() }
+}
+
+impl<R, D, B, T> Response<R, yoke::Yoke<D, B>>
+where
+    R: Request,
+    D: for<'y> yoke::Yokeable<'y>,
+    for<'y> <D as yoke::Yokeable<'y>>::Output: IntoIterator<Item = T>,
+    T: for<'y> yoke::Yokeable<'y, Output = T>,
+{
+    /// Get first result of this response.
+    pub fn first_yoke(self) -> Option<yoke::Yoke<T, B>> {
+        self.data
+            .try_map_project(|yk, _| yk.into_iter().next().ok_or(()))
+            .ok()
+    }
+}
 
 // // impl<R, D, T> CustomResponse<'_, R, D>
 // // where

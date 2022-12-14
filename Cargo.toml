@@ -58,6 +58,7 @@ aliri_braid = "0.3.1"
 futures = { version = "0.3.25", optional = true }
 hyper = { version = "0.14.23", optional = true }
 twitch_types = { version = "0.3.10", path = "./twitch_types" }
+yoke = { version = "0.6.2", features = ["derive"] }
 
 [features]
 default = ["deser_borrow"]
@@ -69,83 +70,29 @@ deny_unknown_fields = []
 trace_unknown_fields = ["dep:serde_ignored", "tracing"]
 
 serde_json = ["dep:serde_json", "dep:serde_path_to_error"]
-helix = [
-    "twitch_types/color",
-    "twitch_types/emote",
-    "twitch_types/goal",
-    "twitch_types/moderation",
-    "twitch_types/points",
-    "twitch_types/stream",
-    "twitch_types/timestamp",
-    "twitch_types/user",
-    "dep:async-trait",
-    "serde_json",
-    "dep:hyper",
-]
+helix = ["twitch_types/color", "twitch_types/emote", "twitch_types/goal", "twitch_types/moderation", "twitch_types/points", "twitch_types/stream", "twitch_types/timestamp", "twitch_types/user", "dep:async-trait", "serde_json", "dep:hyper"]
 
 deser_borrow = []
 
 tmi = ["serde_json", "dep:serde_path_to_error", "dep:hyper"]
 
-surf = [
-    "dep:surf",
-    "dep:http-types",
-    "client",
-    "twitch_oauth2/surf",
-    "hyper?/stream",
-]
+surf = ["dep:surf", "dep:http-types", "client", "twitch_oauth2/surf", "hyper?/stream"]
 
 ureq = ["dep:ureq", "client"]
 
 reqwest = ["dep:reqwest", "client", "twitch_oauth2/reqwest"]
 
-pubsub = [
-    "serde_json",
-    "twitch_types/emote",
-    "twitch_types/moderation",
-    "twitch_types/stream",
-    "twitch_types/timestamp",
-    "twitch_types/user",
-    "twitch_types/points",
-]
+pubsub = ["serde_json", "twitch_types/emote", "twitch_types/moderation", "twitch_types/stream", "twitch_types/timestamp", "twitch_types/user", "twitch_types/points"]
 
-eventsub = [
-    "serde_json",
-    "twitch_types/emote",
-    "twitch_types/eventsub",
-    "twitch_types/goal",
-    "twitch_types/points",
-    "twitch_types/stream",
-    "twitch_types/timestamp",
-    # insert when websockets are stable
-    # "serde_json/raw_value",
-]
+eventsub = ["serde_json", "twitch_types/emote", "twitch_types/eventsub", "twitch_types/goal", "twitch_types/points", "twitch_types/stream", "twitch_types/timestamp"]
 
 hmac = ["dep:crypto_hmac", "dep:sha2"]
 
 mock_api = []
 
-all = [
-    "tmi",
-    "helix",
-    "client",
-    "pubsub",
-    "eventsub",
-    "hmac",
-    "twitch_oauth2",
-    "tracing",
-    "twitch_types/time",
-]
+all = ["tmi", "helix", "client", "pubsub", "eventsub", "hmac", "twitch_oauth2", "tracing", "twitch_types/time"]
 
-_all = [
-    "all",
-    "typed-builder",
-    "surf",
-    "reqwest",
-    "ureq",
-    "twitch_oauth2/surf_client_curl",
-    "mock_api",
-]
+_all = ["all", "typed-builder", "surf", "reqwest", "ureq", "twitch_oauth2/surf_client_curl", "mock_api"]
 
 [dev-dependencies]
 tokio = { version = "1.22.0", features = ["rt-multi-thread", "macros"] }
@@ -168,6 +115,12 @@ required-features = ["reqwest", "helix"]
 name = "get_channel_status"
 path = "examples/get_channel_status.rs"
 required-features = ["reqwest", "helix"]
+
+[[example]]
+name = "get_users"
+path = "examples/get_users.rs"
+required-features = ["reqwest", "helix"]
+
 
 [[example]]
 name = "get_moderation"

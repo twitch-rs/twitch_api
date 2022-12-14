@@ -117,10 +117,13 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         &'a self,
         request: R,
         token: &T,
-    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<
+        Response<R, yoke::Yoke<D, std::rc::Rc<[u8]>>>,
+        ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
+    >
     where
-        R: Request<Response = D> + Request + RequestGet,
-        D: serde::de::DeserializeOwned + PartialEq,
+        R: for <'y> Request<Response<'y> = D> + Request + RequestGet,
+        D: for<'b> serde::de::Deserialize<'b> + for<'b> yoke::Yokeable<'b, Output = D> + PartialEq,
         T: TwitchToken + ?Sized,
         C: Send,
     {
@@ -133,7 +136,42 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .map_err(ClientRequestError::RequestError)?
             .into_response_vec()
             .await?;
-        <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
+        let (parts, body) = response.into_parts();
+        let body: std::rc::Rc<[u8]> = body.into();
+        let mut pagination = None;
+        let mut request_opt = None;
+        let mut total = None;
+        let mut other = None;
+        let resp: yoke::Yoke<<R as Request>::Response<'static>, _> =
+            yoke::Yoke::try_attach_to_cart(
+                body,
+                |body| -> Result<
+                    <D as yoke::Yokeable<'_>>::Output,
+                    ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
+                > {
+                    let response = http::Response::from_parts(parts, body);
+                    let Response {
+                        data,
+                        pagination: pagination_inner,
+                        request: request_inner,
+                        total: total_inner,
+                        other: other_inner,
+                    } = <R>::parse_response(Some(request), &uri, &response)?;
+                    pagination = pagination_inner;
+                    request_opt = request_inner;
+                    total = total_inner;
+                    other = other_inner;
+                    Ok(data)
+                },
+            )?;
+
+        Ok(Response {
+            data: resp,
+            pagination,
+            request: request_opt,
+            total,
+            other,
+        })
     }
 
     // /// Request on a valid [`RequestPost`] endpoint

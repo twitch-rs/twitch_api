@@ -18,7 +18,7 @@ pub trait Request: serde::Serialize {
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     /// Response type. twitch's response will  deserialize to this.
-    type Response: serde::de::DeserializeOwned + PartialEq;
+    type Response<'a>: serde::de::Deserialize<'a> + PartialEq;
     /// Defines layout of the url parameters.
     fn query(&self) -> Result<String, errors::SerializeError> { ser::to_string(self) }
     /// Returns full URI for the request, including query parameters.
@@ -296,19 +296,19 @@ pub trait Request: serde::Serialize {
 //         let body = body.try_to_body()?;
 //         // eprintln!("\n\nbody is ------------ {} ------------", body);
 
-    //     let mut bearer = http::HeaderValue::from_str(&format!("Bearer {token}")).map_err(|_| {
-    //         CreateRequestError::Custom("Could not make token into headervalue".into())
-    //     })?;
-    //     bearer.set_sensitive(true);
-    //     http::Request::builder()
-    //         .method(http::Method::PUT)
-    //         .uri(uri)
-    //         .header("Client-ID", client_id)
-    //         .header("Content-Type", "application/json")
-    //         .header(http::header::AUTHORIZATION, bearer)
-    //         .body(body)
-    //         .map_err(Into::into)
-    // }
+//     let mut bearer = http::HeaderValue::from_str(&format!("Bearer {token}")).map_err(|_| {
+//         CreateRequestError::Custom("Could not make token into headervalue".into())
+//     })?;
+//     bearer.set_sensitive(true);
+//     http::Request::builder()
+//         .method(http::Method::PUT)
+//         .uri(uri)
+//         .header("Client-ID", client_id)
+//         .header("Content-Type", "application/json")
+//         .header(http::header::AUTHORIZATION, bearer)
+//         .body(body)
+//         .map_err(Into::into)
+// }
 
 //     /// Parse response.
 //     ///
@@ -385,17 +385,16 @@ pub trait RequestGet: Request {
     /// # Notes
     ///
     /// Pass in the request to enable [pagination](Response::get_next) if supported.
-    fn parse_response<B: Into<hyper::body::Bytes>>(
+    fn parse_response<'r>(
         request: Option<Self>,
         uri: &http::Uri,
-        response: http::Response<B>,
-    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestGetError>
+        response: &http::Response<&'r [u8]>,
+    ) -> Result<Response<Self, <Self as Request>::Response<'r>>, HelixRequestGetError>
     where
         Self: Sized,
     {
-        let response: http::Response<hyper::body::Bytes> = response.map(|b| b.into());
-        let text = std::str::from_utf8(response.body().as_ref()).map_err(|e| {
-            HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
+        let text = std::str::from_utf8(response.body()).map_err(|e| {
+            HelixRequestGetError::Utf8Error(response.body().to_vec(), e, uri.clone())
         })?;
         //eprintln!("\n\nmessage is ------------ {} ------------", text);
         if let Ok(HelixRequestError {
@@ -415,12 +414,12 @@ pub trait RequestGet: Request {
     }
 
     /// Parse a response string into the response.
-    fn parse_inner_response(
+    fn parse_inner_response<'r>(
         request: Option<Self>,
         uri: &http::Uri,
-        response: &str,
+        response: &'r str,
         status: http::StatusCode,
-    ) -> Result<Response<Self, <Self as Request>::Response>, HelixRequestGetError>
+    ) -> Result<Response<Self, <Self as Request>::Response<'r>>, HelixRequestGetError>
     where
         Self: Sized,
     {

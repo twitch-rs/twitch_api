@@ -28,19 +28,20 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
     //     .map(|response| response.first())
     // }
 
-    // /// Get [User](helix::users::User) from user id
-    // pub async fn get_user_from_id<T>(
-    //     &'client self,
-    //     id: impl Into<&types::UserIdRef>,
-    //     token: &T,
-    // ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
-    // where
-    //     T: TwitchToken + ?Sized,
-    // {
-    //     self.req_get(helix::users::GetUsersRequest::ids(&[id.into()][..]), token)
-    //         .await
-    //         .map(|response| response.first())
-    // }
+    /// Get [User](helix::users::User) from user id
+    pub async fn get_user_from_id<T>(
+        &'client self,
+        id: impl Into<&types::UserIdRef>,
+        token: &T,
+    ) -> Result<Option<yoke::Yoke<helix::users::User<'static>, std::rc::Rc<[u8]>>>, ClientError<'client, C>>
+    where
+        T: TwitchToken + ?Sized,
+    {
+        // self.req_get(helix::users::GetUsersRequest::ids(&[id.into()][..]), token)
+        //     .await
+        //     .map(|response| response.first_yoke())
+        todo!()
+    }
 
     // /// Get multiple [User](helix::users::User)s from user ids.
     // pub async fn get_users_from_ids<T>(

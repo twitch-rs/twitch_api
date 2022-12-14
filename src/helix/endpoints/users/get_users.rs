@@ -106,30 +106,31 @@ impl<'a> GetUsersRequest<'a> {
 ///
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[derive(yoke::Yokeable)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct User {
+pub struct User<'a> {
     /// User’s broadcaster type: "partner", "affiliate", or "".
     pub broadcaster_type: Option<types::BroadcasterType>,
     /// Date when the user was created.
-    pub created_at: types::Timestamp,
+    pub created_at: Cow<'a, types::Timestamp>,
     /// User’s channel description.
     pub description: Option<String>,
     /// User’s display name.
-    pub display_name: types::DisplayName,
+    pub display_name: Cow<'a, types::DisplayName>,
     /// User’s email address. Returned if the request includes the [`user:read:email` scope](twitch_oauth2::Scope::UserReadEmail).
     pub email: Option<String>,
     /// User’s ID.
-    pub id: types::UserId,
+    pub id: Cow<'a, types::UserId>,
     /// User’s login name.
-    pub login: types::UserName,
+    pub login: Cow<'a, types::UserName>,
     /// URL of the user’s offline image.
     pub offline_image_url: Option<String>,
     /// URL of the user’s profile image.
     pub profile_image_url: Option<String>,
     /// User’s type: "staff", "admin", "global_mod", or "".
     #[serde(rename = "type")]
-    pub type_: Option<types::UserType>,
+    pub type_: Option<Cow<'a, types::UserType>>,
     #[deprecated(
         since = "0.7.0",
         note = "removed, see https://discuss.dev.twitch.tv/t/get-users-api-endpoint-view-count-deprecation/37777"
@@ -140,7 +141,7 @@ pub struct User {
 }
 
 impl Request for GetUsersRequest<'_> {
-    type Response = Vec<User>;
+    type Response<'a> = Vec<User<'a>>;
 
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
