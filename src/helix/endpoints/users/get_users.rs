@@ -105,24 +105,27 @@ impl<'a> GetUsersRequest<'a> {
 /// Return Values for [Get Users](super::get_users)
 ///
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[derive(yoke::Yokeable)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone, yoke::Yokeable)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct User<'a> {
     /// User’s broadcaster type: "partner", "affiliate", or "".
     pub broadcaster_type: Option<types::BroadcasterType>,
     /// Date when the user was created.
+    #[serde(borrow = "'a")]
     pub created_at: Cow<'a, types::Timestamp>,
     /// User’s channel description.
     pub description: Option<String>,
     /// User’s display name.
+    #[serde(borrow = "'a")]
     pub display_name: Cow<'a, types::DisplayName>,
     /// User’s email address. Returned if the request includes the [`user:read:email` scope](twitch_oauth2::Scope::UserReadEmail).
     pub email: Option<String>,
     /// User’s ID.
+    #[serde(borrow = "'a")]
     pub id: Cow<'a, types::UserId>,
     /// User’s login name.
+    #[serde(borrow = "'a")]
     pub login: Cow<'a, types::UserName>,
     /// URL of the user’s offline image.
     pub offline_image_url: Option<String>,
@@ -130,6 +133,7 @@ pub struct User<'a> {
     pub profile_image_url: Option<String>,
     /// User’s type: "staff", "admin", "global_mod", or "".
     #[serde(rename = "type")]
+    #[serde(borrow = "'a")]
     pub type_: Option<Cow<'a, types::UserType>>,
     #[deprecated(
         since = "0.7.0",
@@ -141,7 +145,7 @@ pub struct User<'a> {
 }
 
 impl Request for GetUsersRequest<'_> {
-    type Response<'a> = Vec<User<'a>>;
+    type Response = Vec<User<'static>>;
 
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
@@ -183,7 +187,7 @@ fn test_request() {
 "#
         .to_vec();
 
-    let http_response = http::Response::builder().body(data).unwrap();
+    let http_response = http::Response::builder().body(data.as_slice()).unwrap();
 
     let uri = req.get_uri().unwrap();
     assert_eq!(
@@ -191,5 +195,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users?id=44322889"
     );
 
-    dbg!(GetUsersRequest::parse_response(Some(req), &uri, http_response).unwrap());
+    dbg!(GetUsersRequest::parse_response(Some(req), &uri, &http_response).unwrap());
 }

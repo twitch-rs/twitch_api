@@ -273,7 +273,7 @@ pub enum DeserError {
 ///
 /// The log_ignored argument decides if a trace of ignored value should be emitted
 #[cfg(feature = "serde_json")]
-pub fn parse_json<'a, T: serde::Deserialize<'a>>(
+pub fn parse_json<'a, T: for<'d> serde::Deserialize<'d>>(
     s: &'a str,
     #[allow(unused_variables)] log_ignored: bool,
 ) -> Result<T, DeserError> {

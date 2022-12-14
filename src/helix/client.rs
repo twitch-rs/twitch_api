@@ -113,17 +113,20 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     /// # }
     /// # // fn main() {run()}
     /// ```
-    pub async fn req_get<R, D, T>(
+    pub async fn req_get<R, T, D>(
         &'a self,
         request: R,
         token: &T,
     ) -> Result<
-        Response<R, yoke::Yoke<D, std::rc::Rc<[u8]>>>,
+        Response<R, yoke::Yoke<D, Vec<u8>>>,
         ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
     >
     where
-        R: for <'y> Request<Response<'y> = D> + Request + RequestGet,
-        D: for<'b> serde::de::Deserialize<'b> + for<'b> yoke::Yokeable<'b, Output = D> + PartialEq,
+        R: Request<Response = D> + RequestGet,
+        for<'y> D: yoke::Yokeable<'y>,
+        //for<'d> yoke::trait_hack::YokeTraitHack<<D as yoke::Yokeable<'d>>::Output>:
+        //    serde::Deserialize<'d>,
+        for<'d> yoke::trait_hack::YokeTraitHack<<D as yoke::Yokeable<'d>>::Output>: serde::Deserialize<'d>,
         T: TwitchToken + ?Sized,
         C: Send,
     {
@@ -137,33 +140,28 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
             .into_response_vec()
             .await?;
         let (parts, body) = response.into_parts();
-        let body: std::rc::Rc<[u8]> = body.into();
         let mut pagination = None;
         let mut request_opt = None;
         let mut total = None;
         let mut other = None;
-        let resp: yoke::Yoke<<R as Request>::Response<'static>, _> =
-            yoke::Yoke::try_attach_to_cart(
-                body,
-                |body| -> Result<
-                    <D as yoke::Yokeable<'_>>::Output,
-                    ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
-                > {
-                    let response = http::Response::from_parts(parts, body);
-                    let Response {
-                        data,
-                        pagination: pagination_inner,
-                        request: request_inner,
-                        total: total_inner,
-                        other: other_inner,
-                    } = <R>::parse_response(Some(request), &uri, &response)?;
-                    pagination = pagination_inner;
-                    request_opt = request_inner;
-                    total = total_inner;
-                    other = other_inner;
-                    Ok(data)
-                },
-            )?;
+        let resp: yoke::Yoke<D, _> = yoke::Yoke::try_attach_to_cart(
+            body,
+            |body| -> Result<_, ClientRequestError<<C as crate::HttpClient<'a>>::Error>> {
+                let response = http::Response::from_parts(parts, body);
+                let Response {
+                    data,
+                    pagination: pagination_inner,
+                    request: request_inner,
+                    total: total_inner,
+                    other: other_inner,
+                } = <R>::parse_response(Some(request), &uri, &response)?;
+                pagination = pagination_inner;
+                request_opt = request_inner;
+                total = total_inner;
+                other = other_inner;
+                Ok(data)
+            },
+        )?;
 
         Ok(Response {
             data: resp,

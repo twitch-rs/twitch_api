@@ -1,7 +1,4 @@
 //! Convenience functions for [HelixClient]
-
-use std::borrow::Cow;
-
 use crate::helix::{self, ClientRequestError, HelixClient};
 use crate::types;
 use twitch_oauth2::TwitchToken;
@@ -28,19 +25,18 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
     //     .map(|response| response.first())
     // }
 
-    /// Get [User](helix::users::User) from user id
+     /// Get [User](helix::users::User) from user id
     pub async fn get_user_from_id<T>(
         &'client self,
         id: impl Into<&types::UserIdRef>,
         token: &T,
-    ) -> Result<Option<yoke::Yoke<helix::users::User<'static>, std::rc::Rc<[u8]>>>, ClientError<'client, C>>
+    ) -> Result<Option<yoke::Yoke<helix::users::User<'static>, Vec<u8>>>, ClientError<'client, C>>
     where
         T: TwitchToken + ?Sized,
     {
-        // self.req_get(helix::users::GetUsersRequest::ids(&[id.into()][..]), token)
-        //     .await
-        //     .map(|response| response.first_yoke())
-        todo!()
+        self.req_get(helix::users::GetUsersRequest::ids(&[id.into()][..]), token)
+            .await
+            .map(|response| response.first())
     }
 
     // /// Get multiple [User](helix::users::User)s from user ids.

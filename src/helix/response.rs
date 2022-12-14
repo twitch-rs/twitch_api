@@ -85,26 +85,17 @@ where R: Request
     }
 }
 
-impl<R, D, T> Response<R, D>
+impl<R, D, B, IT, T> Response<R, yoke::Yoke<D, B>>
 where
     R: Request,
-    D: IntoIterator<Item = T>,
+    D: for<'y> yoke::Yokeable<'y, Output = IT>,
+    T: for<'y> yoke::Yokeable<'y>,
+    IT: for<'y> yoke::Yokeable<'y> + IntoIterator<Item = T>,
 {
     /// Get first result of this response.
-    pub fn first(self) -> Option<T> { self.data.into_iter().next() }
-}
-
-impl<R, D, B, T> Response<R, yoke::Yoke<D, B>>
-where
-    R: Request,
-    D: for<'y> yoke::Yokeable<'y>,
-    for<'y> <D as yoke::Yokeable<'y>>::Output: IntoIterator<Item = T>,
-    T: for<'y> yoke::Yokeable<'y, Output = T>,
-{
-    /// Get first result of this response.
-    pub fn first_yoke(self) -> Option<yoke::Yoke<T, B>> {
+    pub fn first(self) -> Option<yoke::Yoke<T, B>> {
         self.data
-            .try_map_project(|yk, _| yk.into_iter().next().ok_or(()))
+            .try_map_project(|yk, _| yk.into_iter().next().map(|t| t.transform_owned()).ok_or(()))
             .ok()
     }
 }

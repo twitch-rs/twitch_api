@@ -4,7 +4,7 @@ use std::{convert::TryInto, str::FromStr};
 
 use crate::parse_json;
 
-use super::{ser, HelixRequestBody, HelixRequestError, InnerResponse, Response};
+use super::{ser, /* HelixRequestBody , */ HelixRequestError, InnerResponse, Response};
 use errors::*;
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
 #[async_trait::async_trait]
@@ -18,7 +18,7 @@ pub trait Request: serde::Serialize {
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     /// Response type. twitch's response will  deserialize to this.
-    type Response<'a>: serde::de::Deserialize<'a> + PartialEq;
+    type Response;
     /// Defines layout of the url parameters.
     fn query(&self) -> Result<String, errors::SerializeError> { ser::to_string(self) }
     /// Returns full URI for the request, including query parameters.
@@ -357,7 +357,8 @@ pub trait Request: serde::Serialize {
 // }
 
 /// Helix endpoint GETs information
-pub trait RequestGet: Request {
+pub trait RequestGet: Request
+where Self::Response: for<'y> yoke::Yokeable<'y> {
     /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
         &self,
@@ -389,9 +390,11 @@ pub trait RequestGet: Request {
         request: Option<Self>,
         uri: &http::Uri,
         response: &http::Response<&'r [u8]>,
-    ) -> Result<Response<Self, <Self as Request>::Response<'r>>, HelixRequestGetError>
+    ) -> Result<Response<Self, <Self::Response as yoke::Yokeable<'r>>::Output>, HelixRequestGetError>
     where
         Self: Sized,
+        for<'y> yoke::trait_hack::YokeTraitHack<<Self::Response as yoke::Yokeable<'y>>::Output>:
+            serde::Deserialize<'y>,
     {
         let text = std::str::from_utf8(response.body()).map_err(|e| {
             HelixRequestGetError::Utf8Error(response.body().to_vec(), e, uri.clone())
@@ -419,9 +422,11 @@ pub trait RequestGet: Request {
         uri: &http::Uri,
         response: &'r str,
         status: http::StatusCode,
-    ) -> Result<Response<Self, <Self as Request>::Response<'r>>, HelixRequestGetError>
+    ) -> Result<Response<Self, <Self::Response as yoke::Yokeable<'r>>::Output>, HelixRequestGetError>
     where
         Self: Sized,
+        yoke::trait_hack::YokeTraitHack<<Self::Response as yoke::Yokeable<'r>>::Output>:
+            serde::Deserialize<'r>,
     {
         let response: InnerResponse<_> = parse_json(response, true).map_err(|e| {
             HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone(), status)
