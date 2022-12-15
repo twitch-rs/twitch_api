@@ -112,7 +112,7 @@ pub struct User<'a> {
     /// User’s broadcaster type: "partner", "affiliate", or "".
     pub broadcaster_type: Option<types::BroadcasterType>,
     /// Date when the user was created.
-    pub created_at: Cow<'a, types::TimestampRef>,
+    pub created_at: &'a str,
     /// User’s channel description.
     pub description: Option<String>,
     /// User’s display name.
@@ -149,7 +149,7 @@ impl Request for GetUsersRequest<'_> {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet<'_> for GetUsersRequest<'_> {}
+impl RequestGet for GetUsersRequest<'_> {}
 
 #[cfg(test)]
 #[test]

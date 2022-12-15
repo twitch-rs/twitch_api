@@ -113,7 +113,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     /// # }
     /// # // fn main() {run()}
     /// ```
-    pub async fn req_get<R, T>(
+    pub async fn req_get<'req, R, T>(
         &'a self,
         request: R,
         token: &T,
@@ -122,7 +122,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
     >
     where
-        R: Request + RequestGet<'static>,
+        R: Request + RequestGet,
         for<'y> R::Response<'static>: yoke::Yokeable<'y>,
         T: TwitchToken + ?Sized,
         C: Send,
@@ -151,12 +151,13 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
                     request: request_inner,
                     total: total_inner,
                     other: other_inner,
-                } = <R>::parse_response(Some(request), &uri, &response)?;
+                }: Response<_, _> = request.parse(&uri, &response).unwrap();
                 pagination = pagination_inner;
                 request_opt = request_inner;
                 total = total_inner;
                 other = other_inner;
-                Ok(data)
+                use yoke::Yokeable;
+                Ok(data.transform_owned())
             },
         )?;
 

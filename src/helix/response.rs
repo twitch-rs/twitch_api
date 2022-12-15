@@ -3,8 +3,7 @@ use super::{Cursor, Request};
 
 /// Response retrieved from endpoint. Data is the type in [`Request::Response`]
 #[non_exhaustive]
-pub struct Response<R, D>
-where R: Request {
+pub struct Response<R, D> {
     /// Twitch's response field for `data`.
     pub data: D,
     /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.

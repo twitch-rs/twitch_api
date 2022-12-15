@@ -25,7 +25,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
     //     .map(|response| response.first())
     // }
 
-     /// Get [User](helix::users::User) from user id
+    /// Get [User](helix::users::User) from user id
     pub async fn get_user_from_id<T>(
         &'client self,
         id: impl Into<&types::UserIdRef>,
