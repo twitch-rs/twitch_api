@@ -123,8 +123,8 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     >
     where
         R: Request<Response = D> + RequestGet,
-        for<'y> D: yoke::Yokeable<'y>,
-        for<'d> yoke::trait_hack::YokeTraitHack<<<R as Request>::Response as yoke::Yokeable<'d>>::Output>:
+        for<'y> D: yoke::Yokeable<'y> + serde::Deserialize<'y>,
+        for<'d> yoke::trait_hack::YokeTraitHack<<D as yoke::Yokeable<'d>>::Output>:
             serde::Deserialize<'d>,
 
         T: TwitchToken + ?Sized,
@@ -144,9 +144,12 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         let mut request_opt = None;
         let mut total = None;
         let mut other = None;
-        let resp: yoke::Yoke<D, _> = yoke::Yoke::try_attach_to_cart(
+        let resp: yoke::Yoke<D, _> = yoke::Yoke::try_attach_to_cart::<_, _>(
             body,
-            |body| -> Result<_, ClientRequestError<<C as crate::HttpClient<'a>>::Error>> {
+            |body| -> Result<
+                <D as yoke::Yokeable<'_>>::Output,
+                ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
+            > {
                 let response = http::Response::from_parts(parts, body);
                 let Response {
                     data,
@@ -154,12 +157,16 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
                     request: request_inner,
                     total: total_inner,
                     other: other_inner,
-                } = <R>::parse_response(Some(request), &uri, &response)?;
+                } = <R>::parse_response::<yoke::trait_hack::YokeTraitHack<D>>(
+                    Some(request),
+                    &uri,
+                    &response,
+                )?;
                 pagination = pagination_inner;
                 request_opt = request_inner;
                 total = total_inner;
                 other = other_inner;
-                Ok(data)
+                Ok(data.0.transform_owned())
             },
         )?;
 

@@ -133,7 +133,7 @@ pub struct User<'a> {
     pub profile_image_url: Option<String>,
     /// User’s type: "staff", "admin", "global_mod", or "".
     #[serde(rename = "type")]
-    #[serde(borrow = "'a")]
+    #[serde(bound(deserialize = "'de: 'a"))]
     pub type_: Option<Cow<'a, types::UserType>>,
     #[deprecated(
         since = "0.7.0",

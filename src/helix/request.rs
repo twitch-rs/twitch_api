@@ -386,14 +386,14 @@ where Self::Response: for<'y> yoke::Yokeable<'y> {
     /// # Notes
     ///
     /// Pass in the request to enable [pagination](Response::get_next) if supported.
-    fn parse_response<'r>(
+    fn parse_response<D>(
         request: Option<Self>,
         uri: &http::Uri,
-        response: &http::Response<&'r [u8]>,
-    ) -> Result<Response<Self, <Self::Response as yoke::Yokeable<'r>>::Output>, HelixRequestGetError>
+        response: &http::Response<&[u8]>,
+    ) -> Result<Response<Self, D>, HelixRequestGetError>
     where
         Self: Sized,
-        for<'d> yoke::trait_hack::YokeTraitHack<<Self::Response as yoke::Yokeable<'d>>::Output>: serde::Deserialize<'d>,
+        for<'r> D: serde::Deserialize<'r>,
     {
         let text = std::str::from_utf8(response.body()).map_err(|e| {
             HelixRequestGetError::Utf8Error(response.body().to_vec(), e, uri.clone())
@@ -416,17 +416,47 @@ where Self::Response: for<'y> yoke::Yokeable<'y> {
     }
 
     /// Parse a response string into the response.
-    fn parse_inner_response<'r>(
+    fn parse_inner_response<D>(
         request: Option<Self>,
         uri: &http::Uri,
-        response: &'r str,
+        response: &str,
         status: http::StatusCode,
-    ) -> Result<Response<Self, <Self::Response as yoke::Yokeable<'r>>::Output>, HelixRequestGetError>
+    ) -> Result<Response<Self, D>, HelixRequestGetError>
     where
         Self: Sized,
-        for<'d> yoke::trait_hack::YokeTraitHack<<Self::Response as yoke::Yokeable<'d>>::Output>: serde::Deserialize<'d>,
+        for<'r> D: serde::Deserialize<'r>,
     {
-        let response: InnerResponse<_> = parse_json(response, true).map_err(|e| {
+        let response: InnerResponse<_> = {
+            #[cfg(feature = "trace_unknown_fields")]
+            {
+                let jd = &mut serde_json::Deserializer::from_str(response);
+                let mut track = serde_path_to_error::Track::new();
+                let pathd = serde_path_to_error::Deserializer::new(jd, &mut track);
+                if true {
+                    let mut fun = |path: serde_ignored::Path| {
+                        tracing::warn!(key=%path,"Found ignored key");
+                    };
+                    serde_ignored::deserialize(pathd, &mut fun).map_err(|e| DeserError::PathError {
+                        path: track.path().to_string(),
+                        error: e,
+                    })
+                } else {
+                    T::deserialize(pathd).map_err(|e| DeserError::PathError {
+                        path: track.path().to_string(),
+                        error: e,
+                    })
+                }
+            }
+            #[cfg(not(feature = "trace_unknown_fields"))]
+            {
+                let jd = &mut serde_json::Deserializer::from_str(response);
+                serde_path_to_error::deserialize(jd).map_err(|e| crate::DeserError::PathError {
+                    path: e.path().to_string(),
+                    error: e.into_inner(),
+                })
+            }
+        }
+        .map_err(|e| {
             HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone(), status)
         })?;
         Ok(Response {

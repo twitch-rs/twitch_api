@@ -58,7 +58,7 @@ aliri_braid = "0.3.1"
 futures = { version = "0.3.25", optional = true }
 hyper = { version = "0.14.23", optional = true }
 twitch_types = { version = "0.3.10", path = "./twitch_types" }
-yoke = { version = "0.6.2", features = ["derive"] }
+yoke = { version = "0.6.2", features = ["derive", "serde"] }
 
 [features]
 default = ["deser_borrow"]
