@@ -124,8 +124,6 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     where
         R: Request<Response = D> + RequestGet,
         for<'y> D: yoke::Yokeable<'y> + serde::Deserialize<'y>,
-        for<'d> yoke::trait_hack::YokeTraitHack<<D as yoke::Yokeable<'d>>::Output>:
-            serde::Deserialize<'d>,
 
         T: TwitchToken + ?Sized,
         C: Send,

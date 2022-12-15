@@ -112,29 +112,24 @@ pub struct User<'a> {
     /// User’s broadcaster type: "partner", "affiliate", or "".
     pub broadcaster_type: Option<types::BroadcasterType>,
     /// Date when the user was created.
-    #[serde(borrow = "'a")]
-    pub created_at: Cow<'a, types::Timestamp>,
+    pub created_at: Cow<'a, types::TimestampRef>,
     /// User’s channel description.
     pub description: Option<String>,
     /// User’s display name.
-    #[serde(borrow = "'a")]
-    pub display_name: Cow<'a, types::DisplayName>,
+    pub display_name: Cow<'a, types::DisplayNameRef>,
     /// User’s email address. Returned if the request includes the [`user:read:email` scope](twitch_oauth2::Scope::UserReadEmail).
     pub email: Option<String>,
     /// User’s ID.
-    #[serde(borrow = "'a")]
     pub id: Cow<'a, types::UserId>,
     /// User’s login name.
-    #[serde(borrow = "'a")]
-    pub login: Cow<'a, types::UserName>,
+    pub login: Cow<'a, types::UserNameRef>,
     /// URL of the user’s offline image.
     pub offline_image_url: Option<String>,
     /// URL of the user’s profile image.
     pub profile_image_url: Option<String>,
     /// User’s type: "staff", "admin", "global_mod", or "".
     #[serde(rename = "type")]
-    #[serde(bound(deserialize = "'de: 'a"))]
-    pub type_: Option<Cow<'a, types::UserType>>,
+    pub type_: Option<types::UserType>,
     #[deprecated(
         since = "0.7.0",
         note = "removed, see https://discuss.dev.twitch.tv/t/get-users-api-endpoint-view-count-deprecation/37777"
