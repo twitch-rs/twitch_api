@@ -18,7 +18,9 @@ pub trait Request: serde::Serialize {
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     /// Response type. twitch's response will  deserialize to this.
-    type Response;
+    ///
+    /// # Notes
+    type Response<'de>: serde::Deserialize<'de>;
     /// Defines layout of the url parameters.
     fn query(&self) -> Result<String, errors::SerializeError> { ser::to_string(self) }
     /// Returns full URI for the request, including query parameters.
@@ -357,8 +359,8 @@ pub trait Request: serde::Serialize {
 // }
 
 /// Helix endpoint GETs information
-pub trait RequestGet: Request
-where Self::Response: for<'y> yoke::Yokeable<'y> {
+pub trait RequestGet<'de>: Request
+where Self::Response<'static>: for<'y> yoke::Yokeable<'y> {
     /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
         &self,
@@ -386,14 +388,18 @@ where Self::Response: for<'y> yoke::Yokeable<'y> {
     /// # Notes
     ///
     /// Pass in the request to enable [pagination](Response::get_next) if supported.
-    fn parse_response<D>(
+    fn parse_response(
         request: Option<Self>,
         uri: &http::Uri,
-        response: &http::Response<&[u8]>,
-    ) -> Result<Response<Self, D>, HelixRequestGetError>
+        response: &http::Response<&'de [u8]>,
+    ) -> Result<
+        Response<Self, <Self::Response<'static> as yoke::Yokeable<'de>>::Output>,
+        HelixRequestGetError,
+    >
     where
         Self: Sized,
-        for<'r> D: serde::Deserialize<'r>,
+        for<'y> Self::Response<'static>: yoke::Yokeable<'y>,
+        <Self::Response<'static> as yoke::Yokeable<'de>>::Output: serde::Deserialize<'de>,
     {
         let text = std::str::from_utf8(response.body()).map_err(|e| {
             HelixRequestGetError::Utf8Error(response.body().to_vec(), e, uri.clone())
@@ -416,15 +422,19 @@ where Self::Response: for<'y> yoke::Yokeable<'y> {
     }
 
     /// Parse a response string into the response.
-    fn parse_inner_response<D>(
+    fn parse_inner_response(
         request: Option<Self>,
         uri: &http::Uri,
-        response: &str,
+        response: &'de str,
         status: http::StatusCode,
-    ) -> Result<Response<Self, D>, HelixRequestGetError>
+    ) -> Result<
+        Response<Self, <Self::Response<'static> as yoke::Yokeable<'de>>::Output>,
+        HelixRequestGetError,
+    >
     where
         Self: Sized,
-        for<'r> D: serde::Deserialize<'r>,
+        for<'y> Self::Response<'static>: yoke::Yokeable<'y>,
+        <Self::Response<'static> as yoke::Yokeable<'de>>::Output: serde::Deserialize<'de>,
     {
         let response: InnerResponse<_> = {
             #[cfg(feature = "trace_unknown_fields")]

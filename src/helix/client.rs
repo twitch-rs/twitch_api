@@ -113,18 +113,17 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     /// # }
     /// # // fn main() {run()}
     /// ```
-    pub async fn req_get<R, T, D>(
+    pub async fn req_get<R, T>(
         &'a self,
         request: R,
         token: &T,
     ) -> Result<
-        Response<R, yoke::Yoke<D, Vec<u8>>>,
+        Response<R, yoke::Yoke<R::Response<'static>, Vec<u8>>>,
         ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
     >
     where
-        R: Request<Response = D> + RequestGet,
-        for<'y> D: yoke::Yokeable<'y> + serde::Deserialize<'y>,
-
+        R: Request + RequestGet<'static>,
+        for<'y> R::Response<'static>: yoke::Yokeable<'y>,
         T: TwitchToken + ?Sized,
         C: Send,
     {
@@ -142,12 +141,9 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         let mut request_opt = None;
         let mut total = None;
         let mut other = None;
-        let resp: yoke::Yoke<D, _> = yoke::Yoke::try_attach_to_cart::<_, _>(
+        let resp: yoke::Yoke<_, _> = yoke::Yoke::try_attach_to_cart::<_, _>(
             body,
-            |body| -> Result<
-                <D as yoke::Yokeable<'_>>::Output,
-                ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
-            > {
+            |body| -> Result<_, ClientRequestError<<C as crate::HttpClient<'a>>::Error>> {
                 let response = http::Response::from_parts(parts, body);
                 let Response {
                     data,
@@ -155,16 +151,12 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
                     request: request_inner,
                     total: total_inner,
                     other: other_inner,
-                } = <R>::parse_response::<yoke::trait_hack::YokeTraitHack<D>>(
-                    Some(request),
-                    &uri,
-                    &response,
-                )?;
+                } = <R>::parse_response(Some(request), &uri, &response)?;
                 pagination = pagination_inner;
                 request_opt = request_inner;
                 total = total_inner;
                 other = other_inner;
-                Ok(data.0.transform_owned())
+                Ok(data)
             },
         )?;
 

@@ -140,7 +140,7 @@ pub struct User<'a> {
 }
 
 impl Request for GetUsersRequest<'_> {
-    type Response = Vec<User<'static>>;
+    type Response<'de> = Vec<User<'de>>;
 
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
@@ -149,7 +149,7 @@ impl Request for GetUsersRequest<'_> {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetUsersRequest<'_> {}
+impl RequestGet<'_> for GetUsersRequest<'_> {}
 
 #[cfg(test)]
 #[test]
