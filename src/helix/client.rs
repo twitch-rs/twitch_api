@@ -151,7 +151,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
                     request: request_inner,
                     total: total_inner,
                     other: other_inner,
-                }: Response<_, _> = request.parse(&uri, &response).unwrap();
+                }: Response<_, _> = <R>::parse_response(Some(request), &uri, &response).unwrap();
                 pagination = pagination_inner;
                 request_opt = request_inner;
                 total = total_inner;

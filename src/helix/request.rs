@@ -384,23 +384,6 @@ where for<'y> Self::Response<'static>: yoke::Yokeable<'y> {
             .map_err(Into::into)
     }
 
-    /// Parse response on self.
-    ///
-    /// # Notes
-    ///
-    /// Pass in the request to enable [pagination](Response::get_next) if supported.
-    fn parse<'de>(
-        self,
-        uri: &http::Uri,
-        response: &http::Response<&'de [u8]>,
-    ) -> Result<Response<Self, Self::Response<'de>>, HelixRequestGetError>
-    where
-        Self: Sized,
-        Self::Response<'de>: serde::Deserialize<'de>,
-    {
-        Self::parse_response(Some(self), uri, response)
-    }
-
     /// Parse response.
     ///
     /// # Notes
