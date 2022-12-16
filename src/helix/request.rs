@@ -20,7 +20,7 @@ pub trait Request: serde::Serialize {
     /// Response type. twitch's response will  deserialize to this.
     ///
     /// # Notes
-    type Response<'de>: serde::Deserialize<'de>;
+    type Response: for<'y> yoke::Yokeable<'y>;
 
     /// Defines layout of the url parameters.
     fn query(&self) -> Result<String, errors::SerializeError> { ser::to_string(self) }
@@ -361,7 +361,7 @@ pub trait Request: serde::Serialize {
 
 /// Helix endpoint GETs information
 pub trait RequestGet: Request
-where for<'y> Self::Response<'static>: yoke::Yokeable<'y> {
+where for<'y> Self::Response: yoke::Yokeable<'y> {
     /// Create a [`http::Request`] from this [`Request`] in your client
     fn create_request(
         &self,
@@ -393,10 +393,11 @@ where for<'y> Self::Response<'static>: yoke::Yokeable<'y> {
         request: Option<Self>,
         uri: &http::Uri,
         response: &http::Response<&'de [u8]>,
-    ) -> Result<Response<Self, Self::Response<'de>>, HelixRequestGetError>
+    ) -> Result<Response<Self, <Self::Response as yoke::Yokeable<'de>>::Output>, HelixRequestGetError>
     where
         Self: Sized,
-        Self::Response<'de>: serde::Deserialize<'de>,
+         yoke::trait_hack::YokeTraitHack<<Self::Response as yoke::Yokeable<'de>>::Output>:
+            serde::Deserialize<'de>,
     {
         let text = std::str::from_utf8(response.body()).map_err(|e| {
             HelixRequestGetError::Utf8Error(response.body().to_vec(), e, uri.clone())
@@ -424,46 +425,19 @@ where for<'y> Self::Response<'static>: yoke::Yokeable<'y> {
         uri: &http::Uri,
         response: &'de str,
         status: http::StatusCode,
-    ) -> Result<Response<Self, Self::Response<'de>>, HelixRequestGetError>
+    ) -> Result<Response<Self, <Self::Response as yoke::Yokeable<'de>>::Output>, HelixRequestGetError>
     where
         Self: Sized,
-        Self::Response<'de>: serde::Deserialize<'de>,
+         yoke::trait_hack::YokeTraitHack<<Self::Response as yoke::Yokeable<'de>>::Output>:
+            serde::Deserialize<'de>,
     {
-        let response: InnerResponse<_> = {
-            #[cfg(feature = "trace_unknown_fields")]
-            {
-                let jd = &mut serde_json::Deserializer::from_str(response);
-                let mut track = serde_path_to_error::Track::new();
-                let pathd = serde_path_to_error::Deserializer::new(jd, &mut track);
-                if true {
-                    let mut fun = |path: serde_ignored::Path| {
-                        tracing::warn!(key=%path,"Found ignored key");
-                    };
-                    serde_ignored::deserialize(pathd, &mut fun).map_err(|e| DeserError::PathError {
-                        path: track.path().to_string(),
-                        error: e,
-                    })
-                } else {
-                    T::deserialize(pathd).map_err(|e| DeserError::PathError {
-                        path: track.path().to_string(),
-                        error: e,
-                    })
-                }
-            }
-            #[cfg(not(feature = "trace_unknown_fields"))]
-            {
-                let jd = &mut serde_json::Deserializer::from_str(response);
-                serde_path_to_error::deserialize(jd).map_err(|e| crate::DeserError::PathError {
-                    path: e.path().to_string(),
-                    error: e.into_inner(),
-                })
-            }
-        }
-        .map_err(|e| {
+        let response: InnerResponse<
+            yoke::trait_hack::YokeTraitHack<<Self::Response as yoke::Yokeable<'de>>::Output>,
+        > = parse_json(response, true).map_err(|e| {
             HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone(), status)
         })?;
         Ok(Response {
-            data: response.data,
+            data: response.data.0,
             pagination: response.pagination.cursor,
             request,
             total: response.total,

@@ -112,7 +112,8 @@ pub struct User<'a> {
     /// User’s broadcaster type: "partner", "affiliate", or "".
     pub broadcaster_type: Option<types::BroadcasterType>,
     /// Date when the user was created.
-    pub created_at: &'a str,
+    #[serde(borrow)]
+    pub created_at: Cow<'a, types::TimestampRef>,
     /// User’s channel description.
     pub description: Option<String>,
     /// User’s display name.
@@ -140,7 +141,7 @@ pub struct User<'a> {
 }
 
 impl Request for GetUsersRequest<'_> {
-    type Response<'de> = Vec<User<'de>>;
+    type Response = Vec<User<'static>>;
 
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];

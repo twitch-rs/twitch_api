@@ -118,12 +118,14 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request: R,
         token: &T,
     ) -> Result<
-        Response<R, yoke::Yoke<R::Response<'static>, Vec<u8>>>,
+        Response<R, yoke::Yoke<R::Response, Vec<u8>>>,
         ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
     >
     where
         R: Request + RequestGet,
-        for<'y> R::Response<'static>: yoke::Yokeable<'y>,
+        for<'y> R::Response: yoke::Yokeable<'y>,
+        for<'y> yoke::trait_hack::YokeTraitHack<<R::Response as yoke::Yokeable<'y>>::Output>:
+            serde::Deserialize<'y>,
         T: TwitchToken + ?Sized,
         C: Send,
     {
@@ -156,8 +158,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
                 request_opt = request_inner;
                 total = total_inner;
                 other = other_inner;
-                use yoke::Yokeable;
-                Ok(data.transform_owned())
+                Ok(data)
             },
         )?;
 

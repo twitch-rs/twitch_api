@@ -31,5 +31,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .expect("no user found");
 
     println!("User information:\n\t{:#?}", user.get());
+    let u = user.get();
+    assert!(matches!(u.display_name, std::borrow::Cow::Borrowed(_)));
     Ok(())
 }
