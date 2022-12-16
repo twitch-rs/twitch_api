@@ -1,7 +1,7 @@
 {
-    "rust-analyzer.cargo.features": "all",
-    "rust-analyzer.checkOnSave.enable": true,
     "rust-analyzer.checkOnSave.command": "clippy",
+    "rust-analyzer.cargo.features": ["helix", "client", "reqwest"],
+    "rust-analyzer.checkOnSave.enable": true,
     "rust-analyzer.diagnostics.disabled": [
         "type-mismatch"
     ],

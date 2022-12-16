@@ -78,7 +78,7 @@ pub enum HelixRequestGetError {
         uri: http::Uri,
     },
     /// could not parse response as utf8 when calling `GET {2}`
-    Utf8Error(hyper::body::Bytes, #[source] std::str::Utf8Error, http::Uri),
+    Utf8Error(Vec<u8>, #[source] std::str::Utf8Error, http::Uri),
     /// deserialization failed when processing request response calling `GET {2}` with response: {3} - {0:?}
     DeserializeError(
         String,

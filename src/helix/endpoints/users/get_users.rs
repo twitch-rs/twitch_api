@@ -105,24 +105,25 @@ impl<'a> GetUsersRequest<'a> {
 /// Return Values for [Get Users](super::get_users)
 ///
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone, yoke::Yokeable)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct User {
+pub struct User<'a> {
     /// User’s broadcaster type: "partner", "affiliate", or "".
     pub broadcaster_type: Option<types::BroadcasterType>,
     /// Date when the user was created.
-    pub created_at: types::Timestamp,
+    #[serde(borrow)]
+    pub created_at: Cow<'a, types::TimestampRef>,
     /// User’s channel description.
     pub description: Option<String>,
     /// User’s display name.
-    pub display_name: types::DisplayName,
+    pub display_name: Cow<'a, types::DisplayNameRef>,
     /// User’s email address. Returned if the request includes the [`user:read:email` scope](twitch_oauth2::Scope::UserReadEmail).
     pub email: Option<String>,
     /// User’s ID.
-    pub id: types::UserId,
+    pub id: Cow<'a, types::UserId>,
     /// User’s login name.
-    pub login: types::UserName,
+    pub login: Cow<'a, types::UserNameRef>,
     /// URL of the user’s offline image.
     pub offline_image_url: Option<String>,
     /// URL of the user’s profile image.
@@ -140,7 +141,7 @@ pub struct User {
 }
 
 impl Request for GetUsersRequest<'_> {
-    type Response = Vec<User>;
+    type Response = Vec<User<'static>>;
 
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadEmail];
@@ -182,7 +183,7 @@ fn test_request() {
 "#
         .to_vec();
 
-    let http_response = http::Response::builder().body(data).unwrap();
+    let http_response = http::Response::builder().body(data.as_slice()).unwrap();
 
     let uri = req.get_uri().unwrap();
     assert_eq!(
@@ -190,5 +191,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/users?id=44322889"
     );
 
-    dbg!(GetUsersRequest::parse_response(Some(req), &uri, http_response).unwrap());
+    dbg!(GetUsersRequest::parse_response(Some(req), &uri, &http_response).unwrap());
 }
