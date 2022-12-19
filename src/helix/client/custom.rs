@@ -33,13 +33,13 @@ where
     }
 }
 
-impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
+impl<C: crate::HttpClient> HelixClient<'_, C> {
     /// Request on a valid [`RequestGet`] endpoint, with the ability to return borrowed data and specific fields.
     pub async fn req_get_custom<'d, R, D, T>(
-        &'a self,
+        &self,
         request: R,
         token: &T,
-    ) -> Result<CustomResponse<'d, R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<CustomResponse<'d, R, D>, ClientRequestError<<C as crate::HttpClient>::Error>>
     where
         R: Request + RequestGet,
         D: serde::de::Deserialize<'d> + 'd,
@@ -97,11 +97,11 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
 
     /// Request on a valid [`RequestPost`] endpoint, with the ability to return borrowed data and specific fields.
     pub async fn req_post_custom<'d, R, B, D, T>(
-        &'a self,
+        &self,
         request: R,
         body: B,
         token: &T,
-    ) -> Result<CustomResponse<'d, R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<CustomResponse<'d, R, D>, ClientRequestError<<C as crate::HttpClient>::Error>>
     where
         R: Request + RequestPost + RequestPost<Body = B>,
         B: HelixRequestBody,
@@ -166,12 +166,12 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     ///
     /// This is probably not useful, as `PATCH` endpoints do not usually return json
     pub async fn req_patch_custom<'d, R, B, D, T, F>(
-        &'a self,
+        &self,
         request: R,
         body: B,
         token: &T,
         function: F,
-    ) -> Result<CustomResponse<'d, R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<CustomResponse<'d, R, D>, ClientRequestError<<C as crate::HttpClient>::Error>>
     where
         R: Request + RequestPatch + RequestPatch<Body = B>,
         B: HelixRequestBody,
@@ -236,11 +236,11 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     ///
     /// This is probably not useful, as `DELETE` endpoints do not usually return json
     pub async fn req_delete_custom<'d, R, D, T, F>(
-        &'a self,
+        &self,
         request: R,
         token: &T,
         function: F,
-    ) -> Result<CustomResponse<'d, R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<CustomResponse<'d, R, D>, ClientRequestError<<C as crate::HttpClient>::Error>>
     where
         R: Request + RequestDelete,
         D: serde::de::Deserialize<'d> + 'd,
@@ -303,12 +303,12 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
     ///
     /// This is probably not useful, as `PUT` endpoints do not usually return json
     pub async fn req_put_custom<'d, R, B, D, T, F>(
-        &'a self,
+        &self,
         request: R,
         body: B,
         token: &T,
         function: F,
-    ) -> Result<CustomResponse<'d, R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<CustomResponse<'d, R, D>, ClientRequestError<<C as crate::HttpClient>::Error>>
     where
         R: Request + RequestPut + RequestPut<Body = B>,
         B: HelixRequestBody,

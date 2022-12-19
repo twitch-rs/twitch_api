@@ -31,10 +31,10 @@
 //!     }
 //!     pub type ClientError = std::io::Error;
 //! }
-//! impl<'a> twitch_api::HttpClient<'a> for foo::Client {
+//! impl twitch_api::HttpClient for foo::Client {
 //!     type Error = foo::ClientError;
 //!
-//!     fn req(&'a self, request: Request) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+//!     fn req(&self, request: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
 //!         Box::pin(async move {
 //!             Ok(self
 //!                 .call(
@@ -166,14 +166,11 @@ where Buffer: Into<hyper::body::Body>
 }
 
 /// A client that can do requests
-pub trait Client<'a>: Send + Sync + 'a {
+pub trait Client: Send + Sync {
     /// Error returned by the client
     type Error: Error + Send + Sync + 'static;
     /// Send a request
-    fn req(
-        &'a self,
-        request: Request,
-    ) -> BoxedFuture<'a, Result<Response, <Self as Client>::Error>>;
+    fn req(&self, request: Request) -> BoxedFuture<'_, Result<Response, <Self as Client>::Error>>;
 }
 
 /// A specific client default for setting some sane defaults for API calls and oauth2 usage
@@ -200,47 +197,33 @@ pub trait ClientDefault<'a>: Clone + Sized {
     fn default_client_with_name(product: Option<http::HeaderValue>) -> Result<Self, Self::Error>;
 }
 
-// This makes errors very muddy, preferably we'd actually use rustc_on_unimplemented, but that is highly not recommended (and doesn't work 100% for me at least)
-// impl<'a, F, R, E> Client<'a> for F
-// where
-//     F: Fn(Req) -> R + Send + Sync + 'a,
-//     R: Future<Output = Result<Response, E>> + Send + Sync + 'a,
-//     E: Error + Send + Sync + 'static,
-// {
-//     type Error = E;
-//
-//     fn req(&'a self, request: Req) -> BoxedFuture<'a, Result<Response, Self::Error>> {
-//         Box::pin((self)(request))
-//     }
-// }
-
 #[derive(Debug, Default, thiserror::Error, Clone)]
 /// A client that will never work, used to trick documentation tests
 #[error("this client does not do anything, only used for documentation test that only checks")]
 pub struct DummyHttpClient;
 
-impl<'a> Client<'a> for DummyHttpClient {
+impl Client for DummyHttpClient {
     type Error = DummyHttpClient;
 
-    fn req(&'a self, _: Request) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+    fn req(&self, _: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
         Box::pin(async { Err(DummyHttpClient) })
     }
 }
 
-impl<'a> Client<'a> for twitch_oauth2::client::DummyClient {
+impl Client for twitch_oauth2::client::DummyClient {
     type Error = twitch_oauth2::client::DummyClient;
 
-    fn req(&'a self, _: Request) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+    fn req(&self, _: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
         Box::pin(async { Err(twitch_oauth2::client::DummyClient) })
     }
 }
 
-impl<'a, C> Client<'a> for std::sync::Arc<C>
-where C: Client<'a>
+impl<C> Client for std::sync::Arc<C>
+where C: Client
 {
-    type Error = <C as Client<'a>>::Error;
+    type Error = <C as Client>::Error;
 
-    fn req(&'a self, req: Request) -> BoxedFuture<'a, Result<Response, Self::Error>> {
+    fn req(&self, req: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
         self.as_ref().req(req)
     }
 }
@@ -267,14 +250,14 @@ pub enum CompatError<E> {
 }
 
 #[cfg(feature = "helix")]
-impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::HelixClient<'a, C> {
-    type Error = CompatError<<C as Client<'a>>::Error>;
+impl<'c, C: Client + Sync + 'c> twitch_oauth2::client::Client for crate::HelixClient<'c, C> {
+    type Error = CompatError<<C as Client>::Error>;
 
     fn req(
-        &'a self,
+        &self,
         request: http::Request<Vec<u8>>,
     ) -> BoxedFuture<
-        'a,
+        '_,
         Result<http::Response<Vec<u8>>, <Self as twitch_oauth2::client::Client>::Error>,
     > {
         let client = self.get_client();
@@ -297,14 +280,14 @@ impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::Heli
 }
 
 #[cfg(feature = "tmi")]
-impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::TmiClient<'a, C> {
-    type Error = CompatError<<C as Client<'a>>::Error>;
+impl<'c, C: Client + Sync + 'c> twitch_oauth2::client::Client for crate::TmiClient<'c, C> {
+    type Error = CompatError<<C as Client>::Error>;
 
     fn req(
-        &'a self,
+        &self,
         request: http::Request<Vec<u8>>,
     ) -> BoxedFuture<
-        'a,
+        '_,
         Result<http::Response<Vec<u8>>, <Self as twitch_oauth2::client::Client>::Error>,
     > {
         let client = self.get_client();
@@ -327,14 +310,14 @@ impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::TmiC
 }
 
 #[cfg(any(feature = "tmi", feature = "helix"))]
-impl<'a, C: Client<'a> + Sync> twitch_oauth2::client::Client<'a> for crate::TwitchClient<'a, C> {
-    type Error = CompatError<<C as Client<'a>>::Error>;
+impl<'c, C: Client + Sync> twitch_oauth2::client::Client for crate::TwitchClient<'c, C> {
+    type Error = CompatError<<C as Client>::Error>;
 
     fn req(
-        &'a self,
+        &self,
         request: http::Request<Vec<u8>>,
     ) -> BoxedFuture<
-        'a,
+        '_,
         Result<http::Response<Vec<u8>>, <Self as twitch_oauth2::client::Client>::Error>,
     > {
         let client = self.get_client();

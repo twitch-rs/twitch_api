@@ -78,14 +78,12 @@ where
     D: serde::de::DeserializeOwned + std::fmt::Debug + PartialEq,
 {
     /// Get the next page in the responses.
-    pub async fn get_next<'a, C: crate::HttpClient<'a>>(
+    pub async fn get_next<'a, C: crate::HttpClient + 'a>(
         self,
         client: &'a super::HelixClient<'a, C>,
         token: &(impl super::TwitchToken + ?Sized),
-    ) -> Result<
-        Option<Response<R, D>>,
-        super::ClientRequestError<<C as crate::HttpClient<'a>>::Error>,
-    > {
+    ) -> Result<Option<Response<R, D>>, super::ClientRequestError<<C as crate::HttpClient>::Error>>
+    {
         if let Some(mut req) = self.request.clone() {
             if self.pagination.is_some() {
                 req.set_pagination(self.pagination);

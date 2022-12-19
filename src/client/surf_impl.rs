@@ -18,10 +18,10 @@ pub enum SurfError {
 use surf::Client as SurfClient;
 
 #[cfg_attr(nightly, doc(cfg(feature = "surf")))] // FIXME: This doc_cfg does nothing
-impl<'a> Client<'a> for SurfClient {
+impl Client for SurfClient {
     type Error = SurfError;
 
-    fn req(&'a self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
+    fn req(&self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
         // First we translate the `http::Request` method and uri into types that surf understands.
 
         let method: surf::http::Method = request.method().clone().into();
