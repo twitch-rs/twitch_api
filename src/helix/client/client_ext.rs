@@ -6,17 +6,17 @@ use crate::helix::{self, ClientRequestError, HelixClient};
 use crate::types;
 use twitch_oauth2::TwitchToken;
 
-type ClientError<'a, C> = ClientRequestError<<C as crate::HttpClient<'a>>::Error>;
+type ClientError<C> = ClientRequestError<<C as crate::HttpClient>::Error>;
 
 // TODO: Consider moving these into the specific modules where the request is defined. Preferably backed by a macro
 
-impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
+impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// Get [User](helix::users::User) from user login
     pub async fn get_user_from_login<T>(
         &'client self,
         login: impl Into<&types::UserNameRef>,
         token: &T,
-    ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
+    ) -> Result<Option<helix::users::User>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -33,7 +33,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         id: impl Into<&types::UserIdRef>,
         token: &T,
-    ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
+    ) -> Result<Option<helix::users::User>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -47,7 +47,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         ids: impl AsRef<[&types::UserIdRef]>,
         token: &T,
-    ) -> Result<Option<helix::users::User>, ClientError<'client, C>>
+    ) -> Result<Option<helix::users::User>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -65,7 +65,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         login: impl Into<&types::UserNameRef>,
         token: &T,
-    ) -> Result<Option<helix::channels::ChannelInformation>, ClientError<'client, C>>
+    ) -> Result<Option<helix::channels::ChannelInformation>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -81,7 +81,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         id: impl Into<&types::UserIdRef>,
         token: &T,
-    ) -> Result<Option<helix::channels::ChannelInformation>, ClientError<'client, C>>
+    ) -> Result<Option<helix::channels::ChannelInformation>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -99,7 +99,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         ids: impl AsRef<[&types::UserIdRef]>,
         token: &T,
-    ) -> Result<Vec<helix::channels::ChannelInformation>, ClientError<'client, C>>
+    ) -> Result<Vec<helix::channels::ChannelInformation>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -142,10 +142,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         batch_size: impl Into<Option<usize>>,
         token: &'client T,
     ) -> std::pin::Pin<
-        Box<
-            dyn futures::Stream<Item = Result<helix::chat::Chatter, ClientError<'client, C>>>
-                + 'client,
-        >,
+        Box<dyn futures::Stream<Item = Result<helix::chat::Chatter, ClientError<C>>> + 'client>,
     >
     where
         T: TwitchToken + Send + Sync + ?Sized,
@@ -180,10 +177,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         query: impl Into<&'client str>,
         token: &'client T,
     ) -> std::pin::Pin<
-        Box<
-            dyn futures::Stream<Item = Result<helix::search::Category, ClientError<'client, C>>>
-                + 'client,
-        >,
+        Box<dyn futures::Stream<Item = Result<helix::search::Category, ClientError<C>>> + 'client>,
     >
     where
         T: TwitchToken + Send + Sync + ?Sized,
@@ -215,10 +209,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         live_only: bool,
         token: &'client T,
     ) -> std::pin::Pin<
-        Box<
-            dyn futures::Stream<Item = Result<helix::search::Channel, ClientError<'client, C>>>
-                + 'client,
-        >,
+        Box<dyn futures::Stream<Item = Result<helix::search::Channel, ClientError<C>>> + 'client>,
     >
     where
         T: TwitchToken + Send + Sync + ?Sized,
@@ -255,9 +246,8 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         token: &'client T,
     ) -> std::pin::Pin<
         Box<
-            dyn futures::Stream<
-                    Item = Result<helix::users::FollowRelationship, ClientError<'client, C>>,
-                > + Send
+            dyn futures::Stream<Item = Result<helix::users::FollowRelationship, ClientError<C>>>
+                + Send
                 + 'client,
         >,
     >
@@ -297,10 +287,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         token: &'client T,
     ) -> std::pin::Pin<
-        Box<
-            dyn futures::Stream<Item = Result<helix::streams::Stream, ClientError<'client, C>>>
-                + 'client,
-        >,
+        Box<dyn futures::Stream<Item = Result<helix::streams::Stream, ClientError<C>>> + 'client>,
     >
     where
         T: TwitchToken + Send + Sync + ?Sized,
@@ -341,10 +328,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
     ) -> std::pin::Pin<
         Box<
             dyn futures::Stream<
-                    Item = Result<
-                        helix::subscriptions::BroadcasterSubscription,
-                        ClientError<'client, C>,
-                    >,
+                    Item = Result<helix::subscriptions::BroadcasterSubscription, ClientError<C>>,
                 > + 'client,
         >,
     >
@@ -387,9 +371,8 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         token: &'client T,
     ) -> std::pin::Pin<
         Box<
-            dyn futures::Stream<
-                    Item = Result<helix::moderation::Moderator, ClientError<'client, C>>,
-                > + 'client,
+            dyn futures::Stream<Item = Result<helix::moderation::Moderator, ClientError<C>>>
+                + 'client,
         >,
     >
     where
@@ -423,9 +406,8 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         token: &'client T,
     ) -> std::pin::Pin<
         Box<
-            dyn futures::Stream<
-                    Item = Result<helix::moderation::BannedUser, ClientError<'client, C>>,
-                > + 'client,
+            dyn futures::Stream<Item = Result<helix::moderation::BannedUser, ClientError<C>>>
+                + 'client,
         >,
     >
     where
@@ -441,7 +423,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         login: impl types::IntoCow<'b, types::UserNameRef> + 'b,
         token: &T,
-    ) -> Result<Option<i64>, ClientError<'client, C>>
+    ) -> Result<Option<i64>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -463,7 +445,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         to_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<i64, ClientError<'client, C>>
+    ) -> Result<i64, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -482,10 +464,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         ids: impl AsRef<[&'client types::CategoryIdRef]>,
         token: &T,
-    ) -> Result<
-        std::collections::HashMap<types::CategoryId, helix::games::Game>,
-        ClientError<'client, C>,
-    >
+    ) -> Result<std::collections::HashMap<types::CategoryId, helix::games::Game>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -510,7 +489,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         target_user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::users::BlockUser, ClientError<'client, C>>
+    ) -> Result<helix::users::BlockUser, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -529,7 +508,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         target_user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::users::UnblockUser, ClientError<'client, C>>
+    ) -> Result<helix::users::UnblockUser, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -551,7 +530,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::moderation::BanUser, ClientError<'client, C>>
+    ) -> Result<helix::moderation::BanUser, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -572,7 +551,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::moderation::UnbanUserResponse, ClientError<'client, C>>
+    ) -> Result<helix::moderation::UnbanUserResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -623,10 +602,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &'client T,
     ) -> std::pin::Pin<
-        Box<
-            dyn futures::Stream<Item = Result<helix::schedule::Segment, ClientError<'client, C>>>
-                + 'client,
-        >,
+        Box<dyn futures::Stream<Item = Result<helix::schedule::Segment, ClientError<C>>> + 'client>,
     >
     where
         T: TwitchToken + Send + Sync + ?Sized,
@@ -640,7 +616,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
     pub async fn get_global_emotes<T>(
         &'client self,
         token: &T,
-    ) -> Result<Vec<helix::chat::GlobalEmote>, ClientError<'client, C>>
+    ) -> Result<Vec<helix::chat::GlobalEmote>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -653,7 +629,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<Vec<helix::chat::ChannelEmote>, ClientError<'client, C>>
+    ) -> Result<Vec<helix::chat::ChannelEmote>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -666,7 +642,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         login: impl types::IntoCow<'client, types::UserNameRef> + 'client,
         token: &T,
-    ) -> Result<Option<Vec<helix::chat::ChannelEmote>>, ClientError<'client, C>>
+    ) -> Result<Option<Vec<helix::chat::ChannelEmote>>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -687,7 +663,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         emote_sets: impl AsRef<[&types::EmoteSetIdRef]>,
         token: &T,
-    ) -> Result<Vec<helix::chat::get_emote_sets::Emote>, ClientError<'client, C>>
+    ) -> Result<Vec<helix::chat::get_emote_sets::Emote>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -702,7 +678,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         moderator_id: impl Into<Option<&'b types::UserIdRef>> + 'b,
         token: &T,
-    ) -> Result<helix::chat::ChatSettings, ClientError<'client, C>>
+    ) -> Result<helix::chat::ChatSettings, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -721,7 +697,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         message: impl Into<&'b str>,
         color: impl std::convert::TryInto<helix::chat::AnnouncementColor, Error = E>,
         token: &T,
-    ) -> Result<helix::chat::SendChatAnnouncementResponse, ClientExtError<'client, C, E>>
+    ) -> Result<helix::chat::SendChatAnnouncementResponse, ClientExtError<C, E>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -741,7 +717,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         message_id: impl types::IntoCow<'b, types::MsgIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::moderation::DeleteChatMessagesResponse, ClientError<'client, C>>
+    ) -> Result<helix::moderation::DeleteChatMessagesResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -756,7 +732,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::moderation::DeleteChatMessagesResponse, ClientError<'client, C>>
+    ) -> Result<helix::moderation::DeleteChatMessagesResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -770,7 +746,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         from_broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         to_broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::raids::StartARaidResponse, ClientError<'client, C>>
+    ) -> Result<helix::raids::StartARaidResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -783,7 +759,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::raids::CancelARaidResponse, ClientError<'client, C>>
+    ) -> Result<helix::raids::CancelARaidResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -796,7 +772,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         user_id: impl Into<&types::UserIdRef>,
         token: &T,
-    ) -> Result<Option<helix::chat::UserChatColor>, ClientError<'client, C>>
+    ) -> Result<Option<helix::chat::UserChatColor>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -815,7 +791,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         color: impl Into<types::NamedUserColor<'b>> + 'b,
         token: &T,
-    ) -> Result<helix::chat::UpdateUserChatColorResponse, ClientError<'client, C>>
+    ) -> Result<helix::chat::UpdateUserChatColorResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -832,7 +808,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         user_ids: impl AsRef<[&types::UserIdRef]>,
         token: &T,
-    ) -> Result<Vec<helix::chat::UserChatColor>, ClientError<'client, C>>
+    ) -> Result<Vec<helix::chat::UserChatColor>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -851,7 +827,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::moderation::AddChannelModeratorResponse, ClientError<'client, C>>
+    ) -> Result<helix::moderation::AddChannelModeratorResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -869,7 +845,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::moderation::RemoveChannelModeratorResponse, ClientError<'client, C>>
+    ) -> Result<helix::moderation::RemoveChannelModeratorResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -887,10 +863,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &'client T,
     ) -> std::pin::Pin<
-        Box<
-            dyn futures::Stream<Item = Result<helix::channels::Vip, ClientError<'client, C>>>
-                + 'client,
-        >,
+        Box<dyn futures::Stream<Item = Result<helix::channels::Vip, ClientError<C>>> + 'client>,
     >
     where
         T: TwitchToken + Send + Sync + ?Sized,
@@ -906,7 +879,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::channels::AddChannelVipResponse, ClientError<'client, C>>
+    ) -> Result<helix::channels::AddChannelVipResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -924,7 +897,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::channels::RemoveChannelVipResponse, ClientError<'client, C>>
+    ) -> Result<helix::channels::RemoveChannelVipResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -943,7 +916,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         to: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         message: impl Into<&'b str>,
         token: &T,
-    ) -> Result<helix::whispers::SendWhisperResponse, ClientError<'client, C>>
+    ) -> Result<helix::whispers::SendWhisperResponse, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -980,7 +953,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
         only_managable_rewards: bool,
         token: &T,
-    ) -> Result<Vec<helix::points::CustomReward>, ClientError<'client, C>>
+    ) -> Result<Vec<helix::points::CustomReward>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -1013,7 +986,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         // FIXME: This should be `impl AsRef<[&'b T]> + 'b`
         ids: &'b [&'b types::RewardIdRef],
         token: &T,
-    ) -> Result<Vec<helix::points::CustomReward>, ClientError<'client, C>>
+    ) -> Result<Vec<helix::points::CustomReward>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -1035,7 +1008,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         subscription: E,
         transport: crate::eventsub::Transport,
         token: &T,
-    ) -> Result<helix::eventsub::CreateEventSubSubscription<E>, ClientError<'client, C>>
+    ) -> Result<helix::eventsub::CreateEventSubSubscription<E>, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -1055,7 +1028,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
         &'client self,
         id: impl types::IntoCow<'b, types::EventSubIdRef> + 'b,
         token: &T,
-    ) -> Result<helix::eventsub::DeleteEventSubSubscription, ClientError<'client, C>>
+    ) -> Result<helix::eventsub::DeleteEventSubSubscription, ClientError<C>>
     where
         T: TwitchToken + ?Sized,
     {
@@ -1115,7 +1088,7 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
     ) -> std::pin::Pin<
         Box<
             dyn futures::Stream<
-                    Item = Result<helix::eventsub::EventSubSubscriptions, ClientError<'client, C>>,
+                    Item = Result<helix::eventsub::EventSubSubscriptions, ClientError<C>>,
                 > + 'client,
         >,
     >
@@ -1139,9 +1112,9 @@ impl<'client, C: crate::HttpClient<'client> + Sync> HelixClient<'client, C> {
 }
 
 #[derive(Debug, thiserror::Error)]
-pub enum ClientExtError<'a, C: crate::HttpClient<'a>, E> {
+pub enum ClientExtError<C: crate::HttpClient, E> {
     #[error(transparent)]
-    ClientError(ClientError<'a, C>),
+    ClientError(ClientError<C>),
     #[error(transparent)]
     Other(#[from] E),
 }
@@ -1168,7 +1141,7 @@ pub enum ClientExtError<'a, C: crate::HttpClient<'a>, E> {
 /// ```
 pub fn make_stream<
     'a,
-    C: crate::HttpClient<'a> + Send + Sync,
+    C: crate::HttpClient + Send + Sync,
     T: TwitchToken + ?Sized + Send + Sync,
     // FIXME: Why does this have to be clone and debug?
     Req: super::Request
@@ -1190,7 +1163,7 @@ pub fn make_stream<
         + Sync
         + Copy
         + 'static,
-) -> std::pin::Pin<Box<dyn futures::Stream<Item = Result<Item, ClientError<'a, C>>> + 'a + Send>>
+) -> std::pin::Pin<Box<dyn futures::Stream<Item = Result<Item, ClientError<C>>> + 'a + Send>>
 where
     // FIXME: This clone is bad. I want to be able to return the data, but not in a way that limits the response to be Default
     // I also want to keep allocations low, so std::mem::take is perfect, but that makes get_next not work optimally.
@@ -1228,7 +1201,7 @@ where
 
     struct State<
         'a,
-        C: crate::HttpClient<'a>,
+        C: crate::HttpClient,
         T: TwitchToken + ?Sized,
         Req: super::Request + super::RequestGet,
         Item,
@@ -1240,7 +1213,7 @@ where
 
     impl<
             'a,
-            C: crate::HttpClient<'a>,
+            C: crate::HttpClient,
             T: TwitchToken + ?Sized,
             Req: super::Request + super::RequestGet + super::Paginated,
             Item,

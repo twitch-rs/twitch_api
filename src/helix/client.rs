@@ -8,7 +8,7 @@ pub(crate) mod client_ext;
 mod custom;
 
 #[cfg(feature = "client")]
-impl<C: crate::HttpClient<'static> + crate::client::ClientDefault<'static>> Default
+impl<C: crate::HttpClient + crate::client::ClientDefault<'static>> Default
     for HelixClient<'static, C>
 {
     fn default() -> Self { Self::new() }
@@ -64,13 +64,13 @@ impl<C: crate::HttpClient<'static> + crate::client::ClientDefault<'static>> Defa
 #[derive(Clone)]
 #[cfg(all(feature = "client", feature = "helix"))] // this is needed due to a bug?
 pub struct HelixClient<'a, C>
-where C: crate::HttpClient<'a> {
+where C: crate::HttpClient + 'a {
     pub(crate) client: C,
     pub(crate) _pd: std::marker::PhantomData<&'a ()>, // TODO: Implement rate limiter...
 }
 
 #[cfg(feature = "client")]
-impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
+impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
     /// Create a new client with an existing client
     pub fn with_client(client: C) -> HelixClient<'a, C> {
         HelixClient {
@@ -117,7 +117,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         &'a self,
         request: R,
         token: &T,
-    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient>::Error>>
     where
         R: Request<Response = D> + Request + RequestGet,
         D: serde::de::DeserializeOwned + PartialEq,
@@ -142,7 +142,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request: R,
         body: B,
         token: &T,
-    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient>::Error>>
     where
         R: Request<Response = D> + Request + RequestPost<Body = B>,
         B: HelixRequestBody,
@@ -168,7 +168,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request: R,
         body: B,
         token: &T,
-    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient>::Error>>
     where
         R: Request<Response = D> + Request + RequestPatch<Body = B>,
         B: HelixRequestBody,
@@ -193,7 +193,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         &'a self,
         request: R,
         token: &T,
-    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient>::Error>>
     where
         R: Request<Response = D> + Request + RequestDelete,
         D: serde::de::DeserializeOwned + PartialEq,
@@ -217,7 +217,7 @@ impl<'a, C: crate::HttpClient<'a>> HelixClient<'a, C> {
         request: R,
         body: B,
         token: &T,
-    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient<'a>>::Error>>
+    ) -> Result<Response<R, D>, ClientRequestError<<C as crate::HttpClient>::Error>>
     where
         R: Request<Response = D> + Request + RequestPut<Body = B>,
         B: HelixRequestBody,

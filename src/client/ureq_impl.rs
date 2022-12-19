@@ -24,10 +24,10 @@ pub enum UreqError {
 }
 
 #[cfg_attr(nightly, doc(cfg(feature = "ureq")))] // FIXME: This doc_cfg does nothing
-impl<'a> Client<'a> for UreqAgent {
+impl Client for UreqAgent {
     type Error = UreqError;
 
-    fn req(&'a self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
+    fn req(&self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
         use std::io::Read;
 
         let method = request.method().to_string();

@@ -195,7 +195,7 @@ pub static TWITCH_EVENTSUB_WEBSOCKET_URL: once_cell::sync::Lazy<url::Url> = mock
 #[derive(Clone)]
 #[non_exhaustive]
 pub struct TwitchClient<'a, C>
-where C: HttpClient<'a> {
+where C: HttpClient + 'a {
     /// Helix endpoint. See [`helix`]
     #[cfg(feature = "helix")]
     pub helix: HelixClient<'a, C>,
@@ -205,7 +205,7 @@ where C: HttpClient<'a> {
 }
 
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
-impl<C: HttpClient<'static>> TwitchClient<'static, C> {
+impl<C: HttpClient + 'static> TwitchClient<'static, C> {
     /// Create a new [`TwitchClient`]
     #[cfg(any(feature = "helix", feature = "tmi"))]
     pub fn new() -> TwitchClient<'static, C>
@@ -216,12 +216,14 @@ impl<C: HttpClient<'static>> TwitchClient<'static, C> {
 }
 
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
-impl<C: HttpClient<'static> + client::ClientDefault<'static>> Default for TwitchClient<'static, C> {
+impl<C: HttpClient + client::ClientDefault<'static> + 'static> Default
+    for TwitchClient<'static, C>
+{
     fn default() -> Self { Self::new() }
 }
 
 #[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
-impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
+impl<'a, C: HttpClient + 'a> TwitchClient<'a, C> {
     /// Create a new [`TwitchClient`] with an existing [`HttpClient`]
     #[cfg_attr(
         nightly,
@@ -229,7 +231,7 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
     )]
     #[cfg(any(feature = "helix", feature = "tmi"))]
     pub fn with_client(client: C) -> TwitchClient<'a, C>
-    where C: Clone {
+    where C: Clone + 'a {
         // FIXME: This Clone is not used when only using one of the endpoints
         TwitchClient {
             #[cfg(feature = "tmi")]

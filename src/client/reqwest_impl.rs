@@ -3,10 +3,10 @@ use super::*;
 use reqwest::Client as ReqwestClient;
 
 #[cfg_attr(nightly, doc(cfg(feature = "reqwest")))] // FIXME: This doc_cfg does nothing
-impl<'a> Client<'a> for ReqwestClient {
+impl Client for ReqwestClient {
     type Error = reqwest::Error;
 
-    fn req(&'a self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
+    fn req(&self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
         // Reqwest plays really nice here and has a try_from on `http::Request` -> `reqwest::Request`
         use std::convert::TryFrom;
         let req = match reqwest::Request::try_from(request) {

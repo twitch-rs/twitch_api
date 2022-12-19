@@ -32,13 +32,13 @@ use serde::{Deserialize, Serialize};
 #[cfg(all(feature = "client", feature = "tmi"))]
 #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "tmi"))))] // FIXME: This doc_cfg does nothing
 #[derive(Clone)]
-pub struct TmiClient<'a, C: crate::HttpClient<'a>> {
+pub struct TmiClient<'a, C: crate::HttpClient + 'a> {
     pub(crate) client: C,
     _pd: std::marker::PhantomData<&'a ()>,
 }
 
 #[cfg(all(feature = "tmi", feature = "client"))]
-impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
+impl<'a, C: crate::HttpClient + 'a> TmiClient<'a, C> {
     /// Create a new client with an existing client
     pub fn with_client(client: C) -> TmiClient<'a, C> {
         TmiClient {
@@ -71,7 +71,7 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
     pub async fn get_chatters(
         &'a self,
         broadcaster: &types::UserNameRef,
-    ) -> Result<GetChatters, RequestError<<C as crate::HttpClient<'a>>::Error>> {
+    ) -> Result<GetChatters, RequestError<<C as crate::HttpClient>::Error>> {
         let url = format!(
             "{}{}{}{}",
             crate::TWITCH_TMI_URL.as_str(),
@@ -96,7 +96,7 @@ impl<'a, C: crate::HttpClient<'a>> TmiClient<'a, C> {
 }
 
 #[cfg(feature = "client")]
-impl<C: crate::HttpClient<'static> + crate::client::ClientDefault<'static>> Default
+impl<C: crate::HttpClient + crate::client::ClientDefault<'static>> Default
     for TmiClient<'static, C>
 {
     fn default() -> Self { Self::new() }
