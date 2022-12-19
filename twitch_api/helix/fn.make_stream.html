@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Make a paginate-able request into a stream"><meta name="keywords" content="rust, rustlang, rust-lang, make_stream"><title>make_stream in twitch_api::helix - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-64f7dca12162a801.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-ebce58d0a40c3431.css"><link rel="stylesheet" disabled href="../../static.files/dark-f23faae4a2daf9a6.css"><link rel="stylesheet" disabled href="../../static.files/ayu-94f39d4346842c1e.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-a211dbb005fb8161.js"></script><script defer src="../../static.files/scrape-examples-ef1e698c1d417c0c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></div></a><h2></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></div></a><div class="sidebar-elems"><h2><a href="index.html">In twitch_api::helix</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1 class="fqn">Function <a href="../index.html">twitch_api</a>::<wbr><a href="index.html">helix</a>::<wbr><a class="fn" href="#">make_stream</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../src/twitch_api/helix/client/client_ext.rs.html#1169-1321">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><div class="item-decl"><pre class="rust fn"><code>pub fn make_stream&lt;'a, C:&nbsp;<a class="trait" href="../client/trait.Client.html" title="trait twitch_api::client::Client">HttpClient</a>&lt;'a&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a>, T:&nbsp;<a class="trait" href="../../twitch_oauth2/tokens/trait.TwitchToken.html" title="trait twitch_oauth2::tokens::TwitchToken">TwitchToken</a> + ?<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a>, Req:&nbsp;<a class="trait" href="trait.Request.html" title="trait twitch_api::helix::Request">Request</a> + <a class="trait" href="trait.RequestGet.html" title="trait twitch_api::helix::RequestGet">RequestGet</a> + <a class="trait" href="trait.Paginated.html" title="trait twitch_api::helix::Paginated">Paginated</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + 'a, Item:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'a&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;req: Req,<br>&nbsp;&nbsp;&nbsp;&nbsp;token: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;'a </a>T,<br>&nbsp;&nbsp;&nbsp;&nbsp;client: &amp;'a <a class="struct" href="../struct.HelixClient.html" title="struct twitch_api::HelixClient">HelixClient</a>&lt;'a, C&gt;,<br>&nbsp;&nbsp;&nbsp;&nbsp;fun: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&lt;Req as <a class="trait" href="trait.Request.html" title="trait twitch_api::helix::Request">Request</a>&gt;::<a class="associatedtype" href="trait.Request.html#associatedtype.Response" title="type twitch_api::helix::Request::Response">Response</a>) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/collections/vec_deque/struct.VecDeque.html" title="struct alloc::collections::vec_deque::VecDeque">VecDeque</a>&lt;Item&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + 'static<br>) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn Stream&lt;Item = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Item, <a class="enum" href="enum.ClientRequestError.html" title="enum twitch_api::helix::ClientRequestError">ClientRequestError</a>&lt;&lt;C as <a class="trait" href="../client/trait.Client.html" title="trait twitch_api::client::Client">HttpClient</a>&lt;'a&gt;&gt;::<a class="associatedtype" href="../client/trait.Client.html#associatedtype.Error" title="type twitch_api::client::Client::Error">Error</a>&gt;&gt;&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'a&gt;&gt;<span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Req as <a class="trait" href="trait.Request.html" title="trait twitch_api::helix::Request">Request</a>&gt;::<a class="associatedtype" href="trait.Request.html#associatedtype.Response" title="type twitch_api::helix::Request::Response">Response</a>: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a>,</span></code></pre></div><span class="item-info"><div class="stab portability">Available on <strong>crate features <code>client</code> and <code>helix</code></strong> only.</div></span><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Make a paginate-able request into a stream</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Make a paginate-able request into a stream"><meta name="keywords" content="rust, rustlang, rust-lang, make_stream"><title>make_stream in twitch_api::helix - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-54cf78c3b80fc28d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-8fe2cf7ee64a76fb.css"><link rel="stylesheet" disabled href="../../static.files/dark-7aacebe982779e9a.css"><link rel="stylesheet" disabled href="../../static.files/ayu-29dcc614f7a7b461.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-a211dbb005fb8161.js"></script><script defer src="../../static.files/scrape-examples-ef1e698c1d417c0c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></div></a><h2></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../twitch_api/index.html"><div class="logo-container"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></div></a><div class="sidebar-elems"><h2><a href="index.html">In twitch_api::helix</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1 class="fqn">Function <a href="../index.html">twitch_api</a>::<wbr><a href="index.html">helix</a>::<wbr><a class="fn" href="#">make_stream</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../src/twitch_api/helix/client/client_ext.rs.html#1142-1294">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><div class="item-decl"><pre class="rust fn"><code>pub fn make_stream&lt;'a, C:&nbsp;<a class="trait" href="../client/trait.Client.html" title="trait twitch_api::client::Client">HttpClient</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a>, T:&nbsp;<a class="trait" href="../../twitch_oauth2/tokens/trait.TwitchToken.html" title="trait twitch_oauth2::tokens::TwitchToken">TwitchToken</a> + ?<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a>, Req:&nbsp;<a class="trait" href="trait.Request.html" title="trait twitch_api::helix::Request">Request</a> + <a class="trait" href="trait.RequestGet.html" title="trait twitch_api::helix::RequestGet">RequestGet</a> + <a class="trait" href="trait.Paginated.html" title="trait twitch_api::helix::Paginated">Paginated</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + 'a, Item:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'a&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;req: Req,<br>&nbsp;&nbsp;&nbsp;&nbsp;token: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;'a </a>T,<br>&nbsp;&nbsp;&nbsp;&nbsp;client: &amp;'a <a class="struct" href="../struct.HelixClient.html" title="struct twitch_api::HelixClient">HelixClient</a>&lt;'a, C&gt;,<br>&nbsp;&nbsp;&nbsp;&nbsp;fun: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&lt;Req as <a class="trait" href="trait.Request.html" title="trait twitch_api::helix::Request">Request</a>&gt;::<a class="associatedtype" href="trait.Request.html#associatedtype.Response" title="type twitch_api::helix::Request::Response">Response</a>) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/collections/vec_deque/struct.VecDeque.html" title="struct alloc::collections::vec_deque::VecDeque">VecDeque</a>&lt;Item&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + 'static<br>) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn Stream&lt;Item = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Item, <a class="enum" href="enum.ClientRequestError.html" title="enum twitch_api::helix::ClientRequestError">ClientRequestError</a>&lt;&lt;C as <a class="trait" href="../client/trait.Client.html" title="trait twitch_api::client::Client">HttpClient</a>&gt;::<a class="associatedtype" href="../client/trait.Client.html#associatedtype.Error" title="type twitch_api::client::Client::Error">Error</a>&gt;&gt;&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'a&gt;&gt;<span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Req as <a class="trait" href="trait.Request.html" title="trait twitch_api::helix::Request">Request</a>&gt;::<a class="associatedtype" href="trait.Request.html#associatedtype.Response" title="type twitch_api::helix::Request::Response">Response</a>: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a>,</span></code></pre></div><span class="item-info"><div class="stab portability">Available on <strong>crate features <code>client</code> and <code>helix</code></strong> only.</div></span><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Make a paginate-able request into a stream</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_api::helix;
 <span class="kw">use </span>futures::TryStreamExt;
@@ -6,7 +6,7 @@
 <span class="kw">let </span>req = helix::moderation::GetModeratorsRequest::broadcaster_id(<span class="string">&quot;1234&quot;</span>);
 
 helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2">&amp;</span>client, std::collections::VecDeque::from).try_collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;().<span class="kw">await</span><span class="question-mark">?</span></code></pre></div>
-</div></details><div class="docblock scraped-example-list"><span></span><h5 id="scraped-examples"><a href="#scraped-examples">Examples found in repository</a><a class="scrape-help" href="../../scrape-examples-help.html">?</a></h5><div class="scraped-example " data-locs="[[[20,20],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#158&quot;,&quot;line 158&quot;],[[54,54],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#192&quot;,&quot;line 192&quot;],[[90,90],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#228&quot;,&quot;line 228&quot;],[[134,136],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#272-274&quot;,&quot;lines 272-274&quot;],[[180,180],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#318&quot;,&quot;line 318&quot;],[[226,226],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#364&quot;,&quot;line 364&quot;],[[262,262],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#400&quot;,&quot;line 400&quot;],[[298,298],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#436&quot;,&quot;line 436&quot;],[[498,498],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#636&quot;,&quot;line 636&quot;],[[762,762],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#900&quot;,&quot;line 900&quot;],[[995,999],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#1133-1137&quot;,&quot;lines 1133-1137&quot;]]"><div class="scraped-example-title">src/helix/client/client_ext.rs (<a href="../../src/twitch_api/helix/client/client_ext.rs.html#158">line 158</a>)</div><div class="code-wrapper"><button class="prev">&pr;</button> <button class="next">&sc;</button><div class="example-wrap"><pre class="src-line-numbers"><span>138</span>
+</div></details><div class="docblock scraped-example-list"><span></span><h5 id="scraped-examples"><a href="#scraped-examples">Examples found in repository</a><a class="scrape-help" href="../../scrape-examples-help.html">?</a></h5><div class="scraped-example " data-locs="[[[17,17],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#155&quot;,&quot;line 155&quot;],[[48,48],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#186&quot;,&quot;line 186&quot;],[[81,81],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#219&quot;,&quot;line 219&quot;],[[124,126],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#262-264&quot;,&quot;lines 262-264&quot;],[[167,167],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#305&quot;,&quot;line 305&quot;],[[210,210],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#348&quot;,&quot;line 348&quot;],[[245,245],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#383&quot;,&quot;line 383&quot;],[[280,280],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#418&quot;,&quot;line 418&quot;],[[474,474],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#612&quot;,&quot;line 612&quot;],[[735,735],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#873&quot;,&quot;line 873&quot;],[[968,972],&quot;../../src/twitch_api/helix/client/client_ext.rs.html#1106-1110&quot;,&quot;lines 1106-1110&quot;]]"><div class="scraped-example-title">src/helix/client/client_ext.rs (<a href="../../src/twitch_api/helix/client/client_ext.rs.html#155">line 155</a>)</div><div class="code-wrapper"><button class="prev">&pr;</button> <button class="next">&sc;</button><div class="example-wrap"><pre class="src-line-numbers"><span>138</span>
 <span>139</span>
 <span>140</span>
 <span>141</span>
@@ -980,33 +980,6 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
 <span>1109</span>
 <span>1110</span>
 <span>1111</span>
-<span>1112</span>
-<span>1113</span>
-<span>1114</span>
-<span>1115</span>
-<span>1116</span>
-<span>1117</span>
-<span>1118</span>
-<span>1119</span>
-<span>1120</span>
-<span>1121</span>
-<span>1122</span>
-<span>1123</span>
-<span>1124</span>
-<span>1125</span>
-<span>1126</span>
-<span>1127</span>
-<span>1128</span>
-<span>1129</span>
-<span>1130</span>
-<span>1131</span>
-<span>1132</span>
-<span>1133</span>
-<span>1134</span>
-<span>1135</span>
-<span>1136</span>
-<span>1137</span>
-<span>1138</span>
 </pre><pre class="rust"><code><button class="expand">&varr;</button>    <span class="kw">pub fn </span>get_chatters&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         broadcaster_id: <span class="kw">impl </span>Into&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>types::UserIdRef&gt;,
@@ -1014,10 +987,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         batch_size: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;,
         token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>T,
     ) -&gt; std::pin::Pin&lt;
-        Box&lt;
-            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::chat::Chatter, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;&gt;
-                + <span class="lifetime">&#39;client</span>,
-        &gt;,
+        Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::chat::Chatter, ClientError&lt;C&gt;&gt;&gt; + <span class="lifetime">&#39;client</span>&gt;,
     &gt;
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
@@ -1052,10 +1022,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         query: <span class="kw">impl </span>Into&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>str&gt;,
         token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>T,
     ) -&gt; std::pin::Pin&lt;
-        Box&lt;
-            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::search::Category, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;&gt;
-                + <span class="lifetime">&#39;client</span>,
-        &gt;,
+        Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::search::Category, ClientError&lt;C&gt;&gt;&gt; + <span class="lifetime">&#39;client</span>&gt;,
     &gt;
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
@@ -1087,10 +1054,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         live_only: bool,
         token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>T,
     ) -&gt; std::pin::Pin&lt;
-        Box&lt;
-            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::search::Channel, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;&gt;
-                + <span class="lifetime">&#39;client</span>,
-        &gt;,
+        Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::search::Channel, ClientError&lt;C&gt;&gt;&gt; + <span class="lifetime">&#39;client</span>&gt;,
     &gt;
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
@@ -1127,9 +1091,8 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>T,
     ) -&gt; std::pin::Pin&lt;
         Box&lt;
-            <span class="kw">dyn </span>futures::Stream&lt;
-                    Item = <span class="prelude-ty">Result</span>&lt;helix::users::FollowRelationship, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;,
-                &gt; + Send
+            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::users::FollowRelationship, ClientError&lt;C&gt;&gt;&gt;
+                + Send
                 + <span class="lifetime">&#39;client</span>,
         &gt;,
     &gt;
@@ -1169,10 +1132,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>T,
     ) -&gt; std::pin::Pin&lt;
-        Box&lt;
-            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::streams::Stream, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;&gt;
-                + <span class="lifetime">&#39;client</span>,
-        &gt;,
+        Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::streams::Stream, ClientError&lt;C&gt;&gt;&gt; + <span class="lifetime">&#39;client</span>&gt;,
     &gt;
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
@@ -1213,10 +1173,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
     ) -&gt; std::pin::Pin&lt;
         Box&lt;
             <span class="kw">dyn </span>futures::Stream&lt;
-                    Item = <span class="prelude-ty">Result</span>&lt;
-                        helix::subscriptions::BroadcasterSubscription,
-                        ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;,
-                    &gt;,
+                    Item = <span class="prelude-ty">Result</span>&lt;helix::subscriptions::BroadcasterSubscription, ClientError&lt;C&gt;&gt;,
                 &gt; + <span class="lifetime">&#39;client</span>,
         &gt;,
     &gt;
@@ -1259,9 +1216,8 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>T,
     ) -&gt; std::pin::Pin&lt;
         Box&lt;
-            <span class="kw">dyn </span>futures::Stream&lt;
-                    Item = <span class="prelude-ty">Result</span>&lt;helix::moderation::Moderator, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;,
-                &gt; + <span class="lifetime">&#39;client</span>,
+            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::moderation::Moderator, ClientError&lt;C&gt;&gt;&gt;
+                + <span class="lifetime">&#39;client</span>,
         &gt;,
     &gt;
     <span class="kw">where
@@ -1295,9 +1251,8 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>T,
     ) -&gt; std::pin::Pin&lt;
         Box&lt;
-            <span class="kw">dyn </span>futures::Stream&lt;
-                    Item = <span class="prelude-ty">Result</span>&lt;helix::moderation::BannedUser, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;,
-                &gt; + <span class="lifetime">&#39;client</span>,
+            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::moderation::BannedUser, ClientError&lt;C&gt;&gt;&gt;
+                + <span class="lifetime">&#39;client</span>,
         &gt;,
     &gt;
     <span class="kw">where
@@ -1313,7 +1268,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         login: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserNameRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;i64&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;i64&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1335,7 +1290,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         to_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;i64, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;i64, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1354,10 +1309,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         ids: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>types::CategoryIdRef]&gt;,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;
-        std::collections::HashMap&lt;types::CategoryId, helix::games::Game&gt;,
-        ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;,
-    &gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;std::collections::HashMap&lt;types::CategoryId, helix::games::Game&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1382,7 +1334,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         target_user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::users::BlockUser, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::users::BlockUser, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1401,7 +1353,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         target_user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::users::UnblockUser, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::users::UnblockUser, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1423,7 +1375,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         moderator_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::BanUser, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::BanUser, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1444,7 +1396,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         moderator_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::UnbanUserResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::UnbanUserResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1495,10 +1447,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>T,
     ) -&gt; std::pin::Pin&lt;
-        Box&lt;
-            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::schedule::Segment, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;&gt;
-                + <span class="lifetime">&#39;client</span>,
-        &gt;,
+        Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::schedule::Segment, ClientError&lt;C&gt;&gt;&gt; + <span class="lifetime">&#39;client</span>&gt;,
     &gt;
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
@@ -1512,7 +1461,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
     </span><span class="kw">pub async fn </span>get_global_emotes&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::GlobalEmote&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::GlobalEmote&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1525,7 +1474,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::ChannelEmote&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::ChannelEmote&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1538,7 +1487,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         login: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;client</span>, types::UserNameRef&gt; + <span class="lifetime">&#39;client</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;helix::chat::ChannelEmote&gt;&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;helix::chat::ChannelEmote&gt;&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1559,7 +1508,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         emote_sets: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::EmoteSetIdRef]&gt;,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::get_emote_sets::Emote&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::get_emote_sets::Emote&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1574,7 +1523,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         moderator_id: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>types::UserIdRef&gt;&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::chat::ChatSettings, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::chat::ChatSettings, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1593,7 +1542,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         message: <span class="kw">impl </span>Into&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>str&gt;,
         color: <span class="kw">impl </span>std::convert::TryInto&lt;helix::chat::AnnouncementColor, Error = E&gt;,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::chat::SendChatAnnouncementResponse, ClientExtError&lt;<span class="lifetime">&#39;client</span>, C, E&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::chat::SendChatAnnouncementResponse, ClientExtError&lt;C, E&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1613,7 +1562,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         moderator_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         message_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::MsgIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::DeleteChatMessagesResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::DeleteChatMessagesResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1628,7 +1577,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         moderator_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::DeleteChatMessagesResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::DeleteChatMessagesResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1642,7 +1591,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         from_broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         to_broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::raids::StartARaidResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::raids::StartARaidResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1655,7 +1604,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::raids::CancelARaidResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::raids::CancelARaidResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1668,7 +1617,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         user_id: <span class="kw">impl </span>Into&lt;<span class="kw-2">&amp;</span>types::UserIdRef&gt;,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::chat::UserChatColor&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::chat::UserChatColor&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1687,7 +1636,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         color: <span class="kw">impl </span>Into&lt;types::NamedUserColor&lt;<span class="lifetime">&#39;b</span>&gt;&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::chat::UpdateUserChatColorResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::chat::UpdateUserChatColorResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1704,7 +1653,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         user_ids: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::UserIdRef]&gt;,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::UserChatColor&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::UserChatColor&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1723,7 +1672,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         moderator_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::AddChannelModeratorResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::AddChannelModeratorResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1741,7 +1690,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         moderator_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::RemoveChannelModeratorResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::moderation::RemoveChannelModeratorResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1759,10 +1708,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span>T,
     ) -&gt; std::pin::Pin&lt;
-        Box&lt;
-            <span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::channels::Vip, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;&gt;
-                + <span class="lifetime">&#39;client</span>,
-        &gt;,
+        Box&lt;<span class="kw">dyn </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::channels::Vip, ClientError&lt;C&gt;&gt;&gt; + <span class="lifetime">&#39;client</span>&gt;,
     &gt;
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
@@ -1778,7 +1724,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::channels::AddChannelVipResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::channels::AddChannelVipResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1796,7 +1742,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::channels::RemoveChannelVipResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::channels::RemoveChannelVipResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1815,7 +1761,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         to: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         message: <span class="kw">impl </span>Into&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>str&gt;,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::whispers::SendWhisperResponse, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::whispers::SendWhisperResponse, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1852,7 +1798,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;b</span>,
         only_managable_rewards: bool,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::points::CustomReward&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::points::CustomReward&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1885,7 +1831,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="comment">// FIXME: This should be `impl AsRef&lt;[&amp;&#39;b T]&gt; + &#39;b`
         </span>ids: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>types::RewardIdRef],
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::points::CustomReward&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::points::CustomReward&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1907,7 +1853,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         subscription: E,
         transport: <span class="kw">crate</span>::eventsub::Transport,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::eventsub::CreateEventSubSubscription&lt;E&gt;, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::eventsub::CreateEventSubSubscription&lt;E&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1927,7 +1873,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;b</span>, types::EventSubIdRef&gt; + <span class="lifetime">&#39;b</span>,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::eventsub::DeleteEventSubSubscription, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::eventsub::DeleteEventSubSubscription, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + <span class="question-mark">?</span>Sized,
     {
@@ -1987,7 +1933,7 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
     ) -&gt; std::pin::Pin&lt;
         Box&lt;
             <span class="kw">dyn </span>futures::Stream&lt;
-                    Item = <span class="prelude-ty">Result</span>&lt;helix::eventsub::EventSubSubscriptions, ClientError&lt;<span class="lifetime">&#39;client</span>, C&gt;&gt;,
+                    Item = <span class="prelude-ty">Result</span>&lt;helix::eventsub::EventSubSubscriptions, ClientError&lt;C&gt;&gt;,
                 &gt; + <span class="lifetime">&#39;client</span>,
         &gt;,
     &gt;
@@ -2008,4 +1954,4 @@ helix::make_stream(req, <span class="kw-2">&amp;</span>token, <span class="kw-2"
             vec
         })
     }</code></pre></div>
-</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (0f529f0f4 2022-12-13)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
+</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (d0dc9efff 2022-12-18)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-58836c674e2f7bd2.css" ></div></body></html>
