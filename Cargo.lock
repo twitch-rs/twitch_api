@@ -2747,7 +2747,7 @@ dependencies = [
 
 [[package]]
 name = "twitch_api"
-version = "0.7.0-rc.2"
+version = "0.7.0-rc.3"
 dependencies = [
  "aliri_braid",
  "async-trait",
