@@ -123,7 +123,7 @@ eventsub = [
 
 hmac = ["dep:crypto_hmac", "dep:sha2"]
 
-mock_api = []
+mock_api = ["twitch_oauth2?/mock_api"]
 
 all = [
     "tmi",

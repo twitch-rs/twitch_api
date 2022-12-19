@@ -5,10 +5,10 @@ use twitch_oauth2::Scope;
 fn main() {
     use std::error::Error;
     if let Err(err) = run() {
-        println!("Error: {}", err);
+        println!("Error: {err}");
         let mut e: &'_ dyn Error = err.as_ref();
         while let Some(cause) = e.source() {
-            println!("Caused by: {}", cause);
+            println!("Caused by: {cause}");
             e = cause;
         }
     }
@@ -24,7 +24,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     std::env::var("TWITCH_OAUTH2_URL")
         .ok()
         .or_else(|| args.next())
-        .map(|t| std::env::set_var("TWITCH_OAUTH2_URL", &t))
+        .map(|t| std::env::set_var("TWITCH_OAUTH2_URL", t))
         .expect("Please set env: TWITCH_OAUTH2_URL or pass url as first argument");
 
     let client_id = std::env::var("MOCK_CLIENT_ID")
@@ -100,7 +100,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
     Ok(())
 }
 
-pub async fn moderation<'a, C: twitch_api::HttpClient<'a> + Sync>(
+pub async fn moderation<'a, C: twitch_api::HttpClient + Sync>(
     client: &'a twitch_api::HelixClient<'a, C>,
     broadcaster_id: &'a types::UserIdRef,
     token: &'a twitch_oauth2::UserToken,
