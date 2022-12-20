@@ -48,6 +48,7 @@
 - Added `Send Whisper` endpoint
 - Added `Delete Channel Stream Schedule Segment` that was accidentally not included in `0.6.0`
 - Added `sort` and `id` to `Get Custom Reward Redemption`
+- Added contribution type `OTHER` for Get Hype Train Events
 
 ## [v0.6.1] - 2022-04-29
 
