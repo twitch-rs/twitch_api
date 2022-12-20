@@ -22,6 +22,8 @@ pub enum ContributionType {
     Bits,
     /// Channel Subscriptions. Either gifted or not.
     Subscription,
+    /// Covers other contribution methods not listed.
+    Other,
 }
 
 /// A contribution to a hype train
