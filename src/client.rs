@@ -280,6 +280,7 @@ impl<'c, C: Client + Sync + 'c> twitch_oauth2::client::Client for crate::HelixCl
 }
 
 #[cfg(feature = "tmi")]
+#[allow(deprecated)]
 impl<'c, C: Client + Sync + 'c> twitch_oauth2::client::Client for crate::TmiClient<'c, C> {
     type Error = CompatError<<C as Client>::Error>;
 

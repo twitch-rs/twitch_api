@@ -1,4 +1,5 @@
 #![doc(alias = "TMI")]
+#![allow(deprecated)]
 //! TMI Endpoint, twitch's unsupported api for better chatters retrieval
 use crate::types;
 use serde::{Deserialize, Serialize};
@@ -32,6 +33,7 @@ use serde::{Deserialize, Serialize};
 #[cfg(all(feature = "client", feature = "tmi"))]
 #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "tmi"))))] // FIXME: This doc_cfg does nothing
 #[derive(Clone)]
+#[deprecated(note = "All TMI functionality has been implemented with helix endpoint Get Chatters")]
 pub struct TmiClient<'a, C: crate::HttpClient + 'a> {
     pub(crate) client: C,
     _pd: std::marker::PhantomData<&'a ()>,
@@ -68,6 +70,7 @@ impl<'a, C: crate::HttpClient + 'a> TmiClient<'a, C> {
     /// # Notes
     ///
     /// This function will aside from url sanitize the broadcasters username, will also remove any `#` and make it lowercase ascii
+    #[deprecated(note = "Has been implemented with helix endpoint Get Chatters")]
     pub async fn get_chatters(
         &'a self,
         broadcaster: &types::UserNameRef,

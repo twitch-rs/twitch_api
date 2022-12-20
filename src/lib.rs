@@ -109,6 +109,10 @@ pub mod eventsub;
 pub use crate::helix::HelixClient;
 #[cfg(all(feature = "tmi", feature = "client"))]
 #[doc(inline)]
+#[deprecated(
+    note = "All TMI functionality has been implemented with helix endpoint Get Chatters"
+)]
+#[allow(deprecated)]
 pub use crate::tmi::TmiClient;
 
 /// Extra types not defined in [`twitch_types`](types)
@@ -201,6 +205,7 @@ where C: HttpClient + 'a {
     pub helix: HelixClient<'a, C>,
     /// TMI endpoint. See [`tmi`]
     #[cfg(feature = "tmi")]
+    #[allow(deprecated)]
     pub tmi: TmiClient<'a, C>,
 }
 
@@ -233,6 +238,7 @@ impl<'a, C: HttpClient + 'a> TwitchClient<'a, C> {
     pub fn with_client(client: C) -> TwitchClient<'a, C>
     where C: Clone + 'a {
         // FIXME: This Clone is not used when only using one of the endpoints
+        #[allow(deprecated)]
         TwitchClient {
             #[cfg(feature = "tmi")]
             tmi: TmiClient::with_client(client.clone()),
