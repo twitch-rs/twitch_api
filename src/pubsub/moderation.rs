@@ -300,6 +300,10 @@ pub enum ModerationActionCommand {
     /// Unique chat disabled
     #[serde(rename = "r9kbetaoff")]
     R9KBetaOff,
+    /// User added as VIP
+    ///
+    /// See also: [VipAdded], which **isn't** the same event.
+    Vip,
     /// User removed as VIP
     Unvip,
     /// Channel host started
@@ -578,6 +582,25 @@ mod tests {
             "data": {
                 "topic": "chat_moderator_actions.80525799.80525799",
                 "message": "{\"type\":\"vip_added\",\"data\":{\"channel_id\":\"80525799\",\"target_user_id\":\"56345511\",\"target_user_login\":\"bossquest\",\"created_by_user_id\":\"80525799\",\"created_by\":\"sessis\"}}"
+            }
+        }"#;
+        let actual = dbg!(Response::parse(source).unwrap());
+        assert!(matches!(
+            actual,
+            Response::Message {
+                data: TopicData::ChatModeratorActions { .. },
+            }
+        ));
+    }
+
+    #[test]
+    fn vip_added_mod_action() {
+        let source = r#"
+        {
+            "type": "MESSAGE",
+            "data": {
+                "topic": "chat_moderator_actions.691109305.120183018",
+                "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"vip\",\"args\":[\"Floikka\"],\"created_by\":\"nam______________________\",\"created_by_user_id\":\"120183018\",\"created_at\":\"2022-12-20T16:41:26.168122804Z\",\"msg_id\":\"\",\"target_user_id\":\"85262774\",\"target_user_login\":\"\",\"from_automod\":false}}"
             }
         }"#;
         let actual = dbg!(Response::parse(source).unwrap());
