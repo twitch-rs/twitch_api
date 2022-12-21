@@ -32,6 +32,7 @@
 - Removed deprecated `limit` on `GetEventSubSubscriptionsRequest` response
 - Removed deprecated `limit` on `CreateEventSubSubscription`
 - Removed deprecated `AddBlockedTerm`, `DeleteBlockedTerm`, `DeletePermittedTerm` and `AddPermittedTerm` on `ModerationActionCommand`
+- Deprecated TMI
 
 ### Added
 

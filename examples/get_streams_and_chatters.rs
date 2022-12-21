@@ -1,3 +1,4 @@
+#![allow(deprecated)]
 use twitch_api::helix::streams::GetStreamsRequest;
 use twitch_api::TwitchClient;
 use twitch_oauth2::{AccessToken, UserToken};
