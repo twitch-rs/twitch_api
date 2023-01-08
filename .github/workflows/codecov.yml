@@ -18,10 +18,9 @@ jobs:
         with:
           submodules: recursive
       - name: Toolchain setup
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@master
         with:
           toolchain: nightly
-          override: true
           components: llvm-tools-preview
       - uses: Swatinem/rust-cache@v1
       - name: Install cargo-llvm-cov
@@ -35,7 +34,7 @@ jobs:
       #- name: Generate code coverage for docs
       #  run: cargo llvm-cov --no-report --doc --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields"
       - name: Merge lcov.info
-        run: cargo llvm-cov --no-run --lcov --ignore-filename-regex "twitch_oauth2" --output-path lcov.info 
+        run: cargo llvm-cov --no-run --lcov --ignore-filename-regex "twitch_oauth2" --output-path lcov.info
       - name: Determine PR number
         if: ${{ github.ref == 'refs/heads/trying' }}
         run: git log -1 --pretty=format:"%s" | awk '{ print "PR_NUMBER=" substr($NF,2,length($NF)-2) }' >> $GITHUB_ENV

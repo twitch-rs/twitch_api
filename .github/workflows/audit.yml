@@ -20,17 +20,14 @@ jobs:
     name: Security Audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: Install rust
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@master
         with:
           toolchain: 1.64.0
-          override: true
-      - uses: actions-rs/audit-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: cargo audit
   cargo-deny:
     name: Cargo Deny
     runs-on: ubuntu-latest
@@ -42,12 +39,12 @@ jobs:
           - licenses
           - sources
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - uses: EmbarkStudios/cargo-deny-action@v1
         with:
-          rust-version: "1.64.0"
+          rust-version: 1.64.0
           command: check ${{ matrix.checks }} -s
           arguments: --all-features
           log-level: warn
