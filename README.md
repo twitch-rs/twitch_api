@@ -12,7 +12,7 @@ You can see current unpublished docs here: [![local-docs]](https://twitch-rs.git
 
 See [examples](./examples) for examples.
 
-[local-docs]: https://img.shields.io/github/workflow/status/twitch-rs/twitch_api/github%20pages/master?label=master%20docs&style=flat-square&event=push
+[local-docs]: https://img.shields.io/github/actions/workflow/status/twitch-rs/twitch_api/gh-pages.yml?label=dev%20docs&style=flat-square&event=push
 
 ```rust ,no_run
 use twitch_api::helix::HelixClient;
