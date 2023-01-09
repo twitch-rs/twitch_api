@@ -117,7 +117,7 @@ pub async fn run(opts: &Opts) -> eyre::Result<()> {
                 }
             }),
         )
-        .nest(
+        .nest_service(
             "/static",
             get_service(ServeDir::new("./static/")).handle_error(|error| async move {
                 tracing::error!("{}", error);
