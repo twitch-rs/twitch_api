@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 askama = { version = "0.11", features = ["with-axum"], git = "https://github.com/djc/askama", rev = "ea8be44" }
 askama_axum = { version = "0.1", git = "https://github.com/djc/askama", rev = "ea8be44" }
-axum = { version = "0.5.17", features = ["tower-log", "http2", "ws"] }
+axum = { version = "0.6.1", features = ["tower-log", "http2", "ws"] }
 clap = { version = "4.0.29", features = ["derive", "env"] }
 color-eyre = { version = "0.6", features = ["capture-spantrace"] }
 dotenvy = "0.15.6"
