@@ -26,7 +26,7 @@ pub struct TeamInformation {
     /// Team description.
     pub info: String,
     /// Image URL for the Team logo.
-    pub thumbnail_url: String,
+    pub thumbnail_url: Option<String>,
     /// Team name.
     pub team_name: String,
     /// Team display name.
