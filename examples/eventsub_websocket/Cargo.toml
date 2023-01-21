@@ -16,7 +16,7 @@ reqwest = { version = "0.11.13", features = ["json"] }
 retainer = "0.3.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1" }
-tokio = { version = "1.22.0", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.24.2", features = ["macros", "rt-multi-thread"] }
 tokio-tungstenite = { version = "0.18.0", features = ["native-tls"] }
 tracing = "0.1.37"
 tracing-error = "0.2.0"
