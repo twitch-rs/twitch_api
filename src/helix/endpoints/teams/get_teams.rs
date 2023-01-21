@@ -140,3 +140,52 @@ fn test_request() {
 
     dbg!(GetTeamsRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }
+
+#[cfg(test)]
+#[test]
+fn test_no_thumbnail() {
+    use helix::*;
+    let req = GetTeamsRequest::id("10920");
+
+    // From response, shortened strings
+    let data = br#"
+    {
+      "data": [
+        {
+          "background_image_url": null,
+          "banner": null,
+          "created_at": "2021-02-26T15:15:43Z",
+          "id": "10920",
+          "info": "info",
+          "team_display_name": "display",
+          "team_name": "partyanimals",
+          "thumbnail_url": null,
+          "updated_at": "2021-04-19T18:24:48Z",
+          "users": [
+            {
+              "user_id": "103198412",
+              "user_login": "findtherabbit",
+              "user_name": "FindTheRabbit"
+            },
+            {
+              "user_id": "126291224",
+              "user_login": "chri5py",
+              "user_name": "chri5py"
+            }
+          ]
+        }
+      ]
+    }
+"#
+    .to_vec();
+
+    let http_response = http::Response::builder().body(data).unwrap();
+
+    let uri = req.get_uri().unwrap();
+    assert_eq!(
+        uri.to_string(),
+        "https://api.twitch.tv/helix/teams?id=10920"
+    );
+
+    dbg!(GetTeamsRequest::parse_response(Some(req), &uri, http_response).unwrap());
+}
