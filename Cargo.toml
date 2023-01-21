@@ -1,13 +1,13 @@
 [package]
 name = "twitch_api"
-version = "0.7.0-rc.3"
+version = "0.7.0-rc.4"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/twitch-rs/twitch_api"
 license = "MIT OR Apache-2.0"
 description = "Library for talking with the new Twitch API aka. \"Helix\", TMI and more!"
 keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
-documentation = "https://docs.rs/twitch_api/0.7.0-rc.2"
+documentation = "https://docs.rs/twitch_api/0.7.0-rc.4"
 readme = "README.md"
 resolver = "2"
 include = [
@@ -27,7 +27,7 @@ members = ["xtask", "examples/*"]
 exclude = ["twitch_types", "twitch_oauth2"]
 
 [workspace.dependencies]
-twitch_api = { version = "0.7.0-rc.3", path = "." }
+twitch_api = { version = "0.7.0-rc.4", path = "." }
 twitch_oauth2 = { version = "0.10.0", path = "twitch_oauth2/" }
 
 [dependencies]
@@ -57,7 +57,7 @@ crypto_hmac = { package = "hmac", version = "0.12.1", optional = true }
 aliri_braid = "0.3.1"
 futures = { version = "0.3.25", optional = true }
 hyper = { version = "0.14.23", optional = true }
-twitch_types = { version = "0.3.10", path = "./twitch_types" }
+twitch_types = { version = "0.3.11", path = "./twitch_types" }
 
 [features]
 default = ["deser_borrow"]
@@ -148,7 +148,7 @@ _all = [
 ]
 
 [dev-dependencies]
-tokio = { version = "1.22.0", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.24.2", features = ["rt-multi-thread", "macros"] }
 dotenvy = "0.15.6"
 futures = "0.3.25"
 serde_cbor = "0.11.2"

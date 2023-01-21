@@ -149,8 +149,8 @@ fn test_request() {
     let end = types::Timestamp::try_from("2021-05-23T00:00:00Z").unwrap();
     let req = UpdateChannelStreamScheduleRequest {
         is_vacation_enabled: Some(true),
-        vacation_start_time: Some(types::IntoCow::to_cow(&start)),
-        vacation_end_time: Some(types::IntoCow::to_cow(&end)),
+        vacation_start_time: Some(types::IntoCow::to_cow(start)),
+        vacation_end_time: Some(types::IntoCow::to_cow(end)),
         timezone: Some("America/New_York".into()),
         ..UpdateChannelStreamScheduleRequest::broadcaster_id("141981764")
     };
