@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/time.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>time.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-52c5db6f6f352e54.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../twitch_types/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/time.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>time.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-6d262342be62306e.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../twitch_types/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -516,9 +516,775 @@
 <a href="#516" id="516">516</a>
 <a href="#517" id="517">517</a>
 <a href="#518" id="518">518</a>
-</pre><pre class="rust"><code><span class="doccomment">/// RFC3339 timestamp
-</span><span class="attr">#[aliri_braid::braid(serde, validator, ord = <span class="string">&quot;omit&quot;</span>)]
-</span><span class="kw">pub struct </span>Timestamp;
+<a href="#519" id="519">519</a>
+<a href="#520" id="520">520</a>
+<a href="#521" id="521">521</a>
+<a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
+<a href="#524" id="524">524</a>
+<a href="#525" id="525">525</a>
+<a href="#526" id="526">526</a>
+<a href="#527" id="527">527</a>
+<a href="#528" id="528">528</a>
+<a href="#529" id="529">529</a>
+<a href="#530" id="530">530</a>
+<a href="#531" id="531">531</a>
+<a href="#532" id="532">532</a>
+<a href="#533" id="533">533</a>
+<a href="#534" id="534">534</a>
+<a href="#535" id="535">535</a>
+<a href="#536" id="536">536</a>
+<a href="#537" id="537">537</a>
+<a href="#538" id="538">538</a>
+<a href="#539" id="539">539</a>
+<a href="#540" id="540">540</a>
+<a href="#541" id="541">541</a>
+<a href="#542" id="542">542</a>
+<a href="#543" id="543">543</a>
+<a href="#544" id="544">544</a>
+<a href="#545" id="545">545</a>
+<a href="#546" id="546">546</a>
+<a href="#547" id="547">547</a>
+<a href="#548" id="548">548</a>
+<a href="#549" id="549">549</a>
+<a href="#550" id="550">550</a>
+<a href="#551" id="551">551</a>
+<a href="#552" id="552">552</a>
+<a href="#553" id="553">553</a>
+<a href="#554" id="554">554</a>
+<a href="#555" id="555">555</a>
+<a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a>
+<a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
+<a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
+<a href="#599" id="599">599</a>
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
+<a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
+<a href="#622" id="622">622</a>
+<a href="#623" id="623">623</a>
+<a href="#624" id="624">624</a>
+<a href="#625" id="625">625</a>
+<a href="#626" id="626">626</a>
+<a href="#627" id="627">627</a>
+<a href="#628" id="628">628</a>
+<a href="#629" id="629">629</a>
+<a href="#630" id="630">630</a>
+<a href="#631" id="631">631</a>
+<a href="#632" id="632">632</a>
+<a href="#633" id="633">633</a>
+<a href="#634" id="634">634</a>
+<a href="#635" id="635">635</a>
+<a href="#636" id="636">636</a>
+<a href="#637" id="637">637</a>
+<a href="#638" id="638">638</a>
+<a href="#639" id="639">639</a>
+<a href="#640" id="640">640</a>
+<a href="#641" id="641">641</a>
+<a href="#642" id="642">642</a>
+<a href="#643" id="643">643</a>
+<a href="#644" id="644">644</a>
+<a href="#645" id="645">645</a>
+<a href="#646" id="646">646</a>
+<a href="#647" id="647">647</a>
+<a href="#648" id="648">648</a>
+<a href="#649" id="649">649</a>
+<a href="#650" id="650">650</a>
+<a href="#651" id="651">651</a>
+<a href="#652" id="652">652</a>
+<a href="#653" id="653">653</a>
+<a href="#654" id="654">654</a>
+<a href="#655" id="655">655</a>
+<a href="#656" id="656">656</a>
+<a href="#657" id="657">657</a>
+<a href="#658" id="658">658</a>
+<a href="#659" id="659">659</a>
+<a href="#660" id="660">660</a>
+<a href="#661" id="661">661</a>
+<a href="#662" id="662">662</a>
+<a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
+<a href="#741" id="741">741</a>
+<a href="#742" id="742">742</a>
+<a href="#743" id="743">743</a>
+<a href="#744" id="744">744</a>
+<a href="#745" id="745">745</a>
+<a href="#746" id="746">746</a>
+<a href="#747" id="747">747</a>
+<a href="#748" id="748">748</a>
+<a href="#749" id="749">749</a>
+<a href="#750" id="750">750</a>
+<a href="#751" id="751">751</a>
+<a href="#752" id="752">752</a>
+<a href="#753" id="753">753</a>
+<a href="#754" id="754">754</a>
+<a href="#755" id="755">755</a>
+<a href="#756" id="756">756</a>
+<a href="#757" id="757">757</a>
+<a href="#758" id="758">758</a>
+<a href="#759" id="759">759</a>
+<a href="#760" id="760">760</a>
+<a href="#761" id="761">761</a>
+<a href="#762" id="762">762</a>
+<a href="#763" id="763">763</a>
+<a href="#764" id="764">764</a>
+<a href="#765" id="765">765</a>
+<a href="#766" id="766">766</a>
+<a href="#767" id="767">767</a>
+<a href="#768" id="768">768</a>
+<a href="#769" id="769">769</a>
+<a href="#770" id="770">770</a>
+<a href="#771" id="771">771</a>
+<a href="#772" id="772">772</a>
+<a href="#773" id="773">773</a>
+<a href="#774" id="774">774</a>
+<a href="#775" id="775">775</a>
+<a href="#776" id="776">776</a>
+<a href="#777" id="777">777</a>
+<a href="#778" id="778">778</a>
+<a href="#779" id="779">779</a>
+<a href="#780" id="780">780</a>
+<a href="#781" id="781">781</a>
+<a href="#782" id="782">782</a>
+<a href="#783" id="783">783</a>
+<a href="#784" id="784">784</a>
+<a href="#785" id="785">785</a>
+<a href="#786" id="786">786</a>
+<a href="#787" id="787">787</a>
+<a href="#788" id="788">788</a>
+<a href="#789" id="789">789</a>
+<a href="#790" id="790">790</a>
+<a href="#791" id="791">791</a>
+<a href="#792" id="792">792</a>
+<a href="#793" id="793">793</a>
+<a href="#794" id="794">794</a>
+<a href="#795" id="795">795</a>
+<a href="#796" id="796">796</a>
+<a href="#797" id="797">797</a>
+<a href="#798" id="798">798</a>
+<a href="#799" id="799">799</a>
+<a href="#800" id="800">800</a>
+<a href="#801" id="801">801</a>
+<a href="#802" id="802">802</a>
+<a href="#803" id="803">803</a>
+<a href="#804" id="804">804</a>
+<a href="#805" id="805">805</a>
+<a href="#806" id="806">806</a>
+<a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+<a href="#812" id="812">812</a>
+<a href="#813" id="813">813</a>
+<a href="#814" id="814">814</a>
+<a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
+<a href="#823" id="823">823</a>
+<a href="#824" id="824">824</a>
+<a href="#825" id="825">825</a>
+<a href="#826" id="826">826</a>
+<a href="#827" id="827">827</a>
+<a href="#828" id="828">828</a>
+<a href="#829" id="829">829</a>
+<a href="#830" id="830">830</a>
+<a href="#831" id="831">831</a>
+<a href="#832" id="832">832</a>
+<a href="#833" id="833">833</a>
+<a href="#834" id="834">834</a>
+<a href="#835" id="835">835</a>
+<a href="#836" id="836">836</a>
+<a href="#837" id="837">837</a>
+<a href="#838" id="838">838</a>
+<a href="#839" id="839">839</a>
+<a href="#840" id="840">840</a>
+<a href="#841" id="841">841</a>
+<a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
+<a href="#868" id="868">868</a>
+<a href="#869" id="869">869</a>
+<a href="#870" id="870">870</a>
+<a href="#871" id="871">871</a>
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+</pre><pre class="rust"><code><span class="attr">#![allow(clippy::missing_safety_doc)]
+
+#[derive(Clone, Hash, PartialEq, Eq)]
+#[repr(transparent)]
+</span><span class="doccomment">/// RFC3339 timestamp
+</span><span class="kw">pub struct </span>Timestamp(String);
+
+<span class="kw">impl </span>Timestamp {
+    <span class="doccomment">///Constructs a new Timestamp if it conforms to [`Timestamp`]
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>new(raw: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, TimestampParseError&gt; {
+        TimestampRef::validate(raw.as_ref())<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="self">Self</span>(raw))
+    }
+
+    <span class="doccomment">///Constructs a new Timestamp without validation
+    ///
+    ///# Safety
+    ///
+    ///Consumers of this function must ensure that values conform to [`Timestamp`]. Failure to maintain this invariant may lead to undefined behavior.
+    </span><span class="attr">#[allow(unsafe_code)]
+    #[inline]
+    </span><span class="kw">pub const unsafe fn </span>new_unchecked(raw: String) -&gt; <span class="self">Self </span>{ <span class="self">Self</span>(raw) }
+
+    <span class="attr">#[inline]
+    </span><span class="doccomment">///Constructs a new Timestamp from a static reference if it conforms to [`Timestamp`]
+    ///
+    ///# Panics
+    ///
+    ///This function will panic if the provided raw string is not valid.
+    </span><span class="attr">#[track_caller]
+    </span><span class="kw">pub fn </span>from_static(raw: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="self">Self </span>{
+        ::std::borrow::ToOwned::to_owned(TimestampRef::from_static(raw))
+    }
+
+    <span class="doccomment">///Converts this `Timestamp` into a [`Box&lt;TimestampRef&gt;`]
+    ///
+    ///This will drop any excess capacity.
+    </span><span class="attr">#[allow(unsafe_code)]
+    #[inline]
+    </span><span class="kw">pub fn </span>into_boxed_ref(<span class="self">self</span>) -&gt; Box&lt;TimestampRef&gt; {
+        <span class="doccomment">///SAFETY: `TimestampRef` is `#[repr(transparent)]` around a single `str` field, so a `*mut str` can be safely reinterpreted as a `*mut TimestampRef`
+        </span><span class="kw">fn </span>_ptr_safety_comment() {}
+
+        <span class="kw">let </span>box_str = <span class="self">self</span>.<span class="number">0</span>.into_boxed_str();
+        <span class="kw">unsafe </span>{ Box::from_raw(Box::into_raw(box_str) <span class="kw">as </span><span class="kw-2">*mut </span>TimestampRef) }
+    }
+
+    <span class="doccomment">///Unwraps the underlying [`String`] value
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>take(<span class="self">self</span>) -&gt; String { <span class="self">self</span>.<span class="number">0 </span>}
+}
+
+<span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef&gt; <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span>TimestampRef) -&gt; <span class="self">Self </span>{ ::std::borrow::ToOwned::to_owned(s) }
+}
+
+<span class="kw">impl </span>::std::convert::From&lt;Timestamp&gt; <span class="kw">for </span>::std::string::String {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(s: Timestamp) -&gt; <span class="self">Self </span>{ s.<span class="number">0 </span>}
+}
+
+<span class="kw">impl </span>::std::borrow::Borrow&lt;TimestampRef&gt; <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>TimestampRef { ::std::ops::Deref::deref(<span class="self">self</span>) }
+}
+
+<span class="kw">impl </span>::std::convert::AsRef&lt;TimestampRef&gt; <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>TimestampRef { ::std::ops::Deref::deref(<span class="self">self</span>) }
+}
+
+<span class="kw">impl </span>::std::convert::AsRef&lt;str&gt; <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="self">self</span>.as_str() }
+}
+
+<span class="kw">impl </span>::std::convert::From&lt;Timestamp&gt; <span class="kw">for </span>Box&lt;TimestampRef&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(r: Timestamp) -&gt; <span class="self">Self </span>{ r.into_boxed_ref() }
+}
+
+<span class="kw">impl </span>::std::convert::From&lt;Box&lt;TimestampRef&gt;&gt; <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(r: Box&lt;TimestampRef&gt;) -&gt; <span class="self">Self </span>{ r.into_owned() }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, TimestampRef&gt;&gt; <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(r: ::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, TimestampRef&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>r {
+            ::std::borrow::Cow::Borrowed(b) =&gt; ::std::borrow::ToOwned::to_owned(b),
+            ::std::borrow::Cow::Owned(o) =&gt; o,
+        }
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;Timestamp&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, TimestampRef&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(owned: Timestamp) -&gt; <span class="self">Self </span>{ ::std::borrow::Cow::Owned(owned) }
+}
+
+<span class="kw">impl </span>::std::convert::TryFrom&lt;::std::string::String&gt; <span class="kw">for </span>Timestamp {
+    <span class="kw">type </span>Error = TimestampParseError;
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>try_from(s: ::std::string::String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="kw">const fn </span>ensure_try_from_string_error_converts_to_validator_error&lt;
+            T: <span class="question-mark">?</span>Sized + From&lt;&lt;String <span class="kw">as </span>::std::convert::TryFrom&lt;::std::string::String&gt;&gt;::Error&gt;,
+        &gt;() {
+        }
+
+        ensure_try_from_string_error_converts_to_validator_error::&lt;<span class="self">Self</span>::Error&gt;();
+        <span class="self">Self</span>::new(s)
+    }
+}
+
+<span class="kw">impl </span>::std::convert::TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>str&gt; <span class="kw">for </span>Timestamp {
+    <span class="kw">type </span>Error = TimestampParseError;
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>try_from(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="kw">let </span>ref_ty = TimestampRef::from_str(s)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(::std::borrow::ToOwned::to_owned(ref_ty))
+    }
+}
+
+<span class="kw">impl </span>::std::str::FromStr <span class="kw">for </span>Timestamp {
+    <span class="kw">type </span><span class="prelude-val">Err </span>= TimestampParseError;
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from_str(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
+        <span class="kw">let </span>ref_ty = TimestampRef::from_str(s)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(::std::borrow::ToOwned::to_owned(ref_ty))
+    }
+}
+
+<span class="kw">impl </span>::std::borrow::Borrow&lt;str&gt; <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="self">self</span>.as_str() }
+}
+
+<span class="kw">impl </span>::std::ops::Deref <span class="kw">for </span>Timestamp {
+    <span class="kw">type </span>Target = TimestampRef;
+
+    <span class="attr">#[allow(unsafe_code)]
+    #[inline]
+    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
+        <span class="doccomment">///SAFETY: The value was satisfies the type&#39;s invariant and conforms to the required implicit contracts of the validator.
+        </span><span class="kw">fn </span>_unchecked_safety_comment() {}
+
+        <span class="kw">unsafe </span>{ TimestampRef::from_str_unchecked(::std::convert::AsRef::as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>)) }
+    }
+}
+
+<span class="kw">impl </span>::std::fmt::Debug <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::std::fmt::Formatter) -&gt; ::std::fmt::Result {
+        &lt;TimestampRef <span class="kw">as </span>::std::fmt::Debug&gt;::fmt(::std::ops::Deref::deref(<span class="self">self</span>), f)
+    }
+}
+
+<span class="kw">impl </span>::std::fmt::Display <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::std::fmt::Formatter) -&gt; ::std::fmt::Result {
+        &lt;TimestampRef <span class="kw">as </span>::std::fmt::Display&gt;::fmt(::std::ops::Deref::deref(<span class="self">self</span>), f)
+    }
+}
+
+<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+</span><span class="kw">impl </span>::serde::Serialize <span class="kw">for </span>Timestamp {
+    <span class="kw">fn </span>serialize&lt;S: ::serde::Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        &lt;String <span class="kw">as </span>::serde::Serialize&gt;::serialize(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, serializer)
+    }
+}
+
+<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Timestamp {
+    <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="kw">let </span>raw = &lt;String <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
+        <span class="self">Self</span>::new(raw).map_err(&lt;D::Error <span class="kw">as </span>::serde::de::Error&gt;::custom)
+    }
+}
+<span class="attr">#[repr(transparent)]
+#[derive(Hash, PartialEq, Eq)]
+</span><span class="doccomment">/// RFC3339 timestamp
+</span><span class="kw">pub struct </span>TimestampRef(str);
+
+<span class="kw">impl </span>TimestampRef {
+    <span class="attr">#[allow(unsafe_code, clippy::should_implement_trait)]
+    #[inline]
+    </span><span class="doccomment">///Transparently reinterprets the string slice as a strongly-typed TimestampRef if it conforms to [`Timestamp`]
+    </span><span class="kw">pub fn </span>from_str(raw: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>, TimestampParseError&gt; {
+        <span class="self">Self</span>::validate(raw)<span class="question-mark">?</span>;
+        <span class="doccomment">///SAFETY: The value was just checked and found to already conform to the required implicit contracts of the validator.
+        </span><span class="kw">fn </span>_unchecked_safety_comment() {}
+
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <span class="self">Self</span>::from_str_unchecked(raw) })
+    }
+
+    <span class="attr">#[allow(unsafe_code)]
+    #[inline]
+    </span><span class="doccomment">///Transparently reinterprets the string slice as a strongly-typed TimestampRef without validating
+    </span><span class="kw">pub const unsafe fn </span>from_str_unchecked(raw: <span class="kw-2">&amp;</span>str) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
+        <span class="doccomment">///SAFETY: `TimestampRef` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const TimestampRef`
+        </span><span class="kw">fn </span>_ptr_safety_comment() {}
+
+        <span class="kw-2">&amp;*</span>(raw <span class="kw">as </span><span class="kw-2">*const </span>str <span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>)
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="doccomment">///Transparently reinterprets the static string slice as a strongly-typed TimestampRef if it conforms to [`Timestamp`]
+    ///
+    ///# Panics
+    ///
+    ///This function will panic if the provided raw string is not valid.
+    </span><span class="attr">#[track_caller]
+    </span><span class="kw">pub fn </span>from_static(raw: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="self">Self </span>{
+        <span class="self">Self</span>::from_str(raw).expect(<span class="macro">concat!</span>(<span class="string">&quot;invalid &quot;</span>, <span class="macro">stringify!</span>(TimestampRef)))
+    }
+
+    <span class="attr">#[allow(unsafe_code)]
+    #[inline]
+    </span><span class="doccomment">///Converts a [`Box&lt;TimestampRef&gt;`] into a [`Timestamp`] without copying or allocating
+    </span><span class="kw">pub fn </span>into_owned(<span class="self">self</span>: Box&lt;TimestampRef&gt;) -&gt; Timestamp {
+        <span class="doccomment">///SAFETY: `TimestampRef` is `#[repr(transparent)]` around a single `str` field, so a `*mut str` can be safely reinterpreted as a `*mut TimestampRef`
+        </span><span class="kw">fn </span>_ptr_safety_comment() {}
+
+        <span class="kw">let </span>raw = Box::into_raw(<span class="self">self</span>);
+        <span class="kw">let </span>boxed = <span class="kw">unsafe </span>{ Box::from_raw(raw <span class="kw">as </span><span class="kw-2">*mut </span>str) };
+        <span class="kw">let </span>s = ::std::convert::From::from(boxed);
+        <span class="doccomment">///SAFETY: The value was just checked and found to already conform to the required implicit contracts of the validator.
+        </span><span class="kw">fn </span>_unchecked_safety_comment() {}
+
+        <span class="kw">unsafe </span>{ Timestamp::new_unchecked(s) }
+    }
+
+    <span class="doccomment">/// Provides access to the underlying value as a string slice.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub const fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0 </span>}
+}
+
+<span class="kw">impl </span>::std::borrow::ToOwned <span class="kw">for </span>TimestampRef {
+    <span class="kw">type </span>Owned = Timestamp;
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>to_owned(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Owned { Timestamp(<span class="self">self</span>.<span class="number">0</span>.into()) }
+}
+
+<span class="kw">impl </span>::std::cmp::PartialEq&lt;TimestampRef&gt; <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>TimestampRef) -&gt; bool { <span class="self">self</span>.as_str() == other.as_str() }
+}
+
+<span class="kw">impl </span>::std::cmp::PartialEq&lt;Timestamp&gt; <span class="kw">for </span>TimestampRef {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Timestamp) -&gt; bool { <span class="self">self</span>.as_str() == other.as_str() }
+}
+
+<span class="kw">impl </span>::std::cmp::PartialEq&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef&gt; <span class="kw">for </span>Timestamp {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: &amp;&amp;TimestampRef) -&gt; bool { <span class="self">self</span>.as_str() == other.as_str() }
+}
+
+<span class="kw">impl </span>::std::cmp::PartialEq&lt;Timestamp&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Timestamp) -&gt; bool { <span class="self">self</span>.as_str() == other.as_str() }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef {
+    <span class="kw">type </span>Error = TimestampParseError;
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>try_from(s: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef, <span class="self">Self</span>::Error&gt; { TimestampRef::from_str(s) }
+}
+
+<span class="kw">impl </span>::std::borrow::Borrow&lt;str&gt; <span class="kw">for </span>TimestampRef {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0 </span>}
+}
+
+<span class="kw">impl </span>::std::convert::AsRef&lt;str&gt; <span class="kw">for </span>TimestampRef {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0 </span>}
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, TimestampRef&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef) -&gt; <span class="self">Self </span>{ ::std::borrow::Cow::Borrowed(r) }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;b</span>, TimestampRef&gt;&gt;
+    <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef
+{
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;b</span>, TimestampRef&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef {
+        ::std::borrow::Borrow::borrow(r)
+    }
+}
+
+<span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef&gt; <span class="kw">for </span>::std::rc::Rc&lt;TimestampRef&gt; {
+    <span class="attr">#[allow(unsafe_code)]
+    #[inline]
+    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef) -&gt; <span class="self">Self </span>{
+        <span class="doccomment">///SAFETY: `TimestampRef` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const TimestampRef`
+        </span><span class="kw">fn </span>_ptr_safety_comment() {}
+
+        <span class="kw">let </span>rc = ::std::rc::Rc::&lt;str&gt;::from(r.as_str());
+        <span class="kw">unsafe </span>{ ::std::rc::Rc::from_raw(::std::rc::Rc::into_raw(rc) <span class="kw">as </span><span class="kw-2">*const </span>TimestampRef) }
+    }
+}
+
+<span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef&gt; <span class="kw">for </span>::std::sync::Arc&lt;TimestampRef&gt; {
+    <span class="attr">#[allow(unsafe_code)]
+    #[inline]
+    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef) -&gt; <span class="self">Self </span>{
+        <span class="doccomment">///SAFETY: `TimestampRef` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const TimestampRef`
+        </span><span class="kw">fn </span>_ptr_safety_comment() {}
+
+        <span class="kw">let </span>arc = ::std::sync::Arc::&lt;str&gt;::from(r.as_str());
+        <span class="kw">unsafe </span>{
+            ::std::sync::Arc::from_raw(::std::sync::Arc::into_raw(arc) <span class="kw">as </span><span class="kw-2">*const </span>TimestampRef)
+        }
+    }
+}
+
+<span class="kw">impl </span>::std::fmt::Debug <span class="kw">for </span>TimestampRef {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::std::fmt::Formatter) -&gt; ::std::fmt::Result {
+        &lt;str <span class="kw">as </span>::std::fmt::Debug&gt;::fmt(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, f)
+    }
+}
+
+<span class="kw">impl </span>::std::fmt::Display <span class="kw">for </span>TimestampRef {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::std::fmt::Formatter) -&gt; ::std::fmt::Result {
+        &lt;str <span class="kw">as </span>::std::fmt::Display&gt;::fmt(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, f)
+    }
+}
+
+<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+</span><span class="kw">impl </span>::serde::Serialize <span class="kw">for </span>TimestampRef {
+    <span class="kw">fn </span>serialize&lt;S: ::serde::Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
+        &lt;str <span class="kw">as </span>::serde::Serialize&gt;::serialize(<span class="self">self</span>.as_str(), serializer)
+    }
+}
+
+<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>: <span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;a</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef {
+    <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="kw">let </span>raw = &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
+        TimestampRef::from_str(raw).map_err(&lt;D::Error <span class="kw">as </span>::serde::de::Error&gt;::custom)
+    }
+}
+
+<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Box&lt;TimestampRef&gt; {
+    <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="kw">let </span>owned = &lt;Timestamp <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(owned.into_boxed_ref())
+    }
+}
 
 <span class="macro">impl_extra!</span>(validated, Timestamp, TimestampRef, TimestampParseError);
 
@@ -544,10 +1310,8 @@
     }
 }
 
-<span class="kw">impl </span>aliri_braid::Validator <span class="kw">for </span>Timestamp {
-    <span class="kw">type </span>Error = TimestampParseError;
-
-    <span class="kw">fn </span>validate(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+<span class="kw">impl </span>TimestampRef {
+    <span class="kw">fn </span>validate(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), TimestampParseError&gt; {
         <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
         </span>{
             <span class="kw">let _ </span>= time::OffsetDateTime::parse(s, <span class="kw-2">&amp;</span>time::format_description::well_known::Rfc3339)<span class="question-mark">?</span>;
@@ -619,27 +1383,75 @@
 }
 
 <span class="doccomment">/// Errors that can occur when parsing a timestamp.
-</span><span class="attr">#[derive(Debug, thiserror::Error, displaydoc::Display)]
-#[ignore_extra_doc_attributes]
+</span><span class="attr">#[derive(Debug)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>TimestampParseError {
     <span class="doccomment">/// Could not parse the timestamp using `time`
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
-    </span>TimeError(<span class="attr">#[from] </span>time::error::Parse),
+    </span>TimeError(time::error::Parse),
     <span class="doccomment">/// Could not format the timestamp using `time`
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
-    </span>TimeFormatError(<span class="attr">#[from] </span>time::error::Format),
-    <span class="doccomment">/// {0}
+    </span>TimeFormatError(time::error::Format),
+    <span class="doccomment">/// Other error
     </span>Other(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
-    <span class="doccomment">/// timestamp has an invalid format. {s:?} - {location}
+    <span class="doccomment">/// Timestamp has an invalid format.
     </span>InvalidFormat {
         <span class="doccomment">/// location of error
         </span>location: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>std::panic::Location&lt;<span class="lifetime">&#39;static</span>&gt;,
         <span class="doccomment">/// Thing that failed
         </span>s: <span class="prelude-ty">Option</span>&lt;String&gt;,
     },
+}
+
+<span class="kw">impl </span>core::fmt::Display <span class="kw">for </span>TimestampParseError {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>core::fmt::Formatter) -&gt; core::fmt::Result {
+        <span class="attr">#[allow(unused_variables)]
+        </span><span class="kw">match </span><span class="self">self </span>{
+            <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+            </span>TimestampParseError::TimeError(parse_error) =&gt; {
+                <span class="macro">write!</span>(formatter, <span class="string">&quot;Could not parse the timestamp using `time`&quot;</span>)
+            }
+            <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+            </span>TimestampParseError::TimeFormatError(<span class="kw">_</span>) =&gt; {
+                <span class="macro">write!</span>(formatter, <span class="string">&quot;Could not format the timestamp using `time`&quot;</span>)
+            }
+            TimestampParseError::Other(other) =&gt; {
+                <span class="macro">write!</span>(formatter, <span class="string">&quot;{}&quot;</span>, other)
+            }
+            TimestampParseError::InvalidFormat { location, s } =&gt; {
+                <span class="macro">write!</span>(
+                    formatter,
+                    <span class="string">&quot;timestamp has an invalid format. {:?} - {}&quot;</span>,
+                    s, location
+                )
+            }
+        }
+    }
+}
+
+<span class="kw">impl </span>std::error::Error <span class="kw">for </span>TimestampParseError {
+    <span class="kw">fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::option::Option&lt;<span class="kw-2">&amp;</span>(<span class="kw">dyn </span>std::error::Error + <span class="lifetime">&#39;static</span>)&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+            </span>TimestampParseError::TimeError { <span class="number">0</span>: source, .. } =&gt; {
+                std::option::Option::Some(source <span class="kw">as _</span>)
+            }
+            <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+            </span>TimestampParseError::TimeFormatError { <span class="number">0</span>: source, .. } =&gt; {
+                std::option::Option::Some(source <span class="kw">as _</span>)
+            }
+            TimestampParseError::Other { .. } =&gt; std::option::Option::None,
+            TimestampParseError::InvalidFormat { .. } =&gt; std::option::Option::None,
+        }
+    }
+}
+<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+</span><span class="kw">impl </span>std::convert::From&lt;time::error::Parse&gt; <span class="kw">for </span>TimestampParseError {
+    <span class="kw">fn </span>from(source: time::error::Parse) -&gt; <span class="self">Self </span>{ TimestampParseError::TimeError(source) }
+}
+<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+</span><span class="kw">impl </span>std::convert::From&lt;time::error::Format&gt; <span class="kw">for </span>TimestampParseError {
+    <span class="kw">fn </span>from(source: time::error::Format) -&gt; <span class="self">Self </span>{ TimestampParseError::TimeFormatError(source) }
 }
 
 <span class="kw">impl </span>TimestampParseError {
@@ -1035,4 +1847,4 @@
     }
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (5ce39f42b 2023-01-20)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-ab1d4ae2ec52020e.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (c8e6a9e8b 2023-01-23)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
