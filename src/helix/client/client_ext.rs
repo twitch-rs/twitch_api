@@ -340,6 +340,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             Ok(t) => t,
             Err(e) => return futures::stream::once(async { Err(e) }).boxed(),
         };
+        // If this fails to compile due to missing implementation, make sure this crate and `twitch_oauth2` use the same version of `twitch_types`
         let req = helix::subscriptions::GetBroadcasterSubscriptionsRequest::broadcaster_id(user_id);
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
@@ -419,7 +420,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        if let Some(user) = self.get_user_from_login(&*login.to_cow(), token).await? {
+        if let Some(user) = self.get_user_from_login(&*login.into_cow(), token).await? {
             self.get_total_followers_from_id(&user.id, token)
                 .await
                 .map(Some)
@@ -640,7 +641,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         T: TwitchToken + Send + Sync + ?Sized,
     {
         if let Some(user) = self
-            .get_user_from_login(login.to_cow().as_ref(), token)
+            .get_user_from_login(login.into_cow().as_ref(), token)
             .await?
         {
             self.get_channel_emotes_from_id(&user.id, token)
@@ -789,7 +790,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         T: TwitchToken + Send + Sync + ?Sized,
     {
         let req = helix::chat::UpdateUserChatColorRequest {
-            user_id: user_id.to_cow(),
+            user_id: user_id.into_cow(),
             color: color.into(),
         };
 
@@ -825,8 +826,8 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         T: TwitchToken + Send + Sync + ?Sized,
     {
         let req = helix::moderation::AddChannelModeratorRequest {
-            broadcaster_id: broadcaster_id.to_cow(),
-            moderator_id: moderator_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            moderator_id: moderator_id.into_cow(),
         };
 
         Ok(self.req_post(req, helix::EmptyBody, token).await?.data)
@@ -843,8 +844,8 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         T: TwitchToken + Send + Sync + ?Sized,
     {
         let req = helix::moderation::RemoveChannelModeratorRequest {
-            broadcaster_id: broadcaster_id.to_cow(),
-            moderator_id: moderator_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            moderator_id: moderator_id.into_cow(),
         };
 
         Ok(self.req_delete(req, token).await?.data)
@@ -875,8 +876,8 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         T: TwitchToken + Send + Sync + ?Sized,
     {
         let req = helix::channels::AddChannelVipRequest {
-            broadcaster_id: broadcaster_id.to_cow(),
-            user_id: user_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            user_id: user_id.into_cow(),
         };
 
         Ok(self.req_post(req, helix::EmptyBody, token).await?.data)
@@ -893,8 +894,8 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         T: TwitchToken + Send + Sync + ?Sized,
     {
         let req = helix::channels::RemoveChannelVipRequest {
-            broadcaster_id: broadcaster_id.to_cow(),
-            user_id: user_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            user_id: user_id.into_cow(),
         };
 
         Ok(self.req_delete(req, token).await?.data)

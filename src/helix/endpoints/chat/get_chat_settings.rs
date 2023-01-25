@@ -83,7 +83,7 @@ impl<'a> GetChatSettingsRequest<'a> {
     /// Get chat settings for broadcasters channel
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
             moderator_id: None,
         }
     }
@@ -96,7 +96,7 @@ impl<'a> GetChatSettingsRequest<'a> {
         mut self,
         moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
-        self.moderator_id = Some(moderator_id.to_cow());
+        self.moderator_id = Some(moderator_id.into_cow());
         self
     }
 }

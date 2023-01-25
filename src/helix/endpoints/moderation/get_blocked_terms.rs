@@ -68,8 +68,8 @@ impl<'a> GetBlockedTerms<'a> {
         moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
-            moderator_id: moderator_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            moderator_id: moderator_id.into_cow(),
             after: Default::default(),
             first: Default::default(),
         }

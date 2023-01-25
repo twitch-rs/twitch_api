@@ -79,7 +79,7 @@ impl<'a> GetBroadcasterSubscriptionsEventsRequest<'a> {
     /// Get events for this broadcaster
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
             user_id: Cow::Borrowed(&[]),
             after: Default::default(),
             first: Default::default(),

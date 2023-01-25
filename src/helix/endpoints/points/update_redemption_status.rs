@@ -100,9 +100,9 @@ impl<'a> UpdateRedemptionStatusRequest<'a> {
         id: impl types::IntoCow<'a, types::RedemptionIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
-            reward_id: reward_id.to_cow(),
-            id: id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            reward_id: reward_id.into_cow(),
+            id: id.into_cow(),
         }
     }
 }

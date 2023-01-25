@@ -146,7 +146,7 @@ impl<'a> CreatePollBody<'a> {
         choices: impl Into<Cow<'a, [NewPollChoice<'a>]>>,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
             title: title.into(),
             duration,
             choices: choices.into(),

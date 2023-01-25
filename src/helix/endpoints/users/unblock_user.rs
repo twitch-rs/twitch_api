@@ -52,7 +52,7 @@ impl<'a> UnblockUserRequest<'a> {
     /// Create a new unblock request
     pub fn unblock_user(target_user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            target_user_id: target_user_id.to_cow(),
+            target_user_id: target_user_id.into_cow(),
         }
     }
 }

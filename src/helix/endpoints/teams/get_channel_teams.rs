@@ -52,7 +52,7 @@ impl<'a> GetChannelTeamsRequest<'a> {
     /// Get the team of this specific broadcaster
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
         }
     }
 }

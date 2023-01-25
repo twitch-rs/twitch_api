@@ -68,7 +68,7 @@ impl<'a> UpdateUserChatColorRequest<'a> {
         color: types::NamedUserColor<'static>,
     ) -> Self {
         Self {
-            user_id: user_id.to_cow(),
+            user_id: user_id.into_cow(),
             color,
         }
     }

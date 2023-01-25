@@ -65,7 +65,7 @@ impl<'a> GetCustomRewardRequest<'a> {
     /// Rewards on this broadcasters channel
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
             id: Cow::Borrowed(&[]),
             only_manageable_rewards: Default::default(),
         }

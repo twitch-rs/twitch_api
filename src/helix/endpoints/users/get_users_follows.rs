@@ -61,7 +61,7 @@ impl<'a> GetUsersFollowsRequest<'a> {
     /// Get the broadcasters that `from_id` is following
     pub fn following(from_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            from_id: Some(from_id.to_cow()),
+            from_id: Some(from_id.into_cow()),
             ..Self::empty()
         }
     }
@@ -69,7 +69,7 @@ impl<'a> GetUsersFollowsRequest<'a> {
     /// Get the followers of `to_id`
     pub fn followers(to_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            to_id: Some(to_id.to_cow()),
+            to_id: Some(to_id.into_cow()),
             ..Self::empty()
         }
     }
@@ -80,8 +80,8 @@ impl<'a> GetUsersFollowsRequest<'a> {
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            from_id: Some(user_id.to_cow()),
-            to_id: Some(broadcaster_id.to_cow()),
+            from_id: Some(user_id.into_cow()),
+            to_id: Some(broadcaster_id.into_cow()),
             ..Self::empty()
         }
     }

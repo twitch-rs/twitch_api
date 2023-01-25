@@ -58,7 +58,7 @@ impl<'a> GetCheermotesRequest<'a> {
     /// Get Cheermotes in a specific broadcasters channel.
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: Some(broadcaster_id.to_cow()),
+            broadcaster_id: Some(broadcaster_id.into_cow()),
         }
     }
 }

@@ -71,7 +71,7 @@ impl<'a> CheckAutoModStatusRequest<'a> {
     /// Check automod status in this broadcasters channel.
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
         }
     }
 }
@@ -109,7 +109,7 @@ impl<'a> CheckAutoModStatusBody<'a> {
         msg_text: impl Into<Cow<'a, str>>,
     ) -> Self {
         Self {
-            msg_id: msg_id.to_cow(),
+            msg_id: msg_id.into_cow(),
             msg_text: msg_text.into(),
             user_id: None,
         }

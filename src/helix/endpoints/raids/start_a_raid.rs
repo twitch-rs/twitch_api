@@ -61,8 +61,8 @@ impl<'a> StartARaidRequest<'a> {
         to_broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            from_broadcaster_id: from_broadcaster_id.to_cow(),
-            to_broadcaster_id: to_broadcaster_id.to_cow(),
+            from_broadcaster_id: from_broadcaster_id.into_cow(),
+            to_broadcaster_id: to_broadcaster_id.into_cow(),
         }
     }
 }

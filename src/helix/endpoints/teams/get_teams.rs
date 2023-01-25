@@ -55,7 +55,7 @@ impl<'a> GetTeamsRequest<'a> {
     /// Get team with this [`TeamId`](types::TeamId)
     pub fn id(id: impl types::IntoCow<'a, types::TeamIdRef> + 'a) -> Self {
         Self {
-            id: Some(id.to_cow()),
+            id: Some(id.into_cow()),
             name: None,
         }
     }

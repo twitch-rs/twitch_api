@@ -108,8 +108,8 @@ impl<'a> EndPollBody<'a> {
         status: PollStatus,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
-            id: id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            id: id.into_cow(),
             status,
         }
     }

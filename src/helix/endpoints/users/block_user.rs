@@ -63,7 +63,7 @@ impl<'a> BlockUserRequest<'a> {
     /// Block a user
     pub fn block_user(target_user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            target_user_id: target_user_id.to_cow(),
+            target_user_id: target_user_id.into_cow(),
             source_context: None,
             reason: None,
         }

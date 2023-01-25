@@ -82,8 +82,8 @@ impl<'a> UpdateChannelStreamScheduleSegmentRequest<'a> {
         id: impl types::IntoCow<'a, types::StreamSegmentIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
-            id: id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            id: id.into_cow(),
         }
     }
 }

@@ -75,8 +75,8 @@ impl<'a> BanUserRequest<'a> {
         moderator_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
-            moderator_id: moderator_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            moderator_id: moderator_id.into_cow(),
         }
     }
 }
@@ -118,7 +118,7 @@ impl<'a> BanUserBody<'a> {
         Self {
             duration: duration.into(),
             reason: reason.into(),
-            user_id: user_id.to_cow(),
+            user_id: user_id.into_cow(),
         }
     }
 }
