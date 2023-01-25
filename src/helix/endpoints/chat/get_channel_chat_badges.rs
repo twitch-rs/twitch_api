@@ -56,7 +56,7 @@ impl<'a> GetChannelChatBadgesRequest<'a> {
     /// Get chat badges for the specified broadcaster.
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
         }
     }
 }

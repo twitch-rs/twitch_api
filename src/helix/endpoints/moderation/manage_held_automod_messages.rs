@@ -110,8 +110,8 @@ impl<'a> ManageHeldAutoModMessagesBody<'a> {
         action: impl Into<AutoModAction>,
     ) -> Self {
         Self {
-            user_id: user_id.to_cow(),
-            msg_id: msg_id.to_cow(),
+            user_id: user_id.into_cow(),
+            msg_id: msg_id.into_cow(),
             action: action.into(),
         }
     }

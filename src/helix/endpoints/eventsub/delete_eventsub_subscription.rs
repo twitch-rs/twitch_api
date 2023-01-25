@@ -19,7 +19,7 @@ pub struct DeleteEventSubSubscriptionRequest<'a> {
 impl<'a> DeleteEventSubSubscriptionRequest<'a> {
     /// Delete this eventsub subscription.
     pub fn id(id: impl types::IntoCow<'a, types::EventSubIdRef> + 'a) -> Self {
-        Self { id: id.to_cow() }
+        Self { id: id.into_cow() }
     }
 }
 

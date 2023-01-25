@@ -69,7 +69,7 @@ impl<'a> GetFollowedStreamsRequest<'a> {
     /// See also [`HelixClient::get_followed_streams`](crate::helix::HelixClient::get_followed_streams).
     pub fn user_id(user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            user_id: user_id.to_cow(),
+            user_id: user_id.into_cow(),
             after: Default::default(),
             before: Default::default(),
             first: Default::default(),

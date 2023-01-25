@@ -10,12 +10,12 @@ use std::borrow::Cow;
 pub mod get_channel_teams;
 pub mod get_teams;
 
-/// Information about a team. Get team members with [`GetChannelTeamsRequest`](get_channel_teams::GetChannelTeamsRequest)
+/// Information about a team. Get team `members` with [`GetChannelTeamsRequest`](get_channel_teams::GetChannelTeamsRequest)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct TeamInformation {
-    /// URL of the Team background image.
+    /// URL of the Team background `image`.
     pub background_image_url: Option<String>,
     /// URL for the Team banner.
     pub banner: Option<String>,

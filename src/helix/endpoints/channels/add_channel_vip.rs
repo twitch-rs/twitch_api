@@ -59,8 +59,8 @@ impl<'a> AddChannelVipRequest<'a> {
         user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
-            user_id: user_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            user_id: user_id.into_cow(),
         }
     }
 }

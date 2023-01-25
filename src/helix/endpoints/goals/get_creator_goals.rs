@@ -64,7 +64,7 @@ impl<'a> GetCreatorGoalsRequest<'a> {
     /// Gets the broadcaster’s list of active goals.
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
             cursor: Default::default(),
             first: Default::default(),
             id: Default::default(),

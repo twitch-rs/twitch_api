@@ -102,7 +102,7 @@ impl<'a> GetClipsRequest<'a> {
     /// Broadcaster for whom clips are returned.
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: Some(broadcaster_id.to_cow()),
+            broadcaster_id: Some(broadcaster_id.into_cow()),
             ..Self::empty()
         }
     }
@@ -110,7 +110,7 @@ impl<'a> GetClipsRequest<'a> {
     /// Game for which clips are returned.
     pub fn game_id(game_id: impl types::IntoCow<'a, types::CategoryIdRef> + 'a) -> Self {
         Self {
-            game_id: Some(game_id.to_cow()),
+            game_id: Some(game_id.into_cow()),
             ..Self::empty()
         }
     }
@@ -128,7 +128,7 @@ impl<'a> GetClipsRequest<'a> {
         &mut self,
         started_at: impl types::IntoCow<'a, types::TimestampRef> + 'a,
     ) -> &mut Self {
-        self.started_at = Some(started_at.to_cow());
+        self.started_at = Some(started_at.into_cow());
         self
     }
 
@@ -137,7 +137,7 @@ impl<'a> GetClipsRequest<'a> {
         &mut self,
         ended_at: impl types::IntoCow<'a, types::TimestampRef> + 'a,
     ) -> &mut Self {
-        self.ended_at = Some(ended_at.to_cow());
+        self.ended_at = Some(ended_at.into_cow());
         self
     }
 

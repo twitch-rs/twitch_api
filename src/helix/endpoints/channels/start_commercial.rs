@@ -88,7 +88,7 @@ impl<'a> StartCommercialBody<'a> {
         length: impl Into<types::CommercialLength>,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
             length: length.into(),
         }
     }

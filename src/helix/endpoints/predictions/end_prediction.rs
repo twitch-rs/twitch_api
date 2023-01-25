@@ -111,8 +111,8 @@ impl<'a> EndPredictionBody<'a> {
         status: impl Into<types::PredictionStatus>,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
-            id: id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            id: id.into_cow(),
             status: status.into(),
             winning_outcome_id: None,
         }
@@ -125,7 +125,7 @@ impl<'a> EndPredictionBody<'a> {
         mut self,
         winning_outcome_id: impl types::IntoCow<'a, types::PredictionIdRef> + 'a,
     ) -> Self {
-        self.winning_outcome_id = Some(winning_outcome_id.to_cow());
+        self.winning_outcome_id = Some(winning_outcome_id.into_cow());
         self
     }
 }

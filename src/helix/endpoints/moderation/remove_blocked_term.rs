@@ -67,9 +67,9 @@ impl<'a> RemoveBlockedTermRequest<'a> {
         id: impl types::IntoCow<'a, types::BlockedTermIdRef> + 'a,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
-            moderator_id: moderator_id.to_cow(),
-            id: id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
+            moderator_id: moderator_id.into_cow(),
+            id: id.into_cow(),
         }
     }
 }

@@ -85,7 +85,7 @@ impl<'a> CreateChannelStreamScheduleSegmentRequest<'a> {
     /// Create a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
         }
     }
 }
@@ -133,7 +133,7 @@ impl<'a> CreateChannelStreamScheduleSegmentBody<'a> {
         is_recurring: bool,
     ) -> Self {
         Self {
-            start_time: start_time.to_cow(),
+            start_time: start_time.into_cow(),
             timezone: timezone.into(),
             is_recurring,
             duration: Default::default(),
@@ -173,7 +173,7 @@ fn test_request() {
     let ts = types::Timestamp::try_from("2021-07-01T18:00:00Z").unwrap();
     let body = CreateChannelStreamScheduleSegmentBody {
         duration: Some("60".into()),
-        category_id: Some(types::IntoCow::to_cow("509670")),
+        category_id: Some(types::IntoCow::into_cow("509670")),
         title: Some("TwitchDev Monthly Update // July 1, 2021".into()),
         ..CreateChannelStreamScheduleSegmentBody::new(&*ts, "America/New_York", false)
     };

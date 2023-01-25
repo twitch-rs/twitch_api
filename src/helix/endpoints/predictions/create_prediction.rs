@@ -112,7 +112,7 @@ impl<'a> CreatePredictionBody<'a> {
         prediction_window: i64,
     ) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
             title: title.into(),
             outcomes,
             prediction_window,

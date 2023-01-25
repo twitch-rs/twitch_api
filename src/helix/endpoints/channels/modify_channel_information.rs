@@ -68,7 +68,7 @@ impl<'a> ModifyChannelInformationRequest<'a> {
     /// Modify specified broadcasters channel
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         ModifyChannelInformationRequest {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
         }
     }
 }
@@ -122,7 +122,7 @@ impl<'a> ModifyChannelInformationBody<'a> {
         &mut self,
         game_id: impl types::IntoCow<'a, types::CategoryIdRef> + 'a,
     ) -> &mut Self {
-        self.game_id = Some(game_id.to_cow());
+        self.game_id = Some(game_id.into_cow());
         self
     }
 

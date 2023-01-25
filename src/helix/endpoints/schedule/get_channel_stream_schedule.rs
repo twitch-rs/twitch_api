@@ -74,7 +74,7 @@ impl<'a> GetChannelStreamScheduleRequest<'a> {
     /// Get a broadcasters schedule
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
             id: Default::default(),
             start_time: Default::default(),
             utc_offset: Default::default(),
@@ -85,7 +85,7 @@ impl<'a> GetChannelStreamScheduleRequest<'a> {
 
     /// Set the id for the request.
     pub fn id(mut self, id: impl types::IntoCow<'a, types::StreamSegmentIdRef> + 'a) -> Self {
-        self.id = Some(id.to_cow());
+        self.id = Some(id.into_cow());
         self
     }
 
@@ -94,7 +94,7 @@ impl<'a> GetChannelStreamScheduleRequest<'a> {
         mut self,
         start_time: impl types::IntoCow<'a, types::TimestampRef> + 'a,
     ) -> Self {
-        self.start_time = Some(start_time.to_cow());
+        self.start_time = Some(start_time.into_cow());
         self
     }
 

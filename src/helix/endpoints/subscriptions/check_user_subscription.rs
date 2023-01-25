@@ -61,7 +61,7 @@ impl<'a> CheckUserSubscriptionRequest<'a> {
     /// Checks subscribed users to this specific channel.
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
             user_id: Cow::Borrowed(&[]),
         }
     }

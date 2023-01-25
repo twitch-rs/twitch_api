@@ -71,8 +71,8 @@ impl<'a> SendWhisperRequest<'a> {
         to: impl types::IntoCow<'a, types::UserIdRef> + 'a,
     ) -> Self {
         Self {
-            from_user_id: from.to_cow(),
-            to_user_id: to.to_cow(),
+            from_user_id: from.into_cow(),
+            to_user_id: to.into_cow(),
         }
     }
 }

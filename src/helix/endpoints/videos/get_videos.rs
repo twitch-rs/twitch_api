@@ -100,7 +100,7 @@ impl<'a> GetVideosRequest<'a> {
     /// ID of the user who owns the video.
     pub fn user_id(user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            user_id: Some(user_id.to_cow()),
+            user_id: Some(user_id.into_cow()),
             ..Self::default()
         }
     }
@@ -108,7 +108,7 @@ impl<'a> GetVideosRequest<'a> {
     /// ID of the game the video is of.
     pub fn game_id(game_id: impl types::IntoCow<'a, types::CategoryIdRef> + 'a) -> Self {
         Self {
-            game_id: Some(game_id.to_cow()),
+            game_id: Some(game_id.into_cow()),
             ..Self::default()
         }
     }

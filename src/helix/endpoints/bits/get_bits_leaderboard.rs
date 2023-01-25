@@ -90,7 +90,7 @@ impl<'a> GetBitsLeaderboardRequest<'a> {
     /// Get leaderboard starting at this timestamp
     pub fn started_at(self, started_at: impl types::IntoCow<'a, types::TimestampRef> + 'a) -> Self {
         Self {
-            started_at: Some(started_at.to_cow()),
+            started_at: Some(started_at.into_cow()),
             ..self
         }
     }
@@ -98,7 +98,7 @@ impl<'a> GetBitsLeaderboardRequest<'a> {
     /// Get leaderboard where this user is included (if they are on the leaderboard)
     pub fn user_id(self, user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            user_id: Some(user_id.to_cow()),
+            user_id: Some(user_id.into_cow()),
             ..self
         }
     }

@@ -91,7 +91,7 @@ impl<'a> GetCustomRewardRedemptionRequest<'a> {
     /// Reward to fetch
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: broadcaster_id.to_cow(),
+            broadcaster_id: broadcaster_id.into_cow(),
             reward_id: None,
             status: Default::default(),
             after: Default::default(),
@@ -106,7 +106,7 @@ impl<'a> GetCustomRewardRedemptionRequest<'a> {
         mut self,
         reward_id: impl types::IntoCow<'a, types::RewardIdRef> + 'a,
     ) -> Self {
-        self.reward_id = Some(reward_id.to_cow());
+        self.reward_id = Some(reward_id.into_cow());
         self
     }
 
