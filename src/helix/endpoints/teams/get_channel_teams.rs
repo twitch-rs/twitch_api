@@ -85,7 +85,34 @@ impl Request for GetChannelTeamsRequest<'_> {
     const SCOPE: &'static [twitch_oauth2::Scope] = &[];
 }
 
-impl RequestGet for GetChannelTeamsRequest<'_> {}
+impl RequestGet for GetChannelTeamsRequest<'_> {
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, <Self as Request>::Response>, helix::HelixRequestGetError>
+    where
+        Self: Sized,
+    {
+        let response: helix::InnerResponse<Option<_>> =
+            crate::parse_json(response, true).map_err(|e| {
+                helix::HelixRequestGetError::DeserializeError(
+                    response.to_string(),
+                    e,
+                    uri.clone(),
+                    status,
+                )
+            })?;
+        Ok(helix::Response {
+            data: response.data.unwrap_or_default(),
+            pagination: response.pagination.cursor,
+            request,
+            total: response.total,
+            other: response.other,
+        })
+    }
+}
 
 #[cfg(test)]
 #[test]
@@ -122,6 +149,25 @@ fn test_request() {
     assert_eq!(
         uri.to_string(),
         "https://api.twitch.tv/helix/teams/channel?broadcaster_id=44322889"
+    );
+
+    dbg!(GetChannelTeamsRequest::parse_response(Some(req), &uri, http_response).unwrap());
+}
+
+#[cfg(test)]
+#[test]
+fn test_request_null() {
+    use helix::*;
+    let req = GetChannelTeamsRequest::broadcaster_id("1234");
+
+    let data = br#"{"data": null}"#.to_vec();
+
+    let http_response = http::Response::builder().body(data).unwrap();
+
+    let uri = req.get_uri().unwrap();
+    assert_eq!(
+        uri.to_string(),
+        "https://api.twitch.tv/helix/teams/channel?broadcaster_id=1234"
     );
 
     dbg!(GetChannelTeamsRequest::parse_response(Some(req), &uri, http_response).unwrap());
