@@ -52,6 +52,10 @@
 - Added `sort` and `id` to `Get Custom Reward Redemption`
 - Added contribution type `OTHER` for Get Hype Train Events
 
+### Fixed
+
+- Handle `teams/channel` (Get Channel Teams) returning a null value for data
+
 ## [v0.6.1] - 2022-04-29
 
 - No changes, only a fix for docs.rs output and some version bumps in Cargo.toml
