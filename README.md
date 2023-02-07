@@ -16,7 +16,7 @@ See [examples](./examples) for examples.
 
 ```rust ,no_run
 use twitch_api::helix::HelixClient;
-use twitch_oauth2::{AccessToken, UserToken};
+use twitch_api::twitch_oauth2::{AccessToken, UserToken};
 use reqwest::Client as ReqwestClient;
 
 #[tokio::main]
