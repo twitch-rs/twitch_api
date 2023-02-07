@@ -18,7 +18,7 @@
 //!
 //! ```rust,no_run
 //! use twitch_api::{helix::channels::GetChannelInformationRequest, TwitchClient};
-//! use twitch_oauth2::{tokens::errors::AppAccessTokenError, AppAccessToken, Scope, TwitchToken};
+//! use twitch_api::twitch_oauth2::{tokens::errors::AppAccessTokenError, AppAccessToken, Scope, TwitchToken};
 //! # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
 //!
 //! # #[tokio::main]
@@ -44,7 +44,7 @@
 //!
 //! ```rust,no_run
 //! # use twitch_api::{TwitchClient, helix::channels::GetChannelInformationRequest};
-//! # use twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::AppAccessTokenError};
+//! # use twitch_api::twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::AppAccessTokenError};
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
 //! let client = TwitchClient::default();
