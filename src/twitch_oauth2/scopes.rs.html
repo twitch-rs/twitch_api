@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/scopes.rs`."><title>scopes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script id="default-settings" ></script><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/scopes.rs`."><title>scopes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../twitch_oauth2/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -166,13 +166,106 @@
 <a href="#166" id="166">166</a>
 <a href="#167" id="167">167</a>
 <a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Module for all possible scopes in twitch.
-
 </span><span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>std::borrow::Cow;
 
 <span class="macro">macro_rules! </span>scope_impls {
-    ($(<span class="macro-nonterminal">$i</span>:ident,scope: <span class="macro-nonterminal">$rename</span>:literal, doc: <span class="macro-nonterminal">$doc</span>:literal);* $(;)<span class="question-mark">? </span>) =&gt; {
+    (@omit <span class="attr">#[deprecated(<span class="macro-nonterminal">$depr</span>:tt)] </span><span class="macro-nonterminal">$i</span>:ident) =&gt; {
+        <span class="attr">#[cfg(_internal_never)]
+        </span><span class="self">Self</span>::<span class="macro-nonterminal">$i
+    </span>};
+    (@omit <span class="macro-nonterminal">$i</span>:ident) =&gt; {
+        <span class="self">Self</span>::<span class="macro-nonterminal">$i
+    </span>};
+
+    ($($(<span class="attr">#[cfg((<span class="macro-nonterminal">$cfg</span>:meta))]</span>)* $(<span class="attr">#[deprecated(<span class="macro-nonterminal">$depr</span>:meta)]</span>)<span class="question-mark">? </span><span class="macro-nonterminal">$i</span>:ident,scope: <span class="macro-nonterminal">$rename</span>:literal, doc: <span class="macro-nonterminal">$doc</span>:literal);* $(;)<span class="question-mark">? </span>) =&gt; {
         <span class="attr">#[doc = <span class="string">&quot;Scopes for twitch.&quot;</span>]
         #[doc = <span class="string">&quot;&quot;</span>]
         #[doc = <span class="string">&quot;&lt;https://dev.twitch.tv/docs/authentication/#scopes&gt;&quot;</span>]
@@ -182,6 +275,8 @@
         #[serde(into = <span class="string">&quot;String&quot;</span>)]
         </span><span class="kw">pub enum </span>Scope {
             $(
+                $(<span class="attr">#[cfg(<span class="macro-nonterminal">$cfg</span>)]</span>)*
+                $(<span class="attr">#[deprecated(<span class="macro-nonterminal">$depr</span>)]</span>)*
                 <span class="attr">#[doc = <span class="macro-nonterminal">$doc</span>]
                 #[doc = <span class="string">&quot;\n\n&quot;</span>]
                 #[doc = <span class="string">&quot;`&quot;</span>]
@@ -196,9 +291,12 @@
 
         <span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>Scope {
             <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-                f.write_str(<span class="kw">match </span><span class="self">self </span>{
+                <span class="attr">#![allow(deprecated)]
+
+                </span>f.write_str(<span class="kw">match </span><span class="self">self </span>{
                     Scope::Other(s) =&gt; <span class="kw-2">&amp;</span>s,
                     $(
+                        $(<span class="attr">#[cfg(<span class="macro-nonterminal">$cfg</span>)]</span>)*
                         Scope::<span class="macro-nonterminal">$i </span>=&gt; <span class="macro-nonterminal">$rename</span>,
                     )*
                 })
@@ -211,37 +309,98 @@
             #[doc = <span class="string">&quot;Please note that this may not work for you, as some auth flows and \&quot;apis\&quot; don&#39;t accept all scopes&quot;</span>]
             </span><span class="kw">pub fn </span>all() -&gt; Vec&lt;Scope&gt; {
                 <span class="macro">vec!</span>[
-                    $(Scope::<span class="macro-nonterminal">$i</span>,)*
+                    $(
+                        <span class="macro">scope_impls!</span>(@omit $(<span class="attr">#[deprecated(<span class="macro-nonterminal">$depr</span>)]</span>)* <span class="macro-nonterminal">$i</span>),
+                    )*
+                ]
+            }
+
+            <span class="attr">#[doc = <span class="string">&quot;Get a slice of all defined twitch [Scopes][Scope].&quot;</span>]
+            #[doc = <span class="string">&quot;\n\n&quot;</span>]
+            #[doc = <span class="string">&quot;Please note that this may not work for you, as some auth flows and \&quot;apis\&quot; don&#39;t accept all scopes&quot;</span>]
+            </span><span class="kw">pub const fn </span>all_slice() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[Scope] {
+                <span class="kw-2">&amp;</span>[
+                    $(
+                        <span class="macro">scope_impls!</span>(@omit $(<span class="attr">#[deprecated(<span class="macro-nonterminal">$depr</span>)]</span>)* <span class="macro-nonterminal">$i</span>),
+                    )*
                 ]
             }
 
             <span class="attr">#[doc = <span class="string">&quot;Get a description for the token&quot;</span>]
-            </span><span class="kw">pub fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
-                <span class="kw">match </span><span class="self">self </span>{
-                    $(<span class="self">Self</span>::<span class="macro-nonterminal">$i </span>=&gt; <span class="macro-nonterminal">$doc</span>,)*
+            </span><span class="kw">pub const fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+                <span class="attr">#![allow(deprecated)]
+
+                </span><span class="kw">match </span><span class="self">self </span>{
+
+                    $(
+                        $(<span class="attr">#[cfg(<span class="macro-nonterminal">$cfg</span>)]</span>)*
+                        <span class="self">Self</span>::<span class="macro-nonterminal">$i </span>=&gt; <span class="macro-nonterminal">$doc</span>,
+                    )*
                     <span class="kw">_ </span>=&gt; <span class="string">&quot;unknown scope&quot;
                 </span>}
             }
 
             <span class="attr">#[doc = <span class="string">&quot;Make a scope from a cow string&quot;</span>]
             </span><span class="kw">pub fn </span>parse&lt;C&gt;(s: C) -&gt; Scope <span class="kw">where </span>C: Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt; {
-                <span class="kw">use </span>std::borrow::Borrow;
+                <span class="attr">#![allow(deprecated)]
+                </span><span class="kw">use </span>std::borrow::Borrow;
                 <span class="kw">let </span>s = s.into();
                 <span class="kw">match </span>s.borrow() {
-                    $(<span class="macro-nonterminal">$rename </span>=&gt; {Scope::<span class="macro-nonterminal">$i</span>})<span class="kw-2">*</span>,
+
+                    $(
+                        $(<span class="attr">#[cfg(<span class="macro-nonterminal">$cfg</span>)]</span>)*
+                        <span class="macro-nonterminal">$rename </span>=&gt; {Scope::<span class="macro-nonterminal">$i</span>}
+                    )<span class="kw-2">*</span>,
                     <span class="kw">_ </span>=&gt; Scope::Other(s)
                 }
             }
 
             <span class="doccomment">/// Get the scope as a borrowed string.
             </span><span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-                <span class="kw">match </span><span class="self">self </span>{
-                    $(Scope::<span class="macro-nonterminal">$i </span>=&gt; <span class="macro-nonterminal">$rename</span>,)*
-                    <span class="self">Self</span>::Other(c) =&gt;  c.as_ref()
+                <span class="attr">#![allow(deprecated)]
+                </span><span class="kw">match </span><span class="self">self </span>{
+                    $(
+                        $(<span class="attr">#[cfg(<span class="macro-nonterminal">$cfg</span>)]</span>)*
+                        Scope::<span class="macro-nonterminal">$i </span>=&gt; <span class="macro-nonterminal">$rename</span>,
+                    )*
+                    <span class="self">Self</span>::Other(c) =&gt; c.as_ref()
+                }
+            }
+
+            <span class="doccomment">/// Get the scope as a static string slice.
+            ///
+            /// ## Panics
+            ///
+            /// This function panics if the scope can&#39;t be represented as a static string slice
+            </span><span class="kw">pub const fn </span>as_static_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+                <span class="attr">#![allow(deprecated)]
+                </span><span class="kw">match </span><span class="self">self </span>{
+                    $(
+                        $(<span class="attr">#[cfg(<span class="macro-nonterminal">$cfg</span>)]</span>)*
+                        Scope::<span class="macro-nonterminal">$i </span>=&gt; <span class="macro-nonterminal">$rename</span>,
+                    )*
+                    <span class="self">Self</span>::Other(Cow::Borrowed(s)) =&gt; s,
+                    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(),
                 }
             }
         }
-
+        <span class="attr">#[test]
+        #[cfg(test)]
+        </span><span class="kw">fn </span>sorted() {
+            <span class="kw">let </span>slice = [$(
+                $(<span class="attr">#[cfg(<span class="macro-nonterminal">$cfg</span>)]</span>)*
+                <span class="macro-nonterminal">$rename</span>,
+            )<span class="kw-2">*</span>];
+            <span class="kw">let </span><span class="kw-2">mut </span>slice_sorted = [$(
+                $(<span class="attr">#[cfg(<span class="macro-nonterminal">$cfg</span>)]</span>)*
+                <span class="macro-nonterminal">$rename</span>,
+            )<span class="kw-2">*</span>];
+            slice_sorted.sort();
+            <span class="kw">for </span>(scope, sorted) <span class="kw">in </span>slice.iter().zip(slice_sorted.iter()) {
+                <span class="macro">assert_eq!</span>(scope, sorted);
+            }
+            <span class="macro">assert_eq!</span>(slice, slice_sorted);
+        }
     };
 }
 
@@ -271,7 +430,8 @@
     ChannelReadStreamKey,           scope: <span class="string">&quot;channel:read:stream_key&quot;</span>,           doc: <span class="string">&quot;View an authorized user’s stream key.&quot;</span>;
     ChannelReadSubscriptions,       scope: <span class="string">&quot;channel:read:subscriptions&quot;</span>,        doc: <span class="string">&quot;View a list of all subscribers to a channel and check if a user is subscribed to a channel.&quot;</span>;
     ChannelReadVips,                scope: <span class="string">&quot;channel:read:vips&quot;</span>,                 doc: <span class="string">&quot;Read the list of VIPs in your channel.&quot;</span>;
-    ChannelSubscriptions,           scope: <span class="string">&quot;channel_subscriptions&quot;</span>,             doc: <span class="string">&quot;\\[DEPRECATED\\] Read all subscribers to your channel.&quot;</span>;
+    <span class="attr">#[deprecated(note = <span class="string">&quot;Use `ChannelReadSubscriptions` (`channel:read:subscriptions`) instead&quot;</span>)]
+    </span>ChannelSubscriptions,           scope: <span class="string">&quot;channel_subscriptions&quot;</span>,             doc: <span class="string">&quot;Read all subscribers to your channel.&quot;</span>;
     ChatEdit,                       scope: <span class="string">&quot;chat:edit&quot;</span>,                         doc: <span class="string">&quot;Send live stream chat and rooms messages.&quot;</span>;
     ChatRead,                       scope: <span class="string">&quot;chat:read&quot;</span>,                         doc: <span class="string">&quot;View live stream chat and rooms messages.&quot;</span>;
     ClipsEdit,                      scope: <span class="string">&quot;clips:edit&quot;</span>,                        doc: <span class="string">&quot;Manage Clips for a channel.&quot;</span>;
@@ -283,15 +443,19 @@
     ModeratorManageBlockedTerms,    scope: <span class="string">&quot;moderator:manage:blocked_terms&quot;</span>,    doc: <span class="string">&quot;Manage a broadcaster’s list of blocked terms.&quot;</span>;
     ModeratorManageChatMessages,    scope: <span class="string">&quot;moderator:manage:chat_messages&quot;</span>,    doc: <span class="string">&quot;Delete chat messages in channels where you have the moderator role&quot;</span>;
     ModeratorManageChatSettings,    scope: <span class="string">&quot;moderator:manage:chat_settings&quot;</span>,    doc: <span class="string">&quot;View a broadcaster’s chat room settings.&quot;</span>;
+    ModeratorManageShieldMode,      scope: <span class="string">&quot;moderator:manage:shield_mode&quot;</span>,      doc: <span class="string">&quot;Manage a broadcaster’s Shield Mode status.&quot;</span>;
+    ModeratorManageShoutouts,       scope: <span class="string">&quot;moderator:manage:shoutouts&quot;</span>,        doc: <span class="string">&quot;Manage a broadcaster’s shoutouts.&quot;</span>;
     ModeratorReadAutomodSettings,   scope: <span class="string">&quot;moderator:read:automod_settings&quot;</span>,   doc: <span class="string">&quot;View a broadcaster’s AutoMod settings.&quot;</span>;
     ModeratorReadBlockedTerms,      scope: <span class="string">&quot;moderator:read:blocked_terms&quot;</span>,      doc: <span class="string">&quot;View a broadcaster’s list of blocked terms.&quot;</span>;
     ModeratorReadChatSettings,      scope: <span class="string">&quot;moderator:read:chat_settings&quot;</span>,      doc: <span class="string">&quot;View a broadcaster’s chat room settings.&quot;</span>;
     ModeratorReadChatters,          scope: <span class="string">&quot;moderator:read:chatters&quot;</span>,           doc: <span class="string">&quot;View the chatters in a broadcaster’s chat room.&quot;</span>;
+    ModeratorReadFollowers,         scope: <span class="string">&quot;moderator:read:followers&quot;</span>,          doc: <span class="string">&quot;Read the followers of a broadcaster.&quot;</span>;
     ModeratorReadShieldMode,        scope: <span class="string">&quot;moderator:read:shield_mode&quot;</span>,        doc: <span class="string">&quot;View a broadcaster’s Shield Mode status.&quot;</span>;
-    ModeratorManageShieldMode,      scope: <span class="string">&quot;moderator:manage:shield_mode&quot;</span>,      doc: <span class="string">&quot;Manage a broadcaster’s Shield Mode status.&quot;</span>;
+    ModeratorReadShoutouts,         scope: <span class="string">&quot;moderator:read:shoutouts&quot;</span>,          doc: <span class="string">&quot;View a broadcaster’s shoutouts.&quot;</span>;
     UserEdit,                       scope: <span class="string">&quot;user:edit&quot;</span>,                         doc: <span class="string">&quot;Manage a user object.&quot;</span>;
     UserEditBroadcast,              scope: <span class="string">&quot;user:edit:broadcast&quot;</span>,               doc: <span class="string">&quot;Edit your channel&#39;s broadcast configuration, including extension configuration. (This scope implies user:read:broadcast capability.)&quot;</span>;
-    UserEditFollows,                scope: <span class="string">&quot;user:edit:follows&quot;</span>,                 doc: <span class="string">&quot;\\[DEPRECATED\\] Was previously used for “Create User Follows” and “Delete User Follows.&quot;</span>;
+    <span class="attr">#[deprecated(note = <span class="string">&quot;Not used anymore, see https://discuss.dev.twitch.tv/t/deprecation-of-create-and-delete-follows-api-endpoints/32351&quot;</span>)]
+    </span>UserEditFollows,                scope: <span class="string">&quot;user:edit:follows&quot;</span>,                 doc: <span class="string">&quot;\\[DEPRECATED\\] Was previously used for “Create User Follows” and “Delete User Follows.&quot;</span>;
     UserManageBlockedUsers,         scope: <span class="string">&quot;user:manage:blocked_users&quot;</span>,         doc: <span class="string">&quot;Manage the block list of a user.&quot;</span>;
     UserManageChatColor,            scope: <span class="string">&quot;user:manage:chat_color&quot;</span>,            doc: <span class="string">&quot;Update the color used for the user’s name in chat.Update User Chat Color&quot;</span>;
     UserManageWhispers,             scope: <span class="string">&quot;user:manage:whispers&quot;</span>,              doc: <span class="string">&quot;Read whispers that you send and receive, and send whispers on your behalf.&quot;</span>;
@@ -333,6 +497,14 @@
             <span class="macro">assert_eq!</span>(scope, Scope::parse(scope.to_string()))
         }
     }
+
+    <span class="attr">#[test]
+    #[allow(deprecated)]
+    </span><span class="kw">fn </span>no_deprecated() {
+        <span class="kw">for </span>scope <span class="kw">in </span>Scope::all() {
+            <span class="macro">assert!</span>(scope != Scope::ChannelSubscriptions)
+        }
+    }
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (e1eaa2d5d 2023-02-06)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (bd39bbb4b 2023-02-07)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
