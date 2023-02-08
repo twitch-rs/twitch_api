@@ -52,6 +52,7 @@
 - Added `sort` and `id` to `Get Custom Reward Redemption`
 - Added contribution type `OTHER` for Get Hype Train Events
 - Added `Send a Shoutout` endpoint
+- Added `channel.shoutout.receive` and `channel.shoutout.create` eventsub events
 
 ### Fixed
 
