@@ -16,6 +16,8 @@ pub mod hypetrain;
 pub mod poll;
 pub mod prediction;
 pub mod raid;
+#[cfg(feature = "unsupported")]
+pub mod shoutout;
 pub mod subscribe;
 pub mod subscription;
 pub mod unban;
@@ -80,6 +82,12 @@ pub use prediction::{ChannelPredictionLockV1, ChannelPredictionLockV1Payload};
 pub use prediction::{ChannelPredictionProgressV1, ChannelPredictionProgressV1Payload};
 #[doc(inline)]
 pub use raid::{ChannelRaidV1, ChannelRaidV1Payload};
+#[doc(inline)]
+#[cfg(feature = "unsupported")]
+pub use shoutout::{ChannelShoutoutCreateBeta, ChannelShoutoutCreateBetaPayload};
+#[cfg(feature = "unsupported")]
+#[doc(inline)]
+pub use shoutout::{ChannelShoutoutReceiveBeta, ChannelShoutoutReceiveBetaPayload};
 #[doc(inline)]
 pub use subscribe::{ChannelSubscribeV1, ChannelSubscribeV1Payload};
 #[doc(inline)]

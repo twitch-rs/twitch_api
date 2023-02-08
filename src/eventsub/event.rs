@@ -32,6 +32,10 @@ macro_rules! fill_events {
             channel::ChannelPredictionProgressV1;
             channel::ChannelPredictionLockV1;
             channel::ChannelPredictionEndV1;
+            #[cfg(feature = "unsupported")]
+            channel::ChannelShoutoutCreateBeta;
+            #[cfg(feature = "unsupported")]
+            channel::ChannelShoutoutReceiveBeta;
             channel::ChannelRaidV1;
             channel::ChannelSubscriptionEndV1;
             channel::ChannelSubscriptionGiftV1;
@@ -159,6 +163,10 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelPredictionLock => "channel.prediction.lock",
     "a Prediction ends on the specified channel.":
     ChannelPredictionEnd => "channel.prediction.end",
+    "a specified broadcaster sends a Shoutout.":
+    ChannelShoutoutCreate => "channel.shoutout.create",
+    "a specified broadcaster receives a Shoutout.":
+    ChannelShoutoutReceive => "channel.shoutout.receive",
     "a broadcaster raids another broadcaster’s channel.":
     ChannelRaid => "channel.raid",
     "a subscription to the specified channel expires.":
@@ -250,6 +258,10 @@ pub enum Event {
     ChannelPredictionLockV1(Payload<channel::ChannelPredictionLockV1>),
     /// Channel Prediction End V1 Event
     ChannelPredictionEndV1(Payload<channel::ChannelPredictionEndV1>),
+    /// Channel Shoutout Create V1 Event
+    ChannelShoutoutCreateBeta(Payload<channel::ChannelShoutoutCreateBeta>),
+    /// Channel Shoutout Receive V1 Event
+    ChannelShoutoutReceiveBeta(Payload<channel::ChannelShoutoutReceiveBeta>),
     /// Channel Goal Begin V1 Event
     ChannelGoalBeginV1(Payload<channel::ChannelGoalBeginV1>),
     /// Channel Goal Progress V1 Event
