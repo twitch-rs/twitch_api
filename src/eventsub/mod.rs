@@ -357,7 +357,7 @@ impl<E: EventSubscription> Payload<E> {
         Self::parse_request(ty, source)
     }
 
-    /// Parse a slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or [`Payload::parse`].
+    /// Parse a slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or the specific `parse_*` functions
     #[doc(hidden)]
     pub fn parse_request<'a>(
         ty: Cow<'a, [u8]>,
@@ -367,7 +367,7 @@ impl<E: EventSubscription> Payload<E> {
         Self::parse_request_str(ty.as_ref(), source)
     }
 
-    /// Parse a string slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or [`Payload::parse`].
+    /// Parse a string slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or the specific `parse_*` functions
     #[doc(hidden)]
     pub fn parse_request_str<'a>(
         ty: &'a [u8],

@@ -107,6 +107,8 @@ pub struct ChannelInformation {
     /// This value may not be accurate, it'll only be accurate when the token belongs to the broadcaster and they are partnered.
     #[serde(default)]
     pub delay: i64,
+    /// The tags applied to the channel.
+    pub tags: Vec<String>,
 }
 
 impl Request for GetChannelInformationRequest<'_> {
@@ -138,8 +140,9 @@ fn test_request() {
               "game_id": "509670",
               "game_name": "Science & Technology",
               "title": "TwitchDev Monthly Update // May 6, 2021",
-              "delay": 0
-            }
+              "delay": 0,
+              "tags": ["DevsInTheKnow"]
+              }
           ]
         }
         "#

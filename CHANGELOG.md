@@ -34,6 +34,7 @@
 - Removed deprecated `limit` on `CreateEventSubSubscription`
 - Removed deprecated `AddBlockedTerm`, `DeleteBlockedTerm`, `DeletePermittedTerm` and `AddPermittedTerm` on `ModerationActionCommand`
 - Deprecated TMI
+- Added `tags` to Modify Channel Information, Get Channel Informatiom, Search Channels, Get Followed Streams and Get Streams
 
 ### Added
 

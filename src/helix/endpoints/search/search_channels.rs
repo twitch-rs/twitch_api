@@ -119,9 +119,11 @@ pub struct Channel {
         deserialize_with = "helix::deserialize_none_from_empty_string"
     )]
     pub started_at: Option<types::Timestamp>,
-    // FIXME: Twitch doc say tag_ids
     /// Shows tag IDs that apply to the stream (live only).See <https://www.twitch.tv/directory/all/tags> for tag types
+    #[deprecated(note = "use `tags` instead")]
     pub tag_ids: Vec<types::TagId>,
+    /// The tags applied to the channel.
+    pub tags: Vec<String>,
 }
 
 impl Request for SearchChannelsRequest<'_> {
@@ -150,21 +152,34 @@ fn test_request() {
     let data = br#"
     {
         "data": [
-          {
-            "broadcaster_language": "en",
-            "broadcaster_login": "a_seagull",
-            "display_name": "A_Seagull",
-            "game_id": "506442",
-            "game_name": "DOOM Eternal",
-            "id": "19070311",
-            "is_live": true,
-            "tag_ids": [
-              "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
-            ],
-            "thumbnail_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/a_seagull-profile_image-4d2d235688c7dc66-300x300.png",
-            "title": "a_seagull",
-            "started_at": "2020-03-18T17:56:00Z"
-          }
+            {
+                "broadcaster_language": "en",
+                "broadcaster_login": "loserfruit",
+                "display_name": "Loserfruit",
+                "game_id": "498000",
+                "game_name": "House Flipper",
+                "id": "41245072",
+                "is_live": false,
+                "tag_ids": [],
+                "tags": [],
+                "thumbnail_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fd17325a-7dc2-46c6-8617-e90ec259501c-profile_image-300x300.png",
+                "title": "loserfruit",
+                "started_at": ""
+              },
+              {
+                "broadcaster_language": "en",
+                "broadcaster_login": "a_seagull",
+                "display_name": "A_Seagull",
+                "game_id": "506442",
+                "game_name": "DOOM Eternal",
+                "id": "19070311",
+                "is_live": true,
+                "tag_ids": ["6ea6bca4-4712-4ab9-a906-e3336a9d8039"],
+                "tags": ["English"],
+                "thumbnail_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/a_seagull-profile_image-4d2d235688c7dc66-300x300.png",
+                "title": "a_seagull",
+                "started_at": "2020-03-18T17:56:00Z"
+              }
         ],
         "pagination": {}
       }
