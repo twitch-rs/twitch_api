@@ -78,6 +78,7 @@ impl<'a> UnbanUserRequest<'a> {
 /// [`unban-user`](https://dev.twitch.tv/docs/api/reference#unban-user)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub enum UnbanUserResponse {
     /// Unban was successful
     Success,

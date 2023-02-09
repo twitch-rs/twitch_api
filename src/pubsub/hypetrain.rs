@@ -560,6 +560,7 @@ pub enum Reward {
 /// Source type, same as helix hype-train events type
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "UPPERCASE")]
+#[non_exhaustive]
 pub enum SourceType {
     /// Bits
     Bits,
@@ -571,6 +572,7 @@ pub enum SourceType {
 // FIXME: Might be the same as channel_bits::BitsContext or channel_cheer::TriggerType
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "UPPERCASE")]
+#[non_exhaustive]
 pub enum ActionType {
     /// A cheer
     Cheer,
@@ -597,6 +599,7 @@ pub enum ActionType {
 /// Reason hype-train ended
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "UPPERCASE")]
+#[non_exhaustive]
 pub enum EndingReason {
     /// Hype train was completed
     Completed,

@@ -214,6 +214,7 @@ fn main() {
 /// Parse with [`Event::parse`] or parse the whole http request your server receives with [`Payload::parse_http`]
 #[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 #[allow(clippy::large_enum_variant)]
+#[non_exhaustive]
 pub enum Event {
     /// Channel Charity Campaign Donate Beta Event
     #[cfg(feature = "unsupported")]

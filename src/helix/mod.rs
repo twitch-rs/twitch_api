@@ -170,6 +170,7 @@ impl Cursor {
 
 /// Errors that can happen when creating a body
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 pub enum BodyError {
     /// could not serialize as json
     JsonError(#[from] serde_json::Error),
