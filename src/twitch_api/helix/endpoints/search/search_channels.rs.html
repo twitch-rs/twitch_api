@@ -181,6 +181,21 @@
 <a href="#181" id="181">181</a>
 <a href="#182" id="182">182</a>
 <a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Returns a list of channels (users who have streamed within the past 6 months) that match the query via channel name or description either entirely or partially.
 //! [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
 //!
@@ -302,9 +317,11 @@
         deserialize_with = <span class="string">&quot;helix::deserialize_none_from_empty_string&quot;
     </span>)]
     </span><span class="kw">pub </span>started_at: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
-    <span class="comment">// FIXME: Twitch doc say tag_ids
-    </span><span class="doccomment">/// Shows tag IDs that apply to the stream (live only).See &lt;https://www.twitch.tv/directory/all/tags&gt; for tag types
+    <span class="doccomment">/// Shows tag IDs that apply to the stream (live only).See &lt;https://www.twitch.tv/directory/all/tags&gt; for tag types
+    </span><span class="attr">#[deprecated(note = <span class="string">&quot;use `tags` instead&quot;</span>)]
     </span><span class="kw">pub </span>tag_ids: Vec&lt;types::TagId&gt;,
+    <span class="doccomment">/// The tags applied to the channel.
+    </span><span class="kw">pub </span>tags: Vec&lt;String&gt;,
 }
 
 <span class="kw">impl </span>Request <span class="kw">for </span>SearchChannelsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
@@ -333,21 +350,34 @@
     </span><span class="kw">let </span>data = <span class="string">br#&quot;
     {
         &quot;data&quot;: [
-          {
-            &quot;broadcaster_language&quot;: &quot;en&quot;,
-            &quot;broadcaster_login&quot;: &quot;a_seagull&quot;,
-            &quot;display_name&quot;: &quot;A_Seagull&quot;,
-            &quot;game_id&quot;: &quot;506442&quot;,
-            &quot;game_name&quot;: &quot;DOOM Eternal&quot;,
-            &quot;id&quot;: &quot;19070311&quot;,
-            &quot;is_live&quot;: true,
-            &quot;tag_ids&quot;: [
-              &quot;6ea6bca4-4712-4ab9-a906-e3336a9d8039&quot;
-            ],
-            &quot;thumbnail_url&quot;: &quot;https://static-cdn.jtvnw.net/jtv_user_pictures/a_seagull-profile_image-4d2d235688c7dc66-300x300.png&quot;,
-            &quot;title&quot;: &quot;a_seagull&quot;,
-            &quot;started_at&quot;: &quot;2020-03-18T17:56:00Z&quot;
-          }
+            {
+                &quot;broadcaster_language&quot;: &quot;en&quot;,
+                &quot;broadcaster_login&quot;: &quot;loserfruit&quot;,
+                &quot;display_name&quot;: &quot;Loserfruit&quot;,
+                &quot;game_id&quot;: &quot;498000&quot;,
+                &quot;game_name&quot;: &quot;House Flipper&quot;,
+                &quot;id&quot;: &quot;41245072&quot;,
+                &quot;is_live&quot;: false,
+                &quot;tag_ids&quot;: [],
+                &quot;tags&quot;: [],
+                &quot;thumbnail_url&quot;: &quot;https://static-cdn.jtvnw.net/jtv_user_pictures/fd17325a-7dc2-46c6-8617-e90ec259501c-profile_image-300x300.png&quot;,
+                &quot;title&quot;: &quot;loserfruit&quot;,
+                &quot;started_at&quot;: &quot;&quot;
+              },
+              {
+                &quot;broadcaster_language&quot;: &quot;en&quot;,
+                &quot;broadcaster_login&quot;: &quot;a_seagull&quot;,
+                &quot;display_name&quot;: &quot;A_Seagull&quot;,
+                &quot;game_id&quot;: &quot;506442&quot;,
+                &quot;game_name&quot;: &quot;DOOM Eternal&quot;,
+                &quot;id&quot;: &quot;19070311&quot;,
+                &quot;is_live&quot;: true,
+                &quot;tag_ids&quot;: [&quot;6ea6bca4-4712-4ab9-a906-e3336a9d8039&quot;],
+                &quot;tags&quot;: [&quot;English&quot;],
+                &quot;thumbnail_url&quot;: &quot;https://static-cdn.jtvnw.net/jtv_user_pictures/a_seagull-profile_image-4d2d235688c7dc66-300x300.png&quot;,
+                &quot;title&quot;: &quot;a_seagull&quot;,
+                &quot;started_at&quot;: &quot;2020-03-18T17:56:00Z&quot;
+              }
         ],
         &quot;pagination&quot;: {}
       }

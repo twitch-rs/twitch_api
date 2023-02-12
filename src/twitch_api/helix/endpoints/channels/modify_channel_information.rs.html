@@ -226,6 +226,18 @@
 <a href="#226" id="226">226</a>
 <a href="#227" id="227">227</a>
 <a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Modify channel information for users.
 //! [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
 //!
@@ -331,6 +343,12 @@
     </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
     </span><span class="kw">pub </span>delay: <span class="prelude-ty">Option</span>&lt;i32&gt;,
+    <span class="doccomment">/// A list of channel-defined tags to apply to the channel. To remove all tags from the channel, set tags to an empty array.
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
+    #[cfg_attr(not(feature = <span class="string">&quot;deser_borrow&quot;</span>), serde(bound(deserialize = <span class="string">&quot;&#39;de: &#39;a&quot;</span>)))]
+    </span><span class="kw">pub </span>tags: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str]&gt;&gt;,
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ModifyChannelInformationBody&lt;<span class="lifetime">&#39;a</span>&gt; {
@@ -372,6 +390,12 @@
     <span class="doccomment">/// The number of seconds you want your broadcast buffered before streaming it live.
     </span><span class="kw">pub fn </span>delay(<span class="kw-2">&amp;mut </span><span class="self">self</span>, delay: i32) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.delay = <span class="prelude-val">Some</span>(delay);
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// A list of channel-defined tags to apply to the channel. To remove all tags from the channel, set tags to an empty array.
+    </span><span class="kw">pub fn </span>tags(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tags: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span>str]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.tags = <span class="prelude-val">Some</span>(tags.into());
         <span class="self">self
     </span>}
 }

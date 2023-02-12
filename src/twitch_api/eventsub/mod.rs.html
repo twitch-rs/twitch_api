@@ -1318,7 +1318,7 @@
         <span class="self">Self</span>::parse_request(ty, source)
     }
 
-    <span class="doccomment">/// Parse a slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or [`Payload::parse`].
+    <span class="doccomment">/// Parse a slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or the specific `parse_*` functions
     </span><span class="attr">#[doc(hidden)]
     </span><span class="kw">pub fn </span>parse_request&lt;<span class="lifetime">&#39;a</span>&gt;(
         ty: Cow&lt;<span class="lifetime">&#39;a</span>, [u8]&gt;,
@@ -1328,7 +1328,7 @@
         <span class="self">Self</span>::parse_request_str(ty.as_ref(), source)
     }
 
-    <span class="doccomment">/// Parse a string slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or [`Payload::parse`].
+    <span class="doccomment">/// Parse a string slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or the specific `parse_*` functions
     </span><span class="attr">#[doc(hidden)]
     </span><span class="kw">pub fn </span>parse_request_str&lt;<span class="lifetime">&#39;a</span>&gt;(
         ty: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8],

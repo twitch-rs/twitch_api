@@ -155,6 +155,9 @@
 <a href="#155" id="155">155</a>
 <a href="#156" id="156">156</a>
 <a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Gets channel information for users.
 //! [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
 //!
@@ -264,6 +267,8 @@
     /// This value may not be accurate, it&#39;ll only be accurate when the token belongs to the broadcaster and they are partnered.
     </span><span class="attr">#[serde(default)]
     </span><span class="kw">pub </span>delay: i64,
+    <span class="doccomment">/// The tags applied to the channel.
+    </span><span class="kw">pub </span>tags: Vec&lt;String&gt;,
 }
 
 <span class="kw">impl </span>Request <span class="kw">for </span>GetChannelInformationRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
@@ -295,8 +300,9 @@
               &quot;game_id&quot;: &quot;509670&quot;,
               &quot;game_name&quot;: &quot;Science &amp; Technology&quot;,
               &quot;title&quot;: &quot;TwitchDev Monthly Update // May 6, 2021&quot;,
-              &quot;delay&quot;: 0
-            }
+              &quot;delay&quot;: 0,
+              &quot;tags&quot;: [&quot;DevsInTheKnow&quot;]
+              }
           ]
         }
         &quot;#
