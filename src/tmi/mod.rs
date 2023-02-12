@@ -140,6 +140,7 @@ pub type UserId = u64; // TMI user ID's appear to still be ints, even though Hel
 
 /// Errors for [`TmiClient`] requests
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 pub enum RequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// http crate returned an error
     HttpError(#[from] http::Error),

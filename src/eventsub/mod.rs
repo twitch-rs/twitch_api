@@ -386,6 +386,7 @@ impl<E: EventSubscription> Payload<E> {
 
 /// Errors that can happen when parsing payload
 #[derive(thiserror::Error, displaydoc::Display, Debug)]
+#[non_exhaustive]
 pub enum PayloadParseError {
     /// could not parse [`http::Request::body()`] as UTF8
     Utf8Error(#[from] std::str::Utf8Error),

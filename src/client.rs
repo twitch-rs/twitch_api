@@ -240,6 +240,7 @@ where Self: Default
 
 /// A compability shim for ensuring an error can represent [`hyper::Error`]
 #[derive(Debug, thiserror::Error)]
+#[non_exhaustive]
 pub enum CompatError<E> {
     /// An error occurrec when assembling the body
     #[error("could not get the body of the response")]

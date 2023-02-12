@@ -7,6 +7,7 @@ use crate::helix::BodyError;
 /// Errors for [`HelixClient::req_get`](super::super::HelixClient::req_get) and similar functions.
 #[derive(thiserror::Error, Debug)]
 // #[derive(displaydoc::Display)] https://github.com/yaahc/displaydoc/issues/15
+#[non_exhaustive]
 pub enum ClientRequestError<RE: std::error::Error + Send + Sync + 'static> {
     /// Request failed from reqwests side
     #[error("request failed")]
@@ -41,6 +42,7 @@ pub enum ClientRequestError<RE: std::error::Error + Send + Sync + 'static> {
 }
 /// Could not create request
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 pub enum CreateRequestError {
     /// http crate returned an error
     HttpError(#[from] http::Error),
@@ -54,6 +56,7 @@ pub enum CreateRequestError {
 
 /// Errors that can happen when creating [`http::Uri`] for [`Request`](super::Request)
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 pub enum InvalidUri {
     /// URI could not be parsed
     UriParseError(#[from] http::uri::InvalidUri),
@@ -65,6 +68,7 @@ pub enum InvalidUri {
 
 /// Could not parse GET response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 pub enum HelixRequestGetError {
     /// helix returned error {status:?} - {error}: {message:?} when calling `GET {uri}`
     Error {
@@ -101,6 +105,7 @@ pub enum HelixRequestGetError {
 
 /// Could not parse PUT response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 pub enum HelixRequestPutError {
     /// helix returned error {status:?} - {error}: {message:?} when calling `PUT {uri}` with a body
     Error {
@@ -139,6 +144,7 @@ pub enum HelixRequestPutError {
 
 /// Could not parse POST response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 pub enum HelixRequestPostError {
     /// helix returned error {status:?} - {error}: {message:?} when calling `POST {uri}` with a body
     Error {
@@ -177,6 +183,7 @@ pub enum HelixRequestPostError {
 
 /// Could not parse PATCH response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 pub enum HelixRequestPatchError {
     /// helix returned error {status:?} - {error}: {message:?} when calling `PATCH {uri}` with a body
     Error {
@@ -215,6 +222,7 @@ pub enum HelixRequestPatchError {
 
 /// Could not parse DELETE response
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 pub enum HelixRequestDeleteError {
     /// helix returned error {status:?} - {error}: {message:?} when calling `DELETE {uri}`
     Error {

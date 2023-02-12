@@ -37,6 +37,7 @@ pub struct Reward {
 /// See also [`CustomRewardRedemptionStatus`](crate::helix::points::CustomRewardRedemptionStatus)
 #[derive(PartialEq, Eq, Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
+#[non_exhaustive]
 pub enum RedemptionStatus {
     /// Unfulfilled reward - the user has claimed it but it is still pending.
     Unfulfilled,

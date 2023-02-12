@@ -24,6 +24,7 @@ impl<'input, 'output> Serializer<'input, 'output> {
 }
 
 #[derive(Debug, thiserror::Error, displaydoc::Display)]
+#[non_exhaustive]
 /// Errors from the query serializer
 pub enum Error {
     /// {0}

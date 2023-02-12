@@ -25,6 +25,7 @@
 - `Get Channel Information` can now take multiple ids
 - Simplified lifetimes for `Client`. Fixes an issue where &'1 Thing<'static> where: Thing<'static> would wrongly lower '1 to be specific. See <https://github.com/twitch-rs/twitch_api/issues/236>
 - `TeamInformation::thumbnail_url` is now optional (`Option<String>`).
+- Made many structs & enums non exhaustive
 
 ### Changes
 

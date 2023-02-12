@@ -164,6 +164,7 @@ impl helix::Response<GetBroadcasterSubscriptionsRequest<'_>, Vec<BroadcasterSubs
 
 /// Errors when retrieving `points` in [Get Broadcaster Subscriptions](self)
 #[derive(Debug, thiserror::Error)]
+#[non_exhaustive]
 pub enum BroadcasterSubscriptionPointsError {
     /// Deserialization error
     #[error(transparent)]

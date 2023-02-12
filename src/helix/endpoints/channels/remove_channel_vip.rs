@@ -72,6 +72,7 @@ impl<'a> RemoveChannelVipRequest<'a> {
 /// [`remove-channel-vip`](https://dev.twitch.tv/docs/api/reference#remove-channel-vip)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
 pub enum RemoveChannelVipResponse {
     /// Successfully removed the VIP.
     Success,

@@ -339,6 +339,7 @@ impl TwitchResponse {
 ///
 /// See [TwitchResponse]
 #[derive(Clone, Debug, PartialEq, Serialize)]
+#[non_exhaustive]
 pub enum TopicData {
     /// Response from the [automod_queue::AutoModQueue] topic.
     AutoModQueue {
@@ -575,6 +576,7 @@ impl<'de> Deserialize<'de> for TopicData {
 /// Either a response indicating status of something or a message from a topic
 #[derive(Clone, Debug, PartialEq, Deserialize)]
 #[serde(tag = "type")]
+#[non_exhaustive]
 pub enum Response {
     /// Response from a subscription/unsubscription
     #[serde(rename = "RESPONSE")]

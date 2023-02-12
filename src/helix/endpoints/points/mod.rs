@@ -52,6 +52,7 @@ pub use update_redemption_status::{
 };
 /// Custom reward redemption statuses: UNFULFILLED, FULFILLED or CANCELED
 #[derive(PartialEq, Eq, serde::Serialize, serde::Deserialize, Copy, Clone, Debug)]
+#[non_exhaustive]
 pub enum CustomRewardRedemptionStatus {
     /// Unfulfilled reward - the user has claimed it but it is still pending.
     #[serde(rename = "UNFULFILLED")]
