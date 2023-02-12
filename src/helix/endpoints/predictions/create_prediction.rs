@@ -79,9 +79,7 @@ pub struct CreatePredictionRequest<'a> {
 
 impl CreatePredictionRequest<'_> {
     /// Create a new [`CreatePredictionRequest`]
-    pub fn new() -> Self {
-        Self::default()
-    }
+    pub fn new() -> Self { Self::default() }
 }
 
 /// Body Parameters for [Create Prediction](super::create_prediction)
