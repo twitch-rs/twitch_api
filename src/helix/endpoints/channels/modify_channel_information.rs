@@ -103,6 +103,16 @@ pub struct ModifyChannelInformationBody<'a> {
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub delay: Option<i32>,
+    /// A list of channel-defined tags to apply to the channel. To remove all tags from the channel,
+    /// set tags to an empty array. Tags help identify the content that the channel streams.
+    ///
+    /// A channel may specify a maximum of 10 tags.
+    /// Each tag is limited to a maximum of 25 characters and may not be an empty string or contain
+    /// spaces or special characters. Tags are case insensitive.
+    /// For readability, consider using camelCasing or PascalCasing.
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tags: Option<Cow<'a, [&'a str]>>
 }
 
 impl<'a> ModifyChannelInformationBody<'a> {
@@ -144,6 +154,13 @@ impl<'a> ModifyChannelInformationBody<'a> {
     /// The number of seconds you want your broadcast buffered before streaming it live.
     pub fn delay(&mut self, delay: i32) -> &mut Self {
         self.delay = Some(delay);
+        self
+    }
+
+
+    /// The tags to set on the stream. Replaces all existing tags.
+    pub fn tags(&mut self, tags: impl Into<Cow<'a, [&'a str]>>) -> &mut Self {
+        self.tags = Some(tags.into());
         self
     }
 }

@@ -140,7 +140,8 @@ fn test_request() {
               "game_id": "509670",
               "game_name": "Science & Technology",
               "title": "TwitchDev Monthly Update // May 6, 2021",
-              "delay": 0
+              "delay": 0,
+              "tags": ["DevsInTheKnow"]
             }
           ]
         }
