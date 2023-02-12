@@ -23,10 +23,10 @@
 //! let body = create_prediction::CreatePredictionBody::new(
 //!     "141981764",
 //!     "Any leeks in the stream?",
-//!     create_prediction::NewPredictionOutcome::new_tuple(
-//!         "Yes, give it time.",
-//!         "Definitely not.",
-//!     ),
+//!     vec![
+//!         create_prediction::NewPredictionOutcome::new("Yes, give it time."),
+//!         create_prediction::NewPredictionOutcome::new("Definitely not."),
+//!     ],
 //!     120,
 //! );
 //! ```
@@ -49,7 +49,10 @@
 //! let body = create_prediction::CreatePredictionBody::new(
 //!     "141981764",
 //!     "Any leeks in the stream?",
-//!     create_prediction::NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+//!     vec![
+//!         create_prediction::NewPredictionOutcome::new("Yes, give it time."),
+//!         create_prediction::NewPredictionOutcome::new("Definitely not."),
+//!    ],
 //!     120,
 //! );
 //! let response: create_prediction::CreatePredictionResponse = client.req_post(request, body, &token).await?.data;
