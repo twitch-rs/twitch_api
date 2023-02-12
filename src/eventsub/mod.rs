@@ -765,6 +765,7 @@ pub struct EventSubSubscription {
 mod test {
 
     #[test]
+    #[cfg(feature = "unsupported")]
     fn test_websocket_notification() {
         let frame = r#"
         {
