@@ -79,7 +79,9 @@ pub struct CreatePredictionRequest<'a> {
 
 impl CreatePredictionRequest<'_> {
     /// Create a new [`CreatePredictionRequest`]
-    pub fn new() -> Self { Self::default() }
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 /// Body Parameters for [Create Prediction](super::create_prediction)
@@ -138,11 +140,6 @@ impl<'a> NewPredictionOutcome<'a> {
         Self {
             title: title.into(),
         }
-    }
-
-    /// Create a two new [`NewPredictionOutcome`]s
-    pub fn new_tuple(blue: impl Into<Cow<'a, str>>, pink: impl Into<Cow<'a, str>>) -> (Self, Self) {
-        (Self::new(blue), Self::new(pink))
     }
 }
 
@@ -208,7 +205,10 @@ fn test_request() {
     let body = CreatePredictionBody::new(
         "141981764",
         "Any leeks in the stream?",
-        NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+        vec![
+            NewPredictionOutcome::new("Yes, give it time."),
+            NewPredictionOutcome::new("Definitely not."),
+        ],
         120,
     );
 
