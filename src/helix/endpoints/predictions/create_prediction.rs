@@ -97,8 +97,8 @@ pub struct CreatePredictionBody<'a> {
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Cow<'a, str>,
-    /// Array of outcome objects with titles for the Prediction. Array size must be 2.
-    pub outcomes: (NewPredictionOutcome<'a>, NewPredictionOutcome<'a>),
+    /// Array of outcome objects with titles for the Prediction. Minimum: 2. Maximum: 10.
+    pub outcomes: Vec<NewPredictionOutcome<'a>>,
     /// Total duration for the Prediction (in seconds). Minimum: 1. Maximum: 1800.
     pub prediction_window: i64,
 }
@@ -108,7 +108,7 @@ impl<'a> CreatePredictionBody<'a> {
     pub fn new(
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         title: impl Into<Cow<'a, str>>,
-        outcomes: (NewPredictionOutcome<'a>, NewPredictionOutcome<'a>),
+        outcomes: Vec<NewPredictionOutcome<'a>>,
         prediction_window: i64,
     ) -> Self {
         Self {
