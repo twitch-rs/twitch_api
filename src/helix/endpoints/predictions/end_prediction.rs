@@ -100,7 +100,7 @@ pub struct EndPredictionBody<'a> {
     /// ID of the winning outcome for the Prediction. This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
-    pub winning_outcome_id: Option<Cow<'a, types::PredictionIdRef>>,
+    pub winning_outcome_id: Option<Cow<'a, types::PredictionOutcomeIdRef>>,
 }
 
 impl<'a> EndPredictionBody<'a> {
@@ -123,7 +123,7 @@ impl<'a> EndPredictionBody<'a> {
     /// This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
     pub fn winning_outcome_id(
         mut self,
-        winning_outcome_id: impl types::IntoCow<'a, types::PredictionIdRef> + 'a,
+        winning_outcome_id: impl types::IntoCow<'a, types::PredictionOutcomeIdRef> + 'a,
     ) -> Self {
         self.winning_outcome_id = Some(winning_outcome_id.into_cow());
         self
