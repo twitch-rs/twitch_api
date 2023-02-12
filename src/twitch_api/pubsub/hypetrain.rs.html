@@ -2053,6 +2053,9 @@
 <a href="#2053" id="2053">2053</a>
 <a href="#2054" id="2054">2054</a>
 <a href="#2055" id="2055">2055</a>
+<a href="#2056" id="2056">2056</a>
+<a href="#2057" id="2057">2057</a>
+<a href="#2058" id="2058">2058</a>
 </pre><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;hype-train-events-v1&quot;</span>)]
 </span><span class="doccomment">//! PubSub messages for hype-trains
 </span><span class="kw">use crate</span>::{pubsub, types};
@@ -2615,6 +2618,7 @@
 </span><span class="doccomment">/// Source type, same as helix hype-train events type
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>SourceType {
     <span class="doccomment">/// Bits
     </span>Bits,
@@ -2626,6 +2630,7 @@
 </span><span class="comment">// FIXME: Might be the same as channel_bits::BitsContext or channel_cheer::TriggerType
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>ActionType {
     <span class="doccomment">/// A cheer
     </span>Cheer,
@@ -2652,6 +2657,7 @@
 <span class="doccomment">/// Reason hype-train ended
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>EndingReason {
     <span class="doccomment">/// Hype train was completed
     </span>Completed,

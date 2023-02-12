@@ -134,6 +134,7 @@
 <a href="#134" id="134">134</a>
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Removes a VIP from the broadcaster’s chat room.
 //! [`remove-channel-vip`](https://dev.twitch.tv/docs/api/reference#remove-channel-vip)
 //!
@@ -208,6 +209,7 @@
 /// [`remove-channel-vip`](https://dev.twitch.tv/docs/api/reference#remove-channel-vip)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>RemoveChannelVipResponse {
     <span class="doccomment">/// Successfully removed the VIP.
     </span>Success,

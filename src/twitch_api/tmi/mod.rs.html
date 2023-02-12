@@ -152,6 +152,7 @@
 <a href="#152" id="152">152</a>
 <a href="#153" id="153">153</a>
 <a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
 </pre><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;TMI&quot;</span>)]
 #![allow(deprecated)]
 </span><span class="doccomment">//! TMI Endpoint, twitch&#39;s unsupported api for better chatters retrieval
@@ -294,6 +295,7 @@
 
 </span><span class="doccomment">/// Errors for [`TmiClient`] requests
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>RequestError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
     <span class="doccomment">/// http crate returned an error
     </span>HttpError(<span class="attr">#[from] </span>http::Error),

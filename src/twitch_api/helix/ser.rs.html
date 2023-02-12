@@ -980,6 +980,7 @@
 <a href="#980" id="980">980</a>
 <a href="#981" id="981">981</a>
 <a href="#982" id="982">982</a>
+<a href="#983" id="983">983</a>
 </pre><pre class="rust"><code><span class="doccomment">//! application/x-www-form-urlencoded serializer. that follows twitch spec
 //!
 //! `foo=1&amp;foo=2&amp;foo=3`
@@ -1006,6 +1007,7 @@
 }
 
 <span class="attr">#[derive(Debug, thiserror::Error, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="doccomment">/// Errors from the query serializer
 </span><span class="kw">pub enum </span>Error {
     <span class="doccomment">/// {0}

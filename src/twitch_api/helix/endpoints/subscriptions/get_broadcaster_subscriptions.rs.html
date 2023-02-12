@@ -223,6 +223,7 @@
 <a href="#223" id="223">223</a>
 <a href="#224" id="224">224</a>
 <a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Get all of a broadcaster’s subscriptions.
 //! [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
 //!
@@ -389,6 +390,7 @@
 
 <span class="doccomment">/// Errors when retrieving `points` in [Get Broadcaster Subscriptions](self)
 </span><span class="attr">#[derive(Debug, thiserror::Error)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>BroadcasterSubscriptionPointsError {
     <span class="doccomment">/// Deserialization error
     </span><span class="attr">#[error(transparent)]

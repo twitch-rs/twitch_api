@@ -243,6 +243,14 @@
 <a href="#243" id="243">243</a>
 <a href="#244" id="244">244</a>
 <a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Errors that can occur during request processing.
 </span><span class="kw">pub use </span><span class="kw">super</span>::ser::Error <span class="kw">as </span>SerializeError;
 <span class="kw">use </span><span class="kw">crate</span>::helix::BodyError;
@@ -252,6 +260,7 @@
 </span><span class="doccomment">/// Errors for [`HelixClient::req_get`](super::super::HelixClient::req_get) and similar functions.
 </span><span class="attr">#[derive(thiserror::Error, Debug)]
 </span><span class="comment">// #[derive(displaydoc::Display)] https://github.com/yaahc/displaydoc/issues/15
+</span><span class="attr">#[non_exhaustive]
 </span><span class="kw">pub enum </span>ClientRequestError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
     <span class="doccomment">/// Request failed from reqwests side
     </span><span class="attr">#[error(<span class="string">&quot;request failed&quot;</span>)]
@@ -286,6 +295,7 @@
 }
 <span class="doccomment">/// Could not create request
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>CreateRequestError {
     <span class="doccomment">/// http crate returned an error
     </span>HttpError(<span class="attr">#[from] </span>http::Error),
@@ -299,6 +309,7 @@
 
 <span class="doccomment">/// Errors that can happen when creating [`http::Uri`] for [`Request`](super::Request)
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>InvalidUri {
     <span class="doccomment">/// URI could not be parsed
     </span>UriParseError(<span class="attr">#[from] </span>http::uri::InvalidUri),
@@ -310,6 +321,7 @@
 
 <span class="doccomment">/// Could not parse GET response
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>HelixRequestGetError {
     <span class="doccomment">/// helix returned error {status:?} - {error}: {message:?} when calling `GET {uri}`
     </span>Error {
@@ -346,6 +358,7 @@
 
 <span class="doccomment">/// Could not parse PUT response
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>HelixRequestPutError {
     <span class="doccomment">/// helix returned error {status:?} - {error}: {message:?} when calling `PUT {uri}` with a body
     </span>Error {
@@ -384,6 +397,7 @@
 
 <span class="doccomment">/// Could not parse POST response
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>HelixRequestPostError {
     <span class="doccomment">/// helix returned error {status:?} - {error}: {message:?} when calling `POST {uri}` with a body
     </span>Error {
@@ -422,6 +436,7 @@
 
 <span class="doccomment">/// Could not parse PATCH response
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>HelixRequestPatchError {
     <span class="doccomment">/// helix returned error {status:?} - {error}: {message:?} when calling `PATCH {uri}` with a body
     </span>Error {
@@ -460,6 +475,7 @@
 
 <span class="doccomment">/// Could not parse DELETE response
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>HelixRequestDeleteError {
     <span class="doccomment">/// helix returned error {status:?} - {error}: {message:?} when calling `DELETE {uri}`
     </span>Error {

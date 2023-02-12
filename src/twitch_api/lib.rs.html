@@ -379,6 +379,7 @@
 <a href="#379" id="379">379</a>
 <a href="#380" id="380">380</a>
 <a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
 </pre><pre class="rust"><code><span class="attr">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
@@ -652,6 +653,7 @@
 <span class="doccomment">/// A deserialization error
 </span><span class="attr">#[cfg(feature = <span class="string">&quot;serde_json&quot;</span>)]
 #[derive(Debug, thiserror::Error, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>DeserError {
     <span class="doccomment">/// could not deserialize, error on [{path}]. {error}
     </span>PathError {

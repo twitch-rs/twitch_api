@@ -70,6 +70,9 @@
 <a href="#70" id="70">70</a>
 <a href="#71" id="71">71</a>
 <a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
+<a href="#74" id="74">74</a>
+<a href="#75" id="75">75</a>
 </pre><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;vod&quot;</span>)]
 </span><span class="doccomment">//! Helix endpoints regarding videos
 //!
@@ -106,6 +109,7 @@
 <span class="doccomment">/// Sort order of the videos
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>Sort {
     <span class="doccomment">/// Sort by time
     </span>Time,
@@ -118,6 +122,7 @@
 <span class="doccomment">/// Period during which the video was created
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>VideoPeriod {
     <span class="doccomment">/// Filter by all. Effectively a no-op
     </span>All,
@@ -132,6 +137,7 @@
 <span class="doccomment">/// Type of video.
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>VideoTypeFilter {
     <span class="doccomment">/// All video types
     </span>All,

@@ -662,6 +662,7 @@
 <a href="#662" id="662">662</a>
 <a href="#663" id="663">663</a>
 <a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
 </pre><pre class="rust"><code><span class="doccomment">//! EventSub events and their types
 
 </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
@@ -878,6 +879,7 @@ fn main() {
 /// Parse with [`Event::parse`] or parse the whole http request your server receives with [`Payload::parse_http`]
 </span><span class="attr">#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 #[allow(clippy::large_enum_variant)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>Event {
     <span class="doccomment">/// Channel Charity Campaign Donate Beta Event
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]

@@ -63,6 +63,7 @@
 <a href="#63" id="63">63</a>
 <a href="#64" id="64">64</a>
 <a href="#65" id="65">65</a>
+<a href="#66" id="66">66</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding channel points/redeems
 //!
 //! # Examples
@@ -117,6 +118,7 @@
 };
 <span class="doccomment">/// Custom reward redemption statuses: UNFULFILLED, FULFILLED or CANCELED
 </span><span class="attr">#[derive(PartialEq, Eq, serde::Serialize, serde::Deserialize, Copy, Clone, Debug)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>CustomRewardRedemptionStatus {
     <span class="doccomment">/// Unfulfilled reward - the user has claimed it but it is still pending.
     </span><span class="attr">#[serde(rename = <span class="string">&quot;UNFULFILLED&quot;</span>)]

@@ -960,6 +960,7 @@
 <a href="#960" id="960">960</a>
 <a href="#961" id="961">961</a>
 <a href="#962" id="962">962</a>
+<a href="#963" id="963">963</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Holds serializable EventSub stuff
 //!
 //! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).
@@ -1348,6 +1349,7 @@
 
 <span class="doccomment">/// Errors that can happen when parsing payload
 </span><span class="attr">#[derive(thiserror::Error, displaydoc::Display, Debug)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>PayloadParseError {
     <span class="doccomment">/// could not parse [`http::Request::body()`] as UTF8
     </span>Utf8Error(<span class="attr">#[from] </span>std::str::Utf8Error),

@@ -209,6 +209,7 @@
 <a href="#209" id="209">209</a>
 <a href="#210" id="210">210</a>
 <a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
 //!
 //!
@@ -381,6 +382,7 @@
 
 <span class="doccomment">/// Errors that can happen when creating a body
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>BodyError {
     <span class="doccomment">/// could not serialize as json
     </span>JsonError(<span class="attr">#[from] </span>serde_json::Error),
