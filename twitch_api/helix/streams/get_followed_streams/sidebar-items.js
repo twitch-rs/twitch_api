@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["GetFollowedStreamsRequest","Query Parameters for Get Followed Streams"]],"type":[["GetFollowedStreamsResponse","Return Values for Get Followed Streams"]]};
+window.SIDEBAR_ITEMS = {"struct":["GetFollowedStreamsRequest"],"type":["GetFollowedStreamsResponse"]};

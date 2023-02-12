@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Chatter","Return Values for Get Chatters"],["GetChattersRequest","Query Parameters for Get Chatters"]]};
+window.SIDEBAR_ITEMS = {"struct":["Chatter","GetChattersRequest"]};

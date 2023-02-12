@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["ChannelSubGiftsV1Reply","Reply from [ChannelSubGiftsV1]"]],"struct":[["ChannelSubGiftsV1","A user gifts subs."],["MysteryGiftPurchase","Mystery gift"]]};
+window.SIDEBAR_ITEMS = {"enum":["ChannelSubGiftsV1Reply"],"struct":["ChannelSubGiftsV1","MysteryGiftPurchase"]};

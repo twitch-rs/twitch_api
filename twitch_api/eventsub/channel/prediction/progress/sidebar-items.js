@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ChannelPredictionProgressV1","`channel.hype_train.progress`: an user responds to a prediction on the specified channel"],["ChannelPredictionProgressV1Payload","`channel.hype_train.progress` response payload."]]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelPredictionProgressV1","ChannelPredictionProgressV1Payload"]};

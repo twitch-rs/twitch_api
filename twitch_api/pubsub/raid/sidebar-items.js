@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["RaidReply","Reply from [Raid]"]],"struct":[["Raid","A user raids the channel"],["RaidCancelV2","Raid canceled"],["RaidGoV2","Raid go"],["RaidUpdateV2","Raid update"]]};
+window.SIDEBAR_ITEMS = {"enum":["RaidReply"],"struct":["Raid","RaidCancelV2","RaidGoV2","RaidUpdateV2"]};

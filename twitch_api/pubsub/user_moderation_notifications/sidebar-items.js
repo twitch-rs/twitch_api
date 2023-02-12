@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["UserModerationNotificationsReply","Reply from [UserModerationNotifications]"]],"struct":[["UserModerationNotifications","A user follows the channel"]]};
+window.SIDEBAR_ITEMS = {"enum":["UserModerationNotificationsReply"],"struct":["UserModerationNotifications"]};

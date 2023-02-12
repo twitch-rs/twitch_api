@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ChannelSubscriptionMessageV1","`channel.subscription.message`: a subscription to the specified channel expires."],["ChannelSubscriptionMessageV1Payload","`channel.subscription.message` response payload."],["SubscriptionMessage","A message attached to a [`ChannelSubscriptionMessageV1Payload`]"]]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelSubscriptionMessageV1","ChannelSubscriptionMessageV1Payload","SubscriptionMessage"]};

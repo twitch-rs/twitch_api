@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["DeleteChannelStreamScheduleSegment","Return Values for Delete Channel Stream Schedule Segment"]],"struct":[["DeleteChannelStreamScheduleSegmentRequest","Query Parameters for Delete Channel Stream Schedule Segment"]]};
+window.SIDEBAR_ITEMS = {"enum":["DeleteChannelStreamScheduleSegment"],"struct":["DeleteChannelStreamScheduleSegmentRequest"]};

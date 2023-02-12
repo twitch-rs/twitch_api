@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["DeleteEventSubSubscription","Return Values for Delete EventSub Subscriptions"]],"struct":[["DeleteEventSubSubscriptionRequest","Query Parameters for Delete EventSub Subscriptions"]]};
+window.SIDEBAR_ITEMS = {"enum":["DeleteEventSubSubscription"],"struct":["DeleteEventSubSubscriptionRequest"]};

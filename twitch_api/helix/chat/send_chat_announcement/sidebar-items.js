@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["SendChatAnnouncementResponse","Return Values for Send Chat Announcement"]],"struct":[["SendChatAnnouncementBody","Body Parameters for Send Chat Announcement"],["SendChatAnnouncementRequest","Query Parameters for Send Chat Announcement"]]};
+window.SIDEBAR_ITEMS = {"enum":["SendChatAnnouncementResponse"],"struct":["SendChatAnnouncementBody","SendChatAnnouncementRequest"]};

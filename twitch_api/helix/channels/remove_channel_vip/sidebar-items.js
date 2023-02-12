@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["RemoveChannelVipResponse","Return Values for Remove Channel VIP"]],"struct":[["RemoveChannelVipRequest","Query Parameters for Remove Channel VIP"]]};
+window.SIDEBAR_ITEMS = {"enum":["RemoveChannelVipResponse"],"struct":["RemoveChannelVipRequest"]};

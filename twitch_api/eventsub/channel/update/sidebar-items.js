@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ChannelUpdateV1","`channel.update` subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel."],["ChannelUpdateV1Payload","`channel.update` response payload."]]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelUpdateV1","ChannelUpdateV1Payload"]};

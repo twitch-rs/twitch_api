@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["BitsLeaderboard","Return Values for Get Bits Leaderboard"],["DateRange","Period over which the returned data is aggregated."],["GetBitsLeaderboardRequest","Query Parameters for Get Bits Leaderboard"],["LeaderboardUser","Information about user in leaderboard"]]};
+window.SIDEBAR_ITEMS = {"struct":["BitsLeaderboard","DateRange","GetBitsLeaderboardRequest","LeaderboardUser"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Emote","Return Values for Get Channel Emotes"],["GetEmoteSetsRequest","Query Parameters for Get Channel Emotes"]]};
+window.SIDEBAR_ITEMS = {"struct":["Emote","GetEmoteSetsRequest"]};

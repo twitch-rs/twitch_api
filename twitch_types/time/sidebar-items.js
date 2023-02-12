@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["TimestampParseError","Errors that can occur when parsing a timestamp."]],"struct":[["Timestamp","RFC3339 timestamp"],["TimestampRef","RFC3339 timestamp"]]};
+window.SIDEBAR_ITEMS = {"enum":["TimestampParseError"],"struct":["Timestamp","TimestampRef"]};

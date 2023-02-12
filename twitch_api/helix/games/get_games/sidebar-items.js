@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["GetGamesRequest","Query Parameters for Get Games"]],"type":[["Game","Return Values for Get Games"]]};
+window.SIDEBAR_ITEMS = {"struct":["GetGamesRequest"],"type":["Game"]};

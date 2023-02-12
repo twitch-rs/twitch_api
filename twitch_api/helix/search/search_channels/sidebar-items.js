@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Channel","Return Values for Search Channels"],["SearchChannelsRequest","Query Parameters for Search Channels"]]};
+window.SIDEBAR_ITEMS = {"struct":["Channel","SearchChannelsRequest"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ChannelPredictionBeginV1","`channel.prediction.begin`: a Prediction begins on the specified channel"],["ChannelPredictionBeginV1Payload","`channel.prediction.begin` response payload."]]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelPredictionBeginV1","ChannelPredictionBeginV1Payload"]};

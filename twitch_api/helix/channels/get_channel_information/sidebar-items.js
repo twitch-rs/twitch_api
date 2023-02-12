@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ChannelInformation","Return Values for Get Channel Information"],["GetChannelInformationRequest","Query Parameters for Get Channel Information"]]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelInformation","GetChannelInformationRequest"]};

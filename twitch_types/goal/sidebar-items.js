@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["CreatorGoalType","Type of creator goal"]],"struct":[["CreatorGoalId","A Creator Goal ID"],["CreatorGoalIdRef","A Creator Goal ID"]]};
+window.SIDEBAR_ITEMS = {"enum":["CreatorGoalType"],"struct":["CreatorGoalId","CreatorGoalIdRef"]};

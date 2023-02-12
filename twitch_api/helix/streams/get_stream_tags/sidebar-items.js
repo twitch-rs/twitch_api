@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["GetStreamTagsRequest","Query Parameters for Get Stream Tags"]],"type":[["Tag","Return Values for Get Stream Tags"]]};
+window.SIDEBAR_ITEMS = {"struct":["GetStreamTagsRequest"],"type":["Tag"]};

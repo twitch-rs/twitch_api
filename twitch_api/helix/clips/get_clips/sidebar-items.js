@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Clip","Return Values for Get Clips"],["GetClipsRequest","Query Parameters for Get Clips"]]};
+window.SIDEBAR_ITEMS = {"struct":["Clip","GetClipsRequest"]};

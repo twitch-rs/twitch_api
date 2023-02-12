@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["HelixClient","Client for Helix or the New Twitch API"]]};
+window.SIDEBAR_ITEMS = {"struct":["HelixClient"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["CreateChannelStreamScheduleSegmentBody","Body Parameters for Create Channel Stream Schedule Segment"],["CreateChannelStreamScheduleSegmentRequest","Query Parameters for Create Channel Stream Schedule Segment"]],"type":[["CreateChannelStreamScheduleSegmentResponse","Return Values for Create Channel Stream Schedule Segment"]]};
+window.SIDEBAR_ITEMS = {"struct":["CreateChannelStreamScheduleSegmentBody","CreateChannelStreamScheduleSegmentRequest"],"type":["CreateChannelStreamScheduleSegmentResponse"]};

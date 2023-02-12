@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ChannelGoalBeginV1","`channel.goal.begin`: a specified broadcaster begins a goal."],["ChannelGoalBeginV1Payload","`channel.goal.begin` response payload."]]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelGoalBeginV1","ChannelGoalBeginV1Payload"]};

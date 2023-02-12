@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["EndPrediction","Return Values for Update CustomReward"]],"struct":[["EndPredictionBody","Body Parameters for End Prediction"],["EndPredictionRequest","Query Parameters for End Prediction"]]};
+window.SIDEBAR_ITEMS = {"enum":["EndPrediction"],"struct":["EndPredictionBody","EndPredictionRequest"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["CreateCustomRewardBody","Body Parameters for Create Custom Rewards"],["CreateCustomRewardRequest","Query Parameters for Create Custom Rewards"]],"type":[["CreateCustomRewardResponse","Return Values for Create Custom Rewards"]]};
+window.SIDEBAR_ITEMS = {"struct":["CreateCustomRewardBody","CreateCustomRewardRequest"],"type":["CreateCustomRewardResponse"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ChannelBitsBadgeUnlocks","Anyone shares a bit badge in a specified channel."],["ChannelBitsBadgeUnlocksReply","Reply from [ChannelBitsBadgeUnlocks]"]]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelBitsBadgeUnlocks","ChannelBitsBadgeUnlocksReply"]};

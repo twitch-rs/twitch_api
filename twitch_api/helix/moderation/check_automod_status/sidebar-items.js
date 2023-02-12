@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["CheckAutoModStatus","Return Values for Check AutoMod Status"],["CheckAutoModStatusBody","Body Parameters for Check AutoMod Status"],["CheckAutoModStatusRequest","Query Parameters for Check AutoMod Status"]]};
+window.SIDEBAR_ITEMS = {"struct":["CheckAutoModStatus","CheckAutoModStatusBody","CheckAutoModStatusRequest"]};

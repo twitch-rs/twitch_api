@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["RemoveChannelModeratorResponse","Return Values for Remove Channel Moderator"]],"struct":[["RemoveChannelModeratorRequest","Query Parameters for Remove Channel Moderator"]]};
+window.SIDEBAR_ITEMS = {"enum":["RemoveChannelModeratorResponse"],"struct":["RemoveChannelModeratorRequest"]};

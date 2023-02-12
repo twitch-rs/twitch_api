@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ChannelShoutoutCreateBeta","`channel.shoutout.create`: a Prediction begins on the specified channel"],["ChannelShoutoutCreateBetaPayload","`channel.shoutout.create` response payload."]]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelShoutoutCreateBeta","ChannelShoutoutCreateBetaPayload"]};

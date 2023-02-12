@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["UpdateCustomReward","Return Values for Update CustomReward"]],"struct":[["UpdateCustomRewardBody","Body Parameters for Update Custom Rewards"],["UpdateCustomRewardRequest","Query Parameters for Update Custom Rewards"]]};
+window.SIDEBAR_ITEMS = {"enum":["UpdateCustomReward"],"struct":["UpdateCustomRewardBody","UpdateCustomRewardRequest"]};

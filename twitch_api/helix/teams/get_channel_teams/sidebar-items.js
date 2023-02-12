@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["BroadcasterTeam","Return Values for Get Channel Teams"],["GetChannelTeamsRequest","Query Parameters for Get Channel Teams"]]};
+window.SIDEBAR_ITEMS = {"struct":["BroadcasterTeam","GetChannelTeamsRequest"]};

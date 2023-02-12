@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["StartARaidRequest","Query Parameters for Start A Raid"],["StartARaidResponse","Return Values for Start A Raid"]]};
+window.SIDEBAR_ITEMS = {"struct":["StartARaidRequest","StartARaidResponse"]};

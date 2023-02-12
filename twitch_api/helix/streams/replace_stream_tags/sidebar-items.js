@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["ReplaceStreamTags","Return Values for Replace Stream Tags"]],"struct":[["ReplaceStreamTagsBody","Body Parameters for Replace Stream Tags"],["ReplaceStreamTagsRequest","Query Parameters for Replace Stream Tags"]]};
+window.SIDEBAR_ITEMS = {"enum":["ReplaceStreamTags"],"struct":["ReplaceStreamTagsBody","ReplaceStreamTagsRequest"]};

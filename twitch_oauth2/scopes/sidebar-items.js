@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Scope","Scopes for twitch."]]};
+window.SIDEBAR_ITEMS = {"enum":["Scope"]};

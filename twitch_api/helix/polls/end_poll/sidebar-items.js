@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["EndPoll","Return Values for Update CustomReward"],["PollStatus","Status of a poll"]],"struct":[["EndPollBody","Body Parameters for End Poll"],["EndPollRequest","Query Parameters for End Poll"]]};
+window.SIDEBAR_ITEMS = {"enum":["EndPoll","PollStatus"],"struct":["EndPollBody","EndPollRequest"]};

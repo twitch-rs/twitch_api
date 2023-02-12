@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["GetChannelChatBadgesRequest","Query Parameters for Get Channel Chat Badges"]],"type":[["GetChannelChatBadgesResponse","Return Values for Get Channel Chat Badges"]]};
+window.SIDEBAR_ITEMS = {"struct":["GetChannelChatBadgesRequest"],"type":["GetChannelChatBadgesResponse"]};

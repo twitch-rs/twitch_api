@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["AutoModAction","Action to take for a message."],["ManageHeldAutoModMessages","Return Values for Manage Held AutoMod Messages"]],"struct":[["ManageHeldAutoModMessagesBody","Body Parameters for Manage Held AutoMod Messages"],["ManageHeldAutoModMessagesRequest","Query Parameters for Manage Held AutoMod Messages"]]};
+window.SIDEBAR_ITEMS = {"enum":["AutoModAction","ManageHeldAutoModMessages"],"struct":["ManageHeldAutoModMessagesBody","ManageHeldAutoModMessagesRequest"]};

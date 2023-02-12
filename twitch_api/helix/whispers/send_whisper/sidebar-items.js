@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["SendWhisperResponse","Return Values for Send Whisper"]],"struct":[["SendWhisperBody","Body Parameters for Send Whisper"],["SendWhisperRequest","Query Parameters for Send Whisper"]]};
+window.SIDEBAR_ITEMS = {"enum":["SendWhisperResponse"],"struct":["SendWhisperBody","SendWhisperRequest"]};

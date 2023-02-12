@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["EventSubId","An EventSub Subscription ID"],["EventSubIdRef","An EventSub Subscription ID"]]};
+window.SIDEBAR_ITEMS = {"struct":["EventSubId","EventSubIdRef"]};

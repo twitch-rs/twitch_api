@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["GetModeratorsRequest","Query Parameters for Get Moderators"],["Moderator","Return Values for Get Moderators"]]};
+window.SIDEBAR_ITEMS = {"struct":["GetModeratorsRequest","Moderator"]};

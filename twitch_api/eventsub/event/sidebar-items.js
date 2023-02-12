@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Event","A notification with an event payload. Enumerates all possible `Payload`s"],["EventType","Event Types"]],"mod":[["websocket","Types for Eventsub websocket"]],"struct":[["EventTypeParseError","Error when parsing an event-type string."]]};
+window.SIDEBAR_ITEMS = {"enum":["Event","EventType"],"mod":["websocket"],"struct":["EventTypeParseError"]};

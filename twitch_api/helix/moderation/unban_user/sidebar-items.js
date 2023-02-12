@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["UnbanUserResponse","Return Values for Unban User"]],"struct":[["UnbanUserRequest","Query Parameters for Unban User"]]};
+window.SIDEBAR_ITEMS = {"enum":["UnbanUserResponse"],"struct":["UnbanUserRequest"]};

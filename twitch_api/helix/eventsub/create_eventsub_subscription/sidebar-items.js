@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["CreateEventSubSubscription","Return Values for Create EventSub Subscription"],["CreateEventSubSubscriptionBody","Body Parameters for Create EventSub Subscription"],["CreateEventSubSubscriptionRequest","Query Parameters for Create EventSub Subscription"]]};
+window.SIDEBAR_ITEMS = {"struct":["CreateEventSubSubscription","CreateEventSubSubscriptionBody","CreateEventSubSubscriptionRequest"]};

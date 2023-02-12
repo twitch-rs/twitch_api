@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["PredictionStatus","Status of the Prediction"]],"struct":[["GetPredictionsRequest","Query Parameters for Get predictions"],["Prediction","Return Values for Get predictions"],["PredictionOutcome","Outcome for the Prediction"],["PredictionOutcomeId","A prediction choice ID"]]};
+window.SIDEBAR_ITEMS = {"enum":["PredictionStatus"],"struct":["GetPredictionsRequest","Prediction","PredictionOutcome","PredictionOutcomeId"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["AccessToken","An Access Token"],["AccessTokenRef","An Access Token"],["ClientId","A Client Id"],["ClientIdRef","A Client Id"],["ClientSecret","A Client Secret"],["ClientSecretRef","A Client Secret"],["CsrfToken","A Csrf Token"],["CsrfTokenRef","A Csrf Token"],["RefreshToken","A Refresh Token"],["RefreshTokenRef","A Refresh Token"]]};
+window.SIDEBAR_ITEMS = {"struct":["AccessToken","AccessTokenRef","ClientId","ClientIdRef","ClientSecret","ClientSecretRef","CsrfToken","CsrfTokenRef","RefreshToken","RefreshTokenRef"]};

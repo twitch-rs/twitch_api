@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ChannelPointsCustomRewardRemoveV1","`channel.channel_points_custom_reward.remove`: a custom channel points reward has been removed from the specified channel."],["ChannelPointsCustomRewardRemoveV1Payload","`channel.channel_points_custom_reward.remove` response payload."]]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelPointsCustomRewardRemoveV1","ChannelPointsCustomRewardRemoveV1Payload"]};

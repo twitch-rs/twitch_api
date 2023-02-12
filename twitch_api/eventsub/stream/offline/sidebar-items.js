@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["StreamOfflineV1","`stream.offline`: the specified broadcaster stops a stream."],["StreamOfflineV1Payload","`stream.offline` response payload."]]};
+window.SIDEBAR_ITEMS = {"struct":["StreamOfflineV1","StreamOfflineV1Payload"]};

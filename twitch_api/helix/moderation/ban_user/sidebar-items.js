@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["BanUser","Return Values for Ban User"],["BanUserBody","Body Parameters for Ban User"],["BanUserRequest","Query Parameters for Ban User"]]};
+window.SIDEBAR_ITEMS = {"struct":["BanUser","BanUserBody","BanUserRequest"]};

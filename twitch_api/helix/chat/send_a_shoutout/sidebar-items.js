@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["SendAShoutoutResponse","Return Values for Send A Shoutout"]],"struct":[["SendAShoutoutRequest","Query Parameters for Send A Shoutout"]]};
+window.SIDEBAR_ITEMS = {"enum":["SendAShoutoutResponse"],"struct":["SendAShoutoutRequest"]};

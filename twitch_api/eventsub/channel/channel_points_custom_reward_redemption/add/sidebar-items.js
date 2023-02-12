@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ChannelPointsCustomRewardRedemptionAddV1","`channel.channel_points_custom_reward_redemption.add`: a viewer has redeemed a custom channel points reward on the specified channel."],["ChannelPointsCustomRewardRedemptionAddV1Payload","`channel.channel_points_custom_reward_redemption.add` response payload."]]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelPointsCustomRewardRedemptionAddV1","ChannelPointsCustomRewardRedemptionAddV1Payload"]};

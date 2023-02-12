@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["donate","Sends an event notification when a user donates to the broadcaster’s charity campaign."]],"struct":[["ChannelCharityCampaignDonateBeta","`channel.charity_campaign.donate`: a user donates to the broadcaster’s charity campaign."],["ChannelCharityCampaignDonateBetaPayload","`channel.charity_campaign.donate` response payload."]]};
+window.SIDEBAR_ITEMS = {"mod":["donate"],"struct":["ChannelCharityCampaignDonateBeta","ChannelCharityCampaignDonateBetaPayload"]};
