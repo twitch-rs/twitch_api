@@ -107,6 +107,8 @@ pub struct ChannelInformation {
     /// This value may not be accurate, it'll only be accurate when the token belongs to the broadcaster and they are partnered.
     #[serde(default)]
     pub delay: i64,
+    /// The tags applied to the channel.
+    pub tags: Vec<String>,
 }
 
 impl Request for GetChannelInformationRequest<'_> {
