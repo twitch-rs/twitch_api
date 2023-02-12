@@ -23,10 +23,10 @@
 //! let body = create_prediction::CreatePredictionBody::new(
 //!     "141981764",
 //!     "Any leeks in the stream?",
-//!     create_prediction::NewPredictionOutcome::new_tuple(
-//!         "Yes, give it time.",
-//!         "Definitely not.",
-//!     ),
+//!     vec![
+//!         create_prediction::NewPredictionOutcome::new("Yes, give it time."),
+//!         create_prediction::NewPredictionOutcome::new("Definitely not."),
+//!     ],
 //!     120,
 //! );
 //! ```
@@ -49,7 +49,10 @@
 //! let body = create_prediction::CreatePredictionBody::new(
 //!     "141981764",
 //!     "Any leeks in the stream?",
-//!     create_prediction::NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+//!     vec![
+//!         create_prediction::NewPredictionOutcome::new("Yes, give it time."),
+//!         create_prediction::NewPredictionOutcome::new("Definitely not."),
+//!    ],
 //!     120,
 //! );
 //! let response: create_prediction::CreatePredictionResponse = client.req_post(request, body, &token).await?.data;
@@ -97,8 +100,8 @@ pub struct CreatePredictionBody<'a> {
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Cow<'a, str>,
-    /// Array of outcome objects with titles for the Prediction. Array size must be 2.
-    pub outcomes: (NewPredictionOutcome<'a>, NewPredictionOutcome<'a>),
+    /// Array of outcome objects with titles for the Prediction. Minimum: 2. Maximum: 10.
+    pub outcomes: Vec<NewPredictionOutcome<'a>>,
     /// Total duration for the Prediction (in seconds). Minimum: 1. Maximum: 1800.
     pub prediction_window: i64,
 }
@@ -108,7 +111,7 @@ impl<'a> CreatePredictionBody<'a> {
     pub fn new(
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         title: impl Into<Cow<'a, str>>,
-        outcomes: (NewPredictionOutcome<'a>, NewPredictionOutcome<'a>),
+        outcomes: Vec<NewPredictionOutcome<'a>>,
         prediction_window: i64,
     ) -> Self {
         Self {
@@ -138,11 +141,6 @@ impl<'a> NewPredictionOutcome<'a> {
         Self {
             title: title.into(),
         }
-    }
-
-    /// Create a two new [`NewPredictionOutcome`]s
-    pub fn new_tuple(blue: impl Into<Cow<'a, str>>, pink: impl Into<Cow<'a, str>>) -> (Self, Self) {
-        (Self::new(blue), Self::new(pink))
     }
 }
 
@@ -208,7 +206,10 @@ fn test_request() {
     let body = CreatePredictionBody::new(
         "141981764",
         "Any leeks in the stream?",
-        NewPredictionOutcome::new_tuple("Yes, give it time.", "Definitely not."),
+        vec![
+            NewPredictionOutcome::new("Yes, give it time."),
+            NewPredictionOutcome::new("Definitely not."),
+        ],
         120,
     );
 
