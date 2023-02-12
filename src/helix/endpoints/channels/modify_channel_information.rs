@@ -103,6 +103,12 @@ pub struct ModifyChannelInformationBody<'a> {
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub delay: Option<i32>,
+    /// A list of channel-defined tags to apply to the channel. To remove all tags from the channel, set tags to an empty array.
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
+    pub tags: Option<Cow<'a, [&'a str]>>,
 }
 
 impl<'a> ModifyChannelInformationBody<'a> {
@@ -144,6 +150,12 @@ impl<'a> ModifyChannelInformationBody<'a> {
     /// The number of seconds you want your broadcast buffered before streaming it live.
     pub fn delay(&mut self, delay: i32) -> &mut Self {
         self.delay = Some(delay);
+        self
+    }
+
+    /// A list of channel-defined tags to apply to the channel. To remove all tags from the channel, set tags to an empty array.
+    pub fn tags(&mut self, tags: &'a [&str]) -> &mut Self {
+        self.tags = Some(tags.into());
         self
     }
 }

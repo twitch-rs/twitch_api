@@ -147,8 +147,12 @@ pub struct Stream {
     /// UTC timestamp.
     pub started_at: types::Timestamp,
     /// Shows tag IDs that apply to the stream.
-    #[serde(deserialize_with = "helix::deserialize_default_from_null")]
+    #[serde(deserialize_with = "helix::deserialize_default_from_null", default)]
+    #[deprecated(note = "use `tags` instead")]
     pub tag_ids: Vec<types::TagId>,
+    /// The tags applied to the stream.
+    #[serde(deserialize_with = "helix::deserialize_default_from_null")]
+    pub tags: Vec<String>,
     /// Thumbnail URL of the stream. All image URLs have variable width and height. You can replace {width} and {height} with any values to get that size image
     pub thumbnail_url: String,
     /// Stream title.
@@ -189,52 +193,50 @@ fn test_request() {
     let req = GetStreamsRequest::default();
 
     // From twitch docs, kinda. example 1 in https://dev.twitch.tv/docs/api/reference#get-streams is malformed
-    let data = br#"
-{
-    "data": [
-        {
-            "id": "26007494656",
-            "user_id": "23161357",
-            "user_name": "LIRIK",
-            "user_login": "lirik",
-            "game_id": "417752",
-            "game_name": "Talk Shows & Podcasts",
+    let data = r#"
+    {
+        "data": [
+          {
+            "id": "123456789",
+            "user_id": "98765",
+            "user_login": "sandysanderman",
+            "user_name": "SandySanderman",
+            "game_id": "494131",
+            "game_name": "Little Nightmares",
             "type": "live",
-            "title": "Hey Guys, It's Monday - Twitter: @Lirik",
-            "viewer_count": 32575,
-            "started_at": "2017-08-14T16:08:32Z",
-            "language": "en",
-            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg",
-            "tag_ids":  [
-                "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
-            ],
+            "title": "hablamos y le damos a Little Nightmares 1",
+            "tags": ["Español"],
+            "viewer_count": 78365,
+            "started_at": "2021-03-10T15:04:21Z",
+            "language": "es",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_auronplay-{width}x{height}.jpg",
+            "tag_ids": ["d4bb9c58-2141-4881-bcdc-3fe0505457d1"],
             "is_mature": false
-        },
-        {
-            "id": "26007494656",
-            "user_id": "23161357",
-            "user_name": "LIRIK",
-            "user_login": "lirik",
-            "game_id": "417752",
-            "game_name": "Talk Shows & Podcasts",
+          },
+          {
+            "id": "123456789",
+            "user_id": "98765",
+            "user_login": "sandysanderman",
+            "user_name": "SandySanderman",
+            "game_id": "494131",
+            "game_name": "Little Nightmares",
             "type": "live",
-            "title": "Hey Guys, It's Monday - Twitter: @Lirik",
-            "viewer_count": 32575,
-            "started_at": "2017-08-14T16:08:32Z",
-            "language": "en",
-            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg",
-            "tag_ids":  [
-                "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
-            ],
+            "title": "hablamos y le damos a Little Nightmares 1",
+            "tags": ["Español"],
+            "viewer_count": 78365,
+            "started_at": "2021-03-10T15:04:21Z",
+            "language": "es",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_auronplay-{width}x{height}.jpg",
+            "tag_ids": ["d4bb9c58-2141-4881-bcdc-3fe0505457d1"],
             "is_mature": false
+          }
+        ],
+        "pagination": {
+          "cursor": "eyJiIjp7IkN1cnNvciI6ImV5SnpJam8zT0RNMk5TNDBORFF4TlRjMU1UY3hOU3dpWkNJNlptRnNjMlVzSW5RaU9uUnlkV1Y5In0sImEiOnsiQ3Vyc29yIjoiZXlKeklqb3hOVGs0TkM0MU56RXhNekExTVRZNU1ESXNJbVFpT21aaGJITmxMQ0owSWpwMGNuVmxmUT09In19"
         }
-    ],
-    "pagination": {
-        "cursor": "eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6MjB9fQ=="
-    }
-}
+      }
 "#
-        .to_vec();
+        .as_bytes().to_vec();
 
     let http_response = http::Response::builder().body(data).unwrap();
 
@@ -255,21 +257,22 @@ fn test_request_null_tags_issue184() {
 {
     "data": [
         {
-            "id": "26007494656",
-            "user_id": "23161357",
-            "user_name": "LIRIK",
-            "user_login": "lirik",
-            "game_id": "417752",
-            "game_name": "Talk Shows & Podcasts",
+            "id": "123456789",
+            "user_id": "98765",
+            "user_login": "sandysanderman",
+            "user_name": "SandySanderman",
+            "game_id": "494131",
+            "game_name": "Little Nightmares",
             "type": "live",
-            "title": "Hey Guys, It's Monday - Twitter: @Lirik",
-            "viewer_count": 32575,
-            "started_at": "2017-08-14T16:08:32Z",
-            "language": "en",
-            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg",
-            "tag_ids":  null,
+            "title": "hablamos y le damos a Little Nightmares 1",
+            "tags": null,
+            "viewer_count": 78365,
+            "started_at": "2021-03-10T15:04:21Z",
+            "language": "es",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_auronplay-{width}x{height}.jpg",
+            "tag_ids": null,
             "is_mature": false
-        }
+          }
     ],
     "pagination": {
         "cursor": "eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6MjB9fQ=="
