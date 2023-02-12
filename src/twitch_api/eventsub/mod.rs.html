@@ -959,6 +959,7 @@
 <a href="#959" id="959">959</a>
 <a href="#960" id="960">960</a>
 <a href="#961" id="961">961</a>
+<a href="#962" id="962">962</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Holds serializable EventSub stuff
 //!
 //! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).
@@ -1726,6 +1727,7 @@
 </span><span class="kw">mod </span>test {
 
     <span class="attr">#[test]
+    #[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
     </span><span class="kw">fn </span>test_websocket_notification() {
         <span class="kw">let </span>frame = <span class="string">r#&quot;
         {
