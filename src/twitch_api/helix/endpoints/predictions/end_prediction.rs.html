@@ -373,7 +373,7 @@
     <span class="doccomment">/// ID of the winning outcome for the Prediction. This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
     </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>winning_outcome_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::PredictionIdRef&gt;&gt;,
+    </span><span class="kw">pub </span>winning_outcome_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::PredictionOutcomeIdRef&gt;&gt;,
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; EndPredictionBody&lt;<span class="lifetime">&#39;a</span>&gt; {
@@ -396,7 +396,7 @@
     /// This parameter is required if status is being set to [`RESOLVED`](types::PredictionStatus).
     </span><span class="kw">pub fn </span>winning_outcome_id(
         <span class="kw-2">mut </span><span class="self">self</span>,
-        winning_outcome_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::PredictionIdRef&gt; + <span class="lifetime">&#39;a</span>,
+        winning_outcome_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::PredictionOutcomeIdRef&gt; + <span class="lifetime">&#39;a</span>,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.winning_outcome_id = <span class="prelude-val">Some</span>(winning_outcome_id.into_cow());
         <span class="self">self
