@@ -32,10 +32,8 @@ macro_rules! fill_events {
             channel::ChannelPredictionProgressV1;
             channel::ChannelPredictionLockV1;
             channel::ChannelPredictionEndV1;
-            #[cfg(feature = "unsupported")]
-            channel::ChannelShoutoutCreateBeta;
-            #[cfg(feature = "unsupported")]
-            channel::ChannelShoutoutReceiveBeta;
+            channel::ChannelShoutoutCreateV1;
+            channel::ChannelShoutoutReceiveV1;
             channel::ChannelRaidV1;
             channel::ChannelSubscriptionEndV1;
             channel::ChannelSubscriptionGiftV1;
@@ -260,11 +258,9 @@ pub enum Event {
     /// Channel Prediction End V1 Event
     ChannelPredictionEndV1(Payload<channel::ChannelPredictionEndV1>),
     /// Channel Shoutout Create V1 Event
-    #[cfg(feature = "unsupported")]
-    ChannelShoutoutCreateBeta(Payload<channel::ChannelShoutoutCreateBeta>),
+    ChannelShoutoutCreateV1(Payload<channel::ChannelShoutoutCreateV1>),
     /// Channel Shoutout Receive V1 Event
-    #[cfg(feature = "unsupported")]
-    ChannelShoutoutReceiveBeta(Payload<channel::ChannelShoutoutReceiveBeta>),
+    ChannelShoutoutReceiveV1(Payload<channel::ChannelShoutoutReceiveV1>),
     /// Channel Goal Begin V1 Event
     ChannelGoalBeginV1(Payload<channel::ChannelGoalBeginV1>),
     /// Channel Goal Progress V1 Event

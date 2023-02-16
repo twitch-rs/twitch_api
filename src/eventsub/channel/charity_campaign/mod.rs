@@ -4,9 +4,7 @@ use super::{EventSubscription, EventType};
 use crate::types;
 use serde::{Deserialize, Serialize};
 
-#[cfg(feature = "unsupported")]
 pub mod donate;
 
 #[doc(inline)]
-#[cfg(feature = "unsupported")]
-pub use donate::{ChannelCharityCampaignDonateBeta, ChannelCharityCampaignDonateBetaPayload};
+pub use donate::{ChannelCharityCampaignDonateV1, ChannelCharityCampaignDonateV1Payload};

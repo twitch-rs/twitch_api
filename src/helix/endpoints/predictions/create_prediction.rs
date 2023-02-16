@@ -20,13 +20,14 @@
 //!
 //! ```
 //! # use twitch_api::helix::predictions::create_prediction;
+//! let outcomes = &[
+//!     create_prediction::NewPredictionOutcome::new("Yes, give it time."),
+//!     create_prediction::NewPredictionOutcome::new("Definitely not."),
+//! ];
 //! let body = create_prediction::CreatePredictionBody::new(
 //!     "141981764",
 //!     "Any leeks in the stream?",
-//!     vec![
-//!         create_prediction::NewPredictionOutcome::new("Yes, give it time."),
-//!         create_prediction::NewPredictionOutcome::new("Definitely not."),
-//!     ],
+//!     outcomes,
 //!     120,
 //! );
 //! ```
@@ -46,13 +47,14 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = create_prediction::CreatePredictionRequest::new();
+//! let outcomes = &[
+//!     create_prediction::NewPredictionOutcome::new("Yes, give it time."),
+//!     create_prediction::NewPredictionOutcome::new("Definitely not."),
+//! ];
 //! let body = create_prediction::CreatePredictionBody::new(
 //!     "141981764",
 //!     "Any leeks in the stream?",
-//!     vec![
-//!         create_prediction::NewPredictionOutcome::new("Yes, give it time."),
-//!         create_prediction::NewPredictionOutcome::new("Definitely not."),
-//!    ],
+//!     outcomes,
 //!     120,
 //! );
 //! let response: create_prediction::CreatePredictionResponse = client.req_post(request, body, &token).await?.data;
@@ -101,7 +103,8 @@ pub struct CreatePredictionBody<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Cow<'a, str>,
     /// Array of outcome objects with titles for the Prediction. Minimum: 2. Maximum: 10.
-    pub outcomes: Vec<NewPredictionOutcome<'a>>,
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    pub outcomes: Cow<'a, [NewPredictionOutcome<'a>]>,
     /// Total duration for the Prediction (in seconds). Minimum: 1. Maximum: 1800.
     pub prediction_window: i64,
 }
@@ -111,13 +114,13 @@ impl<'a> CreatePredictionBody<'a> {
     pub fn new(
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         title: impl Into<Cow<'a, str>>,
-        outcomes: Vec<NewPredictionOutcome<'a>>,
+        outcomes: &'a [NewPredictionOutcome<'a>],
         prediction_window: i64,
     ) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into_cow(),
             title: title.into(),
-            outcomes,
+            outcomes: outcomes.into(),
             prediction_window,
         }
     }
@@ -202,16 +205,11 @@ impl<'a> RequestPost for CreatePredictionRequest<'a> {
 fn test_request() {
     use helix::*;
     let req = CreatePredictionRequest::new();
-
-    let body = CreatePredictionBody::new(
-        "141981764",
-        "Any leeks in the stream?",
-        vec![
-            NewPredictionOutcome::new("Yes, give it time."),
-            NewPredictionOutcome::new("Definitely not."),
-        ],
-        120,
-    );
+    let outcomes = &[
+        NewPredictionOutcome::new("Yes, give it time."),
+        NewPredictionOutcome::new("Definitely not."),
+    ];
+    let body = CreatePredictionBody::new("141981764", "Any leeks in the stream?", outcomes, 120);
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
