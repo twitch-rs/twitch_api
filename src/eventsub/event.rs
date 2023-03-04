@@ -18,8 +18,10 @@ macro_rules! fill_events {
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
             channel::ChannelUnbanV1;
-            #[cfg(feature = "unsupported")]
-            channel::ChannelCharityCampaignDonateBeta;
+            channel::ChannelCharityCampaignDonateV1;
+            channel::ChannelCharityCampaignProgressV1;
+            channel::ChannelCharityCampaignStartV1;
+            channel::ChannelCharityCampaignStopV1;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardUpdateV1;
             channel::ChannelPointsCustomRewardRemoveV1;
@@ -125,6 +127,12 @@ pub struct EventTypeParseError;
 make_event_type!("Event Types": pub enum EventType {
     "a user donates to the broadcaster’s charity campaign.":
     ChannelCharityCampaignDonate => "channel.charity_campaign.donate",
+    "progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal.":
+    ChannelCharityCampaignProgress => "channel.charity_campaign.progress",
+    "a broadcaster starts a charity campaign.":
+    ChannelCharityCampaignStart => "channel.charity_campaign.start",
+    "a broadcaster stops a charity campaign.":
+    ChannelCharityCampaignStop => "channel.charity_campaign.stop",
     "subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.":
     ChannelUpdate => "channel.update",
     "a specified channel receives a follow.":
@@ -214,9 +222,14 @@ fn main() {
 #[allow(clippy::large_enum_variant)]
 #[non_exhaustive]
 pub enum Event {
-    /// Channel Charity Campaign Donate Beta Event
-    #[cfg(feature = "unsupported")]
-    ChannelCharityCampaignDonateBeta(Payload<channel::ChannelCharityCampaignDonateBeta>),
+    /// Channel Charity Campaign Donate V1 Event
+    ChannelCharityCampaignDonateV1(Payload<channel::ChannelCharityCampaignDonateV1>),
+    /// Channel Charity Campaign Progress V1 Event
+    ChannelCharityCampaignProgressV1(Payload<channel::ChannelCharityCampaignProgressV1>),
+    /// Channel Charity Campaign Start V1 Event
+    ChannelCharityCampaignStartV1(Payload<channel::ChannelCharityCampaignStartV1>),
+    /// Channel Charity Campaign Stop V1 Event
+    ChannelCharityCampaignStopV1(Payload<channel::ChannelCharityCampaignStopV1>),
     /// Channel Update V1 Event
     ChannelUpdateV1(Payload<channel::ChannelUpdateV1>),
     /// Channel Follow V1 Event

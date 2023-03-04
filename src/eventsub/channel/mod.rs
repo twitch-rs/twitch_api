@@ -7,7 +7,6 @@ use serde::{Deserialize, Serialize};
 pub mod ban;
 pub mod channel_points_custom_reward;
 pub mod channel_points_custom_reward_redemption;
-#[cfg(feature = "unsupported")]
 pub mod charity_campaign;
 pub mod cheer;
 pub mod follow;
@@ -45,10 +44,15 @@ pub use channel_points_custom_reward_redemption::{
     ChannelPointsCustomRewardRedemptionUpdateV1, ChannelPointsCustomRewardRedemptionUpdateV1Payload,
 };
 #[doc(inline)]
-#[cfg(feature = "unsupported")]
+pub use charity_campaign::{ChannelCharityCampaignDonateV1, ChannelCharityCampaignDonateV1Payload};
+#[doc(inline)]
 pub use charity_campaign::{
-    ChannelCharityCampaignDonateBeta, ChannelCharityCampaignDonateBetaPayload,
+    ChannelCharityCampaignProgressV1, ChannelCharityCampaignProgressV1Payload,
 };
+#[doc(inline)]
+pub use charity_campaign::{ChannelCharityCampaignStartV1, ChannelCharityCampaignStartV1Payload};
+#[doc(inline)]
+pub use charity_campaign::{ChannelCharityCampaignStopV1, ChannelCharityCampaignStopV1Payload};
 #[doc(inline)]
 pub use cheer::{ChannelCheerV1, ChannelCheerV1Payload};
 #[doc(inline)]
