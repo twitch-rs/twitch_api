@@ -174,7 +174,7 @@ fn test_request() {
                 "game_name": "DOOM Eternal",
                 "id": "19070311",
                 "is_live": true,
-                "tag_ids": ["6ea6bca4-4712-4ab9-a906-e3336a9d8039"],
+                "tag_ids": [],
                 "tags": ["English"],
                 "thumbnail_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/a_seagull-profile_image-4d2d235688c7dc66-300x300.png",
                 "title": "a_seagull",
