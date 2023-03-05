@@ -1,4 +1,5 @@
 #![doc(alias = "channels")]
+#![allow(deprecated)]
 //! Subscription types regarding channels
 use super::{EventSubscription, EventType};
 use crate::types;
@@ -57,6 +58,8 @@ pub use charity_campaign::{ChannelCharityCampaignStopV1, ChannelCharityCampaignS
 pub use cheer::{ChannelCheerV1, ChannelCheerV1Payload};
 #[doc(inline)]
 pub use follow::{ChannelFollowV1, ChannelFollowV1Payload};
+#[doc(inline)]
+pub use follow::{ChannelFollowV2, ChannelFollowV2Payload};
 #[doc(inline)]
 pub use goal::{ChannelGoalBeginV1, ChannelGoalBeginV1Payload};
 #[doc(inline)]

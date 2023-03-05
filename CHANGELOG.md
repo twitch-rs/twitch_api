@@ -35,7 +35,9 @@
 - Removed deprecated `limit` on `CreateEventSubSubscription`
 - Removed deprecated `AddBlockedTerm`, `DeleteBlockedTerm`, `DeletePermittedTerm` and `AddPermittedTerm` on `ModerationActionCommand`
 - Deprecated TMI
-- Added `tags` to Modify Channel Information, Get Channel Informatiom, Search Channels, Get Followed Streams and Get Streams
+- Added `tags` to Modify Channel Information, Get Channel Information, Search Channels, Get Followed Streams and Get Streams
+- Deprecated `channel.follow` v1 eventsub event
+- Deprecated `Get User Follows` and associated follower related extension methods
 
 ### Added
 
@@ -55,6 +57,8 @@
 - Added contribution type `OTHER` for Get Hype Train Events
 - Added `Send a Shoutout` endpoint
 - Added `channel.shoutout.receive` and `channel.shoutout.create` eventsub events
+- Added `channel.follows` v2 eventsub event
+- Added `Get Followed Channels` and `Get Followed Streams`
 
 ### Fixed
 

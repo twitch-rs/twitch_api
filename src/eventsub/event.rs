@@ -1,5 +1,5 @@
 //! EventSub events and their types
-
+#![allow(deprecated)]
 #[cfg(feature = "unsupported")]
 pub mod websocket;
 
@@ -14,6 +14,7 @@ macro_rules! fill_events {
         $callback!($($args)*
             channel::ChannelUpdateV1;
             channel::ChannelFollowV1;
+            channel::ChannelFollowV2;
             channel::ChannelSubscribeV1;
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
@@ -233,7 +234,10 @@ pub enum Event {
     /// Channel Update V1 Event
     ChannelUpdateV1(Payload<channel::ChannelUpdateV1>),
     /// Channel Follow V1 Event
+    #[deprecated(note = "use `Event::ChannelFollowV2` instead")]
     ChannelFollowV1(Payload<channel::ChannelFollowV1>),
+    /// Channel Follow V2 Event
+    ChannelFollowV2(Payload<channel::ChannelFollowV2>),
     /// Channel Subscribe V1 Event
     ChannelSubscribeV1(Payload<channel::ChannelSubscribeV1>),
     /// Channel Cheer V1 Event
