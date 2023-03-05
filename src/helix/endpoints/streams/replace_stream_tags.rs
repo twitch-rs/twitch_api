@@ -62,7 +62,9 @@ use helix::RequestPut;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-#[deprecated(note = "Twitch-defined tags have been deprecated. See https://discuss.dev.twitch.tv/t/adding-customizable-tags-to-the-twitch-api/42921")]
+#[deprecated(
+    note = "Twitch-defined tags have been deprecated. See https://discuss.dev.twitch.tv/t/adding-customizable-tags-to-the-twitch-api/42921"
+)]
 pub struct ReplaceStreamTagsRequest<'a> {
     /// ID of the stream for which tags are to be replaced.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
@@ -89,7 +91,9 @@ impl<'a> ReplaceStreamTagsRequest<'a> {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-#[deprecated(note = "Twitch-defined tags have been deprecated. See https://discuss.dev.twitch.tv/t/adding-customizable-tags-to-the-twitch-api/42921")]
+#[deprecated(
+    note = "Twitch-defined tags have been deprecated. See https://discuss.dev.twitch.tv/t/adding-customizable-tags-to-the-twitch-api/42921"
+)]
 pub struct ReplaceStreamTagsBody<'a> {
     /// IDs of tags to be applied to the stream.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -113,7 +117,9 @@ impl<'a> ReplaceStreamTagsBody<'a> {
 /// [`replace-stream-tags`](https://dev.twitch.tv/docs/api/reference#replace-stream-tags)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
-#[deprecated(note = "Twitch-defined tags have been deprecated. See https://discuss.dev.twitch.tv/t/adding-customizable-tags-to-the-twitch-api/42921")]
+#[deprecated(
+    note = "Twitch-defined tags have been deprecated. See https://discuss.dev.twitch.tv/t/adding-customizable-tags-to-the-twitch-api/42921"
+)]
 pub enum ReplaceStreamTags {
     /// 204 - Stream Tags replaced successfully
     Success,

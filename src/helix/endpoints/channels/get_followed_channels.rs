@@ -9,8 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::channels::get_followed_channels;
-//! let request =
-//!     get_followed_channels::GetFollowedChannels::user_id("1234");
+//! let request = get_followed_channels::GetFollowedChannels::user_id("1234");
 //! ```
 //!
 //! ## Response: [FollowedBroadcaster]
