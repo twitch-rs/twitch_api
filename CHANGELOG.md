@@ -38,6 +38,7 @@
 - Added `tags` to Modify Channel Information, Get Channel Information, Search Channels, Get Followed Streams and Get Streams
 - Deprecated `channel.follow` v1 eventsub event
 - Deprecated `Get User Follows` and associated follower related extension methods
+- Deprecated Twitch-defined tags: `Get All Stream Tags`, `Get Stream Tags`, `Replace Stream Tags` and `TwitchTag`
 
 ### Added
 

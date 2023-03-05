@@ -32,6 +32,7 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
 //! and parse the [`http::Response`] with [`GetStreamTagsRequest::parse_response(None, &request.get_uri(), response)`](GetStreamTagsRequest::parse_response)
+#![allow(deprecated)]
 
 use super::*;
 use helix::RequestGet;
@@ -42,6 +43,7 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
+#[deprecated(note = "use `Get Channel Information` instead")]
 pub struct GetStreamTagsRequest<'a> {
     // FIXME: twitch docs sucks
     /// ID of the stream whose tags are going to be fetched
