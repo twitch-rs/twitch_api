@@ -239,6 +239,11 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     ///
     /// # Ok(()) }
     /// ```
+    #[deprecated(
+        note = "this method will not work anymore on 3 august, see https://discuss.dev.twitch.tv/t/follows-endpoints-and-eventsub-subscription-type-are-now-available-in-open-beta/43322"
+    )]
+    #[allow(deprecated)]
+    #[doc(hidden)]
     pub fn get_follow_relationships<'b, T>(
         &'client self,
         to_id: impl Into<Option<&'b types::UserIdRef>>,
@@ -412,6 +417,11 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 
     /// Get a users, with login, follow count
+    #[deprecated(
+        note = "this method will not work anymore on 3 august, see https://discuss.dev.twitch.tv/t/follows-endpoints-and-eventsub-subscription-type-are-now-available-in-open-beta/43322"
+    )]
+    #[allow(deprecated)]
+    #[doc(hidden)]
     pub async fn get_total_followers_from_login<'b, T>(
         &'client self,
         login: impl types::IntoCow<'b, types::UserNameRef> + Send + 'b,
@@ -429,11 +439,75 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         }
     }
 
+    /// Get a broadcasters follow count
+    ///
+    /// # Notes
+    ///
+    /// You need to have the scope `moderator:read:followers` and be a moderator of the channel if the token is not the broadcasters own token
+    pub async fn get_total_channel_followers<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<i64, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let resp = self
+            .req_get(
+                helix::channels::GetChannelFollowersRequest::broadcaster_id(broadcaster_id),
+                token,
+            )
+            .await?;
+
+        Ok(resp.total.unwrap_or(0))
+    }
+
+    /// Get users followed channels
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let schedule: Vec<helix::channels::FollowedBroadcaster> = client
+    ///     .get_followed_channels("1234", &token)
+    ///     .try_collect()
+    ///     .await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub fn get_followed_channels<'b: 'client, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<helix::channels::FollowedBroadcaster, ClientError<C>>>
+           + Send
+           + Unpin
+           + 'client
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req =
+            helix::channels::get_followed_channels::GetFollowedChannels::user_id(broadcaster_id);
+        make_stream(req, token, self, |broadcasts| broadcasts.into())
+    }
+
     /// Get a users, with id, follow count
     ///
     /// # Notes
     ///
     /// This returns zero if the user doesn't exist
+    #[allow(deprecated)]
+    #[doc(hidden)]
+    #[deprecated(
+        note = "this method will not work anymore on 3 august, see https://discuss.dev.twitch.tv/t/follows-endpoints-and-eventsub-subscription-type-are-now-available-in-open-beta/43322"
+    )]
     pub async fn get_total_followers_from_id<'b, T>(
         &'client self,
         to_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,

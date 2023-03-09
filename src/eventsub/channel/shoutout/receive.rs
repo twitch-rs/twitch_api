@@ -7,7 +7,7 @@ use super::*;
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct ChannelShoutoutReceiveBeta {
+pub struct ChannelShoutoutReceiveV1 {
     /// The ID of the broadcaster that you want to receive notifications about when they receive a Shoutout.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
@@ -16,8 +16,8 @@ pub struct ChannelShoutoutReceiveBeta {
     pub moderator_user_id: types::UserId,
 }
 
-impl ChannelShoutoutReceiveBeta {
-    /// Create a new [`ChannelShoutoutReceiveBeta`]
+impl ChannelShoutoutReceiveV1 {
+    /// Create a new [`ChannelShoutoutReceiveV1`]
     pub fn new(
         broadcaster_user_id: impl Into<types::UserId>,
         moderator_user_id: impl Into<types::UserId>,
@@ -29,8 +29,8 @@ impl ChannelShoutoutReceiveBeta {
     }
 }
 
-impl EventSubscription for ChannelShoutoutReceiveBeta {
-    type Payload = ChannelShoutoutReceiveBetaPayload;
+impl EventSubscription for ChannelShoutoutReceiveV1 {
+    type Payload = ChannelShoutoutReceiveV1Payload;
 
     const EVENT_TYPE: EventType = EventType::ChannelShoutoutReceive;
     #[cfg(feature = "twitch_oauth2")]
@@ -38,11 +38,11 @@ impl EventSubscription for ChannelShoutoutReceiveBeta {
     const VERSION: &'static str = "beta";
 }
 
-/// [`channel.shoutout.receive`](ChannelShoutoutReceiveBeta) response payload.
+/// [`channel.shoutout.receive`](ChannelShoutoutReceiveV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct ChannelShoutoutReceiveBetaPayload {
+pub struct ChannelShoutoutReceiveV1Payload {
     /// An ID that identifies the broadcaster that received the Shoutout.
     pub broadcaster_user_id: types::UserId,
     /// The broadcaster’s login name.

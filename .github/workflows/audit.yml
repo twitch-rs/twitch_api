@@ -26,7 +26,7 @@ jobs:
       - name: Install rust
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: 1.64.0
+          toolchain: 1.65.0
       - run: cargo audit
   cargo-deny:
     name: Cargo Deny
@@ -44,7 +44,7 @@ jobs:
           submodules: recursive
       - uses: EmbarkStudios/cargo-deny-action@v1
         with:
-          rust-version: 1.64.0
+          rust-version: 1.65.0
           command: check ${{ matrix.checks }} -s
           arguments: --all-features
           log-level: warn

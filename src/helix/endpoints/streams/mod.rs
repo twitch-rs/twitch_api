@@ -29,10 +29,12 @@ use std::borrow::Cow;
 #[doc(inline)]
 pub use get_followed_streams::GetFollowedStreamsRequest;
 #[doc(inline)]
+#[allow(deprecated)]
 pub use get_stream_tags::{GetStreamTagsRequest, Tag};
 #[doc(inline)]
 pub use get_streams::{GetStreamsRequest, Stream};
 #[doc(inline)]
+#[allow(deprecated)]
 pub use replace_stream_tags::{ReplaceStreamTags, ReplaceStreamTagsBody, ReplaceStreamTagsRequest};
 
 pub mod get_followed_streams;

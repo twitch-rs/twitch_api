@@ -8,6 +8,7 @@
 
 ### Breaking changes
 
+- MSRV: 1.65.0
 - Requests for helix endpoints have been converted to take `Cow`s.
   This change means the `builder()` methods are harder to use, consider using the new methods on
   each request which provide the same functionality but with better ergonomics.
@@ -15,7 +16,6 @@
 - Crate name changed: `twitch_api2` -> `twitch_api`, also changed to new org `twitch-rs`
 - All (most) types are now living in their own crate `twitch_types`
 - Features for clients are now named after the client, e.g feature `reqwest_client` is now simply `reqwest`
-- MSRV: 1.64.0
 - Fixed wrong type on `UserAuthorizationGrantV1::client_id`
 - Deprecate `bits_voting_enabled`, `bits_per_vote` and `bits_votes` on `Create Poll` and `Poll` and made the fields optional
 - `Get Clips` takes and returns `ClipId` instead of a string
@@ -35,7 +35,10 @@
 - Removed deprecated `limit` on `CreateEventSubSubscription`
 - Removed deprecated `AddBlockedTerm`, `DeleteBlockedTerm`, `DeletePermittedTerm` and `AddPermittedTerm` on `ModerationActionCommand`
 - Deprecated TMI
-- Added `tags` to Modify Channel Information, Get Channel Informatiom, Search Channels, Get Followed Streams and Get Streams
+- Added `tags` to Modify Channel Information, Get Channel Information, Search Channels, Get Followed Streams and Get Streams
+- Deprecated `channel.follow` v1 eventsub event
+- Deprecated `Get User Follows` and associated follower related extension methods
+- Deprecated Twitch-defined tags: `Get All Stream Tags`, `Get Stream Tags`, `Replace Stream Tags` and `TwitchTag`
 
 ### Added
 
@@ -55,6 +58,8 @@
 - Added contribution type `OTHER` for Get Hype Train Events
 - Added `Send a Shoutout` endpoint
 - Added `channel.shoutout.receive` and `channel.shoutout.create` eventsub events
+- Added `channel.follows` v2 eventsub event
+- Added `Get Followed Channels` and `Get Followed Streams`
 
 ### Fixed
 
