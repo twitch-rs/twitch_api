@@ -1,4 +1,5 @@
 #![doc(alias = "channels")]
+#![allow(deprecated)]
 //! Subscription types regarding channels
 use super::{EventSubscription, EventType};
 use crate::types;
@@ -7,7 +8,6 @@ use serde::{Deserialize, Serialize};
 pub mod ban;
 pub mod channel_points_custom_reward;
 pub mod channel_points_custom_reward_redemption;
-#[cfg(feature = "unsupported")]
 pub mod charity_campaign;
 pub mod cheer;
 pub mod follow;
@@ -16,7 +16,6 @@ pub mod hypetrain;
 pub mod poll;
 pub mod prediction;
 pub mod raid;
-#[cfg(feature = "unsupported")]
 pub mod shoutout;
 pub mod subscribe;
 pub mod subscription;
@@ -46,14 +45,21 @@ pub use channel_points_custom_reward_redemption::{
     ChannelPointsCustomRewardRedemptionUpdateV1, ChannelPointsCustomRewardRedemptionUpdateV1Payload,
 };
 #[doc(inline)]
-#[cfg(feature = "unsupported")]
+pub use charity_campaign::{ChannelCharityCampaignDonateV1, ChannelCharityCampaignDonateV1Payload};
+#[doc(inline)]
 pub use charity_campaign::{
-    ChannelCharityCampaignDonateBeta, ChannelCharityCampaignDonateBetaPayload,
+    ChannelCharityCampaignProgressV1, ChannelCharityCampaignProgressV1Payload,
 };
+#[doc(inline)]
+pub use charity_campaign::{ChannelCharityCampaignStartV1, ChannelCharityCampaignStartV1Payload};
+#[doc(inline)]
+pub use charity_campaign::{ChannelCharityCampaignStopV1, ChannelCharityCampaignStopV1Payload};
 #[doc(inline)]
 pub use cheer::{ChannelCheerV1, ChannelCheerV1Payload};
 #[doc(inline)]
 pub use follow::{ChannelFollowV1, ChannelFollowV1Payload};
+#[doc(inline)]
+pub use follow::{ChannelFollowV2, ChannelFollowV2Payload};
 #[doc(inline)]
 pub use goal::{ChannelGoalBeginV1, ChannelGoalBeginV1Payload};
 #[doc(inline)]
@@ -83,11 +89,9 @@ pub use prediction::{ChannelPredictionProgressV1, ChannelPredictionProgressV1Pay
 #[doc(inline)]
 pub use raid::{ChannelRaidV1, ChannelRaidV1Payload};
 #[doc(inline)]
-#[cfg(feature = "unsupported")]
-pub use shoutout::{ChannelShoutoutCreateBeta, ChannelShoutoutCreateBetaPayload};
-#[cfg(feature = "unsupported")]
+pub use shoutout::{ChannelShoutoutCreateV1, ChannelShoutoutCreateV1Payload};
 #[doc(inline)]
-pub use shoutout::{ChannelShoutoutReceiveBeta, ChannelShoutoutReceiveBetaPayload};
+pub use shoutout::{ChannelShoutoutReceiveV1, ChannelShoutoutReceiveV1Payload};
 #[doc(inline)]
 pub use subscribe::{ChannelSubscribeV1, ChannelSubscribeV1Payload};
 #[doc(inline)]

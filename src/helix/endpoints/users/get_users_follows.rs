@@ -39,6 +39,9 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
+#[deprecated(
+    note = "this endpoint has been deprecated, see https://discuss.dev.twitch.tv/t/follows-endpoints-and-eventsub-subscription-type-are-now-available-in-open-beta/43322"
+)]
 pub struct GetUsersFollowsRequest<'a> {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
@@ -107,6 +110,9 @@ impl<'a> GetUsersFollowsRequest<'a> {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
+#[deprecated(
+    note = "this endpoint has been deprecated, see https://discuss.dev.twitch.tv/t/follows-endpoints-and-eventsub-subscription-type-are-now-available-in-open-beta/43322"
+)]
 pub struct UsersFollows {
     /// Total number of items returned in all pages.
     ///

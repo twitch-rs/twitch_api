@@ -85,10 +85,6 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .try_collect()
         .await?;
     dbg!(search.get(0));
-    let _total = client
-        .get_total_followers_from_id(&search.get(0).unwrap().id, &token)
-        .await?;
-    dbg!(_total);
     let streams: Vec<_> = client.get_followed_streams(&token).try_collect().await?;
     dbg!(streams);
     let subs: Vec<_> = client

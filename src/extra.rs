@@ -1,4 +1,4 @@
-#[cfg(all(feature = "unsupported", any(feature = "eventsub", feature = "helix")))]
+#[cfg(any(feature = "eventsub", feature = "helix"))]
 #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]

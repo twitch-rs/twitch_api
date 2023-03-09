@@ -114,7 +114,7 @@ fn test_request() {
     let data = br#"
 {
     "data": [
-        {
+          {
             "id": "42170724654",
             "user_id": "132954738",
             "user_login": "aws",
@@ -127,7 +127,7 @@ fn test_request() {
             "started_at": "2021-03-31T20:57:26Z",
             "language": "en",
             "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_aws-{width}x{height}.jpg",
-            "tag_ids": ["6ea6bca4-4712-4ab9-a906-e3336a9d8039"],
+            "tag_ids": [],
             "tags": ["English"],
             "is_mature": false
           },
@@ -144,7 +144,7 @@ fn test_request() {
             "started_at": "2021-03-31T20:57:26Z",
             "language": "en",
             "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_aws-{width}x{height}.jpg",
-            "tag_ids": ["6ea6bca4-4712-4ab9-a906-e3336a9d8039"],
+            "tag_ids": [],
             "tags": ["English"],
             "is_mature": false
           }

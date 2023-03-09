@@ -1,5 +1,5 @@
 //! EventSub events and their types
-
+#![allow(deprecated)]
 #[cfg(feature = "unsupported")]
 pub mod websocket;
 
@@ -14,12 +14,15 @@ macro_rules! fill_events {
         $callback!($($args)*
             channel::ChannelUpdateV1;
             channel::ChannelFollowV1;
+            channel::ChannelFollowV2;
             channel::ChannelSubscribeV1;
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
             channel::ChannelUnbanV1;
-            #[cfg(feature = "unsupported")]
-            channel::ChannelCharityCampaignDonateBeta;
+            channel::ChannelCharityCampaignDonateV1;
+            channel::ChannelCharityCampaignProgressV1;
+            channel::ChannelCharityCampaignStartV1;
+            channel::ChannelCharityCampaignStopV1;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardUpdateV1;
             channel::ChannelPointsCustomRewardRemoveV1;
@@ -32,10 +35,8 @@ macro_rules! fill_events {
             channel::ChannelPredictionProgressV1;
             channel::ChannelPredictionLockV1;
             channel::ChannelPredictionEndV1;
-            #[cfg(feature = "unsupported")]
-            channel::ChannelShoutoutCreateBeta;
-            #[cfg(feature = "unsupported")]
-            channel::ChannelShoutoutReceiveBeta;
+            channel::ChannelShoutoutCreateV1;
+            channel::ChannelShoutoutReceiveV1;
             channel::ChannelRaidV1;
             channel::ChannelSubscriptionEndV1;
             channel::ChannelSubscriptionGiftV1;
@@ -127,6 +128,12 @@ pub struct EventTypeParseError;
 make_event_type!("Event Types": pub enum EventType {
     "a user donates to the broadcaster’s charity campaign.":
     ChannelCharityCampaignDonate => "channel.charity_campaign.donate",
+    "progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal.":
+    ChannelCharityCampaignProgress => "channel.charity_campaign.progress",
+    "a broadcaster starts a charity campaign.":
+    ChannelCharityCampaignStart => "channel.charity_campaign.start",
+    "a broadcaster stops a charity campaign.":
+    ChannelCharityCampaignStop => "channel.charity_campaign.stop",
     "subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.":
     ChannelUpdate => "channel.update",
     "a specified channel receives a follow.":
@@ -216,13 +223,21 @@ fn main() {
 #[allow(clippy::large_enum_variant)]
 #[non_exhaustive]
 pub enum Event {
-    /// Channel Charity Campaign Donate Beta Event
-    #[cfg(feature = "unsupported")]
-    ChannelCharityCampaignDonateBeta(Payload<channel::ChannelCharityCampaignDonateBeta>),
+    /// Channel Charity Campaign Donate V1 Event
+    ChannelCharityCampaignDonateV1(Payload<channel::ChannelCharityCampaignDonateV1>),
+    /// Channel Charity Campaign Progress V1 Event
+    ChannelCharityCampaignProgressV1(Payload<channel::ChannelCharityCampaignProgressV1>),
+    /// Channel Charity Campaign Start V1 Event
+    ChannelCharityCampaignStartV1(Payload<channel::ChannelCharityCampaignStartV1>),
+    /// Channel Charity Campaign Stop V1 Event
+    ChannelCharityCampaignStopV1(Payload<channel::ChannelCharityCampaignStopV1>),
     /// Channel Update V1 Event
     ChannelUpdateV1(Payload<channel::ChannelUpdateV1>),
     /// Channel Follow V1 Event
+    #[deprecated(note = "use `Event::ChannelFollowV2` instead")]
     ChannelFollowV1(Payload<channel::ChannelFollowV1>),
+    /// Channel Follow V2 Event
+    ChannelFollowV2(Payload<channel::ChannelFollowV2>),
     /// Channel Subscribe V1 Event
     ChannelSubscribeV1(Payload<channel::ChannelSubscribeV1>),
     /// Channel Cheer V1 Event
@@ -260,11 +275,9 @@ pub enum Event {
     /// Channel Prediction End V1 Event
     ChannelPredictionEndV1(Payload<channel::ChannelPredictionEndV1>),
     /// Channel Shoutout Create V1 Event
-    #[cfg(feature = "unsupported")]
-    ChannelShoutoutCreateBeta(Payload<channel::ChannelShoutoutCreateBeta>),
+    ChannelShoutoutCreateV1(Payload<channel::ChannelShoutoutCreateV1>),
     /// Channel Shoutout Receive V1 Event
-    #[cfg(feature = "unsupported")]
-    ChannelShoutoutReceiveBeta(Payload<channel::ChannelShoutoutReceiveBeta>),
+    ChannelShoutoutReceiveV1(Payload<channel::ChannelShoutoutReceiveV1>),
     /// Channel Goal Begin V1 Event
     ChannelGoalBeginV1(Payload<channel::ChannelGoalBeginV1>),
     /// Channel Goal Progress V1 Event

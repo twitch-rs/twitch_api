@@ -6,9 +6,12 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 
-#[cfg(feature = "unsupported")]
 pub mod get_charity_campaign;
+pub mod get_charity_campaign_donations;
 
 #[doc(inline)]
-#[cfg(feature = "unsupported")]
 pub use get_charity_campaign::{CharityCampaign, GetCharityCampaignRequest};
+#[doc(inline)]
+pub use get_charity_campaign_donations::{
+    CharityCampaignDonation, GetCharityCampaignDonationsRequest,
+};
