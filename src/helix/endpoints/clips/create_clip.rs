@@ -44,27 +44,19 @@ use helix::RequestGet;
 #[non_exhaustive]
 pub struct CreateClipRequest<'a> {
     /// The ID of the broadcaster whose stream you want to create a clip from.
-    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
-    pub broadcaster_id: Option<Cow<'a, str>>,
+    pub broadcaster_id: Cow<'a, types::UserIdRef>,
     /// A Boolean value that determines whether the API captures the clip at the moment the viewer requests it or after a delay. If false (default), Twitch captures the clip at the moment the viewer requests it (this is the same clip experience as the Twitch UX). If true, Twitch adds a delay before capturing the clip
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub has_delay: Option<bool>,
 }
 
 impl<'a> CreateClipRequest<'a> {
-    /// An empty request
-    pub fn empty() -> Self {
-        Self {
-            broadcaster_id: Default::default(),
-            has_delay: Default::default(),
-        }
-    }
-
     /// Create a new [`CreateClipRequest`] with the given broadcaster_id
-    pub fn broadcaster_id(broadcaster_id: impl Into<Cow<'a, str>>) -> Self {
+    pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
-            broadcaster_id: Some(broadcaster_id.into()),
+            broadcaster_id: broadcaster_id.into_cow(),
             has_delay: None,
         }
     }
