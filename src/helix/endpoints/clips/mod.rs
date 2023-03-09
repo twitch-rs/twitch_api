@@ -25,5 +25,10 @@ use std::borrow::Cow;
 
 pub mod get_clips;
 
+pub mod create_clip;
+
 #[doc(inline)]
 pub use get_clips::{Clip, GetClipsRequest};
+
+#[doc(inline)]
+pub use create_clip::{CreateClipRequest, CreatedClip};
