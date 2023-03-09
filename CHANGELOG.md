@@ -60,6 +60,7 @@
 - Added `channel.shoutout.receive` and `channel.shoutout.create` eventsub events
 - Added `channel.follows` v2 eventsub event
 - Added `Get Followed Channels` and `Get Followed Streams`
+- Added `Create Clip` endpoint
 
 ### Fixed
 
