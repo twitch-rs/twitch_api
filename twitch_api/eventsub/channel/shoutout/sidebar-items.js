@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["create","receive"],"struct":["ChannelShoutoutCreateBeta","ChannelShoutoutCreateBetaPayload","ChannelShoutoutReceiveBeta","ChannelShoutoutReceiveBetaPayload"]};
+window.SIDEBAR_ITEMS = {"mod":["create","receive"],"struct":["ChannelShoutoutCreateV1","ChannelShoutoutCreateV1Payload","ChannelShoutoutReceiveV1","ChannelShoutoutReceiveV1Payload"]};

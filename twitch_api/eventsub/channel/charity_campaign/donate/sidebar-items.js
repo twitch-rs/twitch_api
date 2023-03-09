@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["ChannelCharityCampaignDonateBeta","ChannelCharityCampaignDonateBetaPayload"]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelCharityCampaignDonateV1","ChannelCharityCampaignDonateV1Payload"]};

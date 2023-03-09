@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["ChannelFollowV1","ChannelFollowV1Payload"]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelFollowV1","ChannelFollowV1Payload","ChannelFollowV2","ChannelFollowV2Payload"]};

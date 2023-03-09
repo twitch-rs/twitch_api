@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-bfa4087bf2db080e.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -663,9 +663,22 @@
 <a href="#663" id="663">663</a>
 <a href="#664" id="664">664</a>
 <a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
 </pre><pre class="rust"><code><span class="doccomment">//! EventSub events and their types
-
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+</span><span class="attr">#![allow(deprecated)]
+#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
 </span><span class="kw">pub mod </span>websocket;
 
 <span class="kw">use </span>std::borrow::Cow;
@@ -679,12 +692,15 @@
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>($(<span class="macro-nonterminal">$args</span>)*
             channel::ChannelUpdateV1;
             channel::ChannelFollowV1;
+            channel::ChannelFollowV2;
             channel::ChannelSubscribeV1;
             channel::ChannelCheerV1;
             channel::ChannelBanV1;
             channel::ChannelUnbanV1;
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-            </span>channel::ChannelCharityCampaignDonateBeta;
+            channel::ChannelCharityCampaignDonateV1;
+            channel::ChannelCharityCampaignProgressV1;
+            channel::ChannelCharityCampaignStartV1;
+            channel::ChannelCharityCampaignStopV1;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardUpdateV1;
             channel::ChannelPointsCustomRewardRemoveV1;
@@ -697,10 +713,8 @@
             channel::ChannelPredictionProgressV1;
             channel::ChannelPredictionLockV1;
             channel::ChannelPredictionEndV1;
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-            </span>channel::ChannelShoutoutCreateBeta;
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-            </span>channel::ChannelShoutoutReceiveBeta;
+            channel::ChannelShoutoutCreateV1;
+            channel::ChannelShoutoutReceiveV1;
             channel::ChannelRaidV1;
             channel::ChannelSubscriptionEndV1;
             channel::ChannelSubscriptionGiftV1;
@@ -792,6 +806,12 @@
 <span class="macro">make_event_type!</span>(<span class="string">&quot;Event Types&quot;</span>: <span class="kw">pub enum </span>EventType {
     <span class="string">&quot;a user donates to the broadcaster’s charity campaign.&quot;</span>:
     ChannelCharityCampaignDonate =&gt; <span class="string">&quot;channel.charity_campaign.donate&quot;</span>,
+    <span class="string">&quot;progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal.&quot;</span>:
+    ChannelCharityCampaignProgress =&gt; <span class="string">&quot;channel.charity_campaign.progress&quot;</span>,
+    <span class="string">&quot;a broadcaster starts a charity campaign.&quot;</span>:
+    ChannelCharityCampaignStart =&gt; <span class="string">&quot;channel.charity_campaign.start&quot;</span>,
+    <span class="string">&quot;a broadcaster stops a charity campaign.&quot;</span>:
+    ChannelCharityCampaignStop =&gt; <span class="string">&quot;channel.charity_campaign.stop&quot;</span>,
     <span class="string">&quot;subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.&quot;</span>:
     ChannelUpdate =&gt; <span class="string">&quot;channel.update&quot;</span>,
     <span class="string">&quot;a specified channel receives a follow.&quot;</span>:
@@ -881,13 +901,21 @@ fn main() {
 #[allow(clippy::large_enum_variant)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Event {
-    <span class="doccomment">/// Channel Charity Campaign Donate Beta Event
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    </span>ChannelCharityCampaignDonateBeta(Payload&lt;channel::ChannelCharityCampaignDonateBeta&gt;),
+    <span class="doccomment">/// Channel Charity Campaign Donate V1 Event
+    </span>ChannelCharityCampaignDonateV1(Payload&lt;channel::ChannelCharityCampaignDonateV1&gt;),
+    <span class="doccomment">/// Channel Charity Campaign Progress V1 Event
+    </span>ChannelCharityCampaignProgressV1(Payload&lt;channel::ChannelCharityCampaignProgressV1&gt;),
+    <span class="doccomment">/// Channel Charity Campaign Start V1 Event
+    </span>ChannelCharityCampaignStartV1(Payload&lt;channel::ChannelCharityCampaignStartV1&gt;),
+    <span class="doccomment">/// Channel Charity Campaign Stop V1 Event
+    </span>ChannelCharityCampaignStopV1(Payload&lt;channel::ChannelCharityCampaignStopV1&gt;),
     <span class="doccomment">/// Channel Update V1 Event
     </span>ChannelUpdateV1(Payload&lt;channel::ChannelUpdateV1&gt;),
     <span class="doccomment">/// Channel Follow V1 Event
+    </span><span class="attr">#[deprecated(note = <span class="string">&quot;use `Event::ChannelFollowV2` instead&quot;</span>)]
     </span>ChannelFollowV1(Payload&lt;channel::ChannelFollowV1&gt;),
+    <span class="doccomment">/// Channel Follow V2 Event
+    </span>ChannelFollowV2(Payload&lt;channel::ChannelFollowV2&gt;),
     <span class="doccomment">/// Channel Subscribe V1 Event
     </span>ChannelSubscribeV1(Payload&lt;channel::ChannelSubscribeV1&gt;),
     <span class="doccomment">/// Channel Cheer V1 Event
@@ -925,11 +953,9 @@ fn main() {
     <span class="doccomment">/// Channel Prediction End V1 Event
     </span>ChannelPredictionEndV1(Payload&lt;channel::ChannelPredictionEndV1&gt;),
     <span class="doccomment">/// Channel Shoutout Create V1 Event
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    </span>ChannelShoutoutCreateBeta(Payload&lt;channel::ChannelShoutoutCreateBeta&gt;),
+    </span>ChannelShoutoutCreateV1(Payload&lt;channel::ChannelShoutoutCreateV1&gt;),
     <span class="doccomment">/// Channel Shoutout Receive V1 Event
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-    </span>ChannelShoutoutReceiveBeta(Payload&lt;channel::ChannelShoutoutReceiveBeta&gt;),
+    </span>ChannelShoutoutReceiveV1(Payload&lt;channel::ChannelShoutoutReceiveV1&gt;),
     <span class="doccomment">/// Channel Goal Begin V1 Event
     </span>ChannelGoalBeginV1(Payload&lt;channel::ChannelGoalBeginV1&gt;),
     <span class="doccomment">/// Channel Goal Progress V1 Event
@@ -1329,4 +1355,4 @@ fn main() {
     }
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (585f3eef2 2023-02-11)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (900c35403 2023-03-08)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>

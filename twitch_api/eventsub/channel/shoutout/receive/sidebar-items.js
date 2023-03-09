@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["ChannelShoutoutReceiveBeta","ChannelShoutoutReceiveBetaPayload"]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelShoutoutReceiveV1","ChannelShoutoutReceiveV1Payload"]};
