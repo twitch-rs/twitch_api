@@ -1,8 +1,8 @@
-#![doc(alias = "channel.hype_train.end")]
+#![doc(alias = "channel.prediction.end")]
 //! A Prediction ends on the specified channel.
 
 use super::*;
-/// [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionend-beta): a Prediction ends on the specified channel.
+/// [`channel.prediction.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionend): a Prediction ends on the specified channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -31,7 +31,7 @@ impl EventSubscription for ChannelPredictionEndV1 {
     const VERSION: &'static str = "1";
 }
 
-/// [`channel.hype_train.end`](ChannelPredictionEndV1) response payload.
+/// [`channel.prediction.end`](ChannelPredictionEndV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]

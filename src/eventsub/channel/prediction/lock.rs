@@ -1,8 +1,8 @@
-#![doc(alias = "channel.hype_train.lock")]
+#![doc(alias = "channel.prediction.lock")]
 //! A user responds to a prediction on the specified channel
 
 use super::*;
-/// [`channel.hype_train.lock`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionlock-beta): an user responds to a prediction on the specified channel
+/// [`channel.prediction.lock`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionlock): an user responds to a prediction on the specified channel
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -31,7 +31,7 @@ impl EventSubscription for ChannelPredictionLockV1 {
     const VERSION: &'static str = "1";
 }
 
-/// [`channel.hype_train.lock`](ChannelPredictionLockV1) response payload.
+/// [`channel.prediction.lock`](ChannelPredictionLockV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
