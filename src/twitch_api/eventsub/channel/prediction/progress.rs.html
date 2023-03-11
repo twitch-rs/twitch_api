@@ -130,11 +130,11 @@
 <a href="#130" id="130">130</a>
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
-</pre><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;channel.hype_train.progress&quot;</span>)]
+</pre><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;channel.prediction.progress&quot;</span>)]
 </span><span class="doccomment">//! A user responds to a prediction on the specified channel
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
-<span class="doccomment">/// [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionprogress-beta): an user responds to a prediction on the specified channel
+<span class="doccomment">/// [`channel.prediction.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelpredictionprogress): an user responds to a prediction on the specified channel
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
@@ -163,7 +163,7 @@
     <span class="kw">const </span>VERSION: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;1&quot;</span>;
 }
 
-<span class="doccomment">/// [`channel.hype_train.progress`](ChannelPredictionProgressV1) response payload.
+<span class="doccomment">/// [`channel.prediction.progress`](ChannelPredictionProgressV1) response payload.
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
