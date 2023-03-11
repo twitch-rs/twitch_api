@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (ff4b772f8 2023-03-10)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../twitch_api/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -676,6 +676,16 @@
 <a href="#676" id="676">676</a>
 <a href="#677" id="677">677</a>
 <a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
 </pre><pre class="rust"><code><span class="doccomment">//! EventSub events and their types
 </span><span class="attr">#![allow(deprecated)]
 #[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
@@ -713,9 +723,11 @@
             channel::ChannelPredictionProgressV1;
             channel::ChannelPredictionLockV1;
             channel::ChannelPredictionEndV1;
+            channel::ChannelRaidV1;
+            channel::ChannelShieldModeBeginV1;
+            channel::ChannelShieldModeEndV1;
             channel::ChannelShoutoutCreateV1;
             channel::ChannelShoutoutReceiveV1;
-            channel::ChannelRaidV1;
             channel::ChannelSubscriptionEndV1;
             channel::ChannelSubscriptionGiftV1;
             channel::ChannelSubscriptionMessageV1;
@@ -860,6 +872,10 @@
     ChannelSubscriptionGift =&gt; <span class="string">&quot;channel.subscription.gift&quot;</span>,
     <span class="string">&quot;a user sends a resubscription chat message in a specific channel&quot;</span>:
     ChannelSubscriptionMessage =&gt; <span class="string">&quot;channel.subscription.message&quot;</span>,
+    <span class="string">&quot;a channel activates shield mode&quot;</span>:
+    ChannelShieldModeBegin =&gt; <span class="string">&quot;channel.shield_mode.begin&quot;</span>,
+    <span class="string">&quot;a channel deactivates shield mode&quot;</span>:
+    ChannelShieldModeEnd =&gt; <span class="string">&quot;channel.shield_mode.end&quot;</span>,
     <span class="string">&quot;a goal begins on the specified channel.&quot;</span>:
     ChannelGoalBegin =&gt; <span class="string">&quot;channel.goal.begin&quot;</span>,
     <span class="string">&quot;a goal makes progress on the specified channel.&quot;</span>:
@@ -952,6 +968,12 @@ fn main() {
     </span>ChannelPredictionLockV1(Payload&lt;channel::ChannelPredictionLockV1&gt;),
     <span class="doccomment">/// Channel Prediction End V1 Event
     </span>ChannelPredictionEndV1(Payload&lt;channel::ChannelPredictionEndV1&gt;),
+    <span class="doccomment">/// Channel Raid V1 Event
+    </span>ChannelRaidV1(Payload&lt;channel::ChannelRaidV1&gt;),
+    <span class="doccomment">/// Channel ShieldMode Begin V1 Event
+    </span>ChannelShieldModeBeginV1(Payload&lt;channel::ChannelShieldModeBeginV1&gt;),
+    <span class="doccomment">/// Channel ShieldMode End V1 Event
+    </span>ChannelShieldModeEndV1(Payload&lt;channel::ChannelShieldModeEndV1&gt;),
     <span class="doccomment">/// Channel Shoutout Create V1 Event
     </span>ChannelShoutoutCreateV1(Payload&lt;channel::ChannelShoutoutCreateV1&gt;),
     <span class="doccomment">/// Channel Shoutout Receive V1 Event
@@ -978,8 +1000,6 @@ fn main() {
     </span>UserAuthorizationGrantV1(Payload&lt;user::UserAuthorizationGrantV1&gt;),
     <span class="doccomment">/// User Authorization Revoke V1 Event
     </span>UserAuthorizationRevokeV1(Payload&lt;user::UserAuthorizationRevokeV1&gt;),
-    <span class="doccomment">/// Channel Raid V1 Event
-    </span>ChannelRaidV1(Payload&lt;channel::ChannelRaidV1&gt;),
     <span class="doccomment">/// Channel Subscription End V1 Event
     </span>ChannelSubscriptionEndV1(Payload&lt;channel::ChannelSubscriptionEndV1&gt;),
     <span class="doccomment">/// Channel Subscription Gift V1 Event
@@ -1355,4 +1375,4 @@ fn main() {
     }
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (900c35403 2023-03-08)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</section></main></body></html>

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["begin","end"],"struct":["ChannelShieldModeBeginV1","ChannelShieldModeBeginV1Payload","ChannelShieldModeEndV1","ChannelShieldModeEndV1Payload"]};
