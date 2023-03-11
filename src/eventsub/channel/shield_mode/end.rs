@@ -54,7 +54,7 @@ pub struct ChannelShieldModeEndV1Payload {
     /// The moderator’s display name.
     pub moderator_user_name: types::DisplayName,
     /// The UTC timestamp (in RFC3339 format) of when the moderator deactivated Shield Mode.
-    pub ended_at: types::UserId,
+    pub ended_at: types::Timestamp,
 }
 
 #[cfg(test)]
