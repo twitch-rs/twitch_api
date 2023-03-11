@@ -1,4 +1,4 @@
-#![doc(alias = "channel.hype_train.gift")]
+#![doc(alias = "channel.subscription.gift")]
 //! A user gives one or more gifted subscriptions in a channel.
 
 use super::*;

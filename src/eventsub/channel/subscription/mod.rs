@@ -1,4 +1,4 @@
-#![doc(alias = "channel.poll")]
+#![doc(alias = "channel.subscription")]
 //! Subscription on a specified channel has changed
 use super::{EventSubscription, EventType};
 use crate::types;

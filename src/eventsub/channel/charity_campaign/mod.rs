@@ -1,4 +1,4 @@
-#![doc(alias = "channel.poll")]
+#![doc(alias = "channel.charity_campaign")]
 //! Poll on a specific channel has been begun, ended or progressed.
 use super::{EventSubscription, EventType};
 use crate::types;

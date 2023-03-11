@@ -1,8 +1,8 @@
-#![doc(alias = "channel.hype_train.progress")]
+#![doc(alias = "channel.prediction.progress")]
 //! A user responds to a prediction on the specified channel
 
 use super::*;
-/// [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionprogress-beta): an user responds to a prediction on the specified channel
+/// [`channel.prediction.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelpredictionprogress): an user responds to a prediction on the specified channel
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -31,7 +31,7 @@ impl EventSubscription for ChannelPredictionProgressV1 {
     const VERSION: &'static str = "1";
 }
 
-/// [`channel.hype_train.progress`](ChannelPredictionProgressV1) response payload.
+/// [`channel.prediction.progress`](ChannelPredictionProgressV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]

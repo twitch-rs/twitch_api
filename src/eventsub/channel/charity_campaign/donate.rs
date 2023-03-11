@@ -40,10 +40,13 @@ pub struct ChannelCharityCampaignDonateV1Payload {
     /// An ID that identifies the charity campaign.
     pub campaign_id: types::CharityCampaignId,
     /// An ID that identifies the broadcaster that’s running the campaign.
+    #[serde(alias = "broadcaster_user_id")]
     pub broadcaster_id: types::UserId,
     /// An ID that identifies the charity campaign.
+    #[serde(alias = "broadcaster_user_login")]
     pub broadcaster_login: types::UserName,
     /// An ID that identifies the broadcaster that’s running the campaign.
+    #[serde(alias = "broadcaster_user_name")]
     pub broadcaster_name: types::DisplayName,
     /// An ID that identifies the user that donated to the campaign.
     pub user_id: types::UserId,
@@ -61,6 +64,52 @@ pub struct ChannelCharityCampaignDonateV1Payload {
     pub charity_website: String,
     /// An object that contains the amount of money that the user donated.
     pub amount: crate::extra::DonationAmount,
+}
+
+#[cfg(test)]
+#[test]
+fn parse_payload_correct_maybe() {
+    let payload = r##"
+    {
+      "subscription": {
+        "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+        "type": "channel.charity_campaign.donate",
+        "version": "1",
+        "status": "enabled",
+        "cost": 0,
+        "condition": {
+          "broadcaster_user_id": "123456"
+        },
+        "transport": {
+          "method": "webhook",
+          "callback": "https://example.com/webhooks/callback"
+        },
+        "created_at": "2022-07-25T10:11:12.123Z"
+      },
+      "event": {
+        "id": "a1b2c3-aabb-4455-d1e2f3",
+        "campaign_id": "123-abc-456-def",
+        "broadcaster_user_id": "123456",
+        "broadcaster_user_name": "SunnySideUp",
+        "broadcaster_user_login": "sunnysideup",
+        "user_id": "654321",
+        "user_login": "generoususer1",
+        "user_name": "GenerousUser1",
+        "charity_name": "Example name",
+        "charity_description": "Example description",
+        "charity_logo": "https://abc.cloudfront.net/ppgf/1000/100.png",
+        "charity_website": "https://www.example.com",
+        "amount": {
+          "value": 10000,
+          "decimal_places": 2,
+          "currency": "USD"
+        }
+      }
+    }
+    "##;
+
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+    crate::tests::roundtrip(&val)
 }
 
 #[cfg(test)]
