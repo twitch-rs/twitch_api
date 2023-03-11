@@ -3,7 +3,9 @@
     "rust-analyzer.checkOnSave.enable": true,
     "rust-analyzer.checkOnSave.command": "clippy",
     "rust-analyzer.diagnostics.disabled": [
-        "type-mismatch"
+        "type-mismatch",
+        // https://github.com/rust-lang/rust-analyzer/issues/14259
+        "unresolved-method"
     ],
     "rust-analyzer.procMacro.ignored": {
         "tracing-attributes": ["instrument"],

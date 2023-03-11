@@ -57,10 +57,12 @@
 - Added `sort` and `id` to `Get Custom Reward Redemption`
 - Added contribution type `OTHER` for Get Hype Train Events
 - Added `Send a Shoutout` endpoint
-- Added `channel.shoutout.receive` and `channel.shoutout.create` eventsub events
-- Added `channel.follows` v2 eventsub event
+- Added `channel.shoutout.receive` and `channel.shoutout.create` EventSub events
+- Added `channel.follows` v2 EventSub event
 - Added `Get Followed Channels` and `Get Followed Streams`
 - Added `Create Clip` endpoint
+- Added `Get Shield Mode Status` and `Update Shield Mode Status`
+- Added  `channel.shield_mode.begin` and `channel.shield_mode.end` EventSub events
 
 ### Fixed
 

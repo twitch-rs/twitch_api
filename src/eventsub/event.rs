@@ -35,9 +35,11 @@ macro_rules! fill_events {
             channel::ChannelPredictionProgressV1;
             channel::ChannelPredictionLockV1;
             channel::ChannelPredictionEndV1;
+            channel::ChannelRaidV1;
+            channel::ChannelShieldModeBeginV1;
+            channel::ChannelShieldModeEndV1;
             channel::ChannelShoutoutCreateV1;
             channel::ChannelShoutoutReceiveV1;
-            channel::ChannelRaidV1;
             channel::ChannelSubscriptionEndV1;
             channel::ChannelSubscriptionGiftV1;
             channel::ChannelSubscriptionMessageV1;
@@ -182,6 +184,10 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelSubscriptionGift => "channel.subscription.gift",
     "a user sends a resubscription chat message in a specific channel":
     ChannelSubscriptionMessage => "channel.subscription.message",
+    "a channel activates shield mode":
+    ChannelShieldModeBegin => "channel.shield_mode.begin",
+    "a channel deactivates shield mode":
+    ChannelShieldModeEnd => "channel.shield_mode.end",
     "a goal begins on the specified channel.":
     ChannelGoalBegin => "channel.goal.begin",
     "a goal makes progress on the specified channel.":
@@ -274,6 +280,12 @@ pub enum Event {
     ChannelPredictionLockV1(Payload<channel::ChannelPredictionLockV1>),
     /// Channel Prediction End V1 Event
     ChannelPredictionEndV1(Payload<channel::ChannelPredictionEndV1>),
+    /// Channel Raid V1 Event
+    ChannelRaidV1(Payload<channel::ChannelRaidV1>),
+    /// Channel ShieldMode Begin V1 Event
+    ChannelShieldModeBeginV1(Payload<channel::ChannelShieldModeBeginV1>),
+    /// Channel ShieldMode End V1 Event
+    ChannelShieldModeEndV1(Payload<channel::ChannelShieldModeEndV1>),
     /// Channel Shoutout Create V1 Event
     ChannelShoutoutCreateV1(Payload<channel::ChannelShoutoutCreateV1>),
     /// Channel Shoutout Receive V1 Event
@@ -300,8 +312,6 @@ pub enum Event {
     UserAuthorizationGrantV1(Payload<user::UserAuthorizationGrantV1>),
     /// User Authorization Revoke V1 Event
     UserAuthorizationRevokeV1(Payload<user::UserAuthorizationRevokeV1>),
-    /// Channel Raid V1 Event
-    ChannelRaidV1(Payload<channel::ChannelRaidV1>),
     /// Channel Subscription End V1 Event
     ChannelSubscriptionEndV1(Payload<channel::ChannelSubscriptionEndV1>),
     /// Channel Subscription Gift V1 Event

@@ -16,10 +16,12 @@ pub mod delete_chat_messages;
 pub mod get_banned_users;
 pub mod get_blocked_terms;
 pub mod get_moderators;
+pub mod get_shield_mode_status;
 pub mod manage_held_automod_messages;
 pub mod remove_blocked_term;
 pub mod remove_channel_moderator;
 pub mod unban_user;
+pub mod update_shield_mode_status;
 
 #[doc(inline)]
 pub use add_blocked_term::{AddBlockedTermBody, AddBlockedTermRequest};
@@ -37,6 +39,8 @@ pub use delete_chat_messages::{DeleteChatMessagesRequest, DeleteChatMessagesResp
 pub use get_banned_users::{BannedUser, GetBannedUsersRequest};
 #[doc(inline)]
 pub use get_moderators::{GetModeratorsRequest, Moderator};
+#[doc(inline)]
+pub use get_shield_mode_status::{GetShieldModeStatusRequest, LastShieldMode, ShieldModeStatus};
 #[doc(inline)]
 pub use manage_held_automod_messages::{
     AutoModAction, ManageHeldAutoModMessages, ManageHeldAutoModMessagesBody,
