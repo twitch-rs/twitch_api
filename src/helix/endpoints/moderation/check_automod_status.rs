@@ -116,11 +116,11 @@ impl<'a> CheckAutoModStatusBody<'a> {
     }
 }
 
-impl<'a> helix::HelixRequestBody for [CheckAutoModStatusBody<'a>] {
+impl<'a> helix::HelixRequestBody for &'a [&'a CheckAutoModStatusBody<'a>] {
     fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
-            data: &'a [CheckAutoModStatusBody<'a>],
+            data: &'a [&'a CheckAutoModStatusBody<'a>],
         }
 
         serde_json::to_vec(&InnerBody { data: self })
@@ -153,8 +153,6 @@ impl Request for CheckAutoModStatusRequest<'_> {
 impl<'a> RequestPost for CheckAutoModStatusRequest<'a> {
     type Body = &'a [&'a CheckAutoModStatusBody<'a>];
 }
-
-impl<'a> helix::private::SealedSerialize for &'a [&'a CheckAutoModStatusBody<'a>] {}
 
 #[cfg(test)]
 #[test]
