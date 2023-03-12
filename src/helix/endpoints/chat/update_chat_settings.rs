@@ -234,16 +234,20 @@ impl RequestPatch for UpdateChatSettingsRequest<'_> {
 
 #[cfg(test)]
 #[test]
+#[allow(clippy::field_reassign_with_default)]
 fn test_request() {
     use helix::*;
     let req = UpdateChatSettingsRequest::new("1234", "5678");
 
-    let body = UpdateChatSettingsBody {
-        slow_mode: Some(true),
-        slow_mode_wait_time: Some(10),
-        ..Default::default()
-    };
+    let mut body = UpdateChatSettingsBody::default();
+    // FIXME: Setters
+    body.slow_mode = Some(true);
+    body.slow_mode_wait_time = Some(10);
 
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"slow_mode":true,"slow_mode_wait_time":10}"#
+    );
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs

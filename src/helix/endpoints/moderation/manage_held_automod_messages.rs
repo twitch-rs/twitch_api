@@ -196,6 +196,11 @@ fn test_request() {
 
     let body = ManageHeldAutoModMessagesBody::new("9327994", "836013710", true);
 
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"user_id":"9327994","msg_id":"836013710","action":"ALLOW"}"#
+    );
+
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs

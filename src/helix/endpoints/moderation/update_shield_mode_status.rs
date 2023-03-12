@@ -166,6 +166,11 @@ fn test_request() {
     let req = UpdateShieldModeStatus::new("12345", "98765");
     let body = UpdateShieldModeStatusBody::is_active(false);
 
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"is_active":false}"#
+    );
+
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs

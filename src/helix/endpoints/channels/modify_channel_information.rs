@@ -86,16 +86,16 @@ pub struct ModifyChannelInformationBody<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub game_id: Option<Cow<'a, types::CategoryIdRef>>,
-    /// Language of the channel
-    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
-    pub broadcaster_language: Option<Cow<'a, str>>,
     /// Title of the stream. Value must not be an empty string.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Option<Cow<'a, str>>,
+    /// Language of the channel
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    pub broadcaster_language: Option<Cow<'a, str>>,
     /// The number of seconds you want your broadcast buffered before streaming it live.
     ///
     /// The delay helps ensure fairness during competitive play.
@@ -218,22 +218,30 @@ impl<'a> RequestPatch for ModifyChannelInformationRequest<'a> {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = ModifyChannelInformationRequest::broadcaster_id("0");
+    let req = ModifyChannelInformationRequest::broadcaster_id("41245072");
 
     let mut body = ModifyChannelInformationBody::new();
-    body.title("Hello World!");
+    body.game_id("33214");
+    body.title("there are helicopters in the game? REASON TO PLAY FORTNITE found");
+    body.broadcaster_language("en");
+    body.tags(&["LevelingUp"]);
+
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"game_id":"33214","title":"there are helicopters in the game? REASON TO PLAY FORTNITE found","broadcaster_language":"en","tags":["LevelingUp"]}"#
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs
-    let data = br#""#.to_vec();
+    let data = vec![];
 
-    let http_response = http::Response::builder().status(200).body(data).unwrap();
+    let http_response = http::Response::builder().status(204).body(data).unwrap();
 
     let uri = req.get_uri().unwrap();
     assert_eq!(
         uri.to_string(),
-        "https://api.twitch.tv/helix/channels?broadcaster_id=0"
+        "https://api.twitch.tv/helix/channels?broadcaster_id=41245072"
     );
 
     dbg!(ModifyChannelInformationRequest::parse_response(Some(req), &uri, http_response).unwrap());

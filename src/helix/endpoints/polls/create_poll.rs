@@ -98,8 +98,6 @@ pub struct CreatePollBody<'a> {
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub title: Cow<'a, str>,
-    /// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.
-    pub duration: i64,
     /// Array of the poll choices. Minimum: 2 choices. Maximum: 5 choices.
     #[cfg_attr(
         feature = "typed-builder",
@@ -107,6 +105,12 @@ pub struct CreatePollBody<'a> {
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub choices: Cow<'a, [NewPollChoice<'a>]>,
+    /// Indicates if Channel Points can be used for voting. Default: false
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    pub channel_points_voting_enabled: Option<bool>,
+    /// Number of Channel Points required to vote once with Channel Points. Minimum: 0. Maximum: 1000000.
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    pub channel_points_per_vote: Option<i64>,
     /// Indicates if Bits can be used for voting. Default: false
     #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -117,12 +121,8 @@ pub struct CreatePollBody<'a> {
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub bits_per_vote: Option<i64>,
-    /// Indicates if Channel Points can be used for voting. Default: false
-    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub channel_points_voting_enabled: Option<bool>,
-    /// Number of Channel Points required to vote once with Channel Points. Minimum: 0. Maximum: 1000000.
-    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub channel_points_per_vote: Option<i64>,
+    /// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.
+    pub duration: i64,
 }
 
 impl<'a> CreatePollBody<'a> {
@@ -241,6 +241,11 @@ fn test_request() {
     let body = CreatePollBody::new("141981764", "Heads or Tails?", 1800, choices)
         .channel_points_per_vote(100)
         .channel_points_voting_enabled(true);
+
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"broadcaster_id":"141981764","title":"Heads or Tails?","choices":[{"title":"Heads"},{"title":"Tails"}],"channel_points_voting_enabled":true,"channel_points_per_vote":100,"duration":1800}"#
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

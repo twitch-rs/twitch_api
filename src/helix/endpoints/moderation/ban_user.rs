@@ -88,6 +88,10 @@ impl<'a> BanUserRequest<'a> {
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 pub struct BanUserBody<'a> {
+    /// The ID of the user to ban or put in a timeout.
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    pub user_id: Cow<'a, types::UserIdRef>,
     /// Duration of the (optional) timeout in seconds.
     ///
     /// To ban a user indefinitely, don’t include this field.
@@ -102,10 +106,6 @@ pub struct BanUserBody<'a> {
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub reason: Cow<'a, str>,
-    /// The ID of the user to ban or put in a timeout.
-    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
-    pub user_id: Cow<'a, types::UserIdRef>,
 }
 
 impl<'a> BanUserBody<'a> {
@@ -116,9 +116,9 @@ impl<'a> BanUserBody<'a> {
         duration: impl Into<Option<u32>>,
     ) -> Self {
         Self {
-            duration: duration.into(),
-            reason: reason.into(),
             user_id: user_id.into_cow(),
+            reason: reason.into(),
+            duration: duration.into(),
         }
     }
 }
@@ -211,6 +211,11 @@ fn test_request() {
     let req = BanUserRequest::new("1234", "5678");
 
     let body = BanUserBody::new("9876", "no reason", 300);
+
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"data":{"user_id":"9876","duration":300,"reason":"no reason"}}"#
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

@@ -201,9 +201,14 @@ fn test_request() {
     let req = EndPollRequest::new();
 
     let body = EndPollBody::new(
-        "274637212",
-        "92af127c-7326-4483-a52b-b0da0be61c01",
+        "141981764",
+        "ed961efd-8a3f-4cf5-a9d0-e616c590cd2a",
         PollStatus::Terminated,
+    );
+
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"broadcaster_id":"141981764","id":"ed961efd-8a3f-4cf5-a9d0-e616c590cd2a","status":"TERMINATED"}"#
     );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());

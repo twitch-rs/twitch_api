@@ -178,6 +178,11 @@ fn test_request() {
         ..CreateChannelStreamScheduleSegmentBody::new(&*ts, "America/New_York", false)
     };
 
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"start_time":"2021-07-01T18:00:00Z","timezone":"America/New_York","is_recurring":false,"duration":"60","category_id":"509670","title":"TwitchDev Monthly Update // July 1, 2021"}"#
+    );
+
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs
