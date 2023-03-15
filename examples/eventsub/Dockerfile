@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=$CARGO_HOME/git \
     --mount=type=cache,target=$CARGO_HOME/registry \
     --mount=type=cache,sharing=private,target=/app/target \
     cargo -V; cargo build --release -p eventsub && mv /app/target/release/eventsub /app/is_live
-FROM alpine:3.16 as runtime
+FROM alpine:3.17 as runtime
 WORKDIR /app
 ARG RUN_DEPS="ca-certificates openssl libgcc"
 RUN apk add --no-cache \
