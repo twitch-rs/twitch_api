@@ -363,7 +363,7 @@ mod tests {
                 "id": "AQoQexAWVYKSTIu4ec_2VAxyuhAB",
                 "status": "reconnecting",
                 "keepalive_timeout_seconds": null,
-                "reconnect_url": "wss://eventsub-beta.wss.twitch.tv?...",
+                "reconnect_url": "wss://eventsub.wss.twitch.tv?...",
                 "connected_at": "2019-11-16T10:11:12.123Z"
               }
             }
