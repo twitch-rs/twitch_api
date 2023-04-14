@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["BroadcasterType","UserType"],"struct":["User"]};
+window.SIDEBAR_ITEMS = {"struct":["User"]};
