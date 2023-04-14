@@ -183,7 +183,7 @@ pub static TWITCH_PUBSUB_URL: once_cell::sync::Lazy<url::Url> =
 #[cfg(feature = "eventsub")]
 pub static TWITCH_EVENTSUB_WEBSOCKET_URL: once_cell::sync::Lazy<url::Url> = mock_env_url!(
     "TWITCH_EVENTSUB_WEBSOCKET_URL",
-    "wss://eventsub-beta.wss.twitch.tv/ws"
+    "wss://eventsub.wss.twitch.tv/ws"
 );
 
 /// Client for Twitch APIs.
