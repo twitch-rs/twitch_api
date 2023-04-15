@@ -9,7 +9,7 @@ on:
 jobs:
   ci:
     name: CI
-    needs: [test, fmt, clippy, docs, release]
+    needs: [test, rustfmt, prettier, clippy, docs, release]
     runs-on: ubuntu-latest
     steps:
       - name: Done
@@ -17,7 +17,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    needs: [test, fmt, clippy, docs]
+    needs: [test, rustfmt, clippy, docs]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -48,7 +48,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: Test twitch_api
         run: cargo test --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}" --workspace
-  fmt:
+  rustfmt:
     name: Rustfmt
     runs-on: ubuntu-latest
     steps:
@@ -61,6 +61,16 @@ jobs:
           components: rustfmt
       - name: Run fmt -- --check
         run: cargo fmt -- --check
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check formatting with Prettier
+        # Explicit commit, because this isn't tagged yet.
+        uses: actionsx/prettier@e90ec5455552f0f640781bdd5f5d2415acb52f1a
+        with:
+          args: -c .
 
   clippy:
     name: Clippy
