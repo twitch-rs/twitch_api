@@ -159,18 +159,17 @@ impl<'a> RequestPost for CheckAutoModStatusRequest<'a> {
 fn test_request() {
     use helix::*;
     let req = CheckAutoModStatusRequest::broadcaster_id("198704263");
+    let body = &[
+        &CheckAutoModStatusBody::new("123", "Hello World!"),
+        &CheckAutoModStatusBody::new("393", "Boooooo!"),
+    ];
 
-    dbg!(req
-        .create_request(
-            &[
-                &CheckAutoModStatusBody::new("123", "hello world"),
-                &CheckAutoModStatusBody::new("393", "automoded word"),
-            ],
-            "token",
-            "clientid"
-        )
-        .unwrap());
+    assert_eq!(
+        std::str::from_utf8(&body.as_slice().try_to_body().unwrap()).unwrap(),
+        r#"{"data":[{"msg_id":"123","msg_text":"Hello World!"},{"msg_id":"393","msg_text":"Boooooo!"}]}"#
+    );
 
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
     // From twitch docs
     let data = br#"
 {

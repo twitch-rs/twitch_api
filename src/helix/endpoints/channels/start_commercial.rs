@@ -130,7 +130,12 @@ fn test_request() {
     use helix::*;
     let req = StartCommercialRequest::default();
 
-    let body = StartCommercialBody::new("1234", types::CommercialLength::Length120);
+    let body = StartCommercialBody::new("41245072", types::CommercialLength::Length60);
+
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"broadcaster_id":"41245072","length":60}"#
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

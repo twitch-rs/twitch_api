@@ -218,8 +218,14 @@ fn test_request() {
 
     let body = EndPredictionBody::new(
         "141981764",
-        "ed961efd-8a3f-4cf5-a9d0-e616c590cd2a",
+        "bc637af0-7766-4525-9308-4112f4cbf178",
         types::PredictionStatus::Resolved,
+    )
+    .winning_outcome_id("73085848-a94d-4040-9d21-2cb7a89374b7");
+
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"broadcaster_id":"141981764","id":"bc637af0-7766-4525-9308-4112f4cbf178","status":"RESOLVED","winning_outcome_id":"73085848-a94d-4040-9d21-2cb7a89374b7"}"#
     );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());

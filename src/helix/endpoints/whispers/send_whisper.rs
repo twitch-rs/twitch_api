@@ -167,6 +167,11 @@ fn test_request() {
 
     let body = SendWhisperBody::new("hello");
 
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"message":"hello"}"#
+    );
+
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs

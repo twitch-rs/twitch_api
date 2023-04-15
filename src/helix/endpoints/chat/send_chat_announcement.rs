@@ -196,7 +196,12 @@ fn test_request() {
     use helix::*;
     let req = SendChatAnnouncementRequest::new("1234", "5678");
 
-    let body = SendChatAnnouncementBody::new("hello chat!", "purple").unwrap();
+    let body = SendChatAnnouncementBody::new("Hello chat!", "purple").unwrap();
+
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"message":"Hello chat!","color":"purple"}"#
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

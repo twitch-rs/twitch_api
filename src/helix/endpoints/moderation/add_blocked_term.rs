@@ -140,7 +140,12 @@ fn test_request() {
     use helix::*;
     let req = AddBlockedTermRequest::new("1234", "5678");
 
-    let body = AddBlockedTermBody::new("A phrase I'm not fond of");
+    let body = AddBlockedTermBody::new("A phrase I’m not fond of");
+
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"text":"A phrase I’m not fond of"}"#
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

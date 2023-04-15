@@ -197,9 +197,15 @@ fn test_request() {
         CreateEventSubSubscriptionRequest::default();
 
     let sub = UserUpdateV1::new("1234");
-    let transport = eventsub::Transport::webhook("example.com", "heyhey13".to_string());
+    let transport =
+        eventsub::Transport::webhook("https://this-is-a-callback.com", "s3cre7".to_string());
 
     let body = CreateEventSubSubscriptionBody::new(sub, transport);
+
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"type":"user.update","version":"1","condition":{"user_id":"1234"},"transport":{"method":"webhook","callback":"https://this-is-a-callback.com","secret":"s3cre7"}}"#
+    );
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 

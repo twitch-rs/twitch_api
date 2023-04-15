@@ -207,7 +207,12 @@ fn test_request() {
         "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
     );
 
-    let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Unfulfilled);
+    let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
+
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"status":"CANCELED"}"#
+    );
 
     dbg!(req.create_request(body, "abcd", "client").unwrap());
     // From twitch docs

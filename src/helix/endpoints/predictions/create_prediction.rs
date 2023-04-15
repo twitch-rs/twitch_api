@@ -211,6 +211,11 @@ fn test_request() {
     ];
     let body = CreatePredictionBody::new("141981764", "Any leeks in the stream?", outcomes, 120);
 
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"broadcaster_id":"141981764","title":"Any leeks in the stream?","outcomes":[{"title":"Yes, give it time."},{"title":"Definitely not."}],"prediction_window":120}"#
+    );
+
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs

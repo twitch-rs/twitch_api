@@ -219,6 +219,11 @@ fn test_request() {
 
     let body = CreateCustomRewardBody::new("game analysis 1v1", 50000);
 
+    assert_eq!(
+        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
+        r#"{"title":"game analysis 1v1","cost":50000}"#
+    );
+
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
     // From twitch docs
