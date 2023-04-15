@@ -1,15 +1,15 @@
 {
-    "rust-analyzer.cargo.features": "all",
-    "rust-analyzer.checkOnSave.enable": true,
-    "rust-analyzer.checkOnSave.command": "clippy",
-    "rust-analyzer.diagnostics.disabled": [
-        "type-mismatch",
-        // https://github.com/rust-lang/rust-analyzer/issues/14259
-        "unresolved-method"
-    ],
-    "rust-analyzer.procMacro.ignored": {
-        "tracing-attributes": ["instrument"],
-        "tracing": ["info", "debug", "error", "warn", "span", "instrument"]
-    },
-    "rust-analyzer.procMacro.attributes.enable": true, // Broken on dyn -> impl, https://github.com/rust-analyzer/rust-analyzer/issues/11815
+  "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.checkOnSave.enable": true,
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "rust-analyzer.diagnostics.disabled": [
+    "type-mismatch",
+    // https://github.com/rust-lang/rust-analyzer/issues/14259
+    "unresolved-method"
+  ],
+  "rust-analyzer.procMacro.ignored": {
+    "tracing-attributes": ["instrument"],
+    "tracing": ["info", "debug", "error", "warn", "span", "instrument"]
+  },
+  "rust-analyzer.procMacro.attributes.enable": true // Broken on dyn -> impl, https://github.com/rust-analyzer/rust-analyzer/issues/11815
 }

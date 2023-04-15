@@ -13,14 +13,9 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Is {{ broadcaster_display }} Live" />
     <meta property="og:url" content="{{ website_url }}" />
-    {% match broadcaster_profile_picture %}
-    {% when Some with (picture_url) %}
-    <meta
-      property="og:image"
-      content="{{ picture_url }}"
-    />
-    {% when None %}
-    {% endmatch %}
+    {% match broadcaster_profile_picture %} {% when Some with (picture_url) %}
+    <meta property="og:image" content="{{ picture_url }}" />
+    {% when None %} {% endmatch %}
     <meta property="og:description" content="?" />
     <link rel="stylesheet" href="/static/style.css" />
     <script>
