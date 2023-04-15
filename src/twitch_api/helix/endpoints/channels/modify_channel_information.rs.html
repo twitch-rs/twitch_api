@@ -238,6 +238,14 @@
 <a href="#238" id="238">238</a>
 <a href="#239" id="239">239</a>
 <a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Modify channel information for users.
 //! [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
 //!
@@ -326,16 +334,16 @@
     #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
     #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
     </span><span class="kw">pub </span>game_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::CategoryIdRef&gt;&gt;,
-    <span class="doccomment">/// Language of the channel
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>broadcaster_language: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
     <span class="doccomment">/// Title of the stream. Value must not be an empty string.
     </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
     #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
     #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
     </span><span class="kw">pub </span>title: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
+    <span class="doccomment">/// Language of the channel
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    #[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
+    </span><span class="kw">pub </span>broadcaster_language: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
     <span class="doccomment">/// The number of seconds you want your broadcast buffered before streaming it live.
     ///
     /// The delay helps ensure fairness during competitive play.
@@ -458,22 +466,30 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = ModifyChannelInformationRequest::broadcaster_id(<span class="string">&quot;0&quot;</span>);
+    <span class="kw">let </span>req = ModifyChannelInformationRequest::broadcaster_id(<span class="string">&quot;41245072&quot;</span>);
 
     <span class="kw">let </span><span class="kw-2">mut </span>body = ModifyChannelInformationBody::new();
-    body.title(<span class="string">&quot;Hello World!&quot;</span>);
+    body.game_id(<span class="string">&quot;33214&quot;</span>);
+    body.title(<span class="string">&quot;there are helicopters in the game? REASON TO PLAY FORTNITE found&quot;</span>);
+    body.broadcaster_language(<span class="string">&quot;en&quot;</span>);
+    body.tags(<span class="kw-2">&amp;</span>[<span class="string">&quot;LevelingUp&quot;</span>]);
+
+    <span class="macro">assert_eq!</span>(
+        std::str::from_utf8(<span class="kw-2">&amp;</span>body.try_to_body().unwrap()).unwrap(),
+        <span class="string">r#&quot;{&quot;game_id&quot;:&quot;33214&quot;,&quot;title&quot;:&quot;there are helicopters in the game? REASON TO PLAY FORTNITE found&quot;,&quot;broadcaster_language&quot;:&quot;en&quot;,&quot;tags&quot;:[&quot;LevelingUp&quot;]}&quot;#
+    </span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
     <span class="comment">// From twitch docs
-    </span><span class="kw">let </span>data = <span class="string">br#&quot;&quot;#</span>.to_vec();
+    </span><span class="kw">let </span>data = <span class="macro">vec!</span>[];
 
-    <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">200</span>).body(data).unwrap();
+    <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">204</span>).body(data).unwrap();
 
     <span class="kw">let </span>uri = req.get_uri().unwrap();
     <span class="macro">assert_eq!</span>(
         uri.to_string(),
-        <span class="string">&quot;https://api.twitch.tv/helix/channels?broadcaster_id=0&quot;
+        <span class="string">&quot;https://api.twitch.tv/helix/channels?broadcaster_id=41245072&quot;
     </span>);
 
     <span class="macro">dbg!</span>(ModifyChannelInformationRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());

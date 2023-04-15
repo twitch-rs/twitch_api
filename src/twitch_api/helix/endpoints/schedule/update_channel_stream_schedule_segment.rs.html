@@ -227,6 +227,11 @@
 <a href="#227" id="227">227</a>
 <a href="#228" id="228">228</a>
 <a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Update a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
 //! [`update-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment)
 //!
@@ -414,6 +419,11 @@
         duration: <span class="prelude-val">Some</span>(<span class="string">&quot;120&quot;</span>.into()),
         ..&lt;<span class="kw">_</span>&gt;::default()
     };
+
+    <span class="macro">assert_eq!</span>(
+        std::str::from_utf8(<span class="kw-2">&amp;</span>body.try_to_body().unwrap()).unwrap(),
+        <span class="string">r#&quot;{&quot;duration&quot;:&quot;120&quot;}&quot;#
+    </span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

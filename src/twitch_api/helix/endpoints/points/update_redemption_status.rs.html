@@ -247,6 +247,11 @@
 <a href="#247" id="247">247</a>
 <a href="#248" id="248">248</a>
 <a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Updates the status of Custom Reward Redemption objects on a channel that are in the UNFULFILLED status.
 //!
 //! Only redemptions for a reward created by the same client_id as attached to the access token can be updated.
@@ -456,7 +461,12 @@
         <span class="string">&quot;17fa2df1-ad76-4804-bfa5-a40ef63efe63&quot;</span>,
     );
 
-    <span class="kw">let </span>body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Unfulfilled);
+    <span class="kw">let </span>body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
+
+    <span class="macro">assert_eq!</span>(
+        std::str::from_utf8(<span class="kw-2">&amp;</span>body.try_to_body().unwrap()).unwrap(),
+        <span class="string">r#&quot;{&quot;status&quot;:&quot;CANCELED&quot;}&quot;#
+    </span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;abcd&quot;</span>, <span class="string">&quot;client&quot;</span>).unwrap());
     <span class="comment">// From twitch docs

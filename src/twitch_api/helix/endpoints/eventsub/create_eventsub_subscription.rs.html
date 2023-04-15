@@ -242,6 +242,12 @@
 <a href="#242" id="242">242</a>
 <a href="#243" id="243">243</a>
 <a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Creates an EventSub subscription.
 //!
 //! See also [`HelixClient::create_eventsub_subscription`](crate::helix::HelixClient::create_eventsub_subscription)
@@ -441,9 +447,15 @@
         CreateEventSubSubscriptionRequest::default();
 
     <span class="kw">let </span>sub = UserUpdateV1::new(<span class="string">&quot;1234&quot;</span>);
-    <span class="kw">let </span>transport = eventsub::Transport::webhook(<span class="string">&quot;example.com&quot;</span>, <span class="string">&quot;heyhey13&quot;</span>.to_string());
+    <span class="kw">let </span>transport =
+        eventsub::Transport::webhook(<span class="string">&quot;https://this-is-a-callback.com&quot;</span>, <span class="string">&quot;s3cre7&quot;</span>.to_string());
 
     <span class="kw">let </span>body = CreateEventSubSubscriptionBody::new(sub, transport);
+
+    <span class="macro">assert_eq!</span>(
+        std::str::from_utf8(<span class="kw-2">&amp;</span>body.try_to_body().unwrap()).unwrap(),
+        <span class="string">r#&quot;{&quot;type&quot;:&quot;user.update&quot;,&quot;version&quot;:&quot;1&quot;,&quot;condition&quot;:{&quot;user_id&quot;:&quot;1234&quot;},&quot;transport&quot;:{&quot;method&quot;:&quot;webhook&quot;,&quot;callback&quot;:&quot;https://this-is-a-callback.com&quot;,&quot;secret&quot;:&quot;s3cre7&quot;}}&quot;#
+    </span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 

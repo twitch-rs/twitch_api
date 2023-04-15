@@ -271,6 +271,11 @@
 <a href="#271" id="271">271</a>
 <a href="#272" id="272">272</a>
 <a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Bans a user from participating in a broadcaster’s chat room, or puts them in a timeout.
 //! [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 //!
@@ -361,6 +366,10 @@
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>BanUserBody&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// The ID of the user to ban or put in a timeout.
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
+    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
+    </span><span class="kw">pub </span>user_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
     <span class="doccomment">/// Duration of the (optional) timeout in seconds.
     ///
     /// To ban a user indefinitely, don’t include this field.
@@ -375,10 +384,6 @@
     </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
     </span><span class="kw">pub </span>reason: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
-    <span class="doccomment">/// The ID of the user to ban or put in a timeout.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>user_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; BanUserBody&lt;<span class="lifetime">&#39;a</span>&gt; {
@@ -389,9 +394,9 @@
         duration: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;u32&gt;&gt;,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            duration: duration.into(),
-            reason: reason.into(),
             user_id: user_id.into_cow(),
+            reason: reason.into(),
+            duration: duration.into(),
         }
     }
 }
@@ -484,6 +489,11 @@
     <span class="kw">let </span>req = BanUserRequest::new(<span class="string">&quot;1234&quot;</span>, <span class="string">&quot;5678&quot;</span>);
 
     <span class="kw">let </span>body = BanUserBody::new(<span class="string">&quot;9876&quot;</span>, <span class="string">&quot;no reason&quot;</span>, <span class="number">300</span>);
+
+    <span class="macro">assert_eq!</span>(
+        std::str::from_utf8(<span class="kw-2">&amp;</span>body.try_to_body().unwrap()).unwrap(),
+        <span class="string">r#&quot;{&quot;data&quot;:{&quot;user_id&quot;:&quot;9876&quot;,&quot;duration&quot;:300,&quot;reason&quot;:&quot;no reason&quot;}}&quot;#
+    </span>);
 
     <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
 
