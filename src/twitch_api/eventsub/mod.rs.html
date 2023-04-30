@@ -1060,7 +1060,7 @@
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>event::{Event, EventType};
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+<span class="attr">#[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
 </span><span class="kw">pub use </span>event::websocket::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// An EventSub subscription.
@@ -1442,7 +1442,7 @@
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+#[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
 #[non_exhaustive]
 </span><span class="doccomment">/// Websocket transport
 </span><span class="kw">pub struct </span>WebsocketTransport {
@@ -1460,7 +1460,7 @@
     <span class="doccomment">/// Webhook transport
     </span>Webhook(WebhookTransport),
     <span class="doccomment">/// Websocket transport
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
     </span>Websocket(WebsocketTransport),
 }
 
@@ -1474,7 +1474,7 @@
     }
 
     <span class="doccomment">/// Convenience method for making a websocket transport
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
     </span><span class="kw">pub fn </span>websocket(session_id: <span class="kw">impl </span>std::string::ToString) -&gt; Transport {
         Transport::Websocket(WebsocketTransport {
             session_id: session_id.to_string(),
@@ -1491,7 +1491,7 @@
     ///
     /// [`Websocket`]: Transport::Websocket
     </span><span class="attr">#[must_use]
-    #[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
     </span><span class="kw">pub fn </span>is_websocket(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool { <span class="macro">matches!</span>(<span class="self">self</span>, <span class="self">Self</span>::Websocket(..)) }
 
     <span class="doccomment">/// Returns `Some(&amp;WebhookTransport)` if this transport is a [webhook](WebhookTransport)
@@ -1504,7 +1504,7 @@
     }
 
     <span class="doccomment">/// Returns `Some(&amp;WebsocketTransport)` if this transport is a [websocket](WebsocketTransport)
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
     </span><span class="kw">pub fn </span>as_websocket(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>WebsocketTransport&gt; {
         <span class="kw">if let </span><span class="self">Self</span>::Websocket(v) = <span class="self">self </span>{
             <span class="prelude-val">Some</span>(v)
@@ -1523,7 +1523,7 @@
     }
 
     <span class="doccomment">/// Returns `Some(WebsocketTransport)` if this transport is a [websocket](WebsocketTransport), `Err(())` if not
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
     </span><span class="kw">pub fn </span>try_into_websocket(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;WebsocketTransport&gt; {
         <span class="kw">if let </span><span class="self">Self</span>::Websocket(v) = <span class="self">self </span>{
             <span class="prelude-val">Some</span>(v)
@@ -1535,7 +1535,7 @@
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+#[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
 #[non_exhaustive]
 </span><span class="doccomment">/// Websocket transport
 </span><span class="kw">pub struct </span>WebsocketTransportResponse {
@@ -1574,7 +1574,7 @@
     <span class="doccomment">/// Webhook transport response
     </span>Webhook(WebhookTransportResponse),
     <span class="doccomment">/// Websocket transport response
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
     </span>Websocket(WebsocketTransportResponse),
 }
 
@@ -1589,7 +1589,7 @@
     ///
     /// [`Websocket`]: TransportResponse::Websocket
     </span><span class="attr">#[must_use]
-    #[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
     </span><span class="kw">pub fn </span>is_websocket(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool { <span class="macro">matches!</span>(<span class="self">self</span>, <span class="self">Self</span>::Websocket(..)) }
 
     <span class="doccomment">/// Returns `Some(&amp;WebhookTransport)` if this transport response is a [webhook](WebhookTransportResponse)
@@ -1602,7 +1602,7 @@
     }
 
     <span class="doccomment">/// Returns `Some(&amp;WebsocketTransport)` if this transport response is a [websocket](WebsocketTransportResponse)
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
     </span><span class="kw">pub fn </span>as_websocket(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>WebsocketTransportResponse&gt; {
         <span class="kw">if let </span><span class="self">Self</span>::Websocket(v) = <span class="self">self </span>{
             <span class="prelude-val">Some</span>(v)
@@ -1621,7 +1621,7 @@
     }
 
     <span class="doccomment">/// Returns `Some(WebsocketTransport)` if this transport response is a [websocket](WebsocketTransportResponse)
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
     </span><span class="kw">pub fn </span>try_into_websocket(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;WebsocketTransportResponse, <span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="self">Self</span>::Websocket(v) = <span class="self">self </span>{
             <span class="prelude-val">Ok</span>(v)
@@ -1729,7 +1729,7 @@
 </span><span class="kw">mod </span>test {
 
     <span class="attr">#[test]
-    #[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    #[cfg(any(feature = <span class="string">&quot;unsupported&quot;</span>, feature = <span class="string">&quot;beta&quot;</span>))]
     </span><span class="kw">fn </span>test_websocket_notification() {
         <span class="kw">let </span>frame = <span class="string">r#&quot;
         {

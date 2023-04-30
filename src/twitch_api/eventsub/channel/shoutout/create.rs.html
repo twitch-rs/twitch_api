@@ -150,7 +150,7 @@
     <span class="kw">const </span>EVENT_TYPE: EventType = EventType::ChannelShoutoutCreate;
     <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
     </span><span class="kw">const </span>SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ModeratorReadShoutouts];
-    <span class="kw">const </span>VERSION: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;beta&quot;</span>;
+    <span class="kw">const </span>VERSION: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;1&quot;</span>;
 }
 
 <span class="doccomment">/// [`channel.shoutout.create`](ChannelShoutoutCreateV1) response payload.
@@ -194,7 +194,7 @@
         &quot;subscription&quot;: {
           &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
           &quot;type&quot;: &quot;channel.shoutout.create&quot;,
-          &quot;version&quot;: &quot;beta&quot;,
+          &quot;version&quot;: &quot;1&quot;,
           &quot;status&quot;: &quot;enabled&quot;,
           &quot;cost&quot;: 0,
           &quot;condition&quot;: {
