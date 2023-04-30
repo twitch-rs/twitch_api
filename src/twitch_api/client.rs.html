@@ -356,6 +356,21 @@
 <a href="#356" id="356">356</a>
 <a href="#357" id="357">357</a>
 <a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Different clients you can use with this crate to call endpoints.
 //!
 //! This enables you to use your own http client/implementation.
@@ -441,6 +456,11 @@
 </span><span class="kw">mod </span>reqwest_impl;
 <span class="attr">#[cfg(feature = <span class="string">&quot;reqwest&quot;</span>)]
 </span><span class="kw">pub use </span>reqwest_impl::ReqwestClientDefaultError;
+
+<span class="attr">#[cfg(feature = <span class="string">&quot;tower&quot;</span>)]
+</span><span class="kw">mod </span>tower_impl;
+<span class="attr">#[cfg(feature = <span class="string">&quot;tower&quot;</span>)]
+</span><span class="kw">pub use </span>tower_impl::TowerService;
 
 <span class="doccomment">/// The User-Agent `product` of this crate.
 </span><span class="kw">pub static </span>TWITCH_API_USER_AGENT: <span class="kw-2">&amp;</span>str = <span class="macro">concat!</span>(
@@ -577,6 +597,16 @@
 }
 
 <span class="kw">impl</span>&lt;C&gt; Client <span class="kw">for </span>std::sync::Arc&lt;C&gt;
+<span class="kw">where </span>C: Client
+{
+    <span class="kw">type </span>Error = &lt;C <span class="kw">as </span>Client&gt;::Error;
+
+    <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;_</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
+        <span class="self">self</span>.as_ref().req(req)
+    }
+}
+
+<span class="kw">impl</span>&lt;C: <span class="question-mark">?</span>Sized&gt; Client <span class="kw">for </span>Box&lt;C&gt;
 <span class="kw">where </span>C: Client
 {
     <span class="kw">type </span>Error = &lt;C <span class="kw">as </span>Client&gt;::Error;
