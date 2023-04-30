@@ -3,15 +3,23 @@
 //!
 //! # Accessing the endpoint
 //!
+//! ## Notes
+//!
+//! See also [`HelixClient::get_streams_from_logins`](crate::helix::HelixClient::get_streams_from_logins) and
+//! [`HelixClient::get_streams_from_ids`](crate::helix::HelixClient::get_streams_from_ids)
+//!
+//!
 //! ## Request: [GetStreamsRequest]
 //!
 //! To use this endpoint, construct a [`GetStreamsRequest`] with the [`GetStreamsRequest::user_ids()`], [`GetStreamsRequest::user_logins()`] or [`GetStreamsRequest::game_ids()`] method.
 //!
+//! See also
+//!
 //! ```rust
 //! use twitch_api::helix::streams::get_streams;
-//! let request = get_streams::GetStreamsRequest::builder()
-//!     .user_login(&["justintvfan".into()][..])
-//!     .build();
+//! let request = get_streams::GetStreamsRequest::user_logins(
+//!     &["justintvfan".into()][..],
+//! );
 //! ```
 //!
 //! ## Response: [Stream]
@@ -28,9 +36,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let logins: &[&types::UserNameRef] = &["justintvfan".into()];
-//! let request = get_streams::GetStreamsRequest::builder()
-//!     .user_login(logins)
-//!     .build();
+//! let request = get_streams::GetStreamsRequest::user_logins(logins);
 //! let response: Vec<get_streams::Stream> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
