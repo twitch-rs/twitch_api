@@ -65,6 +65,7 @@
 - Added `Create Clip` endpoint
 - Added `Get Shield Mode Status` and `Update Shield Mode Status`
 - Added `channel.shield_mode.begin` and `channel.shield_mode.end` EventSub events
+- Added `tower` implementation for `HttpClient`
 
 ### Fixed
 

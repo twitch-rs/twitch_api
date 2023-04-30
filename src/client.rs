@@ -84,6 +84,11 @@ mod reqwest_impl;
 #[cfg(feature = "reqwest")]
 pub use reqwest_impl::ReqwestClientDefaultError;
 
+#[cfg(feature = "tower")]
+mod tower_impl;
+#[cfg(feature = "tower")]
+pub use tower_impl::TowerService;
+
 /// The User-Agent `product` of this crate.
 pub static TWITCH_API_USER_AGENT: &str = concat!(
     env!("CARGO_PKG_NAME"),
@@ -219,6 +224,16 @@ impl Client for twitch_oauth2::client::DummyClient {
 }
 
 impl<C> Client for std::sync::Arc<C>
+where C: Client
+{
+    type Error = <C as Client>::Error;
+
+    fn req(&self, req: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
+        self.as_ref().req(req)
+    }
+}
+
+impl<C: ?Sized> Client for Box<C>
 where C: Client
 {
     type Error = <C as Client>::Error;

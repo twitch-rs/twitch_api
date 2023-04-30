@@ -61,15 +61,24 @@ impl<C: crate::HttpClient + crate::client::ClientDefault<'static>> Default
 ///     .unwrap();
 /// # Ok(()) }
 /// ```
-#[derive(Clone)]
-#[cfg(all(feature = "client", feature = "helix"))] // this is needed due to a bug?
-pub struct HelixClient<'a, C>
-where C: crate::HttpClient + 'a {
+#[cfg(feature = "helix")] // this is needed due to a bug?
+pub struct HelixClient<'a, C: 'a> {
     pub(crate) client: C,
     pub(crate) _pd: std::marker::PhantomData<&'a ()>, // TODO: Implement rate limiter...
 }
 
-#[cfg(feature = "client")]
+#[cfg(feature = "helix")]
+impl<'a, C> Clone for HelixClient<'a, C>
+where C: crate::HttpClient + Clone + 'a
+{
+    fn clone(&self) -> Self {
+        Self {
+            client: self.client.clone(),
+            _pd: self._pd,
+        }
+    }
+}
+
 impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
     /// Create a new client with an existing client
     pub fn with_client(client: C) -> HelixClient<'a, C> {
