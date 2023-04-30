@@ -97,7 +97,7 @@ pub mod user;
 #[doc(inline)]
 pub use event::{Event, EventType};
 
-#[cfg(feature = "unsupported")]
+#[cfg(any(feature = "unsupported", feature = "beta"))]
 pub use event::websocket::*;
 
 /// An EventSub subscription.
@@ -479,7 +479,7 @@ impl std::fmt::Debug for WebhookTransport {
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[cfg(feature = "unsupported")]
+#[cfg(any(feature = "unsupported", feature = "beta"))]
 #[non_exhaustive]
 /// Websocket transport
 pub struct WebsocketTransport {
@@ -497,7 +497,7 @@ pub enum Transport {
     /// Webhook transport
     Webhook(WebhookTransport),
     /// Websocket transport
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     Websocket(WebsocketTransport),
 }
 
@@ -511,7 +511,7 @@ impl Transport {
     }
 
     /// Convenience method for making a websocket transport
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     pub fn websocket(session_id: impl std::string::ToString) -> Transport {
         Transport::Websocket(WebsocketTransport {
             session_id: session_id.to_string(),
@@ -528,7 +528,7 @@ impl Transport {
     ///
     /// [`Websocket`]: Transport::Websocket
     #[must_use]
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     pub fn is_websocket(&self) -> bool { matches!(self, Self::Websocket(..)) }
 
     /// Returns `Some(&WebhookTransport)` if this transport is a [webhook](WebhookTransport)
@@ -541,7 +541,7 @@ impl Transport {
     }
 
     /// Returns `Some(&WebsocketTransport)` if this transport is a [websocket](WebsocketTransport)
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     pub fn as_websocket(&self) -> Option<&WebsocketTransport> {
         if let Self::Websocket(v) = self {
             Some(v)
@@ -560,7 +560,7 @@ impl Transport {
     }
 
     /// Returns `Some(WebsocketTransport)` if this transport is a [websocket](WebsocketTransport), `Err(())` if not
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     pub fn try_into_websocket(self) -> Option<WebsocketTransport> {
         if let Self::Websocket(v) = self {
             Some(v)
@@ -572,7 +572,7 @@ impl Transport {
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[cfg(feature = "unsupported")]
+#[cfg(any(feature = "unsupported", feature = "beta"))]
 #[non_exhaustive]
 /// Websocket transport
 pub struct WebsocketTransportResponse {
@@ -611,7 +611,7 @@ pub enum TransportResponse {
     /// Webhook transport response
     Webhook(WebhookTransportResponse),
     /// Websocket transport response
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     Websocket(WebsocketTransportResponse),
 }
 
@@ -626,7 +626,7 @@ impl TransportResponse {
     ///
     /// [`Websocket`]: TransportResponse::Websocket
     #[must_use]
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     pub fn is_websocket(&self) -> bool { matches!(self, Self::Websocket(..)) }
 
     /// Returns `Some(&WebhookTransport)` if this transport response is a [webhook](WebhookTransportResponse)
@@ -639,7 +639,7 @@ impl TransportResponse {
     }
 
     /// Returns `Some(&WebsocketTransport)` if this transport response is a [websocket](WebsocketTransportResponse)
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     pub fn as_websocket(&self) -> Option<&WebsocketTransportResponse> {
         if let Self::Websocket(v) = self {
             Some(v)
@@ -658,7 +658,7 @@ impl TransportResponse {
     }
 
     /// Returns `Some(WebsocketTransport)` if this transport response is a [websocket](WebsocketTransportResponse)
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     pub fn try_into_websocket(self) -> Result<WebsocketTransportResponse, Self> {
         if let Self::Websocket(v) = self {
             Ok(v)
@@ -766,7 +766,7 @@ pub struct EventSubSubscription {
 mod test {
 
     #[test]
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     fn test_websocket_notification() {
         let frame = r#"
         {

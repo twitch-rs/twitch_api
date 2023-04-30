@@ -39,6 +39,7 @@
 - Deprecated `channel.follow` v1 eventsub event
 - Deprecated `Get User Follows` and associated follower related extension methods
 - Deprecated Twitch-defined tags: `Get All Stream Tags`, `Get Stream Tags`, `Replace Stream Tags` and `TwitchTag`
+- Added `beta` feature to specifically enable beta endpoints
 
 ### Added
 

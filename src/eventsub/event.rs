@@ -1,6 +1,6 @@
 //! EventSub events and their types
 #![allow(deprecated)]
-#[cfg(feature = "unsupported")]
+#[cfg(any(feature = "unsupported", feature = "beta"))]
 pub mod websocket;
 
 use std::borrow::Cow;
@@ -627,7 +627,7 @@ impl Event {
     ///     Event::parse_websocket(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    #[cfg(feature = "unsupported")]
+    #[cfg(any(feature = "unsupported", feature = "beta"))]
     pub fn parse_websocket(frame: &str) -> Result<EventsubWebsocketData<'_>, PayloadParseError> {
         #[derive(Deserialize)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
