@@ -3,6 +3,11 @@
 //!
 //! # Examples
 //!
+//! See [`HelixClient::get_streams_from_logins`](crate::helix::HelixClient::get_streams_from_logins) and
+//! [`HelixClient::get_streams_from_ids`](crate::helix::HelixClient::get_streams_from_ids)
+//!
+//! ## Manual request
+//!
 //! ```rust,no_run
 //! # use twitch_api::{helix::{HelixClient, streams::GetStreamsRequest}, types};
 //! # #[tokio::main]
