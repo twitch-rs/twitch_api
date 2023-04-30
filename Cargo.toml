@@ -179,8 +179,8 @@ path = "examples/get_moderation.rs"
 required-features = ["reqwest", "helix"]
 
 [[example]]
-name = "get_streams_and_chatters"
-path = "examples/get_streams_and_chatters.rs"
+name = "get_streams"
+path = "examples/get_streams.rs"
 required-features = ["reqwest", "helix", "tmi"]
 
 [[example]]
