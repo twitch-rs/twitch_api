@@ -66,6 +66,7 @@ pub use types::PollStatus;
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct EndPollRequest<'a> {
     #[serde(skip)]

@@ -52,6 +52,7 @@ use helix::RequestPost;
 /// [`send-whisper`](https://dev.twitch.tv/docs/api/reference#send-whisper)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct SendWhisperRequest<'a> {
     /// The ID of the user sending the whisper. This user must have a verified phone number.

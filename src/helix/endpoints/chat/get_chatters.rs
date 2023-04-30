@@ -45,6 +45,7 @@ use helix::RequestGet;
 /// [`get-chatters`](https://dev.twitch.tv/docs/api/reference#get-chatters)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetChattersRequest<'a> {
     /// The ID of the broadcaster whose list of chatters you want to get.

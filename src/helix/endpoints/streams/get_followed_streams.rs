@@ -42,6 +42,7 @@ use helix::RequestGet;
 /// [`get-followed-streams`](https://dev.twitch.tv/docs/api/reference#get-followed-streams)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetFollowedStreamsRequest<'a> {
     /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.

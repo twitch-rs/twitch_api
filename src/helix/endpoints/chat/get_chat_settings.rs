@@ -57,6 +57,7 @@ use helix::RequestGet;
 /// [`get-chat-settings`](https://dev.twitch.tv/docs/api/reference#get-chat-settings)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetChatSettingsRequest<'a> {
     /// The ID of the broadcaster whose chat settings you want to get.

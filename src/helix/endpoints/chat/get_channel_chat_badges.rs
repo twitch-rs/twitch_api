@@ -44,6 +44,7 @@ use helix::RequestGet;
 /// [`get-channel-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetChannelChatBadgesRequest<'a> {
     /// The broadcaster whose chat badges are being requested. Provided broadcaster_id must match the user_id in the user OAuth token.

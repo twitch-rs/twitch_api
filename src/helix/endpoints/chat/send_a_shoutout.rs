@@ -42,6 +42,7 @@ use helix::RequestPost;
 /// [`send-a-shoutout`](https://dev.twitch.tv/docs/api/reference#send-a-shoutout)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct SendAShoutoutRequest<'a> {
     /// The ID of the broadcaster that’s sending the Shoutout.

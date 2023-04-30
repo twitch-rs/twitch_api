@@ -40,6 +40,7 @@ use helix::RequestGet;
 /// [`get-user-block-list`](https://dev.twitch.tv/docs/api/reference#get-user-block-list)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetUserBlockListRequest<'a> {
     /// User ID for a Twitch user.

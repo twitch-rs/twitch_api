@@ -42,6 +42,7 @@ use helix::RequestDelete;
 /// [`unban-user`](https://dev.twitch.tv/docs/api/reference#unban-user)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct UnbanUserRequest<'a> {
     /// The ID of the broadcaster whose chat room the user is banned from chatting in.

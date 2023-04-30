@@ -43,6 +43,7 @@ use helix::RequestGet;
 /// [`get-emote-sets`](https://dev.twitch.tv/docs/api/reference#get-emote-sets)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetEmoteSetsRequest<'a> {
     // FIXME: twitch doc specifies maximum as 25, but it actually is 10

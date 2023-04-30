@@ -3,13 +3,14 @@
 //!
 //! # Accessing the endpoint
 //!
-//! ## Request: [GetBlockedTerms]
+//! ## Request: [GetBlockedTermsRequest]
 //!
-//! To use this endpoint, construct a [`GetBlockedTerms`] with the [`GetBlockedTerms::new()`] method.
+//! To use this endpoint, construct a [`GetBlockedTermsRequest`] with the [`GetBlockedTermsRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::get_blocked_terms;
-//! let request = get_blocked_terms::GetBlockedTerms::new("1234", "5678");
+//! let request =
+//!     get_blocked_terms::GetBlockedTermsRequest::new("1234", "5678");
 //! ```
 //!
 //! ## Response: [BlockedTerm]
@@ -24,14 +25,14 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_blocked_terms::GetBlockedTerms::new("1234", "5678");
+//! let request = get_blocked_terms::GetBlockedTermsRequest::new("1234", "5678");
 //! let response: Vec<helix::moderation::BlockedTerm> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
-//! and parse the [`http::Response`] with [`GetBlockedTerms::parse_response(None, &request.get_uri(), response)`](GetBlockedTerms::parse_response)
+//! and parse the [`http::Response`] with [`GetBlockedTermsRequest::parse_response(None, &request.get_uri(), response)`](GetBlockedTermsRequest::parse_response)
 
 use super::*;
 use helix::RequestGet;
@@ -42,7 +43,8 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetBlockedTerms<'a> {
+#[must_use]
+pub struct GetBlockedTermsRequest<'a> {
     /// The ID of the broadcaster whose blocked terms you’re getting.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
@@ -61,7 +63,7 @@ pub struct GetBlockedTerms<'a> {
     pub after: Option<Cow<'a, helix::CursorRef>>,
 }
 
-impl<'a> GetBlockedTerms<'a> {
+impl<'a> GetBlockedTermsRequest<'a> {
     /// Get blocked terms in a broadcasters channel as specified moderator
     pub fn new(
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
@@ -87,7 +89,7 @@ impl<'a> GetBlockedTerms<'a> {
 /// [`get-blocked-terms`](https://dev.twitch.tv/docs/api/reference#get-blocked-terms)
 pub type GetBlockedTermsResponse = BlockedTerm;
 
-impl Request for GetBlockedTerms<'_> {
+impl Request for GetBlockedTermsRequest<'_> {
     type Response = Vec<BlockedTerm>;
 
     const PATH: &'static str = "moderation/blocked_terms";
@@ -96,9 +98,9 @@ impl Request for GetBlockedTerms<'_> {
         &[twitch_oauth2::Scope::ModeratorReadBlockedTerms];
 }
 
-impl RequestGet for GetBlockedTerms<'_> {}
+impl RequestGet for GetBlockedTermsRequest<'_> {}
 
-impl helix::Paginated for GetBlockedTerms<'_> {
+impl helix::Paginated for GetBlockedTermsRequest<'_> {
     fn set_pagination(&mut self, cursor: Option<helix::Cursor>) {
         self.after = cursor.map(|c| c.into_cow())
     }
@@ -108,7 +110,7 @@ impl helix::Paginated for GetBlockedTerms<'_> {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetBlockedTerms::new("1234", "5678").first(10);
+    let req = GetBlockedTermsRequest::new("1234", "5678").first(10);
 
     // From twitch docs, FIXME: has ... and a "bad" comma
     let data = br#"
@@ -139,5 +141,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/moderation/blocked_terms?broadcaster_id=1234&moderator_id=5678&first=10"
     );
 
-    dbg!(GetBlockedTerms::parse_response(Some(req), &uri, http_response).unwrap());
+    dbg!(GetBlockedTermsRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }

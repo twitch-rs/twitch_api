@@ -41,6 +41,7 @@ use helix::RequestGet;
 /// [`create-clip`](https://dev.twitch.tv/docs/api/reference/#create-clip)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct CreateClipRequest<'a> {
     /// The ID of the broadcaster whose stream you want to create a clip from.

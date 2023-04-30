@@ -60,6 +60,7 @@ use helix::RequestPost;
 /// [`send-chat-announcement`](https://dev.twitch.tv/docs/api/reference#send-chat-announcement)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct SendChatAnnouncementRequest<'a> {
     /// The ID of the broadcaster that owns the chat room to send the announcement to.

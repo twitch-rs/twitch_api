@@ -52,6 +52,7 @@ use helix::RequestPost;
 /// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct BanUserRequest<'a> {
     /// The ID of the broadcaster whose chat room the user is being banned from.

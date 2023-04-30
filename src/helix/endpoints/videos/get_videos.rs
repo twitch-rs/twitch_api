@@ -42,6 +42,7 @@ use helix::RequestGet;
 /// [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetVideosRequest<'a> {
     /// ID of the video being queried. Limit: 100. If this is specified, you cannot use any of the optional query parameters below.

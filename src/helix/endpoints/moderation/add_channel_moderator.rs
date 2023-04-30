@@ -43,6 +43,7 @@ use helix::RequestPost;
 /// [`add-channel-moderator`](https://dev.twitch.tv/docs/api/reference#add-channel-moderator)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct AddChannelModeratorRequest<'a> {
     /// The ID of the broadcaster that owns the chat room.

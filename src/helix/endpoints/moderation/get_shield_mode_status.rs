@@ -42,6 +42,7 @@ use helix::RequestGet;
 /// [`get-shield-mode-status`](https://dev.twitch.tv/docs/api/reference#get-shield-mode-status)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetShieldModeStatusRequest<'a> {
     /// The ID of the broadcaster whose Shield Mode activation status you want to get.

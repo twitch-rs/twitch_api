@@ -43,6 +43,7 @@ use helix::RequestGet;
 /// [`get-broadcaster-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetBroadcasterSubscriptionsRequest<'a> {
     /// User ID of the broadcaster. Must match the User ID in the Bearer token.

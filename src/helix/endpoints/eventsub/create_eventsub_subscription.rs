@@ -10,6 +10,7 @@ use crate::eventsub::{EventSubscription, EventType, Status, Transport, Transport
 #[derive(PartialEq, Eq, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
+#[must_use]
 pub struct CreateEventSubSubscriptionRequest<E: EventSubscription> {
     #[cfg_attr(feature = "typed-builder", builder(setter(skip), default))]
     #[serde(skip)]

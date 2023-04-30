@@ -45,6 +45,7 @@ use helix::RequestGet;
 /// [`get-channel-followers`](https://dev.twitch.tv/docs/api/reference#get-channel-followers)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetChannelFollowersRequest<'a> {
     /// A user’s ID. Use this parameter to see whether the user follows this broadcaster.

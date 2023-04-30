@@ -47,6 +47,7 @@ use helix::RequestPut;
 /// [`update-user-chat-color`](https://dev.twitch.tv/docs/api/reference#update-user-chat-color)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct UpdateUserChatColorRequest<'a> {
     /// The ID of the user whose chat color you want to update.

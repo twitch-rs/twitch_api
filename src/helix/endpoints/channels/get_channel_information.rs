@@ -47,6 +47,7 @@ use helix::RequestGet;
 /// [`get-channel-information`](https://dev.twitch.tv/docs/api/reference#get-channel-information)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetChannelInformationRequest<'a> {
     /// ID of the channel

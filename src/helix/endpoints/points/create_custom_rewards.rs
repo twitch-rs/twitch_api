@@ -56,6 +56,7 @@ use helix::RequestPost;
 /// [`create-custom-rewards`](https://dev.twitch.tv/docs/api/reference#create-custom-rewards)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct CreateCustomRewardRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token

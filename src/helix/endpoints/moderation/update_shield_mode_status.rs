@@ -4,14 +4,15 @@
 //!
 //! # Accessing the endpoint
 //!
-//! ## Request: [UpdateShieldModeStatus]
+//! ## Request: [UpdateShieldModeStatusRequest]
 //!
-//! To use this endpoint, construct an [`UpdateShieldModeStatus`] with the [`UpdateShieldModeStatus::builder()`] method.
+//! To use this endpoint, construct an [`UpdateShieldModeStatusRequest`] with the [`UpdateShieldModeStatusRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::update_shield_mode_status;
-//! let request =
-//!     update_shield_mode_status::UpdateShieldModeStatus::new("123", "456");
+//! let request = update_shield_mode_status::UpdateShieldModeStatusRequest::new(
+//!     "123", "456",
+//! );
 //! ```
 //!
 //! //! ## Body: [UpdateShieldModeStatusBody]
@@ -36,7 +37,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = update_shield_mode_status::UpdateShieldModeStatus::new(
+//! let request = update_shield_mode_status::UpdateShieldModeStatusRequest::new(
 //!     "123",
 //!     "456"
 //! );
@@ -48,7 +49,7 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPut::create_request)
-//! and parse the [`http::Response`] with [`UpdateShieldModeStatus::parse_response(None, &request.get_uri(), response)`](UpdateShieldModeStatus::parse_response)
+//! and parse the [`http::Response`] with [`UpdateShieldModeStatusRequest::parse_response(None, &request.get_uri(), response)`](UpdateShieldModeStatusRequest::parse_response)
 
 use super::*;
 use helix::RequestPut;
@@ -61,7 +62,7 @@ pub use super::ShieldModeStatus;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UpdateShieldModeStatus<'a> {
+pub struct UpdateShieldModeStatusRequest<'a> {
     /// The ID of the broadcaster whose Shield Mode you want to activate or deactivate.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
@@ -74,7 +75,7 @@ pub struct UpdateShieldModeStatus<'a> {
     pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
-impl<'a> UpdateShieldModeStatus<'a> {
+impl<'a> UpdateShieldModeStatusRequest<'a> {
     /// Set the shield mode status on specified channel as the specified moderator
     pub fn new(
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
@@ -112,7 +113,7 @@ impl<'a> UpdateShieldModeStatusBody<'a> {
     }
 }
 
-impl Request for UpdateShieldModeStatus<'_> {
+impl Request for UpdateShieldModeStatusRequest<'_> {
     type Response = super::ShieldModeStatus;
 
     const PATH: &'static str = "moderation/shield_mode";
@@ -121,7 +122,7 @@ impl Request for UpdateShieldModeStatus<'_> {
         &[twitch_oauth2::Scope::ModeratorManageShieldMode];
 }
 
-impl<'a> RequestPut for UpdateShieldModeStatus<'a> {
+impl<'a> RequestPut for UpdateShieldModeStatusRequest<'a> {
     type Body = UpdateShieldModeStatusBody<'a>;
 
     fn parse_inner_response(
@@ -163,7 +164,7 @@ impl<'a> RequestPut for UpdateShieldModeStatus<'a> {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = UpdateShieldModeStatus::new("12345", "98765");
+    let req = UpdateShieldModeStatusRequest::new("12345", "98765");
     let body = UpdateShieldModeStatusBody::is_active(false);
 
     assert_eq!(
@@ -197,5 +198,5 @@ fn test_request() {
         "https://api.twitch.tv/helix/moderation/shield_mode?broadcaster_id=12345&moderator_id=98765"
     );
 
-    dbg!(UpdateShieldModeStatus::parse_response(Some(req), &uri, http_response).unwrap());
+    dbg!(UpdateShieldModeStatusRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }
