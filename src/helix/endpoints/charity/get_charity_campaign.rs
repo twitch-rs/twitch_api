@@ -146,7 +146,7 @@ fn test_request() {
             "broadcaster_login": "sunnysideup",
             "charity_name": "Example name",
             "charity_description": "Example description",
-            "charity_logo": "https://example.url/logo.png",
+            "charity_logo": "https://abc.cloudfront.net/ppgf/1000/100.png",
             "charity_website": "https://www.example.com",
             "current_amount": {
               "value": 86000,

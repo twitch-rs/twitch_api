@@ -35,7 +35,7 @@ impl EventSubscription for ChannelShoutoutCreateV1 {
     const EVENT_TYPE: EventType = EventType::ChannelShoutoutCreate;
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModeratorReadShoutouts];
-    const VERSION: &'static str = "beta";
+    const VERSION: &'static str = "1";
 }
 
 /// [`channel.shoutout.create`](ChannelShoutoutCreateV1) response payload.
@@ -79,7 +79,7 @@ fn parse_payload() {
         "subscription": {
           "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
           "type": "channel.shoutout.create",
-          "version": "beta",
+          "version": "1",
           "status": "enabled",
           "cost": 0,
           "condition": {
