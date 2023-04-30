@@ -98,12 +98,18 @@
 <a href="#98" id="98">98</a>
 <a href="#99" id="99">99</a>
 <a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Errors
 
-/// General errors for talking with twitch, used in [AppAccessToken::get_app_access_token][crate::tokens::AppAccessToken::get_app_access_token]
+/// General errors for talking with twitch, used in [`AppAccessToken::get_app_access_token`](crate::tokens::AppAccessToken::get_app_access_token)
 </span><span class="attr">#[allow(missing_docs)]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 #[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>AppAccessTokenError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
     <span class="doccomment">/// request for token failed
     </span>Request(<span class="attr">#[source] </span>RE),
@@ -113,6 +119,7 @@
 
 <span class="doccomment">/// Errors for [AccessToken::validate_token][crate::AccessTokenRef::validate_token] and [UserToken::from_response][crate::tokens::UserToken::from_response]
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>ValidationError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
     <span class="doccomment">/// token is not authorized for use
     </span>NotAuthorized,
@@ -120,9 +127,8 @@
     </span>RequestParseError(<span class="attr">#[from] </span><span class="kw">crate</span>::RequestParseError),
     <span class="doccomment">/// failed to request validation
     </span>Request(<span class="attr">#[source] </span>RE),
-    <span class="comment">// TODO: This should be in it&#39;s own error enum specifically for UserToken validation
-    </span><span class="doccomment">/// validation did not return a login when it was expected
-    </span>NoLogin,
+    <span class="doccomment">/// given token is not of the correct token type: {0}
+    </span>InvalidToken(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
 }
 
 <span class="kw">impl </span>ValidationError&lt;std::convert::Infallible&gt; {
@@ -131,7 +137,7 @@
         <span class="kw">match </span><span class="self">self </span>{
             ValidationError::NotAuthorized =&gt; ValidationError::NotAuthorized,
             ValidationError::RequestParseError(e) =&gt; ValidationError::RequestParseError(e),
-            ValidationError::NoLogin =&gt; ValidationError::NoLogin,
+            ValidationError::InvalidToken(s) =&gt; ValidationError::InvalidToken(s),
             ValidationError::Request(<span class="kw">_</span>) =&gt; <span class="macro">unreachable!</span>(),
         }
     }
@@ -140,6 +146,7 @@
 <span class="doccomment">/// Errors for [AccessToken::revoke_token][crate::AccessTokenRef::revoke_token]
 </span><span class="attr">#[allow(missing_docs)]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 #[cfg(feature = <span class="string">&quot;client&quot;</span>)]
 </span><span class="kw">pub enum </span>RevokeTokenError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
     <span class="doccomment">/// could not parse response when revoking token
@@ -151,6 +158,7 @@
 <span class="doccomment">/// Errors for [TwitchToken::refresh_token][crate::TwitchToken::refresh_token]
 </span><span class="attr">#[allow(missing_docs)]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 #[cfg(feature = <span class="string">&quot;client&quot;</span>)]
 </span><span class="kw">pub enum </span>RefreshTokenError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
     <span class="doccomment">/// request when refreshing token failed
@@ -169,6 +177,7 @@
 
 <span class="doccomment">/// Errors for [`UserTokenBuilder::get_user_token`](crate::tokens::UserTokenBuilder::get_user_token) and [`UserToken::mock_token`](crate::tokens::UserToken::mock_token)
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 #[cfg(feature = <span class="string">&quot;client&quot;</span>)]
 </span><span class="kw">pub enum </span>UserTokenExchangeError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
     <span class="doccomment">/// request for user token failed
@@ -183,6 +192,7 @@
 
 <span class="doccomment">/// Errors for [ImplicitUserTokenBuilder::get_user_token][crate::tokens::ImplicitUserTokenBuilder::get_user_token]
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
+#[non_exhaustive]
 #[cfg(feature = <span class="string">&quot;client&quot;</span>)]
 </span><span class="kw">pub enum </span>ImplicitUserTokenExchangeError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
     <span class="comment">// FIXME: should be TwitchTokenErrorResponse

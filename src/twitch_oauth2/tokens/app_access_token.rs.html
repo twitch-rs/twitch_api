@@ -206,6 +206,16 @@
 <a href="#206" id="206">206</a>
 <a href="#207" id="207">207</a>
 <a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>twitch_types::{UserIdRef, UserNameRef};
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
@@ -220,7 +230,7 @@
     ClientIdRef, ClientSecretRef,
 };
 
-<span class="doccomment">/// An App Access Token from the [OAuth client credentials flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-client-credentials-flow)
+<span class="doccomment">/// An App Access Token from the [OAuth client credentials flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#client-credentials-grant-flow)
 ///
 /// Used for server-to-server requests. Use [`UserToken`](super::UserToken) for requests that need to be in the context of an authenticated user.
 ///
@@ -300,6 +310,11 @@
 <span class="kw">impl </span>AppAccessToken {
     <span class="doccomment">/// Assemble token without checks.
     ///
+    /// This is useful if you already have an app access token and want to use it with this library. Be careful however,
+    /// as this function does not check if the token is valid or expired, nor if it is an `app access token` or `user token`.
+    ///
+    /// # Notes
+    ///
     /// If `expires_in` is `None`, we&#39;ll assume `token.is_elapsed() == true`
     </span><span class="kw">pub fn </span>from_existing_unchecked(
         access_token: AccessToken,
@@ -333,6 +348,11 @@
     {
         <span class="kw">let </span>token = access_token;
         <span class="kw">let </span>validated = token.validate_token(http_client).<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="kw">if </span>validated.user_id.is_some() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(ValidationError::InvalidToken(
+                <span class="string">&quot;expected an app access token, got a user access token&quot;</span>,
+            ));
+        }
         <span class="prelude-val">Ok</span>(<span class="self">Self</span>::from_existing_unchecked(
             token,
             refresh_token.into(),
@@ -360,7 +380,7 @@
         )
     }
 
-    <span class="doccomment">/// Generate app access token via [OAuth client credentials flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-client-credentials-flow)
+    <span class="doccomment">/// Generate app access token via [OAuth client credentials flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#client-credentials-grant-flow)
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
     </span><span class="kw">pub async fn </span>get_app_access_token&lt;C&gt;(
         http_client: <span class="kw-2">&amp;</span>C,

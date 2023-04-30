@@ -268,7 +268,7 @@
     ($($(<span class="attr">#[cfg((<span class="macro-nonterminal">$cfg</span>:meta))]</span>)* $(<span class="attr">#[deprecated(<span class="macro-nonterminal">$depr</span>:meta)]</span>)<span class="question-mark">? </span><span class="macro-nonterminal">$i</span>:ident,scope: <span class="macro-nonterminal">$rename</span>:literal, doc: <span class="macro-nonterminal">$doc</span>:literal);* $(;)<span class="question-mark">? </span>) =&gt; {
         <span class="attr">#[doc = <span class="string">&quot;Scopes for twitch.&quot;</span>]
         #[doc = <span class="string">&quot;&quot;</span>]
-        #[doc = <span class="string">&quot;&lt;https://dev.twitch.tv/docs/authentication/#scopes&gt;&quot;</span>]
+        #[doc = <span class="string">&quot;&lt;https://dev.twitch.tv/docs/authentication/scopes/&gt;&quot;</span>]
         #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq)]
         #[non_exhaustive]
         #[serde(from = <span class="string">&quot;String&quot;</span>)]

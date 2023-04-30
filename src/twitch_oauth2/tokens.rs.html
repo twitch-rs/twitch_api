@@ -341,7 +341,7 @@
     </span>}
     <span class="doccomment">/// Retrieve scopes attached to the token
     </span><span class="kw">fn </span>scopes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[Scope];
-    <span class="doccomment">/// Validate this token. Should be checked on regularly, according to &lt;https://dev.twitch.tv/docs/authentication#validating-requests&gt;
+    <span class="doccomment">/// Validate this token. Should be checked on regularly, according to &lt;https://dev.twitch.tv/docs/authentication/validate-tokens/&gt;
     ///
     /// # Note
     ///
@@ -359,7 +359,7 @@
         token.validate_token(http_client).<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Revoke the token. See &lt;https://dev.twitch.tv/docs/authentication#revoking-access-tokens&gt;
+    <span class="doccomment">/// Revoke the token. See &lt;https://dev.twitch.tv/docs/authentication/revoke-tokens&gt;
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
     </span><span class="kw">async fn </span>revoke_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
         <span class="self">self</span>,
@@ -406,7 +406,7 @@
 
 <span class="doccomment">/// Token validation returned from `https://id.twitch.tv/oauth2/validate`
 ///
-/// See &lt;https://dev.twitch.tv/docs/authentication#validating-requests&gt;
+/// See &lt;https://dev.twitch.tv/docs/authentication/validate-tokens/&gt;
 </span><span class="attr">#[derive(Debug, Clone, Deserialize)]
 </span><span class="kw">pub struct </span>ValidatedToken {
     <span class="doccomment">/// Client ID associated with the token. Twitch requires this in all helix API calls

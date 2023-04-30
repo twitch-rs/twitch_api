@@ -775,6 +775,12 @@
 <a href="#775" id="775">775</a>
 <a href="#776" id="776">776</a>
 <a href="#777" id="777">777</a>
+<a href="#778" id="778">778</a>
+<a href="#779" id="779">779</a>
+<a href="#780" id="780">780</a>
+<a href="#781" id="781">781</a>
+<a href="#782" id="782">782</a>
+<a href="#783" id="783">783</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>twitch_types::{UserId, UserIdRef, UserName, UserNameRef};
 
 <span class="kw">use </span><span class="kw">super</span>::errors::ValidationError;
@@ -788,7 +794,7 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::types::{AccessToken, ClientId, RefreshToken};
 
-<span class="doccomment">/// An User Token from the [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-implicit-code-flow) or [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth#oauth-authorization-code-flow)
+<span class="doccomment">/// An User Token from the [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#implicit-grant-flow) or [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#authorization-code-grant-flow)
 ///
 /// Used for requests that need an authenticated user. See also [`AppAccessToken`](super::AppAccessToken)
 ///
@@ -844,8 +850,12 @@
             refresh_token,
             validated.client_id,
             client_secret,
-            validated.login.ok_or(ValidationError::NoLogin)<span class="question-mark">?</span>,
-            validated.user_id.ok_or(ValidationError::NoLogin)<span class="question-mark">?</span>,
+            validated.login.ok_or(ValidationError::InvalidToken(
+                <span class="string">&quot;validation did not include a `login`, token might be an app access token&quot;</span>,
+            ))<span class="question-mark">?</span>,
+            validated.user_id.ok_or(ValidationError::InvalidToken(
+                <span class="string">&quot;validation did not include a `user_id`, token might be an app access token&quot;</span>,
+            ))<span class="question-mark">?</span>,
             validated.scopes,
             validated.expires_in,
         ))
@@ -870,6 +880,8 @@
     }
 
     <span class="doccomment">/// Assemble token without checks.
+    ///
+    /// # Notes
     ///
     /// If `expires_in` is `None`, we&#39;ll assume `token.is_elapsed` is always false
     </span><span class="attr">#[allow(clippy::too_many_arguments)]
@@ -920,7 +932,7 @@
     /// Hidden because it&#39;s not expected to be used.
     </span><span class="kw">pub fn </span>never_expires(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool { <span class="self">self</span>.never_expiring }
 
-    <span class="doccomment">/// Create a [`UserTokenBuilder`] to get a token with the [OAuth Authorization Code](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-authorization-code-flow)
+    <span class="doccomment">/// Create a [`UserTokenBuilder`] to get a token with the [OAuth Authorization Code](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#authorization-code-grant-flow)
     </span><span class="kw">pub fn </span>builder(
         client_id: ClientId,
         client_secret: ClientSecret,
@@ -1054,9 +1066,9 @@
     <span class="kw">fn </span>scopes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[Scope] { <span class="self">self</span>.scopes.as_slice() }
 }
 
-<span class="doccomment">/// Builder for [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-authorization-code-flow)
+<span class="doccomment">/// Builder for [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#authorization-code-grant-flow)
 ///
-/// See [`ImplicitUserTokenBuilder`] for the [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-implicit-code-flow) (does not require Client Secret)
+/// See [`ImplicitUserTokenBuilder`] for the [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#implicit-grant-flow) (does not require Client Secret)
 </span><span class="kw">pub struct </span>UserTokenBuilder {
     <span class="kw">pub</span>(<span class="kw">crate</span>) scopes: Vec&lt;Scope&gt;,
     <span class="kw">pub</span>(<span class="kw">crate</span>) csrf: <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::types::CsrfToken&gt;,
@@ -1107,7 +1119,7 @@
 
     <span class="doccomment">/// Generate the URL to request a code.
     ///
-    /// Step 1. in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-authorization-code-flow)
+    /// First step in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#get-the-user-to-authorize-your-app)
     </span><span class="kw">pub fn </span>generate_url(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (url::Url, <span class="kw">crate</span>::types::CsrfToken) {
         <span class="kw">let </span>csrf = <span class="kw">crate</span>::types::CsrfToken::new_random();
         <span class="self">self</span>.csrf = <span class="prelude-val">Some</span>(csrf.clone());
@@ -1208,7 +1220,7 @@
 
     <span class="doccomment">/// Generate the code with the help of the authorization code
     ///
-    /// Step 3. and 4. in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-authorization-code-flow)
+    /// Last step in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#use-the-authorization-code-to-get-a-token)
     ///
     /// On failure to authenticate due to wrong redirect url or other errors, twitch redirects the user to `&lt;redirect_url or first defined url in dev console&gt;?error=&lt;error type&gt;&amp;error_description=&lt;description of error&gt;`
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
@@ -1241,9 +1253,9 @@
     }
 }
 
-<span class="doccomment">/// Builder for [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-implicit-code-flow)
+<span class="doccomment">/// Builder for [OAuth implicit code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#implicit-grant-flow)
 ///
-/// See [`UserTokenBuilder`] for the [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-authorization-code-flow) (requires Client Secret, generally more secure)
+/// See [`UserTokenBuilder`] for the [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#authorization-code-grant-flow) (requires Client Secret, generally more secure)
 </span><span class="kw">pub struct </span>ImplicitUserTokenBuilder {
     <span class="kw">pub</span>(<span class="kw">crate</span>) scopes: Vec&lt;Scope&gt;,
     <span class="kw">pub</span>(<span class="kw">crate</span>) csrf: <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::types::CsrfToken&gt;,
@@ -1288,7 +1300,7 @@
 
     <span class="doccomment">/// Generate the URL to request a token.
     ///
-    /// Step 1. in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#auth-implicit-code-flow)
+    /// First step in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#implicit-grant-flow)
     </span><span class="kw">pub fn </span>generate_url(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (url::Url, <span class="kw">crate</span>::types::CsrfToken) {
         <span class="kw">let </span>csrf = <span class="kw">crate</span>::types::CsrfToken::new_random();
         <span class="self">self</span>.csrf = <span class="prelude-val">Some</span>(csrf.clone());
@@ -1328,7 +1340,7 @@
     ///
     /// You can skip this method and instead use the token in the hash directly with [`UserToken::from_existing()`], but it&#39;s provided here for convenience.
     ///
-    /// Step 3. and 4. in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-implicit-code-flow)
+    /// Last step in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#implicit-grant-flow)
     ///
     /// # Example
     ///
