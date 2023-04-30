@@ -55,6 +55,7 @@ use helix::RequestPost;
 ///
 /// [`start-commercial`](https://dev.twitch.tv/docs/api/reference#start-commercial)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
+#[must_use]
 #[non_exhaustive]
 pub struct StartCommercialRequest<'a> {
     #[serde(skip)]

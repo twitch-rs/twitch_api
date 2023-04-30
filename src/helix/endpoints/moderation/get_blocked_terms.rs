@@ -42,7 +42,7 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct GetBlockedTerms<'a> {
+#[must_use]
     /// The ID of the broadcaster whose blocked terms you’re getting.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]

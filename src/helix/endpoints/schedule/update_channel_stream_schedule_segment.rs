@@ -63,6 +63,7 @@ use helix::RequestPatch;
 /// [`update-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct UpdateChannelStreamScheduleSegmentRequest<'a> {
     /// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.

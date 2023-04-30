@@ -40,6 +40,7 @@ use helix::RequestDelete;
 /// [`unblock-user`](https://dev.twitch.tv/docs/api/reference#unblock-user)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct UnblockUserRequest<'a> {
     /// User ID of the follower

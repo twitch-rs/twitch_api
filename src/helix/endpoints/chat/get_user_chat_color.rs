@@ -46,6 +46,7 @@ use helix::RequestGet;
 /// [`get-user-chat-color`](https://dev.twitch.tv/docs/api/reference#get-user-chat-color)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetUserChatColorRequest<'a> {
     /// The ID of the user whose color you want to get.

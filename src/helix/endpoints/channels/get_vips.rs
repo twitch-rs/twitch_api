@@ -42,6 +42,7 @@ use helix::RequestGet;
 /// [`get-vips`](https://dev.twitch.tv/docs/api/reference#get-vips)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetVipsRequest<'a> {
     /// The ID of the broadcaster whose list of VIPs you want to get.

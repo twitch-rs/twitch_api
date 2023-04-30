@@ -42,6 +42,7 @@ use helix::RequestGet;
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
+#[must_use]
 pub struct GetGlobalEmotesRequest {}
 
 impl GetGlobalEmotesRequest {

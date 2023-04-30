@@ -50,6 +50,7 @@ use helix::RequestGet;
 /// [`get-custom-reward-redemption`](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetCustomRewardRedemptionRequest<'a> {
     /// Provided broadcaster_id must match the user_id in the auth token

@@ -56,6 +56,7 @@ use helix::RequestPatch;
 /// [`modify-channel-information`](https://dev.twitch.tv/docs/api/reference#modify-channel-information)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct ModifyChannelInformationRequest<'a> {
     /// ID of the channel

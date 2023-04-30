@@ -75,6 +75,7 @@ use helix::RequestPost;
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct CreatePredictionRequest<'a> {
     #[cfg_attr(feature = "typed-builder", builder(default))]

@@ -42,6 +42,7 @@ use helix::RequestDelete;
 /// [`remove-channel-vip`](https://dev.twitch.tv/docs/api/reference#remove-channel-vip)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct RemoveChannelVipRequest<'a> {
     /// The ID of the broadcaster that’s removing VIP status from the user.

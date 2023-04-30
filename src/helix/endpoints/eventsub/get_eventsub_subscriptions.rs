@@ -9,6 +9,7 @@ use helix::RequestGet;
 /// [`get-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions)
 #[derive(PartialEq, Eq, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetEventSubSubscriptionsRequest<'a> {
     /// Include this parameter to filter subscriptions by their status.

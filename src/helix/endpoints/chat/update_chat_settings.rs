@@ -61,6 +61,7 @@ use helix::RequestPatch;
 /// [`update-chat-settings`](https://dev.twitch.tv/docs/api/reference#update-chat-settings)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct UpdateChatSettingsRequest<'a> {
     /// The ID of the broadcaster whose chat settings you want to update.

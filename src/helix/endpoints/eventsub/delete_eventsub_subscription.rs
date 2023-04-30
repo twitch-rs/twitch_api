@@ -8,6 +8,7 @@ use helix::RequestDelete;
 /// [`delete-eventsub-subscriptions`](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription)
 #[derive(PartialEq, Eq, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct DeleteEventSubSubscriptionRequest<'a> {
     /// The subscription ID for the subscription you want to delete.

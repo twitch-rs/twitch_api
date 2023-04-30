@@ -43,6 +43,7 @@ use helix::RequestGet;
 /// [`get-charity-campaign`](https://dev.twitch.tv/docs/api/reference#get-charity-campaign)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetCharityCampaignRequest<'a> {
     /// The ID of the broadcaster that’s actively running a charity campaign.

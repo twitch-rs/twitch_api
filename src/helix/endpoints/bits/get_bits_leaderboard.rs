@@ -44,6 +44,7 @@ use helix::RequestGet;
 /// [`get-bits-leaderboard`](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetBitsLeaderboardRequest<'a> {
     /// Number of results to be returned. Maximum: 100. Default: 10.

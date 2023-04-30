@@ -43,6 +43,7 @@ use helix::RequestDelete;
 /// [`delete-chat-messages`](https://dev.twitch.tv/docs/api/reference#delete-chat-messages)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct DeleteChatMessagesRequest<'a> {
     /// The ID of the broadcaster that owns the chat room to remove messages from.

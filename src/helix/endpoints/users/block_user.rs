@@ -45,6 +45,7 @@ use helix::RequestPut;
 /// [`block-user`](https://dev.twitch.tv/docs/api/reference#block-user)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct BlockUserRequest<'a> {
     /// User ID of the follower

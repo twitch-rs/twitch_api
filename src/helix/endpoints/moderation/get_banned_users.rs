@@ -42,6 +42,7 @@ use helix::RequestGet;
 /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetBannedUsersRequest<'a> {
     /// Must match the User ID in the Bearer token.

@@ -53,6 +53,7 @@ use helix::RequestPost;
 /// [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct AddBlockedTermRequest<'a> {
     /// The ID of the broadcaster that owns the list of blocked terms.

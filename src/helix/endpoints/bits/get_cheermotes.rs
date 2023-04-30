@@ -43,6 +43,7 @@ use helix::RequestGet;
 /// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 pub struct GetCheermotesRequest<'a> {
     /// ID for the broadcaster who might own specialized Cheermotes.

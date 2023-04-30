@@ -47,6 +47,7 @@ use helix::RequestGet;
 #[deprecated(
     note = "Twitch-defined tags have been deprecated. See https://discuss.dev.twitch.tv/t/adding-customizable-tags-to-the-twitch-api/42921"
 )]
+#[must_use]
 #[non_exhaustive]
 pub struct GetAllStreamTagsRequest<'a> {
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
