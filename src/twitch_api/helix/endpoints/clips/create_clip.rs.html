@@ -119,6 +119,7 @@
 <a href="#119" id="119">119</a>
 <a href="#120" id="120">120</a>
 <a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Create Clip using Broadcaster ID (one only)
 //! [`create-clip`](https://dev.twitch.tv/docs/api/reference/#create-clip)
 //!
@@ -162,6 +163,7 @@
 /// [`create-clip`](https://dev.twitch.tv/docs/api/reference/#create-clip)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreateClipRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster whose stream you want to create a clip from.

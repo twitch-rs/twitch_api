@@ -176,6 +176,7 @@
 <a href="#176" id="176">176</a>
 <a href="#177" id="177">177</a>
 <a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets all scheduled broadcasts or specific scheduled broadcasts from a channel’s stream schedule. Scheduled broadcasts are defined as “stream segments” in the API.
 //! [`get-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule)
 //!
@@ -221,6 +222,7 @@
 /// [`get-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChannelStreamScheduleRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// User ID of the broadcaster who owns the channel streaming schedule. Provided broadcaster_id must match the user_id in the user OAuth token.

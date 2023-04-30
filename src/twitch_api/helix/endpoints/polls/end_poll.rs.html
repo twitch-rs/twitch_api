@@ -260,6 +260,7 @@
 <a href="#260" id="260">260</a>
 <a href="#261" id="261">261</a>
 <a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! End a poll that is currently active.
 //!
 //! [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
@@ -328,6 +329,7 @@
 /// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>EndPollRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="attr">#[serde(skip)]

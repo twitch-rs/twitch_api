@@ -216,6 +216,7 @@
 <a href="#216" id="216">216</a>
 <a href="#217" id="217">217</a>
 <a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Allow or deny a message that was held for review by AutoMod.
 //! [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
 //!
@@ -281,6 +282,7 @@
 /// [`manage-held-automod-messages`](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ManageHeldAutoModMessagesRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="attr">#[serde(skip)]

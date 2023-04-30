@@ -152,6 +152,7 @@
 <a href="#152" id="152">152</a>
 <a href="#153" id="153">153</a>
 <a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets the broadcaster’s list of active goals. Use this to get the current progress of each goal.
 //! [`get-creator-goals`](https://dev.twitch.tv/docs/api/reference#get-creator-goals)
 //!
@@ -196,6 +197,7 @@
 /// [`get-creator-goals`](https://dev.twitch.tv/docs/api/reference#get-creator-goals)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetCreatorGoalsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Must match the User ID in the Bearer token.

@@ -189,6 +189,7 @@
 <a href="#189" id="189">189</a>
 <a href="#190" id="190">190</a>
 <a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets information for a specific Twitch Team.
 //! [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
 //!
@@ -230,6 +231,7 @@
 /// [`get-teams`](https://dev.twitch.tv/docs/api/reference#get-teams)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetTeamsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Team ID.

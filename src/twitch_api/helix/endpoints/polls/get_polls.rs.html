@@ -193,6 +193,7 @@
 <a href="#193" id="193">193</a>
 <a href="#194" id="194">194</a>
 <a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Get information about all polls or specific polls for a Twitch channel. Poll information is available for 90 days.
 //! [`get-polls`](https://dev.twitch.tv/docs/api/reference#get-polls)
 //!
@@ -237,6 +238,7 @@
 /// [`get-polls`](https://dev.twitch.tv/docs/api/reference#get-polls)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetPollsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The broadcaster running polls. Provided broadcaster_id must match the user_id in the user OAuth token.

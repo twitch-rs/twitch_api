@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["GetBlockedTerms"],"type":["GetBlockedTermsResponse"]};
+window.SIDEBAR_ITEMS = {"struct":["GetBlockedTermsRequest"],"type":["GetBlockedTermsResponse"]};

@@ -266,6 +266,7 @@
 <a href="#266" id="266">266</a>
 <a href="#267" id="267">267</a>
 <a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Create a Channel Points Prediction for a specific Twitch channel.
 //!
 //! Results are ordered by most recent, so it can be assumed that the currently active or locked Prediction will be the first item.
@@ -343,6 +344,7 @@
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreatePredictionRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]

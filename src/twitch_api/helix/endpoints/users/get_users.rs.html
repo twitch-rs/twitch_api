@@ -192,6 +192,7 @@
 <a href="#192" id="192">192</a>
 <a href="#193" id="193">193</a>
 <a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets information about one or more specified Twitch users.
 //! [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
 //!
@@ -241,6 +242,7 @@
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetUsersRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// User ID. Multiple user IDs can be specified. Limit: 100.

@@ -270,6 +270,7 @@
 <a href="#270" id="270">270</a>
 <a href="#271" id="271">271</a>
 <a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Returns a list of subscription events.
 //! [`get-broadcaster-subscriptions-events`](https://twitch.uservoice.com/forums/310213-developers/suggestions/39847468-get-broadcaster-subscriptions-events)
 //!
@@ -321,6 +322,7 @@
 /// [`get-broadcaster-subscriptions-events`](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions-events)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetBroadcasterSubscriptionsEventsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Must match the User ID in the Bearer token.

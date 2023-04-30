@@ -125,6 +125,7 @@
 <a href="#125" id="125">125</a>
 <a href="#126" id="126">126</a>
 <a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets all custom emotes for a specific Twitch channel including subscriber emotes, Bits tier emotes, and follower emotes.
 //! [`get-channel-emotes`](https://dev.twitch.tv/docs/api/reference#get-channel-emotes)
 //!
@@ -169,6 +170,7 @@
 /// [`get-channel-emotes`](https://dev.twitch.tv/docs/api/reference#get-channel-emotes)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChannelEmotesRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The broadcaster whose emotes are being requested.

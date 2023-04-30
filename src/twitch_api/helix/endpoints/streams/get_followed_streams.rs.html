@@ -166,6 +166,7 @@
 <a href="#166" id="166">166</a>
 <a href="#167" id="167">167</a>
 <a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets information about active streams belonging to channels that the authenticated user follows.
 //! [`get-followed-streams`](https://dev.twitch.tv/docs/api/reference#get-followed-streams)
 //!
@@ -210,6 +211,7 @@
 /// [`get-followed-streams`](https://dev.twitch.tv/docs/api/reference#get-followed-streams)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetFollowedStreamsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.

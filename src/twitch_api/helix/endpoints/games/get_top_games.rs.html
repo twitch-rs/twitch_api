@@ -123,6 +123,7 @@
 <a href="#123" id="123">123</a>
 <a href="#124" id="124">124</a>
 <a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets games sorted by number of current viewers on Twitch, most popular first.
 //! [`get-top-games`](https://dev.twitch.tv/docs/api/reference#get-top-games)
 //!
@@ -169,6 +170,7 @@
 /// [`get-top-games`](https://dev.twitch.tv/docs/api/reference#get-top-games)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetTopGamesRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.

@@ -248,6 +248,7 @@
 <a href="#248" id="248">248</a>
 <a href="#249" id="249">249</a>
 <a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Creates an EventSub subscription.
 //!
 //! See also [`HelixClient::create_eventsub_subscription`](crate::helix::HelixClient::create_eventsub_subscription)
@@ -260,6 +261,7 @@
 </span><span class="attr">#[derive(PartialEq, Eq, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
+#[must_use]
 </span><span class="kw">pub struct </span>CreateEventSubSubscriptionRequest&lt;E: EventSubscription&gt; {
     <span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(skip), default))]
     #[serde(skip)]

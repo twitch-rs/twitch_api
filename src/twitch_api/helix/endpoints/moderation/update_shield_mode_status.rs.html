@@ -199,20 +199,22 @@
 <a href="#199" id="199">199</a>
 <a href="#200" id="200">200</a>
 <a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Activates or deactivates the broadcaster’s Shield Mode.
 //!
 //! [`update-shield-mode-status`](https://dev.twitch.tv/docs/api/reference#update-shield-mode-status)
 //!
 //! # Accessing the endpoint
 //!
-//! ## Request: [UpdateShieldModeStatus]
+//! ## Request: [UpdateShieldModeStatusRequest]
 //!
-//! To use this endpoint, construct an [`UpdateShieldModeStatus`] with the [`UpdateShieldModeStatus::builder()`] method.
+//! To use this endpoint, construct an [`UpdateShieldModeStatusRequest`] with the [`UpdateShieldModeStatusRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::update_shield_mode_status;
-//! let request =
-//!     update_shield_mode_status::UpdateShieldModeStatus::new(&quot;123&quot;, &quot;456&quot;);
+//! let request = update_shield_mode_status::UpdateShieldModeStatusRequest::new(
+//!     &quot;123&quot;, &quot;456&quot;,
+//! );
 //! ```
 //!
 //! //! ## Body: [UpdateShieldModeStatusBody]
@@ -237,7 +239,7 @@
 //! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = update_shield_mode_status::UpdateShieldModeStatus::new(
+//! let request = update_shield_mode_status::UpdateShieldModeStatusRequest::new(
 //!     &quot;123&quot;,
 //!     &quot;456&quot;
 //! );
@@ -249,7 +251,7 @@
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestPut::create_request)
-//! and parse the [`http::Response`] with [`UpdateShieldModeStatus::parse_response(None, &amp;request.get_uri(), response)`](UpdateShieldModeStatus::parse_response)
+//! and parse the [`http::Response`] with [`UpdateShieldModeStatusRequest::parse_response(None, &amp;request.get_uri(), response)`](UpdateShieldModeStatusRequest::parse_response)
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span>helix::RequestPut;
@@ -262,7 +264,7 @@
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>UpdateShieldModeStatus&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>UpdateShieldModeStatusRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster whose Shield Mode you want to activate or deactivate.
     </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
     #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
@@ -275,7 +277,7 @@
     </span><span class="kw">pub </span>moderator_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; UpdateShieldModeStatus&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; UpdateShieldModeStatusRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Set the shield mode status on specified channel as the specified moderator
     </span><span class="kw">pub fn </span>new(
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>,
@@ -313,7 +315,7 @@
     }
 }
 
-<span class="kw">impl </span>Request <span class="kw">for </span>UpdateShieldModeStatus&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>Request <span class="kw">for </span>UpdateShieldModeStatusRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
     <span class="kw">type </span>Response = <span class="kw">super</span>::ShieldModeStatus;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;moderation/shield_mode&quot;</span>;
@@ -322,7 +324,7 @@
         <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::ModeratorManageShieldMode];
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RequestPut <span class="kw">for </span>UpdateShieldModeStatus&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RequestPut <span class="kw">for </span>UpdateShieldModeStatusRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="kw">type </span>Body = UpdateShieldModeStatusBody&lt;<span class="lifetime">&#39;a</span>&gt;;
 
     <span class="kw">fn </span>parse_inner_response(
@@ -364,7 +366,7 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = UpdateShieldModeStatus::new(<span class="string">&quot;12345&quot;</span>, <span class="string">&quot;98765&quot;</span>);
+    <span class="kw">let </span>req = UpdateShieldModeStatusRequest::new(<span class="string">&quot;12345&quot;</span>, <span class="string">&quot;98765&quot;</span>);
     <span class="kw">let </span>body = UpdateShieldModeStatusBody::is_active(<span class="bool-val">false</span>);
 
     <span class="macro">assert_eq!</span>(
@@ -398,6 +400,6 @@
         <span class="string">&quot;https://api.twitch.tv/helix/moderation/shield_mode?broadcaster_id=12345&amp;moderator_id=98765&quot;
     </span>);
 
-    <span class="macro">dbg!</span>(UpdateShieldModeStatus::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
+    <span class="macro">dbg!</span>(UpdateShieldModeStatusRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }
 </code></pre></div></section></main></body></html>

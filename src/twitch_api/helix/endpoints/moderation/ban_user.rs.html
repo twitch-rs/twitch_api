@@ -276,6 +276,7 @@
 <a href="#276" id="276">276</a>
 <a href="#277" id="277">277</a>
 <a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Bans a user from participating in a broadcaster’s chat room, or puts them in a timeout.
 //! [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 //!
@@ -330,6 +331,7 @@
 /// [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>BanUserRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster whose chat room the user is being banned from.

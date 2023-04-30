@@ -288,6 +288,7 @@
 <a href="#288" id="288">288</a>
 <a href="#289" id="289">289</a>
 <a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets information about active streams.
 //! [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
 //!
@@ -337,6 +338,7 @@
 /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
 </span><span class="attr">#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetStreamsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.

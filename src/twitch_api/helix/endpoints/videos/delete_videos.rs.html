@@ -130,6 +130,7 @@
 <a href="#130" id="130">130</a>
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Deletes one or more videos. Videos are past broadcasts, Highlights, or uploads.
 //! [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
 //!
@@ -179,6 +180,7 @@
 /// [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>DeleteVideosRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// ID of the video(s) to be deleted. Limit: 5.

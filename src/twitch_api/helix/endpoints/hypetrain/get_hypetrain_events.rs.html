@@ -203,6 +203,7 @@
 <a href="#203" id="203">203</a>
 <a href="#204" id="204">204</a>
 <a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
 </pre></div><pre class="rust"><code><span class="attr">#![allow(deprecated_in_future, deprecated)]
 </span><span class="doccomment">//! Gets the information of the most recent Hype Train of the given channel ID.
 //! [`get-hype-train-events`](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)
@@ -248,6 +249,7 @@
 /// [`get-hype-train-events`](https://dev.twitch.tv/docs/api/reference#get-hype-train-events)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetHypeTrainEventsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Must match the User ID in the Bearer token.

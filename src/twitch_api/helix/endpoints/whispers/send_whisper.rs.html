@@ -187,6 +187,7 @@
 <a href="#187" id="187">187</a>
 <a href="#188" id="188">188</a>
 <a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Sends a whisper message to the specified user.
 //! [`send-whisper`](https://dev.twitch.tv/docs/api/reference#send-whisper)
 //!
@@ -241,6 +242,7 @@
 /// [`send-whisper`](https://dev.twitch.tv/docs/api/reference#send-whisper)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SendWhisperRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the user sending the whisper. This user must have a verified phone number.

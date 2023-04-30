@@ -167,6 +167,7 @@
 <a href="#167" id="167">167</a>
 <a href="#168" id="168">168</a>
 <a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets a list of users that follow the specified broadcaster. You can also use this endpoint to see whether a specific user follows the broadcaster.
 //! [`get-channel-followers`](https://dev.twitch.tv/docs/api/reference#get-channel-followers)
 //!
@@ -214,6 +215,7 @@
 /// [`get-channel-followers`](https://dev.twitch.tv/docs/api/reference#get-channel-followers)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChannelFollowersRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// A user’s ID. Use this parameter to see whether the user follows this broadcaster.

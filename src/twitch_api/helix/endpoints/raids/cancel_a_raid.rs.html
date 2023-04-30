@@ -124,6 +124,7 @@
 <a href="#124" id="124">124</a>
 <a href="#125" id="125">125</a>
 <a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Cancel a pending raid.
 //! [`cancel-a-raid`](https://dev.twitch.tv/docs/api/reference#cancel-a-raid)
 //!
@@ -166,6 +167,7 @@
 /// [`cancel-a-raid`](https://dev.twitch.tv/docs/api/reference#cancel-a-raid)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CancelARaidRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster that sent the raiding party.

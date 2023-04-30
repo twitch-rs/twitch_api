@@ -196,6 +196,7 @@
 <a href="#196" id="196">196</a>
 <a href="#197" id="197">197</a>
 <a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Returns a list of channels (users who have streamed within the past 6 months) that match the query via channel name or description either entirely or partially.
 //! [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
 //!
@@ -243,6 +244,7 @@
 /// [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SearchChannelsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// URL encoded search query

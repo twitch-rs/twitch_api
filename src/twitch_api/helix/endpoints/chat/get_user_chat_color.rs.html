@@ -142,6 +142,7 @@
 <a href="#142" id="142">142</a>
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets the color used for the user’s name in chat.
 //! [`get-user-chat-color`](https://dev.twitch.tv/docs/api/reference#get-user-chat-color)
 //!
@@ -190,6 +191,7 @@
 /// [`get-user-chat-color`](https://dev.twitch.tv/docs/api/reference#get-user-chat-color)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetUserChatColorRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the user whose color you want to get.

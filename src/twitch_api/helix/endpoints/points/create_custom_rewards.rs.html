@@ -281,6 +281,7 @@
 <a href="#281" id="281">281</a>
 <a href="#282" id="282">282</a>
 <a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Adds a specified user to the followers of a specified channel.
 //! [`create-custom-rewards`](https://dev.twitch.tv/docs/api/reference#create-custom-rewards)
 //!
@@ -339,6 +340,7 @@
 /// [`create-custom-rewards`](https://dev.twitch.tv/docs/api/reference#create-custom-rewards)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CreateCustomRewardRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Provided broadcaster_id must match the user_id in the auth token

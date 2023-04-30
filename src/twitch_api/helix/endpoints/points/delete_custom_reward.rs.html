@@ -137,6 +137,7 @@
 <a href="#137" id="137">137</a>
 <a href="#138" id="138">138</a>
 <a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Deletes a Custom Reward on a channel.
 //! [`delete-custom-reward`](https://dev.twitch.tv/docs/api/reference#delete-custom-reward)
 //!
@@ -183,6 +184,7 @@
 /// [`delete-custom-reward`](https://dev.twitch.tv/docs/api/reference#delete-custom-reward)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>DeleteCustomRewardRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Provided broadcaster_id must match the user_id in the auth token

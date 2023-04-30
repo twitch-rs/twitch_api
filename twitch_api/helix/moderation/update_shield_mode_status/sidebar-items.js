@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["ShieldModeStatus","UpdateShieldModeStatus","UpdateShieldModeStatusBody"]};
+window.SIDEBAR_ITEMS = {"struct":["ShieldModeStatus","UpdateShieldModeStatusBody","UpdateShieldModeStatusRequest"]};

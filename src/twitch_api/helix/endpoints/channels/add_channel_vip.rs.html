@@ -136,6 +136,7 @@
 <a href="#136" id="136">136</a>
 <a href="#137" id="137">137</a>
 <a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Adds a VIP to the broadcaster’s chat room.
 //! [`add-channel-vip`](https://dev.twitch.tv/docs/api/reference#add-channel-vip)
 //!
@@ -178,6 +179,7 @@
 /// [`add-channel-vip`](https://dev.twitch.tv/docs/api/reference#add-channel-vip)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>AddChannelVipRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster that’s granting VIP status to the user.

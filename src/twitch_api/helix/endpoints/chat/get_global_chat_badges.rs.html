@@ -101,6 +101,7 @@
 <a href="#101" id="101">101</a>
 <a href="#102" id="102">102</a>
 <a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets a list of chat badges that can be used in chat for any channel.
 //! [`get-global-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-global-chat-badges)
 //!
@@ -145,6 +146,7 @@
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
+#[must_use]
 </span><span class="kw">pub struct </span>GetGlobalChatBadgesRequest {}
 
 <span class="kw">impl </span>GetGlobalChatBadgesRequest {

@@ -137,6 +137,7 @@
 <a href="#137" id="137">137</a>
 <a href="#138" id="138">138</a>
 <a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Removes a moderator from the broadcaster’s chat room.
 //! [`remove-channel-moderator`](https://dev.twitch.tv/docs/api/reference#remove-channel-moderator)
 //!
@@ -183,6 +184,7 @@
 /// [`remove-channel-moderator`](https://dev.twitch.tv/docs/api/reference#remove-channel-moderator)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>RemoveChannelModeratorRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster that owns the chat room.

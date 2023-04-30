@@ -218,6 +218,7 @@
 <a href="#218" id="218">218</a>
 <a href="#219" id="219">219</a>
 <a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Sends an announcement to the broadcaster’s chat room.
 //! [`send-chat-announcement`](https://dev.twitch.tv/docs/api/reference#send-chat-announcement)
 //!
@@ -280,6 +281,7 @@
 /// [`send-chat-announcement`](https://dev.twitch.tv/docs/api/reference#send-chat-announcement)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SendChatAnnouncementRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster that owns the chat room to send the announcement to.

@@ -302,6 +302,7 @@
 <a href="#302" id="302">302</a>
 <a href="#303" id="303">303</a>
 <a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Updates a Custom Reward created on a channel.
 //!
 //! Only rewards created programmatically by the same client_id can be updated.
@@ -367,6 +368,7 @@
 /// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateCustomRewardRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Provided broadcaster_id must match the user_id in the auth token

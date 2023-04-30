@@ -236,6 +236,7 @@
 <a href="#236" id="236">236</a>
 <a href="#237" id="237">237</a>
 <a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets video information by video ID (one or more), user ID (one only), or game ID (one only).
 //! [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
 //!
@@ -280,6 +281,7 @@
 /// [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetVideosRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// ID of the video being queried. Limit: 100. If this is specified, you cannot use any of the optional query parameters below.

@@ -120,6 +120,7 @@
 <a href="#120" id="120">120</a>
 <a href="#121" id="121">121</a>
 <a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets a list of users who have editor permissions for a specific channel.
 //! [`get-channel-editors`](https://dev.twitch.tv/docs/api/reference#get-channel-editors)
 //!
@@ -165,6 +166,7 @@
 /// [`get-channel-editors`](https://dev.twitch.tv/docs/api/reference#get-channel-editors)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChannelEditorsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Broadcaster’s user ID associated with the channel.

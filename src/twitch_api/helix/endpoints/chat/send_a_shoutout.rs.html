@@ -145,6 +145,7 @@
 <a href="#145" id="145">145</a>
 <a href="#146" id="146">146</a>
 <a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Sends a Shoutout to the specified broadcaster.
 //! [`send-a-shoutout`](https://dev.twitch.tv/docs/api/reference#send-a-shoutout)
 //!
@@ -189,6 +190,7 @@
 /// [`send-a-shoutout`](https://dev.twitch.tv/docs/api/reference#send-a-shoutout)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SendAShoutoutRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster that’s sending the Shoutout.

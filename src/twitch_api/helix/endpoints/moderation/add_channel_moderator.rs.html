@@ -140,6 +140,7 @@
 <a href="#140" id="140">140</a>
 <a href="#141" id="141">141</a>
 <a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Adds a moderator to the broadcaster’s moderation room.
 //! [`add-channel-moderator`](https://dev.twitch.tv/docs/api/reference#add-channel-moderator)
 //!
@@ -185,6 +186,7 @@
 /// [`add-channel-moderator`](https://dev.twitch.tv/docs/api/reference#add-channel-moderator)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>AddChannelModeratorRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster that owns the chat room.

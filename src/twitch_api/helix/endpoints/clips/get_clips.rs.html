@@ -254,6 +254,7 @@
 <a href="#254" id="254">254</a>
 <a href="#255" id="255">255</a>
 <a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets clip information by clip ID (one or more), broadcaster ID (one only), or game ID (one only).
 //! [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
 //!
@@ -297,6 +298,7 @@
 /// [`get-clips`](https://dev.twitch.tv/docs/api/reference#get-clips)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetClipsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// ID of the broadcaster for whom clips are returned. The number of clips returned is determined by the first query-string parameter (default: 20). Results are ordered by view count.

@@ -142,6 +142,7 @@
 <a href="#142" id="142">142</a>
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Removes the word or phrase that the broadcaster is blocking users from using in their chat room.
 //! [`remove-blocked-term`](https://dev.twitch.tv/docs/api/reference#remove-blocked-term)
 //!
@@ -186,6 +187,7 @@
 /// [`remove-blocked-term`](https://dev.twitch.tv/docs/api/reference#remove-blocked-term)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>RemoveBlockedTermRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster that owns the list of blocked terms.

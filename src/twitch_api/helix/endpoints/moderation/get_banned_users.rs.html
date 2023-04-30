@@ -195,6 +195,7 @@
 <a href="#195" id="195">195</a>
 <a href="#196" id="196">196</a>
 <a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Returns all banned and timed-out users in a channel.
 //! [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
 //!
@@ -239,6 +240,7 @@
 /// [`get-banned-users`](https://dev.twitch.tv/docs/api/reference#get-banned-users)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetBannedUsersRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Must match the User ID in the Bearer token.

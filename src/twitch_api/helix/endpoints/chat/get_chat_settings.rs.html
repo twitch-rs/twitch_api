@@ -231,6 +231,7 @@
 <a href="#231" id="231">231</a>
 <a href="#232" id="232">232</a>
 <a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets the broadcaster’s chat settings.
 //! [`get-chat-settings`](https://dev.twitch.tv/docs/api/reference#get-chat-settings)
 //!
@@ -290,6 +291,7 @@
 /// [`get-chat-settings`](https://dev.twitch.tv/docs/api/reference#get-chat-settings)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChatSettingsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the broadcaster whose chat settings you want to get.

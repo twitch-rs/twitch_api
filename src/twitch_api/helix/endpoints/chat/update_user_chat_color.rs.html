@@ -168,6 +168,7 @@
 <a href="#168" id="168">168</a>
 <a href="#169" id="169">169</a>
 <a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Updates the color used for the user’s name in chat.
 //!
 //! [`update-user-chat-color`](https://dev.twitch.tv/docs/api/reference#update-user-chat-color)
@@ -217,6 +218,7 @@
 /// [`update-user-chat-color`](https://dev.twitch.tv/docs/api/reference#update-user-chat-color)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UpdateUserChatColorRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The ID of the user whose chat color you want to update.

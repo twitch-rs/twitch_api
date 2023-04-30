@@ -197,6 +197,7 @@
 <a href="#197" id="197">197</a>
 <a href="#198" id="198">198</a>
 <a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
 </pre></div><pre class="rust"><code><span class="attr">#![allow(deprecated_in_future, deprecated)]
 </span><span class="doccomment">//! Determines whether a string message meets the channel’s AutoMod requirements.
 //! [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
@@ -258,6 +259,7 @@
 /// [`check-automod-status`](https://dev.twitch.tv/docs/api/reference#check-automod-status)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CheckAutoModStatusRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// Must match the User ID in the Bearer token.

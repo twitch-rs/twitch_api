@@ -124,6 +124,7 @@
 <a href="#124" id="124">124</a>
 <a href="#125" id="125">125</a>
 <a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets a list of custom chat badges that can be used in chat for the specified channel. This includes subscriber badges and Bit badges.
 //! [`get-channel-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges)
 //!
@@ -170,6 +171,7 @@
 /// [`get-channel-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetChannelChatBadgesRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The broadcaster whose chat badges are being requested. Provided broadcaster_id must match the user_id in the user OAuth token.

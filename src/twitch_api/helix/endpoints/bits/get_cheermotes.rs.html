@@ -426,6 +426,7 @@
 <a href="#426" id="426">426</a>
 <a href="#427" id="427">427</a>
 <a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Retrieves the list of available Cheermotes, animated emotes to which viewers can assign Bits, to cheer in chat.
 //! [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
 //!
@@ -471,6 +472,7 @@
 /// [`get-cheermotes`](https://dev.twitch.tv/docs/api/reference#get-cheermotes)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetCheermotesRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// ID for the broadcaster who might own specialized Cheermotes.

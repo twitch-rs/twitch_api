@@ -135,6 +135,7 @@
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
 <a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets a specified user’s block list. The list is sorted by when the block occurred in descending order (i.e. most recent block first).
 //! [`get-user-block-list`](https://dev.twitch.tv/docs/api/reference#get-user-block-list)
 //!
@@ -177,6 +178,7 @@
 /// [`get-user-block-list`](https://dev.twitch.tv/docs/api/reference#get-user-block-list)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[must_use]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GetUserBlockListRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// User ID for a Twitch user.
