@@ -1,4 +1,3 @@
-#![allow(deprecated)]
 use twitch_api::helix::streams::GetStreamsRequest;
 use twitch_api::TwitchClient;
 use twitch_oauth2::{AccessToken, UserToken};
@@ -21,19 +20,8 @@ async fn main() {
     .await
     .unwrap();
 
-    let streams: Vec<String> = args.collect();
     let req = GetStreamsRequest::default();
 
     let response = client.helix.req_get(req, &token).await.unwrap();
-
-    // Note: This will fetch chatters in the current most viewed stream, might spam your console a bit.
     println!("GetStreams:\n\t{:?}", response.data);
-    if let Some(stream) = streams.get(0) {
-        println!(
-            "{:?}",
-            client.tmi.get_chatters(stream.as_str().into()).await
-        );
-    } else if let Some(stream) = response.data.get(0).map(|stream| &stream.user_login) {
-        println!("{:?}", client.tmi.get_chatters(stream).await);
-    }
 }
