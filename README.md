@@ -1,6 +1,6 @@
 # Twitch API | Rust library for talking with the new Twitch API aka. "Helix", TMI and more!
 
-[![github]](https://github.com/twitch-rs/twitch_api)&ensp;[![crates-io]](https://crates.io/crates/twitch_api)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.7.0-rc.4/twitch_api/)&ensp;[![discord]](https://discord.gg/7APWQeEmnK)
+[![github]](https://github.com/twitch-rs/twitch_api)&ensp;[![crates-io]](https://crates.io/crates/twitch_api)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.7.0-rc.6/twitch_api/)&ensp;[![discord]](https://discord.gg/7APWQeEmnK)
 
 [github]: https://img.shields.io/badge/github-twitch--rs/twitch__api-8da0cb?style=for-the-badge&labelColor=555555&logo=github
 [crates-io]: https://img.shields.io/crates/v/twitch_api.svg?style=for-the-badge&color=fc8d62&logo=rust
