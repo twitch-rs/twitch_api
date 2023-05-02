@@ -87,7 +87,7 @@ pub use reqwest_impl::ReqwestClientDefaultError;
 #[cfg(feature = "tower")]
 mod tower_impl;
 #[cfg(feature = "tower")]
-pub use tower_impl::TowerService;
+pub use tower_impl::{TowerError, TowerService};
 
 /// The User-Agent `product` of this crate.
 pub static TWITCH_API_USER_AGENT: &str = concat!(

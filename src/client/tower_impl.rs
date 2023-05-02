@@ -7,6 +7,7 @@ pub struct TowerService<S, ReqBody>(pub S, std::marker::PhantomData<fn(ReqBody)>
 
 #[derive(Debug, thiserror::Error, displaydoc::Display)]
 #[non_exhaustive]
+/// Errors that can occur when using a [`TowerService`]
 pub enum TowerError {
     /// service errored
     ServiceError(#[source] Box<dyn std::error::Error + Send + Sync>),
