@@ -3,12 +3,12 @@ use clap::{builder::ArgPredicate, ArgGroup, Parser};
 #[derive(Parser, Debug, Clone)]
 #[clap(about, version,
     group = ArgGroup::new("token").multiple(false).required(false),
-    group = ArgGroup::new("service").multiple(true).requires("oauth2-service-url"),
+    group = ArgGroup::new("service").multiple(true).requires("oauth2_service_url"),
     group = ArgGroup::new("channel").multiple(true).required(false),
 )]
 pub struct Opts {
     /// OAuth2 Access token
-    #[clap(long, env, hide_env = true, group = "token", value_parser = is_token, required_unless_present = "service"
+    #[clap(long, env, hide_env = true, group = "token", value_parser = to_token, required_unless_present = "service"
     )]
     pub access_token: Option<Secret>,
     /// Name of channel to monitor. If left out, defaults to owner of access token.
@@ -20,7 +20,7 @@ pub struct Opts {
     /// URL to service that provides OAuth2 token. Called on start and whenever the token needs to be refreshed.
     ///
     /// This application does not do any refreshing of tokens.
-    #[clap(long, env, hide_env = true, group = "token",
+    #[clap(long, env, hide_env = true, group = "service",
         value_parser = url::Url::parse, required_unless_present = "token"
         )]
     pub oauth2_service_url: Option<url::Url>,
@@ -47,14 +47,14 @@ pub struct Opts {
     pub oauth2_service_refresh: Option<u64>,
 }
 
-pub fn is_token(s: &str) -> eyre::Result<()> {
+pub fn to_token(s: &str) -> eyre::Result<Secret> {
     if s.starts_with("oauth:") {
         eyre::bail!("token should not have `oauth:` as a prefix")
     }
     if s.len() != 30 {
         eyre::bail!("token needs to be 30 characters long")
     }
-    Ok(())
+    Ok(Secret(s.to_owned()))
 }
 
 #[derive(Clone)]

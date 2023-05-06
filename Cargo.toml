@@ -5,7 +5,7 @@ authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/twitch-rs/twitch_api"
 license = "MIT OR Apache-2.0"
-description = "Library for talking with the new Twitch API aka. \"Helix\", TMI and more!"
+description = "Library for talking with the new Twitch API aka. \"Helix\", EventSub and more!"
 keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
 documentation = "https://docs.rs/twitch_api/0.7.0-rc.6"
 readme = "README.md"
@@ -28,7 +28,7 @@ exclude = ["twitch_types", "twitch_oauth2"]
 
 [workspace.dependencies]
 twitch_api = { version = "0.7.0-rc.6", path = "." }
-twitch_oauth2 = { version = "0.12.0", path = "twitch_oauth2/" }
+twitch_oauth2 = { version = "0.12.1", path = "twitch_oauth2/" }
 twitch_types = { version = "0.4.1", features = [
     "serde",
 ], path = "./twitch_types" }
@@ -69,7 +69,7 @@ default = ["deser_borrow"]
 client = ["twitch_oauth2/client", "dep:futures", "dep:hyper"]
 
 unsupported = ["serde_json?/raw_value", "beta"]
-beta = []
+beta = ["serde_json?/raw_value"]
 deny_unknown_fields = []
 trace_unknown_fields = ["dep:serde_ignored", "tracing"]
 

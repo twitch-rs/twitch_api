@@ -17,6 +17,12 @@ pub struct Opts {
     pub website_callback: String,
     #[clap(long, env, hide_env = true)]
     pub website: String,
+    /// port to use for the server
+    #[clap(long, short, default_value = "80")]
+    pub port: u16,
+    /// interface to use for the server
+    #[clap(long, short, default_value = "127.0.0.1")]
+    pub interface: std::net::IpAddr,
 }
 
 #[derive(Clone)]

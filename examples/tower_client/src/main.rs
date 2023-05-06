@@ -21,6 +21,7 @@ fn main() {
 }
 
 #[tokio::main]
+/// Run the application
 async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     let _ = dotenvy::dotenv();
     tracing_subscriber::fmt()
@@ -53,11 +54,12 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .service(
             hyper::Client::builder().build::<_, hyper::Body>(hyper_tls::HttpsConnector::new()),
         );
+
     tracing::info!("Creating client");
     let client: HelixClient<Box<dyn twitch_api::HttpClient<Error = _>>> =
         HelixClient::with_client(Box::new(TowerService::new(tower_client)));
-    tracing::info!("Getting token");
 
+    tracing::info!("Getting token");
     let token = UserToken::from_existing(
         &client,
         std::env::var("TWITCH_TOKEN")

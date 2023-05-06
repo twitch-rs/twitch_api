@@ -1,4 +1,4 @@
-# Twitch API | Rust library for talking with the new Twitch API aka. "Helix", TMI and more!
+# Twitch API | Rust library for talking with the new Twitch API aka. "Helix", EventSub and more!
 
 [![github]](https://github.com/twitch-rs/twitch_api)&ensp;[![crates-io]](https://crates.io/crates/twitch_api)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.7.0-rc.6/twitch_api/)&ensp;[![discord]](https://discord.gg/7APWQeEmnK)
 
@@ -11,28 +11,24 @@ See [documentation](https://docs.rs/twitch_api) for more info.
 
 You can see current unpublished docs for the main branch here: [![local-docs]](https://twitch-rs.github.io/twitch_api/twitch_api)
 
-See [examples](./examples) for examples.
+See [examples](./examples) for examples. If you want to run them locally,
+make sure you [get the git submodules](./CONTRIBUTING.md#fetching-the-git-submodules) first.
 
 [local-docs]: https://img.shields.io/github/actions/workflow/status/twitch-rs/twitch_api/gh-pages.yml?label=dev%20docs&style=flat-square&event=push
 
 ```rust ,no_run
 use twitch_api::helix::HelixClient;
 use twitch_api::twitch_oauth2::{AccessToken, UserToken};
-use reqwest::Client as ReqwestClient;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-  let client: HelixClient<ReqwestClient> =  HelixClient::default();
+    // Create the HelixClient, which is used to make requests to the Twitch API
+    let client: HelixClient<reqwest::Client> = HelixClient::default();
+    // Create a UserToken, which is used to authenticate requests
+    let token = UserToken::from_token(&client, AccessToken::from("mytoken")).await?;
 
-    let token = UserToken::from_existing(
-        &client,
-        AccessToken::new("mytoken".to_string()),
-        None, // Refresh Token
-        None, // Client Secret
-    )
-    .await?;
-
-    println!("Channel: {:?}",
+    println!(
+        "Channel: {:?}",
         client.get_channel_from_login("twitchdev", &token).await?
     );
 
@@ -50,9 +46,6 @@ This crate aims to target
 
 - [Helix](https://dev.twitch.tv/docs/api/reference)
   - See [implemented endpoints](https://github.com/twitch-rs/twitch_api/wiki/Implemented-Features#helix)
-- TMI
-  - See [implemented endpoints](https://github.com/twitch-rs/twitch_api/wiki/Implemented-Features#tmi)
-  - Note that TMI is planned to be deprecated, with [`Get Chatters`](https://dev.twitch.tv/docs/api/reference#get-chatters) replacing the remaining functionality
 - [EventSub](https://dev.twitch.tv/docs/eventsub/eventsub-reference)
   - See [implemented eventsub Helix endpoints](https://github.com/twitch-rs/twitch_api/wiki/Implemented-Features#eventsub)
 - [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
@@ -67,7 +60,7 @@ There are no current plans to support
 
 - [GraphQL](https://github.com/mauricew/twitch-graphql-api)
 - [Drops](https://dev.twitch.tv/docs/drops) (except what is in Helix)
-- [Twitch IRC Chat](https://dev.twitch.tv/docs/irc), use [museun/twitchchat](https://github.com/museun/twitchchat) or [robotty/twitch-irc](https://github.com/robotty/twitch-irc-rs/)
+- [Twitch IRC Chat](https://dev.twitch.tv/docs/irc), use [museun/twitch_message](https://github.com/museun/twitch_message) or [robotty/twitch-irc](https://github.com/robotty/twitch-irc-rs/)
 - [Authentication](https://dev.twitch.tv/docs/authentication), use [twitch-rs/twitch_oauth2](https://github.com/twitch-rs/twitch_oauth2)
 - Undocumented Helix endpoints, i.e endpoints mobile Twitch app uses. Including [working "hidden" endpoints](https://thomassen.sh/twitch-api-endpoints/)
 

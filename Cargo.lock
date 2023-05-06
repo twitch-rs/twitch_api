@@ -850,7 +850,6 @@ dependencies = [
  "futures",
  "hyper",
  "reqwest",
- "retainer",
  "serde",
  "serde_json",
  "tokio",
@@ -2808,7 +2807,7 @@ dependencies = [
 
 [[package]]
 name = "twitch_oauth2"
-version = "0.12.0"
+version = "0.12.1"
 dependencies = [
  "aliri_braid",
  "async-trait",
