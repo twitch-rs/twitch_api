@@ -10,7 +10,7 @@
 //!
 //! <br>
 //!
-//! <h5>Rust library for talking with the new Twitch API aka. "Helix", TMI and more! Use Twitch endpoints fearlessly!</h5>
+//! <h5>Rust library for talking with the new Twitch API aka. "Helix", EventSub and more! Use Twitch endpoints fearlessly!</h5>
 //!
 //! # Examples
 //!

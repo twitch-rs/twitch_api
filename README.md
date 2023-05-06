@@ -1,4 +1,4 @@
-# Twitch API | Rust library for talking with the new Twitch API aka. "Helix", TMI and more!
+# Twitch API | Rust library for talking with the new Twitch API aka. "Helix", EventSub and more!
 
 [![github]](https://github.com/twitch-rs/twitch_api)&ensp;[![crates-io]](https://crates.io/crates/twitch_api)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.7.0-rc.6/twitch_api/)&ensp;[![discord]](https://discord.gg/7APWQeEmnK)
 
