@@ -46,9 +46,6 @@ This crate aims to target
 
 - [Helix](https://dev.twitch.tv/docs/api/reference)
   - See [implemented endpoints](https://github.com/twitch-rs/twitch_api/wiki/Implemented-Features#helix)
-- TMI
-  - See [implemented endpoints](https://github.com/twitch-rs/twitch_api/wiki/Implemented-Features#tmi)
-  - Note that TMI is planned to be deprecated, with [`Get Chatters`](https://dev.twitch.tv/docs/api/reference#get-chatters) replacing the remaining functionality
 - [EventSub](https://dev.twitch.tv/docs/eventsub/eventsub-reference)
   - See [implemented eventsub Helix endpoints](https://github.com/twitch-rs/twitch_api/wiki/Implemented-Features#eventsub)
 - [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
