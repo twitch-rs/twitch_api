@@ -34,3 +34,5 @@ TWITCH_TOKEN=mytoken
 CLIENT_ID=myclientid
 CLIENT_SECRET=myclientid
 ```
+
+All of these are optional, you do not need to specify a value if the example doesn't need it or it's supplied as an argument in the commandline or from the environment.
