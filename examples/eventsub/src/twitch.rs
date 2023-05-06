@@ -1,4 +1,4 @@
-use std::{collections::VecDeque, sync::Arc};
+use std::sync::Arc;
 
 use axum::{
     body::HttpBody,
@@ -16,13 +16,7 @@ use twitch_api::{
         stream::{StreamOfflineV1, StreamOfflineV1Payload, StreamOnlineV1, StreamOnlineV1Payload},
         Event, EventType, Status,
     },
-    helix::{
-        self,
-        eventsub::{
-            CreateEventSubSubscriptionBody, CreateEventSubSubscriptionRequest,
-            GetEventSubSubscriptionsRequest,
-        },
-    },
+    helix,
     twitch_oauth2::{AppAccessToken, ClientId, ClientSecret, TwitchToken},
     types::{self, UserNameRef},
     HelixClient,
@@ -46,14 +40,16 @@ pub async fn eventsub_register(
         // first check if we are already registered
         interval.tick().await;
         tracing::info!("checking subs");
-        let req = GetEventSubSubscriptionsRequest::status(Status::Enabled);
-        let subs = helix::make_stream(req, &*token.read().await, &client, |resp| {
-            VecDeque::from(resp.subscriptions)
-        })
-        // filter out websockets
-        .try_filter(|event| futures::future::ready(event.transport.is_webhook()))
-        .try_collect::<Vec<_>>()
-        .await?;
+        let subs = client
+            .get_eventsub_subscriptions(Status::Enabled, None, None, &*token.read().await)
+            .map_ok(|events| {
+                futures::stream::iter(events.subscriptions.into_iter().map(Ok::<_, eyre::Report>))
+            })
+            .try_flatten()
+            // filter out websockets
+            .try_filter(|event| futures::future::ready(event.transport.is_webhook()))
+            .try_collect::<Vec<_>>()
+            .await?;
         let online_exists = subs.iter().any(|sub| {
             // we've filtered out websocket transports
             sub.transport.as_webhook().unwrap().callback == website
@@ -88,41 +84,41 @@ pub async fn eventsub_register(
             online = online_exists,
             "got existing subs"
         );
+
+        let transport = twitch_eventsub::Transport::webhook(
+            website.clone(),
+            sign_secret.secret_str().to_string(),
+        );
         drop(subs);
         if !online_exists {
-            let request = CreateEventSubSubscriptionRequest::new();
-            let body = CreateEventSubSubscriptionBody::new(
-                StreamOnlineV1::broadcaster_user_id(config.broadcaster.id.clone()),
-                twitch_eventsub::Transport::webhook(
-                    website.clone(),
-                    sign_secret.secret_str().to_string(),
-                ),
-            );
             if std::env::var("DEV").is_ok() {
                 tracing::info!("In dev mode, not registering eventsubs");
             } else {
                 client
-                    .req_post(request, body, &*token.read().await)
+                    .create_eventsub_subscription(
+                        StreamOnlineV1::broadcaster_user_id(config.broadcaster.id.clone()),
+                        transport.clone(),
+                        &*token.read().await,
+                    )
                     .await
                     .wrap_err_with(|| "when registering online event")?;
             }
         }
 
         if !offline_exists {
-            let request = CreateEventSubSubscriptionRequest::default();
-            let body = CreateEventSubSubscriptionBody::new(
-                StreamOfflineV1::broadcaster_user_id(config.broadcaster.id.clone()),
-                twitch_eventsub::Transport::webhook(
-                    website.clone(),
-                    sign_secret.secret_str().to_string(),
-                ),
-            );
             if std::env::var("DEV").is_ok() {
                 tracing::info!("In dev mode, not registering eventsubs");
                 return Ok(());
             } else {
                 client
-                    .req_post(request, body, &*token.read().await)
+                    .create_eventsub_subscription(
+                        StreamOfflineV1::broadcaster_user_id(config.broadcaster.id.clone()),
+                        twitch_eventsub::Transport::webhook(
+                            website.clone(),
+                            sign_secret.secret_str().to_string(),
+                        ),
+                        &*token.read().await,
+                    )
                     .await
                     .wrap_err_with(|| "when registering offline event")?;
             }

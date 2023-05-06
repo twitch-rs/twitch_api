@@ -54,8 +54,10 @@ async fn main() -> Result<(), eyre::Report> {
     Ok(())
 }
 
+/// Run the application
 pub async fn run(opts: &Opts) -> eyre::Result<()> {
-    let client: HelixClient<'static, _> = twitch_api::HelixClient::with_client(
+    // Create the HelixClient, which is used to make requests to the Twitch API
+    let client: HelixClient<_> = twitch_api::HelixClient::with_client(
         <reqwest::Client>::default_client_with_name(Some(
             "twitch-rs/eventsub"
                 .parse()
@@ -65,6 +67,7 @@ pub async fn run(opts: &Opts) -> eyre::Result<()> {
         .wrap_err_with(|| "when creating client")?,
     );
 
+    // Get the app access token
     let token = twitch_oauth2::AppAccessToken::get_app_access_token(
         &client,
         opts.client_id.clone(),
@@ -73,29 +76,37 @@ pub async fn run(opts: &Opts) -> eyre::Result<()> {
     )
     .await?;
 
+    // Get the user we want to listen to
     let broadcaster = client
         .get_user_from_login(&opts.broadcaster_login, &token)
         .await?
         .ok_or_else(|| eyre::eyre!("broadcaster not found"))?;
 
+    // Create the config, which is shared between all requests
     let config = Arc::new(Config {
         broadcaster_url: stream_url_from_user(&broadcaster.login),
         broadcaster,
         website_url: opts.website.clone(),
     });
 
+    // Status of the channel
     let live = twitch::is_live(&config, &client, &token).await?;
 
+    // make the token sharable via an Arc<RwLock<_>>
     let token = Arc::new(tokio::sync::RwLock::new(token));
+
+    // watch channel for the live status, sent to every website websocket client
     let (sender, recv) = watch::channel(live);
     let sender = Arc::new(sender);
+
+    // Retainer/cache for the eventsub subscriptions, stores the header Twitch-Eventsub-Message-Id to check if we've already seen the request from twitch.
     let retainer = Arc::new(retainer::Cache::<axum::http::HeaderValue, ()>::new());
     let ret = retainer.clone();
-    let retainer_cleanup = async move {
+    let retainer_cleanup = tokio::spawn(async move {
         ret.monitor(10, 0.50, tokio::time::Duration::from_secs(86400 / 2))
             .await;
         Ok::<(), eyre::Report>(())
-    };
+    });
 
     let app = Router::new()
         .route(
@@ -143,23 +154,27 @@ pub async fn run(opts: &Opts) -> eyre::Result<()> {
                 .layer(CatchPanicLayer::new()),
         );
 
+    // spawn the server
+    let address = (opts.interface, opts.port).into();
     let server = tokio::spawn(async move {
-        axum::Server::bind(
-            &"0.0.0.0:80"
-                .parse()
-                .wrap_err_with(|| "when parsing address")?,
-        )
-        .serve(app.into_make_service())
-        .await
-        .wrap_err_with(|| "when serving")?;
+        axum::Server::bind(&address)
+            .serve(app.into_make_service())
+            .await
+            .wrap_err_with(|| "when serving")?;
         Ok::<(), eyre::Report>(())
     });
-    tracing::info!("spinning up server!");
+    tracing::info!("spinning up server! http://{}", address);
+
     if std::env::var("IM_A_SERVER").is_err() {
-        tracing::warn!("to run this example you need to be a server with a url with tls,
-        this means you're either behind a reverse-proxy, or you've setup this example to handle that");
+        tracing::warn!("to run this example you need to be a server with a url and have https via tls,
+            this means you're either behind a reverse-proxy, or you've setup this example to handle that");
+        tracing::warn!(
+            "set IM_A_SERVER=1 to bypass this check, see eventsub_websocket
+            for an example which doesn't require a server"
+        );
         std::env::set_var("DEV", "1");
     }
+
     let r = tokio::try_join!(
         flatten(server),
         flatten(tokio::spawn(twitch::checker(
@@ -181,7 +196,7 @@ pub async fn run(opts: &Opts) -> eyre::Result<()> {
             opts.website_callback.clone(),
             opts.sign_secret.clone()
         ))),
-        flatten(tokio::spawn(retainer_cleanup)),
+        flatten(retainer_cleanup),
     );
     r?;
     Ok(())

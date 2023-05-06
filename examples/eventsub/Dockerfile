@@ -10,14 +10,16 @@ COPY ../../ .
 ARG RUSTFLAGS=-Ctarget-feature=-crt-static
 ARG CARGO_UNSTABLE_SPARSE_REGISTRY=true
 RUN --mount=type=cache,target=$CARGO_HOME/git \
-    --mount=type=cache,target=$CARGO_HOME/registry \
-    --mount=type=cache,sharing=private,target=/app/target \
-    cargo -V; cargo build --release -p eventsub && mv /app/target/release/eventsub /app/is_live
+  --mount=type=cache,target=$CARGO_HOME/registry \
+  --mount=type=cache,sharing=private,target=/app/target \
+  cargo -V
+cargo build --release -p eventsub && mv /app/target/release/eventsub /app/is_live
 FROM alpine:3.16 as runtime
 WORKDIR /app
 ARG RUN_DEPS="ca-certificates openssl libgcc"
 RUN apk add --no-cache \
-        ${RUN_DEPS}
+  ${RUN_DEPS}
 COPY --from=builder /app/is_live /app/is_live
 COPY ./examples/eventsub/static ./static
-ENTRYPOINT "/app/is_live"
+EXPOSE 80
+ENTRYPOINT ["/app/is_live", "--interface", "0.0.0.0"]

@@ -5,7 +5,6 @@ pub mod websocket;
 
 use clap::Parser;
 pub use opts::Secret;
-use twitch_oauth2::UserToken;
 
 use std::sync::Arc;
 
@@ -13,11 +12,11 @@ use opts::Opts;
 
 use eyre::Context;
 
-use tokio::{sync::RwLock, task::JoinHandle};
 use twitch_api::{client::ClientDefault, HelixClient};
 
 #[tokio::main]
 async fn main() -> Result<(), eyre::Report> {
+    // Setup dotenv, tracing and error reporting with eyre
     util::install_utils()?;
     let opts = Opts::parse();
 
@@ -30,15 +29,17 @@ async fn main() -> Result<(), eyre::Report> {
 
     tracing::debug!(opts = ?opts);
 
-    run(&opts)
+    run(Arc::new(opts))
         .await
         .with_context(|| "when running application")?;
 
     Ok(())
 }
 
-pub async fn run(opts: &Opts) -> eyre::Result<()> {
-    let client: HelixClient<'static, _> = twitch_api::HelixClient::with_client(
+/// Run the application
+pub async fn run(opts: Arc<Opts>) -> eyre::Result<()> {
+    // Create the HelixClient, which is used to make requests to the Twitch API
+    let client: HelixClient<_> = twitch_api::HelixClient::with_client(
         <reqwest::Client>::default_client_with_name(Some(
             "twitch-rs/eventsub"
                 .parse()
@@ -48,25 +49,22 @@ pub async fn run(opts: &Opts) -> eyre::Result<()> {
         .wrap_err_with(|| "when creating client")?,
     );
 
-    let token = util::get_access_token(client.get_client(), opts).await?;
-    let token: Arc<RwLock<UserToken>> = Arc::new(RwLock::new(token));
-    let retainer = Arc::new(retainer::Cache::<String, ()>::new());
-    let ret = retainer.clone();
-    let retainer_cleanup = async move {
-        ret.monitor(10, 0.50, tokio::time::Duration::from_secs(86400 / 2))
-            .await;
-        Ok::<(), eyre::Report>(())
-    };
+    // Get the access token from the cli, dotenv or an oauth service
+    let token: twitch_oauth2::UserToken =
+        util::get_access_token(client.get_client(), &opts).await?;
+
+    // Get the user id of the channel we want to listen to
     let user_id = if let Some(ref id) = opts.channel_id {
         id.clone().into()
     } else if let Some(ref login) = opts.channel_login {
         client
-            .get_user_from_login(login, &*token.read().await)
+            .get_user_from_login(login, &token)
             .await?
             .ok_or_else(|| eyre::eyre!("no user found with name {login}"))?
             .id
     } else {
-        token.read().await.user_id.clone()
+        // Use the user id from the token if no channel is specified
+        token.user_id.clone()
     };
 
     let websocket_client = websocket::WebsocketClient {
@@ -75,22 +73,18 @@ pub async fn run(opts: &Opts) -> eyre::Result<()> {
         client,
         user_id,
         connect_url: twitch_api::TWITCH_EVENTSUB_WEBSOCKET_URL.clone(),
+        opts,
     };
 
-    let websocket_client = {
-        let opts = opts.clone();
-        async move { websocket_client.run(&opts).await }
-    };
+    let websocket_client = tokio::spawn(async move { websocket_client.run().await });
 
-    let r = tokio::try_join!(
-        flatten(tokio::spawn(retainer_cleanup)),
-        flatten(tokio::spawn(websocket_client))
-    );
-    r?;
+    tokio::try_join!(flatten(websocket_client))?;
     Ok(())
 }
 
-async fn flatten<T>(handle: JoinHandle<Result<T, eyre::Report>>) -> Result<T, eyre::Report> {
+async fn flatten<T>(
+    handle: tokio::task::JoinHandle<Result<T, eyre::Report>>,
+) -> Result<T, eyre::Report> {
     match handle.await {
         Ok(Ok(result)) => Ok(result),
         Ok(Err(err)) => Err(err),

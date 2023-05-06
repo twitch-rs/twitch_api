@@ -1,3 +1,4 @@
+/// Setup dotenv, tracing and error reporting with eyre
 pub fn install_utils() -> eyre::Result<()> {
     let _ = dotenvy::dotenv(); //ignore error
     install_tracing();
@@ -5,6 +6,7 @@ pub fn install_utils() -> eyre::Result<()> {
     Ok(())
 }
 
+/// Install eyre and setup a panic hook
 fn install_eyre() -> eyre::Result<()> {
     let (panic_hook, eyre_hook) = color_eyre::config::HookBuilder::default().into_hooks();
 
@@ -16,6 +18,7 @@ fn install_eyre() -> eyre::Result<()> {
     Ok(())
 }
 
+/// Install tracing with a specialized filter
 fn install_tracing() {
     use tracing_error::ErrorLayer;
     use tracing_subscriber::prelude::*;

@@ -1,28 +1,35 @@
 use std::sync::Arc;
 
 use eyre::Context;
-use tokio::sync::RwLock;
 use tokio_tungstenite::tungstenite;
 use tracing::Instrument;
 use twitch_api::{
     eventsub::{
+        self,
         event::websocket::{EventsubWebsocketData, ReconnectPayload, SessionData, WelcomePayload},
         Event,
     },
     types::{self},
     HelixClient,
 };
-use twitch_oauth2::UserToken;
+use twitch_oauth2::{TwitchToken, UserToken};
 
 pub struct WebsocketClient {
+    /// The session id of the websocket connection
     pub session_id: Option<String>,
-    pub token: Arc<RwLock<UserToken>>,
+    /// The token used to authenticate with the Twitch API
+    pub token: UserToken,
+    /// The client used to make requests to the Twitch API
     pub client: HelixClient<'static, reqwest::Client>,
+    /// The user id of the channel we want to listen to
     pub user_id: types::UserId,
+    /// The url to use for websocket
     pub connect_url: url::Url,
+    pub opts: Arc<crate::Opts>,
 }
 
 impl WebsocketClient {
+    /// Connect to the websocket and return the stream
     pub async fn connect(
         &self,
     ) -> Result<
@@ -46,12 +53,15 @@ impl WebsocketClient {
         Ok(socket)
     }
 
+    /// Run the websocket subscriber
     #[tracing::instrument(name = "subscriber", skip_all, fields())]
-    pub async fn run(mut self, _opts: &crate::Opts) -> Result<(), eyre::Error> {
+    pub async fn run(mut self) -> Result<(), eyre::Error> {
+        // Establish the stream
         let mut s = self
             .connect()
             .await
             .context("when establishing connection")?;
+        // Loop over the stream, processing messages as they come in.
         loop {
             tokio::select!(
             Some(msg) = futures::StreamExt::next(&mut s) => {
@@ -76,10 +86,12 @@ impl WebsocketClient {
         }
     }
 
+    /// Process a message from the websocket
     pub async fn process_message(&mut self, msg: tungstenite::Message) -> Result<(), eyre::Report> {
         match msg {
             tungstenite::Message::Text(s) => {
                 tracing::info!("{s}");
+                // Parse the message into a [twitch_api::eventsub::EventsubWebsocketData]
                 match Event::parse_websocket(&s)? {
                     EventsubWebsocketData::Welcome {
                         payload: WelcomePayload { session },
@@ -92,14 +104,26 @@ impl WebsocketClient {
                         self.process_welcome_message(session).await?;
                         Ok(())
                     }
+                    // Here is where you would handle the events you want to listen to
                     EventsubWebsocketData::Notification {
                         metadata: _,
-                        payload: _,
-                    } => Ok(()),
+                        payload,
+                    } => {
+                        match payload {
+                            Event::ChannelBanV1(eventsub::Payload { message, .. }) => {
+                                tracing::info!(?message, "got ban event");
+                            }
+                            Event::ChannelUnbanV1(eventsub::Payload { message, .. }) => {
+                                tracing::info!(?message, "got ban event");
+                            }
+                            _ => {}
+                        }
+                        Ok(())
+                    }
                     EventsubWebsocketData::Revocation {
-                        metadata: _,
+                        metadata,
                         payload: _,
-                    } => Ok(()),
+                    } => eyre::bail!("got revocation event: {metadata:?}"),
                     EventsubWebsocketData::Keepalive {
                         metadata: _,
                         payload: _,
@@ -120,23 +144,25 @@ impl WebsocketClient {
         if let Some(url) = data.reconnect_url {
             self.connect_url = url.parse()?;
         }
-        let req = twitch_api::helix::eventsub::CreateEventSubSubscriptionRequest::new();
-        let body = twitch_api::helix::eventsub::CreateEventSubSubscriptionBody::new(
-            twitch_api::eventsub::channel::ChannelBanV1::broadcaster_user_id(self.user_id.clone()),
-            twitch_api::eventsub::Transport::websocket(data.id.clone()),
-        );
+        // check if the token is expired, if it is, request a new token. This only works if using a oauth service for getting a token
+        if self.token.is_elapsed() {
+            self.token =
+                crate::util::get_access_token(self.client.get_client(), &self.opts).await?;
+        }
+        let transport = eventsub::Transport::websocket(data.id.clone());
         self.client
-            .req_post(req, body, &*self.token.read().await)
+            .create_eventsub_subscription(
+                eventsub::channel::ChannelBanV1::broadcaster_user_id(self.user_id.clone()),
+                transport.clone(),
+                &self.token,
+            )
             .await?;
-        let req = twitch_api::helix::eventsub::CreateEventSubSubscriptionRequest::new();
-        let body = twitch_api::helix::eventsub::CreateEventSubSubscriptionBody::new(
-            twitch_api::eventsub::channel::ChannelUnbanV1::broadcaster_user_id(
-                self.user_id.clone(),
-            ),
-            twitch_api::eventsub::Transport::websocket(data.id.clone()),
-        );
         self.client
-            .req_post(req, body, &*self.token.read().await)
+            .create_eventsub_subscription(
+                eventsub::channel::ChannelUnbanV1::broadcaster_user_id(self.user_id.clone()),
+                transport,
+                &self.token,
+            )
             .await?;
         tracing::info!("listening to ban and unbans");
         Ok(())

@@ -14,34 +14,60 @@
 //!
 //! # Examples
 //!
+//! Get a channel
+//!
+//! ```rust,no_run
+//! use twitch_api::helix::HelixClient;
+//! use twitch_api::twitch_oauth2::{AccessToken, UserToken};
+//!
+//! #[tokio::main]
+//! async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+//!     // Create the HelixClient, which is used to make requests to the Twitch API
+//!     let client: HelixClient<reqwest::Client> = HelixClient::default();
+//!     // Create a UserToken, which is used to authenticate requests.
+//!     let token =
+//!         UserToken::from_token(&client, AccessToken::from("mytoken"))
+//!             .await?;
+//!
+//!     println!(
+//!         "Channel: {:?}",
+//!         client.get_channel_from_login("twitchdev", &token).await?
+//!     );
+//!
+//!     Ok(())
+//! }
+//! ```
+//!
 //! Get information about a channel with the [`Get Channel Information`](crate::helix::channels::get_channel_information) helix endpoint.
 //!
 //! ```rust,no_run
+//! use twitch_api::twitch_oauth2::{
+//!     tokens::errors::AppAccessTokenError, AppAccessToken, TwitchToken,
+//! };
 //! use twitch_api::{helix::channels::GetChannelInformationRequest, TwitchClient};
-//! use twitch_api::twitch_oauth2::{tokens::errors::AppAccessTokenError, AppAccessToken, Scope, TwitchToken};
-//! # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
 //!
-//! # #[tokio::main]
-//! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-//! # let client_id = twitch_oauth2::ClientId::from("validclientid");
-//! # let client_secret = twitch_oauth2::ClientSecret::from("validclientsecret");
+//! #[tokio::main]
+//! async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+//!     let client: TwitchClient<reqwest::Client> = TwitchClient::default();
+//!     let token = AppAccessToken::get_app_access_token(
+//!         &client,
+//!         "validclientid".into(),
+//!         "validclientsecret".into(),
+//!         vec![/* scopes */],
+//!     )
+//!     .await?;
+//!     let ids: &[&twitch_types::UserIdRef] = &["27620241".into()];
+//!     let req = GetChannelInformationRequest::broadcaster_ids(ids);
+//!     println!(
+//!         "{:?}",
+//!         &client.helix.req_get(req, &token).await?.data[0].title
+//!     );
 //!
-//! let client: TwitchClient<reqwest::Client> = TwitchClient::default();
-//! let token =
-//!     AppAccessToken::get_app_access_token(&client, client_id, client_secret, Scope::all())
-//!         .await?;
-//! let ids: &[&twitch_types::UserIdRef] = &["27620241".into()];
-//! let req = GetChannelInformationRequest::broadcaster_ids(ids);
-//! println!(
-//!     "{:?}",
-//!     &client.helix.req_get(req, &token).await?.data[0].title
-//! );
-//! # Ok(())
-//! # }
+//!     Ok(())
+//! }
 //! ```
 //!
 //! There is also convenience functions, like accessing channel information with a specified login name
-//!
 //! ```rust,no_run
 //! # use twitch_api::{TwitchClient, helix::channels::GetChannelInformationRequest};
 //! # use twitch_api::twitch_oauth2::{AppAccessToken, Scope, TwitchToken, tokens::errors::AppAccessTokenError};

@@ -11,6 +11,10 @@ mod custom;
 impl<C: crate::HttpClient + crate::client::ClientDefault<'static>> Default
     for HelixClient<'static, C>
 {
+    /// Creates a new [`HelixClient`] with a default [`HttpClient`][crate::HttpClient].
+    ///
+    /// See [ClientDefault::default_client_with_name](crate::client::ClientDefault::default_client_with_name)
+    /// for setting a product name in the User Agent.
     fn default() -> Self { Self::new() }
 }
 
@@ -30,7 +34,7 @@ impl<C: crate::HttpClient + crate::client::ClientDefault<'static>> Default
 /// [`req_patch`](HelixClient::req_patch) for [`PATCH`](RequestPatch) and
 /// [`req_delete`](HelixClient::req_delete) for [`DELETE`](RequestDelete)
 ///
-/// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
+/// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime, which typically means it can be elided.
 ///
 /// ```rust,no_run
 /// # use twitch_api::{HelixClient}; pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}

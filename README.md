@@ -11,28 +11,24 @@ See [documentation](https://docs.rs/twitch_api) for more info.
 
 You can see current unpublished docs for the main branch here: [![local-docs]](https://twitch-rs.github.io/twitch_api/twitch_api)
 
-See [examples](./examples) for examples.
+See [examples](./examples) for examples. If you want to run them locally,
+make sure you [get the git submodules](./CONTRIBUTING.md#fetching-the-git-submodules) first.
 
 [local-docs]: https://img.shields.io/github/actions/workflow/status/twitch-rs/twitch_api/gh-pages.yml?label=dev%20docs&style=flat-square&event=push
 
 ```rust ,no_run
 use twitch_api::helix::HelixClient;
 use twitch_api::twitch_oauth2::{AccessToken, UserToken};
-use reqwest::Client as ReqwestClient;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-  let client: HelixClient<ReqwestClient> =  HelixClient::default();
+    // Create the HelixClient, which is used to make requests to the Twitch API
+    let client: HelixClient<reqwest::Client> = HelixClient::default();
+    // Create a UserToken, which is used to authenticate requests
+    let token = UserToken::from_token(&client, AccessToken::from("mytoken")).await?;
 
-    let token = UserToken::from_existing(
-        &client,
-        AccessToken::new("mytoken".to_string()),
-        None, // Refresh Token
-        None, // Client Secret
-    )
-    .await?;
-
-    println!("Channel: {:?}",
+    println!(
+        "Channel: {:?}",
         client.get_channel_from_login("twitchdev", &token).await?
     );
 

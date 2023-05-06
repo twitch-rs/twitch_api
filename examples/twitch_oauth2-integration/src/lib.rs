@@ -7,6 +7,7 @@ pub async fn get_auth_token_request(
     let client_secret = ClientSecret::from("aaaa");
 
     let token =
+            // here we can use the TwitchClient as a client for twitch_oauth2
         AppAccessToken::get_app_access_token(client, client_id, client_secret, Scope::all())
             .await
             .unwrap();

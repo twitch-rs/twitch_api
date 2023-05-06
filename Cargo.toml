@@ -28,7 +28,7 @@ exclude = ["twitch_types", "twitch_oauth2"]
 
 [workspace.dependencies]
 twitch_api = { version = "0.7.0-rc.6", path = "." }
-twitch_oauth2 = { version = "0.12.0", path = "twitch_oauth2/" }
+twitch_oauth2 = { version = "0.12.1", path = "twitch_oauth2/" }
 twitch_types = { version = "0.4.1", features = [
     "serde",
 ], path = "./twitch_types" }
@@ -69,7 +69,7 @@ default = ["deser_borrow"]
 client = ["twitch_oauth2/client", "dep:futures", "dep:hyper"]
 
 unsupported = ["serde_json?/raw_value", "beta"]
-beta = []
+beta = ["serde_json?/raw_value"]
 deny_unknown_fields = []
 trace_unknown_fields = ["dep:serde_ignored", "tracing"]
 

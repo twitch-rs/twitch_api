@@ -1,6 +1,7 @@
 use eyre::Context;
 use twitch_oauth2::UserToken;
 
+/// Setup dotenv, tracing and error reporting with eyre
 pub fn install_utils() -> eyre::Result<()> {
     let _ = dotenvy::dotenv(); //ignore error
     install_tracing();
@@ -8,6 +9,7 @@ pub fn install_utils() -> eyre::Result<()> {
     Ok(())
 }
 
+/// Install eyre and setup a panic hook
 fn install_eyre() -> eyre::Result<()> {
     let (panic_hook, eyre_hook) = color_eyre::config::HookBuilder::default().into_hooks();
 
@@ -18,7 +20,7 @@ fn install_eyre() -> eyre::Result<()> {
     }));
     Ok(())
 }
-
+/// Install tracing with a specialized filter
 fn install_tracing() {
     use tracing_error::ErrorLayer;
     use tracing_subscriber::prelude::*;
@@ -32,6 +34,7 @@ fn install_tracing() {
     let filter_layer = EnvFilter::try_from_default_env()
         .or_else(|_| EnvFilter::try_new("info"))
         .map(|f| {
+            // common filters which can be very verbose
             f.add_directive("hyper=error".parse().expect("could not make directive"))
                 .add_directive("h2=error".parse().expect("could not make directive"))
                 .add_directive("rustls=error".parse().expect("could not make directive"))
@@ -51,17 +54,19 @@ fn install_tracing() {
         .init();
 }
 
+/// Create a new [UserToken] from an [AccessToken]
 #[tracing::instrument(skip(client, token))]
 pub async fn make_token<'a>(
     client: &'a impl twitch_oauth2::client::Client,
     token: impl Into<twitch_oauth2::AccessToken>,
 ) -> Result<UserToken, eyre::Report> {
-    UserToken::from_existing(client, token.into(), None, None)
+    UserToken::from_token(client, token.into())
         .await
         .context("could not get/make access token")
         .map_err(Into::into)
 }
 
+/// Get an access token from either the cli, dotenv (via [clap::Arg::env]) or an oauth service
 #[tracing::instrument(skip(client, opts))]
 pub async fn get_access_token(
     client: &reqwest::Client,
