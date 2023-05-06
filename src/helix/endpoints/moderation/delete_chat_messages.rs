@@ -109,8 +109,8 @@ impl Request for DeleteChatMessagesRequest<'_> {
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     const PATH: &'static str = "moderation/chat";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ModeratorManageChatMessages];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ModeratorManageChatMessages];
 }
 
 impl RequestDelete for DeleteChatMessagesRequest<'_> {

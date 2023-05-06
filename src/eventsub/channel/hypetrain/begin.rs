@@ -28,7 +28,8 @@ impl EventSubscription for ChannelHypeTrainBeginV1 {
 
     const EVENT_TYPE: EventType = EventType::ChannelHypeTrainBegin;
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadHypeTrain];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelReadHypeTrain];
     const VERSION: &'static str = "1";
 }
 

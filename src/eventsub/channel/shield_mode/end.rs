@@ -32,7 +32,10 @@ impl EventSubscription for ChannelShieldModeEndV1 {
 
     const EVENT_TYPE: EventType = EventType::ChannelShieldModeEnd;
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModeratorReadShieldMode];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![any(
+        twitch_oauth2::Scope::ModeratorReadShieldMode,
+        twitch_oauth2::Scope::ModeratorManageShieldMode
+    )];
     const VERSION: &'static str = "1";
 }
 

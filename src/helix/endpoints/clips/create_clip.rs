@@ -87,7 +87,8 @@ impl Request for CreateClipRequest<'_> {
 
     const PATH: &'static str = "clips";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ClipsEdit];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ClipsEdit];
 }
 
 impl RequestGet for CreateClipRequest<'_> {}

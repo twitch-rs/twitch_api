@@ -158,8 +158,8 @@ impl Request for CreatePredictionRequest<'_> {
 
     const PATH: &'static str = "predictions";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ChannelManagePredictions];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelManagePredictions];
 }
 
 impl<'a> RequestPost for CreatePredictionRequest<'a> {

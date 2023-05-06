@@ -118,8 +118,8 @@ impl Request for UpdateShieldModeStatusRequest<'_> {
 
     const PATH: &'static str = "moderation/shield_mode";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ModeratorManageShieldMode];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ModeratorManageShieldMode];
 }
 
 impl<'a> RequestPut for UpdateShieldModeStatusRequest<'a> {

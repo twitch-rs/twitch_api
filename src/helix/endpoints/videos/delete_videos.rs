@@ -81,7 +81,8 @@ impl Request for DeleteVideosRequest<'_> {
 
     const PATH: &'static str = "videos";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageVideos];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelManageVideos];
 }
 
 impl RequestDelete for DeleteVideosRequest<'_> {

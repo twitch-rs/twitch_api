@@ -34,7 +34,10 @@ impl EventSubscription for ChannelShoutoutReceiveV1 {
 
     const EVENT_TYPE: EventType = EventType::ChannelShoutoutReceive;
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModeratorReadShoutouts];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![any(
+        twitch_oauth2::Scope::ModeratorReadShoutouts,
+        twitch_oauth2::Scope::ModeratorManageShoutouts
+    )];
     const VERSION: &'static str = "1";
 }
 

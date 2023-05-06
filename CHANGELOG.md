@@ -27,6 +27,8 @@
 - `TeamInformation::thumbnail_url` is now optional (`Option<String>`).
 - Made many structs & enums non exhaustive
 - Renamed `GetBlockedTerms` -> `GetBlockedTermsRequest`
+- Changed `SCOPES` on `helix::Request`, `pubsub::Topic` and `eventsub::EventSubscription` to be `twitch_oauth2::Validator`
+- Updated `twitch_oauth2` dependency
 
 ### Changes
 
@@ -40,10 +42,10 @@
 - Deprecated `channel.follow` v1 eventsub event
 - Deprecated `Get User Follows` and associated follower related extension methods
 - Deprecated Twitch-defined tags: `Get All Stream Tags`, `Get Stream Tags`, `Replace Stream Tags` and `TwitchTag`
-- Added `beta` feature to specifically enable beta endpoints
 
 ### Added
 
+- Added `beta` feature to specifically enable beta endpoints
 - Added `Ban User` and `Unban User`
 - Added `Get Chat Settings` endpoint
 - Added `type` and `user_id` query params to `GetEventSubSubscriptionsRequest`

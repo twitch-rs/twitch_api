@@ -11,9 +11,9 @@ use errors::*;
 pub trait Request: serde::Serialize {
     /// The path to the endpoint relative to the helix root. eg. `channels` for [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information)
     const PATH: &'static str;
-    /// Scopes needed by this endpoint
+    /// Scopes needed for this endpoint
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope];
+    const SCOPE: twitch_oauth2::Validator;
     /// Optional scopes needed by this endpoint
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];

@@ -89,8 +89,8 @@ impl Request for SendAShoutoutRequest<'_> {
 
     const PATH: &'static str = "chat/shoutouts";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ModeratorManageShoutouts];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ModeratorManageShoutouts];
 }
 
 impl RequestPost for SendAShoutoutRequest<'_> {

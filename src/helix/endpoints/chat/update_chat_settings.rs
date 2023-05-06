@@ -178,8 +178,8 @@ impl Request for UpdateChatSettingsRequest<'_> {
 
     const PATH: &'static str = "chat/settings";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ModeratorManageChatSettings];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ModeratorManageChatSettings];
 }
 
 impl RequestPatch for UpdateChatSettingsRequest<'_> {

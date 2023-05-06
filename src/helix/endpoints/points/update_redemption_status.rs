@@ -141,8 +141,8 @@ impl Request for UpdateRedemptionStatusRequest<'_> {
 
     const PATH: &'static str = "channel_points/custom_rewards/redemptions";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::scopes::Scope::ChannelManageBroadcast];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::scopes::Scope::ChannelManageRedemptions];
 }
 
 impl RequestPatch for UpdateRedemptionStatusRequest<'_> {

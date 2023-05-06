@@ -108,7 +108,10 @@ impl Request for GetModeratorsRequest<'_> {
 
     const PATH: &'static str = "moderation/moderators";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![any(
+        twitch_oauth2::Scope::ModerationRead,
+        twitch_oauth2::Scope::ChannelManageModerators
+    )];
 }
 
 impl RequestGet for GetModeratorsRequest<'_> {}

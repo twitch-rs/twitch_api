@@ -122,7 +122,7 @@ impl Request for GetChannelStreamScheduleRequest<'_> {
 
     const PATH: &'static str = "schedule";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![];
 }
 
 impl RequestGet for GetChannelStreamScheduleRequest<'_> {}

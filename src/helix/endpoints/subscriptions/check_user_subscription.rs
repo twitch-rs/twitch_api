@@ -102,7 +102,8 @@ impl Request for CheckUserSubscriptionRequest<'_> {
 
     const PATH: &'static str = "subscriptions/user";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserReadSubscriptions];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::UserReadSubscriptions];
 }
 
 impl RequestGet for CheckUserSubscriptionRequest<'_> {

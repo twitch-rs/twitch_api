@@ -94,8 +94,10 @@ impl Request for GetBlockedTermsRequest<'_> {
 
     const PATH: &'static str = "moderation/blocked_terms";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ModeratorReadBlockedTerms];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![any(
+        twitch_oauth2::Scope::ModeratorReadBlockedTerms,
+        twitch_oauth2::Scope::ModeratorManageBlockedTerms
+    )];
 }
 
 impl RequestGet for GetBlockedTermsRequest<'_> {}

@@ -15,7 +15,7 @@ impl_de_ser!(Raid, "raid", channel_id);
 
 impl pubsub::Topic for Raid {
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![];
 
     fn into_topic(self) -> pubsub::Topics { super::Topics::Raid(self) }
 }

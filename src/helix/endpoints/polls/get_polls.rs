@@ -126,7 +126,10 @@ impl Request for GetPollsRequest<'_> {
 
     const PATH: &'static str = "polls";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadPolls];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![any(
+        twitch_oauth2::Scope::ChannelReadPolls,
+        twitch_oauth2::Scope::ChannelManagePolls
+    )];
 }
 
 impl RequestGet for GetPollsRequest<'_> {}

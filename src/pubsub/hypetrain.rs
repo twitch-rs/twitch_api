@@ -20,7 +20,7 @@ impl_de_ser!(
 
 impl pubsub::Topic for HypeTrainEventsV1 {
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![];
 
     fn into_topic(self) -> pubsub::Topics { super::Topics::HypeTrainEventsV1(self) }
 }
@@ -42,7 +42,7 @@ impl_de_ser!(
 
 impl pubsub::Topic for HypeTrainEventsV1Rewards {
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![];
 
     fn into_topic(self) -> pubsub::Topics { super::Topics::HypeTrainEventsV1Rewards(self) }
 }

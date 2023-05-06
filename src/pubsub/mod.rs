@@ -119,7 +119,7 @@ pub trait Topic: Serialize + Into<String> {
     /// ><code>unsupported</code></span>
     #[cfg(feature = "twitch_oauth2")]
     #[cfg_attr(nightly, doc(cfg(feature = "twitch_oauth2")))]
-    const SCOPE: &'static [twitch_oauth2::Scope];
+    const SCOPE: twitch_oauth2::Validator;
 
     /// Convert this into a [`Topics`]
     fn into_topic(self) -> Topics;

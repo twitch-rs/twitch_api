@@ -20,7 +20,7 @@ impl_de_ser!(VideoPlayback, "video-playback", channel_login);
 
 impl pubsub::Topic for VideoPlayback {
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![];
 
     fn into_topic(self) -> pubsub::Topics { super::Topics::VideoPlayback(self) }
 }
@@ -37,7 +37,7 @@ impl_de_ser!(VideoPlaybackById, "video-playback-by-id", channel_id);
 
 impl pubsub::Topic for VideoPlaybackById {
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![];
 
     fn into_topic(self) -> pubsub::Topics { super::Topics::VideoPlaybackById(self) }
 }

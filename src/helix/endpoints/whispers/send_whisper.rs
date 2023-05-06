@@ -127,7 +127,8 @@ impl Request for SendWhisperRequest<'_> {
 
     const PATH: &'static str = "whispers";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageWhispers];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::UserManageWhispers];
 }
 
 impl<'a> RequestPost for SendWhisperRequest<'a> {

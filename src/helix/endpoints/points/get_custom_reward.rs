@@ -139,8 +139,10 @@ impl Request for GetCustomRewardRequest<'_> {
 
     const PATH: &'static str = "channel_points/custom_rewards";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::scopes::Scope::ChannelReadRedemptions];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![any(
+        twitch_oauth2::scopes::Scope::ChannelReadRedemptions,
+        twitch_oauth2::Scope::ChannelManageRedemptions
+    )];
 }
 
 impl RequestGet for GetCustomRewardRequest<'_> {}

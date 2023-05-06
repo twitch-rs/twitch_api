@@ -91,7 +91,8 @@ impl Request for UpdateUserChatColorRequest<'_> {
 
     const PATH: &'static str = "chat/color";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageChatColor];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::UserManageChatColor];
 }
 
 impl RequestPut for UpdateUserChatColorRequest<'_> {

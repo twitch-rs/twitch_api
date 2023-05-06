@@ -107,7 +107,7 @@ pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq + Clone {
 
     /// Scopes needed by this subscription
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope];
+    const SCOPE: twitch_oauth2::Validator;
     /// Optional scopes needed by this subscription
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];

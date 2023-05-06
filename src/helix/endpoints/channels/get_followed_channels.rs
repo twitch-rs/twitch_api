@@ -114,7 +114,8 @@ impl Request for GetFollowedChannels<'_> {
 
     const PATH: &'static str = "channels/followed";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModeratorReadFollowers];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::UserReadFollows];
 }
 
 impl RequestGet for GetFollowedChannels<'_> {}

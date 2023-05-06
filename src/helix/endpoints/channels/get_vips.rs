@@ -110,7 +110,10 @@ impl Request for GetVipsRequest<'_> {
 
     const PATH: &'static str = "channels/vips";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadVips];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![any(
+        twitch_oauth2::Scope::ChannelReadVips,
+        twitch_oauth2::Scope::ChannelManageVips
+    )];
 }
 
 impl helix::Paginated for GetVipsRequest<'_> {

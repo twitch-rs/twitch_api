@@ -97,8 +97,8 @@ impl Request for GetCharityCampaignRequest<'_> {
 
     const PATH: &'static str = "charity/campaigns";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::scopes::Scope::ChannelReadCharity];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::scopes::Scope::ChannelReadCharity];
 }
 
 impl RequestGet for GetCharityCampaignRequest<'_> {

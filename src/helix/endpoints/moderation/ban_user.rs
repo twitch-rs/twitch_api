@@ -160,8 +160,8 @@ impl Request for BanUserRequest<'_> {
 
     const PATH: &'static str = "moderation/bans";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ModeratorManageBannedUsers];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ModeratorManageBannedUsers];
 }
 
 impl<'a> RequestPost for BanUserRequest<'a> {

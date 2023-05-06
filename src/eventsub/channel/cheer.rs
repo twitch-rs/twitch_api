@@ -27,7 +27,8 @@ impl EventSubscription for ChannelCheerV1 {
 
     const EVENT_TYPE: EventType = EventType::ChannelCheer;
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::BitsRead];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::BitsRead];
     const VERSION: &'static str = "1";
 }
 

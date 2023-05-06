@@ -85,7 +85,8 @@ impl Request for AddChannelModeratorRequest<'_> {
 
     const PATH: &'static str = "moderation/moderators";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageModerators];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelManageModerators];
 }
 
 impl RequestPost for AddChannelModeratorRequest<'_> {

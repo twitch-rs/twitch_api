@@ -90,7 +90,8 @@ impl Request for GetUserBlockListRequest<'_> {
         &[twitch_oauth2::Scope::UserReadBlockedUsers];
     const PATH: &'static str = "users/blocks";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::UserReadBlockedUsers];
 }
 
 impl RequestGet for GetUserBlockListRequest<'_> {}

@@ -20,7 +20,8 @@ impl_de_ser!(
 
 impl pubsub::Topic for ChannelCheerEventsPublicV1 {
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::BitsRead];
 
     fn into_topic(self) -> pubsub::Topics { super::Topics::ChannelCheerEventsPublicV1(self) }
 }
