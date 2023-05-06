@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Scope"]};
+window.SIDEBAR_ITEMS = {"enum":["Scope"],"mod":["validator"]};

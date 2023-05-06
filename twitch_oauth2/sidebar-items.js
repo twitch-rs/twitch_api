@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["RequestParseError","Scope"],"mod":["client","id","scopes","tokens","types"],"static":["AUTH_URL","REVOKE_URL","TOKEN_URL","VALIDATE_URL"],"struct":["AppAccessToken","UserToken","ValidatedToken"],"trait":["TwitchToken"]};
+window.SIDEBAR_ITEMS = {"enum":["RequestParseError","Scope","Validator"],"macro":["validator"],"mod":["client","id","scopes","tokens","types"],"static":["AUTH_URL","REVOKE_URL","TOKEN_URL","VALIDATE_URL"],"struct":["AppAccessToken","UserToken","ValidatedToken"],"trait":["TwitchToken"]};
