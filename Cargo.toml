@@ -151,6 +151,7 @@ _all = [
     "ureq",
     "twitch_oauth2/surf_client_curl",
     "mock_api",
+    "tower",
 ]
 
 [dev-dependencies]
