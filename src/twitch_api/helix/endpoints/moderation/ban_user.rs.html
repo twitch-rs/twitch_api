@@ -274,9 +274,6 @@
 <a href="#274" id="274">274</a>
 <a href="#275" id="275">275</a>
 <a href="#276" id="276">276</a>
-<a href="#277" id="277">277</a>
-<a href="#278" id="278">278</a>
-<a href="#279" id="279">279</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Bans a user from participating in a broadcaster’s chat room, or puts them in a timeout.
 //! [`ban-user`](https://dev.twitch.tv/docs/api/reference#ban-user)
 //!
@@ -467,8 +464,8 @@
                 status,
             )
         })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(helix::Response {
-            data: data.into_iter().next().ok_or_else(|| {
+        <span class="prelude-val">Ok</span>(helix::Response::with_data(
+            data.into_iter().next().ok_or_else(|| {
                 helix::HelixRequestPostError::InvalidResponse {
                     reason: <span class="string">&quot;missing response data&quot;</span>,
                     response: response.to_string(),
@@ -476,11 +473,8 @@
                     uri: uri.clone(),
                 }
             })<span class="question-mark">?</span>,
-            pagination: <span class="prelude-val">None</span>,
             request,
-            total: <span class="prelude-val">None</span>,
-            other: <span class="prelude-val">None</span>,
-        })
+        ))
     }
 }
 

@@ -247,12 +247,6 @@
 <a href="#247" id="247">247</a>
 <a href="#248" id="248">248</a>
 <a href="#249" id="249">249</a>
-<a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Updates the status of Custom Reward Redemption objects on a channel that are in the UNFULFILLED status.
 //!
 //! Only redemptions for a reward created by the same client_id as attached to the access token can be updated.
@@ -441,13 +435,7 @@
                 })
             }
         };
-        <span class="prelude-val">Ok</span>(helix::Response {
-            data: resp,
-            pagination: <span class="prelude-val">None</span>,
-            request,
-            total: <span class="prelude-val">None</span>,
-            other: <span class="prelude-val">None</span>,
-        })
+        <span class="prelude-val">Ok</span>(helix::Response::with_data(resp, request))
     }
 }
 

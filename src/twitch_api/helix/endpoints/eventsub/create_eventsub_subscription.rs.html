@@ -248,9 +248,6 @@
 <a href="#248" id="248">248</a>
 <a href="#249" id="249">249</a>
 <a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Creates an EventSub subscription.
 //!
 //! See also [`HelixClient::create_eventsub_subscription`](crate::helix::HelixClient::create_eventsub_subscription)
@@ -421,9 +418,10 @@
                 uri: uri.clone(),
             }
         })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(helix::Response {
-            data: CreateEventSubSubscription {
-                total: response.total,
+        <span class="prelude-val">Ok</span>(helix::Response::with_data(
+            CreateEventSubSubscription {
+                <span class="comment">// helix::Response total is generally the total number of results, not what the total for this endpoint means. Thus, we set it to None.))
+                </span>total: response.total,
                 total_cost: response.total_cost,
                 max_total_cost: response.max_total_cost,
                 cost: data.cost,
@@ -435,12 +433,8 @@
                 created_at: data.created_at,
                 transport: data.transport,
             },
-            pagination: <span class="prelude-val">None</span>,
             request,
-            <span class="comment">// helix::Response total is generally the total number of results, not what the total for this endpoint means. Thus, we set it to None.
-            </span>total: <span class="prelude-val">None</span>,
-            other: <span class="prelude-val">None</span>,
-        })
+        ))
     }
 }
 

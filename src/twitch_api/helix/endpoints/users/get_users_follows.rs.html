@@ -432,16 +432,16 @@
                 status,
             )
         })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(helix::Response {
-            data: UsersFollows {
+        <span class="prelude-val">Ok</span>(helix::Response::new(
+            UsersFollows {
                 total: response.total,
                 follow_relationships: response.data,
             },
-            pagination: response.pagination.cursor,
+            response.pagination.cursor,
             request,
-            total: <span class="prelude-val">Some</span>(response.total),
-            other: <span class="prelude-val">None</span>,
-        })
+            <span class="prelude-val">Some</span>(response.total),
+            <span class="prelude-val">None</span>,
+        ))
     }
 }
 

@@ -143,9 +143,6 @@
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
 <a href="#145" id="145">145</a>
-<a href="#146" id="146">146</a>
-<a href="#147" id="147">147</a>
-<a href="#148" id="148">148</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Sends a Shoutout to the specified broadcaster.
 //! [`send-a-shoutout`](https://dev.twitch.tv/docs/api/reference#send-a-shoutout)
 //!
@@ -254,13 +251,10 @@
         </span><span class="self">Self</span>: Sized,
     {
         <span class="kw">match </span>status {
-            http::StatusCode::NO_CONTENT =&gt; <span class="prelude-val">Ok</span>(helix::Response {
-                data: SendAShoutoutResponse::Success,
-                pagination: <span class="prelude-val">None</span>,
+            http::StatusCode::NO_CONTENT =&gt; <span class="prelude-val">Ok</span>(helix::Response::with_data(
+                SendAShoutoutResponse::Success,
                 request,
-                total: <span class="prelude-val">None</span>,
-                other: <span class="prelude-val">None</span>,
-            }),
+            )),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(helix::HelixRequestPostError::InvalidResponse {
                 reason: <span class="string">&quot;unexpected status&quot;</span>,
                 response: response.to_string(),

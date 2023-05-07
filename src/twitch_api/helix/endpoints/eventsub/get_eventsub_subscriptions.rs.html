@@ -303,19 +303,19 @@
                 status,
             )
         })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(helix::Response {
-            data: EventSubSubscriptions {
+        <span class="prelude-val">Ok</span>(helix::Response::new(
+            EventSubSubscriptions {
                 <span class="comment">// FIXME: This should probably be i64
                 </span>total: response.total <span class="kw">as </span>usize,
                 total_cost: response.total_cost,
                 max_total_cost: response.max_total_cost,
                 subscriptions: response.data,
             },
-            pagination: response.pagination.cursor,
+            response.pagination.cursor,
             request,
-            total: <span class="prelude-val">Some</span>(response.total),
-            other: <span class="prelude-val">None</span>,
-        })
+            <span class="prelude-val">Some</span>(response.total),
+            <span class="prelude-val">None</span>,
+        ))
     }
 }
 

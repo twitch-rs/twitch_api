@@ -562,13 +562,13 @@
                     status,
                 )
             })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(Response {
-            data: response.data,
-            pagination: response.pagination.cursor,
+        <span class="prelude-val">Ok</span>(Response::new(
+            response.data,
+            response.pagination.cursor,
             request,
-            total: response.total,
-            other: <span class="prelude-val">None</span>,
-        })
+            response.total,
+            response.other,
+        ))
     }
 }
 
@@ -865,13 +865,13 @@
         <span class="kw">let </span>response: InnerResponse&lt;<span class="kw">_</span>&gt; = parse_json(response, <span class="bool-val">true</span>).map_err(|e| {
             HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone(), status)
         })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(Response {
-            data: response.data,
-            pagination: response.pagination.cursor,
+        <span class="prelude-val">Ok</span>(Response::new(
+            response.data,
+            response.pagination.cursor,
             request,
-            total: response.total,
-            other: response.other,
-        })
+            response.total,
+            response.other,
+        ))
     }
 }
 </code></pre></div></section></main></body></html>

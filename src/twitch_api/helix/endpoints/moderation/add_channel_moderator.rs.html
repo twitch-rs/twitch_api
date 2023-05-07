@@ -139,9 +139,6 @@
 <a href="#139" id="139">139</a>
 <a href="#140" id="140">140</a>
 <a href="#141" id="141">141</a>
-<a href="#142" id="142">142</a>
-<a href="#143" id="143">143</a>
-<a href="#144" id="144">144</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Adds a moderator to the broadcaster’s moderation room.
 //! [`add-channel-moderator`](https://dev.twitch.tv/docs/api/reference#add-channel-moderator)
 //!
@@ -246,13 +243,10 @@
         </span><span class="self">Self</span>: Sized,
     {
         <span class="kw">match </span>status {
-            http::StatusCode::NO_CONTENT =&gt; <span class="prelude-val">Ok</span>(helix::Response {
-                data: AddChannelModeratorResponse::Success,
-                pagination: <span class="prelude-val">None</span>,
+            http::StatusCode::NO_CONTENT =&gt; <span class="prelude-val">Ok</span>(helix::Response::with_data(
+                AddChannelModeratorResponse::Success,
                 request,
-                total: <span class="prelude-val">None</span>,
-                other: <span class="prelude-val">None</span>,
-            }),
+            )),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(helix::HelixRequestPostError::InvalidResponse {
                 reason: <span class="string">&quot;unexpected status&quot;</span>,
                 response: response.to_string(),

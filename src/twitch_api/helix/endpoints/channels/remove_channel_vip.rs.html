@@ -134,9 +134,6 @@
 <a href="#134" id="134">134</a>
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
-<a href="#137" id="137">137</a>
-<a href="#138" id="138">138</a>
-<a href="#139" id="139">139</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Removes a VIP from the broadcaster’s chat room.
 //! [`remove-channel-vip`](https://dev.twitch.tv/docs/api/reference#remove-channel-vip)
 //!
@@ -238,13 +235,10 @@
         </span><span class="self">Self</span>: Sized,
     {
         <span class="kw">match </span>status {
-            http::StatusCode::NO_CONTENT =&gt; <span class="prelude-val">Ok</span>(helix::Response {
-                data: RemoveChannelVipResponse::Success,
-                pagination: <span class="prelude-val">None</span>,
+            http::StatusCode::NO_CONTENT =&gt; <span class="prelude-val">Ok</span>(helix::Response::with_data(
+                RemoveChannelVipResponse::Success,
                 request,
-                total: <span class="prelude-val">None</span>,
-                other: <span class="prelude-val">None</span>,
-            }),
+            )),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: <span class="string">&quot;unexpected status&quot;</span>,
                 response: response.to_string(),

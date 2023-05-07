@@ -343,13 +343,13 @@
         </span><span class="self">Self</span>: Sized,
     {
         <span class="kw">match </span>status {
-            http::StatusCode::NO_CONTENT | http::StatusCode::OK =&gt; <span class="prelude-val">Ok</span>(helix::Response {
-                data: ReplaceStreamTags::Success,
-                pagination: <span class="prelude-val">None</span>,
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK =&gt; <span class="prelude-val">Ok</span>(helix::Response::new(
+                ReplaceStreamTags::Success,
+                <span class="prelude-val">None</span>,
                 request,
-                total: <span class="prelude-val">None</span>,
-                other: &lt;<span class="kw">_</span>&gt;::default(),
-            }),
+                <span class="prelude-val">None</span>,
+                &lt;<span class="kw">_</span>&gt;::default(),
+            )),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(helix::HelixRequestPutError::InvalidResponse {
                 reason: <span class="string">&quot;unexpected status&quot;</span>,
                 response: response.to_string(),

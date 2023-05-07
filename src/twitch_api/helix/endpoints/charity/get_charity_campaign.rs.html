@@ -297,13 +297,13 @@
                     status,
                 )
             })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(helix::Response {
-            data: response.data.into_iter().next(),
-            pagination: response.pagination.cursor,
+        <span class="prelude-val">Ok</span>(helix::Response::new(
+            response.data.into_iter().next(),
+            response.pagination.cursor,
             request,
-            total: response.total,
-            other: response.other,
-        })
+            response.total,
+            response.other,
+        ))
     }
 }
 

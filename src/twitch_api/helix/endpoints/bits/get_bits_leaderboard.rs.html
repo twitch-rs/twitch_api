@@ -430,17 +430,17 @@
                 status,
             )
         })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(helix::Response {
-            data: BitsLeaderboard {
+        <span class="prelude-val">Ok</span>(helix::Response::new(
+            BitsLeaderboard {
                 leaderboard: response.data,
                 date_range: response.date_range,
                 total: response.total,
             },
-            pagination: <span class="prelude-val">None</span>,
+            <span class="prelude-val">None</span>,
             request,
-            total: <span class="prelude-val">Some</span>(response.total),
-            other: <span class="prelude-val">None</span>,
-        })
+            <span class="prelude-val">Some</span>(response.total),
+            <span class="prelude-val">None</span>,
+        ))
     }
 }
 

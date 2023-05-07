@@ -226,12 +226,6 @@
 <a href="#226" id="226">226</a>
 <a href="#227" id="227">227</a>
 <a href="#228" id="228">228</a>
-<a href="#229" id="229">229</a>
-<a href="#230" id="230">230</a>
-<a href="#231" id="231">231</a>
-<a href="#232" id="232">232</a>
-<a href="#233" id="233">233</a>
-<a href="#234" id="234">234</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Gets the broadcaster’s chat settings.
 //! [`get-chat-settings`](https://dev.twitch.tv/docs/api/reference#get-chat-settings)
 //!
@@ -380,13 +374,7 @@
                 })
             }
         };
-        <span class="prelude-val">Ok</span>(helix::Response {
-            data: resp,
-            pagination: <span class="prelude-val">None</span>,
-            request,
-            total: <span class="prelude-val">None</span>,
-            other: <span class="prelude-val">None</span>,
-        })
+        <span class="prelude-val">Ok</span>(helix::Response::with_data(resp, request))
     }
 }
 

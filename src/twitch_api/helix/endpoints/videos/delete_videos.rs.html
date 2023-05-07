@@ -128,10 +128,6 @@
 <a href="#128" id="128">128</a>
 <a href="#129" id="129">129</a>
 <a href="#130" id="130">130</a>
-<a href="#131" id="131">131</a>
-<a href="#132" id="132">132</a>
-<a href="#133" id="133">133</a>
-<a href="#134" id="134">134</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Deletes one or more videos. Videos are past broadcasts, Highlights, or uploads.
 //! [`delete-videos`](https://dev.twitch.tv/docs/api/reference#delete-videos)
 //!
@@ -230,13 +226,9 @@
         </span><span class="self">Self</span>: Sized,
     {
         <span class="kw">match </span>status {
-            http::StatusCode::NO_CONTENT | http::StatusCode::OK =&gt; <span class="prelude-val">Ok</span>(helix::Response {
-                data: DeleteVideo::Success,
-                pagination: <span class="prelude-val">None</span>,
-                request,
-                total: <span class="prelude-val">None</span>,
-                other: <span class="prelude-val">None</span>,
-            }),
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK =&gt; {
+                <span class="prelude-val">Ok</span>(helix::Response::with_data(DeleteVideo::Success, request))
+            }
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: <span class="string">&quot;unexpected status&quot;</span>,
                 response: response.to_string(),

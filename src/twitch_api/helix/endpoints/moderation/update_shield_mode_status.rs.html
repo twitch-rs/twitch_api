@@ -345,8 +345,8 @@
                     status,
                 )
             })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(helix::Response {
-            data: inner_response.data.into_iter().next().ok_or(
+        <span class="prelude-val">Ok</span>(helix::Response::new(
+            inner_response.data.into_iter().next().ok_or(
                 helix::HelixRequestPutError::InvalidResponse {
                     reason: <span class="string">&quot;expected an entry in `data`&quot;</span>,
                     response: response.to_string(),
@@ -354,11 +354,11 @@
                     uri: uri.clone(),
                 },
             )<span class="question-mark">?</span>,
-            pagination: inner_response.pagination.cursor,
+            inner_response.pagination.cursor,
             request,
-            total: inner_response.total,
-            other: inner_response.other,
-        })
+            inner_response.total,
+            inner_response.other,
+        ))
     }
 }
 

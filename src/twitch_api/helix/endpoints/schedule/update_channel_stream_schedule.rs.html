@@ -170,12 +170,6 @@
 <a href="#170" id="170">170</a>
 <a href="#171" id="171">171</a>
 <a href="#172" id="172">172</a>
-<a href="#173" id="173">173</a>
-<a href="#174" id="174">174</a>
-<a href="#175" id="175">175</a>
-<a href="#176" id="176">176</a>
-<a href="#177" id="177">177</a>
-<a href="#178" id="178">178</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Update the settings for a channel’s stream schedule. This can be used for setting vacation details.
 //!
 //! [`update-channel-stream-schedule`](https://dev.twitch.tv/docs/api/reference/#update-channel-stream-schedule)
@@ -308,13 +302,7 @@
                 })
             }
         };
-        <span class="prelude-val">Ok</span>(helix::Response {
-            data: resp,
-            pagination: <span class="prelude-val">None</span>,
-            request,
-            total: <span class="prelude-val">None</span>,
-            other: <span class="prelude-val">None</span>,
-        })
+        <span class="prelude-val">Ok</span>(helix::Response::with_data(resp, request))
     }
 }
 
