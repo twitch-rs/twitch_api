@@ -1,13 +1,14 @@
 name: Audit
 
 on:
-  push:
   pull_request:
-    paths:
-      - "**/Cargo.toml"
-      - "**/Cargo.lock"
+    types: [opened, reopened, synchronize]
+  push:
+    branches: [main]
   schedule:
     - cron: "0 0 * * *"
+  merge_group:
+    types: [checks_requested]
 
 jobs:
   audit:
