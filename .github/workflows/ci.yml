@@ -5,7 +5,9 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
   push:
-    branches: [main, staging, trying]
+    branches: [main]
+  merge_group:
+    types: [checks_requested]
 jobs:
   ci:
     name: CI

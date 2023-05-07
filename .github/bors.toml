@@ -1,5 +1,0 @@
-block_labels = ["needs-decision"]
-status = [
-"CI","audit"
-]
-delete_merged_branches = true
