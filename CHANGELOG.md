@@ -66,6 +66,7 @@
 - Added `Get Shield Mode Status` and `Update Shield Mode Status`
 - Added `channel.shield_mode.begin` and `channel.shield_mode.end` EventSub events
 - Added `tower` implementation for `HttpClient`
+- Added `helix::Response::new` and `helix::Response::with_data` to make it possible to create your own responses.
 
 ### Fixed
 
