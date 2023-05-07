@@ -124,13 +124,13 @@ pub trait RequestPost: Request {
                     status,
                 )
             })?;
-        Ok(Response {
-            data: response.data,
-            pagination: response.pagination.cursor,
+        Ok(Response::new(
+            response.data,
+            response.pagination.cursor,
             request,
-            total: response.total,
-            other: None,
-        })
+            response.total,
+            response.other,
+        ))
     }
 }
 
@@ -427,12 +427,12 @@ pub trait RequestGet: Request {
         let response: InnerResponse<_> = parse_json(response, true).map_err(|e| {
             HelixRequestGetError::DeserializeError(response.to_string(), e, uri.clone(), status)
         })?;
-        Ok(Response {
-            data: response.data,
-            pagination: response.pagination.cursor,
+        Ok(Response::new(
+            response.data,
+            response.pagination.cursor,
             request,
-            total: response.total,
-            other: response.other,
-        })
+            response.total,
+            response.other,
+        ))
     }
 }

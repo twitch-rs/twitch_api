@@ -115,13 +115,13 @@ impl RequestGet for SearchCategoriesRequest<'_> {
                     status,
                 )
             })?;
-        Ok(helix::Response {
-            data: response.data.unwrap_or_default(),
-            pagination: response.pagination.cursor,
+        Ok(helix::Response::new(
+            response.data.unwrap_or_default(),
+            response.pagination.cursor,
             request,
-            total: response.total,
-            other: None,
-        })
+            response.total,
+            response.other,
+        ))
     }
 }
 

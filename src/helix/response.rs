@@ -27,6 +27,133 @@ where
     R: Request,
     D: serde::de::DeserializeOwned + PartialEq,
 {
+    /// Create a new response.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::{self, Request, RequestPost};
+    ///
+    /// #[derive(serde::Serialize, Debug, PartialEq)]
+    /// pub struct MyTwitchRequest {}
+    ///
+    /// #[derive(serde::Deserialize, Debug, PartialEq)]
+    /// pub enum MyTwitchResponse {
+    ///     Success,
+    /// }
+    ///
+    /// impl Request for MyTwitchRequest {
+    ///     type Response = MyTwitchResponse;
+    ///
+    ///     const PATH: &'static str = "my/request";
+    ///     const SCOPE: &'static [twitch_api::twitch_oauth2::Scope] = &[];
+    /// }
+    ///
+    /// impl RequestPost for MyTwitchRequest {
+    ///     type Body = helix::EmptyBody;
+    ///
+    ///     fn parse_inner_response(
+    ///         request: Option<Self>,
+    ///         uri: &http::Uri,
+    ///         response: &str,
+    ///         status: http::StatusCode,
+    ///     ) -> Result<
+    ///         helix::Response<Self, Self::Response>,
+    ///         helix::HelixRequestPostError,
+    ///     >
+    ///     where
+    ///         Self: Sized,
+    ///     {
+    ///         match status {
+    ///             http::StatusCode::NO_CONTENT => Ok(helix::Response::new(
+    ///                 MyTwitchResponse::Success,
+    ///                 None,
+    ///                 request,
+    ///                 None,
+    ///                 None,
+    ///             )),
+    ///             _ => Err(helix::HelixRequestPostError::InvalidResponse {
+    ///                 reason: "unexpected status",
+    ///                 response: response.to_string(),
+    ///                 status,
+    ///                 uri: uri.clone(),
+    ///             }),
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    pub fn new(
+        data: D,
+        pagination: Option<Cursor>,
+        request: Option<R>,
+        total: Option<i64>,
+        other: Option<serde_json::Map<String, serde_json::Value>>,
+    ) -> Self {
+        Self {
+            data,
+            pagination,
+            request,
+            total,
+            other,
+        }
+    }
+
+    /// Create a new response without pagination, total or other fields.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::{self, Request, RequestPut};
+    ///
+    /// #[derive(serde::Serialize, Debug, PartialEq)]
+    /// pub struct MyTwitchRequest {}
+    ///
+    /// #[derive(serde::Deserialize, Debug, PartialEq)]
+    /// pub enum MyTwitchResponse {
+    ///     Success,
+    /// }
+    ///
+    /// impl Request for MyTwitchRequest {
+    ///     type Response = MyTwitchResponse;
+    ///
+    ///     const PATH: &'static str = "my/request";
+    ///     const SCOPE: &'static [twitch_api::twitch_oauth2::Scope] = &[];
+    /// }
+    ///
+    /// impl RequestPut for MyTwitchRequest {
+    ///     type Body = helix::EmptyBody;
+    ///
+    ///     fn parse_inner_response(
+    ///         request: Option<Self>,
+    ///         uri: &http::Uri,
+    ///         response: &str,
+    ///         status: http::StatusCode,
+    ///     ) -> Result<
+    ///         helix::Response<Self, Self::Response>,
+    ///         helix::HelixRequestPutError,
+    ///     >
+    ///     where
+    ///         Self: Sized,
+    ///     {
+    ///         match status {
+    ///             http::StatusCode::NO_CONTENT => Ok(helix::Response::with_data(
+    ///                 MyTwitchResponse::Success,
+    ///                 request,
+    ///             )),
+    ///             _ => Err(helix::HelixRequestPutError::InvalidResponse {
+    ///                 reason: "unexpected status",
+    ///                 response: response.to_string(),
+    ///                 status,
+    ///                 uri: uri.clone(),
+    ///             }),
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    pub fn with_data(data: D, request: Option<R>) -> Self {
+        Self::new(data, None, request, None, None)
+    }
+
     /// Get a field from the response that is not part of `data`.
     pub fn get_other<Q, V>(&self, key: &Q) -> Result<Option<V>, serde_json::Error>
     where

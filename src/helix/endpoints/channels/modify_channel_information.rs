@@ -194,25 +194,18 @@ impl<'a> RequestPatch for ModifyChannelInformationRequest<'a> {
     where
         Self: Sized,
     {
-        Ok(helix::Response {
-            data: match status {
-                http::StatusCode::NO_CONTENT | http::StatusCode::OK => {
-                    ModifyChannelInformation::Success
-                }
-                _ => {
-                    return Err(helix::HelixRequestPatchError::InvalidResponse {
-                        reason: "unexpected status code",
-                        response: response.to_string(),
-                        status,
-                        uri: uri.clone(),
-                    })
-                }
-            },
-            pagination: None,
-            request,
-            total: None,
-            other: None,
-        })
+        match status {
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response::with_data(
+                ModifyChannelInformation::Success,
+                request,
+            )),
+            _ => Err(helix::HelixRequestPatchError::InvalidResponse {
+                reason: "unexpected status code",
+                response: response.to_string(),
+                status,
+                uri: uri.clone(),
+            }),
+        }
     }
 }
 

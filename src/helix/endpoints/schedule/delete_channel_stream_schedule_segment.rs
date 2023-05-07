@@ -105,13 +105,10 @@ impl RequestDelete for DeleteChannelStreamScheduleSegmentRequest<'_> {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
-                data: DeleteChannelStreamScheduleSegment::Success,
-                pagination: None,
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response::with_data(
+                DeleteChannelStreamScheduleSegment::Success,
                 request,
-                total: None,
-                other: None,
-            }),
+            )),
             _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: "unexpected status",
                 response: response.to_string(),

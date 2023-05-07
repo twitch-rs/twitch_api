@@ -102,13 +102,10 @@ impl RequestDelete for DeleteCustomRewardRequest<'_> {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
-                data: DeleteCustomReward::Success,
-                pagination: None,
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response::with_data(
+                DeleteCustomReward::Success,
                 request,
-                total: None,
-                other: None,
-            }),
+            )),
             _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: "unexpected status",
                 response: response.to_string(),

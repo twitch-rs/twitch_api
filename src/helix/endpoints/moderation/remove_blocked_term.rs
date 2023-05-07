@@ -107,13 +107,10 @@ impl RequestDelete for RemoveBlockedTermRequest<'_> {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT => Ok(helix::Response {
-                data: RemoveBlockedTerm::Success,
-                pagination: None,
+            http::StatusCode::NO_CONTENT => Ok(helix::Response::with_data(
+                RemoveBlockedTerm::Success,
                 request,
-                total: None,
-                other: None,
-            }),
+            )),
             _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: "unexpected status",
                 response: response.to_string(),

@@ -120,13 +120,13 @@ impl RequestGet for GetCharityCampaignRequest<'_> {
                     status,
                 )
             })?;
-        Ok(helix::Response {
-            data: response.data.into_iter().next(),
-            pagination: response.pagination.cursor,
+        Ok(helix::Response::new(
+            response.data.into_iter().next(),
+            response.pagination.cursor,
             request,
-            total: response.total,
-            other: response.other,
-        })
+            response.total,
+            response.other,
+        ))
     }
 }
 

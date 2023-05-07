@@ -149,13 +149,13 @@ impl<'a> RequestPut for ReplaceStreamTagsRequest<'a> {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
-                data: ReplaceStreamTags::Success,
-                pagination: None,
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response::new(
+                ReplaceStreamTags::Success,
+                None,
                 request,
-                total: None,
-                other: <_>::default(),
-            }),
+                None,
+                <_>::default(),
+            )),
             _ => Err(helix::HelixRequestPutError::InvalidResponse {
                 reason: "unexpected status",
                 response: response.to_string(),

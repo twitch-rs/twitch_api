@@ -144,13 +144,10 @@ impl<'a> RequestPost for SendWhisperRequest<'a> {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT => Ok(helix::Response {
-                data: SendWhisperResponse::Success,
-                pagination: None,
+            http::StatusCode::NO_CONTENT => Ok(helix::Response::with_data(
+                SendWhisperResponse::Success,
                 request,
-                total: None,
-                other: None,
-            }),
+            )),
             _ => Err(helix::HelixRequestPostError::InvalidResponse {
                 reason: "unexpected status",
                 response: response_str.to_string(),
