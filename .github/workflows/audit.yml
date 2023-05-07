@@ -14,7 +14,9 @@ jobs:
   audit:
     needs: [cargo-deny] # security-audit,
     runs-on: ubuntu-latest
+    if: always()
     steps:
+      - run: jq --exit-status 'all(.result == "success")' <<< '${{ toJson(needs) }}'
       - name: Done
         run: exit 0
   security-audit:

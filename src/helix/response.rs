@@ -46,7 +46,8 @@ where
     ///     type Response = MyTwitchResponse;
     ///
     ///     const PATH: &'static str = "my/request";
-    ///     const SCOPE: &'static [twitch_api::twitch_oauth2::Scope] = &[];
+    ///     const SCOPE: twitch_api::twitch_oauth2::Validator =
+    ///         twitch_api::twitch_oauth2::validator![];
     /// }
     ///
     /// impl RequestPost for MyTwitchRequest {
@@ -117,7 +118,8 @@ where
     ///     type Response = MyTwitchResponse;
     ///
     ///     const PATH: &'static str = "my/request";
-    ///     const SCOPE: &'static [twitch_api::twitch_oauth2::Scope] = &[];
+    ///     const SCOPE: twitch_api::twitch_oauth2::Validator =
+    ///         twitch_api::twitch_oauth2::validator![];
     /// }
     ///
     /// impl RequestPut for MyTwitchRequest {
