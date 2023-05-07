@@ -13,7 +13,9 @@ jobs:
     name: CI
     needs: [test, rustfmt, prettier, clippy, docs, release]
     runs-on: ubuntu-latest
+    if: always()
     steps:
+      - run: jq --exit-status 'all(.result == "success")' <<< '${{ toJson(needs) }}'
       - name: Done
         run: exit 0
   release:
