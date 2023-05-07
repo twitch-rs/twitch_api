@@ -132,7 +132,8 @@ impl Request for ReplaceStreamTagsRequest<'_> {
 
     const PATH: &'static str = "streams/tags";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageBroadcast];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelManageBroadcast];
 }
 
 impl<'a> RequestPut for ReplaceStreamTagsRequest<'a> {

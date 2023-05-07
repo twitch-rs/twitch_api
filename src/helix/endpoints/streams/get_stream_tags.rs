@@ -71,7 +71,7 @@ impl Request for GetStreamTagsRequest<'_> {
 
     const PATH: &'static str = "streams/tags";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![];
 }
 
 impl RequestGet for GetStreamTagsRequest<'_> {}

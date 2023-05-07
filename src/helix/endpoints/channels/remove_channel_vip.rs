@@ -84,7 +84,8 @@ impl Request for RemoveChannelVipRequest<'_> {
 
     const PATH: &'static str = "channels/vips";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageVips];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelManageVips];
 }
 
 impl RequestDelete for RemoveChannelVipRequest<'_> {

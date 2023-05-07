@@ -16,7 +16,8 @@ impl_de_ser!(ChannelBitsEventsV2, "channel-bits-events-v2", channel_id);
 
 impl pubsub::Topic for ChannelBitsEventsV2 {
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::BitsRead];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::BitsRead];
 
     fn into_topic(self) -> pubsub::Topics { super::Topics::ChannelBitsEventsV2(self) }
 }

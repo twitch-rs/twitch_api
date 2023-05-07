@@ -75,7 +75,8 @@ impl Request for CancelARaidRequest<'_> {
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     const PATH: &'static str = "raids";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageRaids];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelManageRaids];
 }
 
 impl RequestDelete for CancelARaidRequest<'_> {

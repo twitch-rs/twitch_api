@@ -33,9 +33,11 @@ impl<E: EventSubscription> Default for CreateEventSubSubscriptionRequest<E> {
 impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<E> {
     type Response = CreateEventSubSubscription<E>;
 
+    #[cfg(feature = "twitch_oauth2")]
+    const OPT_SCOPE: &'static [twitch_oauth2::Scope] = E::OPT_SCOPE;
     const PATH: &'static str = "eventsub/subscriptions";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator = E::SCOPE;
 }
 
 /// Body Parameters for [Create EventSub Subscription](super::create_eventsub_subscription)

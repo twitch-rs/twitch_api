@@ -75,7 +75,8 @@ impl Request for UnblockUserRequest<'_> {
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
     const PATH: &'static str = "users/blocks";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::UserManageBlockedUsers];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::UserManageBlockedUsers];
 }
 
 impl RequestDelete for UnblockUserRequest<'_> {

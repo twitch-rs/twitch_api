@@ -118,7 +118,8 @@ impl Request for GetChattersRequest<'_> {
 
     const PATH: &'static str = "chat/chatters";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ModeratorReadChatters];
 }
 
 impl RequestGet for GetChattersRequest<'_> {}

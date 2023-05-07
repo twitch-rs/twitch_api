@@ -81,7 +81,8 @@ impl Request for GetChannelEditorsRequest<'_> {
 
     const PATH: &'static str = "channels/editors";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadEditors];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelReadEditors];
 }
 
 impl RequestGet for GetChannelEditorsRequest<'_> {}

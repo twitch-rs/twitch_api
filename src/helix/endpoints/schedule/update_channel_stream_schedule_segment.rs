@@ -140,7 +140,8 @@ impl Request for UpdateChannelStreamScheduleSegmentRequest<'_> {
 
     const PATH: &'static str = "schedule/segment";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManageSchedule];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelManageSchedule];
 }
 
 impl<'a> RequestPatch for UpdateChannelStreamScheduleSegmentRequest<'a> {

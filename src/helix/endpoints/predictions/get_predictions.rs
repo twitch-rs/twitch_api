@@ -124,7 +124,8 @@ impl Request for GetPredictionsRequest<'_> {
 
     const PATH: &'static str = "predictions";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadPredictions];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelReadPredictions];
 }
 
 impl RequestGet for GetPredictionsRequest<'_> {}

@@ -27,7 +27,10 @@ impl EventSubscription for ChannelPredictionProgressV1 {
 
     const EVENT_TYPE: EventType = EventType::ChannelPredictionProgress;
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadPredictions];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![any(
+        twitch_oauth2::Scope::ChannelReadPredictions,
+        twitch_oauth2::Scope::ChannelManagePredictions
+    )];
     const VERSION: &'static str = "1";
 }
 

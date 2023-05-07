@@ -148,7 +148,8 @@ impl Request for CheckAutoModStatusRequest<'_> {
 
     const PATH: &'static str = "moderation/enforcements/status";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ModerationRead];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ModerationRead];
 }
 
 impl<'a> RequestPost for CheckAutoModStatusRequest<'a> {

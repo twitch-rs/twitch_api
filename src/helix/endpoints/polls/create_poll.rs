@@ -190,7 +190,8 @@ impl Request for CreatePollRequest<'_> {
 
     const PATH: &'static str = "polls";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelManagePolls];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelManagePolls];
 }
 
 impl<'a> RequestPost for CreatePollRequest<'a> {

@@ -29,7 +29,7 @@ impl Request for DeleteEventSubSubscriptionRequest<'_> {
 
     const PATH: &'static str = "eventsub/subscriptions";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![];
 }
 
 /// Return Values for [Delete EventSub Subscriptions](super::delete_eventsub_subscription)

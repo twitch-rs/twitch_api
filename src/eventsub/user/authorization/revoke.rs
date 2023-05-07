@@ -22,7 +22,7 @@ impl EventSubscription for UserAuthorizationRevokeV1 {
 
     const EVENT_TYPE: EventType = EventType::UserAuthorizationRevoke;
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator = twitch_oauth2::validator![];
     const VERSION: &'static str = "1";
 }
 

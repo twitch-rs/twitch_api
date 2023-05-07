@@ -27,8 +27,8 @@ impl EventSubscription for ChannelSubscriptionEndV1 {
 
     const EVENT_TYPE: EventType = EventType::ChannelSubscriptionEnd;
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] =
-        &[twitch_oauth2::Scope::ChannelReadSubscriptions];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelReadSubscriptions];
     const VERSION: &'static str = "1";
 }
 

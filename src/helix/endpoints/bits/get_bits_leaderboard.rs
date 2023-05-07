@@ -156,7 +156,8 @@ impl Request for GetBitsLeaderboardRequest<'_> {
 
     const PATH: &'static str = "bits/leaderboard";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::BitsRead];
 }
 
 impl RequestGet for GetBitsLeaderboardRequest<'_> {

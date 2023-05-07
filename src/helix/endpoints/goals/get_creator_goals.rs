@@ -112,7 +112,8 @@ impl Request for GetCreatorGoalsRequest<'_> {
 
     const PATH: &'static str = "goals";
     #[cfg(feature = "twitch_oauth2")]
-    const SCOPE: &'static [twitch_oauth2::Scope] = &[twitch_oauth2::Scope::ChannelReadGoals];
+    const SCOPE: twitch_oauth2::Validator =
+        twitch_oauth2::validator![twitch_oauth2::Scope::ChannelReadGoals];
 }
 
 impl RequestGet for GetCreatorGoalsRequest<'_> {}
