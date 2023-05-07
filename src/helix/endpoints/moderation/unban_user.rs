@@ -105,13 +105,10 @@ impl RequestDelete for UnbanUserRequest<'_> {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT => Ok(helix::Response {
-                data: UnbanUserResponse::Success,
-                pagination: None,
+            http::StatusCode::NO_CONTENT => Ok(helix::Response::with_data(
+                UnbanUserResponse::Success,
                 request,
-                total: None,
-                other: None,
-            }),
+            )),
             _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: "unexpected status",
                 response: response.to_string(),

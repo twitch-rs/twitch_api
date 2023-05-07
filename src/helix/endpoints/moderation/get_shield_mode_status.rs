@@ -169,8 +169,8 @@ impl RequestGet for GetShieldModeStatusRequest<'_> {
                     status,
                 )
             })?;
-        Ok(helix::Response {
-            data: inner_response.data.into_iter().next().ok_or(
+        Ok(helix::Response::new(
+            inner_response.data.into_iter().next().ok_or(
                 helix::HelixRequestGetError::InvalidResponse {
                     reason: "expected an entry in `data`",
                     response: response.to_string(),
@@ -178,11 +178,11 @@ impl RequestGet for GetShieldModeStatusRequest<'_> {
                     uri: uri.clone(),
                 },
             )?,
-            pagination: inner_response.pagination.cursor,
+            inner_response.pagination.cursor,
             request,
-            total: inner_response.total,
-            other: inner_response.other,
-        })
+            inner_response.total,
+            inner_response.other,
+        ))
     }
 }
 

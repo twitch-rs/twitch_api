@@ -182,16 +182,16 @@ impl RequestGet for GetUsersFollowsRequest<'_> {
                 status,
             )
         })?;
-        Ok(helix::Response {
-            data: UsersFollows {
+        Ok(helix::Response::new(
+            UsersFollows {
                 total: response.total,
                 follow_relationships: response.data,
             },
-            pagination: response.pagination.cursor,
+            response.pagination.cursor,
             request,
-            total: Some(response.total),
-            other: None,
-        })
+            Some(response.total),
+            None,
+        ))
     }
 }
 

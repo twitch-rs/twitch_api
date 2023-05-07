@@ -95,13 +95,9 @@ impl RequestDelete for DeleteVideosRequest<'_> {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response {
-                data: DeleteVideo::Success,
-                pagination: None,
-                request,
-                total: None,
-                other: None,
-            }),
+            http::StatusCode::NO_CONTENT | http::StatusCode::OK => {
+                Ok(helix::Response::with_data(DeleteVideo::Success, request))
+            }
             _ => Err(helix::HelixRequestDeleteError::InvalidResponse {
                 reason: "unexpected status",
                 response: response.to_string(),

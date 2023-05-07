@@ -98,13 +98,10 @@ impl RequestPost for AddChannelVipRequest<'_> {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT => Ok(helix::Response {
-                data: AddChannelVipResponse::Success,
-                pagination: None,
+            http::StatusCode::NO_CONTENT => Ok(helix::Response::with_data(
+                AddChannelVipResponse::Success,
                 request,
-                total: None,
-                other: None,
-            }),
+            )),
             _ => Err(helix::HelixRequestPostError::InvalidResponse {
                 reason: "unexpected status",
                 response: response.to_string(),

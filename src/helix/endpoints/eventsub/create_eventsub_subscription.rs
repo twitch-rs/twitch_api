@@ -166,8 +166,9 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
                 uri: uri.clone(),
             }
         })?;
-        Ok(helix::Response {
-            data: CreateEventSubSubscription {
+        Ok(helix::Response::with_data(
+            CreateEventSubSubscription {
+                // helix::Response total is generally the total number of results, not what the total for this endpoint means. Thus, we set it to None.))
                 total: response.total,
                 total_cost: response.total_cost,
                 max_total_cost: response.max_total_cost,
@@ -180,12 +181,8 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
                 created_at: data.created_at,
                 transport: data.transport,
             },
-            pagination: None,
             request,
-            // helix::Response total is generally the total number of results, not what the total for this endpoint means. Thus, we set it to None.
-            total: None,
-            other: None,
-        })
+        ))
     }
 }
 

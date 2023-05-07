@@ -140,13 +140,9 @@ impl RequestPut for BlockUserRequest<'_> {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT => Ok(helix::Response {
-                data: BlockUser::Success,
-                pagination: None,
-                request,
-                total: None,
-                other: None,
-            }),
+            http::StatusCode::NO_CONTENT => {
+                Ok(helix::Response::with_data(BlockUser::Success, request))
+            }
             _ => Err(helix::HelixRequestPutError::InvalidResponse {
                 reason: "unexpected status",
                 response: response.to_string(),

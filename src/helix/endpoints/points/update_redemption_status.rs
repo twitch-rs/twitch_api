@@ -186,13 +186,7 @@ impl RequestPatch for UpdateRedemptionStatusRequest<'_> {
                 })
             }
         };
-        Ok(helix::Response {
-            data: resp,
-            pagination: None,
-            request,
-            total: None,
-            other: None,
-        })
+        Ok(helix::Response::with_data(resp, request))
     }
 }
 

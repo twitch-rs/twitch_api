@@ -107,13 +107,10 @@ impl RequestPut for UpdateUserChatColorRequest<'_> {
         Self: Sized,
     {
         match status {
-            http::StatusCode::NO_CONTENT => Ok(helix::Response {
-                data: UpdateUserChatColorResponse::Success,
-                pagination: None,
+            http::StatusCode::NO_CONTENT => Ok(helix::Response::with_data(
+                UpdateUserChatColorResponse::Success,
                 request,
-                total: None,
-                other: None,
-            }),
+            )),
             _ => Err(helix::HelixRequestPutError::InvalidResponse {
                 reason: "unexpected status",
                 response: response.to_string(),

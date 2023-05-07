@@ -109,19 +109,19 @@ impl RequestGet for GetEventSubSubscriptionsRequest<'_> {
                 status,
             )
         })?;
-        Ok(helix::Response {
-            data: EventSubSubscriptions {
+        Ok(helix::Response::new(
+            EventSubSubscriptions {
                 // FIXME: This should probably be i64
                 total: response.total as usize,
                 total_cost: response.total_cost,
                 max_total_cost: response.max_total_cost,
                 subscriptions: response.data,
             },
-            pagination: response.pagination.cursor,
+            response.pagination.cursor,
             request,
-            total: Some(response.total),
-            other: None,
-        })
+            Some(response.total),
+            None,
+        ))
     }
 }
 

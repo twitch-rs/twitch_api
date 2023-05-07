@@ -188,8 +188,8 @@ impl<'a> RequestPost for BanUserRequest<'a> {
                 status,
             )
         })?;
-        Ok(helix::Response {
-            data: data.into_iter().next().ok_or_else(|| {
+        Ok(helix::Response::with_data(
+            data.into_iter().next().ok_or_else(|| {
                 helix::HelixRequestPostError::InvalidResponse {
                     reason: "missing response data",
                     response: response.to_string(),
@@ -197,11 +197,8 @@ impl<'a> RequestPost for BanUserRequest<'a> {
                     uri: uri.clone(),
                 }
             })?,
-            pagination: None,
             request,
-            total: None,
-            other: None,
-        })
+        ))
     }
 }
 

@@ -164,13 +164,13 @@ impl<'a> RequestPatch for UpdateChannelStreamScheduleSegmentRequest<'a> {
                     status,
                 )
             })?;
-        Ok(helix::Response {
-            data: response.data,
-            pagination: response.pagination.cursor,
+        Ok(helix::Response::new(
+            response.data,
+            response.pagination.cursor,
             request,
-            total: response.total,
-            other: None,
-        })
+            response.total,
+            response.other,
+        ))
     }
 }
 

@@ -184,17 +184,17 @@ impl RequestGet for GetBitsLeaderboardRequest<'_> {
                 status,
             )
         })?;
-        Ok(helix::Response {
-            data: BitsLeaderboard {
+        Ok(helix::Response::new(
+            BitsLeaderboard {
                 leaderboard: response.data,
                 date_range: response.date_range,
                 total: response.total,
             },
-            pagination: None,
+            None,
             request,
-            total: Some(response.total),
-            other: None,
-        })
+            Some(response.total),
+            None,
+        ))
     }
 }
 
