@@ -236,6 +236,8 @@
 <a href="#236" id="236">236</a>
 <a href="#237" id="237">237</a>
 <a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Responses contains the return values of a [request](super::Request).
 </span><span class="kw">use super</span>::{Cursor, Request};
 
@@ -284,7 +286,8 @@
     ///     type Response = MyTwitchResponse;
     ///
     ///     const PATH: &amp;&#39;static str = &quot;my/request&quot;;
-    ///     const SCOPE: &amp;&#39;static [twitch_api::twitch_oauth2::Scope] = &amp;[];
+    ///     const SCOPE: twitch_api::twitch_oauth2::Validator =
+    ///         twitch_api::twitch_oauth2::validator![];
     /// }
     ///
     /// impl RequestPost for MyTwitchRequest {
@@ -355,7 +358,8 @@
     ///     type Response = MyTwitchResponse;
     ///
     ///     const PATH: &amp;&#39;static str = &quot;my/request&quot;;
-    ///     const SCOPE: &amp;&#39;static [twitch_api::twitch_oauth2::Scope] = &amp;[];
+    ///     const SCOPE: twitch_api::twitch_oauth2::Validator =
+    ///         twitch_api::twitch_oauth2::validator![];
     /// }
     ///
     /// impl RequestPut for MyTwitchRequest {
