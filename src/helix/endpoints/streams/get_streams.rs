@@ -112,6 +112,14 @@ impl<'a> GetStreamsRequest<'a> {
         self.first = Some(first);
         self
     }
+
+    /// Return streams with these [Id](types::CategoryId)s
+    pub fn game_ids(game_ids: impl Into<Cow<'a, [&'a types::CategoryIdRef]>>) -> Self {
+        Self {
+            game_id: game_ids.into(),
+            ..Self::default()
+        }
+    }
 }
 
 impl Default for GetStreamsRequest<'_> {
