@@ -11,10 +11,10 @@
 //! Subscribe to a channel's follow events:
 //!
 //! ```rust, no_run
-//! use twitch_api::eventsub::{channel::ChannelFollowV1, Transport, TransportMethod};
-//! use twitch_api::helix::{self, eventsub::{
-//!     CreateEventSubSubscriptionBody, CreateEventSubSubscriptionRequest,
-//! }};
+//! use twitch_api::{
+//!     eventsub::{channel::ChannelFollowV2, Transport, TransportMethod},
+//!     helix,
+//! };
 //! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -22,21 +22,15 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //!
-//! let event = ChannelFollowV1::builder()
-//!     .broadcaster_user_id("1234")
-//!     .build();
+//! let event = ChannelFollowV2::new("1234", "5678");
 //! let transport = Transport::webhook(
 //!     "https://example.org/eventsub/channelfollow",
 //!     String::from("secretabcd"),
 //! );
 //!
-//! let request = CreateEventSubSubscriptionRequest::default();
-//! let body = CreateEventSubSubscriptionBody::builder()
-//!     .subscription(event)
-//!     .transport(transport)
-//!     .build();
-//!
-//! let event_information = client.req_post(request, body, &token).await?.data;
+//! let event_information = client
+//!     .create_eventsub_subscription(event, transport, &token)
+//!     .await?;
 //!
 //! println!("event id: {:?}", event_information.id);
 //! # Ok(())
@@ -46,7 +40,6 @@
 //! You'll now get a http POST request to the url you specified as the `callback`.
 //! You need to respond to this request from your webserver with a 200 OK response with the [`challenge`](VerificationRequest::challenge) as the body.
 //! After this, you'll get notifications
-//!
 //! ```rust
 //! use twitch_api::eventsub::{Event, Payload, Message};
 //! pub fn parse_request(
@@ -57,7 +50,7 @@
 //!         return Err(todo!());
 //!     }
 //!     match Event::parse_http(request)? {
-//!         Event::ChannelFollowV1(Payload {
+//!         Event::ChannelFollowV2(Payload {
 //!             message: Message::VerificationRequest(ver),
 //!             ..
 //!         }) => {
@@ -66,7 +59,7 @@
 //!                 .status(200)
 //!                 .body(ver.challenge.into_bytes())?)
 //!         },
-//!         Event::ChannelFollowV1(Payload {
+//!         Event::ChannelFollowV2(Payload {
 //!             message: Message::Notification(notif),
 //!             ..
 //!         }) => {
@@ -175,36 +168,37 @@ impl<E: EventSubscription> Payload<E> {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api::eventsub::{channel::ChannelFollowV1, Payload};
+    /// use twitch_api::eventsub::{channel::ChannelFollowV2, Payload};
     /// let notification = r#"
     /// {
     ///     "subscription": {
     ///         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
-    ///         "status": "enabled",
     ///         "type": "channel.follow",
-    ///         "version": "1",
-    ///         "cost": 1,
+    ///         "version": "2",
+    ///         "status": "enabled",
+    ///         "cost": 0,
     ///         "condition": {
-    ///             "broadcaster_user_id": "12826"
+    ///            "broadcaster_user_id": "1337",
+    ///            "moderator_user_id": "1337"
     ///         },
-    ///         "transport": {
+    ///          "transport": {
     ///             "method": "webhook",
     ///             "callback": "https://example.com/webhooks/callback"
     ///         },
-    ///         "created_at": "2019-11-16T10:11:12.123Z"
+    ///         "created_at": "2019-11-16T10:11:12.634234626Z"
     ///     },
     ///     "event": {
-    ///         "user_id": "1337",
-    ///         "user_login": "awesome_user",
-    ///         "user_name": "Awesome_User",
-    ///         "broadcaster_user_id":     "12826",
-    ///         "broadcaster_user_login":  "twitch",
-    ///         "broadcaster_user_name":   "Twitch",
+    ///         "user_id": "1234",
+    ///         "user_login": "cool_user",
+    ///         "user_name": "Cool_User",
+    ///         "broadcaster_user_id": "1337",
+    ///         "broadcaster_user_login": "cooler_user",
+    ///         "broadcaster_user_name": "Cooler_User",
     ///         "followed_at": "2020-07-15T18:16:11.17106713Z"
     ///     }
     /// }
     /// "#;
-    /// let payload: Payload<ChannelFollowV1> =
+    /// let payload: Payload<ChannelFollowV2> =
     ///     Payload::parse_notification(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
@@ -234,17 +228,18 @@ impl<E: EventSubscription> Payload<E> {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api::eventsub::{channel::ChannelFollowV1, Payload};
+    /// use twitch_api::eventsub::{channel::ChannelFollowV2, Payload};
     /// let notification = r#"
     /// {
     ///     "subscription": {
     ///         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
     ///         "status": "authorization_revoked",
     ///         "type": "channel.follow",
-    ///         "cost": 1,
-    ///         "version": "1",
+    ///         "cost": 0,
+    ///         "version": "2",
     ///         "condition": {
-    ///             "broadcaster_user_id": "12826"
+    ///             "broadcaster_user_id": "1337",
+    ///             "moderator_user_id": "1337"
     ///         },
     ///         "transport": {
     ///             "method": "webhook",
@@ -254,7 +249,7 @@ impl<E: EventSubscription> Payload<E> {
     ///     }
     /// }
     /// "#;
-    /// let payload: Payload<ChannelFollowV1> =
+    /// let payload: Payload<ChannelFollowV2> =
     ///     Payload::parse_revocation(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
@@ -279,7 +274,7 @@ impl<E: EventSubscription> Payload<E> {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api::eventsub::{channel::ChannelFollowV1, Payload};
+    /// use twitch_api::eventsub::{channel::ChannelFollowV2, Payload};
     /// let notification = r#"
     /// {
     ///     "challenge": "pogchamp-kappa-360noscope-vohiyo",
@@ -287,10 +282,11 @@ impl<E: EventSubscription> Payload<E> {
     ///         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
     ///         "status": "webhook_callback_verification_pending",
     ///         "type": "channel.follow",
-    ///         "version": "1",
+    ///         "version": "2",
     ///         "cost": 1,
     ///         "condition": {
-    ///             "broadcaster_user_id": "12826"
+    ///             "broadcaster_user_id": "12826",
+    ///             "moderator_user_id": "12826"
     ///         },
     ///         "transport": {
     ///             "method": "webhook",
@@ -300,7 +296,7 @@ impl<E: EventSubscription> Payload<E> {
     ///     }
     /// }
     /// "#;
-    /// let payload: Payload<ChannelFollowV1> =
+    /// let payload: Payload<ChannelFollowV2> =
     ///     Payload::parse_verification_request(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
@@ -333,14 +329,14 @@ impl<E: EventSubscription> Payload<E> {
     ///
     /// ```rust
     /// use http::Request;
-    /// use twitch_api::eventsub::{Payload, channel::ChannelFollowV1};
+    /// use twitch_api::eventsub::{Payload, channel::ChannelFollowV2};
     /// # struct Body {} impl Body { fn new() -> Self {Body {}} fn to_bytes(&self) -> &[u8] { &[] } }
     /// # fn a() -> Result<(), twitch_api::eventsub::PayloadParseError> {
     /// // Example of a request with a body that doesn't implement `AsRef<[u8]>`
     /// let original_request: Request<Body> = http::Request::new(Body::new());
     /// // Convert to a request with a body of `Vec<u8>`, which does implement `AsRef<[u8]>`
     /// let converted_request: Request<Vec<u8>> = original_request.map(|r| r.to_bytes().to_owned());
-    /// Payload::<ChannelFollowV1>::parse_http(&converted_request)?
+    /// Payload::<ChannelFollowV2>::parse_http(&converted_request)?
     /// # ; Ok(())}
     /// ```
     pub fn parse_http<B>(request: &http::Request<B>) -> Result<Payload<E>, PayloadParseError>
