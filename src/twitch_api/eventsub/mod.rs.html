@@ -957,10 +957,6 @@
 <a href="#957" id="957">957</a>
 <a href="#958" id="958">958</a>
 <a href="#959" id="959">959</a>
-<a href="#960" id="960">960</a>
-<a href="#961" id="961">961</a>
-<a href="#962" id="962">962</a>
-<a href="#963" id="963">963</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Holds serializable EventSub stuff
 //!
 //! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).
@@ -974,10 +970,10 @@
 //! Subscribe to a channel&#39;s follow events:
 //!
 //! ```rust, no_run
-//! use twitch_api::eventsub::{channel::ChannelFollowV1, Transport, TransportMethod};
-//! use twitch_api::helix::{self, eventsub::{
-//!     CreateEventSubSubscriptionBody, CreateEventSubSubscriptionRequest,
-//! }};
+//! use twitch_api::{
+//!     eventsub::{channel::ChannelFollowV2, Transport, TransportMethod},
+//!     helix,
+//! };
 //! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
@@ -985,21 +981,15 @@
 //! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
 //!
-//! let event = ChannelFollowV1::builder()
-//!     .broadcaster_user_id(&quot;1234&quot;)
-//!     .build();
+//! let event = ChannelFollowV2::new(&quot;1234&quot;, &quot;5678&quot;);
 //! let transport = Transport::webhook(
 //!     &quot;https://example.org/eventsub/channelfollow&quot;,
 //!     String::from(&quot;secretabcd&quot;),
 //! );
 //!
-//! let request = CreateEventSubSubscriptionRequest::default();
-//! let body = CreateEventSubSubscriptionBody::builder()
-//!     .subscription(event)
-//!     .transport(transport)
-//!     .build();
-//!
-//! let event_information = client.req_post(request, body, &amp;token).await?.data;
+//! let event_information = client
+//!     .create_eventsub_subscription(event, transport, &amp;token)
+//!     .await?;
 //!
 //! println!(&quot;event id: {:?}&quot;, event_information.id);
 //! # Ok(())
@@ -1009,7 +999,6 @@
 //! You&#39;ll now get a http POST request to the url you specified as the `callback`.
 //! You need to respond to this request from your webserver with a 200 OK response with the [`challenge`](VerificationRequest::challenge) as the body.
 //! After this, you&#39;ll get notifications
-//!
 //! ```rust
 //! use twitch_api::eventsub::{Event, Payload, Message};
 //! pub fn parse_request(
@@ -1020,7 +1009,7 @@
 //!         return Err(todo!());
 //!     }
 //!     match Event::parse_http(request)? {
-//!         Event::ChannelFollowV1(Payload {
+//!         Event::ChannelFollowV2(Payload {
 //!             message: Message::VerificationRequest(ver),
 //!             ..
 //!         }) =&gt; {
@@ -1029,7 +1018,7 @@
 //!                 .status(200)
 //!                 .body(ver.challenge.into_bytes())?)
 //!         },
-//!         Event::ChannelFollowV1(Payload {
+//!         Event::ChannelFollowV2(Payload {
 //!             message: Message::Notification(notif),
 //!             ..
 //!         }) =&gt; {
@@ -1138,36 +1127,37 @@
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api::eventsub::{channel::ChannelFollowV1, Payload};
+    /// use twitch_api::eventsub::{channel::ChannelFollowV2, Payload};
     /// let notification = r#&quot;
     /// {
     ///     &quot;subscription&quot;: {
     ///         &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
-    ///         &quot;status&quot;: &quot;enabled&quot;,
     ///         &quot;type&quot;: &quot;channel.follow&quot;,
-    ///         &quot;version&quot;: &quot;1&quot;,
-    ///         &quot;cost&quot;: 1,
+    ///         &quot;version&quot;: &quot;2&quot;,
+    ///         &quot;status&quot;: &quot;enabled&quot;,
+    ///         &quot;cost&quot;: 0,
     ///         &quot;condition&quot;: {
-    ///             &quot;broadcaster_user_id&quot;: &quot;12826&quot;
+    ///            &quot;broadcaster_user_id&quot;: &quot;1337&quot;,
+    ///            &quot;moderator_user_id&quot;: &quot;1337&quot;
     ///         },
-    ///         &quot;transport&quot;: {
+    ///          &quot;transport&quot;: {
     ///             &quot;method&quot;: &quot;webhook&quot;,
     ///             &quot;callback&quot;: &quot;https://example.com/webhooks/callback&quot;
     ///         },
-    ///         &quot;created_at&quot;: &quot;2019-11-16T10:11:12.123Z&quot;
+    ///         &quot;created_at&quot;: &quot;2019-11-16T10:11:12.634234626Z&quot;
     ///     },
     ///     &quot;event&quot;: {
-    ///         &quot;user_id&quot;: &quot;1337&quot;,
-    ///         &quot;user_login&quot;: &quot;awesome_user&quot;,
-    ///         &quot;user_name&quot;: &quot;Awesome_User&quot;,
-    ///         &quot;broadcaster_user_id&quot;:     &quot;12826&quot;,
-    ///         &quot;broadcaster_user_login&quot;:  &quot;twitch&quot;,
-    ///         &quot;broadcaster_user_name&quot;:   &quot;Twitch&quot;,
+    ///         &quot;user_id&quot;: &quot;1234&quot;,
+    ///         &quot;user_login&quot;: &quot;cool_user&quot;,
+    ///         &quot;user_name&quot;: &quot;Cool_User&quot;,
+    ///         &quot;broadcaster_user_id&quot;: &quot;1337&quot;,
+    ///         &quot;broadcaster_user_login&quot;: &quot;cooler_user&quot;,
+    ///         &quot;broadcaster_user_name&quot;: &quot;Cooler_User&quot;,
     ///         &quot;followed_at&quot;: &quot;2020-07-15T18:16:11.17106713Z&quot;
     ///     }
     /// }
     /// &quot;#;
-    /// let payload: Payload&lt;ChannelFollowV1&gt; =
+    /// let payload: Payload&lt;ChannelFollowV2&gt; =
     ///     Payload::parse_notification(notification)?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
@@ -1197,17 +1187,18 @@
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api::eventsub::{channel::ChannelFollowV1, Payload};
+    /// use twitch_api::eventsub::{channel::ChannelFollowV2, Payload};
     /// let notification = r#&quot;
     /// {
     ///     &quot;subscription&quot;: {
     ///         &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
     ///         &quot;status&quot;: &quot;authorization_revoked&quot;,
     ///         &quot;type&quot;: &quot;channel.follow&quot;,
-    ///         &quot;cost&quot;: 1,
-    ///         &quot;version&quot;: &quot;1&quot;,
+    ///         &quot;cost&quot;: 0,
+    ///         &quot;version&quot;: &quot;2&quot;,
     ///         &quot;condition&quot;: {
-    ///             &quot;broadcaster_user_id&quot;: &quot;12826&quot;
+    ///             &quot;broadcaster_user_id&quot;: &quot;1337&quot;,
+    ///             &quot;moderator_user_id&quot;: &quot;1337&quot;
     ///         },
     ///         &quot;transport&quot;: {
     ///             &quot;method&quot;: &quot;webhook&quot;,
@@ -1217,7 +1208,7 @@
     ///     }
     /// }
     /// &quot;#;
-    /// let payload: Payload&lt;ChannelFollowV1&gt; =
+    /// let payload: Payload&lt;ChannelFollowV2&gt; =
     ///     Payload::parse_revocation(notification)?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
@@ -1242,7 +1233,7 @@
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api::eventsub::{channel::ChannelFollowV1, Payload};
+    /// use twitch_api::eventsub::{channel::ChannelFollowV2, Payload};
     /// let notification = r#&quot;
     /// {
     ///     &quot;challenge&quot;: &quot;pogchamp-kappa-360noscope-vohiyo&quot;,
@@ -1250,10 +1241,11 @@
     ///         &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
     ///         &quot;status&quot;: &quot;webhook_callback_verification_pending&quot;,
     ///         &quot;type&quot;: &quot;channel.follow&quot;,
-    ///         &quot;version&quot;: &quot;1&quot;,
+    ///         &quot;version&quot;: &quot;2&quot;,
     ///         &quot;cost&quot;: 1,
     ///         &quot;condition&quot;: {
-    ///             &quot;broadcaster_user_id&quot;: &quot;12826&quot;
+    ///             &quot;broadcaster_user_id&quot;: &quot;12826&quot;,
+    ///             &quot;moderator_user_id&quot;: &quot;12826&quot;
     ///         },
     ///         &quot;transport&quot;: {
     ///             &quot;method&quot;: &quot;webhook&quot;,
@@ -1263,7 +1255,7 @@
     ///     }
     /// }
     /// &quot;#;
-    /// let payload: Payload&lt;ChannelFollowV1&gt; =
+    /// let payload: Payload&lt;ChannelFollowV2&gt; =
     ///     Payload::parse_verification_request(notification)?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
@@ -1296,14 +1288,14 @@
     ///
     /// ```rust
     /// use http::Request;
-    /// use twitch_api::eventsub::{Payload, channel::ChannelFollowV1};
+    /// use twitch_api::eventsub::{Payload, channel::ChannelFollowV2};
     /// # struct Body {} impl Body { fn new() -&gt; Self {Body {}} fn to_bytes(&amp;self) -&gt; &amp;[u8] { &amp;[] } }
     /// # fn a() -&gt; Result&lt;(), twitch_api::eventsub::PayloadParseError&gt; {
     /// // Example of a request with a body that doesn&#39;t implement `AsRef&lt;[u8]&gt;`
     /// let original_request: Request&lt;Body&gt; = http::Request::new(Body::new());
     /// // Convert to a request with a body of `Vec&lt;u8&gt;`, which does implement `AsRef&lt;[u8]&gt;`
     /// let converted_request: Request&lt;Vec&lt;u8&gt;&gt; = original_request.map(|r| r.to_bytes().to_owned());
-    /// Payload::&lt;ChannelFollowV1&gt;::parse_http(&amp;converted_request)?
+    /// Payload::&lt;ChannelFollowV2&gt;::parse_http(&amp;converted_request)?
     /// # ; Ok(())}
     /// ```
     </span><span class="kw">pub fn </span>parse_http&lt;B&gt;(request: <span class="kw-2">&amp;</span>http::Request&lt;B&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt;
