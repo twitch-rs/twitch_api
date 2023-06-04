@@ -11,10 +11,10 @@
 //! Subscribe to a channel's follow events:
 //!
 //! ```rust, no_run
-//! use twitch_api::eventsub::{channel::ChannelFollowV1, Transport, TransportMethod};
-//! use twitch_api::helix::{self, eventsub::{
-//!     CreateEventSubSubscriptionBody, CreateEventSubSubscriptionRequest,
-//! }};
+//! use twitch_api::{
+//!     eventsub::{channel::ChannelFollowV2, Transport, TransportMethod},
+//!     helix,
+//! };
 //! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -22,21 +22,15 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //!
-//! let event = ChannelFollowV1::builder()
-//!     .broadcaster_user_id("1234")
-//!     .build();
+//! let event = ChannelFollowV2::new("1234", "5678");
 //! let transport = Transport::webhook(
 //!     "https://example.org/eventsub/channelfollow",
 //!     String::from("secretabcd"),
 //! );
 //!
-//! let request = CreateEventSubSubscriptionRequest::default();
-//! let body = CreateEventSubSubscriptionBody::builder()
-//!     .subscription(event)
-//!     .transport(transport)
-//!     .build();
-//!
-//! let event_information = client.req_post(request, body, &token).await?.data;
+//! let event_information = client
+//!     .create_eventsub_subscription(event, transport, &token)
+//!     .await?;
 //!
 //! println!("event id: {:?}", event_information.id);
 //! # Ok(())
@@ -46,7 +40,6 @@
 //! You'll now get a http POST request to the url you specified as the `callback`.
 //! You need to respond to this request from your webserver with a 200 OK response with the [`challenge`](VerificationRequest::challenge) as the body.
 //! After this, you'll get notifications
-//!
 //! ```rust
 //! use twitch_api::eventsub::{Event, Payload, Message};
 //! pub fn parse_request(
@@ -57,7 +50,7 @@
 //!         return Err(todo!());
 //!     }
 //!     match Event::parse_http(request)? {
-//!         Event::ChannelFollowV1(Payload {
+//!         Event::ChannelFollowV2(Payload {
 //!             message: Message::VerificationRequest(ver),
 //!             ..
 //!         }) => {
@@ -66,7 +59,7 @@
 //!                 .status(200)
 //!                 .body(ver.challenge.into_bytes())?)
 //!         },
-//!         Event::ChannelFollowV1(Payload {
+//!         Event::ChannelFollowV2(Payload {
 //!             message: Message::Notification(notif),
 //!             ..
 //!         }) => {
