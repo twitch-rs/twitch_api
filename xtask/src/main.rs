@@ -207,4 +207,30 @@ mod tests {
         assert!(!pkgid.contains('@'));
         assert!(pkgid.contains("twitch_api"));
     }
+
+    #[test]
+    pub fn assert_msrv() {
+        let workspace = get_cargo_workspace();
+        let toml = std::fs::read_to_string(&workspace.join("Cargo.toml")).unwrap();
+        let msrv = toml
+            .split("rust-version = \"")
+            .nth(1)
+            .unwrap()
+            .split('"')
+            .next()
+            .unwrap();
+        dbg!(msrv);
+        let read_dir = std::fs::read_dir(workspace.join(".github/workflows")).unwrap();
+        for workflow in read_dir {
+            let workflow = workflow.unwrap();
+            let path = workflow.path();
+            if path.extension() == Some(std::ffi::OsStr::new("yml")) {
+                let content = std::fs::read_to_string(&path).unwrap();
+                if content.contains("MSRV:") {
+                    println!("check {}", path.display());
+                    assert!(content.contains(&format!("MSRV: {msrv}")));
+                }
+            }
+        }
+    }
 }
