@@ -110,6 +110,10 @@ pub struct ChannelInformation {
     pub delay: i64,
     /// The tags applied to the channel.
     pub tags: Vec<String>,
+    /// The [CCLs](https://blog.twitch.tv/en/2023/06/20/introducing-content-classification-labels/) applied to the channel.
+    pub content_classification_labels: Vec<types::ContentClassificationId>,
+    /// Boolean flag indicating if the channel has branded content.
+    pub is_branded_content: bool,
 }
 
 impl Request for GetChannelInformationRequest<'_> {
@@ -142,8 +146,10 @@ fn test_request() {
               "game_name": "Science & Technology",
               "title": "TwitchDev Monthly Update // May 6, 2021",
               "delay": 0,
-              "tags": ["DevsInTheKnow"]
-              }
+              "tags": ["DevsInTheKnow"],
+              "content_classification_labels": ["Gambling", "DrugsIntoxication", "MatureGame"],
+              "is_branded_content": false
+            }
           ]
         }
         "#
