@@ -51,7 +51,8 @@ pub use get_followed_channels::{FollowedBroadcaster, GetFollowedChannels};
 pub use get_vips::{GetVipsRequest, Vip};
 #[doc(inline)]
 pub use modify_channel_information::{
-    ModifyChannelInformation, ModifyChannelInformationBody, ModifyChannelInformationRequest,
+    ContentClassificationLabel, ModifyChannelInformation, ModifyChannelInformationBody,
+    ModifyChannelInformationRequest,
 };
 #[doc(inline)]
 pub use remove_channel_vip::{RemoveChannelVipRequest, RemoveChannelVipResponse};

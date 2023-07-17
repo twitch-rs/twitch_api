@@ -110,6 +110,38 @@ pub struct ModifyChannelInformationBody<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
     pub tags: Option<Cow<'a, [&'a str]>>,
+    /// List of labels that should be set as the Channel’s CCLs.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub content_classification_labels: Option<Cow<'a, [ContentClassificationLabel]>>,
+    /// Boolean flag indicating if the channel has branded content.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_branded_content: Option<bool>,
+}
+
+/// List of labels that should be set as the Channel’s CCLs.
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[non_exhaustive]
+pub struct ContentClassificationLabel {
+    /// Boolean flag indicating whether the label should be enabled (true) or disabled for the channel.
+    pub is_enabled: bool,
+    /// ID of the Content Classification Labels that must be added/removed from the channel.
+    pub id: types::ContentClassificationId,
+}
+
+impl ContentClassificationLabel {
+    /// Create a new [`ContentClassificationLabel`]
+    pub fn new(is_enabled: bool, id: types::ContentClassificationId) -> Self {
+        Self { is_enabled, id }
+    }
+}
+
+impl From<(bool, types::ContentClassificationId)> for ContentClassificationLabel {
+    fn from(tup: (bool, types::ContentClassificationId)) -> Self {
+        Self {
+            is_enabled: tup.0,
+            id: tup.1,
+        }
+    }
 }
 
 impl<'a> ModifyChannelInformationBody<'a> {
@@ -159,6 +191,43 @@ impl<'a> ModifyChannelInformationBody<'a> {
         self.tags = Some(tags.into());
         self
     }
+
+    /// List of labels that should be set as the Channel’s CCLs.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// # use twitch_api::helix::channels::modify_channel_information::ModifyChannelInformationBody;
+    /// use twitch_types;
+    ///
+    /// let mut body = ModifyChannelInformationBody::new();
+    /// body.content_classification_labels(vec![
+    ///     (true, twitch_types::ContentClassificationId::SexualThemes).into(),
+    ///     (false, twitch_types::ContentClassificationId::ViolentGraphic).into(),
+    /// ]);
+    /// ```
+    pub fn content_classification_labels(
+        &mut self,
+        content_classification_labels: impl Into<Cow<'a, [ContentClassificationLabel]>>,
+    ) -> &mut Self {
+        self.content_classification_labels = Some(content_classification_labels.into());
+        self
+    }
+
+    /// Boolean flag indicating if the channel has branded content.
+    pub fn is_branded_content(&mut self, is_branded_content: bool) -> &mut Self {
+        self.is_branded_content = Some(is_branded_content);
+        self
+    }
+}
+
+#[test]
+pub fn t() {
+    let mut body = ModifyChannelInformationBody::new();
+    body.content_classification_labels(vec![
+        (true, types::ContentClassificationId::SexualThemes).into()
+    ]);
+    dbg!(body);
 }
 
 impl helix::private::SealedSerialize for ModifyChannelInformationBody<'_> {}
