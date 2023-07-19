@@ -29,6 +29,7 @@
 - Renamed `GetBlockedTerms` -> `GetBlockedTermsRequest`
 - Changed `SCOPES` on `helix::Request`, `pubsub::Topic` and `eventsub::EventSubscription` to be `twitch_oauth2::Validator`
 - Updated `twitch_oauth2` dependency
+- Added EventSub WebSocket support, changing many methods on transport and eventsub to take this into account.
 
 ### Changes
 

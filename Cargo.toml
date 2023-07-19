@@ -69,7 +69,7 @@ default = ["deser_borrow"]
 client = ["twitch_oauth2/client", "dep:futures", "dep:hyper"]
 
 unsupported = ["serde_json?/raw_value", "beta"]
-beta = ["serde_json?/raw_value"]
+beta = []
 deny_unknown_fields = []
 trace_unknown_fields = ["dep:serde_ignored", "tracing"]
 
@@ -118,7 +118,7 @@ pubsub = [
 ]
 
 eventsub = [
-    "serde_json",
+    "serde_json/raw_value",
     "twitch_types/emote",
     "twitch_types/eventsub",
     "twitch_types/goal",
