@@ -91,11 +91,156 @@
 <a href="#91" id="91">91</a>
 <a href="#92" id="92">92</a>
 <a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
 </pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;channel.update&quot;</span>)]
 </span><span class="doccomment">//! Channel has updated the category, title, mature flag, or broadcast language.
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// [`channel.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelupdate) subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
+</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ChannelUpdateV2 {
+    <span class="doccomment">/// The broadcaster user ID for the channel you want to get updates for.
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
+    </span><span class="kw">pub </span>broadcaster_user_id: types::UserId,
+}
+
+<span class="kw">impl </span>ChannelUpdateV2 {
+    <span class="doccomment">/// The broadcaster user ID for the channel you want to get updates for.
+    </span><span class="kw">pub fn </span>broadcaster_user_id(broadcaster_user_id: <span class="kw">impl </span>Into&lt;types::UserId&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            broadcaster_user_id: broadcaster_user_id.into(),
+        }
+    }
+}
+
+<span class="kw">impl </span>EventSubscription <span class="kw">for </span>ChannelUpdateV2 {
+    <span class="kw">type </span>Payload = ChannelUpdateV2Payload;
+
+    <span class="kw">const </span>EVENT_TYPE: EventType = EventType::ChannelUpdate;
+    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
+    <span class="kw">const </span>VERSION: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;2&quot;</span>;
+}
+
+<span class="doccomment">/// [`channel.update`](ChannelUpdateV2) response payload.
+</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>ChannelUpdateV2Payload {
+    <span class="doccomment">/// The broadcaster’s user ID.
+    </span><span class="kw">pub </span>broadcaster_user_id: types::UserId,
+    <span class="doccomment">/// The requested broadcaster login.
+    </span><span class="kw">pub </span>broadcaster_user_login: types::UserName,
+    <span class="doccomment">/// The broadcaster’s user display name.
+    </span><span class="kw">pub </span>broadcaster_user_name: types::DisplayName,
+    <span class="doccomment">/// The channel’s stream title.
+    </span><span class="kw">pub </span>title: String,
+    <span class="doccomment">/// The channel’s broadcast language.
+    </span><span class="kw">pub </span>language: String,
+    <span class="doccomment">/// The channel’s category ID.
+    </span><span class="kw">pub </span>category_id: types::CategoryId,
+    <span class="doccomment">/// The category name.
+    </span><span class="kw">pub </span>category_name: String,
+    <span class="doccomment">/// Array of content classification label IDs currently applied on the Channel.
+    </span><span class="kw">pub </span>content_classification_labels: Vec&lt;types::ContentClassificationId&gt;,
+}
+
+<span class="attr">#[deprecated(note = <span class="string">&quot;Use `ChannelUpdateV2` instead&quot;</span>)]
+</span><span class="doccomment">/// version 1 of [`channel.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelupdate) subscription type sends notifications when a broadcaster updates the category, title, mature flag, or broadcast language for their channel.
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
@@ -125,7 +270,8 @@
 }
 
 <span class="doccomment">/// [`channel.update`](ChannelUpdateV1) response payload.
-</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="attr">#[deprecated(note = <span class="string">&quot;Use `ChannelUpdateV2` instead&quot;</span>)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChannelUpdateV1Payload {
@@ -149,7 +295,45 @@
 
 <span class="attr">#[cfg(test)]
 #[test]
-</span><span class="kw">fn </span>parse_payload() {
+</span><span class="kw">fn </span>parse_payload_v2() {
+    <span class="comment">// FIXME: https://github.com/twitchdev/issues/issues/268
+    </span><span class="kw">let </span>payload = <span class="string">r#&quot;
+    {
+        &quot;subscription&quot;: {
+            &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
+            &quot;type&quot;: &quot;channel.update&quot;,
+            &quot;version&quot;: &quot;2&quot;,
+            &quot;status&quot;: &quot;enabled&quot;,
+            &quot;cost&quot;: 0,
+            &quot;condition&quot;: {
+               &quot;broadcaster_user_id&quot;: &quot;1337&quot;
+            },
+             &quot;transport&quot;: {
+                &quot;method&quot;: &quot;webhook&quot;,
+                &quot;callback&quot;: &quot;https://example.com/webhooks/callback&quot;
+            },
+            &quot;created_at&quot;: &quot;2023-06-29T17:20:33.860897266Z&quot;
+        },
+        &quot;event&quot;: {
+            &quot;broadcaster_user_id&quot;: &quot;1337&quot;,
+            &quot;broadcaster_user_login&quot;: &quot;cool_user&quot;,
+            &quot;broadcaster_user_name&quot;: &quot;Cool_User&quot;,
+            &quot;title&quot;: &quot;Best Stream Ever&quot;,
+            &quot;language&quot;: &quot;en&quot;,
+            &quot;category_id&quot;: &quot;12453&quot;,
+            &quot;category_name&quot;: &quot;Grand Theft Auto&quot;,
+            &quot;content_classification_labels&quot;: [ &quot;MatureGame&quot; ]
+        }
+    }
+    &quot;#</span>;
+
+    <span class="kw">let </span>val = <span class="macro">dbg!</span>(<span class="kw">crate</span>::eventsub::Event::parse(payload).unwrap());
+    <span class="kw">crate</span>::tests::roundtrip(<span class="kw-2">&amp;</span>val)
+}
+
+<span class="attr">#[cfg(test)]
+#[test]
+</span><span class="kw">fn </span>parse_payload_v1() {
     <span class="comment">// FIXME: https://github.com/twitchdev/issues/issues/268
     </span><span class="kw">let </span>payload = <span class="string">r#&quot;
     {
