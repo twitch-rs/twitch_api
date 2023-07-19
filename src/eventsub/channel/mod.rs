@@ -109,3 +109,5 @@ pub use subscription::{ChannelSubscriptionMessageV1, ChannelSubscriptionMessageV
 pub use unban::{ChannelUnbanV1, ChannelUnbanV1Payload};
 #[doc(inline)]
 pub use update::{ChannelUpdateV1, ChannelUpdateV1Payload};
+#[doc(inline)]
+pub use update::{ChannelUpdateV2, ChannelUpdateV2Payload};

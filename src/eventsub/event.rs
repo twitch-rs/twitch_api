@@ -13,6 +13,7 @@ macro_rules! fill_events {
     ($callback:ident( $($args:tt)* )) => {
         $callback!($($args)*
             channel::ChannelUpdateV1;
+            channel::ChannelUpdateV2;
             channel::ChannelFollowV1;
             channel::ChannelFollowV2;
             channel::ChannelSubscribeV1;
@@ -238,7 +239,10 @@ pub enum Event {
     /// Channel Charity Campaign Stop V1 Event
     ChannelCharityCampaignStopV1(Payload<channel::ChannelCharityCampaignStopV1>),
     /// Channel Update V1 Event
+    #[deprecated(note = "use `Event::ChannelUpdateV2` instead")]
     ChannelUpdateV1(Payload<channel::ChannelUpdateV1>),
+    /// Channel Update V2 Event
+    ChannelUpdateV2(Payload<channel::ChannelUpdateV2>),
     /// Channel Follow V1 Event
     #[deprecated(note = "use `Event::ChannelFollowV2` instead")]
     ChannelFollowV1(Payload<channel::ChannelFollowV1>),
