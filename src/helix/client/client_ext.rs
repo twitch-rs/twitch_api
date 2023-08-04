@@ -226,7 +226,6 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     ///
     /// # Ok(()) }
     /// ```
-    #[cfg(feature = "unsupported")]
     pub fn get_chatters<T>(
         &'client self,
         broadcaster_id: impl Into<&'client types::UserIdRef>,
