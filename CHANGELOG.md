@@ -8,7 +8,7 @@
 
 ### Breaking changes
 
-- MSRV: 1.66.1
+- MSRV: 1.67.0
 - Requests for helix endpoints have been converted to take `Cow`s.
   This change means the `builder()` methods are harder to use, consider using the new methods on
   each request which provide the same functionality but with better ergonomics.
