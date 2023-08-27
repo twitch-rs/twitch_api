@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/client_ext.rs`."><title>client_ext.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (32303b219 2023-07-29)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/client_ext.rs`."><title>client_ext.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-47e7ab555ef2818a.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (69e97df5c 2023-08-26)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-b2d31d2efc7e9b67.css" data-theme-dark-css="dark-3388a2fb2ef8066b.css" data-theme-ayu-css="ayu-8c3c66a6cf12cb2f.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-ef3a2de404864b0b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-b2d31d2efc7e9b67.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-3388a2fb2ef8066b.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../twitch_api/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1355,6 +1355,36 @@
 <a href="#1355" id="1355">1355</a>
 <a href="#1356" id="1356">1356</a>
 <a href="#1357" id="1357">1357</a>
+<a href="#1358" id="1358">1358</a>
+<a href="#1359" id="1359">1359</a>
+<a href="#1360" id="1360">1360</a>
+<a href="#1361" id="1361">1361</a>
+<a href="#1362" id="1362">1362</a>
+<a href="#1363" id="1363">1363</a>
+<a href="#1364" id="1364">1364</a>
+<a href="#1365" id="1365">1365</a>
+<a href="#1366" id="1366">1366</a>
+<a href="#1367" id="1367">1367</a>
+<a href="#1368" id="1368">1368</a>
+<a href="#1369" id="1369">1369</a>
+<a href="#1370" id="1370">1370</a>
+<a href="#1371" id="1371">1371</a>
+<a href="#1372" id="1372">1372</a>
+<a href="#1373" id="1373">1373</a>
+<a href="#1374" id="1374">1374</a>
+<a href="#1375" id="1375">1375</a>
+<a href="#1376" id="1376">1376</a>
+<a href="#1377" id="1377">1377</a>
+<a href="#1378" id="1378">1378</a>
+<a href="#1379" id="1379">1379</a>
+<a href="#1380" id="1380">1380</a>
+<a href="#1381" id="1381">1381</a>
+<a href="#1382" id="1382">1382</a>
+<a href="#1383" id="1383">1383</a>
+<a href="#1384" id="1384">1384</a>
+<a href="#1385" id="1385">1385</a>
+<a href="#1386" id="1386">1386</a>
+<a href="#1387" id="1387">1387</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]
 </span><span class="attr">#![warn(clippy::future_not_send)]
 </span><span class="kw">use </span>std::borrow::Cow;
@@ -1452,6 +1482,22 @@
     }
 
     <span class="doccomment">/// Get multiple [ChannelInformation](helix::channels::ChannelInformation) from broadcasters ids
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;&#39;static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::{helix, types};
+    ///
+    /// let ids: &amp;[&amp;types::UserIdRef] = &amp;[&quot;1234&quot;.into(), &quot;4321&quot;.into()];
+    /// let chatters: Vec&lt;helix::channels::ChannelInformation&gt; = client
+    ///    .get_channels_from_ids(ids, &amp;token).await?;
+    /// # Ok(()) }
+    /// ```
     </span><span class="kw">pub async fn </span>get_channels_from_ids&lt;<span class="lifetime">&#39;b</span>, T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;client </span><span class="self">self</span>,
         ids: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::UserIdRef]&gt; + Send,
@@ -1487,7 +1533,9 @@
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let chatters: Vec&lt;helix::chat::Chatter&gt; = client.get_chatters(&quot;1234&quot;, &quot;4321&quot;, 1000, &amp;token).try_collect().await?;
+    /// let chatters: Vec&lt;helix::chat::Chatter&gt; = client
+    ///    .get_chatters(&quot;1234&quot;, &quot;4321&quot;, 1000, &amp;token)
+    ///    .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -1523,7 +1571,9 @@
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let categories: Vec&lt;helix::search::Category&gt; = client.search_categories(&quot;Fortnite&quot;, &amp;token).try_collect().await?;
+    /// let categories: Vec&lt;helix::search::Category&gt; = client
+    ///     .search_categories(&quot;Fortnite&quot;, &amp;token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -1555,7 +1605,9 @@
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let channel: Vec&lt;helix::search::Channel&gt; = client.search_channels(&quot;twitchdev&quot;, false, &amp;token).try_collect().await?;
+    /// let channel: Vec&lt;helix::search::Channel&gt; = client
+    ///     .search_channels(&quot;twitchdev&quot;, false, &amp;token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -1592,7 +1644,9 @@
     /// use futures::TryStreamExt;
     ///
     /// // Get the followers of channel &quot;1234&quot;
-    /// let followers: Vec&lt;helix::users::FollowRelationship&gt; = client.get_follow_relationships(Some(&quot;1234&quot;.into()), None, &amp;token).try_collect().await?;
+    /// let followers: Vec&lt;helix::users::FollowRelationship&gt; = client
+    ///     .get_follow_relationships(Some(&quot;1234&quot;.into()), None, &amp;token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -1638,7 +1692,9 @@
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let channels: Vec&lt;helix::streams::Stream&gt; = client.get_followed_streams(&amp;token).try_collect().await?;
+    /// let channels: Vec&lt;helix::streams::Stream&gt; = client
+    ///     .get_followed_streams(&amp;token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -1678,7 +1734,9 @@
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let subs: Vec&lt;helix::subscriptions::BroadcasterSubscription&gt; = client.get_broadcaster_subscriptions(&amp;token).try_collect().await?;
+    /// let subs: Vec&lt;helix::subscriptions::BroadcasterSubscription&gt; = client
+    ///     .get_broadcaster_subscriptions(&amp;token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -1720,7 +1778,9 @@
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let moderators: Vec&lt;helix::moderation::Moderator&gt; = client.get_moderators_in_channel_from_id(&quot;twitchdev&quot;, &amp;token).try_collect().await?;
+    /// let moderators: Vec&lt;helix::moderation::Moderator&gt; = client
+    ///     .get_moderators_in_channel_from_id(&quot;twitchdev&quot;, &amp;token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
