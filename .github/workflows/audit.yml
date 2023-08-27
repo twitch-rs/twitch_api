@@ -1,5 +1,6 @@
 name: Audit
-
+env:
+  MSRV: 1.67.0
 on:
   pull_request:
     types: [opened, reopened, synchronize]
@@ -29,7 +30,7 @@ jobs:
       - name: Install rust
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: 1.66.1
+          toolchain: ${{ env.MSRV }}
       - run: cargo audit
   cargo-deny:
     name: Cargo Deny
@@ -47,7 +48,7 @@ jobs:
           submodules: recursive
       - uses: EmbarkStudios/cargo-deny-action@v1
         with:
-          rust-version: 1.66.1
+          rust-version: ${{ env.MSRV }}
           command: check ${{ matrix.checks }} -s
           arguments: --all-features
           log-level: warn

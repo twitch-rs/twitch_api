@@ -5,13 +5,11 @@
 //!
 //! ## Request: [SearchChannelsRequest]
 //!
-//! To use this endpoint, construct a [`SearchChannelsRequest`] with the [`SearchChannelsRequest::builder()`] method.
+//! To use this endpoint, construct a [`SearchChannelsRequest`] with the [`SearchChannelsRequest::query()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::search::search_channels;
-//! let request = search_channels::SearchChannelsRequest::builder()
-//!     .query("hello")
-//!     .build();
+//! let request = search_channels::SearchChannelsRequest::query("hello");
 //! ```
 //!
 //! ## Response: [Channel]

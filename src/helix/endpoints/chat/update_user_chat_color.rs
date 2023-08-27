@@ -6,7 +6,7 @@
 //!
 //! ## Request: [UpdateUserChatColorRequest]
 //!
-//! To use this endpoint, construct an [`UpdateUserChatColorRequest`] with the [`UpdateUserChatColorRequest::builder()`] method.
+//! To use this endpoint, construct an [`UpdateUserChatColorRequest`] with the [`UpdateUserChatColorRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::update_user_chat_color;

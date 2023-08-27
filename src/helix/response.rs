@@ -175,7 +175,7 @@ where
             _ => self
                 .other
                 .as_ref()
-                .and_then(|map| map.get(key.borrow()))
+                .and_then(|map| map.get(key))
                 .map(|v| serde_json::from_value(v.clone()))
                 .transpose(),
         }

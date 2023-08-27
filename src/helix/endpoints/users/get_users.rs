@@ -3,14 +3,11 @@
 //!
 //! ## Request: [GetUsersRequest]
 //!
-//! To use this endpoint, construct a [`GetUsersRequest`] with the [`GetUsersRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetUsersRequest`] with the [`GetUsersRequest::logins()`], [`GetUsersRequest::ids()`] or [`GetUsersRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::users::get_users;
-//! let request = get_users::GetUsersRequest::builder()
-//!     .id(&["1234".into()][..])
-//!     .login(&["justintvfan".into()][..])
-//!     .build();
+//! let mut request = get_users::GetUsersRequest::new();
 //! ```
 //!
 //! ## Response: [User]
@@ -27,10 +24,10 @@
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let ids: &[&types::UserIdRef] = &["1234".into()];
 //! let logins: &[&types::UserNameRef] = &["justintvfan".into()];
-//! let request = get_users::GetUsersRequest::builder()
-//!     .id(ids)
-//!     .login(logins)
-//!     .build();
+//! let mut request = get_users::GetUsersRequest::new();
+//! request.login = logins.into();
+//! request.id = ids.into();
+//!
 //! let response: Vec<get_users::User> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -91,10 +88,6 @@ impl<'a> GetUsersRequest<'a> {
     }
 
     /// Returns an empty [`GetUsersRequest`]
-    ///
-    /// # Notes
-    ///
-    /// This is not a valid request, it needs to be filled out with other fields.
     pub fn new() -> Self {
         Self {
             id: Cow::Borrowed(&[]),

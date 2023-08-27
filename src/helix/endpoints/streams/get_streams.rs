@@ -5,7 +5,7 @@
 //!
 //! ## Request: [GetStreamsRequest]
 //!
-//! To use this endpoint, construct a [`GetStreamsRequest`] with the [`GetStreamsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetStreamsRequest`] with the [`GetStreamsRequest::user_ids()`], [`GetStreamsRequest::user_logins()`] or [`GetStreamsRequest::game_ids()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::streams::get_streams;

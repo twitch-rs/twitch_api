@@ -5,13 +5,12 @@
 //!
 //! ## Request: [GetAllStreamTagsRequest]
 //!
-//! To use this endpoint, construct a [`GetAllStreamTagsRequest`] with the [`GetAllStreamTagsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetAllStreamTagsRequest`] with the [`GetAllStreamTagsRequest::default()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::tags::get_all_stream_tags;
-//! let request = get_all_stream_tags::GetAllStreamTagsRequest::builder()
-//!     .first(100)
-//!     .build();
+//! let request =
+//!     get_all_stream_tags::GetAllStreamTagsRequest::default().first(100);
 //! ```
 //!
 //! ## Response: [Tag](helix::tags::TwitchTag)
@@ -69,6 +68,12 @@ impl<'a> GetAllStreamTagsRequest<'a> {
     /// Filter the results for specific tag.
     pub fn tag_ids(mut self, tag_ids: impl Into<Cow<'a, [&'a types::TagIdRef]>>) -> Self {
         self.tag_id = tag_ids.into();
+        self
+    }
+
+    /// Set amount of results returned per page.
+    pub fn first(mut self, first: usize) -> Self {
+        self.first = Some(first);
         self
     }
 }

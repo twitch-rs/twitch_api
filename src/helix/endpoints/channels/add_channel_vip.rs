@@ -5,7 +5,7 @@
 //!
 //! ## Request: [AddChannelVipRequest]
 //!
-//! To use this endpoint, construct a [`AddChannelVipRequest`] with the [`AddChannelVipRequest::new()`] or[`AddChannelVipRequest::builder()`] method.
+//! To use this endpoint, construct a [`AddChannelVipRequest`] with the [`AddChannelVipRequest::new()`] or [`AddChannelVipRequest::builder()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::channels::add_channel_vip;

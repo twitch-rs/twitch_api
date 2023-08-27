@@ -1,6 +1,7 @@
 name: CI
 env:
   CI_TWITCH_API_FEATURES: "twitch_oauth2/all all unsupported deny_unknown_fields ureq"
+  MSRV: 1.67.0
 on:
   pull_request:
     types: [opened, reopened, synchronize]
@@ -39,7 +40,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
-        rust: [1.66.1, nightly]
+        rust: ["", nightly]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -48,10 +49,10 @@ jobs:
       - name: Install rust
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: ${{ matrix.rust }}
+          toolchain: ${{ matrix.rust || env.MSRV }}
       - uses: Swatinem/rust-cache@v2
       - name: Test twitch_api
-        run: cargo test --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}" --workspace
+        run: cargo test --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}" ${{matrix.rust == 'nightly' && '--workspace'}}
   rustfmt:
     name: Rustfmt
     runs-on: ubuntu-latest

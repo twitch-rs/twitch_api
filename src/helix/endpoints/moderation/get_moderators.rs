@@ -5,7 +5,7 @@
 //!
 //! ## Request: [GetModeratorsRequest]
 //!
-//! To use this endpoint, construct a [`GetModeratorsRequest`] with the [`GetModeratorsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetModeratorsRequest`] with the [`GetModeratorsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::get_moderators;

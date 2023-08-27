@@ -5,13 +5,11 @@
 //!
 //! ## Request: [GetTopGamesRequest]
 //!
-//! To use this endpoint, construct a [`GetTopGamesRequest`] with the [`GetTopGamesRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetTopGamesRequest`] with the [`GetTopGamesRequest::default()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::games::get_top_games;
-//! let request = get_top_games::GetTopGamesRequest::builder()
-//!     .first(100)
-//!     .build();
+//! let request = get_top_games::GetTopGamesRequest::default().first(100);
 //! ```
 //!
 //! ## Response: [Game](types::TwitchCategory)
@@ -26,8 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_top_games::GetTopGamesRequest::builder()
-//!     .build();
+//! let request = get_top_games::GetTopGamesRequest::default();
 //! let response: Vec<get_top_games::Game> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

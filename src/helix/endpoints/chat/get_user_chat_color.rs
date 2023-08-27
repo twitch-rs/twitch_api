@@ -5,13 +5,13 @@
 //!
 //! ## Request: [GetUserChatColorRequest]
 //!
-//! To use this endpoint, construct a [`GetUserChatColorRequest`] with the [`GetUserChatColorRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetUserChatColorRequest`] with the [`GetUserChatColorRequest::user_ids()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_user_chat_color;
-//! let request = get_user_chat_color::GetUserChatColorRequest::builder()
-//!     .user_id(&["4321".into()][..])
-//!     .build();
+//! let request = get_user_chat_color::GetUserChatColorRequest::user_ids(
+//!     &["4321".into()][..],
+//! );
 //! ```
 //!
 //! ## Response: [UserChatColor]
@@ -27,9 +27,8 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let ids: &[&types::UserIdRef] = &["4321".into()];
-//! let request = get_user_chat_color::GetUserChatColorRequest::builder()
-//!     .user_id(ids)
-//!     .build();
+//! let request = get_user_chat_color::GetUserChatColorRequest::
+//!     user_ids(ids);
 //! let response: Vec<helix::chat::UserChatColor> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -62,6 +61,15 @@ pub struct GetUserChatColorRequest<'a> {
 
 impl<'a> GetUserChatColorRequest<'a> {
     /// Get chat colors of specified users
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::chat::get_user_chat_color::GetUserChatColorRequest;
+    /// use twitch_api::types;
+    /// let ids: &[&types::UserIdRef] = &["1234".into()];
+    /// GetUserChatColorRequest::user_ids(ids);
+    /// ```
     pub fn user_ids(user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
         Self {
             user_id: user_ids.into(),
