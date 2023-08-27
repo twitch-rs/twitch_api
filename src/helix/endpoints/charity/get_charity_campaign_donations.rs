@@ -5,7 +5,7 @@
 //!
 //! ## Request: [GetCharityCampaignDonationsRequest]
 //!
-//! To use this endpoint, construct a [`GetCharityCampaignDonationsRequest`] with the [`GetCharityCampaignDonationsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetCharityCampaignDonationsRequest`] with the [`GetCharityCampaignDonationsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::charity::get_charity_campaign_donations;

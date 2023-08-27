@@ -5,7 +5,7 @@
 //!
 //! ## Request: [AddChannelModeratorRequest]
 //!
-//! To use this endpoint, construct a [`AddChannelModeratorRequest`] with the [`AddChannelModeratorRequest::builder()`] method.
+//! To use this endpoint, construct a [`AddChannelModeratorRequest`] with the [`AddChannelModeratorRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::add_channel_moderator;

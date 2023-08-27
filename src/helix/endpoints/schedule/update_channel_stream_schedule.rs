@@ -6,7 +6,7 @@
 //!
 //! ## Request: [UpdateChannelStreamScheduleRequest]
 //!
-//! To use this endpoint, construct an [`UpdateChannelStreamScheduleRequest`] with the [`UpdateChannelStreamScheduleRequest::builder()`] method.
+//! To use this endpoint, construct an [`UpdateChannelStreamScheduleRequest`] with the [`UpdateChannelStreamScheduleRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::update_channel_stream_schedule;

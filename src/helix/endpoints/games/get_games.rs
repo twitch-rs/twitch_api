@@ -5,7 +5,7 @@
 //!
 //! ## Request: [GetGamesRequest]
 //!
-//! To use this endpoint, construct a [`GetGamesRequest`] with the [`GetGamesRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetGamesRequest`] with the [`GetGamesRequest::names()`], [`GetGamesRequest::ids()`] or [`GetGamesRequest::empty()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::games::get_games;

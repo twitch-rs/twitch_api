@@ -5,7 +5,7 @@
 //!
 //! ## Request: [ReplaceStreamTagsRequest]
 //!
-//! To use this endpoint, construct a [`ReplaceStreamTagsRequest`] with the [`ReplaceStreamTagsRequest::builder()`] method.
+//! To use this endpoint, construct a [`ReplaceStreamTagsRequest`] with the [`ReplaceStreamTagsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::streams::replace_stream_tags;

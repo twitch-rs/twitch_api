@@ -6,7 +6,7 @@
 //!
 //! ## Request: [UpdateShieldModeStatusRequest]
 //!
-//! To use this endpoint, construct an [`UpdateShieldModeStatusRequest`] with the [`UpdateShieldModeStatusRequest::builder()`] method.
+//! To use this endpoint, construct an [`UpdateShieldModeStatusRequest`] with the [`UpdateShieldModeStatusRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::moderation::update_shield_mode_status;

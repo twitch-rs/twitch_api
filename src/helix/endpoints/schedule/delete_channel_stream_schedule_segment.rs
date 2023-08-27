@@ -7,7 +7,7 @@
 //!
 //! ## Request: [DeleteChannelStreamScheduleSegmentRequest]
 //!
-//! To use this endpoint, construct a [`DeleteChannelStreamScheduleSegmentRequest`] with the [`DeleteChannelStreamScheduleSegmentRequest::builder()`] method.
+//! To use this endpoint, construct a [`DeleteChannelStreamScheduleSegmentRequest`] with the [`DeleteChannelStreamScheduleSegmentRequest::new()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::schedule::delete_channel_stream_schedule_segment;

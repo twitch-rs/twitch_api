@@ -5,13 +5,11 @@
 //!
 //! ## Request: [SearchCategoriesRequest]
 //!
-//! To use this endpoint, construct a [`SearchCategoriesRequest`] with the [`SearchCategoriesRequest::builder()`] method.
+//! To use this endpoint, construct a [`SearchCategoriesRequest`] with the [`SearchCategoriesRequest::query()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::search::search_categories;
-//! let request = search_categories::SearchCategoriesRequest::builder()
-//!     .query("hello")
-//!     .build();
+//! let request = search_categories::SearchCategoriesRequest::query("hello");
 //! ```
 //!
 //! ## Response: [Category](types::TwitchCategory)
@@ -26,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = search_categories::SearchCategoriesRequest::builder()
-//!     .query("hello")
-//!     .build();
+//! let request = search_categories::SearchCategoriesRequest::query("hello");
 //! let response: Vec<search_categories::Category> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

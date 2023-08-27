@@ -95,6 +95,22 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 
     /// Get multiple [ChannelInformation](helix::channels::ChannelInformation) from broadcasters ids
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::{helix, types};
+    ///
+    /// let ids: &[&types::UserIdRef] = &["1234".into(), "4321".into()];
+    /// let chatters: Vec<helix::channels::ChannelInformation> = client
+    ///    .get_channels_from_ids(ids, &token).await?;
+    /// # Ok(()) }
+    /// ```
     pub async fn get_channels_from_ids<'b, T>(
         &'client self,
         ids: impl AsRef<[&types::UserIdRef]> + Send,
@@ -130,7 +146,9 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let chatters: Vec<helix::chat::Chatter> = client.get_chatters("1234", "4321", 1000, &token).try_collect().await?;
+    /// let chatters: Vec<helix::chat::Chatter> = client
+    ///    .get_chatters("1234", "4321", 1000, &token)
+    ///    .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -166,7 +184,9 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let categories: Vec<helix::search::Category> = client.search_categories("Fortnite", &token).try_collect().await?;
+    /// let categories: Vec<helix::search::Category> = client
+    ///     .search_categories("Fortnite", &token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -198,7 +218,9 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let channel: Vec<helix::search::Channel> = client.search_channels("twitchdev", false, &token).try_collect().await?;
+    /// let channel: Vec<helix::search::Channel> = client
+    ///     .search_channels("twitchdev", false, &token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -235,7 +257,9 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use futures::TryStreamExt;
     ///
     /// // Get the followers of channel "1234"
-    /// let followers: Vec<helix::users::FollowRelationship> = client.get_follow_relationships(Some("1234".into()), None, &token).try_collect().await?;
+    /// let followers: Vec<helix::users::FollowRelationship> = client
+    ///     .get_follow_relationships(Some("1234".into()), None, &token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -281,7 +305,9 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let channels: Vec<helix::streams::Stream> = client.get_followed_streams(&token).try_collect().await?;
+    /// let channels: Vec<helix::streams::Stream> = client
+    ///     .get_followed_streams(&token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -321,7 +347,9 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let subs: Vec<helix::subscriptions::BroadcasterSubscription> = client.get_broadcaster_subscriptions(&token).try_collect().await?;
+    /// let subs: Vec<helix::subscriptions::BroadcasterSubscription> = client
+    ///     .get_broadcaster_subscriptions(&token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```
@@ -363,7 +391,9 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::helix;
     /// use futures::TryStreamExt;
     ///
-    /// let moderators: Vec<helix::moderation::Moderator> = client.get_moderators_in_channel_from_id("twitchdev", &token).try_collect().await?;
+    /// let moderators: Vec<helix::moderation::Moderator> = client
+    ///     .get_moderators_in_channel_from_id("twitchdev", &token)
+    ///     .try_collect().await?;
     ///
     /// # Ok(()) }
     /// ```

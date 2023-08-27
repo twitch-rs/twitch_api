@@ -3,7 +3,7 @@
 //!
 //! ## Request: [GetPollsRequest]
 //!
-//! To use this endpoint, construct a [`GetPollsRequest`] with the [`GetPollsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetPollsRequest`] with the [`GetPollsRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::polls::get_polls;

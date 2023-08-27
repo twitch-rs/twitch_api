@@ -7,7 +7,7 @@
 //!
 //! ## Request: [GetCustomRewardRedemptionRequest]
 //!
-//! To use this endpoint, construct a [`GetCustomRewardRedemptionRequest`] with the [`GetCustomRewardRedemptionRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetCustomRewardRedemptionRequest`] with the [`GetCustomRewardRedemptionRequest::broadcaster_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::points::{

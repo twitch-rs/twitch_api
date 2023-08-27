@@ -5,7 +5,7 @@
 //!
 //! ## Request: [GetEmoteSetsRequest]
 //!
-//! To use this endpoint, construct a [`GetEmoteSetsRequest`] with the [`GetEmoteSetsRequest::builder()`] method.
+//! To use this endpoint, construct a [`GetEmoteSetsRequest`] with the [`GetEmoteSetsRequest::emote_set_ids()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_emote_sets;

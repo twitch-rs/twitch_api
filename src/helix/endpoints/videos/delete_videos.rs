@@ -5,13 +5,11 @@
 //!
 //! ## Request: [DeleteVideosRequest]
 //!
-//! To use this endpoint, construct a [`DeleteVideosRequest`] with the [`DeleteVideosRequest::builder()`] method.
+//! To use this endpoint, construct a [`DeleteVideosRequest`] with the [`DeleteVideosRequest::ids()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::videos::delete_videos;
-//! let request = delete_videos::DeleteVideosRequest::builder()
-//!     .id(&["1234".into()][..])
-//!     .build();
+//! let request = delete_videos::DeleteVideosRequest::ids(&["1234".into()][..]);
 //! ```
 //!
 //! ## Response: [DeleteVideo]
@@ -27,9 +25,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let ids: &[&types::VideoIdRef] = &["1234".into()];
-//! let request = delete_videos::DeleteVideosRequest::builder()
-//!     .id(ids)
-//!     .build();
+//! let request = delete_videos::DeleteVideosRequest::ids(ids);
 //! let response: delete_videos::DeleteVideo = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
