@@ -15,6 +15,7 @@ pub use end::{ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload};
 #[doc(inline)]
 pub use progress::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload};
 
+// FIXME: Is this always the same as helix::endpoints::hypetrain::ContributionType?
 /// Type of contribution
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
@@ -24,6 +25,8 @@ pub enum ContributionType {
     Bits,
     /// Channel Subscriptions. Either gifted or not.
     Subscription,
+    /// Covers other contribution methods not listed.
+    Other,
 }
 
 /// A contribution to hype train
