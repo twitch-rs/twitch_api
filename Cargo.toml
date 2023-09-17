@@ -1,13 +1,13 @@
 [package]
 name = "twitch_api"
-version = "0.7.0-rc.6"
+version = "0.7.0-rc.7"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/twitch-rs/twitch_api"
 license = "MIT OR Apache-2.0"
 description = "Library for talking with the new Twitch API aka. \"Helix\", EventSub and more!"
 keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
-documentation = "https://docs.rs/twitch_api/0.7.0-rc.6"
+documentation = "https://docs.rs/twitch_api/0.7.0-rc.7"
 readme = "README.md"
 resolver = "2"
 include = [
@@ -57,7 +57,7 @@ http-types = { version = "2.12.0", optional = true, features = [
 ] }
 sha2 = { version = "0.10.6", optional = true }
 crypto_hmac = { package = "hmac", version = "0.12.1", optional = true }
-aliri_braid = "0.3.1"
+aliri_braid = "0.4.0"
 futures = { version = "0.3.28", optional = true }
 hyper = { version = "0.14.26", optional = true }
 twitch_types = { workspace = true }
