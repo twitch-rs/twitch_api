@@ -1,7 +1,7 @@
 pre-release-commit-message = "release {{crate_name}} {{version}}"
-tag = false
-push = false
-publish = false
+disable-tag = true
+disable-push = true
+disable-publish = true
 enable-features = ["all", "twitch_oauth2/all", "unsupported"]
 consolidate-commits = false
 pre-release-replacements = [
