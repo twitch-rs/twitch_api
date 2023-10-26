@@ -2903,7 +2903,7 @@ dependencies = [
 
 [[package]]
 name = "twitch_oauth2"
-version = "0.12.4"
+version = "0.12.7"
 dependencies = [
  "aliri_braid",
  "async-trait",
@@ -2915,6 +2915,7 @@ dependencies = [
  "rand 0.8.5",
  "reqwest",
  "serde",
+ "serde_derive",
  "serde_json",
  "surf",
  "thiserror",
@@ -2934,9 +2935,10 @@ dependencies = [
 
 [[package]]
 name = "twitch_types"
-version = "0.4.2"
+version = "0.4.3"
 dependencies = [
  "serde",
+ "serde_derive",
  "time 0.3.28",
 ]
 
