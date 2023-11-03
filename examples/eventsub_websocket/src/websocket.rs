@@ -40,13 +40,14 @@ impl WebsocketClient {
     > {
         tracing::info!("connecting to twitch");
         let config = tungstenite::protocol::WebSocketConfig {
-            max_send_queue: None,
+            max_write_buffer_size: 2048,
             max_message_size: Some(64 << 20), // 64 MiB
             max_frame_size: Some(16 << 20),   // 16 MiB
             accept_unmasked_frames: false,
+            ..tungstenite::protocol::WebSocketConfig::default()
         };
         let (socket, _) =
-            tokio_tungstenite::connect_async_with_config(&self.connect_url, Some(config))
+            tokio_tungstenite::connect_async_with_config(&self.connect_url, Some(config), false)
                 .await
                 .context("Can't connect")?;
 

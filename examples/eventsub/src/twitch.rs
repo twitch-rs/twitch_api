@@ -185,7 +185,7 @@ pub async fn twitch_eventsub(
     // TODO: Some people have reported wierd bouncing when subscribing to stream.online/stream.offline, track this somehow.
 
     match event {
-        Event::ChannelUpdateV1(P {
+        Event::ChannelUpdateV2(P {
             message: M::Notification(_notification),
             ..
         }) => {}

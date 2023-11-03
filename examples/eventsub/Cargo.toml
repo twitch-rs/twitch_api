@@ -20,12 +20,12 @@ retainer = "0.3.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1" }
 tokio = { version = "1.33.0", features = ["macros", "rt-multi-thread"] }
-tokio-tungstenite = "0.18.0"
+tokio-tungstenite = "0.20.1"
 tower = "0.4"
 tower-http = { version = "0.4.4", features = ["fs", "trace", "catch-panic"] }
 tracing = "0.1.40"
 tracing-error = "0.2.0"
-tracing-log = "0.1.4"
+tracing-log = "0.2.0"
 tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
 twitch_api = { workspace = true, features = [
     "reqwest",
