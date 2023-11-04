@@ -2,7 +2,7 @@
 #![doc(alias = "channel-bits-events-v2")]
 //! PubSub messages for bits
 use crate::{pubsub, types};
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// Anyone cheers in a specified channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]

@@ -80,7 +80,8 @@ macro_rules! impl_de_ser {
     };
 }
 
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::Deserializer;
+use serde_derive::{Deserialize, Serialize};
 
 pub mod automod_queue;
 pub mod channel_bits;
@@ -109,7 +110,7 @@ use crate::parse_json;
 /// A logical partition of messages that clients may subscribe to, to get messages.
 ///
 /// also known as event
-pub trait Topic: Serialize + Into<String> {
+pub trait Topic: serde::Serialize + Into<String> {
     /// Scopes needed by this topic
     ///
     /// This constant
@@ -482,7 +483,7 @@ pub enum TopicData {
 }
 
 // This impl is here because otherwise we hide the errors from deser
-impl<'de> Deserialize<'de> for TopicData {
+impl<'de> serde::Deserialize<'de> for TopicData {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         // FIXME: make into macro or actually upstream into serde..., untagged_force = "field"
 
@@ -605,7 +606,9 @@ impl Response {
 fn deserialize_default_from_null<'de, D, T>(deserializer: D) -> Result<T, D::Error>
 where
     D: Deserializer<'de>,
-    T: Deserialize<'de> + Default, {
+    T: serde::Deserialize<'de> + Default, {
+    use serde::Deserialize;
+
     Ok(Option::deserialize(deserializer)?.unwrap_or_default())
 }
 

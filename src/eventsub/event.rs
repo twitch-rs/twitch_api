@@ -4,7 +4,7 @@ pub mod websocket;
 
 use std::borrow::Cow;
 
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 use super::*;
 
@@ -512,7 +512,7 @@ fn get_version_event_type_and_message_type_from_http<B>(
     request: &http::Request<B>,
 ) -> Result<(Cow<'_, str>, EventType, Cow<'_, [u8]>), PayloadParseError>
 where B: AsRef<[u8]> {
-    use serde::de::IntoDeserializer;
+    use serde::{de::IntoDeserializer, Deserialize};
     match (
         request
             .headers()

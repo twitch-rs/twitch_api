@@ -2,7 +2,7 @@
 #![doc(alias = "channel-points-channel-v1")]
 //! PubSub messages for channel points
 use crate::{pubsub, types};
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// A user redeems an reward using channel points.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]

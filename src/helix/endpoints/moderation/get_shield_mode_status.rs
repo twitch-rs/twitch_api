@@ -82,7 +82,7 @@ pub struct ShieldModeStatus {
     pub last_shield_mode: Option<LastShieldMode>,
 }
 
-impl<'de> Deserialize<'de> for ShieldModeStatus {
+impl<'de> serde::Deserialize<'de> for ShieldModeStatus {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where D: serde::Deserializer<'de> {
         #[derive(Deserialize)]

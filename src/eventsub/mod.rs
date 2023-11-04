@@ -78,7 +78,8 @@
 use std::borrow::Cow;
 
 use crate::types;
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::de::DeserializeOwned;
+use serde_derive::{Deserialize, Serialize};
 
 use crate::parse_json;
 
@@ -93,9 +94,9 @@ pub use event::{Event, EventType};
 pub use event::websocket::*;
 
 /// An EventSub subscription.
-pub trait EventSubscription: DeserializeOwned + Serialize + PartialEq + Clone {
+pub trait EventSubscription: DeserializeOwned + serde::Serialize + PartialEq + Clone {
     /// Payload for given subscription
-    type Payload: PartialEq + std::fmt::Debug + DeserializeOwned + Serialize + Clone;
+    type Payload: PartialEq + std::fmt::Debug + DeserializeOwned + serde::Serialize + Clone;
 
     /// Scopes needed by this subscription
     #[cfg(feature = "twitch_oauth2")]

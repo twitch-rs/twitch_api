@@ -832,6 +832,7 @@ dependencies = [
  "reqwest",
  "retainer",
  "serde",
+ "serde_derive",
  "serde_json",
  "tokio",
  "tokio-tungstenite",
@@ -2863,6 +2864,7 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_cbor",
+ "serde_derive",
  "serde_ignored",
  "serde_json",
  "serde_path_to_error",
@@ -3287,6 +3289,7 @@ dependencies = [
  "color-eyre",
  "once_cell",
  "serde",
+ "serde_derive",
  "serde_json",
  "xshell",
 ]

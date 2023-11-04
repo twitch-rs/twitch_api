@@ -3,7 +3,7 @@
 //!
 //! See also [`pubsub::channel_points`]
 use crate::pubsub;
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// A user redeems an reward using channel points.
 ///

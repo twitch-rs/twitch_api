@@ -3,7 +3,7 @@
 #![allow(deprecated)]
 //! PubSub messages for moderator actions
 use crate::{pubsub, types};
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// A moderator performs an action in the channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
@@ -337,7 +337,10 @@ pub enum ChannelAction {
 }
 
 impl std::fmt::Display for ModerationActionCommand {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { self.serialize(f) }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        use serde::Serialize;
+        self.serialize(f)
+    }
 }
 
 /// Moderation type

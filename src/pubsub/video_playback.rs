@@ -6,7 +6,7 @@
 #![doc(alias = "video-playback")]
 //! PubSub messages for (live) stream playback information
 use crate::{pubsub, types};
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// Statistics about stream
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]

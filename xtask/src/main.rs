@@ -180,7 +180,7 @@ fn pkgid() -> Result<String, color_eyre::Report> {
 /// Returns the cargo workspace for the manifest
 pub fn get_cargo_workspace() -> &'static Path {
     static WORKSPACE: OnceCell<PathBuf> = OnceCell::new();
-    #[derive(Debug, Deserialize)]
+    #[derive(Debug, serde_derive::Deserialize)]
     pub struct CargoMetadata {
         pub workspace_root: PathBuf,
     }

@@ -3,7 +3,7 @@
 #![doc(alias = "channel-subscribe-events-v1")]
 //! PubSub messages for subscriptions
 use crate::{pubsub, types};
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// A subscription event happens in channel
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]

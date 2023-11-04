@@ -1,6 +1,6 @@
 //! PubSub messages for when AutoMod flags a message as potentially inappropriate, and when a moderator takes action on a message.
 use crate::{pubsub, types};
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// A user follows the channel
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]

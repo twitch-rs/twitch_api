@@ -942,13 +942,13 @@ impl ser::Serializer for ValueSerializer {
 #[cfg(test)]
 #[test]
 fn serialize_query() {
-    #[derive(serde::Serialize)]
+    #[derive(serde_derive::Serialize)]
     #[serde(rename_all = "lowercase")]
     pub enum Variant {
         Hello,
         World,
     }
-    #[derive(serde::Serialize)]
+    #[derive(serde_derive::Serialize)]
     struct Request {
         filter: String,
         maybe: Option<String>,

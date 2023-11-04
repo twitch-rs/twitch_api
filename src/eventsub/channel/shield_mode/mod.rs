@@ -2,7 +2,7 @@
 //! Shield mode on the specified channel begins or ends.
 use super::{EventSubscription, EventType};
 use crate::types;
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 pub mod begin;
 pub mod end;

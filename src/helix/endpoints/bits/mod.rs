@@ -21,7 +21,7 @@ use crate::{
     helix::{self, Request},
     types,
 };
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 use std::borrow::Cow;
 
 pub mod get_bits_leaderboard;

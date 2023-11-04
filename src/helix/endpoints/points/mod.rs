@@ -24,7 +24,7 @@ use crate::{
     helix::{self, Request},
     types,
 };
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 use std::borrow::Cow;
 
 pub mod create_custom_rewards;
@@ -51,7 +51,7 @@ pub use update_redemption_status::{
     UpdateRedemptionStatusBody, UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,
 };
 /// Custom reward redemption statuses: UNFULFILLED, FULFILLED or CANCELED
-#[derive(PartialEq, Eq, serde::Serialize, serde::Deserialize, Copy, Clone, Debug)]
+#[derive(PartialEq, Eq, Serialize, Deserialize, Copy, Clone, Debug)]
 #[non_exhaustive]
 pub enum CustomRewardRedemptionStatus {
     /// Unfulfilled reward - the user has claimed it but it is still pending.

@@ -1,7 +1,7 @@
 #![doc(alias = "channel-bits-badge-unlocks")]
 //! PubSub messages for bits
 use crate::{pubsub, types};
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// Anyone shares a bit badge in a specified channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
