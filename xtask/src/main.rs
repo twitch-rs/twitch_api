@@ -211,7 +211,7 @@ mod tests {
     #[test]
     pub fn assert_msrv() {
         let workspace = get_cargo_workspace();
-        let toml = std::fs::read_to_string(&workspace.join("Cargo.toml")).unwrap();
+        let toml = std::fs::read_to_string(workspace.join("Cargo.toml")).unwrap();
         let msrv = toml
             .split("rust-version = \"")
             .nth(1)

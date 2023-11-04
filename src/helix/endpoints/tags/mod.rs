@@ -12,7 +12,7 @@
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let req = GetAllStreamTagsRequest::builder().build();
 //!
-//! println!("{:?}", &client.req_get(req, &token).await?.data.get(0));
+//! println!("{:?}", &client.req_get(req, &token).await?.data.first());
 //! # Ok(())
 //! # }
 //! ```

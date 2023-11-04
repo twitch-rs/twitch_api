@@ -185,7 +185,7 @@ pub async fn twitch_eventsub(
     // TODO: Some people have reported wierd bouncing when subscribing to stream.online/stream.offline, track this somehow.
 
     match event {
-        Event::ChannelUpdateV1(P {
+        Event::ChannelUpdateV2(P {
             message: M::Notification(_notification),
             ..
         }) => {}
@@ -272,7 +272,7 @@ pub async fn is_live<'a>(
         .await
         .wrap_err_with(|| "could not check live streams")?
         .data
-        .get(0)
+        .first()
     {
         Ok(LiveStatus::Live {
             started_at: stream.started_at.clone(),

@@ -15,7 +15,7 @@
 //!     .reward_id("92af127c-7326-4483-a52b-b0da0be61c01")
 //!     .status(CustomRewardRedemptionStatus::Canceled);
 //!
-//! println!("{:?}", &client.req_get(request, &token).await?.data.get(0));
+//! println!("{:?}", &client.req_get(request, &token).await?.data.first());
 //! # Ok(())
 //! # }
 //! ```

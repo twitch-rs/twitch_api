@@ -88,7 +88,7 @@ impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
     pub fn with_client(client: C) -> HelixClient<'a, C> {
         HelixClient {
             client,
-            _pd: std::marker::PhantomData::default(),
+            _pd: std::marker::PhantomData,
         }
     }
 

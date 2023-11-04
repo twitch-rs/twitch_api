@@ -90,7 +90,7 @@ impl<C: crate::HttpClient> HelixClient<'_, C> {
                 total: response.total,
                 other: response.other,
                 raw_data: response.data.to_owned(),
-                pd: <_>::default(),
+                pd: std::marker::PhantomData,
             })
         }
     }
@@ -155,7 +155,7 @@ impl<C: crate::HttpClient> HelixClient<'_, C> {
                 total: response.total,
                 other: response.other,
                 raw_data: response.data.to_owned(),
-                pd: <_>::default(),
+                pd: std::marker::PhantomData,
             })
         }
     }
@@ -225,7 +225,7 @@ impl<C: crate::HttpClient> HelixClient<'_, C> {
                 total: response.total,
                 other: response.other,
                 raw_data: response.data.to_owned(),
-                pd: <_>::default(),
+                pd: std::marker::PhantomData,
             })
         }
     }
@@ -292,7 +292,7 @@ impl<C: crate::HttpClient> HelixClient<'_, C> {
                 total: response.total,
                 other: response.other,
                 raw_data: response.data.to_owned(),
-                pd: <_>::default(),
+                pd: std::marker::PhantomData,
             })
         }
     }
@@ -362,7 +362,7 @@ impl<C: crate::HttpClient> HelixClient<'_, C> {
                 total: response.total,
                 other: response.other,
                 raw_data: response.data.to_owned(),
-                pd: <_>::default(),
+                pd: std::marker::PhantomData,
             })
         }
     }
