@@ -12,7 +12,7 @@
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let req = GetClipsRequest::game_id("1234").first(100); // max 100, 20 if left unspecified
 //!
-//! println!("{:?}", &client.req_get(req, &token).await?.data.get(0));
+//! println!("{:?}", &client.req_get(req, &token).await?.data.first());
 //! # Ok(())
 //! # }
 //! ```

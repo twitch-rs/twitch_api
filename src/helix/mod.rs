@@ -134,7 +134,7 @@ where
         }
     }
 
-    deserializer.deserialize_any(Inner(<_>::default()))
+    deserializer.deserialize_any(Inner(std::marker::PhantomData))
 }
 
 /// A request that can be paginated.

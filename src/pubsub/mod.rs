@@ -647,7 +647,7 @@ where
         }
     }
 
-    deserializer.deserialize_any(Inner(<_>::default()))
+    deserializer.deserialize_any(Inner(std::marker::PhantomData))
 }
 
 #[cfg(test)]

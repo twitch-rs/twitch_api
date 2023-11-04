@@ -45,7 +45,7 @@ impl<'a, C: crate::HttpClient + 'a> TmiClient<'a, C> {
     pub fn with_client(client: C) -> TmiClient<'a, C> {
         TmiClient {
             client,
-            _pd: std::marker::PhantomData::default(),
+            _pd: std::marker::PhantomData,
         }
     }
 

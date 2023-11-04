@@ -84,7 +84,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .search_channels("e", false, &token)
         .try_collect()
         .await?;
-    dbg!(search.get(0));
+    dbg!(search.first());
     let streams: Vec<_> = client.get_followed_streams(&token).try_collect().await?;
     dbg!(streams);
     let subs: Vec<_> = client
