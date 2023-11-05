@@ -79,6 +79,9 @@ pub struct GetClipsRequest<'a> {
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub started_at: Option<Cow<'a, types::TimestampRef>>,
+    /// Determines whether the response includes featured clips. If true, returns only clips that are featured. If false, returns only clips that aren’t featured. All clips are returned if this parameter is not present.
+    #[cfg_attr(feature = "typed-builder", builder(default))]
+    pub is_featured: Option<bool>,
 }
 
 impl<'a> GetClipsRequest<'a> {
@@ -97,6 +100,7 @@ impl<'a> GetClipsRequest<'a> {
             ended_at: Default::default(),
             first: Default::default(),
             started_at: Default::default(),
+            is_featured: None,
         }
     }
 
@@ -190,6 +194,8 @@ pub struct Clip {
     ///
     /// Is none if the video is not available or hasn’t been created yet from the live stream. See [video_id](Clip::video_id).
     pub vod_offset: Option<i64>,
+    /// Indicates if the clip is featured or not.
+    pub is_featured: bool,
 }
 
 impl Request for GetClipsRequest<'_> {
@@ -220,22 +226,23 @@ fn test_request() {
 {
     "data": [
       {
-        "id": "RandomClip1",
+        "id": "AwkwardHelplessSalamanderSwiftRage",
         "url": "https://clips.twitch.tv/AwkwardHelplessSalamanderSwiftRage",
-        "embed_url": "https://clips.twitch.tv/embed?clip=RandomClip1",
-        "broadcaster_id": "1234",
-        "broadcaster_name": "JJ",
-        "creator_id": "123456",
-        "creator_name": "MrMarshall",
-        "video_id": "",
-        "game_id": "33103",
+        "embed_url": "https://clips.twitch.tv/embed?clip=AwkwardHelplessSalamanderSwiftRage",
+        "broadcaster_id": "67955580",
+        "broadcaster_name": "ChewieMelodies",
+        "creator_id": "53834192",
+        "creator_name": "BlackNova03",
+        "video_id": "205586603",
+        "game_id": "488191",
         "language": "en",
-        "title": "random1",
+        "title": "babymetal",
         "view_count": 10,
         "created_at": "2017-11-30T22:34:18Z",
         "thumbnail_url": "https://clips-media-assets.twitch.tv/157589949-preview-480x272.jpg",
-        "duration": 12.9,
-        "vod_offset": 1957
+        "duration": 60,
+        "vod_offset": 480,
+        "is_featured": false
       }
     ],
     "pagination": {
