@@ -64,7 +64,14 @@ pub struct GetFollowedChannels<'a> {
 }
 
 impl<'a> GetFollowedChannels<'a> {
-    /// Get specified broadcasters channel editors
+    /// Get specified users followed channels
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::GetFollowedChannels;
+    /// let request = GetFollowedChannels::user_id("1234");
+    /// ```
     pub fn user_id(user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
             user_id: user_id.into_cow(),
@@ -75,12 +82,26 @@ impl<'a> GetFollowedChannels<'a> {
     }
 
     /// Set amount of results returned per page.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::GetFollowedChannels;
+    /// let request = GetFollowedChannels::user_id("1234").first(100);
+    /// ```
     pub fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
         self
     }
 
     /// Check if the user is following this broadcaster
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::GetFollowedChannels;
+    /// let request = GetFollowedChannels::user_id("1234").broadcaster_id("1337");
+    /// ```
     pub fn broadcaster_id(
         self,
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,

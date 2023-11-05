@@ -28,7 +28,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = snooze_next_ad::SnoozeNextAdRequest::broadcaster_id("1234");
-//! let response: snooze_next_ad::SnoozedAdSchedule = client.req_patch(request, helix::EmptyBody, &token).await?.data;
+//! let response: snooze_next_ad::SnoozedAdSchedule = client.req_post(request, helix::EmptyBody, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -58,7 +58,7 @@ impl<'a> SnoozeNextAdRequest<'a> {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api::helix::channel::SnoozeNextAdRequest;
+    /// use twitch_api::helix::channels::SnoozeNextAdRequest;
     ///
     /// let request = SnoozeNextAdRequest::broadcaster_id("1337");
     /// ```

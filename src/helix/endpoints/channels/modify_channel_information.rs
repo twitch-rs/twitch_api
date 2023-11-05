@@ -67,6 +67,14 @@ pub struct ModifyChannelInformationRequest<'a> {
 
 impl<'a> ModifyChannelInformationRequest<'a> {
     /// Modify specified broadcasters channel
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::ModifyChannelInformationRequest;
+    ///
+    /// let request = ModifyChannelInformationRequest::broadcaster_id("1337");
+    /// ```
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         ModifyChannelInformationRequest {
             broadcaster_id: broadcaster_id.into_cow(),

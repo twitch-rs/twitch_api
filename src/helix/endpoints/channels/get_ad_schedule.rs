@@ -57,7 +57,7 @@ impl<'a> GetAdScheduleRequest<'a> {
     /// # Examples
     ///
     /// ```rust
-    /// use twitch_api::helix::channel::GetAdScheduleRequest;
+    /// use twitch_api::helix::channels::GetAdScheduleRequest;
     /// let request = GetAdScheduleRequest::broadcaster_id("1234");
     /// ```
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {

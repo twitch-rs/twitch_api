@@ -66,6 +66,13 @@ pub struct GetVipsRequest<'a> {
 
 impl<'a> GetVipsRequest<'a> {
     /// Get channel VIPs in channel
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::GetVipsRequest;
+    /// let request = GetVipsRequest::broadcaster_id("1337");
+    /// ```
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into_cow(),
@@ -76,12 +83,28 @@ impl<'a> GetVipsRequest<'a> {
     }
 
     /// Set amount of results returned per page.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::GetVipsRequest;
+    /// let request = GetVipsRequest::broadcaster_id("1234").first(100);
+    /// ```
     pub fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
         self
     }
 
     /// Filter response with these IDs
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::GetVipsRequest;
+    ///
+    /// let user_ids: &[&twitch_types::UserIdRef] = &["1234".into()];
+    /// let request = GetVipsRequest::broadcaster_id("1337").user_ids(user_ids);
+    /// ```
     pub fn user_ids(self, user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
         Self {
             user_id: user_ids.into(),

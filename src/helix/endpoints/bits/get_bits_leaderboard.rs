@@ -81,6 +81,13 @@ impl<'a> GetBitsLeaderboardRequest<'a> {
     }
 
     /// Get loaderboard for this period. Valid values: `"day"`, `"week"`, `"month"`, `"year"`, `"all"`
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::bits::GetBitsLeaderboardRequest;
+    /// let request = GetBitsLeaderboardRequest::new().period("week");
+    /// ```
     pub fn period(self, period: impl Into<Cow<'a, str>>) -> Self {
         Self {
             period: Some(period.into()),
@@ -89,6 +96,15 @@ impl<'a> GetBitsLeaderboardRequest<'a> {
     }
 
     /// Get leaderboard starting at this timestamp
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::bits::GetBitsLeaderboardRequest;
+    /// use twitch_api::types::Timestamp;
+    /// let request =
+    ///     GetBitsLeaderboardRequest::new().started_at(Timestamp::today());
+    /// ```
     pub fn started_at(self, started_at: impl types::IntoCow<'a, types::TimestampRef> + 'a) -> Self {
         Self {
             started_at: Some(started_at.into_cow()),
@@ -97,6 +113,14 @@ impl<'a> GetBitsLeaderboardRequest<'a> {
     }
 
     /// Get leaderboard where this user is included (if they are on the leaderboard)
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::bits::GetBitsLeaderboardRequest;
+    /// use twitch_api::types::Timestamp;
+    /// let request = GetBitsLeaderboardRequest::new().user_id("1337");
+    /// ```
     pub fn user_id(self, user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
             user_id: Some(user_id.into_cow()),

@@ -84,6 +84,14 @@ pub struct StartCommercialBody<'a> {
 
 impl<'a> StartCommercialBody<'a> {
     /// Start a commercial in this broadcasters channel
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::StartCommercialBody;
+    /// use twitch_types::CommercialLength;
+    /// let request = StartCommercialBody::new("1337", CommercialLength::Length60);
+    /// ```
     pub fn new(
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         length: impl Into<types::CommercialLength>,

@@ -55,6 +55,13 @@ pub struct AddChannelVipRequest<'a> {
 
 impl<'a> AddChannelVipRequest<'a> {
     /// Add a channel VIP
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::AddChannelVipRequest;
+    /// let request = AddChannelVipRequest::new("1234", "4567");
+    /// ```
     pub fn new(
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
