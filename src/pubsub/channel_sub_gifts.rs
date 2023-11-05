@@ -2,7 +2,7 @@
 #![doc(alias = "channel-sub-gifts-v1")]
 //! PubSub messages for sub gifts
 use crate::{pubsub, types};
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// A user gifts subs.
 ///

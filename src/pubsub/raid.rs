@@ -1,7 +1,7 @@
 #![doc(alias = "raids")]
 //! PubSub messages for raids
 use crate::{pubsub, types};
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// A user raids the channel
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]

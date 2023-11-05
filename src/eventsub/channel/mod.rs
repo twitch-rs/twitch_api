@@ -3,7 +3,7 @@
 //! Subscription types regarding channels
 use super::{EventSubscription, EventType};
 use crate::types;
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 pub mod ban;
 pub mod channel_points_custom_reward;

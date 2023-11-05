@@ -28,7 +28,7 @@
 //! # }
 //! ```
 
-use serde::Deserialize;
+use serde_derive::Deserialize;
 #[doc(no_inline)]
 #[cfg(feature = "twitch_oauth2")]
 pub use twitch_oauth2::Scope;

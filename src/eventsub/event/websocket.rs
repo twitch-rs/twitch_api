@@ -2,7 +2,7 @@
 use std::borrow::Cow;
 
 use crate::types;
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 use super::{Event, EventType};
 

@@ -340,7 +340,7 @@ impl LiveStatus {
     pub fn is_offline(&self) -> bool { matches!(self, Self::Offline { .. }) }
 
     pub fn to_message(&self) -> eyre::Result<ws::Message> {
-        #[derive(serde::Serialize)]
+        #[derive(serde_derive::Serialize)]
         struct Msg {
             html: String,
             live: bool,

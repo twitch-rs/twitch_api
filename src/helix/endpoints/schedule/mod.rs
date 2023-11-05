@@ -3,7 +3,7 @@ use crate::{
     helix::{self, Request},
     types,
 };
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 use std::borrow::Cow;
 
 pub mod create_channel_stream_schedule_segment;

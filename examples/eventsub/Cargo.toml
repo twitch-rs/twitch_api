@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-askama = { version = "0.11", features = ["with-axum"], git = "https://github.com/djc/askama", rev = "eeec6f0" }
+askama = { version = "0.11", features = ["with-axum"], git = "https://github.com/djc/askama", rev = "eeec6f0", default-features = false }
 askama_axum = { version = "0.1", git = "https://github.com/djc/askama", rev = "eeec6f0" }
 axum = { version = "0.6.20", features = ["tower-log", "http2", "ws"] }
 clap = { version = "4.4.7", features = ["derive", "env"] }
@@ -17,7 +17,8 @@ futures = "0.3.28"
 hyper = "0.14"
 reqwest = "0.11.22"
 retainer = "0.3.0"
-serde = { version = "1", features = ["derive"] }
+serde = "1.0.190"
+serde_derive = "1.0.190"
 serde_json = { version = "1" }
 tokio = { version = "1.33.0", features = ["macros", "rt-multi-thread"] }
 tokio-tungstenite = "0.20.1"

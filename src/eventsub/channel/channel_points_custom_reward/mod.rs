@@ -3,7 +3,7 @@
 //! Custom channel points rewards on specific channel has been changed, removed or updated.
 use super::{EventSubscription, EventType};
 use crate::types;
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 pub mod add;
 pub mod remove;

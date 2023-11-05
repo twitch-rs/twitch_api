@@ -3,7 +3,7 @@
 //! A viewer has redeemed a custom channel points reward or a redemption of a channel points custom reward has been updated for the specified channel.
 use super::{EventSubscription, EventType};
 use crate::types;
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 pub mod add;
 pub mod update;

@@ -2,7 +2,7 @@
 #![allow(deprecated)]
 //! TMI Endpoint, twitch's unsupported api for better chatters retrieval
 use crate::types;
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 /// Client for the twitch TMI endpoint, almost entirely undocumented and certainly not supported.
 ///
 /// # Examples

@@ -170,6 +170,8 @@ pub struct BroadcasterSubscriptionEventData {
 /// Deserialize [`SubscriptionTier::Other("")`](types::SubscriptionTier::Other) as [`Option::None`]
 fn subscription_tier<'de, D>(deserializer: D) -> Result<Option<types::SubscriptionTier>, D::Error>
 where D: serde::de::Deserializer<'de> {
+    use serde::Deserialize;
+
     Ok(match types::SubscriptionTier::deserialize(deserializer)? {
         types::SubscriptionTier::Other(s) if s.is_empty() => None,
         other => Some(other),

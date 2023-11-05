@@ -2,7 +2,7 @@
 #![doc(alias = "channel-cheer-events-public-v1")]
 //! PubSub messages for cheer events
 use crate::{pubsub, types};
-use serde::{Deserialize, Serialize};
+use serde_derive::{Deserialize, Serialize};
 
 /// A user redeems a cheer with shared rewards.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
