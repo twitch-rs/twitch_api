@@ -28,6 +28,8 @@ use serde_derive::{Deserialize, Serialize};
 use std::borrow::Cow;
 
 pub mod add_channel_vip;
+#[cfg(feature = "beta")]
+pub mod get_ad_schedule;
 pub mod get_channel_editors;
 pub mod get_channel_followers;
 pub mod get_channel_information;
@@ -39,6 +41,9 @@ pub mod start_commercial;
 
 #[doc(inline)]
 pub use add_channel_vip::{AddChannelVipRequest, AddChannelVipResponse};
+#[cfg(feature = "beta")]
+#[doc(inline)]
+pub use get_ad_schedule::{AdSchedule, GetAdScheduleRequest};
 #[doc(inline)]
 pub use get_channel_editors::{Editor, GetChannelEditorsRequest};
 #[doc(inline)]
