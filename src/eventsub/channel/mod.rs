@@ -11,6 +11,7 @@ pub mod ban;
 pub mod channel_points_custom_reward;
 pub mod channel_points_custom_reward_redemption;
 pub mod charity_campaign;
+pub mod chat;
 pub mod cheer;
 pub mod follow;
 pub mod goal;
@@ -60,6 +61,14 @@ pub use charity_campaign::{
 pub use charity_campaign::{ChannelCharityCampaignStartV1, ChannelCharityCampaignStartV1Payload};
 #[doc(inline)]
 pub use charity_campaign::{ChannelCharityCampaignStopV1, ChannelCharityCampaignStopV1Payload};
+#[doc(inline)]
+pub use chat::{ChannelChatClearUserMessagesV1, ChannelChatClearUserMessagesV1Payload};
+#[doc(inline)]
+pub use chat::{ChannelChatClearV1, ChannelChatClearV1Payload};
+#[doc(inline)]
+pub use chat::{ChannelChatMessageDeleteV1, ChannelChatMessageDeleteV1Payload};
+#[doc(inline)]
+pub use chat::{ChannelChatNotificationV1, ChannelChatNotificationV1Payload};
 #[doc(inline)]
 pub use cheer::{ChannelCheerV1, ChannelCheerV1Payload};
 #[doc(inline)]
