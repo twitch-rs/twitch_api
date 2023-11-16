@@ -73,7 +73,8 @@
 - Added `is_branded_content` and `content_classification_labels` to `Get Channel Information` and `Modify Channel information`
 - Added `channel.update` v2 EventSub event
 - Added `is_featured` to Get Clips
-- Added `Get Ad Schedule` and `Snooze Next Ad` endpoint
+- Added beta `Get Ad Schedule` and `Snooze Next Ad` endpoint
+- Added beta `channel.ad_break.begin` eventsub event
 
 ### Fixed
 

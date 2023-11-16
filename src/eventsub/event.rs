@@ -11,6 +11,8 @@ use super::*;
 macro_rules! fill_events {
     ($callback:ident( $($args:tt)* )) => {
         $callback!($($args)*
+            #[cfg(feature = "beta")]
+            channel::ChannelAdBreakBeginBeta;
             channel::ChannelUpdateV1;
             channel::ChannelUpdateV2;
             channel::ChannelFollowV1;
@@ -128,6 +130,8 @@ macro_rules! make_event_type {
 pub struct EventTypeParseError;
 
 make_event_type!("Event Types": pub enum EventType {
+    "a user runs a midroll commercial break, either manually or automatically via ads manager.":
+    ChannelAdBreakBegin => "channel.ad_break.begin",
     "a user donates to the broadcaster’s charity campaign.":
     ChannelCharityCampaignDonate => "channel.charity_campaign.donate",
     "progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal.":
@@ -229,6 +233,9 @@ fn main() {
 #[allow(clippy::large_enum_variant)]
 #[non_exhaustive]
 pub enum Event {
+    /// Channel Ad Break Begin Beta Event
+    #[cfg(feature = "beta")]
+    ChannelAdBreakBeginBeta(Payload<channel::ChannelAdBreakBeginBeta>),
     /// Channel Charity Campaign Donate V1 Event
     ChannelCharityCampaignDonateV1(Payload<channel::ChannelCharityCampaignDonateV1>),
     /// Channel Charity Campaign Progress V1 Event

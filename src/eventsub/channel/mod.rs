@@ -5,6 +5,8 @@ use super::{EventSubscription, EventType};
 use crate::types;
 use serde_derive::{Deserialize, Serialize};
 
+#[cfg(feature = "beta")]
+pub mod ad_break;
 pub mod ban;
 pub mod channel_points_custom_reward;
 pub mod channel_points_custom_reward_redemption;
@@ -23,6 +25,9 @@ pub mod subscription;
 pub mod unban;
 pub mod update;
 
+#[doc(inline)]
+#[cfg(feature = "beta")]
+pub use ad_break::{ChannelAdBreakBeginBeta, ChannelAdBreakBeginBetaPayload};
 #[doc(inline)]
 pub use ban::{ChannelBanV1, ChannelBanV1Payload};
 #[doc(inline)]
