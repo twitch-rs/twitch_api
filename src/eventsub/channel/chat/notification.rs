@@ -39,9 +39,9 @@ impl EventSubscription for ChannelChatNotificationV1 {
     const VERSION: &'static str = "1";
 }
 
+// XXX: this struct can never be deny_unknown_fields
 /// [`channel.chat.notification`](ChannelChatNotificationV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct ChannelChatNotificationV1Payload {
     /// The broadcaster user ID.
@@ -68,34 +68,93 @@ pub struct ChannelChatNotificationV1Payload {
     pub message_id: types::MsgId,
     /// The structured chat message
     pub message: Message,
-    /// The type of notice.
-    pub notice_type: NoticeType,
-    /// Information about the sub event. Null if notice_type is not sub.
-    pub sub: Option<Subscription>,
-    /// Information about the resub event. Null if notice_type is not resub.
-    pub resub: Option<Resubscription>,
-    /// Information about the gift sub event. Null if notice_type is not sub_gift.
-    pub sub_gift: Option<SubGift>,
-    /// Information about the community gift sub event. Null if notice_type is not community_sub_gift.
-    pub community_sub_gift: Option<CommunitySubGift>,
-    /// Information about the community gift paid upgrade event. Null if notice_type is not gift_paid_upgrade.
-    pub gift_paid_upgrade: Option<GiftPaidUpgrade>,
-    /// Information about the Prime gift paid upgrade event. Null if notice_type is not prime_paid_upgrade.
-    pub prime_paid_upgrade: Option<PrimePaidUpgrade>,
-    /// Information about the raid event. Null if notice_type is not raid.
-    pub raid: Option<Raid>,
-    /// Returns an empty payload if notice_type is unraid, otherwise returns null.
-    pub unraid: Option<Unraid>,
-    /// Information about the pay it forward event. Null if notice_type is not pay_it_forward.
-    pub pay_it_forward: Option<PayItForward>,
-    /// Information about the announcement event. Null if notice_type is not announcement
-    pub announcement: Option<Announcement>,
-    /// Information about the charity donation event. Null if notice_type is not charity_donation.
-    pub charity_donation: Option<CharityDonation>,
-    /// Information about the bits badge tier event. Null if notice_type is not bits_badge_tier.
-    pub bits_badge_tier: Option<BitsBadgeTier>,
+    /// The notification
+    #[serde(flatten)]
+    pub notification: Notification,
 }
 
+/// All possible notifications in [`ChannelChatNotificationV1Payload`]
+// XXX: this struct can never be deny_unknown_fields
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[non_exhaustive]
+#[serde(tag = "notice_type", rename_all = "lowercase")]
+pub enum Notification {
+    /// Information about the sub event. Null if notice_type is not sub.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Subscription(Subscription),
+    /// Information about the resub event. Null if notice_type is not resub.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Resubscription(Resubscription),
+    /// Information about the gift sub event. Null if notice_type is not sub_gift.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    SubGift(SubGift),
+    /// Information about the community gift sub event. Null if notice_type is not community_sub_gift.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    CommunitySubGift(CommunitySubGift),
+    /// Information about the community gift paid upgrade event. Null if notice_type is not gift_paid_upgrade.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    GiftPaidUpgrade(GiftPaidUpgrade),
+    /// Information about the Prime gift paid upgrade event. Null if notice_type is not prime_paid_upgrade.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    PrimePaidUpgrade(PrimePaidUpgrade),
+    /// Information about the raid event. Null if notice_type is not raid.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Raid(Raid),
+    /// Returns an empty payload if notice_type is unraid, otherwise returns null.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Unraid(Unraid),
+    /// Information about the pay it forward event. Null if notice_type is not pay_it_forward.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    PayItForward(PayItForward),
+    /// Information about the announcement event. Null if notice_type is not announcement
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Announcement(Announcement),
+    /// Information about the charity donation event. Null if notice_type is not charity_donation.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    CharityDonation(CharityDonation),
+    /// Information about the bits badge tier event. Null if notice_type is not bits_badge_tier.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    BitsBadgeTier(BitsBadgeTier),
+}
+
+impl crate::eventsub::NamedField for Subscription {
+    const NAME: &'static str = "sub";
+}
+impl crate::eventsub::NamedField for Resubscription {
+    const NAME: &'static str = "resub";
+}
+impl crate::eventsub::NamedField for SubGift {
+    const NAME: &'static str = "sub_gift";
+}
+impl crate::eventsub::NamedField for CommunitySubGift {
+    const NAME: &'static str = "community_sub_gift";
+}
+impl crate::eventsub::NamedField for GiftPaidUpgrade {
+    const NAME: &'static str = "gift_paid_upgrade";
+}
+impl crate::eventsub::NamedField for PrimePaidUpgrade {
+    const NAME: &'static str = "prime_paid_upgrade";
+}
+impl crate::eventsub::NamedField for Raid {
+    const NAME: &'static str = "raid";
+}
+impl crate::eventsub::NamedField for Unraid {
+    const NAME: &'static str = "unraid";
+}
+impl crate::eventsub::NamedField for PayItForward {
+    const NAME: &'static str = "pay_it_forward";
+}
+impl crate::eventsub::NamedField for Announcement {
+    const NAME: &'static str = "announcement";
+}
+impl crate::eventsub::NamedField for CharityDonation {
+    const NAME: &'static str = "charity_donation";
+}
+impl crate::eventsub::NamedField for BitsBadgeTier {
+    const NAME: &'static str = "bits_badge_tier";
+}
+
+/// A badge
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -108,8 +167,9 @@ pub struct Badge {
     pub info: String,
 }
 
+/// A message
+// XXX: this struct can never be deny_unknown_fields
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Message {
     /// The chat message in plain text.
@@ -118,39 +178,44 @@ pub struct Message {
     pub fragments: Vec<Fragment>,
 }
 
+/// A chat message fragment
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Fragment {
-    /// The type of message fragment. Possible values:
-    ///
-    /// * `text`
-    /// * `cheermote`
-    /// * `emote`
-    /// * `mention`
-    #[serde(rename = "type")]
-    pub type_: FragmentType,
     /// Message text in fragment
     pub text: String,
-    /// Metadata pertaining to the cheermote.
-    pub cheermote: Option<Cheermote>,
-    /// Metadata pertaining to the emote.
-    pub emote: Option<Emote>,
-    /// Metadata pertaining to the mention.
-    pub mention: Option<Mention>,
+    /// Fragment data
+    #[serde(flatten)]
+    pub data: FragmentData,
 }
 
+/// Fragment data
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-#[serde(rename_all = "lowercase")]
-pub enum FragmentType {
-    Text,
-    Cheermote,
-    Emote,
-    Mention,
+#[serde(tag = "type", rename_all = "lowercase")]
+pub enum FragmentData {
+    /// A Cheermote.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Cheermote(Cheermote),
+    /// A Emote.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Emote(Emote),
+    /// A Mention.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Mention(Mention),
 }
 
+impl crate::eventsub::NamedField for Cheermote {
+    const NAME: &'static str = "cheermote";
+}
+impl crate::eventsub::NamedField for Emote {
+    const NAME: &'static str = "emote";
+}
+impl crate::eventsub::NamedField for Mention {
+    const NAME: &'static str = "mention";
+}
+
+/// A cheermote fragment
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -167,6 +232,7 @@ pub struct Cheermote {
     pub tier: i32,
 }
 
+/// An emote fragment
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -184,6 +250,7 @@ pub struct Emote {
     pub format: Vec<types::EmoteAnimationSetting>,
 }
 
+/// A user mention fragment
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -196,25 +263,7 @@ pub struct Mention {
     pub user_login: types::UserName,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-#[serde(rename_all = "lowercase")]
-pub enum NoticeType {
-    Sub,
-    Resub,
-    SubGift,
-    CommunitySubGift,
-    GiftPaidUpgrade,
-    PrimePaidUpgrade,
-    Raid,
-    Unraid,
-    PayItForward,
-    Announcement,
-    BitsBadgeTier,
-    CharityDonation,
-}
-
+/// A subscription notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -231,6 +280,7 @@ pub struct Subscription {
     pub duration_months: i32,
 }
 
+/// A resubcription notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -261,6 +311,7 @@ pub struct Resubscription {
     pub gifter_user_login: Option<types::UserName>,
 }
 
+/// A subscription gift notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -285,6 +336,9 @@ pub struct SubGift {
     pub community_gift_id: Option<types::CommunityGiftId>,
 }
 
+/// A gift notification for multiple gifted subscriptions. Followed by [`CommunitySubGift::total`] amount of [`SubGift`]s.
+///
+/// Contains the id for [`SubGift::community_gift_id`]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -303,6 +357,7 @@ pub struct CommunitySubGift {
     pub cumulative_total: Option<i32>,
 }
 
+/// A gift notification for a paid upgrade of a previously gifted subscription.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -317,6 +372,7 @@ pub struct GiftPaidUpgrade {
     pub gifter_user_login: Option<types::UserName>,
 }
 
+/// A notification for a paid upgrade of a previous Twitch Prime channel subscription.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -329,6 +385,7 @@ pub struct PrimePaidUpgrade {
     pub sub_tier: types::SubscriptionTier,
 }
 
+/// A raid notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -345,11 +402,15 @@ pub struct Raid {
     pub profile_image_url: String,
 }
 
+/// A unraid notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Unraid {}
 
+/// A pay it forward notification
+///
+/// This event is triggered when a user gifts a subscription to another user in the channel when they were themselves gifted a subscription by another user in the channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -364,6 +425,7 @@ pub struct PayItForward {
     pub gifter_user_login: Option<types::UserName>,
 }
 
+/// A announcement notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -372,6 +434,7 @@ pub struct Announcement {
     pub color: types::HexColor,
 }
 
+/// A charity donation notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
@@ -382,6 +445,7 @@ pub struct CharityDonation {
     pub amount: crate::extra::DonationAmount,
 }
 
+/// A bits badge tier upgrade notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
