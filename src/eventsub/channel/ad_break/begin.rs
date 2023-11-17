@@ -7,13 +7,13 @@ use super::*;
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct ChannelAdBreakBeginBeta {
+pub struct ChannelAdBreakBeginV1 {
     /// The ID of the broadcaster that you want to get Channel Ad Break begin notifications for.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
 }
 
-impl ChannelAdBreakBeginBeta {
+impl ChannelAdBreakBeginV1 {
     /// The ID of the broadcaster that you want to get Channel Ad Break begin notifications for.
     pub fn broadcaster_user_id(broadcaster_user_id: impl Into<types::UserId>) -> Self {
         Self {
@@ -22,8 +22,8 @@ impl ChannelAdBreakBeginBeta {
     }
 }
 
-impl EventSubscription for ChannelAdBreakBeginBeta {
-    type Payload = ChannelAdBreakBeginBetaPayload;
+impl EventSubscription for ChannelAdBreakBeginV1 {
+    type Payload = ChannelAdBreakBeginV1Payload;
 
     const EVENT_TYPE: EventType = EventType::ChannelAdBreakBegin;
     #[cfg(feature = "twitch_oauth2")]
@@ -31,16 +31,16 @@ impl EventSubscription for ChannelAdBreakBeginBeta {
         twitch_oauth2::Scope::ChannelReadAds,
         twitch_oauth2::Scope::ChannelManageAds
     )];
-    const VERSION: &'static str = "beta";
+    const VERSION: &'static str = "1";
 }
 
 /// [`channel.ad_break.begin`](ChannelAdBreakBeginBeta) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-pub struct ChannelAdBreakBeginBetaPayload {
+pub struct ChannelAdBreakBeginV1Payload {
     /// Length in seconds of the mid-roll ad break requested
-    pub length_seconds: i32,
+    pub duration_seconds: i32,
     #[serde(alias = "timestamp")]
     /// The UTC timestamp of when the ad break began, in RFC3339 format. Note that there is potential delay between this event, when the streamer requested the ad break, and when the viewers will see ads.
     pub started_at: types::Timestamp,
@@ -48,12 +48,16 @@ pub struct ChannelAdBreakBeginBetaPayload {
     pub is_automatic: bool,
     /// The broadcaster’s user ID for the channel the ad was run on.
     pub broadcaster_user_id: types::UserId,
-    /// The ID of the user that requested the ad. For automatic ads, this will be the ID of the broadcaster.
-    pub requester_user_id: types::UserId,
     /// The broadcaster’s user login for the channel the ad was run on.
     pub broadcaster_user_login: types::UserName,
     /// The broadcaster’s user display name for the channel the ad was run on.
     pub broadcaster_user_name: types::DisplayName,
+    /// The ID of the user that requested the ad. For automatic ads, this will be the ID of the broadcaster.
+    pub requester_user_id: types::UserId,
+    /// The login of the user that requested the ad.
+    pub requester_user_login: types::UserName,
+    /// The display name of the user that requested the ad.
+    pub requester_user_name: types::DisplayName,
 }
 
 #[cfg(test)]
@@ -66,7 +70,7 @@ fn parse_payload() {
         "subscription": {
             "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
             "type": "channel.ad_break.begin",
-            "version": "beta",
+            "version": "1",
             "status": "enabled",
             "cost": 0,
             "condition": {
@@ -79,13 +83,15 @@ fn parse_payload() {
             "created_at": "2019-11-16T10:11:12.634234626Z"
         },
         "event": {
-            "length_seconds": 60,
+            "duration_seconds": 60,
             "started_at": "2019-11-16T10:11:12.634234626Z",
             "is_automatic": false,
             "broadcaster_user_id": "1337",
-            "requester_user_id": "1337",
             "broadcaster_user_login": "cool_user",
-            "broadcaster_user_name": "Cool_User"
+            "broadcaster_user_name": "Cool_User",
+            "requester_user_id": "1337",
+            "requester_user_login": "cool_user",
+            "requester_user_name": "Cool_User"
         }
     }
     "##;

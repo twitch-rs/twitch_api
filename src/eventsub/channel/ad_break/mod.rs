@@ -7,4 +7,4 @@ use serde_derive::{Deserialize, Serialize};
 pub mod begin;
 
 #[doc(inline)]
-pub use begin::{ChannelAdBreakBeginBeta, ChannelAdBreakBeginBetaPayload};
+pub use begin::{ChannelAdBreakBeginV1, ChannelAdBreakBeginV1Payload};

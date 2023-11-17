@@ -239,7 +239,7 @@ pub struct ChatMessageDropReason {
 #[non_exhaustive]
 pub struct SendChatMessageResponse {
     /// The message id for the message that was sent.
-    #[serde(deserialize_with = "helix::deserialize_none_from_empty_string")]
+    #[serde(deserialize_with = "crate::deserialize_none_from_empty_string")]
     pub message_id: Option<types::MsgId>,
     /// If the message passed all checks and was sent.
     pub is_sent: bool,
@@ -354,7 +354,7 @@ fn test_reject() {
           }
         }
       ]
-    }      
+    }
     "#
     .to_vec();
 
@@ -380,7 +380,7 @@ fn test_reject() {
           }
         }
       ]
-    }      
+    }
     "#
     .to_vec();
 

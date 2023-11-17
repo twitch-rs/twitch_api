@@ -51,15 +51,8 @@ pub struct ChannelChatNotificationV1Payload {
     /// The broadcaster login.
     pub broadcaster_user_login: types::UserName,
     /// The user ID of the user that sent the message.
-    pub chatter_user_id: types::UserId,
-    /// The user name of the user that sent the message.
-    pub chatter_user_name: types::DisplayName,
-    /// The user login of the user that sent the message.
-    pub chatter_user_login: types::UserName,
-    /// Whether or not the chatter is anonymous.
-    pub chatter_is_anonymous: bool,
-    /// The color of the user’s name in the chat room.
-    pub color: types::HexColor,
+    #[serde(flatten)]
+    pub chatter: Chatter,
     /// List of chat badges.
     pub badges: Vec<Badge>,
     /// The message Twitch shows in the chat room for this notice.
@@ -73,46 +66,160 @@ pub struct ChannelChatNotificationV1Payload {
     pub notification: Notification,
 }
 
+/// Information about the user that triggered this notification
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum Chatter {
+    /// Chatter
+    Chatter {
+        /// The user ID of the user that sent the message.
+        chatter_user_id: types::UserId,
+        /// The user name of the user that sent the message.
+        chatter_user_name: types::DisplayName,
+        /// The user login of the user that sent the message.
+        chatter_user_login: types::UserName,
+        /// The color of the user’s name in the chat room.
+        color: Option<types::NamedUserColor<'static>>,
+    },
+    /// Chatter is anonymous
+    Anonymous,
+}
+
+impl Chatter {
+    /// Returns `true` if the chatter is [`Anonymous`].
+    ///
+    /// [`Anonymous`]: Chatter::Anonymous
+    #[must_use]
+    pub fn is_anonymous(&self) -> bool { matches!(self, Self::Anonymous) }
+
+    /// Returns `true` if the chatter is [`Chatter`].
+    ///
+    /// [`Chatter`]: Chatter::Chatter
+    #[must_use]
+    pub fn is_chatter(&self) -> bool { matches!(self, Self::Chatter { .. }) }
+}
+
+impl serde::Serialize for Chatter {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where S: serde::Serializer {
+        #[derive(Default, Serialize)]
+        struct InnerChatter<'a> {
+            chatter_user_id: Option<&'a types::UserIdRef>,
+            chatter_user_name: Option<&'a types::DisplayNameRef>,
+            chatter_user_login: Option<&'a types::UserNameRef>,
+            color: String,
+            chatter_is_anonymous: bool,
+        }
+
+        match self {
+            Chatter::Chatter {
+                chatter_user_id,
+                chatter_user_name,
+                chatter_user_login,
+                color,
+            } => InnerChatter {
+                chatter_user_id: Some(chatter_user_id),
+                chatter_user_name: Some(chatter_user_name),
+                chatter_user_login: Some(chatter_user_login),
+                color: color.as_ref().map(|c| c.to_string()).unwrap_or_default(),
+                chatter_is_anonymous: false,
+            },
+            Chatter::Anonymous => InnerChatter {
+                chatter_is_anonymous: true,
+                ..Default::default()
+            },
+        }
+        .serialize(serializer)
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for Chatter {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where D: serde::Deserializer<'de> {
+        #[derive(Deserialize)]
+        struct InnerChatter<'c> {
+            chatter_user_id: Option<types::UserId>,
+            chatter_user_name: Option<types::DisplayName>,
+            chatter_user_login: Option<types::UserName>,
+            #[serde(borrow)]
+            color: Option<types::NamedUserColor<'c>>,
+            chatter_is_anonymous: bool,
+        }
+
+        let chatter = InnerChatter::deserialize(deserializer)?;
+        if chatter.chatter_is_anonymous {
+            #[cfg(feature = "tracing")]
+            if let Some(c) = chatter.color {
+                if c.as_hex().as_str() != "" {
+                    tracing::error!("got a anonymous user with color set to {c}");
+                }
+            }
+            Ok(Chatter::Anonymous)
+        } else {
+            Ok(Chatter::Chatter {
+                chatter_user_id: chatter
+                    .chatter_user_id
+                    .ok_or_else(|| serde::de::Error::missing_field("chatter_user_id"))?,
+                chatter_user_name: chatter
+                    .chatter_user_name
+                    .ok_or_else(|| serde::de::Error::missing_field("chatter_user_name"))?,
+                chatter_user_login: chatter
+                    .chatter_user_login
+                    .ok_or_else(|| serde::de::Error::missing_field("chatter_user_login"))?,
+                color: Some(
+                    chatter
+                        .color
+                        .ok_or_else(|| serde::de::Error::missing_field("color"))?
+                        .to_owned(),
+                )
+                .filter(|s| s.as_hex().as_str() != ""),
+            })
+        }
+    }
+}
+
 /// All possible notifications in [`ChannelChatNotificationV1Payload`]
 // XXX: this struct can never be deny_unknown_fields
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
-#[serde(tag = "notice_type", rename_all = "lowercase")]
+#[serde(tag = "notice_type", rename_all = "snake_case")]
 pub enum Notification {
-    /// Information about the sub event. Null if notice_type is not sub.
+    /// Information about the sub event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    #[serde(rename = "sub")]
     Subscription(Subscription),
-    /// Information about the resub event. Null if notice_type is not resub.
+    /// Information about the resub event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    #[serde(rename = "resub")]
     Resubscription(Resubscription),
-    /// Information about the gift sub event. Null if notice_type is not sub_gift.
+    /// Information about the gift sub event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     SubGift(SubGift),
-    /// Information about the community gift sub event. Null if notice_type is not community_sub_gift.
+    /// Information about the community gift sub event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     CommunitySubGift(CommunitySubGift),
-    /// Information about the community gift paid upgrade event. Null if notice_type is not gift_paid_upgrade.
+    /// Information about the community gift paid upgrade event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     GiftPaidUpgrade(GiftPaidUpgrade),
-    /// Information about the Prime gift paid upgrade event. Null if notice_type is not prime_paid_upgrade.
+    /// Information about the Prime gift paid upgrade event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     PrimePaidUpgrade(PrimePaidUpgrade),
-    /// Information about the raid event. Null if notice_type is not raid.
+    /// Information about the raid event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     Raid(Raid),
-    /// Returns an empty payload if notice_type is unraid, otherwise returns null.
+    /// a unraid event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     Unraid(Unraid),
-    /// Information about the pay it forward event. Null if notice_type is not pay_it_forward.
+    /// Information about the pay it forward event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     PayItForward(PayItForward),
-    /// Information about the announcement event. Null if notice_type is not announcement
+    /// Information about the announcement event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     Announcement(Announcement),
-    /// Information about the charity donation event. Null if notice_type is not charity_donation.
+    /// Information about the charity donation event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     CharityDonation(CharityDonation),
-    /// Information about the bits badge tier event. Null if notice_type is not bits_badge_tier.
+    /// Information about the bits badge tier event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     BitsBadgeTier(BitsBadgeTier),
 }
@@ -180,29 +287,47 @@ pub struct Message {
 
 /// A chat message fragment
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "type", rename_all = "snake_case")]
 #[non_exhaustive]
-pub struct Fragment {
-    /// Message text in fragment
-    pub text: String,
-    /// Fragment data
-    #[serde(flatten)]
-    pub data: FragmentData,
+pub enum Fragment {
+    /// A Cheermote.
+    Cheermote {
+        /// Message text in fragment
+        text: String,
+        /// A Cheermote.
+        cheermote: Cheermote,
+    },
+    /// A Emote.
+    Emote {
+        /// Message text in fragment
+        text: String,
+        /// A Emote.
+        emote: Emote,
+    },
+    /// A Mention.
+    Mention {
+        /// Message text in fragment
+        text: String,
+        /// A Mention.
+        mention: Mention,
+    },
+    /// A text fragment, see [`Fragment::text`].
+    Text {
+        /// Message text in fragment
+        text: String,
+    },
 }
 
-/// Fragment data
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[non_exhaustive]
-#[serde(tag = "type", rename_all = "lowercase")]
-pub enum FragmentData {
-    /// A Cheermote.
-    #[serde(with = "crate::eventsub::enum_field_as_inner")]
-    Cheermote(Cheermote),
-    /// A Emote.
-    #[serde(with = "crate::eventsub::enum_field_as_inner")]
-    Emote(Emote),
-    /// A Mention.
-    #[serde(with = "crate::eventsub::enum_field_as_inner")]
-    Mention(Mention),
+impl Fragment {
+    /// Get the text data
+    pub fn text(&self) -> &str {
+        match self {
+            Fragment::Cheermote { text, .. } => text,
+            Fragment::Emote { text, .. } => text,
+            Fragment::Mention { text, .. } => text,
+            Fragment::Text { text } => text,
+        }
+    }
 }
 
 impl crate::eventsub::NamedField for Cheermote {
@@ -280,9 +405,105 @@ pub struct Subscription {
     pub duration_months: i32,
 }
 
+/// A gifter
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum Gifter {
+    /// No gifter
+    None,
+    /// An anonymous gifter
+    Anonymous,
+    /// A gifter
+    Gifter {
+        /// The user ID of the subscription gifter. Null if anonymous.
+        gifter_user_id: types::UserId,
+        /// The user name of the subscription gifter. Null if anonymous.
+        gifter_user_name: types::DisplayName,
+        /// The user login of the subscription gifter. Null if anonymous.
+        gifter_user_login: types::UserName,
+    },
+}
+
+impl Gifter {
+    /// Returns `true` if the gifter is [`Anonymous`].
+    ///
+    /// [`Anonymous`]: Gifter::Anonymous
+    #[must_use]
+    pub fn is_anonymous(&self) -> bool { matches!(self, Self::Anonymous) }
+
+    /// Returns `true` if the gifter is [`Gifter`].
+    ///
+    /// [`Gifter`]: Gifter::Gifter
+    #[must_use]
+    pub fn is_gifter(&self) -> bool { matches!(self, Self::Gifter { .. }) }
+}
+
+impl serde::Serialize for Gifter {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where S: serde::Serializer {
+        #[derive(Default, Serialize)]
+        struct InnerGifter<'a> {
+            gifter_user_id: Option<&'a types::UserIdRef>,
+            gifter_user_name: Option<&'a types::DisplayNameRef>,
+            gifter_user_login: Option<&'a types::UserNameRef>,
+            gifter_is_anonymous: Option<bool>,
+        }
+
+        match self {
+            Gifter::Gifter {
+                gifter_user_id,
+                gifter_user_name,
+                gifter_user_login,
+            } => InnerGifter {
+                gifter_user_id: Some(gifter_user_id),
+                gifter_user_name: Some(gifter_user_name),
+                gifter_user_login: Some(gifter_user_login),
+                gifter_is_anonymous: Some(false),
+            },
+            Gifter::Anonymous => InnerGifter {
+                gifter_is_anonymous: Some(true),
+                ..Default::default()
+            },
+            Gifter::None => Default::default(),
+        }
+        .serialize(serializer)
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for Gifter {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where D: serde::Deserializer<'de> {
+        #[derive(Deserialize)]
+        struct InnerGifter {
+            gifter_user_id: Option<types::UserId>,
+            gifter_user_name: Option<types::DisplayName>,
+            gifter_user_login: Option<types::UserName>,
+            gifter_is_anonymous: Option<bool>,
+        }
+
+        let gifter = InnerGifter::deserialize(deserializer)?;
+        if let Some(true) = gifter.gifter_is_anonymous {
+            Ok(Gifter::Anonymous)
+        } else if let None = gifter.gifter_is_anonymous {
+            Ok(Gifter::None)
+        } else {
+            Ok(Gifter::Gifter {
+                gifter_user_id: gifter
+                    .gifter_user_id
+                    .ok_or_else(|| serde::de::Error::missing_field("gifter_user_id"))?,
+                gifter_user_name: gifter
+                    .gifter_user_name
+                    .ok_or_else(|| serde::de::Error::missing_field("gifter_user_name"))?,
+                gifter_user_login: gifter
+                    .gifter_user_login
+                    .ok_or_else(|| serde::de::Error::missing_field("gifter_user_login"))?,
+            })
+        }
+    }
+}
+
 /// A resubcription notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct Resubscription {
     /// The total number of months the user has subscribed.
@@ -301,14 +522,10 @@ pub struct Resubscription {
     pub is_prime: bool,
     /// Whether or not the resub was a result of a gift.
     pub is_gift: bool,
-    /// Whether or not the gift was anonymous. Null if not a gift.
-    pub gifter_is_anonymous: Option<bool>,
-    /// The user ID of the subscription gifter. Null if anonymous.
-    pub gifter_user_id: Option<types::UserId>,
-    /// The user name of the subscription gifter. Null if anonymous.
-    pub gifter_user_name: Option<types::DisplayName>,
-    /// The user login of the subscription gifter. Null if anonymous.
-    pub gifter_user_login: Option<types::UserName>,
+    // FIXME: This might eat errors
+    /// The gifter
+    #[serde(flatten)]
+    pub gifter: Gifter,
 }
 
 /// A subscription gift notification
@@ -359,17 +576,11 @@ pub struct CommunitySubGift {
 
 /// A gift notification for a paid upgrade of a previously gifted subscription.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct GiftPaidUpgrade {
-    /// Whether the gift was given anonymously.
-    pub gifter_is_anonymous: bool,
-    /// The user ID of the user who gifted the subscription. Null if anonymous.
-    pub gifter_user_id: Option<types::UserId>,
-    /// The user name of the user who gifted the subscription. Null if anonymous.
-    pub gifter_user_name: Option<types::DisplayName>,
-    /// The user login of the user who gifted the subscription. Null if anonymous.
-    pub gifter_user_login: Option<types::UserName>,
+    /// The gifter
+    #[serde(flatten)]
+    pub gifter: Gifter,
 }
 
 /// A notification for a paid upgrade of a previous Twitch Prime channel subscription.
@@ -415,14 +626,15 @@ pub struct Unraid {}
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct PayItForward {
-    /// Whether the gift was given anonymously.
-    pub gifter_is_anonymous: bool,
-    /// The user ID of the user who gifted the subscription. Null if anonymous.
-    pub gifter_user_id: Option<types::UserId>,
-    /// The user name of the user who gifted the subscription. Null if anonymous.
-    pub gifter_user_name: Option<types::DisplayName>,
-    /// The user login of the user who gifted the subscription. Null if anonymous.
-    pub gifter_user_login: Option<types::UserName>,
+    /// The gifter
+    #[serde(flatten)]
+    pub gifter: Gifter,
+    /// The user ID of the subscription gift recipient.
+    pub recipient_user_id: Option<types::UserId>,
+    /// The user name of the subscription gift recipient.
+    pub recipient_user_name: Option<types::DisplayName>,
+    /// The user login of the subscription gift recipient.
+    pub recipient_user_login: Option<types::UserName>,
 }
 
 /// A announcement notification
@@ -431,7 +643,7 @@ pub struct PayItForward {
 #[non_exhaustive]
 pub struct Announcement {
     /// Color of the announcement.
-    pub color: types::HexColor,
+    pub color: crate::extra::AnnouncementColor,
 }
 
 /// A charity donation notification
@@ -543,4 +755,433 @@ fn parse_payload() {
 
     let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
     crate::tests::roundtrip(&val)
+}
+
+#[cfg(test)]
+#[test]
+fn parse_payload_resub_without_message() {
+    let payload = r##"
+    {
+        "subscription": {
+            "id": "eebd50e7-2e58-4034-849b-d47e935632da5",
+            "status": "enabled",
+            "type": "channel.chat.notification",
+            "version": "1",
+            "condition": {
+                "broadcaster_user_id": "1337",
+                "user_id": "27620241"
+            },
+            "transport": {
+                "method": "websocket",
+                "session_id": "AgoQTaaaaaaaab2QtdG5r8vMSBIaaaaaaaaa"
+            },
+            "created_at": "2023-11-19T21:31:08.935820817Z",
+            "cost": 0
+        },
+        "event": {
+            "broadcaster_user_id": "1337",
+            "broadcaster_user_login": "cool_user",
+            "broadcaster_user_name": "Cool_User",
+            "chatter_user_id": "1234",
+            "chatter_user_login": "justinfan",
+            "chatter_user_name": "justinfan",
+            "chatter_is_anonymous": false,
+            "color": "#E20072",
+            "badges": [
+                {
+                    "set_id": "subscriber",
+                    "id": "60",
+                    "info": "65"
+                },
+                {
+                    "set_id": "twitchconAmsterdam2020",
+                    "id": "1",
+                    "info": ""
+                }
+            ],
+            "system_message": "justinfan subscribed at Tier 1. They've subscribed for 65 months!",
+            "message_id": "5dfe4963-9db8-44a9-9f69-27452aaaaa30",
+            "message": {
+                "text": "",
+                "fragments": []
+            },
+            "notice_type": "resub",
+            "sub": null,
+            "resub": {
+                "cumulative_months": 65,
+                "duration_months": 0,
+                "streak_months": null,
+                "sub_tier": "1000",
+                "is_prime": false,
+                "is_gift": false,
+                "gifter_is_anonymous": null,
+                "gifter_user_id": null,
+                "gifter_user_name": null,
+                "gifter_user_login": null
+            },
+            "sub_gift": null,
+            "community_sub_gift": null,
+            "gift_paid_upgrade": null,
+            "prime_paid_upgrade": null,
+            "pay_it_forward": null,
+            "raid": null,
+            "unraid": null,
+            "announcement": null,
+            "bits_badge_tier": null,
+            "charity_donation": null
+        }
+    }
+    "##;
+
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+    crate::tests::roundtrip(&val)
+}
+
+#[cfg(test)]
+#[test]
+fn parse_payload_cheer_just_text() {
+    let payload = r##"
+    {
+        "subscription": {
+            "id": "2237f256-1b83-4ec9-956e-c3578925e8e6",
+            "status": "enabled",
+            "type": "channel.chat.notification",
+            "version": "1",
+            "condition": {
+                "broadcaster_user_id": "67931625",
+                "user_id": "27620241"
+            },
+            "transport": {
+                "method": "websocket",
+                "session_id": "AgoQuf4yiyFuTd64mlIG4zbSOxIGY2VsbC1j"
+            },
+            "created_at": "2023-11-19T22:08:49.127052362Z",
+            "cost": 0
+        },
+        "event": {
+            "broadcaster_user_id": "67931625",
+            "broadcaster_user_login": "amar",
+            "broadcaster_user_name": "Amar",
+            "chatter_user_id": "101572475",
+            "chatter_user_login": "justinfan",
+            "chatter_user_name": "justinfan",
+            "chatter_is_anonymous": false,
+            "color": "#FA6E02",
+            "badges": [
+                {
+                    "set_id": "moderator",
+                    "id": "1",
+                    "info": ""
+                },
+                {
+                    "set_id": "subscriber",
+                    "id": "48",
+                    "info": "58"
+                },
+                {
+                    "set_id": "partner",
+                    "id": "1",
+                    "info": ""
+                }
+            ],
+            "system_message": "justinfan subscribed at Tier 1. They've subscribed for 58 months!",
+            "message_id": "aaa15585-0f43-4c32-8c48-56d58e9567a7",
+            "message": {
+                "text": "GIB MIR DEN POKAL",
+                "fragments": [
+                    {
+                        "type": "text",
+                        "text": "GIB MIR DEN POKAL",
+                        "cheermote": null,
+                        "emote": null,
+                        "mention": null
+                    }
+                ]
+            },
+            "notice_type": "resub",
+            "sub": null,
+            "resub": {
+                "cumulative_months": 58,
+                "duration_months": 0,
+                "streak_months": null,
+                "sub_tier": "1000",
+                "is_prime": false,
+                "is_gift": false,
+                "gifter_is_anonymous": null,
+                "gifter_user_id": null,
+                "gifter_user_name": null,
+                "gifter_user_login": null
+            },
+            "sub_gift": null,
+            "community_sub_gift": null,
+            "gift_paid_upgrade": null,
+            "prime_paid_upgrade": null,
+            "pay_it_forward": null,
+            "raid": null,
+            "unraid": null,
+            "announcement": null,
+            "bits_badge_tier": null,
+            "charity_donation": null
+        }
+    }
+    "##;
+
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+    crate::tests::roundtrip(&val)
+}
+
+#[cfg(test)]
+#[test]
+fn parse_payload_sub_gift_anon() {
+    let payload = r##"
+    {
+        "subscription": {
+            "id": "f6b57ae8-add7-4faa-a396-4d6c87cb1337",
+            "status": "enabled",
+            "type": "channel.chat.notification",
+            "version": "1",
+            "condition": {
+                "broadcaster_user_id": "1337",
+                "user_id": "27620241"
+            },
+            "transport": {
+                "method": "websocket",
+                "session_id": "AgoQ_ZPE5-zrR2W3HJjkQxrFfxIGY2Vs1337"
+            },
+            "created_at": "2023-11-20T09:52:07.940291459Z",
+            "cost": 0
+        },
+        "event": {
+            "broadcaster_user_id": "1337",
+            "broadcaster_user_login": "cool_user",
+            "broadcaster_user_name": "Cool_User",
+            "chatter_user_id": null,
+            "chatter_user_login": null,
+            "chatter_user_name": null,
+            "chatter_is_anonymous": true,
+            "color": "",
+            "badges": [],
+            "system_message": "An anonymous user is gifting 1 Tier 1 Subs to Cool_User's community!",
+            "message_id": "fa2135ca-34da-413f-1337-4efa3c9a6bac",
+            "message": {
+                "text": "",
+                "fragments": []
+            },
+            "notice_type": "community_sub_gift",
+            "sub": null,
+            "resub": null,
+            "sub_gift": null,
+            "community_sub_gift": {
+                "id": "12111455614691086753",
+                "total": 1,
+                "cumulative_total": null,
+                "sub_tier": "1000"
+            },
+            "gift_paid_upgrade": null,
+            "prime_paid_upgrade": null,
+            "pay_it_forward": null,
+            "raid": null,
+            "unraid": null,
+            "announcement": null,
+            "bits_badge_tier": null,
+            "charity_donation": null
+        }
+    }
+    "##;
+
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+    crate::tests::roundtrip(&val)
+}
+
+#[cfg(test)]
+#[test]
+pub fn resub_doesnt_eat_gifter_error() {
+    let payload = r#"
+    {
+        "cumulative_months": 2,
+        "duration_months": 0,
+        "streak_months": null,
+        "sub_tier": "1000",
+        "is_prime": false,
+        "is_gift": true,
+        "gifter_is_anonymous": false,
+        "gifter_user_id": "1234",
+        "gifter_user_name": 1,
+        "gifter_user_login": "justinfan1"
+      }
+    "#;
+
+    dbg!(serde_json::from_str::<Resubscription>(payload).unwrap_err());
+}
+#[cfg(test)]
+#[test]
+fn parse_payload_resub_gifted() {
+    let payload = r##"
+    {
+        "subscription": {
+          "id": "96f9a91e-f1e0-43af-82ac-a6e934771337",
+          "status": "enabled",
+          "type": "channel.chat.notification",
+          "version": "1",
+          "condition": {
+            "broadcaster_user_id": "165081337",
+            "user_id": "27620241"
+          },
+          "transport": {
+            "method": "websocket",
+            "session_id": "AgoQUlB8aB2SSsavWVfcs5ljnBIGY2Vs1337"
+          },
+          "created_at": "2023-11-20T16:41:22.999246448Z",
+          "cost": 0
+        },
+        "event": {
+          "broadcaster_user_id": "1337",
+          "broadcaster_user_login": "Cool_User",
+          "broadcaster_user_name": "cool_user",
+          "chatter_user_id": "5678",
+          "chatter_user_login": "someone1",
+          "chatter_user_name": "someone1",
+          "chatter_is_anonymous": false,
+          "color": "",
+          "badges": [
+            {
+              "set_id": "subscriber",
+              "id": "2",
+              "info": "2"
+            }
+          ],
+          "system_message": "someone1 subscribed at Tier 1. They've subscribed for 2 months!",
+          "message_id": "101ab672-fcde-4d71-8011-ac2859786cea",
+          "message": {
+            "text": "",
+            "fragments": []
+          },
+          "notice_type": "resub",
+          "sub": null,
+          "resub": {
+            "cumulative_months": 2,
+            "duration_months": 0,
+            "streak_months": null,
+            "sub_tier": "1000",
+            "is_prime": false,
+            "is_gift": true,
+            "gifter_is_anonymous": false,
+            "gifter_user_id": "1234",
+            "gifter_user_name": "justinfan1",
+            "gifter_user_login": "justinfan1"
+          },
+          "sub_gift": null,
+          "community_sub_gift": null,
+          "gift_paid_upgrade": null,
+          "prime_paid_upgrade": null,
+          "pay_it_forward": null,
+          "raid": null,
+          "unraid": null,
+          "announcement": null,
+          "bits_badge_tier": null,
+          "charity_donation": null
+        }
+    }
+    "##;
+
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+    crate::tests::roundtrip(&val)
+}
+
+#[cfg(test)]
+#[test]
+fn parse_payload_pay_it_forward() {
+    let payload = r##"
+    {
+        "subscription": {
+            "id": "96f9a91e-f1e0-43af-82ac-a6e934778805",
+            "status": "enabled",
+            "type": "channel.chat.notification",
+            "version": "1",
+            "condition": {
+                "broadcaster_user_id": "165080419",
+                "user_id": "27620241"
+            },
+            "transport": {
+                "method": "websocket",
+                "session_id": "AgoQUlB8aB2SSsavWVfcs5ljnBIGY2VsbC1j"
+            },
+            "created_at": "2023-11-20T16:41:22.999246448Z",
+            "cost": 0
+        },
+        "event": {
+            "broadcaster_user_id": "1337",
+            "broadcaster_user_login": "Cool_User",
+            "broadcaster_user_name": "cool_user",
+            "chatter_user_id": "1234",
+            "chatter_user_login": "justinfan1",
+            "chatter_user_name": "justinfan1",
+            "chatter_is_anonymous": false,
+            "color": "#03FCFC",
+            "badges": [
+                {
+                    "set_id": "subscriber",
+                    "id": "3",
+                    "info": "5"
+                },
+                {
+                    "set_id": "rplace-2023",
+                    "id": "1",
+                    "info": ""
+                }
+            ],
+            "system_message": "justinfan1 is paying forward the Gift they got from SomeoneElse to the community!",
+            "message_id": "3bc0badf-1d2c-45cd-8743-62ba2f411337",
+            "message": {
+                "text": "",
+                "fragments": []
+            },
+            "notice_type": "pay_it_forward",
+            "sub": null,
+            "resub": null,
+            "sub_gift": null,
+            "community_sub_gift": null,
+            "gift_paid_upgrade": null,
+            "prime_paid_upgrade": null,
+            "pay_it_forward": {
+                "recipient_user_id": null,
+                "recipient_user_name": null,
+                "recipient_user_login": null,
+                "gifter_is_anonymous": false,
+                "gifter_user_id": "5678",
+                "gifter_user_name": "SomeoneElse",
+                "gifter_user_login": "someoneelse"
+            },
+            "raid": null,
+            "unraid": null,
+            "announcement": null,
+            "bits_badge_tier": null,
+            "charity_donation": null
+        }
+    }
+    "##;
+
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+    crate::tests::roundtrip(&val)
+}
+
+#[cfg(test)]
+#[test]
+fn parse_payload_examples() {
+    let payloads = vec![
+        r##"
+{"subscription":{"id":"d46bb9d5-7b78-4495-a8f6-31e0bfe74422","status":"enabled","type":"channel.chat.notification","version":"1","condition":{"broadcaster_user_id":"67931625","user_id":"27620241"},"transport":{"method":"websocket","session_id":"AgoQUlB8aB2SSsavWVfcs5ljnBIGY2VsbC1j"},"created_at":"2023-11-20T16:41:21.3673997Z","cost":0},"event":{"broadcaster_user_id":"67931625","broadcaster_user_login":"amar","broadcaster_user_name":"Amar","chatter_user_id":"276319092","chatter_user_login":"baba_avil","chatter_user_name":"BaBa_Avil","chatter_is_anonymous":false,"color":"#9ACD32","badges":[{"set_id":"subscriber","id":"3","info":"4"},{"set_id":"premium","id":"1","info":""}],"system_message":"BaBa_Avil is paying forward the Gift they got from sarius05 to melizhr!","message_id":"1b1cf50d-d01b-4019-a564-cad2937bfeae","message":{"text":"","fragments":[]},"notice_type":"pay_it_forward","sub":null,"resub":null,"sub_gift":null,"community_sub_gift":null,"gift_paid_upgrade":null,"prime_paid_upgrade":null,"pay_it_forward":{"recipient_user_id":"924524794","recipient_user_name":"melizhr","recipient_user_login":"melizhr","gifter_is_anonymous":false,"gifter_user_id":"434322296","gifter_user_name":"sarius05","gifter_user_login":"sarius05"},"raid":null,"unraid":null,"announcement":null,"bits_badge_tier":null,"charity_donation":null}}
+"##,
+        r##"
+{"subscription":{"id":"96f9a91e-f1e0-43af-82ac-a6e934778805","status":"enabled","type":"channel.chat.notification","version":"1","condition":{"broadcaster_user_id":"165080419","user_id":"27620241"},"transport":{"method":"websocket","session_id":"AgoQUlB8aB2SSsavWVfcs5ljnBIGY2VsbC1j"},"created_at":"2023-11-20T16:41:22.999246448Z","cost":0},"event":{"broadcaster_user_id":"165080419","broadcaster_user_login":"elraenn","broadcaster_user_name":"Elraenn","chatter_user_id":"735414451","chatter_user_login":"deniztony","chatter_user_name":"DenizTony","chatter_is_anonymous":false,"color":"#03FCFC","badges":[{"set_id":"subscriber","id":"3","info":"5"},{"set_id":"rplace-2023","id":"1","info":""}],"system_message":"DenizTony is paying forward the Gift they got from VikingHido to the community!","message_id":"3bc0badf-1d2c-45cd-8743-62ba2f41a2f6","message":{"text":"","fragments":[]},"notice_type":"pay_it_forward","sub":null,"resub":null,"sub_gift":null,"community_sub_gift":null,"gift_paid_upgrade":null,"prime_paid_upgrade":null,"pay_it_forward":{"recipient_user_id":null,"recipient_user_name":null,"recipient_user_login":null,"gifter_is_anonymous":false,"gifter_user_id":"446352253","gifter_user_name":"VikingHido","gifter_user_login":"vikinghido"},"raid":null,"unraid":null,"announcement":null,"bits_badge_tier":null,"charity_donation":null}}
+"##,
+        r##"
+{"subscription":{"id":"96f9a91e-f1e0-43af-82ac-a6e934778805","status":"enabled","type":"channel.chat.notification","version":"1","condition":{"broadcaster_user_id":"165080419","user_id":"27620241"},"transport":{"method":"websocket","session_id":"AgoQUlB8aB2SSsavWVfcs5ljnBIGY2VsbC1j"},"created_at":"2023-11-20T16:41:22.999246448Z","cost":0},"event":{"broadcaster_user_id":"165080419","broadcaster_user_login":"elraenn","broadcaster_user_name":"Elraenn","chatter_user_id":"425829220","chatter_user_login":"kecogluali5","chatter_user_name":"Kecogluali5","chatter_is_anonymous":false,"color":"#0000FF","badges":[{"set_id":"subscriber","id":"12","info":"12"}],"system_message":"Kecogluali5 is paying forward the Gift they got from CasinoZEBERUS to the community!","message_id":"573a20ff-8f88-499e-be2b-c7079eb76f6c","message":{"text":"","fragments":[]},"notice_type":"pay_it_forward","sub":null,"resub":null,"sub_gift":null,"community_sub_gift":null,"gift_paid_upgrade":null,"prime_paid_upgrade":null,"pay_it_forward":{"recipient_user_id":null,"recipient_user_name":null,"recipient_user_login":null,"gifter_is_anonymous":false,"gifter_user_id":"967793245","gifter_user_name":"CasinoZEBERUS","gifter_user_login":"casinozeberus"},"raid":null,"unraid":null,"announcement":null,"bits_badge_tier":null,"charity_donation":null}}
+"##,
+        //r#""#,
+    ];
+    for payload in payloads {
+        let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+        crate::tests::roundtrip(&val)
+    }
 }

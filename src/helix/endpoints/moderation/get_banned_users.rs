@@ -108,11 +108,11 @@ pub struct BannedUser {
     pub user_name: types::DisplayName,
     /// Login of a user who has been banned.
     pub user_login: types::UserName,
-    #[serde(deserialize_with = "helix::deserialize_none_from_empty_string")]
+    #[serde(deserialize_with = "crate::deserialize_none_from_empty_string")]
     /// RFC3339 formatted timestamp for timeouts; empty string for bans.
     pub expires_at: Option<types::Timestamp>,
     /// The reason for the ban if provided by the moderator.
-    #[serde(deserialize_with = "helix::deserialize_none_from_empty_string")]
+    #[serde(deserialize_with = "crate::deserialize_none_from_empty_string")]
     pub reason: Option<String>,
     /// User ID of the moderator who initiated the ban.
     pub moderator_id: types::UserId,

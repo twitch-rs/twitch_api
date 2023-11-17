@@ -89,13 +89,13 @@ impl<'de> serde::Deserialize<'de> for ShieldModeStatus {
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         struct InnerShieldModeStatus {
             is_active: bool,
-            #[serde(deserialize_with = "helix::deserialize_none_from_empty_string")]
+            #[serde(deserialize_with = "crate::deserialize_none_from_empty_string")]
             moderator_id: Option<types::UserId>,
-            #[serde(deserialize_with = "helix::deserialize_none_from_empty_string")]
+            #[serde(deserialize_with = "crate::deserialize_none_from_empty_string")]
             moderator_login: Option<types::UserName>,
-            #[serde(deserialize_with = "helix::deserialize_none_from_empty_string")]
+            #[serde(deserialize_with = "crate::deserialize_none_from_empty_string")]
             moderator_name: Option<types::DisplayName>,
-            #[serde(deserialize_with = "helix::deserialize_none_from_empty_string")]
+            #[serde(deserialize_with = "crate::deserialize_none_from_empty_string")]
             last_activated_at: Option<types::Timestamp>,
         }
 

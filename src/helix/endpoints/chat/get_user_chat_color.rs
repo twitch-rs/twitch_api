@@ -95,7 +95,7 @@ pub struct UserChatColor {
     /// If the user hasn’t specified a color in their settings, the value is [`None`].
     #[serde(
         default,
-        deserialize_with = "helix::deserialize_none_from_empty_string"
+        deserialize_with = "crate::deserialize_none_from_empty_string"
     )]
     pub color: Option<types::HexColor>,
 }

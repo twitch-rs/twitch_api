@@ -85,7 +85,7 @@ pub struct AdSchedule {
     )]
     pub next_ad_at: Option<types::Timestamp>,
     /// The length in seconds of the scheduled upcoming ad break.
-    pub length_seconds: i32, /* TODO: Is this a types::CommercialLength? is it 0 if no ad is scheduled? */
+    pub duration: i32, /* TODO: Is this a types::CommercialLength? is it 0 if no ad is scheduled? */
     /// The UTC timestamp of the broadcaster’s last ad-break, in RFC3339 format. Empty if the channel has not run an ad or is not live.
     pub last_ad_at: types::Timestamp,
     /// The amount of pre-roll free time remaining for the channel in seconds. Returns 0 if they are currently not pre-roll free.
@@ -93,7 +93,7 @@ pub struct AdSchedule {
         default,
         deserialize_with = "helix::deserialize_none_from_empty_or_zero_string"
     )]
-    pub preroll_free_time_seconds: Option<i32>,
+    pub preroll_free_time: Option<i32>,
 }
 
 impl Request for GetAdScheduleRequest<'_> {
@@ -134,9 +134,9 @@ impl RequestGet for GetAdScheduleRequest<'_> {
                     snooze_count: i32,
                     snooze_refresh_at: i32,
                     next_ad_at: i32,
-                    length_seconds: i32,
+                    duration: i32,
                     last_ad_at: i32,
-                    preroll_free_time_seconds: i32,
+                    preroll_free_time: i32,
                 }
                 let fake: Result<helix::InnerResponse<Vec<IsWrong>>, _> =
                     crate::parse_json(str_response, true);
@@ -180,8 +180,8 @@ fn test_request() {
           {
             "next_ad_at" : "2023-08-01T23:08:18+00:00",
             "last_ad_at" : "2023-08-01T23:08:18+00:00",
-            "length_seconds" : 60,
-            "preroll_free_time_seconds" : 90,
+            "duration" : 60,
+            "preroll_free_time" : 90,
             "snooze_count" : 1,
             "snooze_refresh_at" : "2023-08-01T23:08:18+00:00"
           }
@@ -208,7 +208,18 @@ fn test_request_empty_wrong() {
     let req = GetAdScheduleRequest::broadcaster_id("123");
 
     // From twitch docs
-    let data = br#"{"data":[{"snooze_count":0,"snooze_refresh_at":0,"next_ad_at":0,"length_seconds":0,"last_ad_at":0,"preroll_free_time_seconds":0}]}"#
+    let data = br#"{
+        "data": [
+          {
+            "duration": 0,
+            "last_ad_at": 0,
+            "next_ad_at": 0,
+            "preroll_free_time": 0,
+            "snooze_count": 0,
+            "snooze_refresh_at": 0
+          }
+        ]
+      }"#
     .to_vec();
 
     let http_response = http::Response::builder().body(data).unwrap();

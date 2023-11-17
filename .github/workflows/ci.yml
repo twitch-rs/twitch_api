@@ -52,7 +52,7 @@ jobs:
           toolchain: ${{ matrix.rust || env.MSRV }}
       - uses: Swatinem/rust-cache@v2
       - name: Test twitch_api
-        run: cargo test --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}" ${{matrix.rust == 'nightly' && '--workspace'}}
+        run: cargo test --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }}" ${{matrix.rust == 'nightly' && '--workspace' || ''}}
   rustfmt:
     name: Rustfmt
     runs-on: ubuntu-latest

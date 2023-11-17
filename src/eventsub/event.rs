@@ -11,8 +11,7 @@ use super::*;
 macro_rules! fill_events {
     ($callback:ident( $($args:tt)* )) => {
         $callback!($($args)*
-            #[cfg(feature = "beta")]
-            channel::ChannelAdBreakBeginBeta;
+            channel::ChannelAdBreakBeginV1;
             channel::ChannelBanV1;
             channel::ChannelCharityCampaignDonateV1;
             channel::ChannelCharityCampaignProgressV1;
@@ -245,9 +244,8 @@ fn main() {
 #[allow(clippy::large_enum_variant)]
 #[non_exhaustive]
 pub enum Event {
-    /// Channel Ad Break Begin Beta Event
-    #[cfg(feature = "beta")]
-    ChannelAdBreakBeginBeta(Payload<channel::ChannelAdBreakBeginBeta>),
+    /// Channel Ad Break Begin V1 Event
+    ChannelAdBreakBeginV1(Payload<channel::ChannelAdBreakBeginV1>),
     /// Channel Chat Clear V1 Event
     ChannelChatClearV1(Payload<channel::ChannelChatClearV1>),
     /// Channel Chat ClearUserMessages V1 Event

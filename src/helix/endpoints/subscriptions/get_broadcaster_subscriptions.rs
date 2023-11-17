@@ -105,19 +105,19 @@ pub struct BroadcasterSubscription {
     /// User ID of the broadcaster.
     #[serde(
         default,
-        deserialize_with = "helix::deserialize_none_from_empty_string"
+        deserialize_with = "crate::deserialize_none_from_empty_string"
     )]
     pub gifter_id: Option<types::UserId>,
     /// Login of the gifter.
     #[serde(
         default,
-        deserialize_with = "helix::deserialize_none_from_empty_string"
+        deserialize_with = "crate::deserialize_none_from_empty_string"
     )]
     pub gifter_login: Option<types::UserName>,
     /// Display name of the gifter.
     #[serde(
         default,
-        deserialize_with = "helix::deserialize_none_from_empty_string"
+        deserialize_with = "crate::deserialize_none_from_empty_string"
     )]
     pub gifter_name: Option<types::DisplayName>,
     /// Determines if the subscription is a gift subscription.

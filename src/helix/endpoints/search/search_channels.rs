@@ -115,7 +115,7 @@ pub struct Channel {
     /// UTC timestamp. (live only)
     #[serde(
         default,
-        deserialize_with = "helix::deserialize_none_from_empty_string"
+        deserialize_with = "crate::deserialize_none_from_empty_string"
     )]
     pub started_at: Option<types::Timestamp>,
     /// Shows tag IDs that apply to the stream (live only).See <https://www.twitch.tv/directory/all/tags> for tag types

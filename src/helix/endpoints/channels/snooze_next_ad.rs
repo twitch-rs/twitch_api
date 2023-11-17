@@ -148,7 +148,8 @@ fn test_request() {
             "next_ad_at" : "2023-08-01T23:08:18+00:00"
           }
         ]
-      }"#;
+      }
+      "#;
 
     let http_response = http::Response::builder().status(204).body(data).unwrap();
 
