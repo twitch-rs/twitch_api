@@ -101,12 +101,6 @@ pub struct Poll {
     pub title: String,
     /// Array of the poll choices.
     pub choices: Vec<PollChoice>,
-    /// Indicates if Bits can be used for voting.
-    #[deprecated(since = "0.7.0", note = "the bits options for polls has been removed")]
-    pub bits_voting_enabled: bool,
-    /// Number of Bits required to vote once with Bits.
-    #[deprecated(since = "0.7.0", note = "the bits options for polls has been removed")]
-    pub bits_per_vote: i64,
     /// Indicates if Channel Points can be used for voting.
     pub channel_points_voting_enabled: bool,
     /// Number of Channel Points required to vote once with Channel Points.
@@ -162,19 +156,15 @@ fn test_request() {
             "id": "4c123012-1351-4f33-84b7-43856e7a0f47",
             "title": "Heads",
             "votes": 0,
-            "channel_points_votes": 0,
-            "bits_votes": 0
+            "channel_points_votes": 0
             },
             {
             "id": "279087e3-54a7-467e-bcd0-c1393fcea4f0",
             "title": "Tails",
             "votes": 0,
-            "channel_points_votes": 0,
-            "bits_votes": 0
+            "channel_points_votes": 0
             }
         ],
-        "bits_voting_enabled": false,
-        "bits_per_vote": 0,
         "channel_points_voting_enabled": false,
         "channel_points_per_vote": 0,
         "status": "ACTIVE",

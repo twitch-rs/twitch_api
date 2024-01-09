@@ -235,8 +235,6 @@ fn test_request() {
             "bits_votes": 0
             }
         ],
-        "bits_voting_enabled": false,
-        "bits_per_vote": 0,
         "channel_points_voting_enabled": true,
         "channel_points_per_vote": 100,
         "status": "TERMINATED",
