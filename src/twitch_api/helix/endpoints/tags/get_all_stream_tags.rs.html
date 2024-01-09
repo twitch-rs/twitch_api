@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/tags/get_all_stream_tags.rs`."><title>get_all_stream_tags.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/tags/get_all_stream_tags.rs`."><title>get_all_stream_tags.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -211,9 +213,9 @@
 //! use twitch_api::helix::{self, tags::get_all_stream_tags};
 //! # use twitch_api::client;
 //! # #[tokio::main]
-//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
-//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
-//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+//! # let client: helix::HelixClient&lt;'static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+//! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
 //! let request = get_all_stream_tags::GetAllStreamTagsRequest::builder()
 //!     .build();
@@ -232,31 +234,31 @@
 ///
 /// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
-#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[cfg_attr(feature = <span class="string">"typed-builder"</span>, derive(typed_builder::TypedBuilder))]
 #[deprecated(
-    note = <span class="string">&quot;Twitch-defined tags have been deprecated. See https://discuss.dev.twitch.tv/t/adding-customizable-tags-to-the-twitch-api/42921&quot;
+    note = <span class="string">"Twitch-defined tags have been deprecated. See https://discuss.dev.twitch.tv/t/adding-customizable-tags-to-the-twitch-api/42921"
 </span>)]
 #[must_use]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>GetAllStreamTagsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>GetAllStreamTagsRequest&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, helix::CursorRef&gt;&gt;,
     <span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// ID of a tag. Multiple IDs can be specified. If provided, only the specified tag(s) is(are) returned. Maximum of 100.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
     </span><span class="comment">// FIXME: This is essentially the same as borrow, but worse
-    </span><span class="attr">#[cfg_attr(not(feature = <span class="string">&quot;deser_borrow&quot;</span>), serde(bound(deserialize = <span class="string">&quot;&#39;de: &#39;a&quot;</span>)))]
-    </span><span class="kw">pub </span>tag_id: Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>types::TagIdRef]&gt;,
+    </span><span class="attr">#[cfg_attr(not(feature = <span class="string">"deser_borrow"</span>), serde(bound(deserialize = <span class="string">"'de: 'a"</span>)))]
+    </span><span class="kw">pub </span>tag_id: Cow&lt;<span class="lifetime">'a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">'a </span>types::TagIdRef]&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; GetAllStreamTagsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; GetAllStreamTagsRequest&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Filter the results for specific tag.
-    </span><span class="kw">pub fn </span>tag_ids(<span class="kw-2">mut </span><span class="self">self</span>, tag_ids: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>types::TagIdRef]&gt;&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>tag_ids(<span class="kw-2">mut </span><span class="self">self</span>, tag_ids: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">'a </span>types::TagIdRef]&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.tag_id = tag_ids.into();
         <span class="self">self
     </span>}
@@ -268,7 +270,7 @@
     </span>}
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>GetAllStreamTagsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>Default <span class="kw">for </span>GetAllStreamTagsRequest&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             after: <span class="prelude-val">None</span>,
@@ -283,17 +285,17 @@
 /// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
 </span><span class="kw">pub type </span>Tag = helix::tags::TwitchTag;
 
-<span class="kw">impl </span>Request <span class="kw">for </span>GetAllStreamTagsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>Request <span class="kw">for </span>GetAllStreamTagsRequest&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>Response = Vec&lt;Tag&gt;;
 
-    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;tags/streams&quot;</span>;
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"tags/streams"</span>;
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
 }
 
-<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetAllStreamTagsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {}
+<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetAllStreamTagsRequest&lt;<span class="lifetime">'_</span>&gt; {}
 
-<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetAllStreamTagsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetAllStreamTagsRequest&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
         <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
     }
@@ -310,62 +312,62 @@
     };
 
     <span class="comment">// From twitch docs.
-    </span><span class="kw">let </span>data = <span class="string">&quot;\
+    </span><span class="kw">let </span>data = <span class="string">"\
 {\n\
-    \&quot;data\&quot;: [\n\
+    \"data\": [\n\
         {\n\
-            \&quot;tag_id\&quot;: \&quot;621fb5bf-5498-4d8f-b4ac-db4d40d401bf\&quot;,\n\
-            \&quot;is_auto\&quot;: false,\n\
-            \&quot;localization_names\&quot;: {\n\
-                \&quot;bg-bg\&quot;: \&quot;Завършване без продължаване\&quot;,\n\
-                \&quot;cs-cz\&quot;: \&quot;Na jeden z&amp;aacute;tah\&quot;,\n\
-                \&quot;da-dk\&quot;: \&quot;1 Continue klaret\&quot;,\n\
-                \&quot;de-de\&quot;: \&quot;Mit nur 1 Leben\&quot;,\n\
-                \&quot;el-gr\&quot;: \&quot;1 χωρίς συνέχεια\&quot;,\n\
-                \&quot;en-us\&quot;: \&quot;1 Credit Clear\&quot;\n\
+            \"tag_id\": \"621fb5bf-5498-4d8f-b4ac-db4d40d401bf\",\n\
+            \"is_auto\": false,\n\
+            \"localization_names\": {\n\
+                \"bg-bg\": \"Завършване без продължаване\",\n\
+                \"cs-cz\": \"Na jeden z&amp;aacute;tah\",\n\
+                \"da-dk\": \"1 Continue klaret\",\n\
+                \"de-de\": \"Mit nur 1 Leben\",\n\
+                \"el-gr\": \"1 χωρίς συνέχεια\",\n\
+                \"en-us\": \"1 Credit Clear\"\n\
             },\n\
-            \&quot;localization_descriptions\&quot;: {\n\
-                \&quot;bg-bg\&quot;: \&quot;За потоци с акцент върху завършване на аркадна игра с монети, в която не се използва продължаване\&quot;,\n\
-                \&quot;cs-cz\&quot;: \&quot;Pro vys&amp;iacute;l&amp;aacute;n&amp;iacute; s důrazem na plněn&amp;iacute; mincov&amp;yacute;ch ark&amp;aacute;dov&amp;yacute;ch her bez použit&amp;iacute; pokračov&amp;aacute;n&amp;iacute;.\&quot;,\n\
-                \&quot;da-dk\&quot;: \&quot;Til streams med v&amp;aelig;gt p&amp;aring; at gennemf&amp;oslash;re et arkadespil uden at bruge continues\&quot;,\n\
-                \&quot;de-de\&quot;: \&quot;F&amp;uuml;r Streams mit dem Ziel, ein Coin-op-Arcade-Game mit nur einem Leben abzuschlie&amp;szlig;en.\&quot;,\n\
-                \&quot;el-gr\&quot;: \&quot;Για μεταδόσεις με έμφαση στην ολοκλήρωση παλαιού τύπου ηλεκτρονικών παιχνιδιών που λειτουργούν με κέρμα, χωρίς να χρησιμοποιούν συνέχειες\&quot;,\n\
-                \&quot;en-us\&quot;: \&quot;For streams with an emphasis on completing a coin-op arcade game without using any continues\&quot;\n\
+            \"localization_descriptions\": {\n\
+                \"bg-bg\": \"За потоци с акцент върху завършване на аркадна игра с монети, в която не се използва продължаване\",\n\
+                \"cs-cz\": \"Pro vys&amp;iacute;l&amp;aacute;n&amp;iacute; s důrazem na plněn&amp;iacute; mincov&amp;yacute;ch ark&amp;aacute;dov&amp;yacute;ch her bez použit&amp;iacute; pokračov&amp;aacute;n&amp;iacute;.\",\n\
+                \"da-dk\": \"Til streams med v&amp;aelig;gt p&amp;aring; at gennemf&amp;oslash;re et arkadespil uden at bruge continues\",\n\
+                \"de-de\": \"F&amp;uuml;r Streams mit dem Ziel, ein Coin-op-Arcade-Game mit nur einem Leben abzuschlie&amp;szlig;en.\",\n\
+                \"el-gr\": \"Για μεταδόσεις με έμφαση στην ολοκλήρωση παλαιού τύπου ηλεκτρονικών παιχνιδιών που λειτουργούν με κέρμα, χωρίς να χρησιμοποιούν συνέχειες\",\n\
+                \"en-us\": \"For streams with an emphasis on completing a coin-op arcade game without using any continues\"\n\
             }\n\
         },\n\
         {\n\
-            \&quot;tag_id\&quot;: \&quot;7b49f69a-5d95-4c94-b7e3-66e2c0c6f6c6\&quot;,\n\
-            \&quot;is_auto\&quot;: false,\n\
-            \&quot;localization_names\&quot;: {\n\
-                \&quot;bg-bg\&quot;: \&quot;Дизайн\&quot;,\n\
-                \&quot;cs-cz\&quot;: \&quot;Design\&quot;,\n\
-                \&quot;da-dk\&quot;: \&quot;Design\&quot;,\n\
-                \&quot;de-de\&quot;: \&quot;Design\&quot;,\n\
-                \&quot;el-gr\&quot;: \&quot;Σχέδιο\&quot;,\n\
-                \&quot;en-us\&quot;: \&quot;Design\&quot;\n\
+            \"tag_id\": \"7b49f69a-5d95-4c94-b7e3-66e2c0c6f6c6\",\n\
+            \"is_auto\": false,\n\
+            \"localization_names\": {\n\
+                \"bg-bg\": \"Дизайн\",\n\
+                \"cs-cz\": \"Design\",\n\
+                \"da-dk\": \"Design\",\n\
+                \"de-de\": \"Design\",\n\
+                \"el-gr\": \"Σχέδιο\",\n\
+                \"en-us\": \"Design\"\n\
             },\n\
-            \&quot;localization_descriptions\&quot;: {\n\
-                \&quot;en-us\&quot;: \&quot;For streams with an emphasis on the creative process of designing an object or system\&quot;\n\
+            \"localization_descriptions\": {\n\
+                \"en-us\": \"For streams with an emphasis on the creative process of designing an object or system\"\n\
             }\n\
         },\n\
         {\n\
-            \&quot;tag_id\&quot;: \&quot;1c628b75-b1c3-4a2f-9d1d-056c1f555f0e\&quot;,\n\
-            \&quot;is_auto\&quot;: true,\n\
-            \&quot;localization_names\&quot;: {\n\
-                \&quot;bg-bg\&quot;: \&quot;Ð¨Ð°Ð¼Ð¿Ð¸Ð¾Ð½: Lux\&quot;,\n\
-                \&quot;cs-cz\&quot;: \&quot;Å ampion: Lux\&quot;,\n\
-                \&quot;da-dk\&quot;: \&quot;Champion: Lux\&quot;\n\
+            \"tag_id\": \"1c628b75-b1c3-4a2f-9d1d-056c1f555f0e\",\n\
+            \"is_auto\": true,\n\
+            \"localization_names\": {\n\
+                \"bg-bg\": \"Ð¨Ð°Ð¼Ð¿Ð¸Ð¾Ð½: Lux\",\n\
+                \"cs-cz\": \"Å ampion: Lux\",\n\
+                \"da-dk\": \"Champion: Lux\"\n\
             },\n\
-            \&quot;localization_descriptions\&quot;: {\n\
-                \&quot;en-us\&quot;: \&quot;For streams featuring the champion Lux in League of Legends\&quot;\n\
+            \"localization_descriptions\": {\n\
+                \"en-us\": \"For streams featuring the champion Lux in League of Legends\"\n\
             }\n\
         }\n\
     ],\n\
-    \&quot;pagination\&quot;: {\n\
-        \&quot;cursor\&quot;: \&quot;eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6ImV5SnBaQ0k2ZXlKQ0lqcHVkV3hzTENKQ1QwOU1JanB1ZFd4c0xDS kNVeUk2Ym5Wc2JDd2lUQ0k2Ym5Wc2JDd2lUU0k2Ym5Wc2JDd2lUaUk2Ym5Wc2JDd2lUbE1pT201MWJHd3NJazV WVEV3aU9tNTFiR3dzSWxNaU9pSXhZell5T0dJM05TMWlNV016TFRSaE1tWXRPV1F4WkMwd05UWmpNV1kxTlRWb U1HVWlMQ0pUVXlJNmJuVnNiSDE5In19\&quot;\n\
+    \"pagination\": {\n\
+        \"cursor\": \"eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6ImV5SnBaQ0k2ZXlKQ0lqcHVkV3hzTENKQ1QwOU1JanB1ZFd4c0xDS kNVeUk2Ym5Wc2JDd2lUQ0k2Ym5Wc2JDd2lUU0k2Ym5Wc2JDd2lUaUk2Ym5Wc2JDd2lUbE1pT201MWJHd3NJazV WVEV3aU9tNTFiR3dzSWxNaU9pSXhZell5T0dJM05TMWlNV016TFRSaE1tWXRPV1F4WkMwd05UWmpNV1kxTlRWb U1HVWlMQ0pUVXlJNmJuVnNiSDE5In19\"\n\
     }\n\
 }\n\
-&quot;
+"
         </span>.as_bytes().to_vec();
 
     <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
@@ -373,7 +375,7 @@
     <span class="kw">let </span>uri = req.get_uri().unwrap();
     <span class="macro">assert_eq!</span>(
         uri.to_string(),
-        <span class="string">&quot;https://api.twitch.tv/helix/tags/streams?first=3&quot;
+        <span class="string">"https://api.twitch.tv/helix/tags/streams?first=3"
     </span>);
 
     <span class="macro">dbg!</span>(GetAllStreamTagsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());

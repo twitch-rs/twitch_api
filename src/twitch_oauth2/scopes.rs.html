@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/scopes.rs`."><title>scopes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/scopes.rs`."><title>scopes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../twitch_oauth2/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -265,6 +267,7 @@
 <a href="#265" id="265">265</a>
 <a href="#266" id="266">266</a>
 <a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Module for all possible scopes in twitch.
 </span><span class="kw">pub mod </span>validator;
 <span class="kw">pub use </span>validator::Validator;
@@ -282,31 +285,31 @@
     </span>};
 
     ($($(<span class="attr">#[cfg((<span class="macro-nonterminal">$cfg</span>:meta))]</span>)* $(<span class="attr">#[deprecated(<span class="macro-nonterminal">$depr</span>:meta)]</span>)<span class="question-mark">? </span><span class="macro-nonterminal">$i</span>:ident,scope: <span class="macro-nonterminal">$rename</span>:literal, doc: <span class="macro-nonterminal">$doc</span>:literal);* $(;)<span class="question-mark">? </span>) =&gt; {
-        <span class="attr">#[doc = <span class="string">&quot;Scopes for twitch.&quot;</span>]
-        #[doc = <span class="string">&quot;&quot;</span>]
-        #[doc = <span class="string">&quot;&lt;https://dev.twitch.tv/docs/authentication/scopes/&gt;&quot;</span>]
+        <span class="attr">#[doc = <span class="string">"Scopes for twitch."</span>]
+        #[doc = <span class="string">""</span>]
+        #[doc = <span class="string">"&lt;https://dev.twitch.tv/docs/authentication/scopes/&gt;"</span>]
         #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq)]
         #[non_exhaustive]
-        #[serde(from = <span class="string">&quot;String&quot;</span>)]
-        #[serde(into = <span class="string">&quot;String&quot;</span>)]
+        #[serde(from = <span class="string">"String"</span>)]
+        #[serde(into = <span class="string">"String"</span>)]
         </span><span class="kw">pub enum </span>Scope {
             $(
                 $(<span class="attr">#[cfg(<span class="macro-nonterminal">$cfg</span>)]</span>)*
                 $(<span class="attr">#[deprecated(<span class="macro-nonterminal">$depr</span>)]</span>)*
                 <span class="attr">#[doc = <span class="macro-nonterminal">$doc</span>]
-                #[doc = <span class="string">&quot;\n\n&quot;</span>]
-                #[doc = <span class="string">&quot;`&quot;</span>]
+                #[doc = <span class="string">"\n\n"</span>]
+                #[doc = <span class="string">"`"</span>]
                 #[doc = <span class="macro-nonterminal">$rename</span>]
-                #[doc = <span class="string">&quot;`&quot;</span>]
+                #[doc = <span class="string">"`"</span>]
                 #[serde(rename = <span class="macro-nonterminal">$rename</span>)] </span><span class="comment">// Is this even needed?
                 </span><span class="macro-nonterminal">$i</span>,
             )*
-            <span class="attr">#[doc = <span class="string">&quot;Other scope that is not implemented.&quot;</span>]
-            </span>Other(Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;),
+            <span class="attr">#[doc = <span class="string">"Other scope that is not implemented."</span>]
+            </span>Other(Cow&lt;<span class="lifetime">'static</span>, str&gt;),
         }
 
         <span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>Scope {
-            <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+            <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
                 <span class="attr">#![allow(deprecated)]
 
                 </span>f.write_str(<span class="kw">match </span><span class="self">self </span>{
@@ -320,9 +323,9 @@
         }
 
         <span class="kw">impl </span>Scope {
-            <span class="attr">#[doc = <span class="string">&quot;Get a vec of all defined twitch [Scopes][Scope].&quot;</span>]
-            #[doc = <span class="string">&quot;\n\n&quot;</span>]
-            #[doc = <span class="string">&quot;Please note that this may not work for you, as some auth flows and \&quot;apis\&quot; don&#39;t accept all scopes&quot;</span>]
+            <span class="attr">#[doc = <span class="string">"Get a vec of all defined twitch [Scopes][Scope]."</span>]
+            #[doc = <span class="string">"\n\n"</span>]
+            #[doc = <span class="string">"Please note that this may not work for you, as some auth flows and \"apis\" don't accept all scopes"</span>]
             </span><span class="kw">pub fn </span>all() -&gt; Vec&lt;Scope&gt; {
                 <span class="macro">vec!</span>[
                     $(
@@ -331,10 +334,10 @@
                 ]
             }
 
-            <span class="attr">#[doc = <span class="string">&quot;Get a slice of all defined twitch [Scopes][Scope].&quot;</span>]
-            #[doc = <span class="string">&quot;\n\n&quot;</span>]
-            #[doc = <span class="string">&quot;Please note that this may not work for you, as some auth flows and \&quot;apis\&quot; don&#39;t accept all scopes&quot;</span>]
-            </span><span class="kw">pub const fn </span>all_slice() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[Scope] {
+            <span class="attr">#[doc = <span class="string">"Get a slice of all defined twitch [Scopes][Scope]."</span>]
+            #[doc = <span class="string">"\n\n"</span>]
+            #[doc = <span class="string">"Please note that this may not work for you, as some auth flows and \"apis\" don't accept all scopes"</span>]
+            </span><span class="kw">pub const fn </span>all_slice() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[Scope] {
                 <span class="kw-2">&amp;</span>[
                     $(
                         <span class="macro">scope_impls!</span>(@omit $(<span class="attr">#[deprecated(<span class="macro-nonterminal">$depr</span>)]</span>)* <span class="macro-nonterminal">$i</span>),
@@ -342,8 +345,8 @@
                 ]
             }
 
-            <span class="attr">#[doc = <span class="string">&quot;Get a description for the token&quot;</span>]
-            </span><span class="kw">pub const fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+            <span class="attr">#[doc = <span class="string">"Get a description for the token"</span>]
+            </span><span class="kw">pub const fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
                 <span class="attr">#![allow(deprecated)]
 
                 </span><span class="kw">match </span><span class="self">self </span>{
@@ -352,12 +355,12 @@
                         $(<span class="attr">#[cfg(<span class="macro-nonterminal">$cfg</span>)]</span>)*
                         <span class="self">Self</span>::<span class="macro-nonterminal">$i </span>=&gt; <span class="macro-nonterminal">$doc</span>,
                     )*
-                    <span class="kw">_ </span>=&gt; <span class="string">&quot;unknown scope&quot;
+                    <span class="kw">_ </span>=&gt; <span class="string">"unknown scope"
                 </span>}
             }
 
-            <span class="attr">#[doc = <span class="string">&quot;Make a scope from a cow string&quot;</span>]
-            </span><span class="kw">pub fn </span>parse&lt;C&gt;(s: C) -&gt; Scope <span class="kw">where </span>C: Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt; {
+            <span class="attr">#[doc = <span class="string">"Make a scope from a cow string"</span>]
+            </span><span class="kw">pub fn </span>parse&lt;C&gt;(s: C) -&gt; Scope <span class="kw">where </span>C: Into&lt;Cow&lt;<span class="lifetime">'static</span>, str&gt;&gt; {
                 <span class="attr">#![allow(deprecated)]
                 </span><span class="kw">use </span>std::borrow::Borrow;
                 <span class="kw">let </span>s = s.into();
@@ -387,8 +390,8 @@
             ///
             /// ## Panics
             ///
-            /// This function panics if the scope can&#39;t be represented as a static string slice
-            </span><span class="kw">pub const fn </span>as_static_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+            /// This function panics if the scope can't be represented as a static string slice
+            </span><span class="kw">pub const fn </span>as_static_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
                 <span class="attr">#![allow(deprecated)]
                 </span><span class="kw">match </span><span class="self">self </span>{
                     $(
@@ -421,72 +424,73 @@
 }
 
 <span class="macro">scope_impls!</span>(
-    AnalyticsReadExtensions,        scope: <span class="string">&quot;analytics:read:extensions&quot;</span>,         doc: <span class="string">&quot;View analytics data for the Twitch Extensions owned by the authenticated account.&quot;</span>;
-    AnalyticsReadGames,             scope: <span class="string">&quot;analytics:read:games&quot;</span>,              doc: <span class="string">&quot;View analytics data for the games owned by the authenticated account.&quot;</span>;
-    BitsRead,                       scope: <span class="string">&quot;bits:read&quot;</span>,                         doc: <span class="string">&quot;View Bits information for a channel.&quot;</span>;
-    ChannelBot,                     scope: <span class="string">&quot;channel:bot&quot;</span>,                       doc: <span class="string">&quot;Allows the client’s bot users access to a channel.&quot;</span>;
-    ChannelEditCommercial,          scope: <span class="string">&quot;channel:edit:commercial&quot;</span>,           doc: <span class="string">&quot;Run commercials on a channel.&quot;</span>;
-    ChannelManageAds,               scope: <span class="string">&quot;channel:manage:ads&quot;</span>,                doc: <span class="string">&quot;Manage ads schedule on a channel.&quot;</span>;
-    ChannelManageBroadcast,         scope: <span class="string">&quot;channel:manage:broadcast&quot;</span>,          doc: <span class="string">&quot;Manage a channel’s broadcast configuration, including updating channel configuration and managing stream markers and stream tags.&quot;</span>;
-    ChannelManageExtensions,        scope: <span class="string">&quot;channel:manage:extensions&quot;</span>,         doc: <span class="string">&quot;Manage a channel’s Extension configuration, including activating Extensions.&quot;</span>;
-    ChannelManageModerators,        scope: <span class="string">&quot;channel:manage:moderators&quot;</span>,         doc: <span class="string">&quot;Add or remove the moderator role from users in your channel.&quot;</span>;
-    ChannelManagePolls,             scope: <span class="string">&quot;channel:manage:polls&quot;</span>,              doc: <span class="string">&quot;Manage a channel’s polls.&quot;</span>;
-    ChannelManagePredictions,       scope: <span class="string">&quot;channel:manage:predictions&quot;</span>,        doc: <span class="string">&quot;Manage of channel’s Channel Points Predictions&quot;</span>;
-    ChannelManageRaids,             scope: <span class="string">&quot;channel:manage:raids&quot;</span>,              doc: <span class="string">&quot;Manage a channel raiding another channel.&quot;</span>;
-    ChannelManageRedemptions,       scope: <span class="string">&quot;channel:manage:redemptions&quot;</span>,        doc: <span class="string">&quot;Manage Channel Points custom rewards and their redemptions on a channel.&quot;</span>;
-    ChannelManageSchedule,          scope: <span class="string">&quot;channel:manage:schedule&quot;</span>,           doc: <span class="string">&quot;Manage a channel’s stream schedule.&quot;</span>;
-    ChannelManageVideos,            scope: <span class="string">&quot;channel:manage:videos&quot;</span>,             doc: <span class="string">&quot;Manage a channel’s videos, including deleting videos.&quot;</span>;
-    ChannelManageVips,              scope: <span class="string">&quot;channel:manage:vips&quot;</span>,               doc: <span class="string">&quot;Add or remove the VIP role from users in your channel.&quot;</span>;
-    ChannelModerate,                scope: <span class="string">&quot;channel:moderate&quot;</span>,                  doc: <span class="string">&quot;Perform moderation actions in a channel. The user requesting the scope must be a moderator in the channel.&quot;</span>;
-    ChannelReadAds,                 scope: <span class="string">&quot;channel:read:ads&quot;</span>,                  doc: <span class="string">&quot;Read the ads schedule and details on your channel.&quot;</span>;
-    ChannelReadCharity,             scope: <span class="string">&quot;channel:read:charity&quot;</span>,              doc: <span class="string">&quot;Read charity campaign details and user donations on your channel.&quot;</span>;
-    ChannelReadEditors,             scope: <span class="string">&quot;channel:read:editors&quot;</span>,              doc: <span class="string">&quot;View a list of users with the editor role for a channel.&quot;</span>;
-    ChannelReadGoals,               scope: <span class="string">&quot;channel:read:goals&quot;</span>,                doc: <span class="string">&quot;View Creator Goals for a channel.&quot;</span>;
-    ChannelReadHypeTrain,           scope: <span class="string">&quot;channel:read:hype_train&quot;</span>,           doc: <span class="string">&quot;View Hype Train information for a channel.&quot;</span>;
-    ChannelReadPolls,               scope: <span class="string">&quot;channel:read:polls&quot;</span>,                doc: <span class="string">&quot;View a channel’s polls.&quot;</span>;
-    ChannelReadPredictions,         scope: <span class="string">&quot;channel:read:predictions&quot;</span>,          doc: <span class="string">&quot;View a channel’s Channel Points Predictions.&quot;</span>;
-    ChannelReadRedemptions,         scope: <span class="string">&quot;channel:read:redemptions&quot;</span>,          doc: <span class="string">&quot;View Channel Points custom rewards and their redemptions on a channel.&quot;</span>;
-    ChannelReadStreamKey,           scope: <span class="string">&quot;channel:read:stream_key&quot;</span>,           doc: <span class="string">&quot;View an authorized user’s stream key.&quot;</span>;
-    ChannelReadSubscriptions,       scope: <span class="string">&quot;channel:read:subscriptions&quot;</span>,        doc: <span class="string">&quot;View a list of all subscribers to a channel and check if a user is subscribed to a channel.&quot;</span>;
-    ChannelReadVips,                scope: <span class="string">&quot;channel:read:vips&quot;</span>,                 doc: <span class="string">&quot;Read the list of VIPs in your channel.&quot;</span>;
-    <span class="attr">#[deprecated(note = <span class="string">&quot;Use `ChannelReadSubscriptions` (`channel:read:subscriptions`) instead&quot;</span>)]
-    </span>ChannelSubscriptions,           scope: <span class="string">&quot;channel_subscriptions&quot;</span>,             doc: <span class="string">&quot;Read all subscribers to your channel.&quot;</span>;
-    ChatEdit,                       scope: <span class="string">&quot;chat:edit&quot;</span>,                         doc: <span class="string">&quot;Send live stream chat and rooms messages.&quot;</span>;
-    ChatRead,                       scope: <span class="string">&quot;chat:read&quot;</span>,                         doc: <span class="string">&quot;View live stream chat and rooms messages.&quot;</span>;
-    ClipsEdit,                      scope: <span class="string">&quot;clips:edit&quot;</span>,                        doc: <span class="string">&quot;Manage Clips for a channel.&quot;</span>;
-    ModerationRead,                 scope: <span class="string">&quot;moderation:read&quot;</span>,                   doc: <span class="string">&quot;View a channel’s moderation data including Moderators, Bans, Timeouts, and Automod settings.&quot;</span>;
-    ModeratorManageAnnouncements,   scope: <span class="string">&quot;moderator:manage:announcements&quot;</span>,    doc: <span class="string">&quot;Send announcements in channels where you have the moderator role.&quot;</span>;
-    ModeratorManageAutoMod,         scope: <span class="string">&quot;moderator:manage:automod&quot;</span>,          doc: <span class="string">&quot;Manage messages held for review by AutoMod in channels where you are a moderator.&quot;</span>;
-    ModeratorManageAutomodSettings, scope: <span class="string">&quot;moderator:manage:automod_settings&quot;</span>, doc: <span class="string">&quot;Manage a broadcaster’s AutoMod settings&quot;</span>;
-    ModeratorManageBannedUsers,     scope: <span class="string">&quot;moderator:manage:banned_users&quot;</span>,     doc: <span class="string">&quot;Ban and unban users.&quot;</span>;
-    ModeratorManageBlockedTerms,    scope: <span class="string">&quot;moderator:manage:blocked_terms&quot;</span>,    doc: <span class="string">&quot;Manage a broadcaster’s list of blocked terms.&quot;</span>;
-    ModeratorManageChatMessages,    scope: <span class="string">&quot;moderator:manage:chat_messages&quot;</span>,    doc: <span class="string">&quot;Delete chat messages in channels where you have the moderator role&quot;</span>;
-    ModeratorManageChatSettings,    scope: <span class="string">&quot;moderator:manage:chat_settings&quot;</span>,    doc: <span class="string">&quot;View a broadcaster’s chat room settings.&quot;</span>;
-    ModeratorManageShieldMode,      scope: <span class="string">&quot;moderator:manage:shield_mode&quot;</span>,      doc: <span class="string">&quot;Manage a broadcaster’s Shield Mode status.&quot;</span>;
-    ModeratorManageShoutouts,       scope: <span class="string">&quot;moderator:manage:shoutouts&quot;</span>,        doc: <span class="string">&quot;Manage a broadcaster’s shoutouts.&quot;</span>;
-    ModeratorReadAutomodSettings,   scope: <span class="string">&quot;moderator:read:automod_settings&quot;</span>,   doc: <span class="string">&quot;View a broadcaster’s AutoMod settings.&quot;</span>;
-    ModeratorReadBlockedTerms,      scope: <span class="string">&quot;moderator:read:blocked_terms&quot;</span>,      doc: <span class="string">&quot;View a broadcaster’s list of blocked terms.&quot;</span>;
-    ModeratorReadChatSettings,      scope: <span class="string">&quot;moderator:read:chat_settings&quot;</span>,      doc: <span class="string">&quot;View a broadcaster’s chat room settings.&quot;</span>;
-    ModeratorReadChatters,          scope: <span class="string">&quot;moderator:read:chatters&quot;</span>,           doc: <span class="string">&quot;View the chatters in a broadcaster’s chat room.&quot;</span>;
-    ModeratorReadFollowers,         scope: <span class="string">&quot;moderator:read:followers&quot;</span>,          doc: <span class="string">&quot;Read the followers of a broadcaster.&quot;</span>;
-    ModeratorReadShieldMode,        scope: <span class="string">&quot;moderator:read:shield_mode&quot;</span>,        doc: <span class="string">&quot;View a broadcaster’s Shield Mode status.&quot;</span>;
-    ModeratorReadShoutouts,         scope: <span class="string">&quot;moderator:read:shoutouts&quot;</span>,          doc: <span class="string">&quot;View a broadcaster’s shoutouts.&quot;</span>;
-    UserBot,                        scope: <span class="string">&quot;user:bot&quot;</span>,                          doc: <span class="string">&quot;Allows client’s bot to act as this user.&quot;</span>;
-    UserEdit,                       scope: <span class="string">&quot;user:edit&quot;</span>,                         doc: <span class="string">&quot;Manage a user object.&quot;</span>;
-    UserEditBroadcast,              scope: <span class="string">&quot;user:edit:broadcast&quot;</span>,               doc: <span class="string">&quot;Edit your channel&#39;s broadcast configuration, including extension configuration. (This scope implies user:read:broadcast capability.)&quot;</span>;
-    <span class="attr">#[deprecated(note = <span class="string">&quot;Not used anymore, see https://discuss.dev.twitch.tv/t/deprecation-of-create-and-delete-follows-api-endpoints/32351&quot;</span>)]
-    </span>UserEditFollows,                scope: <span class="string">&quot;user:edit:follows&quot;</span>,                 doc: <span class="string">&quot;\\[DEPRECATED\\] Was previously used for “Create User Follows” and “Delete User Follows.&quot;</span>;
-    UserManageBlockedUsers,         scope: <span class="string">&quot;user:manage:blocked_users&quot;</span>,         doc: <span class="string">&quot;Manage the block list of a user.&quot;</span>;
-    UserManageChatColor,            scope: <span class="string">&quot;user:manage:chat_color&quot;</span>,            doc: <span class="string">&quot;Update the color used for the user’s name in chat.Update User Chat Color&quot;</span>;
-    UserManageWhispers,             scope: <span class="string">&quot;user:manage:whispers&quot;</span>,              doc: <span class="string">&quot;Read whispers that you send and receive, and send whispers on your behalf.&quot;</span>;
-    UserReadBlockedUsers,           scope: <span class="string">&quot;user:read:blocked_users&quot;</span>,           doc: <span class="string">&quot;View the block list of a user.&quot;</span>;
-    UserReadBroadcast,              scope: <span class="string">&quot;user:read:broadcast&quot;</span>,               doc: <span class="string">&quot;View a user’s broadcasting configuration, including Extension configurations.&quot;</span>;
-    UserReadChat,                   scope: <span class="string">&quot;user:read:chat&quot;</span>,                    doc: <span class="string">&quot;View live stream chat and room messages.&quot;</span>;
-    UserReadEmail,                  scope: <span class="string">&quot;user:read:email&quot;</span>,                   doc: <span class="string">&quot;View a user’s email address.&quot;</span>;
-    UserReadFollows,                scope: <span class="string">&quot;user:read:follows&quot;</span>,                 doc: <span class="string">&quot;View the list of channels a user follows.&quot;</span>;
-    UserReadSubscriptions,          scope: <span class="string">&quot;user:read:subscriptions&quot;</span>,           doc: <span class="string">&quot;View if an authorized user is subscribed to specific channels.&quot;</span>;
-    WhispersEdit,                   scope: <span class="string">&quot;whispers:edit&quot;</span>,                     doc: <span class="string">&quot;Send whisper messages.&quot;</span>;
-    WhispersRead,                   scope: <span class="string">&quot;whispers:read&quot;</span>,                     doc: <span class="string">&quot;View your whisper messages.&quot;</span>;
+    AnalyticsReadExtensions,        scope: <span class="string">"analytics:read:extensions"</span>,         doc: <span class="string">"View analytics data for the Twitch Extensions owned by the authenticated account."</span>;
+    AnalyticsReadGames,             scope: <span class="string">"analytics:read:games"</span>,              doc: <span class="string">"View analytics data for the games owned by the authenticated account."</span>;
+    BitsRead,                       scope: <span class="string">"bits:read"</span>,                         doc: <span class="string">"View Bits information for a channel."</span>;
+    ChannelBot,                     scope: <span class="string">"channel:bot"</span>,                       doc: <span class="string">"Allows the client’s bot users access to a channel."</span>;
+    ChannelEditCommercial,          scope: <span class="string">"channel:edit:commercial"</span>,           doc: <span class="string">"Run commercials on a channel."</span>;
+    ChannelManageAds,               scope: <span class="string">"channel:manage:ads"</span>,                doc: <span class="string">"Manage ads schedule on a channel."</span>;
+    ChannelManageBroadcast,         scope: <span class="string">"channel:manage:broadcast"</span>,          doc: <span class="string">"Manage a channel’s broadcast configuration, including updating channel configuration and managing stream markers and stream tags."</span>;
+    ChannelManageExtensions,        scope: <span class="string">"channel:manage:extensions"</span>,         doc: <span class="string">"Manage a channel’s Extension configuration, including activating Extensions."</span>;
+    ChannelManageModerators,        scope: <span class="string">"channel:manage:moderators"</span>,         doc: <span class="string">"Add or remove the moderator role from users in your channel."</span>;
+    ChannelManagePolls,             scope: <span class="string">"channel:manage:polls"</span>,              doc: <span class="string">"Manage a channel’s polls."</span>;
+    ChannelManagePredictions,       scope: <span class="string">"channel:manage:predictions"</span>,        doc: <span class="string">"Manage of channel’s Channel Points Predictions"</span>;
+    ChannelManageRaids,             scope: <span class="string">"channel:manage:raids"</span>,              doc: <span class="string">"Manage a channel raiding another channel."</span>;
+    ChannelManageRedemptions,       scope: <span class="string">"channel:manage:redemptions"</span>,        doc: <span class="string">"Manage Channel Points custom rewards and their redemptions on a channel."</span>;
+    ChannelManageSchedule,          scope: <span class="string">"channel:manage:schedule"</span>,           doc: <span class="string">"Manage a channel’s stream schedule."</span>;
+    ChannelManageVideos,            scope: <span class="string">"channel:manage:videos"</span>,             doc: <span class="string">"Manage a channel’s videos, including deleting videos."</span>;
+    ChannelManageVips,              scope: <span class="string">"channel:manage:vips"</span>,               doc: <span class="string">"Add or remove the VIP role from users in your channel."</span>;
+    ChannelModerate,                scope: <span class="string">"channel:moderate"</span>,                  doc: <span class="string">"Perform moderation actions in a channel. The user requesting the scope must be a moderator in the channel."</span>;
+    ChannelReadAds,                 scope: <span class="string">"channel:read:ads"</span>,                  doc: <span class="string">"Read the ads schedule and details on your channel."</span>;
+    ChannelReadCharity,             scope: <span class="string">"channel:read:charity"</span>,              doc: <span class="string">"Read charity campaign details and user donations on your channel."</span>;
+    ChannelReadEditors,             scope: <span class="string">"channel:read:editors"</span>,              doc: <span class="string">"View a list of users with the editor role for a channel."</span>;
+    ChannelReadGoals,               scope: <span class="string">"channel:read:goals"</span>,                doc: <span class="string">"View Creator Goals for a channel."</span>;
+    ChannelReadHypeTrain,           scope: <span class="string">"channel:read:hype_train"</span>,           doc: <span class="string">"View Hype Train information for a channel."</span>;
+    ChannelReadPolls,               scope: <span class="string">"channel:read:polls"</span>,                doc: <span class="string">"View a channel’s polls."</span>;
+    ChannelReadPredictions,         scope: <span class="string">"channel:read:predictions"</span>,          doc: <span class="string">"View a channel’s Channel Points Predictions."</span>;
+    ChannelReadRedemptions,         scope: <span class="string">"channel:read:redemptions"</span>,          doc: <span class="string">"View Channel Points custom rewards and their redemptions on a channel."</span>;
+    ChannelReadStreamKey,           scope: <span class="string">"channel:read:stream_key"</span>,           doc: <span class="string">"View an authorized user’s stream key."</span>;
+    ChannelReadSubscriptions,       scope: <span class="string">"channel:read:subscriptions"</span>,        doc: <span class="string">"View a list of all subscribers to a channel and check if a user is subscribed to a channel."</span>;
+    ChannelReadVips,                scope: <span class="string">"channel:read:vips"</span>,                 doc: <span class="string">"Read the list of VIPs in your channel."</span>;
+    <span class="attr">#[deprecated(note = <span class="string">"Use `ChannelReadSubscriptions` (`channel:read:subscriptions`) instead"</span>)]
+    </span>ChannelSubscriptions,           scope: <span class="string">"channel_subscriptions"</span>,             doc: <span class="string">"Read all subscribers to your channel."</span>;
+    ChatEdit,                       scope: <span class="string">"chat:edit"</span>,                         doc: <span class="string">"Send live stream chat and rooms messages."</span>;
+    ChatRead,                       scope: <span class="string">"chat:read"</span>,                         doc: <span class="string">"View live stream chat and rooms messages."</span>;
+    ClipsEdit,                      scope: <span class="string">"clips:edit"</span>,                        doc: <span class="string">"Manage Clips for a channel."</span>;
+    ModerationRead,                 scope: <span class="string">"moderation:read"</span>,                   doc: <span class="string">"View a channel’s moderation data including Moderators, Bans, Timeouts, and Automod settings."</span>;
+    ModeratorManageAnnouncements,   scope: <span class="string">"moderator:manage:announcements"</span>,    doc: <span class="string">"Send announcements in channels where you have the moderator role."</span>;
+    ModeratorManageAutoMod,         scope: <span class="string">"moderator:manage:automod"</span>,          doc: <span class="string">"Manage messages held for review by AutoMod in channels where you are a moderator."</span>;
+    ModeratorManageAutomodSettings, scope: <span class="string">"moderator:manage:automod_settings"</span>, doc: <span class="string">"Manage a broadcaster’s AutoMod settings"</span>;
+    ModeratorManageBannedUsers,     scope: <span class="string">"moderator:manage:banned_users"</span>,     doc: <span class="string">"Ban and unban users."</span>;
+    ModeratorManageBlockedTerms,    scope: <span class="string">"moderator:manage:blocked_terms"</span>,    doc: <span class="string">"Manage a broadcaster’s list of blocked terms."</span>;
+    ModeratorManageChatMessages,    scope: <span class="string">"moderator:manage:chat_messages"</span>,    doc: <span class="string">"Delete chat messages in channels where you have the moderator role"</span>;
+    ModeratorManageChatSettings,    scope: <span class="string">"moderator:manage:chat_settings"</span>,    doc: <span class="string">"View a broadcaster’s chat room settings."</span>;
+    ModeratorManageShieldMode,      scope: <span class="string">"moderator:manage:shield_mode"</span>,      doc: <span class="string">"Manage a broadcaster’s Shield Mode status."</span>;
+    ModeratorManageShoutouts,       scope: <span class="string">"moderator:manage:shoutouts"</span>,        doc: <span class="string">"Manage a broadcaster’s shoutouts."</span>;
+    ModeratorReadAutomodSettings,   scope: <span class="string">"moderator:read:automod_settings"</span>,   doc: <span class="string">"View a broadcaster’s AutoMod settings."</span>;
+    ModeratorReadBlockedTerms,      scope: <span class="string">"moderator:read:blocked_terms"</span>,      doc: <span class="string">"View a broadcaster’s list of blocked terms."</span>;
+    ModeratorReadChatSettings,      scope: <span class="string">"moderator:read:chat_settings"</span>,      doc: <span class="string">"View a broadcaster’s chat room settings."</span>;
+    ModeratorReadChatters,          scope: <span class="string">"moderator:read:chatters"</span>,           doc: <span class="string">"View the chatters in a broadcaster’s chat room."</span>;
+    ModeratorReadFollowers,         scope: <span class="string">"moderator:read:followers"</span>,          doc: <span class="string">"Read the followers of a broadcaster."</span>;
+    ModeratorReadShieldMode,        scope: <span class="string">"moderator:read:shield_mode"</span>,        doc: <span class="string">"View a broadcaster’s Shield Mode status."</span>;
+    ModeratorReadShoutouts,         scope: <span class="string">"moderator:read:shoutouts"</span>,          doc: <span class="string">"View a broadcaster’s shoutouts."</span>;
+    UserBot,                        scope: <span class="string">"user:bot"</span>,                          doc: <span class="string">"Allows client’s bot to act as this user."</span>;
+    UserEdit,                       scope: <span class="string">"user:edit"</span>,                         doc: <span class="string">"Manage a user object."</span>;
+    UserEditBroadcast,              scope: <span class="string">"user:edit:broadcast"</span>,               doc: <span class="string">"Edit your channel's broadcast configuration, including extension configuration. (This scope implies user:read:broadcast capability.)"</span>;
+    <span class="attr">#[deprecated(note = <span class="string">"Not used anymore, see https://discuss.dev.twitch.tv/t/deprecation-of-create-and-delete-follows-api-endpoints/32351"</span>)]
+    </span>UserEditFollows,                scope: <span class="string">"user:edit:follows"</span>,                 doc: <span class="string">"\\[DEPRECATED\\] Was previously used for “Create User Follows” and “Delete User Follows."</span>;
+    UserManageBlockedUsers,         scope: <span class="string">"user:manage:blocked_users"</span>,         doc: <span class="string">"Manage the block list of a user."</span>;
+    UserManageChatColor,            scope: <span class="string">"user:manage:chat_color"</span>,            doc: <span class="string">"Update the color used for the user’s name in chat.Update User Chat Color"</span>;
+    UserManageWhispers,             scope: <span class="string">"user:manage:whispers"</span>,              doc: <span class="string">"Read whispers that you send and receive, and send whispers on your behalf."</span>;
+    UserReadBlockedUsers,           scope: <span class="string">"user:read:blocked_users"</span>,           doc: <span class="string">"View the block list of a user."</span>;
+    UserReadBroadcast,              scope: <span class="string">"user:read:broadcast"</span>,               doc: <span class="string">"View a user’s broadcasting configuration, including Extension configurations."</span>;
+    UserReadChat,                   scope: <span class="string">"user:read:chat"</span>,                    doc: <span class="string">"View live stream chat and room messages."</span>;
+    UserReadEmail,                  scope: <span class="string">"user:read:email"</span>,                   doc: <span class="string">"View a user’s email address."</span>;
+    UserReadFollows,                scope: <span class="string">"user:read:follows"</span>,                 doc: <span class="string">"View the list of channels a user follows."</span>;
+    UserReadModeratedChannels,      scope: <span class="string">"user:read:moderated_channels"</span>,      doc: <span class="string">"Read the list of channels you have moderator privileges in."</span>;
+    UserReadSubscriptions,          scope: <span class="string">"user:read:subscriptions"</span>,           doc: <span class="string">"View if an authorized user is subscribed to specific channels."</span>;
+    WhispersEdit,                   scope: <span class="string">"whispers:edit"</span>,                     doc: <span class="string">"Send whisper messages."</span>;
+    WhispersRead,                   scope: <span class="string">"whispers:read"</span>,                     doc: <span class="string">"View your whisper messages."</span>;
 );
 
 <span class="kw">impl </span>Scope {
@@ -512,8 +516,8 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>custom_scope() {
         <span class="macro">assert_eq!</span>(
-            Scope::Other(Cow::from(<span class="string">&quot;custom_scope&quot;</span>)),
-            Scope::parse(<span class="string">&quot;custom_scope&quot;</span>)
+            Scope::Other(Cow::from(<span class="string">"custom_scope"</span>)),
+            Scope::parse(<span class="string">"custom_scope"</span>)
         )
     }
 

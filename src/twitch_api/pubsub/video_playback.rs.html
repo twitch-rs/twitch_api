@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/video_playback.rs`."><title>video_playback.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/video_playback.rs`."><title>video_playback.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -339,28 +341,28 @@
 <a href="#339" id="339">339</a>
 <a href="#340" id="340">340</a>
 <a href="#341" id="341">341</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;vod&quot;</span>)]
-#![doc(alias = <span class="string">&quot;videos&quot;</span>)]
-#![doc(alias = <span class="string">&quot;live&quot;</span>)]
-#![doc(alias = <span class="string">&quot;stream&quot;</span>)]
-#![doc(alias = <span class="string">&quot;viewers&quot;</span>)]
-#![doc(alias = <span class="string">&quot;video-playback&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"vod"</span>)]
+#![doc(alias = <span class="string">"videos"</span>)]
+#![doc(alias = <span class="string">"live"</span>)]
+#![doc(alias = <span class="string">"stream"</span>)]
+#![doc(alias = <span class="string">"viewers"</span>)]
+#![doc(alias = <span class="string">"video-playback"</span>)]
 </span><span class="doccomment">//! PubSub messages for (live) stream playback information
 </span><span class="kw">use crate</span>::{pubsub, types};
 <span class="kw">use </span>serde_derive::{Deserialize, Serialize};
 
 <span class="doccomment">/// Statistics about stream
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>VideoPlayback {
     <span class="doccomment">/// The channel_login to watch.
     </span><span class="kw">pub </span>channel_login: types::DisplayName,
 }
 
-<span class="macro">impl_de_ser!</span>(VideoPlayback, <span class="string">&quot;video-playback&quot;</span>, channel_login);
+<span class="macro">impl_de_ser!</span>(VideoPlayback, <span class="string">"video-playback"</span>, channel_login);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>VideoPlayback {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::VideoPlayback(<span class="self">self</span>) }
@@ -368,16 +370,16 @@
 
 <span class="doccomment">/// Statistics about stream
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>VideoPlaybackById {
     <span class="doccomment">/// The channel_login to watch.
     </span><span class="kw">pub </span>channel_id: u32,
 }
 
-<span class="macro">impl_de_ser!</span>(VideoPlaybackById, <span class="string">&quot;video-playback-by-id&quot;</span>, channel_id);
+<span class="macro">impl_de_ser!</span>(VideoPlaybackById, <span class="string">"video-playback-by-id"</span>, channel_id);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>VideoPlaybackById {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::VideoPlaybackById(<span class="self">self</span>) }
@@ -385,14 +387,14 @@
 
 <span class="doccomment">/// Reply from [VideoPlayback] and [VideoPlaybackById]
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[serde(tag = <span class="string">&quot;type&quot;</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[serde(tag = <span class="string">"type"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>VideoPlaybackReply {
     <span class="doccomment">/// Commercial started
     ///
     /// Commercial started in full-screen or PiP
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;commercial&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"commercial"</span>)]
     </span>Commercial {
         <span class="doccomment">/// Length of commercial
         </span>length: i64,
@@ -403,7 +405,7 @@
         </span>scheduled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     },
     <span class="doccomment">/// Current viewcount on playback
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;viewcount&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"viewcount"</span>)]
     </span>ViewCount {
         <span class="doccomment">/// Epoch Server time
         </span>server_time: f64,
@@ -411,13 +413,13 @@
         </span>viewers: i64,
     },
     <span class="doccomment">/// VOD Watchparty.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;watchparty-vod&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"watchparty-vod"</span>)]
     </span>WatchPartyVod {
         <span class="doccomment">/// information about VOD.
         </span>vod: Vod,
     },
     <span class="doccomment">/// Stream started
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;stream-up&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"stream-up"</span>)]
     </span>StreamUp {
         <span class="doccomment">/// Epoch Server time
         </span>server_time: f64,
@@ -425,13 +427,13 @@
         </span>play_delay: i64,
     },
     <span class="doccomment">/// Stream ended
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;stream-down&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"stream-down"</span>)]
     </span>StreamDown {
         <span class="doccomment">/// Epoch Server time
         </span>server_time: f64,
     },
     <span class="doccomment">/// Channel hit by TOS strike, meaning it will end
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;tos-strike&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"tos-strike"</span>)]
     </span>TosStrike {
         <span class="doccomment">/// Epoch Server time
         </span>server_time: f64,
@@ -440,7 +442,7 @@
 
 <span class="doccomment">/// Video on Demand
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Vod {
     <span class="doccomment">/// Type of broadcast
@@ -461,7 +463,7 @@
 
 <span class="doccomment">/// Watch party type
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[serde(rename_all = <span class="string">"lowercase"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>WatchpartyType {
     <span class="doccomment">/// A rerun, i.e a highlight or saved broadcast
@@ -472,7 +474,7 @@
 
 <span class="doccomment">/// Type of broadcast
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[serde(rename_all = <span class="string">"lowercase"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>BroadcastType {
     <span class="doccomment">/// Archive
@@ -485,14 +487,14 @@
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="attr">#[test]
     </span><span class="kw">fn </span>video_playback() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;video-playback.tmi&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;viewcount\&quot;,\&quot;server_time\&quot;:1603127341.505835,\&quot;viewers\&quot;:2}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "video-playback.tmi",
+        "message": "{\"type\":\"viewcount\",\"server_time\":1603127341.505835,\"viewers\":2}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -504,14 +506,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>video_playback_by_id() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;video-playback-by-id.1234&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;viewcount\&quot;,\&quot;server_time\&quot;:1603127341.505835,\&quot;viewers\&quot;:2}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "video-playback-by-id.1234",
+        "message": "{\"type\":\"viewcount\",\"server_time\":1603127341.505835,\"viewers\":2}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -523,56 +525,56 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>stream_up() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;video-playback.tmi&quot;,
-        &quot;message&quot;: &quot;{\&quot;server_time\&quot;:1603291436,\&quot;play_delay\&quot;:0,\&quot;type\&quot;:\&quot;stream-up\&quot;}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "video-playback.tmi",
+        "message": "{\"server_time\":1603291436,\"play_delay\":0,\"type\":\"stream-up\"}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">if let </span>Response::Message { data } = <span class="macro">dbg!</span>(Response::parse(source).unwrap()) {
             <span class="kw">if let </span>TopicData::VideoPlayback { reply, .. } = data {
                 <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="kw-2">*</span>reply, VideoPlaybackReply::StreamUp { .. }))
             } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(<span class="string">&quot;not a videoplayback&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">"not a videoplayback"</span>)
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;not a message&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"not a message"</span>)
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>stream_down() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;video-playback.tmi&quot;,
-        &quot;message&quot;: &quot;{\&quot;server_time\&quot;:1603141689,\&quot;type\&quot;:\&quot;stream-down\&quot;}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "video-playback.tmi",
+        "message": "{\"server_time\":1603141689,\"type\":\"stream-down\"}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">if let </span>Response::Message { data } = <span class="macro">dbg!</span>(Response::parse(source).unwrap()) {
             <span class="kw">if let </span>TopicData::VideoPlayback { reply, .. } = data {
                 <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="kw-2">*</span>reply, VideoPlaybackReply::StreamDown { .. }))
             } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(<span class="string">&quot;not a videoplayback&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">"not a videoplayback"</span>)
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;not a message&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"not a message"</span>)
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>watch_party_vod_rerun() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;video-playback-by-id.1234&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;watchparty-vod\&quot;,\&quot;vod\&quot;:{\&quot;wp_id\&quot;:\&quot;\&quot;,\&quot;wp_type\&quot;:\&quot;rerun\&quot;,\&quot;increment_url\&quot;:\&quot;https://countess.twitch.tv/ping.gif?u=%7B%22id%22%3A%22711110781%22%2C%22type%22%3A%22vod%22%7D\&quot;,\&quot;vod_id\&quot;:\&quot;1337\&quot;,\&quot;title\&quot;:\&quot;hi\&quot;,\&quot;broadcast_type\&quot;:\&quot;archive\&quot;,\&quot;viewable\&quot;:\&quot;public\&quot;}}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "video-playback-by-id.1234",
+        "message": "{\"type\":\"watchparty-vod\",\"vod\":{\"wp_id\":\"\",\"wp_type\":\"rerun\",\"increment_url\":\"https://countess.twitch.tv/ping.gif?u=%7B%22id%22%3A%22711110781%22%2C%22type%22%3A%22vod%22%7D\",\"vod_id\":\"1337\",\"title\":\"hi\",\"broadcast_type\":\"archive\",\"viewable\":\"public\"}}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">if let </span>Response::Message { data } = <span class="macro">dbg!</span>(Response::parse(source).unwrap()) {
             <span class="kw">if let </span>TopicData::VideoPlaybackById { reply, .. } = data {
                 <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -580,87 +582,87 @@
                     VideoPlaybackReply::WatchPartyVod { vod: Vod { .. } }
                 ))
             } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(<span class="string">&quot;not a videoplayback&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">"not a videoplayback"</span>)
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;not a message&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"not a message"</span>)
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>commercial1() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;video-playback-by-id.1234&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;commercial\&quot;,\&quot;server_time\&quot;:1603209658.186545,\&quot;length\&quot;:60}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "video-playback-by-id.1234",
+        "message": "{\"type\":\"commercial\",\"server_time\":1603209658.186545,\"length\":60}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">if let </span>Response::Message { data } = <span class="macro">dbg!</span>(Response::parse(source).unwrap()) {
             <span class="kw">if let </span>TopicData::VideoPlaybackById { reply, .. } = data {
                 <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="kw-2">*</span>reply, VideoPlaybackReply::Commercial { .. }))
             } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(<span class="string">&quot;not a videoplayback&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">"not a videoplayback"</span>)
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;not a message&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"not a message"</span>)
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>commercial2() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;video-playback-by-id.1234&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;commercial\&quot;,\&quot;server_time\&quot;:1604022504.517951,\&quot;length\&quot;:175}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "video-playback-by-id.1234",
+        "message": "{\"type\":\"commercial\",\"server_time\":1604022504.517951,\"length\":175}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">if let </span>Response::Message { data } = <span class="macro">dbg!</span>(Response::parse(source).unwrap()) {
             <span class="kw">if let </span>TopicData::VideoPlaybackById { reply, .. } = data {
                 <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="kw-2">*</span>reply, VideoPlaybackReply::Commercial { .. }))
             } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(<span class="string">&quot;not a videoplayback&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">"not a videoplayback"</span>)
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;not a message&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"not a message"</span>)
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>commercial_scheduled() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;video-playback-by-id.1234&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;commercial\&quot;,\&quot;server_time\&quot;:1604087214.932556,\&quot;length\&quot;:180,\&quot;scheduled\&quot;:false}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "video-playback-by-id.1234",
+        "message": "{\"type\":\"commercial\",\"server_time\":1604087214.932556,\"length\":180,\"scheduled\":false}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">if let </span>Response::Message { data } = <span class="macro">dbg!</span>(Response::parse(source).unwrap()) {
             <span class="kw">if let </span>TopicData::VideoPlaybackById { reply, .. } = data {
                 <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="kw-2">*</span>reply, VideoPlaybackReply::Commercial { .. }))
             } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(<span class="string">&quot;not a videoplayback&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">"not a videoplayback"</span>)
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;not a message&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"not a message"</span>)
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
-        <span class="kw">let </span>s = <span class="string">&quot;video-playback.tmi&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"video-playback.tmi"</span>;
         <span class="macro">assert_eq!</span>(
             VideoPlayback {
-                channel_login: <span class="string">&quot;tmi&quot;</span>.into()
+                channel_login: <span class="string">"tmi"</span>.into()
             },
             s.to_string().try_into().unwrap()
         );
-        <span class="kw">let </span>s = <span class="string">&quot;video-playback-by-id.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"video-playback-by-id.1234"</span>;
         <span class="macro">assert_eq!</span>(
             VideoPlaybackById { channel_id: <span class="number">1234 </span>},
             s.to_string().try_into().unwrap()
@@ -669,13 +671,13 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
-        <span class="kw">let </span>s = <span class="string">&quot;video-playback.tmi&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"video-playback.tmi"</span>;
         <span class="kw">let </span>right: String = VideoPlayback {
-            channel_login: <span class="string">&quot;tmi&quot;</span>.into(),
+            channel_login: <span class="string">"tmi"</span>.into(),
         }
         .into();
         <span class="macro">assert_eq!</span>(s.to_string(), right);
-        <span class="kw">let </span>s = <span class="string">&quot;video-playback-by-id.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"video-playback-by-id.1234"</span>;
         <span class="kw">let </span>right: String = VideoPlaybackById { channel_id: <span class="number">1234 </span>}.into();
         <span class="macro">assert_eq!</span>(s.to_string(), right);
     }

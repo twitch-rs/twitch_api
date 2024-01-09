@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event/websocket.rs`."><title>websocket.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event/websocket.rs`."><title>websocket.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -430,139 +432,139 @@
 <span class="kw">use super</span>::{Event, EventType};
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 </span><span class="doccomment">/// Defines a message that the EventSub WebSocket server sends your client when an event that you subscribe to occurs.
-</span><span class="kw">pub struct </span>NotificationMetadata&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>NotificationMetadata&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ID that uniquely identifies the message. Twitch sends messages at least once, but if Twitch is unsure of whether you received a notification, it’ll resend the message. This means you may receive a notification twice. If Twitch resends the message, the message ID will be the same.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>message_id: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>message_id: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
     <span class="doccomment">/// The UTC date and time that the message was sent.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>message_timestamp: Cow&lt;<span class="lifetime">&#39;a</span>, types::TimestampRef&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>message_timestamp: Cow&lt;<span class="lifetime">'a</span>, types::TimestampRef&gt;,
     <span class="doccomment">/// The type of event sent in the message.
     </span><span class="kw">pub </span>subscription_type: EventType,
     <span class="doccomment">/// The version number of the subscription type’s definition. This is the same value specified in the subscription request.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>subscription_version: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>subscription_version: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 </span><span class="doccomment">/// Defines the first message that the EventSub WebSocket server sends after your client connects to it.
-</span><span class="kw">pub struct </span>WelcomeMetadata&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>WelcomeMetadata&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ID that uniquely identifies the message. Twitch sends messages at least once, but if Twitch is unsure of whether you received a notification, it’ll resend the message. This means you may receive a notification twice. If Twitch resends the message, the message ID will be the same.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>message_id: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>message_id: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
     <span class="doccomment">/// The UTC date and time that the message was sent.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>message_timestamp: Cow&lt;<span class="lifetime">&#39;a</span>, types::TimestampRef&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>message_timestamp: Cow&lt;<span class="lifetime">'a</span>, types::TimestampRef&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 </span><span class="doccomment">/// Defines the first message that the EventSub WebSocket server sends after your client connects to it.
-</span><span class="kw">pub struct </span>WelcomePayload&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>WelcomePayload&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Session information
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>session: SessionData&lt;<span class="lifetime">&#39;a</span>&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>session: SessionData&lt;<span class="lifetime">'a</span>&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 </span><span class="doccomment">/// Session information sent with the welcome
-</span><span class="kw">pub struct </span>SessionData&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>SessionData&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ID that uniquely identifies this WebSocket connection. Use this ID to set the session_id field in all subscription requests.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>id: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>id: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
     <span class="doccomment">/// The connection’s status, which is set to connected.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>status: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>status: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
     <span class="doccomment">/// The maximum number of seconds that you should expect silence before receiving a keepalive message. For a welcome message, this is the number of seconds that you have to subscribe to an event after receiving the welcome message. If you don’t subscribe to an event within this window, the socket is disconnected.
     </span><span class="kw">pub </span>keepalive_timeout_seconds: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// The URL to reconnect to if you get a Reconnect message. Is set to null.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>reconnect_url: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>reconnect_url: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, str&gt;&gt;,
     <span class="doccomment">/// The UTC date and time that the connection was created.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>connected_at: Cow&lt;<span class="lifetime">&#39;a</span>, types::TimestampRef&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>connected_at: Cow&lt;<span class="lifetime">'a</span>, types::TimestampRef&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 </span><span class="doccomment">/// Defines the message that the EventSub WebSocket server sends your client to indicate that the WebSocket connection is healthy.
-</span><span class="kw">pub struct </span>KeepaliveMetadata&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>KeepaliveMetadata&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ID that uniquely identifies the message. Twitch sends messages at least once, but if Twitch is unsure of whether you received a notification, it’ll resend the message. This means you may receive a notification twice. If Twitch resends the message, the message ID is the same.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>message_id: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>message_id: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
     <span class="doccomment">/// The UTC date and time that the message was sent.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>message_timestamp: Cow&lt;<span class="lifetime">&#39;a</span>, types::TimestampRef&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>message_timestamp: Cow&lt;<span class="lifetime">'a</span>, types::TimestampRef&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 </span><span class="doccomment">/// Defines the message that the EventSub WebSocket server sends if the server must drop the connection.
-</span><span class="kw">pub struct </span>ReconnectMetadata&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>ReconnectMetadata&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ID that uniquely identifies the message. Twitch sends messages at least once, but if Twitch is unsure of whether you received a notification, it’ll resend the message. This means you may receive a notification twice. If Twitch resends the message, the message ID is the same.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>message_id: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>message_id: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
     <span class="doccomment">/// The UTC date and time that the message was sent.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>message_timestamp: Cow&lt;<span class="lifetime">&#39;a</span>, types::TimestampRef&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>message_timestamp: Cow&lt;<span class="lifetime">'a</span>, types::TimestampRef&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 </span><span class="doccomment">/// Defines the message that the EventSub WebSocket server sends if the server must drop the connection.
-</span><span class="kw">pub struct </span>ReconnectPayload&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
+</span><span class="kw">pub struct </span>ReconnectPayload&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
     </span><span class="doccomment">/// Session data
-    </span><span class="kw">pub </span>session: SessionData&lt;<span class="lifetime">&#39;a</span>&gt;,
+    </span><span class="kw">pub </span>session: SessionData&lt;<span class="lifetime">'a</span>&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 </span><span class="doccomment">/// Defines the message that the EventSub WebSocket server sends if the user no longer exists or they revoked the authorization token that the subscription relied on.
-</span><span class="kw">pub struct </span>RevocationMetadata&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>RevocationMetadata&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ID that uniquely identifies the message. Twitch sends messages at least once, but if Twitch is unsure of whether you received a notification, it’ll resend the message. This means you may receive a notification twice. If Twitch resends the message, the message ID will be the same.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>message_id: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>message_id: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
     <span class="doccomment">/// The UTC date and time that the message was sent.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>message_timestamp: Cow&lt;<span class="lifetime">&#39;a</span>, types::TimestampRef&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>message_timestamp: Cow&lt;<span class="lifetime">'a</span>, types::TimestampRef&gt;,
     <span class="doccomment">/// The type of event sent in the message.
     </span><span class="kw">pub </span>subscription_type: EventType,
     <span class="doccomment">/// The version number of the subscription type’s definition. This is the same value specified in the subscription request.
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span><span class="kw">pub </span>subscription_version: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span><span class="kw">pub </span>subscription_version: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[serde(tag = <span class="string">&quot;message_type&quot;</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[serde(tag = <span class="string">"message_type"</span>)]
 #[non_exhaustive]
 </span><span class="doccomment">/// Metadata for a websocket event
-</span><span class="kw">pub enum </span>EventsubWebsocketMetadata&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub enum </span>EventsubWebsocketMetadata&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Defines a message that the EventSub WebSocket server sends your client when an event that you subscribe to occurs.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;notification&quot;</span>)]
-    </span>Notification(<span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)] </span>NotificationMetadata&lt;<span class="lifetime">&#39;a</span>&gt;),
+    </span><span class="attr">#[serde(rename = <span class="string">"notification"</span>)]
+    </span>Notification(<span class="attr">#[serde(borrow = <span class="string">"'a"</span>)] </span>NotificationMetadata&lt;<span class="lifetime">'a</span>&gt;),
     <span class="doccomment">/// Defines the first message that the EventSub WebSocket server sends after your client connects to it.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;session_welcome&quot;</span>)]
-    </span>Welcome(<span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)] </span>WelcomeMetadata&lt;<span class="lifetime">&#39;a</span>&gt;),
+    </span><span class="attr">#[serde(rename = <span class="string">"session_welcome"</span>)]
+    </span>Welcome(<span class="attr">#[serde(borrow = <span class="string">"'a"</span>)] </span>WelcomeMetadata&lt;<span class="lifetime">'a</span>&gt;),
     <span class="doccomment">/// Defines the message that the EventSub WebSocket server sends your client to indicate that the WebSocket connection is healthy.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;session_keepalive&quot;</span>)]
-    </span>Keepalive(<span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)] </span>KeepaliveMetadata&lt;<span class="lifetime">&#39;a</span>&gt;),
+    </span><span class="attr">#[serde(rename = <span class="string">"session_keepalive"</span>)]
+    </span>Keepalive(<span class="attr">#[serde(borrow = <span class="string">"'a"</span>)] </span>KeepaliveMetadata&lt;<span class="lifetime">'a</span>&gt;),
     <span class="doccomment">/// Defines the message that the EventSub WebSocket server sends if the server must drop the connection.s
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;session_reconnect&quot;</span>)]
-    </span>Reconnect(<span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)] </span>ReconnectMetadata&lt;<span class="lifetime">&#39;a</span>&gt;),
+    </span><span class="attr">#[serde(rename = <span class="string">"session_reconnect"</span>)]
+    </span>Reconnect(<span class="attr">#[serde(borrow = <span class="string">"'a"</span>)] </span>ReconnectMetadata&lt;<span class="lifetime">'a</span>&gt;),
     <span class="doccomment">/// Defines the message that the EventSub WebSocket server sends if the user no longer exists or they revoked the authorization token that the subscription relied on.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;revocation&quot;</span>)]
-    </span>Revocation(<span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)] </span>RevocationMetadata&lt;<span class="lifetime">&#39;a</span>&gt;),
+    </span><span class="attr">#[serde(rename = <span class="string">"revocation"</span>)]
+    </span>Revocation(<span class="attr">#[serde(borrow = <span class="string">"'a"</span>)] </span>RevocationMetadata&lt;<span class="lifetime">'a</span>&gt;),
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;d</span>&gt; EventsubWebsocketMetadata&lt;<span class="lifetime">&#39;d</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'d</span>&gt; EventsubWebsocketMetadata&lt;<span class="lifetime">'d</span>&gt; {
     <span class="doccomment">/// Get message id
-    </span><span class="kw">pub fn </span>message_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;d</span>, str&gt; {
+    </span><span class="kw">pub fn </span>message_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">'d</span>, str&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             EventsubWebsocketMetadata::Welcome(WelcomeMetadata { message_id, .. })
             | EventsubWebsocketMetadata::Keepalive(KeepaliveMetadata { message_id, .. })
@@ -577,7 +579,7 @@
     }
 
     <span class="doccomment">/// Get message timestamp
-    </span><span class="kw">pub fn </span>message_timestamp(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;d</span>, types::TimestampRef&gt; {
+    </span><span class="kw">pub fn </span>message_timestamp(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">'d</span>, types::TimestampRef&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             EventsubWebsocketMetadata::Welcome(WelcomeMetadata {
                 message_timestamp, ..
@@ -601,49 +603,49 @@
 
 <span class="attr">#[allow(missing_docs)]
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
-</span><span class="kw">pub enum </span>EventsubWebsocketData&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub enum </span>EventsubWebsocketData&lt;<span class="lifetime">'a</span>&gt; {
     Welcome {
-        <span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-        </span>metadata: WelcomeMetadata&lt;<span class="lifetime">&#39;a</span>&gt;,
-        <span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-        </span>payload: WelcomePayload&lt;<span class="lifetime">&#39;a</span>&gt;,
+        <span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+        </span>metadata: WelcomeMetadata&lt;<span class="lifetime">'a</span>&gt;,
+        <span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+        </span>payload: WelcomePayload&lt;<span class="lifetime">'a</span>&gt;,
     },
     Keepalive {
-        <span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-        </span>metadata: KeepaliveMetadata&lt;<span class="lifetime">&#39;a</span>&gt;,
+        <span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+        </span>metadata: KeepaliveMetadata&lt;<span class="lifetime">'a</span>&gt;,
         payload: (),
     },
     Notification {
-        <span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-        </span>metadata: NotificationMetadata&lt;<span class="lifetime">&#39;a</span>&gt;,
+        <span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+        </span>metadata: NotificationMetadata&lt;<span class="lifetime">'a</span>&gt;,
         payload: Event,
     },
     Revocation {
-        <span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-        </span>metadata: RevocationMetadata&lt;<span class="lifetime">&#39;a</span>&gt;,
+        <span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+        </span>metadata: RevocationMetadata&lt;<span class="lifetime">'a</span>&gt;,
         payload: Event,
     },
     Reconnect {
-        <span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-        </span>metadata: ReconnectMetadata&lt;<span class="lifetime">&#39;a</span>&gt;,
-        <span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-        </span>payload: ReconnectPayload&lt;<span class="lifetime">&#39;a</span>&gt;,
+        <span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+        </span>metadata: ReconnectMetadata&lt;<span class="lifetime">'a</span>&gt;,
+        <span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+        </span>payload: ReconnectPayload&lt;<span class="lifetime">'a</span>&gt;,
     },
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;d</span>&gt; EventsubWebsocketData&lt;<span class="lifetime">&#39;d</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'d</span>&gt; EventsubWebsocketData&lt;<span class="lifetime">'d</span>&gt; {
     <span class="doccomment">/// Get message id
-    </span><span class="kw">pub fn </span>message_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;d</span>, str&gt; { <span class="self">self</span>.metadata().message_id() }
+    </span><span class="kw">pub fn </span>message_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">'d</span>, str&gt; { <span class="self">self</span>.metadata().message_id() }
 
     <span class="doccomment">/// Get message timestamp
-    </span><span class="kw">pub fn </span>message_timestamp(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;d</span>, types::TimestampRef&gt; {
+    </span><span class="kw">pub fn </span>message_timestamp(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">'d</span>, types::TimestampRef&gt; {
         <span class="self">self</span>.metadata().message_timestamp()
     }
 
     <span class="doccomment">/// Get metadata for the event
-    </span><span class="kw">pub fn </span>metadata(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; EventsubWebsocketMetadata&lt;<span class="lifetime">&#39;d</span>&gt; {
+    </span><span class="kw">pub fn </span>metadata(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; EventsubWebsocketMetadata&lt;<span class="lifetime">'d</span>&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             EventsubWebsocketData::Welcome { metadata, .. } =&gt; {
                 EventsubWebsocketMetadata::Welcome(metadata.clone())
@@ -670,26 +672,26 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>welcome() {
-        <span class="kw">let </span>msg = <span class="string">r#&quot;
+        <span class="kw">let </span>msg = <span class="string">r#"
         {
-            &quot;metadata&quot;: {
-              &quot;message_id&quot;: &quot;96a3f3b5-5dec-4eed-908e-e11ee657416c&quot;,
-              &quot;message_type&quot;: &quot;session_welcome&quot;,
-              &quot;message_timestamp&quot;: &quot;2022-10-19T14:56:51.634234626Z&quot;
+            "metadata": {
+              "message_id": "96a3f3b5-5dec-4eed-908e-e11ee657416c",
+              "message_type": "session_welcome",
+              "message_timestamp": "2022-10-19T14:56:51.634234626Z"
             },
-            &quot;payload&quot;: {
-              &quot;session&quot;: {
-                &quot;id&quot;: &quot;AQoQILE98gtqShGmLD7AM6yJThAB&quot;,
-                &quot;status&quot;: &quot;connected&quot;,
-                &quot;connected_at&quot;: &quot;2022-10-19T14:56:51.616329898Z&quot;,
-                &quot;keepalive_timeout_seconds&quot;: 10,
-                &quot;reconnect_url&quot;: null
+            "payload": {
+              "session": {
+                "id": "AQoQILE98gtqShGmLD7AM6yJThAB",
+                "status": "connected",
+                "connected_at": "2022-10-19T14:56:51.616329898Z",
+                "keepalive_timeout_seconds": 10,
+                "reconnect_url": null
               }
             }
           }
-        &quot;#</span>;
+        "#</span>;
         <span class="kw">let </span>event = Event::parse_websocket(msg).unwrap();
-        <span class="macro">assert_eq!</span>(event.message_id(), <span class="string">&quot;96a3f3b5-5dec-4eed-908e-e11ee657416c&quot;</span>);
+        <span class="macro">assert_eq!</span>(event.message_id(), <span class="string">"96a3f3b5-5dec-4eed-908e-e11ee657416c"</span>);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             event,
             EventsubWebsocketData::Welcome {
@@ -701,18 +703,18 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>keepalive() {
-        <span class="kw">let </span>msg = <span class="string">r#&quot;
+        <span class="kw">let </span>msg = <span class="string">r#"
         {
-            &quot;metadata&quot;: {
-              &quot;message_id&quot;: &quot;8d8e0935-0e0c-479a-8fa2-ad4c02cef742&quot;,
-              &quot;message_type&quot;: &quot;session_keepalive&quot;,
-              &quot;message_timestamp&quot;: &quot;2022-11-04T13:11:49.770459792Z&quot;
+            "metadata": {
+              "message_id": "8d8e0935-0e0c-479a-8fa2-ad4c02cef742",
+              "message_type": "session_keepalive",
+              "message_timestamp": "2022-11-04T13:11:49.770459792Z"
             },
-            &quot;payload&quot;: {}
+            "payload": {}
         }
-        &quot;#</span>;
+        "#</span>;
         <span class="kw">let </span>event = Event::parse_websocket(msg).unwrap();
-        <span class="macro">assert_eq!</span>(event.message_id(), <span class="string">&quot;8d8e0935-0e0c-479a-8fa2-ad4c02cef742&quot;</span>);
+        <span class="macro">assert_eq!</span>(event.message_id(), <span class="string">"8d8e0935-0e0c-479a-8fa2-ad4c02cef742"</span>);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             event,
             EventsubWebsocketData::Keepalive {
@@ -724,45 +726,45 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>notification() {
-        <span class="kw">let </span>msg = <span class="string">r#&quot;
+        <span class="kw">let </span>msg = <span class="string">r#"
         {
-            &quot;metadata&quot;: {
-              &quot;message_id&quot;: &quot;befa7b53-d79d-478f-86b9-120f112b044e&quot;,
-              &quot;message_type&quot;: &quot;notification&quot;,
-              &quot;message_timestamp&quot;: &quot;2019-11-16T10:11:12.123Z&quot;,
-              &quot;subscription_type&quot;: &quot;channel.follow&quot;,
-              &quot;subscription_version&quot;: &quot;1&quot;
+            "metadata": {
+              "message_id": "befa7b53-d79d-478f-86b9-120f112b044e",
+              "message_type": "notification",
+              "message_timestamp": "2019-11-16T10:11:12.123Z",
+              "subscription_type": "channel.follow",
+              "subscription_version": "1"
             },
-            &quot;payload&quot;: {
-              &quot;subscription&quot;: {
-                &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
-                &quot;status&quot;: &quot;enabled&quot;,
-                &quot;type&quot;: &quot;channel.follow&quot;,
-                &quot;version&quot;: &quot;1&quot;,
-                &quot;cost&quot;: 1,
-                &quot;condition&quot;: {
-                  &quot;broadcaster_user_id&quot;: &quot;12826&quot;
+            "payload": {
+              "subscription": {
+                "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+                "status": "enabled",
+                "type": "channel.follow",
+                "version": "1",
+                "cost": 1,
+                "condition": {
+                  "broadcaster_user_id": "12826"
                 },
-                &quot;transport&quot;: {
-                  &quot;method&quot;: &quot;websocket&quot;,
-                  &quot;session_id&quot;: &quot;AQoQexAWVYKSTIu4ec_2VAxyuhAB&quot;
+                "transport": {
+                  "method": "websocket",
+                  "session_id": "AQoQexAWVYKSTIu4ec_2VAxyuhAB"
                 },
-                &quot;created_at&quot;: &quot;2019-11-16T10:11:12.123Z&quot;
+                "created_at": "2019-11-16T10:11:12.123Z"
               },
-              &quot;event&quot;: {
-                &quot;user_id&quot;: &quot;1337&quot;,
-                &quot;user_login&quot;: &quot;awesome_user&quot;,
-                &quot;user_name&quot;: &quot;Awesome_User&quot;,
-                &quot;broadcaster_user_id&quot;: &quot;12826&quot;,
-                &quot;broadcaster_user_login&quot;: &quot;twitch&quot;,
-                &quot;broadcaster_user_name&quot;: &quot;Twitch&quot;,
-                &quot;followed_at&quot;: &quot;2020-07-15T18:16:11.17106713Z&quot;
+              "event": {
+                "user_id": "1337",
+                "user_login": "awesome_user",
+                "user_name": "Awesome_User",
+                "broadcaster_user_id": "12826",
+                "broadcaster_user_login": "twitch",
+                "broadcaster_user_name": "Twitch",
+                "followed_at": "2020-07-15T18:16:11.17106713Z"
               }
             }
           }
-        &quot;#</span>;
+        "#</span>;
         <span class="kw">let </span>event = Event::parse_websocket(msg).unwrap();
-        <span class="macro">assert_eq!</span>(event.message_id(), <span class="string">&quot;befa7b53-d79d-478f-86b9-120f112b044e&quot;</span>);
+        <span class="macro">assert_eq!</span>(event.message_id(), <span class="string">"befa7b53-d79d-478f-86b9-120f112b044e"</span>);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             event,
             EventsubWebsocketData::Notification {
@@ -774,26 +776,26 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>reconnect() {
-        <span class="kw">let </span>msg = <span class="string">r#&quot;
+        <span class="kw">let </span>msg = <span class="string">r#"
         {
-            &quot;metadata&quot;: {
-              &quot;message_id&quot;: &quot;84c1e79a-2a4b-4c13-ba0b-4312293e9308&quot;,
-              &quot;message_type&quot;: &quot;session_reconnect&quot;,
-              &quot;message_timestamp&quot;: &quot;2019-11-18T09:10:11.234Z&quot;
+            "metadata": {
+              "message_id": "84c1e79a-2a4b-4c13-ba0b-4312293e9308",
+              "message_type": "session_reconnect",
+              "message_timestamp": "2019-11-18T09:10:11.234Z"
             },
-            &quot;payload&quot;: {
-              &quot;session&quot;: {
-                &quot;id&quot;: &quot;AQoQexAWVYKSTIu4ec_2VAxyuhAB&quot;,
-                &quot;status&quot;: &quot;reconnecting&quot;,
-                &quot;keepalive_timeout_seconds&quot;: null,
-                &quot;reconnect_url&quot;: &quot;wss://eventsub.wss.twitch.tv?...&quot;,
-                &quot;connected_at&quot;: &quot;2019-11-16T10:11:12.123Z&quot;
+            "payload": {
+              "session": {
+                "id": "AQoQexAWVYKSTIu4ec_2VAxyuhAB",
+                "status": "reconnecting",
+                "keepalive_timeout_seconds": null,
+                "reconnect_url": "wss://eventsub.wss.twitch.tv?...",
+                "connected_at": "2019-11-16T10:11:12.123Z"
               }
             }
           }
-        &quot;#</span>;
+        "#</span>;
         <span class="kw">let </span>event = Event::parse_websocket(msg).unwrap();
-        <span class="macro">assert_eq!</span>(event.message_id(), <span class="string">&quot;84c1e79a-2a4b-4c13-ba0b-4312293e9308&quot;</span>);
+        <span class="macro">assert_eq!</span>(event.message_id(), <span class="string">"84c1e79a-2a4b-4c13-ba0b-4312293e9308"</span>);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             event,
             EventsubWebsocketData::Reconnect {
@@ -805,36 +807,36 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>revocation() {
-        <span class="kw">let </span>msg = <span class="string">r#&quot;
+        <span class="kw">let </span>msg = <span class="string">r#"
         {
-            &quot;metadata&quot;: {
-              &quot;message_id&quot;: &quot;84c1e79a-2a4b-4c13-ba0b-4312293e9308&quot;,
-              &quot;message_type&quot;: &quot;revocation&quot;,
-              &quot;message_timestamp&quot;: &quot;2019-11-16T10:11:12.123Z&quot;,
-              &quot;subscription_type&quot;: &quot;channel.follow&quot;,
-              &quot;subscription_version&quot;: &quot;1&quot;
+            "metadata": {
+              "message_id": "84c1e79a-2a4b-4c13-ba0b-4312293e9308",
+              "message_type": "revocation",
+              "message_timestamp": "2019-11-16T10:11:12.123Z",
+              "subscription_type": "channel.follow",
+              "subscription_version": "1"
             },
-            &quot;payload&quot;: {
-              &quot;subscription&quot;: {
-                &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
-                &quot;status&quot;: &quot;authorization_revoked&quot;,
-                &quot;type&quot;: &quot;channel.follow&quot;,
-                &quot;version&quot;: &quot;1&quot;,
-                &quot;cost&quot;: 1,
-                &quot;condition&quot;: {
-                  &quot;broadcaster_user_id&quot;: &quot;12826&quot;
+            "payload": {
+              "subscription": {
+                "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+                "status": "authorization_revoked",
+                "type": "channel.follow",
+                "version": "1",
+                "cost": 1,
+                "condition": {
+                  "broadcaster_user_id": "12826"
                 },
-                &quot;transport&quot;: {
-                  &quot;method&quot;: &quot;websocket&quot;,
-                  &quot;session_id&quot;: &quot;AQoQexAWVYKSTIu4ec_2VAxyuhAB&quot;
+                "transport": {
+                  "method": "websocket",
+                  "session_id": "AQoQexAWVYKSTIu4ec_2VAxyuhAB"
                 },
-                &quot;created_at&quot;: &quot;2019-11-16T10:11:12.123Z&quot;
+                "created_at": "2019-11-16T10:11:12.123Z"
               }
             }
           }
-        &quot;#</span>;
+        "#</span>;
         <span class="kw">let </span>event = Event::parse_websocket(msg).unwrap();
-        <span class="macro">assert_eq!</span>(event.message_id(), <span class="string">&quot;84c1e79a-2a4b-4c13-ba0b-4312293e9308&quot;</span>);
+        <span class="macro">assert_eq!</span>(event.message_id(), <span class="string">"84c1e79a-2a4b-4c13-ba0b-4312293e9308"</span>);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             event,
             EventsubWebsocketData::Revocation {

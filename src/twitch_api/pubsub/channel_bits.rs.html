@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_bits.rs`."><title>channel_bits.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_bits.rs`."><title>channel_bits.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -153,24 +155,24 @@
 <a href="#153" id="153">153</a>
 <a href="#154" id="154">154</a>
 <a href="#155" id="155">155</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;bits&quot;</span>)]
-#![doc(alias = <span class="string">&quot;channel-bits-events-v2&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"bits"</span>)]
+#![doc(alias = <span class="string">"channel-bits-events-v2"</span>)]
 </span><span class="doccomment">//! PubSub messages for bits
 </span><span class="kw">use crate</span>::{pubsub, types};
 <span class="kw">use </span>serde_derive::{Deserialize, Serialize};
 
 <span class="doccomment">/// Anyone cheers in a specified channel.
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>ChannelBitsEventsV2 {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
     </span><span class="kw">pub </span>channel_id: u32,
 }
 
-<span class="macro">impl_de_ser!</span>(ChannelBitsEventsV2, <span class="string">&quot;channel-bits-events-v2&quot;</span>, channel_id);
+<span class="macro">impl_de_ser!</span>(ChannelBitsEventsV2, <span class="string">"channel-bits-events-v2"</span>, channel_id);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>ChannelBitsEventsV2 {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
         <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::BitsRead];
 
@@ -179,12 +181,12 @@
 
 <span class="doccomment">/// Reply from [ChannelBitsEventsV2]
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[serde(tag = <span class="string">&quot;message_type&quot;</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[serde(tag = <span class="string">"message_type"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ChannelBitsEventsV2Reply {
     <span class="doccomment">/// Bits event
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;bits_event&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"bits_event"</span>)]
     </span>BitsEvent {
         <span class="doccomment">/// Data associated with reply
         </span>data: BitsEventData,
@@ -200,7 +202,7 @@
 
 <span class="doccomment">/// Data for bits event
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>BitsEventData {
     <span class="doccomment">/// If set, describes new unlocked badge for user
@@ -215,7 +217,7 @@
     </span><span class="kw">pub </span>chat_message: String,
     <span class="doccomment">/// Context of `bits_event`, seems to only be [`cheer`](BitsContext::Cheer)
     </span><span class="kw">pub </span>context: BitsContext,
-    <span class="attr">#[serde(default)] </span><span class="comment">// FIXME: docs don&#39;t have this field here, but actual responses do
+    <span class="attr">#[serde(default)] </span><span class="comment">// FIXME: docs don't have this field here, but actual responses do
     </span><span class="doccomment">/// Whether the cheer was anonymous.
     </span><span class="kw">pub </span>is_anonymous: bool,
     <span class="doccomment">/// Time when pubsub message was sent
@@ -230,7 +232,7 @@
 
 <span class="doccomment">/// [`ChannelBitsEventsV2Reply::BitsEvent`] event unlocked new badge for user.
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>BadgeEntitlement {
     <span class="doccomment">/// New version of badge
@@ -244,7 +246,7 @@
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>BitsContext {
     <span class="doccomment">/// Cheer
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;cheer&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"cheer"</span>)]
     </span>Cheer,
 }
 
@@ -254,14 +256,14 @@
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="attr">#[test]
     </span><span class="kw">fn </span>bits_event() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;channel-bits-events-v2.1234&quot;,
-        &quot;message&quot;: &quot;{\&quot;data\&quot;:{\&quot;user_name\&quot;:\&quot;justintv\&quot;,\&quot;channel_name\&quot;:\&quot;tmi\&quot;,\&quot;user_id\&quot;:\&quot;12345\&quot;,\&quot;channel_id\&quot;:\&quot;1234\&quot;,\&quot;time\&quot;:\&quot;2020-10-19T17:50:24.807841596Z\&quot;,\&quot;chat_message\&quot;:\&quot;Corgo1 Corgo1 Corgo1 Corgo1 Corgo1\&quot;,\&quot;bits_used\&quot;:5,\&quot;total_bits_used\&quot;:29,\&quot;is_anonymous\&quot;:false,\&quot;context\&quot;:\&quot;cheer\&quot;,\&quot;badge_entitlement\&quot;:null},\&quot;version\&quot;:\&quot;1.0\&quot;,\&quot;message_type\&quot;:\&quot;bits_event\&quot;,\&quot;message_id\&quot;:\&quot;d1831817-95f2-5dfa-8864-f36f16eeb5d8\&quot;}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "channel-bits-events-v2.1234",
+        "message": "{\"data\":{\"user_name\":\"justintv\",\"channel_name\":\"tmi\",\"user_id\":\"12345\",\"channel_id\":\"1234\",\"time\":\"2020-10-19T17:50:24.807841596Z\",\"chat_message\":\"Corgo1 Corgo1 Corgo1 Corgo1 Corgo1\",\"bits_used\":5,\"total_bits_used\":29,\"is_anonymous\":false,\"context\":\"cheer\",\"badge_entitlement\":null},\"version\":\"1.0\",\"message_type\":\"bits_event\",\"message_id\":\"d1831817-95f2-5dfa-8864-f36f16eeb5d8\"}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -273,15 +275,15 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>bits_event_documented() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-       &quot;topic&quot;: &quot;channel-bits-events-v2.46024993&quot;,
-       &quot;message&quot;: &quot;{\&quot;data\&quot;:{\&quot;user_name\&quot;:\&quot;jwp\&quot;,\&quot;channel_name\&quot;:\&quot;bontakun\&quot;,\&quot;user_id\&quot;:\&quot;95546976\&quot;,\&quot;channel_id\&quot;:\&quot;46024993\&quot;,\&quot;time\&quot;:\&quot;2017-02-09T13:23:58.168Z\&quot;,\&quot;chat_message\&quot;:\&quot;cheer10000 New badge hype!\&quot;,\&quot;bits_used\&quot;:10000,\&quot;total_bits_used\&quot;:25000,\&quot;context\&quot;:\&quot;cheer\&quot;,\&quot;badge_entitlement\&quot;:{\&quot;new_version\&quot;:25000,\&quot;previous_version\&quot;:10000}},\&quot;version\&quot;:\&quot;1.0\&quot;,\&quot;message_type\&quot;:\&quot;bits_event\&quot;,\&quot;message_id\&quot;:\&quot;8145728a4-35f0-4cf7-9dc0-f2ef24de1eb6\&quot;,\&quot;is_anonymous\&quot;:true}&quot;
+    "type": "MESSAGE",
+    "data": {
+       "topic": "channel-bits-events-v2.46024993",
+       "message": "{\"data\":{\"user_name\":\"jwp\",\"channel_name\":\"bontakun\",\"user_id\":\"95546976\",\"channel_id\":\"46024993\",\"time\":\"2017-02-09T13:23:58.168Z\",\"chat_message\":\"cheer10000 New badge hype!\",\"bits_used\":10000,\"total_bits_used\":25000,\"context\":\"cheer\",\"badge_entitlement\":{\"new_version\":25000,\"previous_version\":10000}},\"version\":\"1.0\",\"message_type\":\"bits_event\",\"message_id\":\"8145728a4-35f0-4cf7-9dc0-f2ef24de1eb6\",\"is_anonymous\":true}"
     }
 }
-&quot;#</span>;
+"#</span>;
 
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -294,7 +296,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
-        <span class="kw">let </span>s = <span class="string">&quot;channel-bits-events-v2.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"channel-bits-events-v2.1234"</span>;
         <span class="macro">assert_eq!</span>(
             ChannelBitsEventsV2 { channel_id: <span class="number">1234 </span>},
             s.to_string().try_into().unwrap()
@@ -303,7 +305,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
-        <span class="kw">let </span>s = <span class="string">&quot;channel-bits-events-v2.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"channel-bits-events-v2.1234"</span>;
         <span class="kw">let </span>right: String = ChannelBitsEventsV2 { channel_id: <span class="number">1234 </span>}.into();
         <span class="macro">assert_eq!</span>(s.to_string(), right);
     }

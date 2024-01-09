@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_subscriptions.rs`."><title>channel_subscriptions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_subscriptions.rs`."><title>channel_subscriptions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -583,16 +585,16 @@
 <a href="#583" id="583">583</a>
 <a href="#584" id="584">584</a>
 <a href="#585" id="585">585</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;subscription&quot;</span>)]
-#![doc(alias = <span class="string">&quot;subscriptions&quot;</span>)]
-#![doc(alias = <span class="string">&quot;channel-subscribe-events-v1&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"subscription"</span>)]
+#![doc(alias = <span class="string">"subscriptions"</span>)]
+#![doc(alias = <span class="string">"channel-subscribe-events-v1"</span>)]
 </span><span class="doccomment">//! PubSub messages for subscriptions
 </span><span class="kw">use crate</span>::{pubsub, types};
 <span class="kw">use </span>serde_derive::{Deserialize, Serialize};
 
 <span class="doccomment">/// A subscription event happens in channel
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>ChannelSubscribeEventsV1 {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
     </span><span class="kw">pub </span>channel_id: u32,
@@ -600,12 +602,12 @@
 
 <span class="macro">impl_de_ser!</span>(
     ChannelSubscribeEventsV1,
-    <span class="string">&quot;channel-subscribe-events-v1&quot;</span>,
+    <span class="string">"channel-subscribe-events-v1"</span>,
     channel_id <span class="comment">// FIXME: add trailing comma
 </span>);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>ChannelSubscribeEventsV1 {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::ChannelSubscribeEventsV1(<span class="self">self</span>) }
@@ -613,7 +615,7 @@
 
 <span class="doccomment">/// A subscription
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Sub {
     <span class="comment">// FIXME: Could be for month that subscription ends
@@ -650,7 +652,7 @@
 
 <span class="doccomment">/// A resubscription
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ReSub {
     <span class="comment">// missing in documented example
@@ -689,7 +691,7 @@
 
 <span class="doccomment">/// A gifted subscription happened
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SubGift {
     <span class="comment">// missing in documented example
@@ -732,7 +734,7 @@
 
 <span class="doccomment">/// Gifted resubscription with optional message
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ResubGift {
     <span class="comment">// missing in documented example
@@ -778,7 +780,7 @@
 
 <span class="doccomment">/// User extends a (gifted) sub
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ExtendSub {
     <span class="doccomment">/// Unknown
@@ -816,26 +818,26 @@
 // Should probably share fields.
 </span><span class="doccomment">/// Reply from [ChannelSubscribeEventsV1]
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = <span class="string">&quot;context&quot;</span>)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[serde(tag = <span class="string">"context"</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ChannelSubscribeEventsV1Reply {
     <span class="doccomment">/// A subscription
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;sub&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"sub"</span>)]
     </span>Sub(Sub),
     <span class="doccomment">/// A resubscription
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;resub&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"resub"</span>)]
     </span>ReSub(ReSub),
     <span class="doccomment">/// A gifted subscription happened
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;subgift&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"subgift"</span>)]
     </span>SubGift(SubGift),
     <span class="doccomment">/// Gifted resubscription with optional message
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;resubgift&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"resubgift"</span>)]
     </span>ResubGift(ResubGift),
     <span class="doccomment">/// User extends sub through the month.
     ///
     /// Message emited in web chat is something like: `User Extended their Tier 1 subscription through June!`
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;extendsub&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"extendsub"</span>)]
     </span>ExtendSub(ExtendSub),
 }
 
@@ -854,11 +856,11 @@
 
 <span class="doccomment">/// Message sent with subscription
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SubMessage {
     <span class="doccomment">/// Emotes in subscription message
-    </span><span class="attr">#[serde(deserialize_with = <span class="string">&quot;pubsub::deserialize_default_from_null&quot;</span>)]
+    </span><span class="attr">#[serde(deserialize_with = <span class="string">"pubsub::deserialize_default_from_null"</span>)]
     </span><span class="kw">pub </span>emotes: Vec&lt;Emote&gt;,
     <span class="doccomment">/// Message in subscription
     </span><span class="kw">pub </span>message: String,
@@ -872,36 +874,36 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>subscription_doc_example_resub() {
         <span class="comment">// twitch docs broken as usual. /emotes/id  is a string and /months is missing
-        </span><span class="kw">let </span>message = <span class="string">r##&quot;
+        </span><span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;user_name&quot;: &quot;tww2&quot;,
-    &quot;display_name&quot;: &quot;TWW2&quot;,
-    &quot;channel_name&quot;: &quot;mr_woodchuck&quot;,
-    &quot;user_id&quot;: &quot;13405587&quot;,
-    &quot;channel_id&quot;: &quot;89614178&quot;,
-    &quot;time&quot;: &quot;2015-12-19T16:39:57-08:00&quot;,
-    &quot;sub_plan&quot;: &quot;1000&quot;,
-    &quot;sub_plan_name&quot;: &quot;Channel Subscription (mr_woodchuck)&quot;,
-    &quot;cumulative_months&quot;: 9,
-    &quot;streak_months&quot;: 3,
-    &quot;months&quot;: 0,
-    &quot;context&quot;: &quot;resub&quot;,
-    &quot;is_gift&quot;: false,
-    &quot;sub_message&quot;: {
-        &quot;message&quot;: &quot;A Twitch baby is born! KappaHD&quot;,
-        &quot;emotes&quot;: [
+    "user_name": "tww2",
+    "display_name": "TWW2",
+    "channel_name": "mr_woodchuck",
+    "user_id": "13405587",
+    "channel_id": "89614178",
+    "time": "2015-12-19T16:39:57-08:00",
+    "sub_plan": "1000",
+    "sub_plan_name": "Channel Subscription (mr_woodchuck)",
+    "cumulative_months": 9,
+    "streak_months": 3,
+    "months": 0,
+    "context": "resub",
+    "is_gift": false,
+    "sub_message": {
+        "message": "A Twitch baby is born! KappaHD",
+        "emotes": [
             {
-                &quot;start&quot;: 23,
-                &quot;end&quot;: 7,
-                &quot;id&quot;: &quot;2867&quot;
+                "start": 23,
+                "end": 7,
+                "id": "2867"
             }
         ]
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-subscribe-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -914,31 +916,31 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>subscription_doc_example_subgift() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;user_name&quot;: &quot;tww2&quot;,
-    &quot;display_name&quot;: &quot;TWW2&quot;,
-    &quot;channel_name&quot;: &quot;mr_woodchuck&quot;,
-    &quot;user_id&quot;: &quot;13405587&quot;,
-    &quot;channel_id&quot;: &quot;89614178&quot;,
-    &quot;time&quot;: &quot;2015-12-19T16:39:57-08:00&quot;,
-    &quot;sub_plan&quot;: &quot;1000&quot;,
-    &quot;sub_plan_name&quot;: &quot;Channel Subscription (mr_woodchuck)&quot;,
-    &quot;months&quot;: 9,
-    &quot;context&quot;: &quot;subgift&quot;,
-    &quot;is_gift&quot;: true,
-    &quot;sub_message&quot;: {
-        &quot;message&quot;: &quot;&quot;,
-        &quot;emotes&quot;: null
+    "user_name": "tww2",
+    "display_name": "TWW2",
+    "channel_name": "mr_woodchuck",
+    "user_id": "13405587",
+    "channel_id": "89614178",
+    "time": "2015-12-19T16:39:57-08:00",
+    "sub_plan": "1000",
+    "sub_plan_name": "Channel Subscription (mr_woodchuck)",
+    "months": 9,
+    "context": "subgift",
+    "is_gift": true,
+    "sub_message": {
+        "message": "",
+        "emotes": null
     },
-    &quot;recipient_id&quot;: &quot;19571752&quot;,
-    &quot;recipient_user_name&quot;: &quot;forstycup&quot;,
-    &quot;recipient_display_name&quot;: &quot;forstycup&quot;
+    "recipient_id": "19571752",
+    "recipient_user_name": "forstycup",
+    "recipient_display_name": "forstycup"
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-subscribe-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -951,31 +953,31 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>new_sub() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;benefit_end_month&quot;: 11,
-    &quot;user_name&quot;: &quot;tmi&quot;,
-    &quot;display_name&quot;: &quot;tmi&quot;,
-    &quot;channel_name&quot;: &quot;emilgardis&quot;,
-    &quot;user_id&quot;: &quot;1234&quot;,
-    &quot;channel_id&quot;: &quot;27620241&quot;,
-    &quot;time&quot;: &quot;2020-10-20T22:17:43.242793831Z&quot;,
-    &quot;sub_message&quot;: {
-        &quot;message&quot;: &quot;&quot;,
-        &quot;emotes&quot;: null
+    "benefit_end_month": 11,
+    "user_name": "tmi",
+    "display_name": "tmi",
+    "channel_name": "emilgardis",
+    "user_id": "1234",
+    "channel_id": "27620241",
+    "time": "2020-10-20T22:17:43.242793831Z",
+    "sub_message": {
+        "message": "",
+        "emotes": null
     },
-    &quot;sub_plan&quot;: &quot;1000&quot;,
-    &quot;sub_plan_name&quot;: &quot;Channel Subscription (emilgardis)&quot;,
-    &quot;months&quot;: 0,
-    &quot;cumulative_months&quot;: 1,
-    &quot;context&quot;: &quot;sub&quot;,
-    &quot;is_gift&quot;: false,
-    &quot;multi_month_duration&quot;: 0
+    "sub_plan": "1000",
+    "sub_plan_name": "Channel Subscription (emilgardis)",
+    "months": 0,
+    "cumulative_months": 1,
+    "context": "sub",
+    "is_gift": false,
+    "multi_month_duration": 0
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-subscribe-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -988,33 +990,33 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>gifted_sub() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;benefit_end_month&quot;: 0,
-    &quot;user_name&quot;: &quot;tmi&quot;,
-    &quot;display_name&quot;: &quot;tmi&quot;,
-    &quot;channel_name&quot;: &quot;emilgardis&quot;,
-    &quot;user_id&quot;: &quot;1234&quot;,
-    &quot;channel_id&quot;: &quot;27620241&quot;,
-    &quot;recipient_id&quot;: &quot;1337&quot;,
-    &quot;recipient_user_name&quot;: &quot;justintv&quot;,
-    &quot;recipient_display_name&quot;: &quot;justintv&quot;,
-    &quot;time&quot;: &quot;2020-10-20T22:18:17.542444893Z&quot;,
-    &quot;sub_message&quot;: {
-        &quot;message&quot;: &quot;&quot;,
-        &quot;emotes&quot;: null
+    "benefit_end_month": 0,
+    "user_name": "tmi",
+    "display_name": "tmi",
+    "channel_name": "emilgardis",
+    "user_id": "1234",
+    "channel_id": "27620241",
+    "recipient_id": "1337",
+    "recipient_user_name": "justintv",
+    "recipient_display_name": "justintv",
+    "time": "2020-10-20T22:18:17.542444893Z",
+    "sub_message": {
+        "message": "",
+        "emotes": null
     },
-    &quot;sub_plan&quot;: &quot;1000&quot;,
-    &quot;sub_plan_name&quot;: &quot;Channel Subscription (emilgardis)&quot;,
-    &quot;months&quot;: 1,
-    &quot;context&quot;: &quot;subgift&quot;,
-    &quot;is_gift&quot;: true,
-    &quot;multi_month_duration&quot;: 1
+    "sub_plan": "1000",
+    "sub_plan_name": "Channel Subscription (emilgardis)",
+    "months": 1,
+    "context": "subgift",
+    "is_gift": true,
+    "multi_month_duration": 1
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-subscribe-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -1027,38 +1029,38 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>resub() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;benefit_end_month&quot;: 0,
-    &quot;user_name&quot;: &quot;tmi&quot;,
-    &quot;display_name&quot;: &quot;tmi&quot;,
-    &quot;channel_name&quot;: &quot;emilgardis&quot;,
-    &quot;user_id&quot;: &quot;1234&quot;,
-    &quot;channel_id&quot;: &quot;80525799&quot;,
-    &quot;time&quot;: &quot;2020-10-25T17:15:36.541972298Z&quot;,
-    &quot;sub_message&quot;: {
-        &quot;message&quot;: &quot;message here&quot;,
-        &quot;emotes&quot;: [
+    "benefit_end_month": 0,
+    "user_name": "tmi",
+    "display_name": "tmi",
+    "channel_name": "emilgardis",
+    "user_id": "1234",
+    "channel_id": "80525799",
+    "time": "2020-10-25T17:15:36.541972298Z",
+    "sub_message": {
+        "message": "message here",
+        "emotes": [
             {
-                &quot;start&quot;: 191,
-                &quot;end&quot;: 197,
-                &quot;id&quot;: &quot;12342378&quot;
+                "start": 191,
+                "end": 197,
+                "id": "12342378"
             }
         ]
     },
-    &quot;sub_plan&quot;: &quot;2000&quot;,
-    &quot;sub_plan_name&quot;: &quot;Channel Subscription (emilgardis): $9.99 Sub&quot;,
-    &quot;months&quot;: 0,
-    &quot;cumulative_months&quot;: 12,
-    &quot;streak_months&quot;: 12,
-    &quot;context&quot;: &quot;resub&quot;,
-    &quot;is_gift&quot;: false,
-    &quot;multi_month_duration&quot;: 0
+    "sub_plan": "2000",
+    "sub_plan_name": "Channel Subscription (emilgardis): $9.99 Sub",
+    "months": 0,
+    "cumulative_months": 12,
+    "streak_months": 12,
+    "context": "resub",
+    "is_gift": false,
+    "multi_month_duration": 0
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-subscribe-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -1071,39 +1073,39 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>resub_gift() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;benefit_end_month&quot;: 0,
-    &quot;user_name&quot;: &quot;emilgardis&quot;,
-    &quot;display_name&quot;: &quot;emilgardis&quot;,
-    &quot;channel_name&quot;: &quot;sessis&quot;,
-    &quot;user_id&quot;: &quot;158640756&quot;,
-    &quot;channel_id&quot;: &quot;80525799&quot;,
-    &quot;recipient_user_name&quot;: &quot;champi70&quot;,
-    &quot;recipient_display_name&quot;: &quot;Champi70&quot;,
-    &quot;time&quot;: &quot;2020-12-06T18:54:52.804481633Z&quot;,
-    &quot;sub_message&quot;: {
-        &quot;message&quot;: &quot;¡Gracias, @emilgardis, por regalarme una suscripción! thank you so mych sessis for the streams you brighten my day each time you are in stream you are awesome sessHug&quot;,
-        &quot;emotes&quot;: [
+    "benefit_end_month": 0,
+    "user_name": "emilgardis",
+    "display_name": "emilgardis",
+    "channel_name": "sessis",
+    "user_id": "158640756",
+    "channel_id": "80525799",
+    "recipient_user_name": "champi70",
+    "recipient_display_name": "Champi70",
+    "time": "2020-12-06T18:54:52.804481633Z",
+    "sub_message": {
+        "message": "¡Gracias, @emilgardis, por regalarme una suscripción! thank you so mych sessis for the streams you brighten my day each time you are in stream you are awesome sessHug",
+        "emotes": [
             {
-                &quot;start&quot;: 161,
-                &quot;end&quot;: 167,
-                &quot;id&quot;: &quot;300741652&quot;
+                "start": 161,
+                "end": 167,
+                "id": "300741652"
             }
         ]
     },
-    &quot;sub_plan&quot;: &quot;1000&quot;,
-    &quot;sub_plan_name&quot;: &quot;Channel Subscription (sessis)&quot;,
-    &quot;months&quot;: 0,
-    &quot;cumulative_months&quot;: 24,
-    &quot;context&quot;: &quot;resubgift&quot;,
-    &quot;is_gift&quot;: true,
-    &quot;multi_month_duration&quot;: 0
+    "sub_plan": "1000",
+    "sub_plan_name": "Channel Subscription (sessis)",
+    "months": 0,
+    "cumulative_months": 24,
+    "context": "resubgift",
+    "is_gift": true,
+    "multi_month_duration": 0
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-subscribe-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -1116,31 +1118,31 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>extendsub() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;benefit_end_month&quot;: 6,
-    &quot;user_name&quot;: &quot;user&quot;,
-    &quot;display_name&quot;: &quot;User!&quot;,
-    &quot;channel_name&quot;: &quot;twitch&quot;,
-    &quot;user_id&quot;: &quot;1234&quot;,
-    &quot;channel_id&quot;: &quot;123&quot;,
-    &quot;time&quot;: &quot;2021-05-14T20:54:06.805273338Z&quot;,
-    &quot;sub_message&quot;: {
-        &quot;message&quot;: &quot;&quot;,
-        &quot;emotes&quot;: null
+    "benefit_end_month": 6,
+    "user_name": "user",
+    "display_name": "User!",
+    "channel_name": "twitch",
+    "user_id": "1234",
+    "channel_id": "123",
+    "time": "2021-05-14T20:54:06.805273338Z",
+    "sub_message": {
+        "message": "",
+        "emotes": null
     },
-    &quot;sub_plan&quot;: &quot;1000&quot;,
-    &quot;sub_plan_name&quot;: &quot;Channel Subscription (twitch)&quot;,
-    &quot;months&quot;: 0,
-    &quot;cumulative_months&quot;: 5,
-    &quot;context&quot;: &quot;extendsub&quot;,
-    &quot;is_gift&quot;: false,
-    &quot;multi_month_duration&quot;: 0
+    "sub_plan": "1000",
+    "sub_plan_name": "Channel Subscription (twitch)",
+    "months": 0,
+    "cumulative_months": 5,
+    "context": "extendsub",
+    "is_gift": false,
+    "multi_month_duration": 0
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-subscribe-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "channel-subscribe-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -1154,7 +1156,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
-        <span class="kw">let </span>s = <span class="string">&quot;channel-subscribe-events-v1.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"channel-subscribe-events-v1.1234"</span>;
         <span class="macro">assert_eq!</span>(
             ChannelSubscribeEventsV1 { channel_id: <span class="number">1234 </span>},
             s.to_string().try_into().unwrap()
@@ -1163,7 +1165,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
-        <span class="kw">let </span>s = <span class="string">&quot;channel-subscribe-events-v1.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"channel-subscribe-events-v1.1234"</span>;
         <span class="kw">let </span>right: String = ChannelSubscribeEventsV1 { channel_id: <span class="number">1234 </span>}.into();
         <span class="macro">assert_eq!</span>(s.to_string(), right);
     }

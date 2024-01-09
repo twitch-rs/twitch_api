@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/id.rs`."><title>id.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/id.rs`."><title>id.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../twitch_oauth2/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -125,7 +127,7 @@
 
 <span class="kw">use crate</span>::{AccessToken, RequestParseError};
 <span class="kw">use </span>std::time::Duration;
-<span class="doccomment">/// Twitch&#39;s representation of the oauth flow.
+<span class="doccomment">/// Twitch's representation of the oauth flow.
 ///
 /// Retrieve with
 ///
@@ -136,13 +138,13 @@
     <span class="doccomment">/// Access token
     </span><span class="kw">pub </span>access_token: AccessToken,
     <span class="doccomment">/// Time (in seconds) until token expires
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>expires_in: <span class="prelude-ty">Option</span>&lt;u64&gt;,
     <span class="doccomment">/// Token that can be used to refresh
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>refresh_token: <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::RefreshToken&gt;,
     <span class="doccomment">/// Scopes attached to token
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;scope&quot;</span>, deserialize_with = <span class="string">&quot;scope::deserialize&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"scope"</span>, deserialize_with = <span class="string">"scope::deserialize"</span>)]
     #[serde(default)]
     </span><span class="kw">pub </span>scopes: <span class="prelude-ty">Option</span>&lt;Vec&lt;<span class="kw">crate</span>::Scope&gt;&gt;,
 }
@@ -156,11 +158,11 @@
     }
 }
 
-<span class="doccomment">/// Twitch&#39;s representation of the oauth flow for errors
+<span class="doccomment">/// Twitch's representation of the oauth flow for errors
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize, thiserror::Error)]
 </span><span class="kw">pub struct </span>TwitchTokenErrorResponse {
     <span class="doccomment">/// Status code of error
-    </span><span class="attr">#[serde(with = <span class="string">&quot;status_code&quot;</span>)]
+    </span><span class="attr">#[serde(with = <span class="string">"status_code"</span>)]
     </span><span class="kw">pub </span>status: http::StatusCode,
     <span class="doccomment">/// Message attached to error
     </span><span class="kw">pub </span>message: String,
@@ -169,14 +171,14 @@
 }
 
 <span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>TwitchTokenErrorResponse {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="macro">write!</span>(
             f,
-            <span class="string">&quot;{error} - {message}&quot;</span>,
+            <span class="string">"{error} - {message}"</span>,
             error = <span class="self">self
                 </span>.error
                 .as_deref()
-                .unwrap_or_else(|| <span class="self">self</span>.status.canonical_reason().unwrap_or(<span class="string">&quot;Error&quot;</span>)),
+                .unwrap_or_else(|| <span class="self">self</span>.status.canonical_reason().unwrap_or(<span class="string">"Error"</span>)),
             message = <span class="self">self</span>.message
         )
     }
@@ -190,14 +192,14 @@
         Deserializer, Serializer,
     };
 
-    <span class="kw">pub fn </span>deserialize&lt;<span class="lifetime">&#39;de</span>, D&gt;(de: D) -&gt; <span class="prelude-ty">Result</span>&lt;StatusCode, D::Error&gt;
-    <span class="kw">where </span>D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; {
+    <span class="kw">pub fn </span>deserialize&lt;<span class="lifetime">'de</span>, D&gt;(de: D) -&gt; <span class="prelude-ty">Result</span>&lt;StatusCode, D::Error&gt;
+    <span class="kw">where </span>D: Deserializer&lt;<span class="lifetime">'de</span>&gt; {
         <span class="kw">let </span>code: u16 = Deserialize::deserialize(de)<span class="question-mark">?</span>;
         <span class="kw">match </span>StatusCode::from_u16(code) {
             <span class="prelude-val">Ok</span>(code) =&gt; <span class="prelude-val">Ok</span>(code),
             <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(Error::invalid_value(
                 Unexpected::Unsigned(code <span class="kw">as </span>u64),
-                <span class="kw-2">&amp;</span><span class="string">&quot;a value between 100 and 600&quot;</span>,
+                <span class="kw-2">&amp;</span><span class="string">"a value between 100 and 600"</span>,
             )),
         }
     }
@@ -212,13 +214,13 @@
 </span><span class="kw">pub mod </span>scope {
     <span class="kw">use </span>serde::{de::Deserialize, Deserializer};
 
-    <span class="kw">pub fn </span>deserialize&lt;<span class="lifetime">&#39;de</span>, D&gt;(de: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;<span class="kw">crate</span>::Scope&gt;&gt;, D::Error&gt;
-    <span class="kw">where </span>D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; {
+    <span class="kw">pub fn </span>deserialize&lt;<span class="lifetime">'de</span>, D&gt;(de: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;<span class="kw">crate</span>::Scope&gt;&gt;, D::Error&gt;
+    <span class="kw">where </span>D: Deserializer&lt;<span class="lifetime">'de</span>&gt; {
         <span class="kw">let </span>scopes: <span class="prelude-ty">Option</span>&lt;Vec&lt;<span class="kw">crate</span>::Scope&gt;&gt; = Deserialize::deserialize(de)<span class="question-mark">?</span>;
         <span class="kw">if let </span><span class="prelude-val">Some</span>(scopes) = scopes {
             <span class="kw">match </span>scopes {
                 scopes <span class="kw">if </span>scopes.is_empty() || scopes.len() &gt; <span class="number">1 </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(scopes)),
-                scopes <span class="kw">if </span>scopes.len() == <span class="number">1 </span>&amp;&amp; scopes.get(<span class="number">0</span>).unwrap().as_str() == <span class="string">&quot;&quot; </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+                scopes <span class="kw">if </span>scopes.len() == <span class="number">1 </span>&amp;&amp; scopes.get(<span class="number">0</span>).unwrap().as_str() == <span class="string">"" </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
                 <span class="kw">_ </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(scopes)),
             }
         } <span class="kw">else </span>{

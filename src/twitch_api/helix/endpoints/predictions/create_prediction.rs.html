@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/predictions/create_prediction.rs`."><title>create_prediction.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/predictions/create_prediction.rs`."><title>create_prediction.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -290,12 +292,12 @@
 //! ```
 //! # use twitch_api::helix::predictions::create_prediction;
 //! let outcomes = &amp;[
-//!     create_prediction::NewPredictionOutcome::new(&quot;Yes, give it time.&quot;),
-//!     create_prediction::NewPredictionOutcome::new(&quot;Definitely not.&quot;),
+//!     create_prediction::NewPredictionOutcome::new("Yes, give it time."),
+//!     create_prediction::NewPredictionOutcome::new("Definitely not."),
 //! ];
 //! let body = create_prediction::CreatePredictionBody::new(
-//!     &quot;141981764&quot;,
-//!     &quot;Any leeks in the stream?&quot;,
+//!     "141981764",
+//!     "Any leeks in the stream?",
 //!     outcomes,
 //!     120,
 //! );
@@ -311,18 +313,18 @@
 //! use twitch_api::helix::{self, predictions::create_prediction};
 //! # use twitch_api::client;
 //! # #[tokio::main]
-//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
-//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
-//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+//! # let client: helix::HelixClient&lt;'static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+//! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
 //! let request = create_prediction::CreatePredictionRequest::new();
 //! let outcomes = &amp;[
-//!     create_prediction::NewPredictionOutcome::new(&quot;Yes, give it time.&quot;),
-//!     create_prediction::NewPredictionOutcome::new(&quot;Definitely not.&quot;),
+//!     create_prediction::NewPredictionOutcome::new("Yes, give it time."),
+//!     create_prediction::NewPredictionOutcome::new("Definitely not."),
 //! ];
 //! let body = create_prediction::CreatePredictionBody::new(
-//!     &quot;141981764&quot;,
-//!     &quot;Any leeks in the stream?&quot;,
+//!     "141981764",
+//!     "Any leeks in the stream?",
 //!     outcomes,
 //!     120,
 //! );
@@ -343,16 +345,16 @@
 ///
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
-#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[cfg_attr(feature = <span class="string">"typed-builder"</span>, derive(typed_builder::TypedBuilder))]
 #[must_use]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>CreatePredictionRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
+</span><span class="kw">pub struct </span>CreatePredictionRequest&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default))]
     #[serde(skip)]
-    </span>_marker: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>()&gt;,
+    </span>_marker: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>()&gt;,
 }
 
-<span class="kw">impl </span>CreatePredictionRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>CreatePredictionRequest&lt;<span class="lifetime">'_</span>&gt; {
     <span class="doccomment">/// Create a new [`CreatePredictionRequest`]
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::default() }
 }
@@ -361,30 +363,30 @@
 ///
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
-#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[cfg_attr(feature = <span class="string">"typed-builder"</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>CreatePredictionBody&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>CreatePredictionBody&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// The broadcaster running Predictions. Provided broadcaster_id must match the user_id in the user OAuth token.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(setter(into)))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>broadcaster_id: Cow&lt;<span class="lifetime">'a</span>, types::UserIdRef&gt;,
     <span class="doccomment">/// Title for the Prediction. Maximum: 45 characters.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>title: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(setter(into)))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>title: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
     <span class="doccomment">/// Array of outcome objects with titles for the Prediction. Minimum: 2. Maximum: 10.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>outcomes: Cow&lt;<span class="lifetime">&#39;a</span>, [NewPredictionOutcome&lt;<span class="lifetime">&#39;a</span>&gt;]&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>outcomes: Cow&lt;<span class="lifetime">'a</span>, [NewPredictionOutcome&lt;<span class="lifetime">'a</span>&gt;]&gt;,
     <span class="doccomment">/// Total duration for the Prediction (in seconds). Minimum: 1. Maximum: 1800.
     </span><span class="kw">pub </span>prediction_window: i64,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; CreatePredictionBody&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; CreatePredictionBody&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Create a Channel Points Prediction for a specific Twitch channel.
     </span><span class="kw">pub fn </span>new(
-        broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>,
-        title: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
-        outcomes: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[NewPredictionOutcome&lt;<span class="lifetime">&#39;a</span>&gt;],
+        broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">'a</span>, types::UserIdRef&gt; + <span class="lifetime">'a</span>,
+        title: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'a</span>, str&gt;&gt;,
+        outcomes: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[NewPredictionOutcome&lt;<span class="lifetime">'a</span>&gt;],
         prediction_window: i64,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
@@ -396,21 +398,21 @@
     }
 }
 
-<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>CreatePredictionBody&lt;<span class="lifetime">&#39;_</span>&gt; {}
+<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>CreatePredictionBody&lt;<span class="lifetime">'_</span>&gt; {}
 
 <span class="doccomment">/// Choice settings for a poll
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
-#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[cfg_attr(feature = <span class="string">"typed-builder"</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>NewPredictionOutcome&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>NewPredictionOutcome&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Text displayed for the choice. Maximum: 25 characters.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>title: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>title: Cow&lt;<span class="lifetime">'a</span>, str&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; NewPredictionOutcome&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; NewPredictionOutcome&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Create a new [`NewPredictionOutcome`]
-    </span><span class="kw">pub fn </span>new(title: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(title: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'a</span>, str&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             title: title.into(),
         }
@@ -422,17 +424,17 @@
 /// [`create-prediction`](https://dev.twitch.tv/docs/api/reference#create-prediction)
 </span><span class="kw">pub type </span>CreatePredictionResponse = <span class="kw">super</span>::Prediction;
 
-<span class="kw">impl </span>Request <span class="kw">for </span>CreatePredictionRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>Request <span class="kw">for </span>CreatePredictionRequest&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>Response = CreatePredictionResponse;
 
-    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;predictions&quot;</span>;
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"predictions"</span>;
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
         <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::ChannelManagePredictions];
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RequestPost <span class="kw">for </span>CreatePredictionRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Body = CreatePredictionBody&lt;<span class="lifetime">&#39;a</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; RequestPost <span class="kw">for </span>CreatePredictionRequest&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Body = CreatePredictionBody&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
@@ -454,7 +456,7 @@
             })<span class="question-mark">?</span>;
         <span class="kw">let </span>data = response.data.into_iter().next().ok_or_else(|| {
             helix::HelixRequestPostError::InvalidResponse {
-                reason: <span class="string">&quot;response included no data&quot;</span>,
+                reason: <span class="string">"response included no data"</span>,
                 response: response_str.to_string(),
                 status,
                 uri: uri.clone(),
@@ -476,63 +478,63 @@
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
     <span class="kw">let </span>req = CreatePredictionRequest::new();
     <span class="kw">let </span>outcomes = <span class="kw-2">&amp;</span>[
-        NewPredictionOutcome::new(<span class="string">&quot;Yes, give it time.&quot;</span>),
-        NewPredictionOutcome::new(<span class="string">&quot;Definitely not.&quot;</span>),
+        NewPredictionOutcome::new(<span class="string">"Yes, give it time."</span>),
+        NewPredictionOutcome::new(<span class="string">"Definitely not."</span>),
     ];
-    <span class="kw">let </span>body = CreatePredictionBody::new(<span class="string">&quot;141981764&quot;</span>, <span class="string">&quot;Any leeks in the stream?&quot;</span>, outcomes, <span class="number">120</span>);
+    <span class="kw">let </span>body = CreatePredictionBody::new(<span class="string">"141981764"</span>, <span class="string">"Any leeks in the stream?"</span>, outcomes, <span class="number">120</span>);
 
     <span class="macro">assert_eq!</span>(
         std::str::from_utf8(<span class="kw-2">&amp;</span>body.try_to_body().unwrap()).unwrap(),
-        <span class="string">r#&quot;{&quot;broadcaster_id&quot;:&quot;141981764&quot;,&quot;title&quot;:&quot;Any leeks in the stream?&quot;,&quot;outcomes&quot;:[{&quot;title&quot;:&quot;Yes, give it time.&quot;},{&quot;title&quot;:&quot;Definitely not.&quot;}],&quot;prediction_window&quot;:120}&quot;#
+        <span class="string">r#"{"broadcaster_id":"141981764","title":"Any leeks in the stream?","outcomes":[{"title":"Yes, give it time."},{"title":"Definitely not."}],"prediction_window":120}"#
     </span>);
 
-    <span class="macro">dbg!</span>(req.create_request(body, <span class="string">&quot;token&quot;</span>, <span class="string">&quot;clientid&quot;</span>).unwrap());
+    <span class="macro">dbg!</span>(req.create_request(body, <span class="string">"token"</span>, <span class="string">"clientid"</span>).unwrap());
 
     <span class="comment">// From twitch docs
-    </span><span class="kw">let </span>data = <span class="string">br##&quot;
+    </span><span class="kw">let </span>data = <span class="string">br##"
 {
-    &quot;data&quot;: [
+    "data": [
         {
-        &quot;id&quot;: &quot;bc637af0-7766-4525-9308-4112f4cbf178&quot;,
-        &quot;broadcaster_id&quot;: &quot;141981764&quot;,
-        &quot;broadcaster_name&quot;: &quot;TwitchDev&quot;,
-        &quot;broadcaster_login&quot;: &quot;twitchdev&quot;,
-        &quot;title&quot;: &quot;Any leeks in the stream?&quot;,
-        &quot;winning_outcome_id&quot;: null,
-        &quot;outcomes&quot;: [
+        "id": "bc637af0-7766-4525-9308-4112f4cbf178",
+        "broadcaster_id": "141981764",
+        "broadcaster_name": "TwitchDev",
+        "broadcaster_login": "twitchdev",
+        "title": "Any leeks in the stream?",
+        "winning_outcome_id": null,
+        "outcomes": [
             {
-            &quot;id&quot;: &quot;73085848-a94d-4040-9d21-2cb7a89374b7&quot;,
-            &quot;title&quot;: &quot;Yes, give it time.&quot;,
-            &quot;users&quot;: 0,
-            &quot;channel_points&quot;: 0,
-            &quot;top_predictors&quot;: null,
-            &quot;color&quot;: &quot;BLUE&quot;
+            "id": "73085848-a94d-4040-9d21-2cb7a89374b7",
+            "title": "Yes, give it time.",
+            "users": 0,
+            "channel_points": 0,
+            "top_predictors": null,
+            "color": "BLUE"
             },
             {
-            &quot;id&quot;: &quot;906b70ba-1f12-47ea-9e95-e5f93d20e9cc&quot;,
-            &quot;title&quot;: &quot;Definitely not.&quot;,
-            &quot;users&quot;: 0,
-            &quot;channel_points&quot;: 0,
-            &quot;top_predictors&quot;: null,
-            &quot;color&quot;: &quot;PINK&quot;
+            "id": "906b70ba-1f12-47ea-9e95-e5f93d20e9cc",
+            "title": "Definitely not.",
+            "users": 0,
+            "channel_points": 0,
+            "top_predictors": null,
+            "color": "PINK"
             }
         ],
-        &quot;prediction_window&quot;: 120,
-        &quot;status&quot;: &quot;ACTIVE&quot;,
-        &quot;created_at&quot;: &quot;2021-04-28T17:11:22.595914172Z&quot;,
-        &quot;ended_at&quot;: null,
-        &quot;locked_at&quot;: null
+        "prediction_window": 120,
+        "status": "ACTIVE",
+        "created_at": "2021-04-28T17:11:22.595914172Z",
+        "ended_at": null,
+        "locked_at": null
         }
     ]
 }
-    &quot;##
+    "##
     </span>.to_vec();
 
     <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">200</span>).body(data).unwrap();
-    <span class="comment">// This is marked as 204 in twitch docs, but in reality it&#39;s 200
+    <span class="comment">// This is marked as 204 in twitch docs, but in reality it's 200
 
     </span><span class="kw">let </span>uri = req.get_uri().unwrap();
-    <span class="macro">assert_eq!</span>(uri.to_string(), <span class="string">&quot;https://api.twitch.tv/helix/predictions?&quot;</span>);
+    <span class="macro">assert_eq!</span>(uri.to_string(), <span class="string">"https://api.twitch.tv/helix/predictions?"</span>);
 
     <span class="macro">dbg!</span>(CreatePredictionRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
 }

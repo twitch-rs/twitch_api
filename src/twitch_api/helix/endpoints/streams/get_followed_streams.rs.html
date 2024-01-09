@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/streams/get_followed_streams.rs`."><title>get_followed_streams.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/streams/get_followed_streams.rs`."><title>get_followed_streams.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -180,7 +182,7 @@
 //! ```rust
 //! use twitch_api::helix::streams::get_followed_streams;
 //! let request =
-//!     get_followed_streams::GetFollowedStreamsRequest::user_id(&quot;1234&quot;);
+//!     get_followed_streams::GetFollowedStreamsRequest::user_id("1234");
 //! ```
 //!
 //! ## Response: [Stream]
@@ -191,11 +193,11 @@
 //! use twitch_api::helix::{self, streams::get_followed_streams};
 //! # use twitch_api::client;
 //! # #[tokio::main]
-//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
-//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
-//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+//! # let client: helix::HelixClient&lt;'static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+//! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = get_followed_streams::GetFollowedStreamsRequest::user_id(&quot;1234&quot;);
+//! let request = get_followed_streams::GetFollowedStreamsRequest::user_id("1234");
 //! let response: Vec&lt;get_followed_streams::GetFollowedStreamsResponse&gt; = client.req_get(request, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -211,34 +213,34 @@
 ///
 /// [`get-followed-streams`](https://dev.twitch.tv/docs/api/reference#get-followed-streams)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
-#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[cfg_attr(feature = <span class="string">"typed-builder"</span>, derive(typed_builder::TypedBuilder))]
 #[must_use]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>GetFollowedStreamsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>GetFollowedStreamsRequest&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(setter(into)))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>user_id: Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(setter(into)))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>user_id: Cow&lt;<span class="lifetime">'a</span>, types::UserIdRef&gt;,
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, helix::CursorRef&gt;&gt;,
     <span class="doccomment">/// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>before: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>before: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, helix::CursorRef&gt;&gt;,
     <span class="doccomment">/// Maximum number of objects to return. Maximum: 100. Default: 20.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;usize&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; GetFollowedStreamsRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; GetFollowedStreamsRequest&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Get a users followed streams.
     ///
     /// Requires token with scope [`user:read:follows`](twitch_oauth2::Scope::UserReadFollows).
     ///
     /// See also [`HelixClient::get_followed_streams`](crate::helix::HelixClient::get_followed_streams).
-    </span><span class="kw">pub fn </span>user_id(user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>user_id(user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">'a</span>, types::UserIdRef&gt; + <span class="lifetime">'a</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             user_id: user_id.into_cow(),
             after: Default::default(),
@@ -259,18 +261,18 @@
 /// [`get-followed-streams`](https://dev.twitch.tv/docs/api/reference#get-followed-streams)
 </span><span class="kw">pub type </span>GetFollowedStreamsResponse = Stream;
 
-<span class="kw">impl </span>Request <span class="kw">for </span>GetFollowedStreamsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>Request <span class="kw">for </span>GetFollowedStreamsRequest&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>Response = Vec&lt;GetFollowedStreamsResponse&gt;;
 
-    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;streams/followed&quot;</span>;
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"streams/followed"</span>;
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
         <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::UserReadFollows];
 }
 
-<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetFollowedStreamsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {}
+<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetFollowedStreamsRequest&lt;<span class="lifetime">'_</span>&gt; {}
 
-<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetFollowedStreamsRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetFollowedStreamsRequest&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
         <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
     }
@@ -280,52 +282,52 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetFollowedStreamsRequest::user_id(<span class="string">&quot;141981764&quot;</span>);
+    <span class="kw">let </span>req = GetFollowedStreamsRequest::user_id(<span class="string">"141981764"</span>);
 
     <span class="comment">// From twitch docs.
-    </span><span class="kw">let </span>data = <span class="string">br#&quot;
+    </span><span class="kw">let </span>data = <span class="string">br#"
 {
-    &quot;data&quot;: [
+    "data": [
           {
-            &quot;id&quot;: &quot;42170724654&quot;,
-            &quot;user_id&quot;: &quot;132954738&quot;,
-            &quot;user_login&quot;: &quot;aws&quot;,
-            &quot;user_name&quot;: &quot;AWS&quot;,
-            &quot;game_id&quot;: &quot;417752&quot;,
-            &quot;game_name&quot;: &quot;Talk Shows &amp; Podcasts&quot;,
-            &quot;type&quot;: &quot;live&quot;,
-            &quot;title&quot;: &quot;AWS Howdy Partner! Y&#39;all welcome ExtraHop to the show!&quot;,
-            &quot;viewer_count&quot;: 20,
-            &quot;started_at&quot;: &quot;2021-03-31T20:57:26Z&quot;,
-            &quot;language&quot;: &quot;en&quot;,
-            &quot;thumbnail_url&quot;: &quot;https://static-cdn.jtvnw.net/previews-ttv/live_user_aws-{width}x{height}.jpg&quot;,
-            &quot;tag_ids&quot;: [],
-            &quot;tags&quot;: [&quot;English&quot;],
-            &quot;is_mature&quot;: false
+            "id": "42170724654",
+            "user_id": "132954738",
+            "user_login": "aws",
+            "user_name": "AWS",
+            "game_id": "417752",
+            "game_name": "Talk Shows &amp; Podcasts",
+            "type": "live",
+            "title": "AWS Howdy Partner! Y'all welcome ExtraHop to the show!",
+            "viewer_count": 20,
+            "started_at": "2021-03-31T20:57:26Z",
+            "language": "en",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_aws-{width}x{height}.jpg",
+            "tag_ids": [],
+            "tags": ["English"],
+            "is_mature": false
           },
           {
-            &quot;id&quot;: &quot;42170724654&quot;,
-            &quot;user_id&quot;: &quot;132954738&quot;,
-            &quot;user_login&quot;: &quot;aws&quot;,
-            &quot;user_name&quot;: &quot;AWS&quot;,
-            &quot;game_id&quot;: &quot;417752&quot;,
-            &quot;game_name&quot;: &quot;Talk Shows &amp; Podcasts&quot;,
-            &quot;type&quot;: &quot;live&quot;,
-            &quot;title&quot;: &quot;AWS Howdy Partner! Y&#39;all welcome ExtraHop to the show!&quot;,
-            &quot;viewer_count&quot;: 20,
-            &quot;started_at&quot;: &quot;2021-03-31T20:57:26Z&quot;,
-            &quot;language&quot;: &quot;en&quot;,
-            &quot;thumbnail_url&quot;: &quot;https://static-cdn.jtvnw.net/previews-ttv/live_user_aws-{width}x{height}.jpg&quot;,
-            &quot;tag_ids&quot;: [],
-            &quot;tags&quot;: [&quot;English&quot;],
-            &quot;is_mature&quot;: false
+            "id": "42170724654",
+            "user_id": "132954738",
+            "user_login": "aws",
+            "user_name": "AWS",
+            "game_id": "417752",
+            "game_name": "Talk Shows &amp; Podcasts",
+            "type": "live",
+            "title": "AWS Howdy Partner! Y'all welcome ExtraHop to the show!",
+            "viewer_count": 20,
+            "started_at": "2021-03-31T20:57:26Z",
+            "language": "en",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_aws-{width}x{height}.jpg",
+            "tag_ids": [],
+            "tags": ["English"],
+            "is_mature": false
           }
     ],
-    &quot;pagination&quot;: {
-        &quot;cursor&quot;: &quot;eyJiIjp7IkN1cnNvciI6ImV5SnpJam8zT0RNMk5TNDBORFF4TlRjMU1UY3hOU3dpWkNJNlptRnNjMlVzSW5RaU9uUnlkV1Y5In0sImEiOnsiQ3Vyc29yIjoiZXlKeklqb3hOVGs0TkM0MU56RXhNekExTVRZNU1ESXNJbVFpT21aaGJITmxMQ0owSWpwMGNuVmxmUT09In19==&quot;
+    "pagination": {
+        "cursor": "eyJiIjp7IkN1cnNvciI6ImV5SnpJam8zT0RNMk5TNDBORFF4TlRjMU1UY3hOU3dpWkNJNlptRnNjMlVzSW5RaU9uUnlkV1Y5In0sImEiOnsiQ3Vyc29yIjoiZXlKeklqb3hOVGs0TkM0MU56RXhNekExTVRZNU1ESXNJbVFpT21aaGJITmxMQ0owSWpwMGNuVmxmUT09In19=="
     }
 }
-&quot;#
+"#
         </span>.to_vec();
 
     <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
@@ -333,7 +335,7 @@
     <span class="kw">let </span>uri = req.get_uri().unwrap();
     <span class="macro">assert_eq!</span>(
         uri.to_string(),
-        <span class="string">&quot;https://api.twitch.tv/helix/streams/followed?user_id=141981764&quot;
+        <span class="string">"https://api.twitch.tv/helix/streams/followed?user_id=141981764"
     </span>);
 
     <span class="macro">dbg!</span>(GetFollowedStreamsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());

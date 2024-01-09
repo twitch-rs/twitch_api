@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/time.rs`."><title>time.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/time.rs`."><title>time.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../twitch_types/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -952,7 +954,7 @@
     ///
     ///This function will panic if the provided raw string is not valid.
     </span><span class="attr">#[track_caller]
-    </span><span class="kw">pub fn </span>from_static(raw: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>from_static(raw: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="self">Self </span>{
         ::std::borrow::ToOwned::to_owned(TimestampRef::from_static(raw))
     }
 
@@ -974,7 +976,7 @@
     </span><span class="kw">pub fn </span>take(<span class="self">self</span>) -&gt; String { <span class="self">self</span>.<span class="number">0 </span>}
 }
 
-<span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef&gt; <span class="kw">for </span>Timestamp {
+<span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>TimestampRef&gt; <span class="kw">for </span>Timestamp {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span>TimestampRef) -&gt; <span class="self">Self </span>{ ::std::borrow::ToOwned::to_owned(s) }
 }
@@ -1009,9 +1011,9 @@
     </span><span class="kw">fn </span>from(r: Box&lt;TimestampRef&gt;) -&gt; <span class="self">Self </span>{ r.into_owned() }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, TimestampRef&gt;&gt; <span class="kw">for </span>Timestamp {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::std::convert::From&lt;::std::borrow::Cow&lt;<span class="lifetime">'a</span>, TimestampRef&gt;&gt; <span class="kw">for </span>Timestamp {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(r: ::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, TimestampRef&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(r: ::std::borrow::Cow&lt;<span class="lifetime">'a</span>, TimestampRef&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">match </span>r {
             ::std::borrow::Cow::Borrowed(b) =&gt; ::std::borrow::ToOwned::to_owned(b),
             ::std::borrow::Cow::Owned(o) =&gt; o,
@@ -1019,7 +1021,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;Timestamp&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, TimestampRef&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::std::convert::From&lt;Timestamp&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">'a</span>, TimestampRef&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(owned: Timestamp) -&gt; <span class="self">Self </span>{ ::std::borrow::Cow::Owned(owned) }
 }
@@ -1039,7 +1041,7 @@
     }
 }
 
-<span class="kw">impl </span>::std::convert::TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>str&gt; <span class="kw">for </span>Timestamp {
+<span class="kw">impl </span>::std::convert::TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>str&gt; <span class="kw">for </span>Timestamp {
     <span class="kw">type </span>Error = TimestampParseError;
 
     <span class="attr">#[inline]
@@ -1070,7 +1072,7 @@
     <span class="attr">#[allow(unsafe_code)]
     #[inline]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
-        <span class="doccomment">///SAFETY: The value was satisfies the type&#39;s invariant and conforms to the required implicit contracts of the validator.
+        <span class="doccomment">///SAFETY: The value was satisfies the type's invariant and conforms to the required implicit contracts of the validator.
         </span><span class="kw">fn </span>_unchecked_safety_comment() {}
 
         <span class="kw">unsafe </span>{ TimestampRef::from_str_unchecked(::std::convert::AsRef::as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>)) }
@@ -1091,17 +1093,17 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
 </span><span class="kw">impl </span>::serde::Serialize <span class="kw">for </span>Timestamp {
     <span class="kw">fn </span>serialize&lt;S: ::serde::Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
         &lt;String <span class="kw">as </span>::serde::Serialize&gt;::serialize(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, serializer)
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Timestamp {
-    <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
-        <span class="kw">let </span>raw = &lt;String <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
+<span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Timestamp {
+    <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="kw">let </span>raw = &lt;String <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
         <span class="self">Self</span>::new(raw).map_err(&lt;D::Error <span class="kw">as </span>::serde::de::Error&gt;::custom)
     }
 }
@@ -1139,8 +1141,8 @@
     ///
     ///This function will panic if the provided raw string is not valid.
     </span><span class="attr">#[track_caller]
-    </span><span class="kw">pub fn </span>from_static(raw: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="self">Self </span>{
-        <span class="self">Self</span>::from_str(raw).expect(<span class="macro">concat!</span>(<span class="string">&quot;invalid &quot;</span>, <span class="macro">stringify!</span>(TimestampRef)))
+    </span><span class="kw">pub fn </span>from_static(raw: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><span class="self">Self </span>{
+        <span class="self">Self</span>::from_str(raw).expect(<span class="macro">concat!</span>(<span class="string">"invalid "</span>, <span class="macro">stringify!</span>(TimestampRef)))
     }
 
     <span class="attr">#[allow(unsafe_code)]
@@ -1181,21 +1183,21 @@
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Timestamp) -&gt; bool { <span class="self">self</span>.as_str() == other.as_str() }
 }
 
-<span class="kw">impl </span>::std::cmp::PartialEq&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef&gt; <span class="kw">for </span>Timestamp {
+<span class="kw">impl </span>::std::cmp::PartialEq&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>TimestampRef&gt; <span class="kw">for </span>Timestamp {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: &amp;&amp;TimestampRef) -&gt; bool { <span class="self">self</span>.as_str() == other.as_str() }
 }
 
-<span class="kw">impl </span>::std::cmp::PartialEq&lt;Timestamp&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef {
+<span class="kw">impl </span>::std::cmp::PartialEq&lt;Timestamp&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'_ </span>TimestampRef {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Timestamp) -&gt; bool { <span class="self">self</span>.as_str() == other.as_str() }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::std::convert::TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>TimestampRef {
     <span class="kw">type </span>Error = TimestampParseError;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>try_from(s: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef, <span class="self">Self</span>::Error&gt; { TimestampRef::from_str(s) }
+    </span><span class="kw">fn </span>try_from(s: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>TimestampRef, <span class="self">Self</span>::Error&gt; { TimestampRef::from_str(s) }
 }
 
 <span class="kw">impl </span>::std::borrow::Borrow&lt;str&gt; <span class="kw">for </span>TimestampRef {
@@ -1208,24 +1210,24 @@
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0 </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, TimestampRef&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>TimestampRef&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">'a</span>, TimestampRef&gt; {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef) -&gt; <span class="self">Self </span>{ ::std::borrow::Cow::Borrowed(r) }
+    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TimestampRef) -&gt; <span class="self">Self </span>{ ::std::borrow::Cow::Borrowed(r) }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;b</span>, TimestampRef&gt;&gt;
-    <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>: <span class="lifetime">'a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>::std::borrow::Cow&lt;<span class="lifetime">'b</span>, TimestampRef&gt;&gt;
+    <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>TimestampRef
 {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;b</span>, TimestampRef&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef {
+    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>::std::borrow::Cow&lt;<span class="lifetime">'b</span>, TimestampRef&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TimestampRef {
         ::std::borrow::Borrow::borrow(r)
     }
 }
 
-<span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef&gt; <span class="kw">for </span>::std::rc::Rc&lt;TimestampRef&gt; {
+<span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>TimestampRef&gt; <span class="kw">for </span>::std::rc::Rc&lt;TimestampRef&gt; {
     <span class="attr">#[allow(unsafe_code)]
     #[inline]
-    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">'_ </span>TimestampRef) -&gt; <span class="self">Self </span>{
         <span class="doccomment">///SAFETY: `TimestampRef` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const TimestampRef`
         </span><span class="kw">fn </span>_ptr_safety_comment() {}
 
@@ -1234,10 +1236,10 @@
     }
 }
 
-<span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef&gt; <span class="kw">for </span>::std::sync::Arc&lt;TimestampRef&gt; {
+<span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>TimestampRef&gt; <span class="kw">for </span>::std::sync::Arc&lt;TimestampRef&gt; {
     <span class="attr">#[allow(unsafe_code)]
     #[inline]
-    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>TimestampRef) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">'_ </span>TimestampRef) -&gt; <span class="self">Self </span>{
         <span class="doccomment">///SAFETY: `TimestampRef` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const TimestampRef`
         </span><span class="kw">fn </span>_ptr_safety_comment() {}
 
@@ -1262,34 +1264,34 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
 </span><span class="kw">impl </span>::serde::Serialize <span class="kw">for </span>TimestampRef {
     <span class="kw">fn </span>serialize&lt;S: ::serde::Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
         &lt;str <span class="kw">as </span>::serde::Serialize&gt;::serialize(<span class="self">self</span>.as_str(), serializer)
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>: <span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;a</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TimestampRef {
-    <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
-        <span class="kw">let </span>raw = &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
+<span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>: <span class="lifetime">'a</span>, <span class="lifetime">'a</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>TimestampRef {
+    <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="kw">let </span>raw = &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
         TimestampRef::from_str(raw).map_err(&lt;D::Error <span class="kw">as </span>::serde::de::Error&gt;::custom)
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Box&lt;TimestampRef&gt; {
-    <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
-        <span class="kw">let </span>owned = &lt;Timestamp <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
+<span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Box&lt;TimestampRef&gt; {
+    <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="kw">let </span>owned = &lt;Timestamp <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(owned.into_boxed_ref())
     }
 }
 
 <span class="macro">impl_extra!</span>(validated, Timestamp, TimestampRef, TimestampParseError);
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>Timestamp {
-    <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; arbitrary::Result&lt;<span class="self">Self</span>&gt; {
+<span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>Timestamp {
+    <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; arbitrary::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>year = u.int_in_range(<span class="number">0</span>..=<span class="number">9999</span>)<span class="question-mark">?</span>;
         <span class="kw">let </span>month = u.int_in_range(<span class="number">1</span>..=<span class="number">12</span>)<span class="question-mark">?</span>;
         <span class="kw">const </span>M_D: [u8; <span class="number">12</span>] = [<span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>];
@@ -1299,11 +1301,11 @@
         <span class="kw">let </span>second = u.int_in_range(<span class="number">0</span>..=<span class="number">59</span>)<span class="question-mark">?</span>;
         <span class="kw">let </span>millis = <span class="kw">if </span>bool::arbitrary(u)<span class="question-mark">? </span>{
             <span class="kw">let </span>millis = u.int_in_range(<span class="number">0</span>..=<span class="number">999</span>)<span class="question-mark">?</span>;
-            <span class="macro">format!</span>(<span class="string">&quot;.{millis:03}&quot;</span>)
+            <span class="macro">format!</span>(<span class="string">".{millis:03}"</span>)
         } <span class="kw">else </span>{
-            <span class="string">&quot;&quot;</span>.to_owned()
+            <span class="string">""</span>.to_owned()
         };
-        <span class="macro">format!</span>(<span class="string">&quot;{year:04}-{month:02}-{day:02}T{hour:02}:{minute:02}:{second:02}{millis}Z&quot;</span>)
+        <span class="macro">format!</span>(<span class="string">"{year:04}-{month:02}-{day:02}T{hour:02}:{minute:02}:{second:02}{millis}Z"</span>)
             .parse()
             .map_err(|<span class="kw">_</span>| arbitrary::Error::IncorrectFormat)
     }
@@ -1311,59 +1313,59 @@
 
 <span class="kw">impl </span>TimestampRef {
     <span class="kw">fn </span>validate(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), TimestampParseError&gt; {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
         </span>{
             <span class="kw">let _ </span>= time::OffsetDateTime::parse(s, <span class="kw-2">&amp;</span>time::format_description::well_known::Rfc3339)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(())
         }
-        <span class="attr">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
+        <span class="attr">#[cfg(not(feature = <span class="string">"time"</span>))]
         </span>{
             <span class="comment">// This validator is lacking some features for now
             </span><span class="kw">if </span>!s.chars().all(|c| {
                 c.is_numeric()
-                    || c == <span class="string">&#39;T&#39;
-                    </span>|| c == <span class="string">&#39;Z&#39;
-                    </span>|| c == <span class="string">&#39;+&#39;
-                    </span>|| c == <span class="string">&#39;.&#39;
-                    </span>|| c == <span class="string">&#39;-&#39;
-                    </span>|| c == <span class="string">&#39;:&#39;
+                    || c == <span class="string">'T'
+                    </span>|| c == <span class="string">'Z'
+                    </span>|| c == <span class="string">'+'
+                    </span>|| c == <span class="string">'.'
+                    </span>|| c == <span class="string">'-'
+                    </span>|| c == <span class="string">':'
             </span>}) {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(TimestampParseError::invalid());
             }
-            <span class="comment">// PSA: Don&#39;t do time stuff... it sucks
-            </span><span class="kw">if let </span><span class="prelude-val">Some</span>(i) = s.find(<span class="string">&#39;T&#39;</span>) {
-                <span class="comment">// if no `T`, then it&#39;s not a valid timestamp
+            <span class="comment">// PSA: Don't do time stuff... it sucks
+            </span><span class="kw">if let </span><span class="prelude-val">Some</span>(i) = s.find(<span class="string">'T'</span>) {
+                <span class="comment">// if no `T`, then it's not a valid timestamp
                 </span><span class="kw">if </span>i &lt; <span class="number">1 </span>{
                     <span class="kw">return </span><span class="prelude-val">Err</span>(TimestampParseError::invalid());
                 };
                 <span class="kw">let </span>(full_date, full_time) = s.split_at(i);
-                <span class="kw">if </span>full_date.len() != <span class="string">&quot;1900-00-00&quot;</span>.len() {
+                <span class="kw">if </span>full_date.len() != <span class="string">"1900-00-00"</span>.len() {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(TimestampParseError::invalid_s(full_date));
                 }
-                <span class="kw">if </span>!full_date.chars().all(|c| c.is_numeric() || c == <span class="string">&#39;-&#39;</span>) {
+                <span class="kw">if </span>!full_date.chars().all(|c| c.is_numeric() || c == <span class="string">'-'</span>) {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(TimestampParseError::invalid_s(full_date));
                 }
-                <span class="kw">let </span>partial_time = <span class="kw">if let </span><span class="prelude-val">Some</span>(stripped) = full_time.strip_suffix(<span class="string">&#39;Z&#39;</span>) {
+                <span class="kw">let </span>partial_time = <span class="kw">if let </span><span class="prelude-val">Some</span>(stripped) = full_time.strip_suffix(<span class="string">'Z'</span>) {
                     stripped
                 } <span class="kw">else </span>{
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(TimestampParseError::Other(<span class="string">&quot;unsupported non-UTC timestamp, enable the `time` feature in `twitch_types` to enable parsing these&quot;</span>));
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(TimestampParseError::Other(<span class="string">"unsupported non-UTC timestamp, enable the `time` feature in `twitch_types` to enable parsing these"</span>));
                 };
                 <span class="kw">if </span><span class="number">2 </span>!= partial_time
                     .chars()
                     .into_iter()
-                    .filter(|<span class="kw-2">&amp;</span>b| b == <span class="string">&#39;:&#39;</span>)
+                    .filter(|<span class="kw-2">&amp;</span>b| b == <span class="string">':'</span>)
                     .count()
                 {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(TimestampParseError::invalid_s(partial_time));
                 };
-                <span class="kw">if </span>!partial_time.contains(<span class="string">&#39;.&#39;</span>) &amp;&amp; partial_time.len() != <span class="string">&quot;T00:00:00&quot;</span>.len() {
+                <span class="kw">if </span>!partial_time.contains(<span class="string">'.'</span>) &amp;&amp; partial_time.len() != <span class="string">"T00:00:00"</span>.len() {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(TimestampParseError::invalid_s(partial_time));
-                } <span class="kw">else if </span>partial_time.contains(<span class="string">&#39;.&#39;</span>) {
-                    <span class="kw">let </span><span class="kw-2">mut </span>i = partial_time.split(<span class="string">&#39;.&#39;</span>);
+                } <span class="kw">else if </span>partial_time.contains(<span class="string">'.'</span>) {
+                    <span class="kw">let </span><span class="kw-2">mut </span>i = partial_time.split(<span class="string">'.'</span>);
                     <span class="comment">// if len not correct or next is none
                     </span><span class="kw">if </span>!i
                         .next()
-                        .map(|s| s.len() == <span class="string">&quot;T00:00:00&quot;</span>.len())
+                        .map(|s| s.len() == <span class="string">"T00:00:00"</span>.len())
                         .unwrap_or_default()
                     {
                         <span class="kw">return </span><span class="prelude-val">Err</span>(TimestampParseError::invalid_s(partial_time));
@@ -1386,17 +1388,17 @@
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>TimestampParseError {
     <span class="doccomment">/// Could not parse the timestamp using `time`
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
     </span>TimeError(time::error::Parse),
     <span class="doccomment">/// Could not format the timestamp using `time`
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
     </span>TimeFormatError(time::error::Format),
     <span class="doccomment">/// Other error
-    </span>Other(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
+    </span>Other(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str),
     <span class="doccomment">/// Timestamp has an invalid format.
     </span>InvalidFormat {
         <span class="doccomment">/// location of error
-        </span>location: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>std::panic::Location&lt;<span class="lifetime">&#39;static</span>&gt;,
+        </span>location: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>std::panic::Location&lt;<span class="lifetime">'static</span>&gt;,
         <span class="doccomment">/// Thing that failed
         </span>s: <span class="prelude-ty">Option</span>&lt;String&gt;,
     },
@@ -1406,21 +1408,21 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>core::fmt::Formatter) -&gt; core::fmt::Result {
         <span class="attr">#[allow(unused_variables)]
         </span><span class="kw">match </span><span class="self">self </span>{
-            <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
             </span>TimestampParseError::TimeError(parse_error) =&gt; {
-                <span class="macro">write!</span>(formatter, <span class="string">&quot;Could not parse the timestamp using `time`&quot;</span>)
+                <span class="macro">write!</span>(formatter, <span class="string">"Could not parse the timestamp using `time`"</span>)
             }
-            <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
             </span>TimestampParseError::TimeFormatError(<span class="kw">_</span>) =&gt; {
-                <span class="macro">write!</span>(formatter, <span class="string">&quot;Could not format the timestamp using `time`&quot;</span>)
+                <span class="macro">write!</span>(formatter, <span class="string">"Could not format the timestamp using `time`"</span>)
             }
             TimestampParseError::Other(other) =&gt; {
-                <span class="macro">write!</span>(formatter, <span class="string">&quot;{other}&quot;</span>)
+                <span class="macro">write!</span>(formatter, <span class="string">"{other}"</span>)
             }
             TimestampParseError::InvalidFormat { location, s } =&gt; {
                 <span class="macro">write!</span>(
                     formatter,
-                    <span class="string">&quot;timestamp has an invalid format. {s:?} - {location}&quot;
+                    <span class="string">"timestamp has an invalid format. {s:?} - {location}"
                 </span>)
             }
         }
@@ -1428,13 +1430,13 @@
 }
 
 <span class="kw">impl </span>std::error::Error <span class="kw">for </span>TimestampParseError {
-    <span class="kw">fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::option::Option&lt;<span class="kw-2">&amp;</span>(<span class="kw">dyn </span>std::error::Error + <span class="lifetime">&#39;static</span>)&gt; {
+    <span class="kw">fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::option::Option&lt;<span class="kw-2">&amp;</span>(<span class="kw">dyn </span>std::error::Error + <span class="lifetime">'static</span>)&gt; {
         <span class="kw">match </span><span class="self">self </span>{
-            <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
             </span>TimestampParseError::TimeError { <span class="number">0</span>: source, .. } =&gt; {
                 std::option::Option::Some(source <span class="kw">as _</span>)
             }
-            <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
             </span>TimestampParseError::TimeFormatError { <span class="number">0</span>: source, .. } =&gt; {
                 std::option::Option::Some(source <span class="kw">as _</span>)
             }
@@ -1443,17 +1445,17 @@
         }
     }
 }
-<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
 </span><span class="kw">impl </span>std::convert::From&lt;time::error::Parse&gt; <span class="kw">for </span>TimestampParseError {
     <span class="kw">fn </span>from(source: time::error::Parse) -&gt; <span class="self">Self </span>{ TimestampParseError::TimeError(source) }
 }
-<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
 </span><span class="kw">impl </span>std::convert::From&lt;time::error::Format&gt; <span class="kw">for </span>TimestampParseError {
     <span class="kw">fn </span>from(source: time::error::Format) -&gt; <span class="self">Self </span>{ TimestampParseError::TimeFormatError(source) }
 }
 
 <span class="kw">impl </span>TimestampParseError {
-    <span class="attr">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
+    <span class="attr">#[cfg(not(feature = <span class="string">"time"</span>))]
     #[track_caller]
     </span><span class="kw">fn </span>invalid() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::InvalidFormat {
@@ -1462,7 +1464,7 @@
         }
     }
 
-    <span class="attr">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
+    <span class="attr">#[cfg(not(feature = <span class="string">"time"</span>))]
     #[track_caller]
     </span><span class="kw">fn </span>invalid_s(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::InvalidFormat {
@@ -1479,22 +1481,22 @@
     ///
     /// Internally, without the `time` feature, this uses `unsafe` to deal with the raw string bytes. To ensure safety, the method will panic on invalid input and source.
     </span><span class="kw">fn </span>set_time(<span class="kw-2">&amp;mut </span><span class="self">self</span>, hours: u8, minutes: u8, seconds: u8) {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
         </span>{
             <span class="kw">let _ </span>= std::mem::replace(
                 <span class="self">self</span>,
                 <span class="self">self</span>.to_fixed_offset()
                     .replace_time(
                         time::Time::from_hms(hours, minutes, seconds)
-                            .expect(<span class="string">&quot;could not create time&quot;</span>),
+                            .expect(<span class="string">"could not create time"</span>),
                     )
                     .try_into()
-                    .expect(<span class="string">&quot;could not make timestamp&quot;</span>),
+                    .expect(<span class="string">"could not make timestamp"</span>),
             );
         }
-        <span class="attr">#[cfg(not(feature = <span class="string">&quot;time&quot;</span>))]
+        <span class="attr">#[cfg(not(feature = <span class="string">"time"</span>))]
         </span>{
-            <span class="kw">const </span>ERROR_MSG: <span class="kw-2">&amp;</span>str = <span class="string">&quot;malformed timestamp&quot;</span>;
+            <span class="kw">const </span>ERROR_MSG: <span class="kw-2">&amp;</span>str = <span class="string">"malformed timestamp"</span>;
             <span class="macro">assert!</span>(hours &lt; <span class="number">24</span>);
             <span class="macro">assert!</span>(minutes &lt; <span class="number">60</span>);
             <span class="macro">assert!</span>(seconds &lt; <span class="number">60</span>);
@@ -1514,10 +1516,10 @@
                 b[<span class="number">0</span>] = replace[<span class="number">0</span>];
                 b[<span class="number">1</span>] = replace[<span class="number">1</span>];
             }
-            <span class="kw">let </span>t = <span class="self">self</span>.<span class="number">0</span>.find(<span class="string">&#39;T&#39;</span>).expect(ERROR_MSG);
+            <span class="kw">let </span>t = <span class="self">self</span>.<span class="number">0</span>.find(<span class="string">'T'</span>).expect(ERROR_MSG);
             <span class="kw">let </span>partial_time: <span class="kw-2">&amp;mut </span>str = <span class="kw-2">&amp;mut </span><span class="self">self</span>.<span class="number">0</span>[t + <span class="number">1</span>..];
             <span class="comment">// find the hours, minutes and seconds
-            </span><span class="kw">let </span><span class="kw-2">mut </span>matches = partial_time.match_indices(<span class="string">&#39;:&#39;</span>);
+            </span><span class="kw">let </span><span class="kw-2">mut </span>matches = partial_time.match_indices(<span class="string">':'</span>);
             <span class="kw">let </span>(h, m, s) = (
                 <span class="number">0</span>,
                 matches.next().expect(ERROR_MSG).<span class="number">0 </span>+ <span class="number">1</span>,
@@ -1527,28 +1529,28 @@
             <span class="comment">// RFC3339 requires partial-time components to be 2DIGIT
             </span>partial_time
                 .get_mut(h..h + <span class="number">2</span>)
-                .map(|s| replace_len2(s, <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:02}&quot;</span>, hours)))
+                .map(|s| replace_len2(s, <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"{:02}"</span>, hours)))
                 .expect(ERROR_MSG);
             partial_time
                 .get_mut(m..m + <span class="number">2</span>)
-                .map(|s| replace_len2(s, <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:02}&quot;</span>, minutes)))
+                .map(|s| replace_len2(s, <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"{:02}"</span>, minutes)))
                 .expect(ERROR_MSG);
             partial_time
                 .get_mut(s..s + <span class="number">2</span>)
-                .map(|s| replace_len2(s, <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:02}&quot;</span>, seconds)))
+                .map(|s| replace_len2(s, <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"{:02}"</span>, seconds)))
                 .expect(ERROR_MSG);
         }
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"time"</span>)))]
 </span><span class="kw">impl </span>Timestamp {
     <span class="doccomment">/// Create a timestamp corresponding to current time
     </span><span class="kw">pub fn </span>now() -&gt; Timestamp {
         time::OffsetDateTime::now_utc()
             .try_into()
-            .expect(<span class="string">&quot;could not make timestamp&quot;</span>)
+            .expect(<span class="string">"could not make timestamp"</span>)
     }
 
     <span class="doccomment">/// Create a timestamp corresponding to the start of the current day. Timezone will always be UTC.
@@ -1556,7 +1558,7 @@
         time::OffsetDateTime::now_utc()
             .replace_time(time::Time::MIDNIGHT)
             .try_into()
-            .expect(<span class="string">&quot;could not make timestamp&quot;</span>)
+            .expect(<span class="string">"could not make timestamp"</span>)
     }
 }
 
@@ -1568,24 +1570,24 @@
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::try_from(&quot;2021-07-01T13:37:00Z&quot;)?;
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z")?;
     /// assert_eq!(time.normalize()?.as_ref(), &amp;time);
-    /// let time2 = Timestamp::try_from(&quot;2021-07-01T13:37:00-01:00&quot;)?;
+    /// let time2 = Timestamp::try_from("2021-07-01T13:37:00-01:00")?;
     /// assert_ne!(time2.normalize()?.as_ref(), &amp;time2);
-    /// # Ok::&lt;(), std::boxed::Box&lt;dyn std::error::Error + &#39;static&gt;&gt;(())
+    /// # Ok::&lt;(), std::boxed::Box&lt;dyn std::error::Error + 'static&gt;&gt;(())
     /// ```
     </span><span class="attr">#[allow(unreachable_code)]
-    </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;std::borrow::Cow&lt;<span class="lifetime">&#39;_</span>, TimestampRef&gt;, TimestampParseError&gt; {
+    </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;std::borrow::Cow&lt;<span class="lifetime">'_</span>, TimestampRef&gt;, TimestampParseError&gt; {
         <span class="kw">let </span>s = <span class="self">self</span>.as_str();
-        <span class="kw">if </span>s.ends_with(<span class="string">&#39;Z&#39;</span>) {
+        <span class="kw">if </span>s.ends_with(<span class="string">'Z'</span>) {
             <span class="prelude-val">Ok</span>(<span class="self">self</span>.into())
         } <span class="kw">else </span>{
-            <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
             </span>{
                 <span class="kw">let </span>utc = <span class="self">self</span>.to_utc();
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(std::borrow::Cow::Owned(utc.try_into()<span class="question-mark">?</span>));
             }
-            <span class="macro">panic!</span>(<span class="string">&quot;non `Z` timestamps are not possible to use without the `time` feature enabled for `twitch_types`&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"non `Z` timestamps are not possible to use without the `time` feature enabled for `twitch_types`"</span>)
         }
     }
 
@@ -1596,8 +1598,8 @@
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time2021 = Timestamp::try_from(&quot;2021-07-01T13:37:00Z&quot;).unwrap();
-    /// let time2020 = Timestamp::try_from(&quot;2020-07-01T13:37:00Z&quot;).unwrap();
+    /// let time2021 = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// let time2020 = Timestamp::try_from("2020-07-01T13:37:00Z").unwrap();
     /// assert!(time2020.is_before(&amp;time2021));
     /// ```
     </span><span class="kw">pub fn </span>is_before&lt;T: <span class="question-mark">?</span>Sized&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>T) -&gt; bool
@@ -1612,8 +1614,8 @@
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::try_from(&quot;2021-07-01T13:37:00Z&quot;).unwrap();
-    /// assert_eq!(time.to_day().as_str(), &quot;2021-07-01T00:00:00Z&quot;);
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.to_day().as_str(), "2021-07-01T00:00:00Z");
     /// ```
     </span><span class="kw">pub fn </span>to_day(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Timestamp {
         <span class="kw">let </span><span class="kw-2">mut </span>c = <span class="self">self</span>.to_owned();
@@ -1628,8 +1630,8 @@
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::try_from(&quot;2021-07-01T13:37:00Z&quot;).unwrap();
-    /// assert_eq!(time.year(), &quot;2021&quot;);
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.year(), "2021");
     /// ```
     </span><span class="kw">pub fn </span>year(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[<span class="number">0</span>..<span class="number">4</span>] }
 
@@ -1640,8 +1642,8 @@
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::try_from(&quot;2021-07-01T13:37:00Z&quot;).unwrap();
-    /// assert_eq!(time.month(), &quot;07&quot;);
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.month(), "07");
     /// ```
     </span><span class="kw">pub fn </span>month(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[<span class="number">5</span>..<span class="number">7</span>] }
 
@@ -1652,8 +1654,8 @@
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::try_from(&quot;2021-07-01T13:37:00Z&quot;).unwrap();
-    /// assert_eq!(time.day(), &quot;01&quot;);
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.day(), "01");
     /// ```
     </span><span class="kw">pub fn </span>day(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[<span class="number">8</span>..<span class="number">10</span>] }
 
@@ -1664,8 +1666,8 @@
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::try_from(&quot;2021-07-01T13:37:00Z&quot;).unwrap();
-    /// assert_eq!(time.hour(), &quot;13&quot;);
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.hour(), "13");
     /// ```
     </span><span class="kw">pub fn </span>hour(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[<span class="number">11</span>..<span class="number">13</span>] }
 
@@ -1676,8 +1678,8 @@
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::try_from(&quot;2021-07-01T13:37:00Z&quot;).unwrap();
-    /// assert_eq!(time.minute(), &quot;37&quot;);
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.minute(), "37");
     /// ```
     </span><span class="kw">pub fn </span>minute(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[<span class="number">14</span>..<span class="number">16</span>] }
 
@@ -1688,8 +1690,8 @@
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::try_from(&quot;2021-07-01T13:37:00Z&quot;).unwrap();
-    /// assert_eq!(time.second(), &quot;00&quot;);
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
+    /// assert_eq!(time.second(), "00");
     /// ```
     </span><span class="kw">pub fn </span>second(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[<span class="number">17</span>..<span class="number">19</span>] }
 
@@ -1700,13 +1702,13 @@
     /// ```rust
     /// use twitch_types::Timestamp;
     ///
-    /// let time = Timestamp::try_from(&quot;2021-07-01T13:37:00.123Z&quot;).unwrap();
-    /// assert_eq!(time.millis(), Some(&quot;123&quot;));
-    /// let time = Timestamp::try_from(&quot;2021-07-01T13:37:00Z&quot;).unwrap();
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00.123Z").unwrap();
+    /// assert_eq!(time.millis(), Some("123"));
+    /// let time = Timestamp::try_from("2021-07-01T13:37:00Z").unwrap();
     /// assert_eq!(time.millis(), None);
     /// ```
     </span><span class="kw">pub fn </span>millis(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
-        <span class="kw">if </span><span class="self">self</span>.<span class="number">0</span>[<span class="number">19</span>..].contains(<span class="string">&#39;.&#39;</span>) {
+        <span class="kw">if </span><span class="self">self</span>.<span class="number">0</span>[<span class="number">19</span>..].contains(<span class="string">'.'</span>) {
             <span class="kw">let </span>sub = <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[<span class="number">20</span>..];
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>sub[..sub.find(|c: char| !c.is_ascii_digit()).unwrap_or(sub.len())])
         } <span class="kw">else </span>{
@@ -1715,8 +1717,8 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"time"</span>)))]
 </span><span class="kw">impl </span>TimestampRef {
     <span class="doccomment">/// Construct into a [`OffsetDateTime`](time::OffsetDateTime) time with a guaranteed UTC offset.
     ///
@@ -1734,7 +1736,7 @@
     /// This method assumes the timestamp is a valid rfc3339 timestamp, and panics if not.
     </span><span class="kw">pub fn </span>to_fixed_offset(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; time::OffsetDateTime {
         time::OffsetDateTime::parse(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span>time::format_description::well_known::Rfc3339)
-            .expect(<span class="string">&quot;this should never fail&quot;</span>)
+            .expect(<span class="string">"this should never fail"</span>)
     }
 }
 
@@ -1758,31 +1760,31 @@
 <span class="kw">impl </span>PartialOrd <span class="kw">for </span>TimestampRef {
     <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;std::cmp::Ordering&gt; {
         <span class="comment">// to check ordering, we normalize offset, then do a lexicographic comparison if possible,
-        // We can do this because the timestamp should always be RFC3339 with time-offset = &#39;Z&#39; with normalize.
-        // However, we need to make sure punctuation and length is correct. Without the `time` feature, it&#39;s impossible to get a non-UTC timestamp, so normalize will do nothing.
+        // We can do this because the timestamp should always be RFC3339 with time-offset = 'Z' with normalize.
+        // However, we need to make sure punctuation and length is correct. Without the `time` feature, it's impossible to get a non-UTC timestamp, so normalize will do nothing.
         </span><span class="kw">let </span>this = <span class="self">self
             </span>.normalize()
-            .expect(<span class="string">&quot;normalization failed, this is a bug&quot;</span>);
+            .expect(<span class="string">"normalization failed, this is a bug"</span>);
         <span class="kw">let </span>other = other
             .normalize()
-            .expect(<span class="string">&quot;normalization of other failed, this is a bug&quot;</span>);
-        <span class="comment">// If a punctuation exists in only one, we can&#39;t order.
+            .expect(<span class="string">"normalization of other failed, this is a bug"</span>);
+        <span class="comment">// If a punctuation exists in only one, we can't order.
         </span><span class="attr">#[allow(clippy::if_same_then_else)]
-        </span><span class="kw">if </span>this.as_ref().as_str().contains(<span class="string">&#39;.&#39;</span>) ^ other.as_ref().as_str().contains(<span class="string">&#39;.&#39;</span>) {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;tracing&quot;</span>)]
-            </span><span class="macro">tracing::warn!</span>(<span class="string">&quot;comparing two `Timestamps` with differing punctuation&quot;</span>);
+        </span><span class="kw">if </span>this.as_ref().as_str().contains(<span class="string">'.'</span>) ^ other.as_ref().as_str().contains(<span class="string">'.'</span>) {
+            <span class="attr">#[cfg(feature = <span class="string">"tracing"</span>)]
+            </span><span class="macro">tracing::warn!</span>(<span class="string">"comparing two `Timestamps` with differing punctuation"</span>);
             <span class="kw">return </span><span class="prelude-val">None</span>;
         } <span class="kw">else if </span>this.<span class="number">0</span>.len() != other.<span class="number">0</span>.len() {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;tracing&quot;</span>)]
-            </span><span class="macro">tracing::warn!</span>(<span class="string">&quot;comparing two `Timestamps` with differing length&quot;</span>);
+            <span class="attr">#[cfg(feature = <span class="string">"tracing"</span>)]
+            </span><span class="macro">tracing::warn!</span>(<span class="string">"comparing two `Timestamps` with differing length"</span>);
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
         this.as_str().partial_cmp(other.as_str())
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"time"</span>)))]
 </span><span class="kw">impl </span>PartialEq&lt;time::OffsetDateTime&gt; <span class="kw">for </span>Timestamp {
     <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>time::OffsetDateTime) -&gt; bool {
         <span class="comment">// Defer to TimestampRef impl
@@ -1791,8 +1793,8 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"time"</span>)))]
 </span><span class="kw">impl </span>PartialOrd&lt;time::OffsetDateTime&gt; <span class="kw">for </span>Timestamp {
     <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>time::OffsetDateTime) -&gt; <span class="prelude-ty">Option</span>&lt;std::cmp::Ordering&gt; {
         <span class="comment">// Defer to TimestampRef impl
@@ -1801,22 +1803,22 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"time"</span>)))]
 </span><span class="kw">impl </span>PartialEq&lt;time::OffsetDateTime&gt; <span class="kw">for </span>TimestampRef {
     <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>time::OffsetDateTime) -&gt; bool { <span class="kw-2">&amp;</span><span class="self">self</span>.to_utc() == other }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"time"</span>)))]
 </span><span class="kw">impl </span>PartialOrd&lt;time::OffsetDateTime&gt; <span class="kw">for </span>TimestampRef {
     <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>time::OffsetDateTime) -&gt; <span class="prelude-ty">Option</span>&lt;std::cmp::Ordering&gt; {
         <span class="self">self</span>.to_utc().partial_cmp(other)
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;time&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"time"</span>)))]
 </span><span class="kw">impl </span>std::convert::TryFrom&lt;time::OffsetDateTime&gt; <span class="kw">for </span>Timestamp {
     <span class="kw">type </span>Error = time::error::Format;
 
@@ -1833,14 +1835,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">pub fn </span>time_test() {
-        <span class="kw">let </span><span class="kw-2">mut </span>time1 = Timestamp::try_from(<span class="string">&quot;2021-11-11T10:00:00Z&quot;</span>).unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>time1 = Timestamp::try_from(<span class="string">"2021-11-11T10:00:00Z"</span>).unwrap();
         time1.set_time(<span class="number">10</span>, <span class="number">0</span>, <span class="number">32</span>);
-        <span class="kw">let </span>time2 = Timestamp::try_from(<span class="string">&quot;2021-11-10T10:00:00Z&quot;</span>).unwrap();
+        <span class="kw">let </span>time2 = Timestamp::try_from(<span class="string">"2021-11-10T10:00:00Z"</span>).unwrap();
         <span class="macro">assert!</span>(time2.is_before(<span class="kw-2">&amp;</span>time1));
         <span class="macro">dbg!</span>(time1.normalize().unwrap());
-        <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
-        </span><span class="kw">let </span>time = Timestamp::try_from(<span class="string">&quot;2021-11-11T13:37:00-01:00&quot;</span>).unwrap();
-        <span class="attr">#[cfg(feature = <span class="string">&quot;time&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
+        </span><span class="kw">let </span>time = Timestamp::try_from(<span class="string">"2021-11-11T13:37:00-01:00"</span>).unwrap();
+        <span class="attr">#[cfg(feature = <span class="string">"time"</span>)]
         </span><span class="macro">dbg!</span>(time.normalize().unwrap());
     }
 }

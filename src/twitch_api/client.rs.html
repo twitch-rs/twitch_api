@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/client.rs`."><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/client.rs`."><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -374,12 +376,12 @@
 </pre></div><pre class="rust"><code><span class="doccomment">//! Different clients you can use with this crate to call endpoints.
 //!
 //! This enables you to use your own http client/implementation.
-//! For example, say you have a http client that has a &quot;client&quot; named `foo::Client`.
+//! For example, say you have a http client that has a "client" named `foo::Client`.
 //!
 //! That client has a function `call` which looks something like this
 //! ```rust,no_run
 //! # struct Client;type ClientError = std::io::Error; impl Client {
-//! fn call(&amp;self, req: http::Request&lt;Vec&lt;u8&gt;&gt;) -&gt; futures::future::BoxFuture&lt;&#39;static, Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, ClientError&gt;&gt; {
+//! fn call(&amp;self, req: http::Request&lt;Vec&lt;u8&gt;&gt;) -&gt; futures::future::BoxFuture&lt;'static, Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, ClientError&gt;&gt; {
 //! # stringify!(
 //!     ...
 //! # ); todo!()
@@ -397,7 +399,7 @@
 //!         pub fn call(
 //!             &amp;self,
 //!             req: http::Request&lt;Vec&lt;u8&gt;&gt;,
-//!         ) -&gt; futures::future::BoxFuture&lt;&#39;static, Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, ClientError&gt;&gt;
+//!         ) -&gt; futures::future::BoxFuture&lt;'static, Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, ClientError&gt;&gt;
 //!         {
 //!             unimplemented!()
 //!         }
@@ -407,7 +409,7 @@
 //! impl twitch_api::HttpClient for foo::Client {
 //!     type Error = foo::ClientError;
 //!
-//!     fn req(&amp;self, request: Request) -&gt; BoxedFuture&lt;&#39;_, Result&lt;Response, Self::Error&gt;&gt; {
+//!     fn req(&amp;self, request: Request) -&gt; BoxedFuture&lt;'_, Result&lt;Response, Self::Error&gt;&gt; {
 //!         Box::pin(async move {
 //!             Ok(self
 //!                 .call(
@@ -416,7 +418,7 @@
 //!                         // a `Request&lt;impl Into&lt;hyper::body::Body&gt;&gt;` into a `Request&lt;Vec&lt;u8&gt;&gt;`
 //!                         .into_request_vec()
 //!                         .await
-//!                         .expect(&quot;a request given to the client should always be valid&quot;),
+//!                         .expect("a request given to the client should always be valid"),
 //!                 )
 //!                 .await?
 //!                 .map(|body| body.into()))
@@ -426,7 +428,7 @@
 //! // And for full usage
 //! use twitch_api::TwitchClient;
 //! pub struct MyStruct {
-//!     twitch: TwitchClient&lt;&#39;static, foo::Client&gt;,
+//!     twitch: TwitchClient&lt;'static, foo::Client&gt;,
 //!     token: twitch_oauth2::AppAccessToken,
 //! }
 //! ```
@@ -442,40 +444,40 @@
 <span class="kw">pub use </span>hyper::body::Bytes;
 <span class="kw">pub use </span>hyper::Body;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;ureq&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"ureq"</span>)]
 </span><span class="kw">mod </span>ureq_impl;
-<span class="attr">#[cfg(feature = <span class="string">&quot;ureq&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"ureq"</span>)]
 </span><span class="kw">pub use </span>ureq_impl::UreqError;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;surf&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"surf"</span>)]
 </span><span class="kw">mod </span>surf_impl;
-<span class="attr">#[cfg(feature = <span class="string">&quot;surf&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"surf"</span>)]
 </span><span class="kw">pub use </span>surf_impl::SurfError;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;reqwest&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"reqwest"</span>)]
 </span><span class="kw">mod </span>reqwest_impl;
-<span class="attr">#[cfg(feature = <span class="string">&quot;reqwest&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"reqwest"</span>)]
 </span><span class="kw">pub use </span>reqwest_impl::ReqwestClientDefaultError;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;tower&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"tower"</span>)]
 </span><span class="kw">mod </span>tower_impl;
-<span class="attr">#[cfg(feature = <span class="string">&quot;tower&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"tower"</span>)]
 </span><span class="kw">pub use </span>tower_impl::{TowerError, TowerService};
 
 <span class="doccomment">/// The User-Agent `product` of this crate.
 </span><span class="kw">pub static </span>TWITCH_API_USER_AGENT: <span class="kw-2">&amp;</span>str = <span class="macro">concat!</span>(
-    <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>),
-    <span class="string">&quot;/&quot;</span>,
-    <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>),
-    <span class="string">&quot; (+https://github.com/twitch-rs)&quot;
+    <span class="macro">env!</span>(<span class="string">"CARGO_PKG_NAME"</span>),
+    <span class="string">"/"</span>,
+    <span class="macro">env!</span>(<span class="string">"CARGO_PKG_VERSION"</span>),
+    <span class="string">" (+https://github.com/twitch-rs)"
 </span>);
 
 <span class="doccomment">/// A boxed future, mimics `futures::future::BoxFuture`
-</span><span class="kw">pub type </span>BoxedFuture&lt;<span class="lifetime">&#39;a</span>, T&gt; = std::pin::Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = T&gt; + Send + <span class="lifetime">&#39;a</span>&gt;&gt;;
+</span><span class="kw">pub type </span>BoxedFuture&lt;<span class="lifetime">'a</span>, T&gt; = std::pin::Pin&lt;Box&lt;<span class="kw">dyn </span>Future&lt;Output = T&gt; + Send + <span class="lifetime">'a</span>&gt;&gt;;
 
-<span class="doccomment">/// The request type we&#39;re expecting with body.
+<span class="doccomment">/// The request type we're expecting with body.
 </span><span class="kw">pub type </span>Request = http::Request&lt;Bytes&gt;;
-<span class="doccomment">/// The response type we&#39;re expecting with body
+<span class="doccomment">/// The response type we're expecting with body
 </span><span class="kw">pub type </span>Response = http::Response&lt;Body&gt;;
 
 <span class="doccomment">/// Extension trait for [`Response`]
@@ -483,12 +485,12 @@
     <span class="doccomment">/// Error returned
     </span><span class="kw">type </span>Error;
     <span class="doccomment">/// Return the body as a vector of bytes
-    </span><span class="kw">fn </span>into_response_vec&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="self">self</span>)
-        -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, <span class="self">Self</span>::Error&gt;&gt;;
+    </span><span class="kw">fn </span>into_response_vec&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>)
+        -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, <span class="self">Self</span>::Error&gt;&gt;;
     <span class="doccomment">/// Return the body as a [`Bytes`]
-    </span><span class="kw">fn </span>into_response_bytes&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">fn </span>into_response_bytes&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;http::Response&lt;hyper::body::Bytes&gt;, <span class="self">Self</span>::Error&gt;&gt;;
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;http::Response&lt;hyper::body::Bytes&gt;, <span class="self">Self</span>::Error&gt;&gt;;
 }
 
 <span class="kw">impl</span>&lt;Buffer&gt; ResponseExt <span class="kw">for </span>http::Response&lt;Buffer&gt;
@@ -496,9 +498,9 @@
 {
     <span class="kw">type </span>Error = hyper::Error;
 
-    <span class="kw">fn </span>into_response_vec&lt;<span class="lifetime">&#39;a</span>&gt;(
+    <span class="kw">fn </span>into_response_vec&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, <span class="self">Self</span>::Error&gt;&gt; {
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, <span class="self">Self</span>::Error&gt;&gt; {
         <span class="kw">let </span>(parts, body) = <span class="self">self</span>.into_parts();
         <span class="kw">let </span>body: Body = body.into();
         Box::pin(<span class="kw">async move </span>{
@@ -507,9 +509,9 @@
         })
     }
 
-    <span class="kw">fn </span>into_response_bytes&lt;<span class="lifetime">&#39;a</span>&gt;(
+    <span class="kw">fn </span>into_response_bytes&lt;<span class="lifetime">'a</span>&gt;(
         <span class="self">self</span>,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;http::Response&lt;hyper::body::Bytes&gt;, <span class="self">Self</span>::Error&gt;&gt; {
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;http::Response&lt;hyper::body::Bytes&gt;, <span class="self">Self</span>::Error&gt;&gt; {
         <span class="kw">let </span>(parts, body) = <span class="self">self</span>.into_parts();
         <span class="kw">let </span>body: Body = body.into();
         Box::pin(<span class="kw">async move </span>{
@@ -524,7 +526,7 @@
     <span class="doccomment">/// Error returned
     </span><span class="kw">type </span>Error;
     <span class="doccomment">/// Return the body as a vector of bytes
-    </span><span class="kw">fn </span>into_request_vec&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="self">self</span>) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;http::Request&lt;Vec&lt;u8&gt;&gt;, <span class="self">Self</span>::Error&gt;&gt;;
+    </span><span class="kw">fn </span>into_request_vec&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;http::Request&lt;Vec&lt;u8&gt;&gt;, <span class="self">Self</span>::Error&gt;&gt;;
 }
 
 <span class="kw">impl</span>&lt;Buffer&gt; RequestExt <span class="kw">for </span>http::Request&lt;Buffer&gt;
@@ -533,7 +535,7 @@
     <span class="kw">type </span>Error = hyper::Error;
 
     <span class="comment">// TODO: Specialize for Buffer = AsRef&lt;[u8]&gt; or Vec&lt;u8&gt;
-    </span><span class="kw">fn </span>into_request_vec&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="self">self</span>) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;http::Request&lt;Vec&lt;u8&gt;&gt;, <span class="self">Self</span>::Error&gt;&gt; {
+    </span><span class="kw">fn </span>into_request_vec&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;http::Request&lt;Vec&lt;u8&gt;&gt;, <span class="self">Self</span>::Error&gt;&gt; {
         <span class="kw">let </span>(parts, body) = <span class="self">self</span>.into_parts();
         <span class="kw">let </span>body = body.into();
         Box::pin(<span class="kw">async move </span>{
@@ -546,19 +548,19 @@
 <span class="doccomment">/// A client that can do requests
 </span><span class="kw">pub trait </span>Client: Send + Sync {
     <span class="doccomment">/// Error returned by the client
-    </span><span class="kw">type </span>Error: Error + Send + Sync + <span class="lifetime">&#39;static</span>;
+    </span><span class="kw">type </span>Error: Error + Send + Sync + <span class="lifetime">'static</span>;
     <span class="doccomment">/// Send a request
-    </span><span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, request: Request) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;_</span>, <span class="prelude-ty">Result</span>&lt;Response, &lt;<span class="self">Self </span><span class="kw">as </span>Client&gt;::Error&gt;&gt;;
+    </span><span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, request: Request) -&gt; BoxedFuture&lt;<span class="lifetime">'_</span>, <span class="prelude-ty">Result</span>&lt;Response, &lt;<span class="self">Self </span><span class="kw">as </span>Client&gt;::Error&gt;&gt;;
 }
 
 <span class="doccomment">/// A specific client default for setting some sane defaults for API calls and oauth2 usage
-</span><span class="kw">pub trait </span>ClientDefault&lt;<span class="lifetime">&#39;a</span>&gt;: Clone + Sized {
+</span><span class="kw">pub trait </span>ClientDefault&lt;<span class="lifetime">'a</span>&gt;: Clone + Sized {
     <span class="doccomment">/// Errors that can happen when assembling the client
-    </span><span class="kw">type </span>Error: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>;
+    </span><span class="kw">type </span>Error: std::error::Error + Send + Sync + <span class="lifetime">'static</span>;
     <span class="doccomment">/// Construct [`Self`] with sane defaults for API calls and oauth2.
     </span><span class="kw">fn </span>default_client() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::default_client_with_name(<span class="prelude-val">None</span>)
-            .expect(<span class="string">&quot;a new twitch_api client without an extra product should never fail&quot;</span>)
+            .expect(<span class="string">"a new twitch_api client without an extra product should never fail"</span>)
     }
 
     <span class="doccomment">/// Constructs [`Self`] with sane defaults for API calls and oauth2 and setting user-agent to include another product
@@ -577,13 +579,13 @@
 
 <span class="attr">#[derive(Debug, Default, thiserror::Error, Clone)]
 </span><span class="doccomment">/// A client that will never work, used to trick documentation tests
-</span><span class="attr">#[error(<span class="string">&quot;this client does not do anything, only used for documentation test that only checks&quot;</span>)]
+</span><span class="attr">#[error(<span class="string">"this client does not do anything, only used for documentation test that only checks"</span>)]
 </span><span class="kw">pub struct </span>DummyHttpClient;
 
 <span class="kw">impl </span>Client <span class="kw">for </span>DummyHttpClient {
     <span class="kw">type </span>Error = DummyHttpClient;
 
-    <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: Request) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;_</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
+    <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: Request) -&gt; BoxedFuture&lt;<span class="lifetime">'_</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
         Box::pin(<span class="kw">async </span>{ <span class="prelude-val">Err</span>(DummyHttpClient) })
     }
 }
@@ -591,7 +593,7 @@
 <span class="kw">impl </span>Client <span class="kw">for </span>twitch_oauth2::client::DummyClient {
     <span class="kw">type </span>Error = twitch_oauth2::client::DummyClient;
 
-    <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: Request) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;_</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
+    <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: Request) -&gt; BoxedFuture&lt;<span class="lifetime">'_</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
         Box::pin(<span class="kw">async </span>{ <span class="prelude-val">Err</span>(twitch_oauth2::client::DummyClient) })
     }
 }
@@ -601,7 +603,7 @@
 {
     <span class="kw">type </span>Error = &lt;C <span class="kw">as </span>Client&gt;::Error;
 
-    <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;_</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
+    <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request) -&gt; BoxedFuture&lt;<span class="lifetime">'_</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
         <span class="self">self</span>.as_ref().req(req)
     }
 }
@@ -611,12 +613,12 @@
 {
     <span class="kw">type </span>Error = &lt;C <span class="kw">as </span>Client&gt;::Error;
 
-    <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;_</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
+    <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request) -&gt; BoxedFuture&lt;<span class="lifetime">'_</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
         <span class="self">self</span>.as_ref().req(req)
     }
 }
 
-<span class="kw">impl </span>ClientDefault&lt;<span class="lifetime">&#39;static</span>&gt; <span class="kw">for </span>DummyHttpClient
+<span class="kw">impl </span>ClientDefault&lt;<span class="lifetime">'static</span>&gt; <span class="kw">for </span>DummyHttpClient
 <span class="kw">where </span><span class="self">Self</span>: Default
 {
     <span class="kw">type </span>Error = DummyHttpClient;
@@ -631,22 +633,22 @@
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>CompatError&lt;E&gt; {
     <span class="doccomment">/// An error occurrec when assembling the body
-    </span><span class="attr">#[error(<span class="string">&quot;could not get the body of the response&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"could not get the body of the response"</span>)]
     </span>BodyError(<span class="attr">#[source] </span>hyper::Error),
     <span class="doccomment">/// An error occurred
     </span><span class="attr">#[error(transparent)]
     </span>Other(<span class="attr">#[from] </span>E),
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;helix&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;c</span>, C: Client + Sync + <span class="lifetime">&#39;c</span>&gt; twitch_oauth2::client::Client <span class="kw">for </span><span class="kw">crate</span>::HelixClient&lt;<span class="lifetime">&#39;c</span>, C&gt; {
+<span class="attr">#[cfg(feature = <span class="string">"helix"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'c</span>, C: Client + Sync + <span class="lifetime">'c</span>&gt; twitch_oauth2::client::Client <span class="kw">for </span><span class="kw">crate</span>::HelixClient&lt;<span class="lifetime">'c</span>, C&gt; {
     <span class="kw">type </span>Error = CompatError&lt;&lt;C <span class="kw">as </span>Client&gt;::Error&gt;;
 
     <span class="kw">fn </span>req(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         request: http::Request&lt;Vec&lt;u8&gt;&gt;,
     ) -&gt; BoxedFuture&lt;
-        <span class="lifetime">&#39;_</span>,
+        <span class="lifetime">'_</span>,
         <span class="prelude-ty">Result</span>&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, &lt;<span class="self">Self </span><span class="kw">as </span>twitch_oauth2::client::Client&gt;::Error&gt;,
     &gt; {
         <span class="kw">let </span>client = <span class="self">self</span>.get_client();
@@ -668,16 +670,16 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;tmi&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"tmi"</span>)]
 #[allow(deprecated)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;c</span>, C: Client + Sync + <span class="lifetime">&#39;c</span>&gt; twitch_oauth2::client::Client <span class="kw">for </span><span class="kw">crate</span>::TmiClient&lt;<span class="lifetime">&#39;c</span>, C&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'c</span>, C: Client + Sync + <span class="lifetime">'c</span>&gt; twitch_oauth2::client::Client <span class="kw">for </span><span class="kw">crate</span>::TmiClient&lt;<span class="lifetime">'c</span>, C&gt; {
     <span class="kw">type </span>Error = CompatError&lt;&lt;C <span class="kw">as </span>Client&gt;::Error&gt;;
 
     <span class="kw">fn </span>req(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         request: http::Request&lt;Vec&lt;u8&gt;&gt;,
     ) -&gt; BoxedFuture&lt;
-        <span class="lifetime">&#39;_</span>,
+        <span class="lifetime">'_</span>,
         <span class="prelude-ty">Result</span>&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, &lt;<span class="self">Self </span><span class="kw">as </span>twitch_oauth2::client::Client&gt;::Error&gt;,
     &gt; {
         <span class="kw">let </span>client = <span class="self">self</span>.get_client();
@@ -699,15 +701,15 @@
     }
 }
 
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;tmi&quot;</span>, feature = <span class="string">&quot;helix&quot;</span>))]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;c</span>, C: Client + Sync&gt; twitch_oauth2::client::Client <span class="kw">for </span><span class="kw">crate</span>::TwitchClient&lt;<span class="lifetime">&#39;c</span>, C&gt; {
+<span class="attr">#[cfg(any(feature = <span class="string">"tmi"</span>, feature = <span class="string">"helix"</span>))]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'c</span>, C: Client + Sync&gt; twitch_oauth2::client::Client <span class="kw">for </span><span class="kw">crate</span>::TwitchClient&lt;<span class="lifetime">'c</span>, C&gt; {
     <span class="kw">type </span>Error = CompatError&lt;&lt;C <span class="kw">as </span>Client&gt;::Error&gt;;
 
     <span class="kw">fn </span>req(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         request: http::Request&lt;Vec&lt;u8&gt;&gt;,
     ) -&gt; BoxedFuture&lt;
-        <span class="lifetime">&#39;_</span>,
+        <span class="lifetime">'_</span>,
         <span class="prelude-ty">Result</span>&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, &lt;<span class="self">Self </span><span class="kw">as </span>twitch_oauth2::client::Client&gt;::Error&gt;,
     &gt; {
         <span class="kw">let </span>client = <span class="self">self</span>.get_client();
@@ -737,7 +739,7 @@
 
     <span class="kw">if let </span><span class="prelude-val">Some</span>(product) = product {
         <span class="kw">let </span><span class="kw-2">mut </span>user_agent = product.as_bytes().to_owned();
-        user_agent.push(<span class="string">b&#39; &#39;</span>);
+        user_agent.push(<span class="string">b' '</span>);
         user_agent.extend(TWITCH_API_USER_AGENT.as_bytes());
         user_agent.as_slice().try_into()
     } <span class="kw">else </span>{

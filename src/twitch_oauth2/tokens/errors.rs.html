@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/tokens/errors.rs`."><title>errors.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/tokens/errors.rs`."><title>errors.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_oauth2/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -108,9 +110,9 @@
 /// General errors for talking with twitch, used in [`AppAccessToken::get_app_access_token`](crate::tokens::AppAccessToken::get_app_access_token)
 </span><span class="attr">#[allow(missing_docs)]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
-#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+#[cfg(feature = <span class="string">"client"</span>)]
 #[non_exhaustive]
-</span><span class="kw">pub enum </span>AppAccessTokenError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
+</span><span class="kw">pub enum </span>AppAccessTokenError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">'static</span>&gt; {
     <span class="doccomment">/// request for token failed
     </span>Request(<span class="attr">#[source] </span>RE),
     <span class="doccomment">/// could not parse response when getting app access token
@@ -120,7 +122,7 @@
 <span class="doccomment">/// Errors for [AccessToken::validate_token][crate::AccessTokenRef::validate_token] and [UserToken::from_response][crate::tokens::UserToken::from_response]
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
 #[non_exhaustive]
-</span><span class="kw">pub enum </span>ValidationError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
+</span><span class="kw">pub enum </span>ValidationError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">'static</span>&gt; {
     <span class="doccomment">/// token is not authorized for use
     </span>NotAuthorized,
     <span class="doccomment">/// could not parse response when validating token
@@ -128,12 +130,12 @@
     <span class="doccomment">/// failed to request validation
     </span>Request(<span class="attr">#[source] </span>RE),
     <span class="doccomment">/// given token is not of the correct token type: {0}
-    </span>InvalidToken(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
+    </span>InvalidToken(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str),
 }
 
 <span class="kw">impl </span>ValidationError&lt;std::convert::Infallible&gt; {
     <span class="doccomment">/// Convert this error from a infallible to another
-    </span><span class="kw">pub fn </span>into_other&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt;(<span class="self">self</span>) -&gt; ValidationError&lt;RE&gt; {
+    </span><span class="kw">pub fn </span>into_other&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">'static</span>&gt;(<span class="self">self</span>) -&gt; ValidationError&lt;RE&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             ValidationError::NotAuthorized =&gt; ValidationError::NotAuthorized,
             ValidationError::RequestParseError(e) =&gt; ValidationError::RequestParseError(e),
@@ -147,8 +149,8 @@
 </span><span class="attr">#[allow(missing_docs)]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 #[non_exhaustive]
-#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-</span><span class="kw">pub enum </span>RevokeTokenError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
+#[cfg(feature = <span class="string">"client"</span>)]
+</span><span class="kw">pub enum </span>RevokeTokenError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">'static</span>&gt; {
     <span class="doccomment">/// could not parse response when revoking token
     </span>RequestParseError(<span class="attr">#[from] </span><span class="kw">crate</span>::RequestParseError),
     <span class="doccomment">/// failed to do revokation
@@ -159,8 +161,8 @@
 </span><span class="attr">#[allow(missing_docs)]
 #[derive(thiserror::Error, Debug, displaydoc::Display)]
 #[non_exhaustive]
-#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-</span><span class="kw">pub enum </span>RefreshTokenError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
+#[cfg(feature = <span class="string">"client"</span>)]
+</span><span class="kw">pub enum </span>RefreshTokenError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">'static</span>&gt; {
     <span class="doccomment">/// request when refreshing token failed
     </span>RequestError(<span class="attr">#[source] </span>RE),
     <span class="doccomment">/// could not parse response when refreshing token.
@@ -178,8 +180,8 @@
 <span class="doccomment">/// Errors for [`UserTokenBuilder::get_user_token`](crate::tokens::UserTokenBuilder::get_user_token) and [`UserToken::mock_token`](crate::tokens::UserToken::mock_token)
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
 #[non_exhaustive]
-#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-</span><span class="kw">pub enum </span>UserTokenExchangeError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
+#[cfg(feature = <span class="string">"client"</span>)]
+</span><span class="kw">pub enum </span>UserTokenExchangeError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">'static</span>&gt; {
     <span class="doccomment">/// request for user token failed
     </span>RequestError(<span class="attr">#[source] </span>RE),
     <span class="doccomment">/// could not parse response when getting user token
@@ -193,8 +195,8 @@
 <span class="doccomment">/// Errors for [ImplicitUserTokenBuilder::get_user_token][crate::tokens::ImplicitUserTokenBuilder::get_user_token]
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
 #[non_exhaustive]
-#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-</span><span class="kw">pub enum </span>ImplicitUserTokenExchangeError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
+#[cfg(feature = <span class="string">"client"</span>)]
+</span><span class="kw">pub enum </span>ImplicitUserTokenExchangeError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">'static</span>&gt; {
     <span class="comment">// FIXME: should be TwitchTokenErrorResponse
     </span><span class="doccomment">/// twitch returned an error: {error:?} - {description:?}
     </span>TwitchError {

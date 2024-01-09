@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/chat/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/chat/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -294,7 +296,7 @@
 
 <span class="doccomment">/// A set of badges
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>BadgeSet {
     <span class="doccomment">/// ID for the chat badge set.
@@ -305,7 +307,7 @@
 
 <span class="doccomment">/// A chat Badge
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChatBadge {
     <span class="doccomment">/// ID of the chat badge version.
@@ -321,7 +323,7 @@
 
 <span class="doccomment">/// A chat emote
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChannelEmote {
     <span class="doccomment">/// ID of the emote.
@@ -330,10 +332,10 @@
     </span><span class="kw">pub </span>name: String,
     <span class="doccomment">/// Object of image URLs for the emote.
     </span><span class="kw">pub </span>images: types::Image,
-    <span class="doccomment">/// If the emote_type is &quot;subscriptions&quot;, this indicates the subscriber tier at which the emote is unlocked. Set to an empty string otherwise.
+    <span class="doccomment">/// If the emote_type is "subscriptions", this indicates the subscriber tier at which the emote is unlocked. Set to an empty string otherwise.
     </span><span class="attr">#[serde(
         default,
-        deserialize_with = <span class="string">&quot;helix::deserialize_none_from_empty_string&quot;
+        deserialize_with = <span class="string">"helix::deserialize_none_from_empty_string"
     </span>)]
     </span><span class="kw">pub </span>tier: <span class="prelude-ty">Option</span>&lt;types::SubscriptionTier&gt;,
     <span class="comment">// FIXME: Enumify?
@@ -365,21 +367,21 @@
     /// ```rust, no_run
     /// # use twitch_api::{client, helix, types};
     /// # #[tokio::main]
-    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
-    /// # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
-    /// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;'static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-    /// let emotes = client.get_channel_emotes_from_login(&quot;twitchdev&quot;, &amp;token).await?.expect(&quot;user not found&quot;);
-    /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), &quot;https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0&quot;);
+    /// let emotes = client.get_channel_emotes_from_login("twitchdev", &amp;token).await?.expect("user not found");
+    /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0");
     /// # Ok(())
     /// # }
     /// ```
-    </span><span class="kw">pub fn </span>url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; types::EmoteUrlBuilder&lt;<span class="lifetime">&#39;_</span>&gt; { EmoteUrlBuilder::new(<span class="kw-2">&amp;</span><span class="self">self</span>.id) }
+    </span><span class="kw">pub fn </span>url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; types::EmoteUrlBuilder&lt;<span class="lifetime">'_</span>&gt; { EmoteUrlBuilder::new(<span class="kw-2">&amp;</span><span class="self">self</span>.id) }
 }
 
 <span class="doccomment">/// A chat emote
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GlobalEmote {
     <span class="doccomment">/// ID of the emote.
@@ -398,7 +400,7 @@
 
 <span class="doccomment">/// Chat settings
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChatSettings {
     <span class="doccomment">/// The ID of the broadcaster specified in the request.
@@ -450,7 +452,7 @@
 
 <span class="doccomment">/// Valid colors for announcements
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[serde(rename_all = <span class="string">"lowercase"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>AnnouncementColor {
     <span class="doccomment">/// The color blue
@@ -471,7 +473,7 @@
 
 <span class="doccomment">/// An error for an invalid [AnnouncementColor]
 </span><span class="attr">#[derive(Debug, Clone, thiserror::Error)]
-#[error(<span class="string">&quot;invalid color&quot;</span>)]
+#[error(<span class="string">"invalid color"</span>)]
 </span><span class="kw">pub struct </span>AnnouncementColorError;
 
 <span class="kw">impl </span>std::convert::TryFrom&lt;<span class="kw-2">&amp;</span>str&gt; <span class="kw">for </span>AnnouncementColor {
@@ -479,11 +481,11 @@
 
     <span class="kw">fn </span>try_from(value: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Ok</span>(<span class="kw">match </span>value {
-            <span class="string">&quot;blue&quot; </span>=&gt; AnnouncementColor::Blue,
-            <span class="string">&quot;green&quot; </span>=&gt; AnnouncementColor::Green,
-            <span class="string">&quot;orange&quot; </span>=&gt; AnnouncementColor::Orange,
-            <span class="string">&quot;purple&quot; </span>=&gt; AnnouncementColor::Purple,
-            <span class="string">&quot;primary&quot; </span>=&gt; AnnouncementColor::Primary,
+            <span class="string">"blue" </span>=&gt; AnnouncementColor::Blue,
+            <span class="string">"green" </span>=&gt; AnnouncementColor::Green,
+            <span class="string">"orange" </span>=&gt; AnnouncementColor::Orange,
+            <span class="string">"purple" </span>=&gt; AnnouncementColor::Purple,
+            <span class="string">"primary" </span>=&gt; AnnouncementColor::Primary,
             <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(AnnouncementColorError),
         })
     }

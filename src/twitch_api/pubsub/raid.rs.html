@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/raid.rs`."><title>raid.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/raid.rs`."><title>raid.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -233,23 +235,23 @@
 <a href="#233" id="233">233</a>
 <a href="#234" id="234">234</a>
 <a href="#235" id="235">235</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;raids&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"raids"</span>)]
 </span><span class="doccomment">//! PubSub messages for raids
 </span><span class="kw">use crate</span>::{pubsub, types};
 <span class="kw">use </span>serde_derive::{Deserialize, Serialize};
 
 <span class="doccomment">/// A user raids the channel
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>Raid {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
     </span><span class="kw">pub </span>channel_id: u32,
 }
 
-<span class="macro">impl_de_ser!</span>(Raid, <span class="string">&quot;raid&quot;</span>, channel_id);
+<span class="macro">impl_de_ser!</span>(Raid, <span class="string">"raid"</span>, channel_id);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>Raid {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::Raid(<span class="self">self</span>) }
@@ -257,7 +259,7 @@
 
 <span class="doccomment">/// Raid go
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>RaidGoV2 {
     <span class="doccomment">/// ID of user would be raided
@@ -284,7 +286,7 @@
 
 <span class="doccomment">/// Raid update
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>RaidUpdateV2 {
     <span class="doccomment">/// ID of user would be raided
@@ -311,7 +313,7 @@
 
 <span class="doccomment">/// Raid canceled
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>RaidCancelV2 {
     <span class="doccomment">/// ID of user would be raided
@@ -338,18 +340,18 @@
 
 <span class="doccomment">/// Reply from [Raid]
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = <span class="string">&quot;type&quot;</span>, content = <span class="string">&quot;raid&quot;</span>)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[serde(tag = <span class="string">"type"</span>, content = <span class="string">"raid"</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>RaidReply {
     <span class="doccomment">/// Raid go
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;raid_go_v2&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"raid_go_v2"</span>)]
     </span>RaidGoV2(RaidGoV2),
     <span class="doccomment">/// Raid update
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;raid_update_v2&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"raid_update_v2"</span>)]
     </span>RaidUpdateV2(RaidUpdateV2),
     <span class="doccomment">/// Raid canceled
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;raid_cancel_v2&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"raid_cancel_v2"</span>)]
     </span>RaidCancelV2(RaidCancelV2),
 }
 
@@ -360,26 +362,26 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>raid() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;raid_go_v2&quot;,
-    &quot;raid&quot;: {
-        &quot;id&quot;: &quot;7fbea6d0-1337-4c61-8c92-b7510e639010&quot;,
-        &quot;creator_id&quot;: &quot;27620241&quot;,
-        &quot;source_id&quot;: &quot;27620241&quot;,
-        &quot;target_id&quot;: &quot;1234&quot;,
-        &quot;target_login&quot;: &quot;tmi&quot;,
-        &quot;target_display_name&quot;: &quot;TMI&quot;,
-        &quot;target_profile_image&quot;: &quot;https://static-cdn.jtvnw.net/jtv_user_pictures/tmi-profile_image-deadbeef1234-70x70.jpeg&quot;,
-        &quot;transition_jitter_seconds&quot;: 5,
-        &quot;force_raid_now_seconds&quot;: 90,
-        &quot;viewer_count&quot;: 5238
+    "type": "raid_go_v2",
+    "raid": {
+        "id": "7fbea6d0-1337-4c61-8c92-b7510e639010",
+        "creator_id": "27620241",
+        "source_id": "27620241",
+        "target_id": "1234",
+        "target_login": "tmi",
+        "target_display_name": "TMI",
+        "target_profile_image": "https://static-cdn.jtvnw.net/jtv_user_pictures/tmi-profile_image-deadbeef1234-70x70.jpeg",
+        "transition_jitter_seconds": 5,
+        "force_raid_now_seconds": 90,
+        "viewer_count": 5238
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;raid.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "raid.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -392,26 +394,26 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>raid_update() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;raid_update_v2&quot;,
-    &quot;raid&quot;: {
-        &quot;id&quot;: &quot;7fbea6d0-4087-48e7-a395-c0ecd15ef551&quot;,
-        &quot;creator_id&quot;: &quot;123455&quot;,
-        &quot;source_id&quot;: &quot;123455&quot;,
-        &quot;target_id&quot;: &quot;123&quot;,
-        &quot;target_login&quot;: &quot;tmi&quot;,
-        &quot;target_display_name&quot;: &quot;tmi&quot;,
-        &quot;target_profile_image&quot;: &quot;https://static-cdn.jtvnw.net/jtv_user_pictures/deadbeef-profile_image-70x70.png&quot;,
-        &quot;transition_jitter_seconds&quot;: 0,
-        &quot;force_raid_now_seconds&quot;: 90,
-        &quot;viewer_count&quot;: 143
+    "type": "raid_update_v2",
+    "raid": {
+        "id": "7fbea6d0-4087-48e7-a395-c0ecd15ef551",
+        "creator_id": "123455",
+        "source_id": "123455",
+        "target_id": "123",
+        "target_login": "tmi",
+        "target_display_name": "tmi",
+        "target_profile_image": "https://static-cdn.jtvnw.net/jtv_user_pictures/deadbeef-profile_image-70x70.png",
+        "transition_jitter_seconds": 0,
+        "force_raid_now_seconds": 90,
+        "viewer_count": 143
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;raid.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "raid.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -424,26 +426,26 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>raid_cancel() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;raid_cancel_v2&quot;,
-    &quot;raid&quot;: {
-        &quot;id&quot;: &quot;7fbea6d0-5b4b-4b8f-a79d-c9e94bf88bbf&quot;,
-        &quot;creator_id&quot;: &quot;123455&quot;,
-        &quot;source_id&quot;: &quot;123455&quot;,
-        &quot;target_id&quot;: &quot;123&quot;,
-        &quot;target_login&quot;: &quot;tmi&quot;,
-        &quot;target_display_name&quot;: &quot;TMI&quot;,
-        &quot;target_profile_image&quot;: &quot;https://static-cdn.jtvnw.net/jtv_user_pictures/deadbeef-profile_image-70x70.png&quot;,
-        &quot;transition_jitter_seconds&quot;: 4,
-        &quot;force_raid_now_seconds&quot;: 90,
-        &quot;viewer_count&quot;: 4463
+    "type": "raid_cancel_v2",
+    "raid": {
+        "id": "7fbea6d0-5b4b-4b8f-a79d-c9e94bf88bbf",
+        "creator_id": "123455",
+        "source_id": "123455",
+        "target_id": "123",
+        "target_login": "tmi",
+        "target_display_name": "TMI",
+        "target_profile_image": "https://static-cdn.jtvnw.net/jtv_user_pictures/deadbeef-profile_image-70x70.png",
+        "transition_jitter_seconds": 4,
+        "force_raid_now_seconds": 90,
+        "viewer_count": 4463
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;raid.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "raid.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -457,13 +459,13 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
-        <span class="kw">let </span>s = <span class="string">&quot;raid.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"raid.1234"</span>;
         <span class="macro">assert_eq!</span>(Raid { channel_id: <span class="number">1234 </span>}, s.to_string().try_into().unwrap());
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
-        <span class="kw">let </span>s = <span class="string">&quot;raid.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"raid.1234"</span>;
         <span class="kw">let </span>right: String = Raid { channel_id: <span class="number">1234 </span>}.into();
         <span class="macro">assert_eq!</span>(s.to_string(), right);
     }

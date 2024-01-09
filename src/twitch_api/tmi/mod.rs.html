@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/tmi/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/tmi/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -153,9 +155,9 @@
 <a href="#153" id="153">153</a>
 <a href="#154" id="154">154</a>
 <a href="#155" id="155">155</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;TMI&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"TMI"</span>)]
 #![allow(deprecated)]
-</span><span class="doccomment">//! TMI Endpoint, twitch&#39;s unsupported api for better chatters retrieval
+</span><span class="doccomment">//! TMI Endpoint, twitch's unsupported api for better chatters retrieval
 </span><span class="kw">use </span><span class="kw">crate</span>::types;
 <span class="kw">use </span>serde_derive::{Deserialize, Serialize};
 <span class="doccomment">/// Client for the twitch TMI endpoint, almost entirely undocumented and certainly not supported.
@@ -168,36 +170,36 @@
 /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
 /// let client = TmiClient::new();
 /// # let _: &amp;TmiClient&lt;twitch_api::DummyHttpClient&gt; = &amp;client;
-/// println!(&quot;{:?}&quot;, client.get_chatters(&quot;justinfan10&quot;.into()).await?);
+/// println!("{:?}", client.get_chatters("justinfan10".into()).await?);
 /// # Ok(())
 /// # }
 /// ```
 ///
-/// Most [clients][crate::HttpClient] will be able to use the `&#39;static` lifetime
+/// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime
 ///
 /// ```rust
 /// # use twitch_api::{TmiClient}; pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
 /// pub struct MyStruct {
-///     twitch: TmiClient&lt;&#39;static, reqwest::Client&gt;,
+///     twitch: TmiClient&lt;'static, reqwest::Client&gt;,
 ///     token: twitch_oauth2::AppAccessToken,
 /// }
 /// // etc
 /// ```
 ///
 /// See [`HttpClient`][crate::HttpClient] for implemented http clients, you can also define your own if needed.
-</span><span class="attr">#[cfg(all(feature = <span class="string">&quot;client&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>))]
-#[cfg_attr(nightly, doc(cfg(all(feature = <span class="string">&quot;client&quot;</span>, feature = <span class="string">&quot;tmi&quot;</span>))))] </span><span class="comment">// FIXME: This doc_cfg does nothing
+</span><span class="attr">#[cfg(all(feature = <span class="string">"client"</span>, feature = <span class="string">"tmi"</span>))]
+#[cfg_attr(nightly, doc(cfg(all(feature = <span class="string">"client"</span>, feature = <span class="string">"tmi"</span>))))] </span><span class="comment">// FIXME: This doc_cfg does nothing
 </span><span class="attr">#[derive(Clone)]
-#[deprecated(note = <span class="string">&quot;All TMI functionality has been implemented with helix endpoint Get Chatters&quot;</span>)]
-</span><span class="kw">pub struct </span>TmiClient&lt;<span class="lifetime">&#39;a</span>, C: <span class="kw">crate</span>::HttpClient + <span class="lifetime">&#39;a</span>&gt; {
+#[deprecated(note = <span class="string">"All TMI functionality has been implemented with helix endpoint Get Chatters"</span>)]
+</span><span class="kw">pub struct </span>TmiClient&lt;<span class="lifetime">'a</span>, C: <span class="kw">crate</span>::HttpClient + <span class="lifetime">'a</span>&gt; {
     <span class="kw">pub</span>(<span class="kw">crate</span>) client: C,
-    _pd: std::marker::PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>()&gt;,
+    _pd: std::marker::PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>()&gt;,
 }
 
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;tmi&quot;</span>, feature = <span class="string">&quot;client&quot;</span>))]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, C: <span class="kw">crate</span>::HttpClient + <span class="lifetime">&#39;a</span>&gt; TmiClient&lt;<span class="lifetime">&#39;a</span>, C&gt; {
+<span class="attr">#[cfg(all(feature = <span class="string">"tmi"</span>, feature = <span class="string">"client"</span>))]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, C: <span class="kw">crate</span>::HttpClient + <span class="lifetime">'a</span>&gt; TmiClient&lt;<span class="lifetime">'a</span>, C&gt; {
     <span class="doccomment">/// Create a new client with an existing client
-    </span><span class="kw">pub fn </span>with_client(client: C) -&gt; TmiClient&lt;<span class="lifetime">&#39;a</span>, C&gt; {
+    </span><span class="kw">pub fn </span>with_client(client: C) -&gt; TmiClient&lt;<span class="lifetime">'a</span>, C&gt; {
         TmiClient {
             client,
             _pd: std::marker::PhantomData,
@@ -205,8 +207,8 @@
     }
 
     <span class="doccomment">/// Create a new [`TmiClient`] with a default [`HttpClient`][crate::HttpClient]
-    </span><span class="kw">pub fn </span>new() -&gt; TmiClient&lt;<span class="lifetime">&#39;a</span>, C&gt;
-    <span class="kw">where </span>C: <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">&#39;a</span>&gt; {
+    </span><span class="kw">pub fn </span>new() -&gt; TmiClient&lt;<span class="lifetime">'a</span>, C&gt;
+    <span class="kw">where </span>C: <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">'a</span>&gt; {
         <span class="kw">let </span>client = C::default_client();
         TmiClient::with_client(client)
     }
@@ -225,17 +227,17 @@
     /// # Notes
     ///
     /// This function will aside from url sanitize the broadcasters username, will also remove any `#` and make it lowercase ascii
-    </span><span class="attr">#[deprecated(note = <span class="string">&quot;Has been implemented with helix endpoint Get Chatters&quot;</span>)]
+    </span><span class="attr">#[deprecated(note = <span class="string">"Has been implemented with helix endpoint Get Chatters"</span>)]
     </span><span class="kw">pub async fn </span>get_chatters(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
         broadcaster: <span class="kw-2">&amp;</span>types::UserNameRef,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GetChatters, RequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt; {
         <span class="kw">let </span>url = <span class="macro">format!</span>(
-            <span class="string">&quot;{}{}{}{}&quot;</span>,
+            <span class="string">"{}{}{}{}"</span>,
             <span class="kw">crate</span>::TWITCH_TMI_URL.as_str(),
-            <span class="string">&quot;group/user/&quot;</span>,
-            broadcaster.as_str().replace(<span class="string">&#39;#&#39;</span>, <span class="string">&quot;&quot;</span>).to_ascii_lowercase(),
-            <span class="string">&quot;/chatters&quot;
+            <span class="string">"group/user/"</span>,
+            broadcaster.as_str().replace(<span class="string">'#'</span>, <span class="string">""</span>).to_ascii_lowercase(),
+            <span class="string">"/chatters"
         </span>);
         <span class="kw">let </span>req = http::Request::builder()
             .uri(url)
@@ -253,9 +255,9 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-</span><span class="kw">impl</span>&lt;C: <span class="kw">crate</span>::HttpClient + <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">&#39;static</span>&gt;&gt; Default
-    <span class="kw">for </span>TmiClient&lt;<span class="lifetime">&#39;static</span>, C&gt;
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
+</span><span class="kw">impl</span>&lt;C: <span class="kw">crate</span>::HttpClient + <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">'static</span>&gt;&gt; Default
+    <span class="kw">for </span>TmiClient&lt;<span class="lifetime">'static</span>, C&gt;
 {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::new() }
 }
@@ -267,11 +269,11 @@
 </span><span class="kw">pub struct </span>GetChatters {
     <span class="doccomment">/// Amount of connected users
     </span><span class="kw">pub </span>chatter_count: u64,
-    <span class="doccomment">/// Lists of users in their &quot;rank&quot;
+    <span class="doccomment">/// Lists of users in their "rank"
     </span><span class="kw">pub </span>chatters: Chatters,
 }
 
-<span class="doccomment">/// List of &quot;rank&quot;s and what users are in them. A user can only be in one
+<span class="doccomment">/// List of "rank"s and what users are in them. A user can only be in one
 </span><span class="attr">#[derive(Debug, Serialize, Deserialize)]
 </span><span class="kw">pub struct </span>Chatters {
     <span class="doccomment">/// Broadcaster, can (probably) only be one
@@ -291,12 +293,12 @@
 }
 
 <span class="doccomment">/// User ID
-</span><span class="kw">pub type </span>UserId = u64; <span class="comment">// TMI user ID&#39;s appear to still be ints, even though Helix uses strings.
+</span><span class="kw">pub type </span>UserId = u64; <span class="comment">// TMI user ID's appear to still be ints, even though Helix uses strings.
 
 </span><span class="doccomment">/// Errors for [`TmiClient`] requests
 </span><span class="attr">#[derive(thiserror::Error, Debug, displaydoc::Display)]
 #[non_exhaustive]
-</span><span class="kw">pub enum </span>RequestError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt; {
+</span><span class="kw">pub enum </span>RequestError&lt;RE: std::error::Error + Send + Sync + <span class="lifetime">'static</span>&gt; {
     <span class="doccomment">/// http crate returned an error
     </span>HttpError(<span class="attr">#[from] </span>http::Error),
     <span class="doccomment">/// hyper crate returned an error

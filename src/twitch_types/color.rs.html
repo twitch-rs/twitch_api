@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/color.rs`."><title>color.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/color.rs`."><title>color.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../twitch_types/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -267,13 +269,13 @@
 }
 <span class="macro">impl_extra!</span>(no_arb, HexColor, HexColorRef);
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>HexColor {
-    <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; arbitrary::Result&lt;<span class="self">Self</span>&gt; {
+<span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>HexColor {
+    <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; arbitrary::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>buff = [<span class="number">0u8</span>; <span class="number">3</span>];
         u.fill_buffer(<span class="kw-2">&amp;mut </span>buff)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(HexColor::from(<span class="macro">format!</span>(
-            <span class="string">&quot;#{:02X}{:02X}{:02X}&quot;</span>,
+            <span class="string">"#{:02X}{:02X}{:02X}"</span>,
             buff[<span class="number">0</span>], buff[<span class="number">1</span>], buff[<span class="number">2</span>]
         )))
     }
@@ -281,8 +283,8 @@
 
 <span class="doccomment">/// Colors a user can have
 </span><span class="attr">#[derive(Debug, PartialEq, Eq, Clone, serde_derive::Deserialize)]
-#[serde(field_identifier, rename_all = <span class="string">&quot;snake_case&quot;</span>)]
-</span><span class="kw">pub enum </span>NamedUserColor&lt;<span class="lifetime">&#39;a</span>&gt; {
+#[serde(field_identifier, rename_all = <span class="string">"snake_case"</span>)]
+</span><span class="kw">pub enum </span>NamedUserColor&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Blue
     </span>Blue,
     <span class="doccomment">/// Blue Violet
@@ -314,13 +316,13 @@
     <span class="doccomment">/// Yellow Green
     </span>YellowGreen,
     <span class="doccomment">/// A hex color
-    </span><span class="attr">#[serde(borrow = <span class="string">&quot;&#39;a&quot;</span>)]
-    </span>Hex(Cow&lt;<span class="lifetime">&#39;a</span>, HexColorRef&gt;),
+    </span><span class="attr">#[serde(borrow = <span class="string">"'a"</span>)]
+    </span>Hex(Cow&lt;<span class="lifetime">'a</span>, HexColorRef&gt;),
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; arbitrary::Result&lt;<span class="self">Self</span>&gt; {
+<span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; arbitrary::Result&lt;<span class="self">Self</span>&gt; {
         <span class="prelude-val">Ok</span>(<span class="kw">match </span>u.int_in_range(<span class="number">0</span>..=<span class="number">15</span>)<span class="question-mark">? </span>{
             <span class="number">0 </span>=&gt; NamedUserColor::Blue,
             <span class="number">1 </span>=&gt; NamedUserColor::BlueViolet,
@@ -345,14 +347,14 @@
     <span class="kw">fn </span>size_hint(depth: usize) -&gt; (usize, <span class="prelude-ty">Option</span>&lt;usize&gt;) {
         arbitrary::size_hint::or_all(<span class="kw-2">&amp;</span>[
             arbitrary::size_hint::and_all(<span class="kw-2">&amp;</span>[]),
-            &lt;Cow&lt;<span class="lifetime">&#39;a</span>, HexColorRef&gt; <span class="kw">as </span>arbitrary::Arbitrary&gt;::size_hint(depth),
+            &lt;Cow&lt;<span class="lifetime">'a</span>, HexColorRef&gt; <span class="kw">as </span>arbitrary::Arbitrary&gt;::size_hint(depth),
         ])
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;zerofrom&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;zf</span>, <span class="lifetime">&#39;zf_inner</span>&gt; zerofrom::ZeroFrom&lt;<span class="lifetime">&#39;zf</span>, NamedUserColor&lt;<span class="lifetime">&#39;zf_inner</span>&gt;&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">&#39;zf</span>&gt; {
-    <span class="kw">fn </span>zero_from(this: <span class="kw-2">&amp;</span><span class="lifetime">&#39;zf </span>NamedUserColor&lt;<span class="lifetime">&#39;zf_inner</span>&gt;) -&gt; <span class="self">Self </span>{
+<span class="attr">#[cfg(feature = <span class="string">"zerofrom"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'zf</span>, <span class="lifetime">'zf_inner</span>&gt; zerofrom::ZeroFrom&lt;<span class="lifetime">'zf</span>, NamedUserColor&lt;<span class="lifetime">'zf_inner</span>&gt;&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">'zf</span>&gt; {
+    <span class="kw">fn </span>zero_from(this: <span class="kw-2">&amp;</span><span class="lifetime">'zf </span>NamedUserColor&lt;<span class="lifetime">'zf_inner</span>&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">match </span><span class="kw-2">*</span>this {
             NamedUserColor::Blue =&gt; NamedUserColor::Blue,
             NamedUserColor::BlueViolet =&gt; NamedUserColor::BlueViolet,
@@ -370,18 +372,18 @@
             NamedUserColor::SpringGreen =&gt; NamedUserColor::SpringGreen,
             NamedUserColor::YellowGreen =&gt; NamedUserColor::YellowGreen,
             NamedUserColor::Hex(<span class="kw-2">ref </span>__binding_0) =&gt; {
-                NamedUserColor::Hex(&lt;Cow&lt;<span class="lifetime">&#39;zf</span>, HexColorRef&gt; <span class="kw">as </span>zerofrom::ZeroFrom&lt;
-                    <span class="lifetime">&#39;zf</span>,
-                    Cow&lt;<span class="lifetime">&#39;zf_inner</span>, HexColorRef&gt;,
+                NamedUserColor::Hex(&lt;Cow&lt;<span class="lifetime">'zf</span>, HexColorRef&gt; <span class="kw">as </span>zerofrom::ZeroFrom&lt;
+                    <span class="lifetime">'zf</span>,
+                    Cow&lt;<span class="lifetime">'zf_inner</span>, HexColorRef&gt;,
                 &gt;&gt;::zero_from(__binding_0))
             }
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; NamedUserColor&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="doccomment">/// Creates a owned [NamedUserColor&lt;&#39;static&gt;](NamedUserColor) from a borrowed [NamedUserColor&lt;&#39;a&gt;](NamedUserColor)
-    </span><span class="kw">pub fn </span>to_owned(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NamedUserColor&lt;<span class="lifetime">&#39;static</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; NamedUserColor&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="doccomment">/// Creates a owned [NamedUserColor&lt;'static&gt;](NamedUserColor) from a borrowed [NamedUserColor&lt;'a&gt;](NamedUserColor)
+    </span><span class="kw">pub fn </span>to_owned(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NamedUserColor&lt;<span class="lifetime">'static</span>&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             NamedUserColor::Blue =&gt; NamedUserColor::Blue,
             NamedUserColor::BlueViolet =&gt; NamedUserColor::BlueViolet,
@@ -403,7 +405,7 @@
     }
 
     <span class="doccomment">/// All named colors
-    </span><span class="kw">pub fn </span>all() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[NamedUserColor&lt;<span class="lifetime">&#39;static</span>&gt;] {
+    </span><span class="kw">pub fn </span>all() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[NamedUserColor&lt;<span class="lifetime">'static</span>&gt;] {
         <span class="kw-2">&amp;</span>[
             NamedUserColor::Blue,
             NamedUserColor::BlueViolet,
@@ -424,82 +426,82 @@
     }
 
     <span class="doccomment">/// Return this color in [hex](HexColor)
-    </span><span class="kw">pub fn </span>as_hex(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>HexColorRef {
+    </span><span class="kw">pub fn </span>as_hex(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>HexColorRef {
         <span class="kw">match </span><span class="self">self </span>{
-            NamedUserColor::Blue =&gt; HexColorRef::from_static(<span class="string">&quot;#0000FF&quot;</span>),
-            NamedUserColor::BlueViolet =&gt; HexColorRef::from_static(<span class="string">&quot;#8A2BE2&quot;</span>),
-            NamedUserColor::CadetBlue =&gt; HexColorRef::from_static(<span class="string">&quot;#5F9EA0&quot;</span>),
-            NamedUserColor::Chocolate =&gt; HexColorRef::from_static(<span class="string">&quot;#D2691E&quot;</span>),
-            NamedUserColor::Coral =&gt; HexColorRef::from_static(<span class="string">&quot;#FF7F50&quot;</span>),
-            NamedUserColor::DodgerBlue =&gt; HexColorRef::from_static(<span class="string">&quot;#1E90FF&quot;</span>),
-            NamedUserColor::Firebrick =&gt; HexColorRef::from_static(<span class="string">&quot;#B22222&quot;</span>),
-            NamedUserColor::GoldenRod =&gt; HexColorRef::from_static(<span class="string">&quot;#DAA520&quot;</span>),
-            NamedUserColor::Green =&gt; HexColorRef::from_static(<span class="string">&quot;#008000&quot;</span>),
-            NamedUserColor::HotPink =&gt; HexColorRef::from_static(<span class="string">&quot;#FF69B4&quot;</span>),
-            NamedUserColor::OrangeRed =&gt; HexColorRef::from_static(<span class="string">&quot;#FF4500&quot;</span>),
-            NamedUserColor::Red =&gt; HexColorRef::from_static(<span class="string">&quot;#FF0000&quot;</span>),
-            NamedUserColor::SeaGreen =&gt; HexColorRef::from_static(<span class="string">&quot;#2E8B57&quot;</span>),
-            NamedUserColor::SpringGreen =&gt; HexColorRef::from_static(<span class="string">&quot;#00FF7F&quot;</span>),
-            NamedUserColor::YellowGreen =&gt; HexColorRef::from_static(<span class="string">&quot;#ADFF2F&quot;</span>),
+            NamedUserColor::Blue =&gt; HexColorRef::from_static(<span class="string">"#0000FF"</span>),
+            NamedUserColor::BlueViolet =&gt; HexColorRef::from_static(<span class="string">"#8A2BE2"</span>),
+            NamedUserColor::CadetBlue =&gt; HexColorRef::from_static(<span class="string">"#5F9EA0"</span>),
+            NamedUserColor::Chocolate =&gt; HexColorRef::from_static(<span class="string">"#D2691E"</span>),
+            NamedUserColor::Coral =&gt; HexColorRef::from_static(<span class="string">"#FF7F50"</span>),
+            NamedUserColor::DodgerBlue =&gt; HexColorRef::from_static(<span class="string">"#1E90FF"</span>),
+            NamedUserColor::Firebrick =&gt; HexColorRef::from_static(<span class="string">"#B22222"</span>),
+            NamedUserColor::GoldenRod =&gt; HexColorRef::from_static(<span class="string">"#DAA520"</span>),
+            NamedUserColor::Green =&gt; HexColorRef::from_static(<span class="string">"#008000"</span>),
+            NamedUserColor::HotPink =&gt; HexColorRef::from_static(<span class="string">"#FF69B4"</span>),
+            NamedUserColor::OrangeRed =&gt; HexColorRef::from_static(<span class="string">"#FF4500"</span>),
+            NamedUserColor::Red =&gt; HexColorRef::from_static(<span class="string">"#FF0000"</span>),
+            NamedUserColor::SeaGreen =&gt; HexColorRef::from_static(<span class="string">"#2E8B57"</span>),
+            NamedUserColor::SpringGreen =&gt; HexColorRef::from_static(<span class="string">"#00FF7F"</span>),
+            NamedUserColor::YellowGreen =&gt; HexColorRef::from_static(<span class="string">"#ADFF2F"</span>),
             NamedUserColor::Hex(hex) =&gt; hex,
         }
     }
 }
 
-<span class="kw">impl </span>Serialize <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>Serialize <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where </span>S: serde::Serializer {
         serializer.serialize_str(<span class="kw">match </span><span class="self">self </span>{
-            NamedUserColor::Blue =&gt; <span class="string">&quot;blue&quot;</span>,
-            NamedUserColor::BlueViolet =&gt; <span class="string">&quot;blue_violet&quot;</span>,
-            NamedUserColor::CadetBlue =&gt; <span class="string">&quot;cadet_blue&quot;</span>,
-            NamedUserColor::Chocolate =&gt; <span class="string">&quot;chocolate&quot;</span>,
-            NamedUserColor::Coral =&gt; <span class="string">&quot;coral&quot;</span>,
-            NamedUserColor::DodgerBlue =&gt; <span class="string">&quot;dodger_blue&quot;</span>,
-            NamedUserColor::Firebrick =&gt; <span class="string">&quot;firebrick&quot;</span>,
-            NamedUserColor::GoldenRod =&gt; <span class="string">&quot;golden_rod&quot;</span>,
-            NamedUserColor::Green =&gt; <span class="string">&quot;green&quot;</span>,
-            NamedUserColor::HotPink =&gt; <span class="string">&quot;hot_pink&quot;</span>,
-            NamedUserColor::OrangeRed =&gt; <span class="string">&quot;orange_red&quot;</span>,
-            NamedUserColor::Red =&gt; <span class="string">&quot;red&quot;</span>,
-            NamedUserColor::SeaGreen =&gt; <span class="string">&quot;sea_green&quot;</span>,
-            NamedUserColor::SpringGreen =&gt; <span class="string">&quot;spring_green&quot;</span>,
-            NamedUserColor::YellowGreen =&gt; <span class="string">&quot;yellow_green&quot;</span>,
+            NamedUserColor::Blue =&gt; <span class="string">"blue"</span>,
+            NamedUserColor::BlueViolet =&gt; <span class="string">"blue_violet"</span>,
+            NamedUserColor::CadetBlue =&gt; <span class="string">"cadet_blue"</span>,
+            NamedUserColor::Chocolate =&gt; <span class="string">"chocolate"</span>,
+            NamedUserColor::Coral =&gt; <span class="string">"coral"</span>,
+            NamedUserColor::DodgerBlue =&gt; <span class="string">"dodger_blue"</span>,
+            NamedUserColor::Firebrick =&gt; <span class="string">"firebrick"</span>,
+            NamedUserColor::GoldenRod =&gt; <span class="string">"golden_rod"</span>,
+            NamedUserColor::Green =&gt; <span class="string">"green"</span>,
+            NamedUserColor::HotPink =&gt; <span class="string">"hot_pink"</span>,
+            NamedUserColor::OrangeRed =&gt; <span class="string">"orange_red"</span>,
+            NamedUserColor::Red =&gt; <span class="string">"red"</span>,
+            NamedUserColor::SeaGreen =&gt; <span class="string">"sea_green"</span>,
+            NamedUserColor::SpringGreen =&gt; <span class="string">"spring_green"</span>,
+            NamedUserColor::YellowGreen =&gt; <span class="string">"yellow_green"</span>,
             NamedUserColor::Hex(o) =&gt; o.as_str(),
         })
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">type </span>Error = serde::de::value::Error;
 
-    <span class="kw">fn </span>try_from(s: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+    <span class="kw">fn </span>try_from(s: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
         <span class="kw">use </span>serde::de::IntoDeserializer;
 
         NamedUserColor::deserialize(s.into_deserializer())
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;Cow&lt;<span class="lifetime">&#39;a</span>, HexColorRef&gt;&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>from(color: Cow&lt;<span class="lifetime">&#39;a</span>, HexColorRef&gt;) -&gt; <span class="self">Self </span>{ NamedUserColor::Hex(color) }
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;Cow&lt;<span class="lifetime">'a</span>, HexColorRef&gt;&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>from(color: Cow&lt;<span class="lifetime">'a</span>, HexColorRef&gt;) -&gt; <span class="self">Self </span>{ NamedUserColor::Hex(color) }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;HexColor&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;HexColor&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>from(color: HexColor) -&gt; <span class="self">Self </span>{ NamedUserColor::Hex(color.into()) }
 }
 
-<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result { <span class="self">self</span>.serialize(f) }
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result { <span class="self">self</span>.serialize(f) }
 }
 
 <span class="attr">#[cfg(test)]
 #[test]
 </span><span class="kw">fn </span>color() {
-    <span class="kw">let </span>colors = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;hot_pink&quot;</span>, <span class="string">&quot;#9146FF&quot;</span>];
+    <span class="kw">let </span>colors = [<span class="string">"red"</span>, <span class="string">"hot_pink"</span>, <span class="string">"#9146FF"</span>];
     <span class="kw">let </span>check = <span class="macro">vec!</span>[
         NamedUserColor::Red,
         NamedUserColor::HotPink,
-        NamedUserColor::Hex(HexColorRef::from_static(<span class="string">&quot;#9146FF&quot;</span>).into()),
+        NamedUserColor::Hex(HexColorRef::from_static(<span class="string">"#9146FF"</span>).into()),
     ];
     <span class="macro">assert_eq!</span>(
         check,

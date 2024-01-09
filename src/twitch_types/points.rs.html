@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/points.rs`."><title>points.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/points.rs`."><title>points.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../twitch_types/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -257,11 +259,11 @@
 <span class="doccomment">/// Reward redemption max
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(untagged))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(untagged))]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Max {
     <span class="doccomment">/// Max per stream
@@ -269,7 +271,7 @@
         <span class="doccomment">/// Max per stream is enabled
         </span>is_enabled: bool,
         <span class="doccomment">/// Max amount of redemptions per stream
-        </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;value&quot;</span>))]
+        </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"value"</span>))]
         </span>max_per_stream: u32,
     },
     <span class="doccomment">/// Max per user per stream
@@ -277,7 +279,7 @@
         <span class="doccomment">/// Max per user per stream is enabled
         </span>is_enabled: bool,
         <span class="doccomment">/// Max amount of redemptions per user per stream
-        </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;value&quot;</span>))]
+        </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"value"</span>))]
         </span>max_per_user_per_stream: u32,
     },
 }
@@ -285,26 +287,26 @@
 <span class="doccomment">/// Information about global cooldown
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GlobalCooldown {
     <span class="doccomment">/// Cooldown enabled
     </span><span class="kw">pub </span>is_enabled: bool,
     <span class="doccomment">/// Cooldown amount
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;seconds&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"seconds"</span>))]
     </span><span class="kw">pub </span>global_cooldown_seconds: u32,
 }
 
 <span class="doccomment">/// Poll choice
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>PollChoice {
     <span class="doccomment">/// ID for the choice.
@@ -323,30 +325,30 @@
 </span><span class="doccomment">/// Status of a poll
 </span><span class="attr">#[derive(PartialEq, Eq, Debug, Clone)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename_all = <span class="string">"UPPERCASE"</span>))]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>PollStatus {
     <span class="doccomment">/// Poll is currently in progress.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;active&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"active"</span>))]
     </span>Active,
     <span class="doccomment">/// Poll has reached its ended_at time.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;completed&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"completed"</span>))]
     </span>Completed,
     <span class="doccomment">/// Poll has been manually terminated before its ended_at time.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;terminated&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"terminated"</span>))]
     </span>Terminated,
     <span class="doccomment">/// Poll is no longer visible on the channel.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;archived&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"archived"</span>))]
     </span>Archived,
     <span class="doccomment">/// Poll is no longer visible to any user on Twitch.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;moderated&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"moderated"</span>))]
     </span>Moderated,
     <span class="doccomment">/// Something went wrong determining the state.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;invalid&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"invalid"</span>))]
     </span>Invalid,
 }
 
@@ -354,34 +356,34 @@
 </span><span class="doccomment">/// Status of the Prediction
 </span><span class="attr">#[derive(PartialEq, Eq, Debug, Clone)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename_all = <span class="string">"UPPERCASE"</span>))]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>PredictionStatus {
     <span class="doccomment">/// A winning outcome has been chosen and the Channel Points have been distributed to the users who guessed the correct outcome.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;resolved&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"resolved"</span>))]
     </span>Resolved,
     <span class="doccomment">/// The Prediction is active and viewers can make predictions.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;active&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"active"</span>))]
     </span>Active,
     <span class="doccomment">/// The Prediction has been canceled and the Channel Points have been refunded to participants.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;canceled&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"canceled"</span>))]
     </span>Canceled,
     <span class="doccomment">/// The Prediction has been locked and viewers can no longer make predictions.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;locked&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"locked"</span>))]
     </span>Locked,
 }
 
 <span class="doccomment">/// Outcome for the Prediction
 </span><span class="attr">#[derive(PartialEq, Eq, Debug, Clone)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>PredictionOutcome {
     <span class="doccomment">/// ID for the outcome.
@@ -402,20 +404,20 @@
 </span><span class="doccomment">/// Users who were the top predictors.
 </span><span class="attr">#[derive(PartialEq, Eq, Debug, Clone)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>PredictionTopPredictors {
     <span class="doccomment">/// ID of the user.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;user_id&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"user_id"</span>))]
     </span><span class="kw">pub </span>id: UserId,
     <span class="doccomment">/// Display name of the user.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;user_name&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"user_name"</span>))]
     </span><span class="kw">pub </span>name: DisplayName,
     <span class="doccomment">/// Login of the user.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(alias = <span class="string">&quot;user_login&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"user_login"</span>))]
     </span><span class="kw">pub </span>login: UserName,
     <span class="doccomment">/// Number of Channel Points used by the user.
     </span><span class="kw">pub </span>channel_points_used: i64,

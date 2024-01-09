@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_cheer.rs`."><title>channel_cheer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_cheer.rs`."><title>channel_cheer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -184,15 +186,15 @@
 <a href="#184" id="184">184</a>
 <a href="#185" id="185">185</a>
 <a href="#186" id="186">186</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;cheer&quot;</span>)]
-#![doc(alias = <span class="string">&quot;channel-cheer-events-public-v1&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"cheer"</span>)]
+#![doc(alias = <span class="string">"channel-cheer-events-public-v1"</span>)]
 </span><span class="doccomment">//! PubSub messages for cheer events
 </span><span class="kw">use crate</span>::{pubsub, types};
 <span class="kw">use </span>serde_derive::{Deserialize, Serialize};
 
 <span class="doccomment">/// A user redeems a cheer with shared rewards.
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>ChannelCheerEventsPublicV1 {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
     </span><span class="kw">pub </span>channel_id: u32,
@@ -200,12 +202,12 @@
 
 <span class="macro">impl_de_ser!</span>(
     ChannelCheerEventsPublicV1,
-    <span class="string">&quot;channel-cheer-events-public-v1&quot;</span>,
+    <span class="string">"channel-cheer-events-public-v1"</span>,
     channel_id <span class="comment">// FIXME: add trailing comma
 </span>);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>ChannelCheerEventsPublicV1 {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
         <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::BitsRead];
 
@@ -214,41 +216,41 @@
 
 <span class="doccomment">/// Reply from [ChannelCheerEventsPublicV1]
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = <span class="string">&quot;type&quot;</span>, content = <span class="string">&quot;data&quot;</span>)]
+#[serde(tag = <span class="string">"type"</span>, content = <span class="string">"data"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ChannelCheerEventsPublicV1Reply {
     <span class="doccomment">/// A cheer bomb happened
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;cheerbomb&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"cheerbomb"</span>)]
     </span>CheerBomb {
         <span class="doccomment">/// Display name of user
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;displayName&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"displayName"</span>)]
         </span>display_name: types::DisplayName,
         <span class="doccomment">/// Domain of cheer reward. Name of active twitch event
         </span>domain: String,
         <span class="doccomment">/// Selected count for cheer. e.g How many that will receive rewards
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;selectedCount&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"selectedCount"</span>)]
         </span>selected_count: i64,
         <span class="doccomment">/// Unknown
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;totalRewardCount&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"totalRewardCount"</span>)]
         </span>total_reward_count: i64,
         <span class="doccomment">/// Unknown
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;triggerAmount&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"triggerAmount"</span>)]
         </span>trigger_amount: i64,
         <span class="doccomment">/// Type of cheerbomb.
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;triggerType&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"triggerType"</span>)]
         </span>trigger_type: TriggerType,
         <span class="doccomment">/// Id of the user
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;userID&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"userID"</span>)]
         </span>user_id: types::UserId,
         <span class="doccomment">/// Login name of the user, not capitalized
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;userLogin&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"userLogin"</span>)]
         </span>user_login: types::UserName,
     },
 }
 
 <span class="doccomment">/// Trigger for cheer event/cheer bomb
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
+#[serde(rename_all = <span class="string">"UPPERCASE"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>TriggerType {
     <span class="doccomment">/// Subscription
@@ -265,24 +267,24 @@
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="attr">#[test]
     </span><span class="kw">fn </span>channel_cheer_event_cheerbomb_sub() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;cheerbomb&quot;,
-    &quot;data&quot;: {
-        &quot;userID&quot;: &quot;1234&quot;,
-        &quot;displayName&quot;: &quot;TMI&quot;,
-        &quot;userLogin&quot;: &quot;tmi&quot;,
-        &quot;selectedCount&quot;: 5,
-        &quot;triggerType&quot;: &quot;SUBSCRIPTION&quot;,
-        &quot;triggerAmount&quot;: 1,
-        &quot;totalRewardCount&quot;: 5,
-        &quot;domain&quot;: &quot;kpop_megacommerce&quot;
+    "type": "cheerbomb",
+    "data": {
+        "userID": "1234",
+        "displayName": "TMI",
+        "userLogin": "tmi",
+        "selectedCount": 5,
+        "triggerType": "SUBSCRIPTION",
+        "triggerAmount": 1,
+        "totalRewardCount": 5,
+        "domain": "kpop_megacommerce"
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;,&quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-cheer-events-public-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE","data": {{ "topic": "channel-cheer-events-public-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -295,24 +297,24 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>channel_cheer_event_cheerbomb_subgift() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;cheerbomb&quot;,
-    &quot;data&quot;: {
-        &quot;userID&quot;: &quot;1234&quot;,
-        &quot;displayName&quot;: &quot;tmi&quot;,
-        &quot;userLogin&quot;: &quot;TMI&quot;,
-        &quot;selectedCount&quot;: 25,
-        &quot;triggerType&quot;: &quot;SUBGIFT&quot;,
-        &quot;triggerAmount&quot;: 5,
-        &quot;totalRewardCount&quot;: 25,
-        &quot;domain&quot;: &quot;kpop_megacommerce&quot;
+    "type": "cheerbomb",
+    "data": {
+        "userID": "1234",
+        "displayName": "tmi",
+        "userLogin": "TMI",
+        "selectedCount": 25,
+        "triggerType": "SUBGIFT",
+        "triggerAmount": 5,
+        "totalRewardCount": 25,
+        "domain": "kpop_megacommerce"
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;,&quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-cheer-events-public-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE","data": {{ "topic": "channel-cheer-events-public-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -325,24 +327,24 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>channel_cheer_event_cheerbomb_cheer() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;cheerbomb&quot;,
-    &quot;data&quot;: {
-        &quot;userID&quot;: &quot;1234&quot;,
-        &quot;displayName&quot;: &quot;tmi&quot;,
-        &quot;userLogin&quot;: &quot;TMI&quot;,
-        &quot;selectedCount&quot;: 10,
-        &quot;triggerType&quot;: &quot;CHEER&quot;,
-        &quot;triggerAmount&quot;: 600,
-        &quot;totalRewardCount&quot;: 10,
-        &quot;domain&quot;: &quot;kpop_megacommerce&quot;
+    "type": "cheerbomb",
+    "data": {
+        "userID": "1234",
+        "displayName": "tmi",
+        "userLogin": "TMI",
+        "selectedCount": 10,
+        "triggerType": "CHEER",
+        "triggerAmount": 600,
+        "totalRewardCount": 10,
+        "domain": "kpop_megacommerce"
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;,&quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-cheer-events-public-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE","data": {{ "topic": "channel-cheer-events-public-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -356,7 +358,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
-        <span class="kw">let </span>s = <span class="string">&quot;channel-cheer-events-public-v1.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"channel-cheer-events-public-v1.1234"</span>;
         <span class="macro">assert_eq!</span>(
             ChannelCheerEventsPublicV1 { channel_id: <span class="number">1234 </span>},
             s.to_string().try_into().unwrap()
@@ -365,7 +367,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
-        <span class="kw">let </span>s = <span class="string">&quot;channel-cheer-events-public-v1.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"channel-cheer-events-public-v1.1234"</span>;
         <span class="kw">let </span>right: String = ChannelCheerEventsPublicV1 { channel_id: <span class="number">1234 </span>}.into();
         <span class="macro">assert_eq!</span>(s.to_string(), right);
     }

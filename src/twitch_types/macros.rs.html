@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/macros.rs`."><title>macros.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/macros.rs`."><title>macros.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../twitch_types/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -659,22 +661,22 @@
         </span><span class="kw">pub struct </span><span class="macro-nonterminal">$Owned</span>(String);
 
         <span class="kw">impl </span><span class="macro-nonterminal">$Owned </span>{
-            <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">&quot;Constructs a new &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Owned</span>))]
+            <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"Constructs a new "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Owned</span>))]
             #[inline]
             </span><span class="kw">pub const fn </span>new(raw: String) -&gt; <span class="self">Self </span>{
                 <span class="self">Self</span>(raw)
             }
             <span class="attr">#[inline]
-            #[doc = <span class="macro">concat!</span>(<span class="string">&quot;Constructs a new&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Owned</span>), <span class="string">&quot;from a static reference&quot;</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"Constructs a new"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Owned</span>), <span class="string">"from a static reference"</span>)]
             #[track_caller]
-            </span><span class="kw">pub fn </span>from_static(raw: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="self">Self </span>{
+            </span><span class="kw">pub fn </span>from_static(raw: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="self">Self </span>{
                 ::std::borrow::ToOwned::to_owned(<span class="macro-nonterminal">$Borrowed::from_static</span>(raw))
             }
-            <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">&quot;Converts this `&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Owned</span>), <span class="string">&quot;` into a [`Box&lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;&gt;`]\n\nThis will drop any excess capacity.&quot;</span>)]
+            <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"Converts this `"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Owned</span>), <span class="string">"` into a [`Box&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"&gt;`]\n\nThis will drop any excess capacity."</span>)]
             #[allow(unsafe_code)]
             #[inline]
             </span><span class="kw">pub fn </span>into_boxed_ref(<span class="self">self</span>) -&gt; ::std::boxed::Box&lt;<span class="macro-nonterminal">$Borrowed</span>&gt; {
-                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">&quot;SAFETY: `&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;` is `#[repr(transparent)]` around a single `str` field, so a `*mut str` can be safely reinterpreted as a `*mut &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;`&quot;</span>)]
+                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"SAFETY: `"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"` is `#[repr(transparent)]` around a single `str` field, so a `*mut str` can be safely reinterpreted as a `*mut "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"`"</span>)]
                 </span><span class="kw">fn </span>_ptr_safety_comment() {}
 
                 <span class="kw">let </span>box_str = <span class="self">self</span>.<span class="number">0</span>.into_boxed_str();
@@ -682,14 +684,14 @@
                     ::std::boxed::Box::from_raw(::std::boxed::Box::into_raw(box_str) <span class="kw">as </span><span class="kw-2">*mut </span><span class="macro-nonterminal">$Borrowed</span>)
                 }
             }
-            <span class="attr">#[doc = <span class="string">&quot;Unwraps the underlying [`String`] value&quot;</span>]
+            <span class="attr">#[doc = <span class="string">"Unwraps the underlying [`String`] value"</span>]
             #[inline]
             </span><span class="kw">pub fn </span>take(<span class="self">self</span>) -&gt; String {
                 <span class="self">self</span>.<span class="number">0
             </span>}
         }
 
-        <span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="macro-nonterminal">$Borrowed</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
+        <span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><span class="macro-nonterminal">$Borrowed</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$Borrowed</span>) -&gt; <span class="self">Self </span>{
                 ::std::borrow::ToOwned::to_owned(s)
@@ -738,9 +740,9 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$Borrowed</span>&gt;&gt; <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::std::convert::From&lt;::std::borrow::Cow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$Borrowed</span>&gt;&gt; <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
             <span class="attr">#[inline]
-            </span><span class="kw">fn </span>from(r: ::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$Borrowed</span>&gt;) -&gt; <span class="self">Self </span>{
+            </span><span class="kw">fn </span>from(r: ::std::borrow::Cow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$Borrowed</span>&gt;) -&gt; <span class="self">Self </span>{
                 <span class="kw">match </span>r {
                     ::std::borrow::Cow::Borrowed(b) =&gt; ::std::borrow::ToOwned::to_owned(b),
                     ::std::borrow::Cow::Owned(o) =&gt; o,
@@ -748,7 +750,7 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;<span class="macro-nonterminal">$Owned</span>&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$Borrowed</span>&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::std::convert::From&lt;<span class="macro-nonterminal">$Owned</span>&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$Borrowed</span>&gt; {
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>from(owned: <span class="macro-nonterminal">$Owned</span>) -&gt; <span class="self">Self </span>{
                 ::std::borrow::Cow::Owned(owned)
@@ -762,7 +764,7 @@
             }
         }
 
-        <span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>str&gt; <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
+        <span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>str&gt; <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="self">Self </span>{
                 <span class="self">Self</span>::new(::std::convert::From::from(s))
@@ -829,17 +831,17 @@
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
         </span><span class="kw">impl </span>::serde::Serialize <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
             <span class="kw">fn </span>serialize&lt;S: ::serde::Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
                 &lt;String <span class="kw">as </span>::serde::Serialize&gt;::serialize(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, serializer)
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
-            <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
-                <span class="kw">let </span>raw = &lt;String <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
+        <span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
+            <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+                <span class="kw">let </span>raw = &lt;String <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
                 <span class="prelude-val">Ok</span>(<span class="self">Self</span>::new(raw))
             }
         }
@@ -852,32 +854,32 @@
         <span class="kw">impl </span><span class="macro-nonterminal">$Borrowed </span>{
             <span class="attr">#[allow(unsafe_code)]
             #[inline]
-            #[doc = <span class="macro">concat!</span>(<span class="string">&quot;Transparently reinterprets the string slice as a strongly-typed &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>))]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"Transparently reinterprets the string slice as a strongly-typed "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>))]
             </span><span class="kw">pub const fn </span>from_str(raw: <span class="kw-2">&amp;</span>str) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
                 <span class="kw">let </span>ptr: <span class="kw-2">*const </span>str = raw;
-                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">&quot;SAFETY: `&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;`&quot;</span>)]
+                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"SAFETY: `"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"`"</span>)]
                 </span><span class="kw">fn </span>_ptr_safety_comment() {}
 
                 <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>) }
             }
             <span class="attr">#[inline]
-            #[doc = <span class="macro">concat!</span>(<span class="string">&quot;Transparently reinterprets the static string slice as a strongly-typed &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>))]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"Transparently reinterprets the static string slice as a strongly-typed "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>))]
             #[track_caller]
-            </span><span class="kw">pub const fn </span>from_static(raw: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="self">Self </span>{
+            </span><span class="kw">pub const fn </span>from_static(raw: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><span class="self">Self </span>{
                 <span class="self">Self</span>::from_str(raw)
             }
             <span class="attr">#[allow(unsafe_code)]
             #[inline]
-            #[doc = <span class="macro">concat!</span>(<span class="string">&quot;Converts a [`Box&lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;&gt;`] into a [`&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Owned</span>), <span class="string">&quot;`] without copying or allocating&quot;</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"Converts a [`Box&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"&gt;`] into a [`"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Owned</span>), <span class="string">"`] without copying or allocating"</span>)]
             </span><span class="kw">pub fn </span>into_owned(<span class="self">self</span>: ::std::boxed::Box&lt;<span class="macro-nonterminal">$Borrowed</span>&gt;) -&gt; <span class="macro-nonterminal">$Owned </span>{
-                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">&quot;SAFETY: `&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;` is `#[repr(transparent)]` around a single `str` field, so a `*mut str` can be safely reinterpreted as a `*mut &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;`&quot;</span>)]
+                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"SAFETY: `"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"` is `#[repr(transparent)]` around a single `str` field, so a `*mut str` can be safely reinterpreted as a `*mut "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"`"</span>)]
                 </span><span class="kw">fn </span>_ptr_safety_comment() {}
 
                 <span class="kw">let </span>raw = ::std::boxed::Box::into_raw(<span class="self">self</span>);
                 <span class="kw">let </span>boxed = <span class="kw">unsafe </span>{ ::std::boxed::Box::from_raw(raw <span class="kw">as </span><span class="kw-2">*mut </span>str) };
                 <span class="macro-nonterminal">$Owned::new</span>(::std::convert::From::from(boxed))
             }
-            <span class="attr">#[doc = <span class="string">r&quot; Provides access to the underlying value as a string slice.&quot;</span>]
+            <span class="attr">#[doc = <span class="string">r" Provides access to the underlying value as a string slice."</span>]
             #[inline]
             </span><span class="kw">pub const fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
                 <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
@@ -906,23 +908,23 @@
             }
         }
 
-        <span class="kw">impl </span>::std::cmp::PartialEq&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="macro-nonterminal">$Borrowed</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
+        <span class="kw">impl </span>::std::cmp::PartialEq&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><span class="macro-nonterminal">$Borrowed</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: &amp;&amp;<span class="macro-nonterminal">$Borrowed</span>) -&gt; bool {
                 <span class="self">self</span>.as_str() == other.as_str()
             }
         }
 
-        <span class="kw">impl </span>::std::cmp::PartialEq&lt;<span class="macro-nonterminal">$Owned</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="macro-nonterminal">$Borrowed </span>{
+        <span class="kw">impl </span>::std::cmp::PartialEq&lt;<span class="macro-nonterminal">$Owned</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'_ </span><span class="macro-nonterminal">$Borrowed </span>{
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$Owned</span>) -&gt; bool {
                 <span class="self">self</span>.as_str() == other.as_str()
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$Borrowed </span>{
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$Borrowed </span>{
             <span class="attr">#[inline]
-            </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$Borrowed </span>{
+            </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$Borrowed </span>{
                 <span class="macro-nonterminal">$Borrowed::from_str</span>(s)
             }
         }
@@ -941,27 +943,27 @@
             </span>}
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$Borrowed</span>&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$Borrowed</span>&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$Borrowed</span>&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$Borrowed</span>&gt; {
             <span class="attr">#[inline]
-            </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$Borrowed</span>) -&gt; <span class="self">Self </span>{
+            </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$Borrowed</span>) -&gt; <span class="self">Self </span>{
                 ::std::borrow::Cow::Borrowed(r)
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;b</span>, <span class="macro-nonterminal">$Borrowed</span>&gt;&gt;
-            <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$Borrowed
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>: <span class="lifetime">'a</span>&gt; ::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>::std::borrow::Cow&lt;<span class="lifetime">'b</span>, <span class="macro-nonterminal">$Borrowed</span>&gt;&gt;
+            <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$Borrowed
         </span>{
             <span class="attr">#[inline]
-            </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;b</span>, <span class="macro-nonterminal">$Borrowed</span>&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$Borrowed </span>{
+            </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>::std::borrow::Cow&lt;<span class="lifetime">'b</span>, <span class="macro-nonterminal">$Borrowed</span>&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$Borrowed </span>{
                 ::std::borrow::Borrow::borrow(r)
             }
         }
 
-        <span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="macro-nonterminal">$Borrowed</span>&gt; <span class="kw">for </span>::std::rc::Rc&lt;<span class="macro-nonterminal">$Borrowed</span>&gt; {
+        <span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><span class="macro-nonterminal">$Borrowed</span>&gt; <span class="kw">for </span>::std::rc::Rc&lt;<span class="macro-nonterminal">$Borrowed</span>&gt; {
             <span class="attr">#[allow(unsafe_code)]
             #[inline]
-            </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="macro-nonterminal">$Borrowed</span>) -&gt; <span class="self">Self </span>{
-                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">&quot;SAFETY: `&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;`&quot;</span>)]
+            </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">'_ </span><span class="macro-nonterminal">$Borrowed</span>) -&gt; <span class="self">Self </span>{
+                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"SAFETY: `"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"`"</span>)]
                 </span><span class="kw">fn </span>_ptr_safety_comment() {}
 
                 <span class="kw">let </span>rc = ::std::rc::Rc::&lt;str&gt;::from(r.as_str());
@@ -969,11 +971,11 @@
             }
         }
 
-        <span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="macro-nonterminal">$Borrowed</span>&gt; <span class="kw">for </span>::std::sync::Arc&lt;<span class="macro-nonterminal">$Borrowed</span>&gt; {
+        <span class="kw">impl </span>::std::convert::From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><span class="macro-nonterminal">$Borrowed</span>&gt; <span class="kw">for </span>::std::sync::Arc&lt;<span class="macro-nonterminal">$Borrowed</span>&gt; {
             <span class="attr">#[allow(unsafe_code)]
             #[inline]
-            </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="macro-nonterminal">$Borrowed</span>) -&gt; <span class="self">Self </span>{
-                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">&quot;SAFETY: `&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">&quot;`&quot;</span>)]
+            </span><span class="kw">fn </span>from(r: <span class="kw-2">&amp;</span><span class="lifetime">'_ </span><span class="macro-nonterminal">$Borrowed</span>) -&gt; <span class="self">Self </span>{
+                <span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"SAFETY: `"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"` is `#[repr(transparent)]` around a single `str` field, so a `*const str` can be safely reinterpreted as a `*const "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Borrowed</span>), <span class="string">"`"</span>)]
                 </span><span class="kw">fn </span>_ptr_safety_comment() {}
 
                 <span class="kw">let </span>arc = ::std::sync::Arc::&lt;str&gt;::from(r.as_str());
@@ -997,7 +999,7 @@
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
         </span><span class="kw">impl </span>::serde::Serialize <span class="kw">for </span><span class="macro-nonterminal">$Borrowed </span>{
             <span class="kw">fn </span>serialize&lt;S: ::serde::Serializer&gt;(
                 <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -1007,22 +1009,22 @@
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>: <span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;a</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$Borrowed </span>{
-            <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(
+        <span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>: <span class="lifetime">'a</span>, <span class="lifetime">'a</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$Borrowed </span>{
+            <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(
                 deserializer: D,
             ) -&gt; ::std::result::Result&lt;<span class="self">Self</span>, D::Error&gt; {
-                <span class="kw">let </span>raw = &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
+                <span class="kw">let </span>raw = &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
                 ::std::result::Result::Ok(<span class="macro-nonterminal">$Borrowed::from_str</span>(raw))
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>::std::boxed::Box&lt;<span class="macro-nonterminal">$Borrowed</span>&gt; {
-            <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(
+        <span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; ::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>::std::boxed::Box&lt;<span class="macro-nonterminal">$Borrowed</span>&gt; {
+            <span class="kw">fn </span>deserialize&lt;D: ::serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(
                 deserializer: D,
             ) -&gt; ::std::result::Result&lt;<span class="self">Self</span>, D::Error&gt; {
-                <span class="kw">let </span>owned = &lt;<span class="macro-nonterminal">$Owned </span><span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
+                <span class="kw">let </span>owned = &lt;<span class="macro-nonterminal">$Owned </span><span class="kw">as </span>::serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
                 ::std::result::Result::Ok(owned.into_boxed_ref())
             }
         }
@@ -1032,9 +1034,9 @@
 
 <span class="macro">macro_rules! </span>impl_extra {
     (validated, <span class="macro-nonterminal">$owned</span>:path, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>:<span class="macro-nonterminal">path</span>, <span class="macro-nonterminal">$error</span>:path) =&gt; {
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>String&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
             <span class="kw">type </span><span class="macro-nonterminal">Error </span>= <span class="macro-nonterminal">$error</span>;
-            <span class="kw">fn </span>try_from(string: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="macro-nonterminal">$error</span>&gt;  {
+            <span class="kw">fn </span>try_from(string: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="macro-nonterminal">$error</span>&gt;  {
                 &lt;<span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt;<span class="macro-nonterminal">::from_str</span>(string.as_str())
             }
         }
@@ -1042,8 +1044,8 @@
         <span class="macro">impl_extra!</span>(@all, <span class="macro-nonterminal">$owned</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>);
     };
     (<span class="macro-nonterminal">no_arb</span>, <span class="macro-nonterminal">$owned</span>:path, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>:<span class="macro-nonterminal">path</span>) =&gt; {
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
-            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(string: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String) -&gt; <span class="self">Self </span>{
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>String&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(string: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>String) -&gt; <span class="self">Self </span>{
                 &lt;<span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt;<span class="macro-nonterminal">::from_str</span>(string.as_str())
             }
         }
@@ -1052,15 +1054,15 @@
     };
 
     (<span class="macro-nonterminal">ascii</span>, <span class="macro-nonterminal">$owned</span>:path, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>:<span class="macro-nonterminal">path</span>) =&gt; {
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
-            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(string: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String) -&gt; <span class="self">Self </span>{
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>String&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(string: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>String) -&gt; <span class="self">Self </span>{
                 &lt;<span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt;<span class="macro-nonterminal">::from_str</span>(string.as_str())
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
-            <span class="kw">fn </span><span class="macro-nonterminal">arbitrary</span>(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">arbitrary</span>(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
                 <span class="kw">let </span>string: <span class="kw-2">&amp;</span>str = &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>arbitrary::Arbitrary&gt;::arbitrary(u)<span class="question-mark">?</span>;
                 <span class="kw">let </span>string = <span class="kw">if let </span><span class="prelude-val">Some</span>(i) = string.find(|b: char| !b.is_ascii_alphanumeric()) {
                     <span class="kw">let </span>valid = <span class="kw-2">&amp;</span>string[<span class="number">0</span>..i];
@@ -1075,7 +1077,7 @@
                 }
             }
 
-            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
                 <span class="kw">let </span>string: <span class="kw-2">&amp;</span>str = &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>arbitrary::Arbitrary&gt;::arbitrary_take_rest(u)<span class="question-mark">?</span>;
                 <span class="kw">if  </span>string.as_bytes().iter().any(|b| !b.is_ascii_alphanumeric())|| string.is_empty() {
                     <span class="prelude-val">Err</span>(arbitrary::Error::IncorrectFormat)
@@ -1090,13 +1092,13 @@
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$owned </span>{
-            <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$owned </span>{
+            <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
                 &lt;<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span><span class="kw">as </span><span class="macro-nonterminal">arbitrary::Arbitrary</span>&gt;::arbitrary(u).map(Into::into)
             }
 
-            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
                 &lt;<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span><span class="kw">as </span><span class="macro-nonterminal">arbitrary::Arbitrary</span>&gt;::arbitrary_take_rest(u).map(Into::into)
             }
 
@@ -1110,15 +1112,15 @@
     };
 
     (<span class="macro-nonterminal">numeric</span>, <span class="macro-nonterminal">$owned</span>:path, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>:<span class="macro-nonterminal">path</span>) =&gt; {
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
-            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(string: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String) -&gt; <span class="self">Self </span>{
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>String&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(string: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>String) -&gt; <span class="self">Self </span>{
                 &lt;<span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt;<span class="macro-nonterminal">::from_str</span>(string.as_str())
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
-            <span class="kw">fn </span><span class="macro-nonterminal">arbitrary</span>(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">arbitrary</span>(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
                 <span class="kw">let </span>string: <span class="kw-2">&amp;</span>str = &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>arbitrary::Arbitrary&gt;::arbitrary(u)<span class="question-mark">?</span>;
                 <span class="kw">let </span>string = <span class="kw">if let </span><span class="prelude-val">Some</span>(i) = string.find(|b: char| !b.is_ascii_digit()) {
                     <span class="kw">let </span>valid = <span class="kw-2">&amp;</span>string[<span class="number">0</span>..i];
@@ -1133,7 +1135,7 @@
                 }
             }
 
-            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
                 <span class="kw">let </span>string: <span class="kw-2">&amp;</span>str = &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>arbitrary::Arbitrary&gt;::arbitrary_take_rest(u)<span class="question-mark">?</span>;
                 <span class="kw">if  </span>string.as_bytes().iter().any(|b| !b.is_ascii_digit()) || string.is_empty() {
                     <span class="prelude-val">Err</span>(arbitrary::Error::IncorrectFormat)
@@ -1148,14 +1150,14 @@
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$owned </span>{
-            <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
-                &lt;u32 <span class="kw">as </span>arbitrary::Arbitrary&gt;::arbitrary(u).map(|i| <span class="macro">format!</span>(<span class="string">&quot;{i}&quot;</span>).into())
+        <span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$owned </span>{
+            <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+                &lt;u32 <span class="kw">as </span>arbitrary::Arbitrary&gt;::arbitrary(u).map(|i| <span class="macro">format!</span>(<span class="string">"{i}"</span>).into())
             }
 
-            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
-                &lt;u32 <span class="kw">as </span>arbitrary::Arbitrary&gt;::arbitrary_take_rest(u).map(|i| <span class="macro">format!</span>(<span class="string">&quot;{i}&quot;</span>).into())
+            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+                &lt;u32 <span class="kw">as </span>arbitrary::Arbitrary&gt;::arbitrary_take_rest(u).map(|i| <span class="macro">format!</span>(<span class="string">"{i}"</span>).into())
             }
 
             <span class="attr">#[inline]
@@ -1168,19 +1170,19 @@
     };
 
     (<span class="macro-nonterminal">$owned</span>:path, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>:<span class="macro-nonterminal">path</span>) =&gt; {
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
-            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(string: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String) -&gt; <span class="self">Self </span>{
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>String&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(string: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>String) -&gt; <span class="self">Self </span>{
                 &lt;<span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt;<span class="macro-nonterminal">::from_str</span>(string.as_str())
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
-            <span class="kw">fn </span><span class="macro-nonterminal">arbitrary</span>(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">arbitrary</span>(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
                 &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>arbitrary::Arbitrary&gt;::arbitrary(u).map(Into::into)
             }
 
-            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
                 &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>arbitrary::Arbitrary&gt;::arbitrary_take_rest(u).map(Into::into)
             }
 
@@ -1190,13 +1192,13 @@
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$owned </span>{
-            <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; arbitrary::Arbitrary&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$owned </span>{
+            <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
                 &lt;<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span><span class="kw">as </span><span class="macro-nonterminal">arbitrary::Arbitrary</span>&gt;::arbitrary(u).map(Into::into)
             }
 
-            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
+            <span class="kw">fn </span>arbitrary_take_rest(u: arbitrary::Unstructured&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, arbitrary::Error&gt; {
                 &lt;<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span><span class="kw">as </span><span class="macro-nonterminal">arbitrary::Arbitrary</span>&gt;::arbitrary_take_rest(u).map(Into::into)
             }
 
@@ -1211,71 +1213,71 @@
     (@<span class="macro-nonterminal">all</span>, <span class="macro-nonterminal">$owned</span>:path, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>:<span class="macro-nonterminal">path</span>) =&gt; {
         <span class="kw">impl </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
             <span class="doccomment">/// Get a
-            </span><span class="attr">#[<span class="macro-nonterminal">doc </span>= <span class="macro">concat!</span>(<span class="string">&quot;[`Cow&lt;&#39;_, &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="kw-2">ref</span>), <span class="string">&quot;&gt;`](std::borrow::Cow::Borrowed)&quot;</span>)]
-            </span><span class="kw">pub fn </span><span class="macro-nonterminal">as_cow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::std::borrow::Cow&lt;<span class="lifetime">&#39;_</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; {
+            </span><span class="attr">#[<span class="macro-nonterminal">doc </span>= <span class="macro">concat!</span>(<span class="string">"[`Cow&lt;'_, "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="kw-2">ref</span>), <span class="string">"&gt;`](std::borrow::Cow::Borrowed)"</span>)]
+            </span><span class="kw">pub fn </span><span class="macro-nonterminal">as_cow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::std::borrow::Cow&lt;<span class="lifetime">'_</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; {
                 <span class="macro-nonterminal">self</span>.into()
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;zerofrom&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;zf</span>&gt; zerofrom::ZeroFrom&lt;<span class="lifetime">&#39;zf</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;zf </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+        <span class="attr">#[cfg(feature = <span class="string">"zerofrom"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'zf</span>&gt; zerofrom::ZeroFrom&lt;<span class="lifetime">'zf</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'zf </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
             <span class="attr">#[<span class="macro-nonterminal">inline</span>]
-            </span><span class="kw">fn </span>zero_from(other: <span class="kw-2">&amp;</span><span class="lifetime">&#39;zf </span><span class="macro-nonterminal">$</span><span class="kw-2">ref</span>) -&gt; <span class="macro-nonterminal">Self </span>{
+            </span><span class="kw">fn </span>zero_from(other: <span class="kw-2">&amp;</span><span class="lifetime">'zf </span><span class="macro-nonterminal">$</span><span class="kw-2">ref</span>) -&gt; <span class="macro-nonterminal">Self </span>{
                 other
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;zerofrom&quot;</span>)]
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;zf</span>&gt; zerofrom::ZeroFrom&lt;<span class="lifetime">&#39;zf</span>, <span class="macro-nonterminal">$owned</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;zf </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+        <span class="attr">#[cfg(feature = <span class="string">"zerofrom"</span>)]
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'zf</span>&gt; zerofrom::ZeroFrom&lt;<span class="lifetime">'zf</span>, <span class="macro-nonterminal">$owned</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'zf </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
             <span class="attr">#[<span class="macro-nonterminal">inline</span>]
-            </span><span class="kw">fn </span>zero_from(other: <span class="kw-2">&amp;</span><span class="lifetime">&#39;zf </span><span class="macro-nonterminal">$owned</span>) -&gt; <span class="self">Self </span>{
+            </span><span class="kw">fn </span>zero_from(other: <span class="kw-2">&amp;</span><span class="lifetime">'zf </span><span class="macro-nonterminal">$owned</span>) -&gt; <span class="self">Self </span>{
                 other
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$owned</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
-            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(owned: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$owned</span>) -&gt; <span class="self">Self </span>{
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$owned</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(owned: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$owned</span>) -&gt; <span class="self">Self </span>{
                 <span class="kw-2">&amp;*</span>owned
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$owned</span>&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; {
-            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(owned: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$owned</span>) -&gt; <span class="self">Self </span>{
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$owned</span>&gt; <span class="kw">for </span>::std::borrow::Cow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; {
+            <span class="kw">fn </span><span class="macro-nonterminal">from</span>(owned: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$owned</span>) -&gt; <span class="self">Self </span>{
                 ::std::borrow::Cow::Borrowed(<span class="kw-2">&amp;*</span>owned)
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">crate</span>::IntoCow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
-            <span class="kw">fn </span><span class="macro-nonterminal">into_cow</span>(<span class="self">self</span>) -&gt; ::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">crate</span>::IntoCow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw-2">ref </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">into_cow</span>(<span class="self">self</span>) -&gt; ::std::borrow::Cow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; {
                 <span class="macro-nonterminal">::std::borrow::Cow::Borrowed</span>(<span class="self">self</span>)
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">crate</span>::IntoCow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$owned </span>{
-            <span class="kw">fn </span>into_cow(<span class="self">self</span>) -&gt; ::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">crate</span>::IntoCow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$owned </span>{
+            <span class="kw">fn </span>into_cow(<span class="self">self</span>) -&gt; ::std::borrow::Cow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; {
                 <span class="macro-nonterminal">::std::borrow::Cow::Owned</span>(<span class="self">self</span>)
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">crate</span>::IntoCow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$owned </span>{
-            <span class="kw">fn </span>into_cow(<span class="self">self</span>) -&gt; ::std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">crate</span>::IntoCow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$owned </span>{
+            <span class="kw">fn </span>into_cow(<span class="self">self</span>) -&gt; ::std::borrow::Cow&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt; {
                 <span class="macro-nonterminal">::std::borrow::Cow::Borrowed</span>(<span class="self">self</span>.as_ref())
             }
         }
 
         <span class="kw">const _</span>: () = {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
             </span><span class="kw">fn </span>assert_arbitrary() {
-                <span class="kw">fn </span>assert&lt;<span class="lifetime">&#39;a</span>, T: arbitrary::Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt;&gt;() {}
+                <span class="kw">fn </span>assert&lt;<span class="lifetime">'a</span>, T: arbitrary::Arbitrary&lt;<span class="lifetime">'a</span>&gt;&gt;() {}
                 <span class="comment">// XXX: Not asserting arbitrary is implemented for borrowed, this is because a validated type might need owned data.
                 // assert::&lt;&amp;$ref&gt;();
                 </span>assert::&lt;<span class="macro-nonterminal">$owned</span>&gt;();
             }
 
-            <span class="attr">#[cfg(feature = <span class="string">&quot;zerofrom&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"zerofrom"</span>)]
             </span><span class="kw">fn </span>assert_zerofrom() {
-                <span class="kw">fn </span>assert_borrowed&lt;<span class="lifetime">&#39;zf</span>, T: zerofrom::ZeroFrom&lt;<span class="lifetime">&#39;zf</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt;&gt;() {}
-                <span class="kw">fn </span><span class="macro-nonterminal">assert_owned</span>&lt;<span class="lifetime">&#39;zf</span>, T: zerofrom::ZeroFrom&lt;<span class="lifetime">&#39;zf</span>, <span class="macro-nonterminal">$owned</span>&gt;&gt;() {}
+                <span class="kw">fn </span>assert_borrowed&lt;<span class="lifetime">'zf</span>, T: zerofrom::ZeroFrom&lt;<span class="lifetime">'zf</span>, <span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt;&gt;() {}
+                <span class="kw">fn </span><span class="macro-nonterminal">assert_owned</span>&lt;<span class="lifetime">'zf</span>, T: zerofrom::ZeroFrom&lt;<span class="lifetime">'zf</span>, <span class="macro-nonterminal">$owned</span>&gt;&gt;() {}
                 assert_borrowed::&lt;<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt;();
                 <span class="macro-nonterminal">assert_owned</span>::&lt;<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="kw-2">ref</span>&gt;();
             }

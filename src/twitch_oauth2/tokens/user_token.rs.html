@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/tokens/user_token.rs`."><title>user_token.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/tokens/user_token.rs`."><title>user_token.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_oauth2/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -931,9 +933,9 @@
 </pre></div><pre class="rust"><code><span class="kw">use </span>twitch_types::{UserId, UserIdRef, UserName, UserNameRef};
 
 <span class="kw">use </span><span class="kw">super</span>::errors::ValidationError;
-<span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">use </span><span class="kw">super</span>::errors::{ImplicitUserTokenExchangeError, RefreshTokenError, UserTokenExchangeError};
-<span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::client::Client;
 
 <span class="kw">use </span><span class="kw">crate</span>::tokens::{Scope, TwitchToken};
@@ -970,16 +972,16 @@
 }
 
 <span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>UserToken {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        f.debug_struct(<span class="string">&quot;UserToken&quot;</span>)
-            .field(<span class="string">&quot;access_token&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.access_token)
-            .field(<span class="string">&quot;client_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.client_id)
-            .field(<span class="string">&quot;client_secret&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.client_secret)
-            .field(<span class="string">&quot;login&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.login)
-            .field(<span class="string">&quot;user_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.user_id)
-            .field(<span class="string">&quot;refresh_token&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.refresh_token)
-            .field(<span class="string">&quot;expires_in&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.expires_in())
-            .field(<span class="string">&quot;scopes&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.scopes)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">"UserToken"</span>)
+            .field(<span class="string">"access_token"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.access_token)
+            .field(<span class="string">"client_id"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.client_id)
+            .field(<span class="string">"client_secret"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.client_secret)
+            .field(<span class="string">"login"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.login)
+            .field(<span class="string">"user_id"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.user_id)
+            .field(<span class="string">"refresh_token"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.refresh_token)
+            .field(<span class="string">"expires_in"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.expires_in())
+            .field(<span class="string">"scopes"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.scopes)
             .finish()
     }
 }
@@ -1000,10 +1002,10 @@
             validated.client_id,
             client_secret,
             validated.login.ok_or(ValidationError::InvalidToken(
-                <span class="string">&quot;validation did not include a `login`, token might be an app access token&quot;</span>,
+                <span class="string">"validation did not include a `login`, token might be an app access token"</span>,
             ))<span class="question-mark">?</span>,
             validated.user_id.ok_or(ValidationError::InvalidToken(
-                <span class="string">&quot;validation did not include a `user_id`, token might be an app access token&quot;</span>,
+                <span class="string">"validation did not include a `user_id`, token might be an app access token"</span>,
             ))<span class="question-mark">?</span>,
             validated.scopes,
             validated.expires_in,
@@ -1018,16 +1020,16 @@
     ///
     /// ```rust,no_run
     /// use twitch_oauth2::{AccessToken, UserToken};
-    /// // Make sure you enable the feature &quot;reqwest&quot; for twitch_oauth2 if you want to use reqwest
+    /// // Make sure you enable the feature "reqwest" for twitch_oauth2 if you want to use reqwest
     /// # async {let client = twitch_oauth2::client::DummyClient; stringify!(
     /// let client = reqwest::Client::builder()
     ///     .redirect(reqwest::redirect::Policy::none())
     ///     .build()?;
     /// # );
-    /// let token = UserToken::from_token(&amp;client, AccessToken::from(&quot;my_access_token&quot;)).await?;
+    /// let token = UserToken::from_token(&amp;client, AccessToken::from("my_access_token")).await?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())};
     /// ```
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
     </span><span class="kw">pub async fn </span>from_token&lt;C&gt;(
         http_client: <span class="kw-2">&amp;</span>C,
         access_token: AccessToken,
@@ -1046,7 +1048,7 @@
     ///
     /// ```rust,no_run
     /// use twitch_oauth2::{AccessToken, ClientSecret, RefreshToken, UserToken};
-    /// // Make sure you enable the feature &quot;reqwest&quot; for twitch_oauth2 if you want to use reqwest
+    /// // Make sure you enable the feature "reqwest" for twitch_oauth2 if you want to use reqwest
     /// # async {let client = twitch_oauth2::client::DummyClient; stringify!(
     /// let client = reqwest::Client::builder()
     ///     .redirect(reqwest::redirect::Policy::none())
@@ -1054,14 +1056,14 @@
     /// # );
     /// let token = UserToken::from_existing(
     ///     &amp;client,
-    ///     AccessToken::from(&quot;my_access_token&quot;),
-    ///     RefreshToken::from(&quot;my_refresh_token&quot;),
-    ///     ClientSecret::from(&quot;my_client_secret&quot;),
+    ///     AccessToken::from("my_access_token"),
+    ///     RefreshToken::from("my_refresh_token"),
+    ///     ClientSecret::from("my_client_secret"),
     /// )
     /// .await?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())};
     /// ```
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
     </span><span class="kw">pub async fn </span>from_existing&lt;C&gt;(
         http_client: <span class="kw-2">&amp;</span>C,
         access_token: AccessToken,
@@ -1080,7 +1082,7 @@
     ///
     /// # Notes
     ///
-    /// If `expires_in` is `None`, we&#39;ll assume [`token.is_elapsed`](TwitchToken::is_elapsed) is always false
+    /// If `expires_in` is `None`, we'll assume [`token.is_elapsed`](TwitchToken::is_elapsed) is always false
     </span><span class="attr">#[allow(clippy::too_many_arguments)]
     </span><span class="kw">pub fn </span>from_existing_unchecked(
         access_token: <span class="kw">impl </span>Into&lt;AccessToken&gt;,
@@ -1123,7 +1125,7 @@
     <span class="attr">#[doc(hidden)]
     </span><span class="doccomment">/// Returns true if this token is never expiring.
     ///
-    /// Hidden because it&#39;s not expected to be used.
+    /// Hidden because it's not expected to be used.
     </span><span class="kw">pub fn </span>never_expires(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool { <span class="self">self</span>.never_expiring }
 
     <span class="doccomment">/// Create a [`UserTokenBuilder`] to get a token with the [OAuth Authorization Code](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#authorization-code-grant-flow)
@@ -1142,21 +1144,21 @@
     ///
     /// ```rust,no_run
     /// # #[tokio::main]
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + &#39;static&gt;&gt;{
+    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + 'static&gt;&gt;{
     /// let token = twitch_oauth2::UserToken::mock_token(
     ///     &amp;reqwest::Client::builder()
     ///         .redirect(reqwest::redirect::Policy::none())
     ///         .build()?,
-    ///     &quot;mockclientid&quot;.into(),
-    ///     &quot;mockclientsecret&quot;.into(),
-    ///     &quot;user_id&quot;,
+    ///     "mockclientid".into(),
+    ///     "mockclientsecret".into(),
+    ///     "user_id",
     ///     vec![],
     /// )
     /// .await?;
     /// # Ok(())}
     /// # fn main() {run();}
     /// ```
-    </span><span class="attr">#[cfg(all(feature = <span class="string">&quot;mock_api&quot;</span>, feature = <span class="string">&quot;client&quot;</span>))]
+    </span><span class="attr">#[cfg(all(feature = <span class="string">"mock_api"</span>, feature = <span class="string">"client"</span>))]
     </span><span class="kw">pub async fn </span>mock_token&lt;C&gt;(
         http_client: <span class="kw-2">&amp;</span>C,
         client_id: ClientId,
@@ -1171,13 +1173,13 @@
         <span class="kw">use </span>std::collections::HashMap;
 
         <span class="kw">let </span>user_id = user_id.as_ref();
-        <span class="kw">let </span>scope_str = scopes.as_slice().join(<span class="string">&quot; &quot;</span>);
+        <span class="kw">let </span>scope_str = scopes.as_slice().join(<span class="string">" "</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>params = HashMap::new();
-        params.insert(<span class="string">&quot;client_id&quot;</span>, client_id.as_str());
-        params.insert(<span class="string">&quot;client_secret&quot;</span>, client_secret.secret());
-        params.insert(<span class="string">&quot;grant_type&quot;</span>, <span class="string">&quot;user_token&quot;</span>);
-        params.insert(<span class="string">&quot;scope&quot;</span>, <span class="kw-2">&amp;</span>scope_str);
-        params.insert(<span class="string">&quot;user_id&quot;</span>, user_id);
+        params.insert(<span class="string">"client_id"</span>, client_id.as_str());
+        params.insert(<span class="string">"client_secret"</span>, client_secret.secret());
+        params.insert(<span class="string">"grant_type"</span>, <span class="string">"user_token"</span>);
+        params.insert(<span class="string">"scope"</span>, <span class="kw-2">&amp;</span>scope_str);
+        params.insert(<span class="string">"user_id"</span>, user_id);
 
         <span class="kw">let </span>req = <span class="kw">crate</span>::construct_request(
             <span class="kw-2">&amp;</span><span class="kw">crate</span>::AUTH_URL,
@@ -1207,7 +1209,7 @@
     </span><span class="kw">pub fn </span>set_secret(<span class="kw-2">&amp;mut </span><span class="self">self</span>, secret: <span class="prelude-ty">Option</span>&lt;ClientSecret&gt;) { <span class="self">self</span>.client_secret = secret }
 }
 
-<span class="attr">#[cfg_attr(feature = <span class="string">&quot;client&quot;</span>, async_trait::async_trait)]
+<span class="attr">#[cfg_attr(feature = <span class="string">"client"</span>, async_trait::async_trait)]
 </span><span class="kw">impl </span>TwitchToken <span class="kw">for </span>UserToken {
     <span class="kw">fn </span>token_type() -&gt; <span class="kw">super</span>::BearerTokenType { <span class="kw">super</span>::BearerTokenType::UserToken }
 
@@ -1219,10 +1221,10 @@
 
     <span class="kw">fn </span>user_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>UserIdRef&gt; { <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.user_id) }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-    </span><span class="kw">async fn </span>refresh_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
+    <span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
+    </span><span class="kw">async fn </span>refresh_token&lt;<span class="lifetime">'a</span>, C&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        http_client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>C,
+        http_client: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>C,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), RefreshTokenError&lt;&lt;C <span class="kw">as </span>Client&gt;::Error&gt;&gt;
     <span class="kw">where
         </span><span class="self">Self</span>: Sized,
@@ -1252,7 +1254,7 @@
                 .checked_sub(<span class="self">self</span>.struct_created.elapsed())
                 .unwrap_or_default()
         } <span class="kw">else </span>{
-            <span class="comment">// We don&#39;t return an option here because it&#39;s not expected to use this if the token is known to be unexpiring.
+            <span class="comment">// We don't return an option here because it's not expected to use this if the token is known to be unexpiring.
             </span>std::time::Duration::MAX
         }
     }
@@ -1274,15 +1276,15 @@
 /// Use [`set_scopes(vec![])`](UserTokenBuilder::set_scopes) to add any necessary scopes to the request. You can also use [`force_verify(true)`](UserTokenBuilder::force_verify) to force the user to
 /// re-authorize your app’s access to their resources.
 ///
-///     Make sure you&#39;ve added the redirect URL to the app settings on [the Twitch Developer Console](https://dev.twitch.tv/console).
+///     Make sure you've added the redirect URL to the app settings on [the Twitch Developer Console](https://dev.twitch.tv/console).
 ///
 ///     ```rust
 ///     use twitch_oauth2::{id::TwitchTokenResponse, tokens::UserTokenBuilder, Scope};
 ///     use url::Url;
 ///
 ///     // This is the URL the user will be redirected to after authorizing your application
-///     let redirect_url = Url::parse(&quot;http://localhost/twitch/register&quot;)?;
-///     let mut builder = UserTokenBuilder::new(&quot;myclientid&quot;, &quot;myclientsecret&quot;, redirect_url);
+///     let redirect_url = Url::parse("http://localhost/twitch/register")?;
+///     let mut builder = UserTokenBuilder::new("myclientid", "myclientsecret", redirect_url);
 ///     builder = builder.set_scopes(vec![Scope::ChatRead, Scope::ChatEdit]);
 ///     builder = builder.force_verify(true); // Defaults to false
 ///     # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
@@ -1293,16 +1295,16 @@
 ///     ```rust
 ///     # use twitch_oauth2::{id::TwitchTokenResponse, tokens::UserTokenBuilder, Scope};
 ///     # use url::Url;
-///     # let redirect_url = Url::parse(&quot;http://localhost/twitch/register&quot;)?;
-///     # let mut builder = UserTokenBuilder::new(&quot;myclientid&quot;, &quot;myclientsecret&quot;, redirect_url);
+///     # let redirect_url = Url::parse("http://localhost/twitch/register")?;
+///     # let mut builder = UserTokenBuilder::new("myclientid", "myclientsecret", redirect_url);
 ///     let (url, csrf_token) = builder.generate_url();
 ///     // Make your user navigate to this URL, for example
-///     println!(&quot;Visit this URL to authorize Twitch access: {}&quot;, url);
+///     println!("Visit this URL to authorize Twitch access: {}", url);
 ///     # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
 ///     ```
 ///
-/// 3. Have the user visit the generated URL. They will be asked to authorize your application if they haven&#39;t previously done so
-///    or if you&#39;ve set [`force_verify`](UserTokenBuilder::force_verify) to `true`.
+/// 3. Have the user visit the generated URL. They will be asked to authorize your application if they haven't previously done so
+///    or if you've set [`force_verify`](UserTokenBuilder::force_verify) to `true`.
 ///
 ///      You can do this by providing the link in [a web page](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a), have the user [be directed](https://developer.mozilla.org/en-US/docs/Web/API/Location/assign),
 ///      the console, or by [opening it](https://docs.rs/webbrowser/0.8.10/webbrowser/) in a browser.
@@ -1316,40 +1318,40 @@
 ///     use std::borrow::Cow;
 ///     use std::collections::BTreeMap;
 ///
-///     fn extract_pair&lt;&#39;a&gt;(
-///         query: &amp;BTreeMap&lt;Cow&lt;&#39;a, str&gt;, Cow&lt;&#39;a, str&gt;&gt;,
+///     fn extract_pair&lt;'a&gt;(
+///         query: &amp;BTreeMap&lt;Cow&lt;'a, str&gt;, Cow&lt;'a, str&gt;&gt;,
 ///         key1: &amp;str,
 ///         key2: &amp;str,
-///     ) -&gt; Option&lt;(Cow&lt;&#39;a, str&gt;, Cow&lt;&#39;a, str&gt;)&gt; {
+///     ) -&gt; Option&lt;(Cow&lt;'a, str&gt;, Cow&lt;'a, str&gt;)&gt; {
 ///         Some((query.get(key1)?.clone(), query.get(key2)?.clone()))
 ///     }
 ///
 ///     /// Extract the state and code from the URL a user was redirected to after authorizing the application.
-///     fn extract_url&lt;&#39;a&gt;(
-///         url: &amp;&#39;a url::Url,
-///     ) -&gt; Result&lt;(Cow&lt;&#39;a, str&gt;, Cow&lt;&#39;a, str&gt;), Option&lt;(Cow&lt;&#39;a, str&gt;, Cow&lt;&#39;a, str&gt;)&gt;&gt; {
+///     fn extract_url&lt;'a&gt;(
+///         url: &amp;'a url::Url,
+///     ) -&gt; Result&lt;(Cow&lt;'a, str&gt;, Cow&lt;'a, str&gt;), Option&lt;(Cow&lt;'a, str&gt;, Cow&lt;'a, str&gt;)&gt;&gt; {
 ///         let query: BTreeMap&lt;_, _&gt; = url.query_pairs().collect();
-///         if let Some((error, error_description)) = extract_pair(&amp;query, &quot;error&quot;, &quot;error_description&quot;) {
+///         if let Some((error, error_description)) = extract_pair(&amp;query, "error", "error_description") {
 ///             Err(Some((error, error_description)))
-///         } else if let Some((state, code)) = extract_pair(&amp;query, &quot;state&quot;, &quot;code&quot;) {
+///         } else if let Some((state, code)) = extract_pair(&amp;query, "state", "code") {
 ///             Ok((state, code))
 ///         } else {
 ///             Err(None)
 ///         }
 ///     }
 ///     ```
-/// 5. Finally, call [`get_user_token`](UserTokenBuilder::get_user_token) with the `state` and `code` query parameters to get the user&#39;s access token.
+/// 5. Finally, call [`get_user_token`](UserTokenBuilder::get_user_token) with the `state` and `code` query parameters to get the user's access token.
 ///
 ///     ```rust
 ///     # async move {
 ///     # use twitch_oauth2::{id::TwitchTokenResponse, tokens::UserTokenBuilder, Scope};
 ///     # use url::Url;
 ///     # use std::borrow::Cow;
-///     # let redirect_url = Url::parse(&quot;http://localhost/twitch/register&quot;)?;
-///     # let mut builder = UserTokenBuilder::new(&quot;myclientid&quot;, &quot;myclientsecret&quot;, redirect_url);
+///     # let redirect_url = Url::parse("http://localhost/twitch/register")?;
+///     # let mut builder = UserTokenBuilder::new("myclientid", "myclientsecret", redirect_url);
 ///     # let (url, csrf_token) = builder.generate_url();
-///     # fn extract_url&lt;&#39;a&gt;(_: &amp;&#39;a url::Url) -&gt; Result&lt;(Cow&lt;&#39;a, str&gt;, Cow&lt;&#39;a, str&gt;), std::io::Error&gt; { Ok((Cow::default(), Cow::default())) }
-///     # let url = url::Url::parse(&quot;http://localhost/twitch/register?code=code&amp;state=state&quot;)?;
+///     # fn extract_url&lt;'a&gt;(_: &amp;'a url::Url) -&gt; Result&lt;(Cow&lt;'a, str&gt;, Cow&lt;'a, str&gt;), std::io::Error&gt; { Ok((Cow::default(), Cow::default())) }
+///     # let url = url::Url::parse("http://localhost/twitch/register?code=code&amp;state=state")?;
 ///     # let client = twitch_oauth2::client::DummyClient; stringify!(
 ///     let client = reqwest::Client::builder()
 ///         .redirect(reqwest::redirect::Policy::none())
@@ -1357,7 +1359,7 @@
 ///     # );
 ///     let (state, code) = extract_url(&amp;url)?;
 ///     let token = builder.get_user_token(&amp;client, state.as_ref(), code.as_ref()).await?;
-///     println!(&quot;User token: {:?}&quot;, token);
+///     println!("User token: {:?}", token);
 ///     # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
 ///     # };
 ///     ```
@@ -1377,8 +1379,8 @@
     ///
     /// The `redirect_url` must be present, verbatim, on [the Twitch Developer Console](https://dev.twitch.tv/console).
     ///
-    /// The `url` crate converts empty paths into &quot;/&quot; (such as `https://example.com` into `https://example.com/`),
-    /// which means that you&#39;ll need to add `https://example.com/` to your redirect URIs (note the &quot;trailing&quot; slash) if you want to use an empty path.
+    /// The `url` crate converts empty paths into "/" (such as `https://example.com` into `https://example.com/`),
+    /// which means that you'll need to add `https://example.com/` to your redirect URIs (note the "trailing" slash) if you want to use an empty path.
     ///
     /// To avoid this, use a path such as `https://example.com/twitch/register` or similar instead, where the `url` crate would not add a trailing `/`.
     </span><span class="kw">pub fn </span>new(
@@ -1420,21 +1422,21 @@
         <span class="kw">let </span><span class="kw-2">mut </span>url = <span class="kw">crate</span>::AUTH_URL.clone();
 
         <span class="kw">let </span>auth = <span class="macro">vec!</span>[
-            (<span class="string">&quot;response_type&quot;</span>, <span class="string">&quot;code&quot;</span>),
-            (<span class="string">&quot;client_id&quot;</span>, <span class="self">self</span>.client_id.as_str()),
-            (<span class="string">&quot;redirect_uri&quot;</span>, <span class="self">self</span>.redirect_url.as_str()),
-            (<span class="string">&quot;state&quot;</span>, csrf.as_str()),
+            (<span class="string">"response_type"</span>, <span class="string">"code"</span>),
+            (<span class="string">"client_id"</span>, <span class="self">self</span>.client_id.as_str()),
+            (<span class="string">"redirect_uri"</span>, <span class="self">self</span>.redirect_url.as_str()),
+            (<span class="string">"state"</span>, csrf.as_str()),
         ];
 
         url.query_pairs_mut().extend_pairs(auth);
 
         <span class="kw">if </span>!<span class="self">self</span>.scopes.is_empty() {
             url.query_pairs_mut()
-                .append_pair(<span class="string">&quot;scope&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.scopes.as_slice().join(<span class="string">&quot; &quot;</span>));
+                .append_pair(<span class="string">"scope"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.scopes.as_slice().join(<span class="string">" "</span>));
         }
 
         <span class="kw">if </span><span class="self">self</span>.force_verify {
-            url.query_pairs_mut().append_pair(<span class="string">&quot;force_verify&quot;</span>, <span class="string">&quot;true&quot;</span>);
+            url.query_pairs_mut().append_pair(<span class="string">"force_verify"</span>, <span class="string">"true"</span>);
         };
 
         (url, csrf)
@@ -1462,8 +1464,8 @@
     /// ```rust
     /// use twitch_oauth2::{tokens::UserTokenBuilder, id::TwitchTokenResponse};
     /// use url::Url;
-    /// let callback_url = Url::parse(&quot;http://localhost/twitch/register&quot;)?;
-    /// let mut builder = UserTokenBuilder::new(&quot;myclientid&quot;, &quot;myclientsecret&quot;, callback_url);
+    /// let callback_url = Url::parse("http://localhost/twitch/register")?;
+    /// let mut builder = UserTokenBuilder::new("myclientid", "myclientsecret", callback_url);
     /// let (url, _csrf_code) = builder.generate_url();
     ///
     /// // Direct the user to this url.
@@ -1472,7 +1474,7 @@
     /// // validate the state
     /// # let state_in_query = _csrf_code.secret();
     /// if !builder.csrf_is_valid(state_in_query) {
-    ///     panic!(&quot;state mismatched&quot;)
+    ///     panic!("state mismatched")
     /// }
     /// // and then get your token
     /// # let code_in_query = _csrf_code.secret();
@@ -1484,12 +1486,12 @@
     /// let twitch_response = TwitchTokenResponse::from_response(&amp;response)?;
     ///
     /// // you now have a access token, do what you want with it.
-    /// // You&#39;re recommended to convert it into a `UserToken` via `UserToken::from_response`
+    /// // You're recommended to convert it into a `UserToken` via `UserToken::from_response`
     ///
     /// // You can validate the access_token like this
     /// let validated_req = twitch_response.access_token.validate_token_request();
     /// # fn client_req(_: http::Request&lt;Vec&lt;u8&gt;&gt;) -&gt; http::Response&lt;Vec&lt;u8&gt;&gt; { http::Response::new(
-    /// # r#&quot;{&quot;access_token&quot;:&quot;rfx2uswqe8l4g1mkagrvg5tv0ks3&quot;,&quot;expires_in&quot;:14124,&quot;refresh_token&quot;:&quot;5b93chm6hdve3mycz05zfzatkfdenfspp1h1ar2xxdalen01&quot;,&quot;scope&quot;:[&quot;channel:moderate&quot;,&quot;chat:edit&quot;,&quot;chat:read&quot;],&quot;token_type&quot;:&quot;bearer&quot;}&quot;#.bytes().collect()
+    /// # r#"{"access_token":"rfx2uswqe8l4g1mkagrvg5tv0ks3","expires_in":14124,"refresh_token":"5b93chm6hdve3mycz05zfzatkfdenfspp1h1ar2xxdalen01","scope":["channel:moderate","chat:edit","chat:read"],"token_type":"bearer"}"#.bytes().collect()
     /// # ) }
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
@@ -1497,11 +1499,11 @@
         <span class="kw">use </span>http::{HeaderMap, Method};
         <span class="kw">use </span>std::collections::HashMap;
         <span class="kw">let </span><span class="kw-2">mut </span>params = HashMap::new();
-        params.insert(<span class="string">&quot;client_id&quot;</span>, <span class="self">self</span>.client_id.as_str());
-        params.insert(<span class="string">&quot;client_secret&quot;</span>, <span class="self">self</span>.client_secret.secret());
-        params.insert(<span class="string">&quot;code&quot;</span>, code);
-        params.insert(<span class="string">&quot;grant_type&quot;</span>, <span class="string">&quot;authorization_code&quot;</span>);
-        params.insert(<span class="string">&quot;redirect_uri&quot;</span>, <span class="self">self</span>.redirect_url.as_str());
+        params.insert(<span class="string">"client_id"</span>, <span class="self">self</span>.client_id.as_str());
+        params.insert(<span class="string">"client_secret"</span>, <span class="self">self</span>.client_secret.secret());
+        params.insert(<span class="string">"code"</span>, code);
+        params.insert(<span class="string">"grant_type"</span>, <span class="string">"authorization_code"</span>);
+        params.insert(<span class="string">"redirect_uri"</span>, <span class="self">self</span>.redirect_url.as_str());
 
         <span class="kw">crate</span>::construct_request(
             <span class="kw-2">&amp;</span><span class="kw">crate</span>::TOKEN_URL,
@@ -1517,10 +1519,10 @@
     /// Last step in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#use-the-authorization-code-to-get-a-token)
     ///
     /// On failure to authenticate due to wrong redirect url or other errors, twitch redirects the user to `&lt;redirect_url or first defined url in dev console&gt;?error=&lt;error type&gt;&amp;error_description=&lt;description of error&gt;`
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-    </span><span class="kw">pub async fn </span>get_user_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
+    </span><span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
+    </span><span class="kw">pub async fn </span>get_user_token&lt;<span class="lifetime">'a</span>, C&gt;(
         <span class="self">self</span>,
-        http_client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>C,
+        http_client: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>C,
         state: <span class="kw-2">&amp;</span>str,
         <span class="comment">// TODO: Should be either str or AuthorizationCode
         </span>code: <span class="kw-2">&amp;</span>str,
@@ -1565,8 +1567,8 @@
     ///
     /// The `redirect_url` must be present, verbatim, on [the Twitch Developer Console](https://dev.twitch.tv/console).
     ///
-    /// The `url` crate converts empty paths into &quot;/&quot; (such as `https://example.com` into `https://example.com/`),
-    /// which means that you&#39;ll need to add `https://example.com/` to your redirect URIs (note the &quot;trailing&quot; slash) if you want to use an empty path.
+    /// The `url` crate converts empty paths into "/" (such as `https://example.com` into `https://example.com/`),
+    /// which means that you'll need to add `https://example.com/` to your redirect URIs (note the "trailing" slash) if you want to use an empty path.
     ///
     /// To avoid this, use a path such as `https://example.com/twitch/register` or similar instead, where the `url` crate would not add a trailing `/`.
     </span><span class="kw">pub fn </span>new(client_id: ClientId, redirect_url: url::Url) -&gt; ImplicitUserTokenBuilder {
@@ -1603,21 +1605,21 @@
         <span class="kw">let </span><span class="kw-2">mut </span>url = <span class="kw">crate</span>::AUTH_URL.clone();
 
         <span class="kw">let </span>auth = <span class="macro">vec!</span>[
-            (<span class="string">&quot;response_type&quot;</span>, <span class="string">&quot;token&quot;</span>),
-            (<span class="string">&quot;client_id&quot;</span>, <span class="self">self</span>.client_id.as_str()),
-            (<span class="string">&quot;redirect_uri&quot;</span>, <span class="self">self</span>.redirect_url.as_str()),
-            (<span class="string">&quot;state&quot;</span>, csrf.as_str()),
+            (<span class="string">"response_type"</span>, <span class="string">"token"</span>),
+            (<span class="string">"client_id"</span>, <span class="self">self</span>.client_id.as_str()),
+            (<span class="string">"redirect_uri"</span>, <span class="self">self</span>.redirect_url.as_str()),
+            (<span class="string">"state"</span>, csrf.as_str()),
         ];
 
         url.query_pairs_mut().extend_pairs(auth);
 
         <span class="kw">if </span>!<span class="self">self</span>.scopes.is_empty() {
             url.query_pairs_mut()
-                .append_pair(<span class="string">&quot;scope&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.scopes.as_slice().join(<span class="string">&quot; &quot;</span>));
+                .append_pair(<span class="string">"scope"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.scopes.as_slice().join(<span class="string">" "</span>));
         }
 
         <span class="kw">if </span><span class="self">self</span>.force_verify {
-            url.query_pairs_mut().append_pair(<span class="string">&quot;force_verify&quot;</span>, <span class="string">&quot;true&quot;</span>);
+            url.query_pairs_mut().append_pair(<span class="string">"force_verify"</span>, <span class="string">"true"</span>);
         };
 
         (url, csrf)
@@ -1634,7 +1636,7 @@
 
     <span class="doccomment">/// Generate the code with the help of the hash.
     ///
-    /// You can skip this method and instead use the token in the hash directly with [`UserToken::from_existing()`], but it&#39;s provided here for convenience.
+    /// You can skip this method and instead use the token in the hash directly with [`UserToken::from_existing()`], but it's provided here for convenience.
     ///
     /// Last step in the [guide](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#implicit-grant-flow)
     ///
@@ -1660,41 +1662,41 @@
     /// &lt;html&gt;
     /// &lt;head&gt;
     /// &lt;title&gt;Authorization&lt;/title&gt;
-    /// &lt;meta name=&quot;ROBOTS&quot; content=&quot;NOFOLLOW&quot;&gt;
-    /// &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
-    /// &lt;script type=&quot;text/javascript&quot;&gt;
+    /// &lt;meta name="ROBOTS" content="NOFOLLOW"&gt;
+    /// &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+    /// &lt;script type="text/javascript"&gt;
     /// &lt;!--
     /// function initiate() {
     ///     var hash = document.location.hash.substr(1);
-    ///     document.getElementById(&quot;javascript&quot;).className = &quot;&quot;;
+    ///     document.getElementById("javascript").className = "";
     ///     if (hash != null) {
-    ///             document.location.replace(&quot;/token?&quot;+hash);
+    ///             document.location.replace("/token?"+hash);
     ///     }
     ///     else {
-    ///         document.getElementById(&quot;javascript&quot;).innerHTML = &quot;Error: Access Token not found&quot;;
+    ///         document.getElementById("javascript").innerHTML = "Error: Access Token not found";
     ///     }
     /// }
     /// --&gt;
     /// &lt;/script&gt;
-    /// &lt;style type=&quot;text/css&quot;&gt;
+    /// &lt;style type="text/css"&gt;
     ///     body { text-align: center; background-color: #FFF; max-width: 500px; margin: auto; }
     ///     noscript { color: red;  }
     ///     .hide { display: none; }
     /// &lt;/style&gt;
     /// &lt;/head&gt;
-    /// &lt;body onload=&quot;initiate()&quot;&gt;
+    /// &lt;body onload="initiate()"&gt;
     /// &lt;h1&gt;Authorization&lt;/h1&gt;
     /// &lt;noscript&gt;
     ///     &lt;p&gt;This page requires &lt;strong&gt;JavaScript&lt;/strong&gt; to get your token.
     /// &lt;/noscript&gt;
-    /// &lt;p id=&quot;javascript&quot; class=&quot;hide&quot;&gt;
+    /// &lt;p id="javascript" class="hide"&gt;
     /// You should be redirected..
     /// &lt;/p&gt;
     /// &lt;/body&gt;
     /// &lt;/html&gt;
     /// ```
     ///
-    /// where `/token?` gives this function it&#39;s corresponding arguments in query params
+    /// where `/token?` gives this function it's corresponding arguments in query params
     ///
     /// Make sure that `/token` removes the query from the history.
     ///
@@ -1703,29 +1705,29 @@
     /// &lt;html&gt;
     /// &lt;head&gt;
     /// &lt;title&gt;Authorization Successful&lt;/title&gt;
-    /// &lt;meta name=&quot;ROBOTS&quot; content=&quot;NOFOLLOW&quot;&gt;
-    /// &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
-    /// &lt;script type=&quot;text/javascript&quot;&gt;
+    /// &lt;meta name="ROBOTS" content="NOFOLLOW"&gt;
+    /// &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+    /// &lt;script type="text/javascript"&gt;
     /// &lt;!--
     /// function initiate() {
     ///     //
-    ///     document.location.replace(&quot;/token_retrieved);
+    ///     document.location.replace("/token_retrieved);
     /// }
     /// --&gt;
     /// &lt;/script&gt;
-    /// &lt;style type=&quot;text/css&quot;&gt;
+    /// &lt;style type="text/css"&gt;
     ///     body { text-align: center; background-color: #FFF; max-width: 500px; margin: auto; }
     /// &lt;/style&gt;
     /// &lt;/head&gt;
-    /// &lt;body onload=&quot;initiate()&quot;&gt;
+    /// &lt;body onload="initiate()"&gt;
     /// &lt;h1&gt;Authorization Successful&lt;/h1&gt;
     /// &lt;/body&gt;
     /// &lt;/html&gt;
     /// ```
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-    </span><span class="kw">pub async fn </span>get_user_token&lt;<span class="lifetime">&#39;a</span>, C&gt;(
+    </span><span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
+    </span><span class="kw">pub async fn </span>get_user_token&lt;<span class="lifetime">'a</span>, C&gt;(
         <span class="self">self</span>,
-        http_client: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>C,
+        http_client: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>C,
         state: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
         access_token: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
         error: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
@@ -1766,30 +1768,30 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>from_validated_and_token() {
-        <span class="kw">let </span>body = <span class="string">br#&quot;
+        <span class="kw">let </span>body = <span class="string">br#"
         {
-            &quot;client_id&quot;: &quot;wbmytr93xzw8zbg0p1izqyzzc5mbiz&quot;,
-            &quot;login&quot;: &quot;twitchdev&quot;,
-            &quot;scopes&quot;: [
-              &quot;channel:read:subscriptions&quot;
+            "client_id": "wbmytr93xzw8zbg0p1izqyzzc5mbiz",
+            "login": "twitchdev",
+            "scopes": [
+              "channel:read:subscriptions"
             ],
-            &quot;user_id&quot;: &quot;141981764&quot;,
-            &quot;expires_in&quot;: 5520838
+            "user_id": "141981764",
+            "expires_in": 5520838
         }
-        &quot;#</span>;
+        "#</span>;
         <span class="kw">let </span>response = http::Response::builder().status(<span class="number">200</span>).body(body).unwrap();
         <span class="kw">let </span>validated = ValidatedToken::from_response(<span class="kw-2">&amp;</span>response).unwrap();
-        <span class="kw">let </span>body = <span class="string">br#&quot;
+        <span class="kw">let </span>body = <span class="string">br#"
         {
-            &quot;access_token&quot;: &quot;rfx2uswqe8l4g1mkagrvg5tv0ks3&quot;,
-            &quot;expires_in&quot;: 14124,
-            &quot;refresh_token&quot;: &quot;5b93chm6hdve3mycz05zfzatkfdenfspp1h1ar2xxdalen01&quot;,
-            &quot;scope&quot;: [
-                &quot;channel:read:subscriptions&quot;
+            "access_token": "rfx2uswqe8l4g1mkagrvg5tv0ks3",
+            "expires_in": 14124,
+            "refresh_token": "5b93chm6hdve3mycz05zfzatkfdenfspp1h1ar2xxdalen01",
+            "scope": [
+                "channel:read:subscriptions"
             ],
-            &quot;token_type&quot;: &quot;bearer&quot;
+            "token_type": "bearer"
           }
-        &quot;#</span>;
+        "#</span>;
         <span class="kw">let </span>response = http::Response::builder().status(<span class="number">200</span>).body(body).unwrap();
         <span class="kw">let </span>response = TwitchTokenResponse::from_response(<span class="kw-2">&amp;</span>response).unwrap();
 
@@ -1799,9 +1801,9 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>generate_url() {
         UserTokenBuilder::new(
-            ClientId::from(<span class="string">&quot;random_client&quot;</span>),
-            ClientSecret::from(<span class="string">&quot;random_secret&quot;</span>),
-            url::Url::parse(<span class="string">&quot;https://localhost&quot;</span>).unwrap(),
+            ClientId::from(<span class="string">"random_client"</span>),
+            ClientSecret::from(<span class="string">"random_secret"</span>),
+            url::Url::parse(<span class="string">"https://localhost"</span>).unwrap(),
         )
         .force_verify(<span class="bool-val">true</span>)
         .generate_url()
@@ -1811,51 +1813,51 @@
 
     <span class="attr">#[tokio::test]
     #[ignore]
-    #[cfg(feature = <span class="string">&quot;surf&quot;</span>)]
+    #[cfg(feature = <span class="string">"surf"</span>)]
     </span><span class="kw">async fn </span>get_token() {
         <span class="kw">let </span><span class="kw-2">mut </span>t = UserTokenBuilder::new(
             ClientId::new(
-                std::env::var(<span class="string">&quot;TWITCH_CLIENT_ID&quot;</span>).expect(<span class="string">&quot;no env:TWITCH_CLIENT_ID provided&quot;</span>),
+                std::env::var(<span class="string">"TWITCH_CLIENT_ID"</span>).expect(<span class="string">"no env:TWITCH_CLIENT_ID provided"</span>),
             ),
             ClientSecret::new(
-                std::env::var(<span class="string">&quot;TWITCH_CLIENT_SECRET&quot;</span>)
-                    .expect(<span class="string">&quot;no env:TWITCH_CLIENT_SECRET provided&quot;</span>),
+                std::env::var(<span class="string">"TWITCH_CLIENT_SECRET"</span>)
+                    .expect(<span class="string">"no env:TWITCH_CLIENT_SECRET provided"</span>),
             ),
-            url::Url::parse(<span class="string">r#&quot;https://localhost&quot;#</span>).unwrap(),
+            url::Url::parse(<span class="string">r#"https://localhost"#</span>).unwrap(),
         )
         .force_verify(<span class="bool-val">true</span>);
-        t.csrf = <span class="prelude-val">Some</span>(<span class="kw">crate</span>::CsrfToken::from(<span class="string">&quot;random&quot;</span>));
+        t.csrf = <span class="prelude-val">Some</span>(<span class="kw">crate</span>::CsrfToken::from(<span class="string">"random"</span>));
         <span class="kw">let </span>token = t
-            .get_user_token(<span class="kw-2">&amp;</span>surf::Client::new(), <span class="string">&quot;random&quot;</span>, <span class="string">&quot;authcode&quot;</span>)
+            .get_user_token(<span class="kw-2">&amp;</span>surf::Client::new(), <span class="string">"random"</span>, <span class="string">"authcode"</span>)
             .<span class="kw">await
             </span>.unwrap();
-        <span class="macro">println!</span>(<span class="string">&quot;token: {:?} - {}&quot;</span>, token, token.access_token.secret());
+        <span class="macro">println!</span>(<span class="string">"token: {:?} - {}"</span>, token, token.access_token.secret());
     }
 
     <span class="attr">#[tokio::test]
     #[ignore]
-    #[cfg(feature = <span class="string">&quot;surf&quot;</span>)]
+    #[cfg(feature = <span class="string">"surf"</span>)]
     </span><span class="kw">async fn </span>get_implicit_token() {
         <span class="kw">let </span><span class="kw-2">mut </span>t = ImplicitUserTokenBuilder::new(
             ClientId::new(
-                std::env::var(<span class="string">&quot;TWITCH_CLIENT_ID&quot;</span>).expect(<span class="string">&quot;no env:TWITCH_CLIENT_ID provided&quot;</span>),
+                std::env::var(<span class="string">"TWITCH_CLIENT_ID"</span>).expect(<span class="string">"no env:TWITCH_CLIENT_ID provided"</span>),
             ),
-            url::Url::parse(<span class="string">r#&quot;http://localhost/twitch/register&quot;#</span>).unwrap(),
+            url::Url::parse(<span class="string">r#"http://localhost/twitch/register"#</span>).unwrap(),
         )
         .force_verify(<span class="bool-val">true</span>);
-        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, t.generate_url().<span class="number">0</span>);
-        t.csrf = <span class="prelude-val">Some</span>(<span class="kw">crate</span>::CsrfToken::from(<span class="string">&quot;random&quot;</span>));
+        <span class="macro">println!</span>(<span class="string">"{}"</span>, t.generate_url().<span class="number">0</span>);
+        t.csrf = <span class="prelude-val">Some</span>(<span class="kw">crate</span>::CsrfToken::from(<span class="string">"random"</span>));
         <span class="kw">let </span>token = t
             .get_user_token(
                 <span class="kw-2">&amp;</span>surf::Client::new(),
-                <span class="prelude-val">Some</span>(<span class="string">&quot;random&quot;</span>),
-                <span class="prelude-val">Some</span>(<span class="string">&quot;authcode&quot;</span>),
+                <span class="prelude-val">Some</span>(<span class="string">"random"</span>),
+                <span class="prelude-val">Some</span>(<span class="string">"authcode"</span>),
                 <span class="prelude-val">None</span>,
                 <span class="prelude-val">None</span>,
             )
             .<span class="kw">await
             </span>.unwrap();
-        <span class="macro">println!</span>(<span class="string">&quot;token: {:?} - {}&quot;</span>, token, token.access_token.secret());
+        <span class="macro">println!</span>(<span class="string">"token: {:?} - {}"</span>, token, token.access_token.secret());
     }
 }
 </code></pre></div></section></main></body></html>

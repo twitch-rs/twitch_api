@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -220,44 +222,44 @@
 //! use twitch_api::{helix::{self, Request, RequestGet, users::{GetUsersRequest, User}}, types};
 //!
 //! # #[tokio::main]
-//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
 //!
-//! let logins: &amp;[&amp;types::UserNameRef] = &amp;[&quot;justintv123&quot;.into()];
+//! let logins: &amp;[&amp;types::UserNameRef] = &amp;["justintv123".into()];
 //! let request = GetUsersRequest::logins(logins);
 //!
 //! // Send it however you want
 //! // Create a [`http::Response&lt;hyper::body::Bytes&gt;`] with RequestGet::create_request, which takes an access token and a client_id
-//! let response = send_http_request(request.create_request(&quot;accesstoken&quot;, &quot;client_id&quot;)?)?;
+//! let response = send_http_request(request.create_request("accesstoken", "client_id")?)?;
 //!
 //! // then parse the response
 //! let uri = request.get_uri()?;
 //! let user: helix::Response&lt;_, Vec&lt;User&gt;&gt; = GetUsersRequest::parse_response(Some(request), &amp;uri, response)?;
-//! println!(&quot;{:#?}&quot;, user);
+//! println!("{:#?}", user);
 //! # Ok(())
 //! # }
-//! # fn send_http_request(_: http::Request&lt;hyper::body::Bytes&gt;) -&gt; Result&lt;http::Response&lt;hyper::body::Bytes&gt;,&amp;&#39;static str&gt; {
-//! # Ok(http::Response::builder().body(r#&quot;{&quot;data&quot;:[{&quot;id&quot;:&quot;141981764&quot;,&quot;login&quot;:&quot;twitchdev&quot;,&quot;display_name&quot;:&quot;TwitchDev&quot;,&quot;type&quot;:&quot;&quot;,&quot;broadcaster_type&quot;:&quot;partner&quot;,&quot;description&quot;:&quot;Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.&quot;,&quot;profile_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png&quot;,&quot;offline_image_url&quot;:&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png&quot;,&quot;view_count&quot;:5980557,&quot;email&quot;:&quot;not-real@email.com&quot;,&quot;created_at&quot;:&quot;2016-12-14T20:32:28.894263Z&quot;}]}&quot;#.as_bytes().to_owned().into()).unwrap())
+//! # fn send_http_request(_: http::Request&lt;hyper::body::Bytes&gt;) -&gt; Result&lt;http::Response&lt;hyper::body::Bytes&gt;,&amp;'static str&gt; {
+//! # Ok(http::Response::builder().body(r#"{"data":[{"id":"141981764","login":"twitchdev","display_name":"TwitchDev","type":"","broadcaster_type":"partner","description":"Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.","profile_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png","offline_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png","view_count":5980557,"email":"not-real@email.com","created_at":"2016-12-14T20:32:28.894263Z"}]}"#.as_bytes().to_owned().into()).unwrap())
 //! # }
 //! ```
 
 </span><span class="kw">use </span>serde_derive::Deserialize;
 <span class="attr">#[doc(no_inline)]
-#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
 </span><span class="kw">pub use </span>twitch_oauth2::Scope;
-<span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
 </span><span class="kw">use </span>twitch_oauth2::TwitchToken;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">pub mod </span>client;
 <span class="kw">mod </span>endpoints;
 <span class="kw">pub mod </span>request;
 <span class="kw">pub mod </span>response;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 #[doc(inline)]
 </span><span class="kw">pub use </span>client::{client_ext::make_stream, <span class="kw-2">*</span>};
 <span class="kw">pub use </span>endpoints::<span class="kw-2">*</span>;
-<span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 #[doc(inline)]
 </span><span class="kw">pub use </span>request::errors::ClientRequestError;
 <span class="attr">#[doc(inline)]
@@ -287,11 +289,11 @@
 }
 
 <span class="attr">#[derive(Deserialize, Debug)]
-#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;unsupported&quot;</span>)))]
-</span><span class="kw">struct </span>CustomInnerResponse&lt;<span class="lifetime">&#39;a</span>&gt; {
+#[cfg(feature = <span class="string">"unsupported"</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"unsupported"</span>)))]
+</span><span class="kw">struct </span>CustomInnerResponse&lt;<span class="lifetime">'a</span>&gt; {
     <span class="attr">#[serde(borrow)]
-    </span>data: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>serde_json::value::RawValue,
+    </span>data: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>serde_json::value::RawValue,
     <span class="attr">#[serde(default)]
     </span>pagination: Pagination,
     <span class="attr">#[serde(default)]
@@ -308,26 +310,26 @@
     message: String,
 }
 
-<span class="doccomment">/// Deserialize &quot;&quot; as &lt;T as Default&gt;::Default
-</span><span class="kw">fn </span>deserialize_none_from_empty_string&lt;<span class="lifetime">&#39;de</span>, D, S&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;S&gt;, D::Error&gt;
+<span class="doccomment">/// Deserialize "" as &lt;T as Default&gt;::Default
+</span><span class="kw">fn </span>deserialize_none_from_empty_string&lt;<span class="lifetime">'de</span>, D, S&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;S&gt;, D::Error&gt;
 <span class="kw">where
-    </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
-    S: serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;, {
+    </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
+    S: serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;, {
     <span class="kw">use </span>serde::de::IntoDeserializer;
     <span class="kw">struct </span>Inner&lt;S&gt;(std::marker::PhantomData&lt;S&gt;);
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>, S&gt; serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Inner&lt;S&gt;
-    <span class="kw">where </span>S: serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;
+    <span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, S&gt; serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Inner&lt;S&gt;
+    <span class="kw">where </span>S: serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;
     {
         <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;S&gt;;
 
-        <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-            formatter.write_str(<span class="string">&quot;any string&quot;</span>)
+        <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+            formatter.write_str(<span class="string">"any string"</span>)
         }
 
         <span class="kw">fn </span>visit_str&lt;E&gt;(<span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, E&gt;
         <span class="kw">where </span>E: serde::de::Error {
             <span class="kw">match </span>value {
-                <span class="string">&quot;&quot; </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+                <span class="string">"" </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
                 v =&gt; S::deserialize(v.into_deserializer()).map(<span class="prelude-val">Some</span>),
             }
         }
@@ -335,7 +337,7 @@
         <span class="kw">fn </span>visit_string&lt;E&gt;(<span class="self">self</span>, value: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, E&gt;
         <span class="kw">where </span>E: serde::de::Error {
             <span class="kw">match </span><span class="kw-2">&amp;*</span>value {
-                <span class="string">&quot;&quot; </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+                <span class="string">"" </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
                 v =&gt; S::deserialize(v.into_deserializer()).map(<span class="prelude-val">Some</span>),
             }
         }
@@ -366,18 +368,18 @@
     </span>cursor: <span class="prelude-ty">Option</span>&lt;Cursor&gt;,
 }
 
-<span class="doccomment">/// A cursor is a pointer to the current &quot;page&quot; in the twitch api pagination
+<span class="doccomment">/// A cursor is a pointer to the current "page" in the twitch api pagination
 </span><span class="attr">#[aliri_braid::braid(serde)]
 </span><span class="kw">pub struct </span>Cursor;
 
 <span class="kw">impl </span>CursorRef {
-    <span class="doccomment">/// Get a borrowed [`Cow&lt;&#39;_, CursorRef&gt;`](std::borrow::Cow::Borrowed)
-    </span><span class="kw">pub fn </span>as_cow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::std::borrow::Cow&lt;<span class="lifetime">&#39;_</span>, CursorRef&gt; { <span class="self">self</span>.into() }
+    <span class="doccomment">/// Get a borrowed [`Cow&lt;'_, CursorRef&gt;`](std::borrow::Cow::Borrowed)
+    </span><span class="kw">pub fn </span>as_cow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::std::borrow::Cow&lt;<span class="lifetime">'_</span>, CursorRef&gt; { <span class="self">self</span>.into() }
 }
 
 <span class="kw">impl </span>Cursor {
-    <span class="doccomment">/// Get a owned [`Cow&lt;&#39;_, CursorRef&gt;`](std::borrow::Cow::Owned)
-    </span><span class="kw">fn </span>into_cow&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="self">self</span>) -&gt; std::borrow::Cow&lt;<span class="lifetime">&#39;a</span>, CursorRef&gt; { std::borrow::Cow::Owned(<span class="self">self</span>) }
+    <span class="doccomment">/// Get a owned [`Cow&lt;'_, CursorRef&gt;`](std::borrow::Cow::Owned)
+    </span><span class="kw">fn </span>into_cow&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>) -&gt; std::borrow::Cow&lt;<span class="lifetime">'a</span>, CursorRef&gt; { std::borrow::Cow::Owned(<span class="self">self</span>) }
 }
 
 <span class="doccomment">/// Errors that can happen when creating a body

@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/custom.rs`."><title>custom.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/custom.rs`."><title>custom.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -372,10 +374,10 @@
 
 <span class="doccomment">/// Custom response retrieved from endpoint, used for specializing responses
 </span><span class="attr">#[non_exhaustive]
-</span><span class="kw">pub struct </span>CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;
+</span><span class="kw">pub struct </span>CustomResponse&lt;<span class="lifetime">'d</span>, R, D&gt;
 <span class="kw">where
     </span>R: Request,
-    D: <span class="lifetime">&#39;d</span>, {
+    D: <span class="lifetime">'d</span>, {
     <span class="doccomment">/// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
     </span><span class="kw">pub </span>pagination: <span class="prelude-ty">Option</span>&lt;Cursor&gt;,
     <span class="doccomment">/// The request that was sent, used for [pagination](Paginated).
@@ -384,34 +386,34 @@
     </span><span class="kw">pub </span>total: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Other fields that are part of the response, but unknown.
     ///
-    /// Unfortunately, this [can&#39;t be borrowed](https://github.com/serde-rs/json/issues/599).
+    /// Unfortunately, this [can't be borrowed](https://github.com/serde-rs/json/issues/599).
     </span><span class="kw">pub </span>other: serde_json::Map&lt;String, serde_json::Value&gt;,
     <span class="doccomment">/// The owned data. Use [`CustomResponse::data()`] to deserialize.
     </span><span class="kw">pub </span>raw_data: Box&lt;serde_json::value::RawValue&gt;,
-    pd: std::marker::PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;d </span>D&gt;,
+    pd: std::marker::PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'d </span>D&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;d</span>, R, D&gt; CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'d</span>, R, D&gt; CustomResponse&lt;<span class="lifetime">'d</span>, R, D&gt;
 <span class="kw">where
     </span>R: Request,
-    D: <span class="lifetime">&#39;d </span>+ serde::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt;,
+    D: <span class="lifetime">'d </span>+ serde::Deserialize&lt;<span class="lifetime">'d</span>&gt;,
 {
     <span class="doccomment">/// Deserialize the data
-    </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;</span><span class="lifetime">&#39;d </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;D, serde_json::Error&gt; {
+    </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;</span><span class="lifetime">'d </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;D, serde_json::Error&gt; {
         serde_json::from_str(<span class="self">self</span>.raw_data.get())
     }
 }
 
-<span class="kw">impl</span>&lt;C: <span class="kw">crate</span>::HttpClient&gt; HelixClient&lt;<span class="lifetime">&#39;_</span>, C&gt; {
+<span class="kw">impl</span>&lt;C: <span class="kw">crate</span>::HttpClient&gt; HelixClient&lt;<span class="lifetime">'_</span>, C&gt; {
     <span class="doccomment">/// Request on a valid [`RequestGet`] endpoint, with the ability to return borrowed data and specific fields.
-    </span><span class="kw">pub async fn </span>req_get_custom&lt;<span class="lifetime">&#39;d</span>, R, D, T&gt;(
+    </span><span class="kw">pub async fn </span>req_get_custom&lt;<span class="lifetime">'d</span>, R, D, T&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         request: R,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">'d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
     <span class="kw">where
         </span>R: Request + RequestGet,
-        D: serde::de::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt; + <span class="lifetime">&#39;d</span>,
+        D: serde::de::Deserialize&lt;<span class="lifetime">'d</span>&gt; + <span class="lifetime">'d</span>,
         T: TwitchToken + <span class="question-mark">?</span>Sized,
         C: Send,
     {
@@ -430,7 +432,7 @@
             <span class="kw">let </span>text = std::str::from_utf8(response.body()).map_err(|e| {
                 HelixRequestGetError::Utf8Error(response.body().clone(), e, uri.clone())
             })<span class="question-mark">?</span>;
-            <span class="comment">//eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);
+            <span class="comment">//eprintln!("\n\nmessage is ------------ {} ------------", text);
             </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
                 error,
                 status,
@@ -445,7 +447,7 @@
                 }
                 .into());
             }
-            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">&#39;_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">'_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
                 HelixRequestGetError::DeserializeError(
                     text.to_owned(),
                     e,
@@ -465,16 +467,16 @@
     }
 
     <span class="doccomment">/// Request on a valid [`RequestPost`] endpoint, with the ability to return borrowed data and specific fields.
-    </span><span class="kw">pub async fn </span>req_post_custom&lt;<span class="lifetime">&#39;d</span>, R, B, D, T&gt;(
+    </span><span class="kw">pub async fn </span>req_post_custom&lt;<span class="lifetime">'d</span>, R, B, D, T&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         request: R,
         body: B,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">'d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
     <span class="kw">where
         </span>R: Request + RequestPost + RequestPost&lt;Body = B&gt;,
         B: HelixRequestBody,
-        D: serde::de::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt; + <span class="lifetime">&#39;d</span>,
+        D: serde::de::Deserialize&lt;<span class="lifetime">'d</span>&gt; + <span class="lifetime">'d</span>,
         T: TwitchToken + <span class="question-mark">?</span>Sized,
         C: Send,
     {
@@ -494,7 +496,7 @@
             <span class="kw">let </span>text = std::str::from_utf8(response.body()).map_err(|e| {
                 HelixRequestPostError::Utf8Error(response.body().clone(), e, uri.clone())
             })<span class="question-mark">?</span>;
-            <span class="comment">//eprintln!(&quot;\n\nmessage is ------------ {} ------------&quot;, text);
+            <span class="comment">//eprintln!("\n\nmessage is ------------ {} ------------", text);
             </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(HelixRequestError {
                 error,
                 status,
@@ -510,7 +512,7 @@
                 }
                 .into());
             }
-            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">&#39;_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">'_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
                 HelixRequestPostError::DeserializeError(
                     text.to_owned(),
                     e,
@@ -534,17 +536,17 @@
     /// # Notes
     ///
     /// This is probably not useful, as `PATCH` endpoints do not usually return json
-    </span><span class="kw">pub async fn </span>req_patch_custom&lt;<span class="lifetime">&#39;d</span>, R, B, D, T, F&gt;(
+    </span><span class="kw">pub async fn </span>req_patch_custom&lt;<span class="lifetime">'d</span>, R, B, D, T, F&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         request: R,
         body: B,
         token: <span class="kw-2">&amp;</span>T,
         function: F,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">'d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
     <span class="kw">where
         </span>R: Request + RequestPatch + RequestPatch&lt;Body = B&gt;,
         B: HelixRequestBody,
-        D: serde::de::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt; + <span class="lifetime">&#39;d</span>,
+        D: serde::de::Deserialize&lt;<span class="lifetime">'d</span>&gt; + <span class="lifetime">'d</span>,
         T: TwitchToken + <span class="question-mark">?</span>Sized,
         C: Send,
         F: Fn(<span class="kw-2">&amp;</span>R, <span class="kw-2">&amp;</span>http::Uri, <span class="kw-2">&amp;</span>str, http::StatusCode) -&gt; <span class="prelude-ty">Result</span>&lt;(), HelixRequestPatchError&gt;,
@@ -580,7 +582,7 @@
                 .into());
             }
             function(<span class="kw-2">&amp;</span>request, uri, text, response.status())<span class="question-mark">?</span>;
-            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">&#39;_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">'_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
                 HelixRequestPatchError::DeserializeError(
                     text.to_owned(),
                     e,
@@ -604,15 +606,15 @@
     /// # Notes
     ///
     /// This is probably not useful, as `DELETE` endpoints do not usually return json
-    </span><span class="kw">pub async fn </span>req_delete_custom&lt;<span class="lifetime">&#39;d</span>, R, D, T, F&gt;(
+    </span><span class="kw">pub async fn </span>req_delete_custom&lt;<span class="lifetime">'d</span>, R, D, T, F&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         request: R,
         token: <span class="kw-2">&amp;</span>T,
         function: F,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">'d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
     <span class="kw">where
         </span>R: Request + RequestDelete,
-        D: serde::de::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt; + <span class="lifetime">&#39;d</span>,
+        D: serde::de::Deserialize&lt;<span class="lifetime">'d</span>&gt; + <span class="lifetime">'d</span>,
         T: TwitchToken + <span class="question-mark">?</span>Sized,
         C: Send,
         F: Fn(<span class="kw-2">&amp;</span>R, <span class="kw-2">&amp;</span>http::Uri, <span class="kw-2">&amp;</span>str, http::StatusCode) -&gt; <span class="prelude-ty">Result</span>&lt;(), HelixRequestDeleteError&gt;,
@@ -647,7 +649,7 @@
                 .into());
             }
             function(<span class="kw-2">&amp;</span>request, uri, text, response.status())<span class="question-mark">?</span>;
-            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">&#39;_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">'_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
                 HelixRequestPatchError::DeserializeError(
                     text.to_owned(),
                     e,
@@ -671,17 +673,17 @@
     /// # Notes
     ///
     /// This is probably not useful, as `PUT` endpoints do not usually return json
-    </span><span class="kw">pub async fn </span>req_put_custom&lt;<span class="lifetime">&#39;d</span>, R, B, D, T, F&gt;(
+    </span><span class="kw">pub async fn </span>req_put_custom&lt;<span class="lifetime">'d</span>, R, B, D, T, F&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         request: R,
         body: B,
         token: <span class="kw-2">&amp;</span>T,
         function: F,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">&#39;d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CustomResponse&lt;<span class="lifetime">'d</span>, R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
     <span class="kw">where
         </span>R: Request + RequestPut + RequestPut&lt;Body = B&gt;,
         B: HelixRequestBody,
-        D: serde::de::Deserialize&lt;<span class="lifetime">&#39;d</span>&gt; + <span class="lifetime">&#39;d</span>,
+        D: serde::de::Deserialize&lt;<span class="lifetime">'d</span>&gt; + <span class="lifetime">'d</span>,
         T: TwitchToken + <span class="question-mark">?</span>Sized,
         C: Send,
         F: Fn(<span class="kw-2">&amp;</span>R, <span class="kw-2">&amp;</span>http::Uri, <span class="kw-2">&amp;</span>str, http::StatusCode) -&gt; <span class="prelude-ty">Result</span>&lt;(), HelixRequestDeleteError&gt;,
@@ -717,7 +719,7 @@
                 .into());
             }
             function(<span class="kw-2">&amp;</span>request, uri, text, response.status())<span class="question-mark">?</span>;
-            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">&#39;_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
+            <span class="kw">let </span>response: CustomInnerResponse&lt;<span class="lifetime">'_</span>&gt; = <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(|e| {
                 HelixRequestPatchError::DeserializeError(
                     text.to_owned(),
                     e,

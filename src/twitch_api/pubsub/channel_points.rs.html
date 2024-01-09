@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_points.rs`."><title>channel_points.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_points.rs`."><title>channel_points.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -470,15 +472,15 @@
 <a href="#470" id="470">470</a>
 <a href="#471" id="471">471</a>
 <a href="#472" id="472">472</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;points&quot;</span>)]
-#![doc(alias = <span class="string">&quot;channel-points-channel-v1&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"points"</span>)]
+#![doc(alias = <span class="string">"channel-points-channel-v1"</span>)]
 </span><span class="doccomment">//! PubSub messages for channel points
 </span><span class="kw">use crate</span>::{pubsub, types};
 <span class="kw">use </span>serde_derive::{Deserialize, Serialize};
 
 <span class="doccomment">/// A user redeems an reward using channel points.
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>ChannelPointsChannelV1 {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
     </span><span class="kw">pub </span>channel_id: u32,
@@ -486,20 +488,20 @@
 
 <span class="macro">impl_de_ser!</span>(
     ChannelPointsChannelV1,
-    <span class="string">&quot;channel-points-channel-v1&quot;</span>,
+    <span class="string">"channel-points-channel-v1"</span>,
     channel_id <span class="comment">// FIXME: add trailing comma
 </span>);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>ChannelPointsChannelV1 {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::ChannelPointsChannelV1(<span class="self">self</span>) }
 }
 
-<span class="doccomment">/// A redemption users can &quot;buy&quot; with channel points to trigger rewards
+<span class="doccomment">/// A redemption users can "buy" with channel points to trigger rewards
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Redemption {
     <span class="doccomment">/// ID of channel where the redemption was triggered
@@ -527,7 +529,7 @@
 /// It is currently not possible to see if a unfullfilled redemption has been fullfilled.
 /// Currently only [`ACTION_TAKEN`](RedemptionStatus::ActionTaken) is given on queue changes
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
+#[serde(rename_all = <span class="string">"UPPERCASE"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>RedemptionStatus {
     <span class="doccomment">/// Redemption was fullfilled, e.g it skipped reward queue
@@ -536,13 +538,13 @@
     </span>Unfulfilled,
     <span class="comment">// FIXME: https://github.com/twitchdev/issues/issues/111
     </span><span class="doccomment">/// Redemption was updated. Rejected or completed
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;ACTION_TAKEN&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"ACTION_TAKEN"</span>)]
     </span>ActionTaken,
 }
 
 <span class="doccomment">/// Reward data
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Reward {
     <span class="doccomment">/// Color of background in rewards &amp; challenges screen on client
@@ -592,7 +594,7 @@
 
 <span class="doccomment">/// `update-redemption-statuses-finished``progress
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Progress {
     <span class="doccomment">/// ID of channel user
@@ -613,12 +615,12 @@
 
 <span class="doccomment">/// Reply from [ChannelPointsChannelV1]
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = <span class="string">&quot;type&quot;</span>, content = <span class="string">&quot;data&quot;</span>)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[serde(tag = <span class="string">"type"</span>, content = <span class="string">"data"</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ChannelPointsChannelV1Reply {
     <span class="doccomment">/// A reward was redeemed
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;reward-redeemed&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"reward-redeemed"</span>)]
     </span>RewardRedeemed {
         <span class="doccomment">/// Time the pubsub message was sent
         </span>timestamp: String,
@@ -626,7 +628,7 @@
         </span>redemption: Redemption,
     },
     <span class="doccomment">/// A custom reward was updated
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;custom-reward-updated&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"custom-reward-updated"</span>)]
     </span>CustomRewardUpdated {
         <span class="doccomment">/// Time the pubsub message was sent
         </span>timestamp: String,
@@ -634,7 +636,7 @@
         </span>updated_reward: Reward,
     },
     <span class="doccomment">/// Status of a redemption was changed
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;redemption-status-update&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"redemption-status-update"</span>)]
     </span>RedemptionStatusUpdate {
         <span class="doccomment">/// Time the pubsub message was sent
         </span>timestamp: String,
@@ -643,7 +645,7 @@
     },
     <span class="doccomment">/// Status of multiple redemptions were changed
     </span><span class="comment">// TODO: This seems to only be on complete all / reject all
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;update-redemption-statuses-finished&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"update-redemption-statuses-finished"</span>)]
     </span>UpdateRedemptionStatusesFinished {
         <span class="doccomment">/// Time the pubsub message was sent
         </span>timestamp: String,
@@ -652,7 +654,7 @@
     },
     <span class="doccomment">/// Status of multiple redemptions were changed
     </span><span class="comment">// FIXME: No idea what this is, might be same as UpdateRedemptionStatusesFinished
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;update-redemption-statuses-progress&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"update-redemption-statuses-progress"</span>)]
     </span>UpdateRedemptionStatusProgress {
         <span class="doccomment">/// Time the pubsub message was sent
         </span>timestamp: String,
@@ -667,65 +669,65 @@
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="attr">#[test]
     </span><span class="kw">fn </span>channel_point_redeem() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;reward-redeemed&quot;,
-    &quot;data&quot;: {
-        &quot;timestamp&quot;: &quot;2020-10-10T19:13:30.536153182Z&quot;,
-        &quot;redemption&quot;: {
-            &quot;id&quot;: &quot;b021f290-bedb-49c2-b90f-e6ceb1c0d4ab&quot;,
-            &quot;user&quot;: {
-                &quot;id&quot;: &quot;27620241&quot;,
-                &quot;login&quot;: &quot;emilgardis&quot;,
-                &quot;display_name&quot;: &quot;emilgardis&quot;
+    "type": "reward-redeemed",
+    "data": {
+        "timestamp": "2020-10-10T19:13:30.536153182Z",
+        "redemption": {
+            "id": "b021f290-bedb-49c2-b90f-e6ceb1c0d4ab",
+            "user": {
+                "id": "27620241",
+                "login": "emilgardis",
+                "display_name": "emilgardis"
             },
-            &quot;channel_id&quot;: &quot;27620241&quot;,
-            &quot;redeemed_at&quot;: &quot;2020-10-10T19:13:30.536153182Z&quot;,
-            &quot;reward&quot;: {
-                &quot;id&quot;: &quot;252e209d-4f16-4886-a0d1-97f458ad5698&quot;,
-                &quot;channel_id&quot;: &quot;27620241&quot;,
-                &quot;title&quot;: &quot;Hydration&quot;,
-                &quot;prompt&quot;: &quot;Make Emilgardis drink water&quot;,
-                &quot;cost&quot;: 2000,
-                &quot;is_user_input_required&quot;: true,
-                &quot;is_sub_only&quot;: false,
-                &quot;image&quot;: null,
-                &quot;default_image&quot;: {
-                    &quot;url_1x&quot;: &quot;https://static-cdn.jtvnw.net/custom-reward-images/default-1.png&quot;,
-                    &quot;url_2x&quot;: &quot;https://static-cdn.jtvnw.net/custom-reward-images/default-2.png&quot;,
-                    &quot;url_4x&quot;: &quot;https://static-cdn.jtvnw.net/custom-reward-images/default-4.png&quot;
+            "channel_id": "27620241",
+            "redeemed_at": "2020-10-10T19:13:30.536153182Z",
+            "reward": {
+                "id": "252e209d-4f16-4886-a0d1-97f458ad5698",
+                "channel_id": "27620241",
+                "title": "Hydration",
+                "prompt": "Make Emilgardis drink water",
+                "cost": 2000,
+                "is_user_input_required": true,
+                "is_sub_only": false,
+                "image": null,
+                "default_image": {
+                    "url_1x": "https://static-cdn.jtvnw.net/custom-reward-images/default-1.png",
+                    "url_2x": "https://static-cdn.jtvnw.net/custom-reward-images/default-2.png",
+                    "url_4x": "https://static-cdn.jtvnw.net/custom-reward-images/default-4.png"
                 },
-                &quot;background_color&quot;: &quot;#81AEFF&quot;,
-                &quot;is_enabled&quot;: true,
-                &quot;is_paused&quot;: false,
-                &quot;is_in_stock&quot;: true,
-                &quot;max_per_stream&quot;: {
-                    &quot;is_enabled&quot;: false,
-                    &quot;max_per_stream&quot;: 10
+                "background_color": "#81AEFF",
+                "is_enabled": true,
+                "is_paused": false,
+                "is_in_stock": true,
+                "max_per_stream": {
+                    "is_enabled": false,
+                    "max_per_stream": 10
                 },
-                &quot;should_redemptions_skip_request_queue&quot;: false,
-                &quot;template_id&quot;: null,
-                &quot;updated_for_indicator_at&quot;: &quot;2020-02-06T17:29:19.737311439Z&quot;,
-                &quot;max_per_user_per_stream&quot;: {
-                    &quot;is_enabled&quot;: false,
-                    &quot;max_per_user_per_stream&quot;: 0
+                "should_redemptions_skip_request_queue": false,
+                "template_id": null,
+                "updated_for_indicator_at": "2020-02-06T17:29:19.737311439Z",
+                "max_per_user_per_stream": {
+                    "is_enabled": false,
+                    "max_per_user_per_stream": 0
                 },
-                &quot;global_cooldown&quot;: {
-                    &quot;is_enabled&quot;: false,
-                    &quot;global_cooldown_seconds&quot;: 0
+                "global_cooldown": {
+                    "is_enabled": false,
+                    "global_cooldown_seconds": 0
                 },
-                &quot;redemptions_redeemed_current_stream&quot;: 0,
-                &quot;cooldown_expires_at&quot;: null
+                "redemptions_redeemed_current_stream": 0,
+                "cooldown_expires_at": null
             },
-            &quot;user_input&quot;: &quot;bap&quot;,
-            &quot;status&quot;: &quot;UNFULFILLED&quot;
+            "user_input": "bap",
+            "status": "UNFULFILLED"
         }
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;,&quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-points-channel-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -738,53 +740,53 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>channel_reward_updated() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;custom-reward-updated&quot;,
-    &quot;data&quot;: {
-        &quot;timestamp&quot;: &quot;2020-10-19T19:40:19.637568468Z&quot;,
-        &quot;updated_reward&quot;: {
-            &quot;id&quot;: &quot;071397fb-cd09-420d-8d64-f9fd35f5cdfa&quot;,
-            &quot;channel_id&quot;: &quot;27620241&quot;,
-            &quot;title&quot;: &quot;Up the difficulty &quot;,
-            &quot;prompt&quot;: &quot;stuff.&quot;,
-            &quot;cost&quot;: 20000,
-            &quot;is_user_input_required&quot;: true,
-            &quot;is_sub_only&quot;: false,
-            &quot;image&quot;: null,
-            &quot;default_image&quot;: {
-                &quot;url_1x&quot;: &quot;https://static-cdn.jtvnw.net/custom-reward-images/default-1.png&quot;,
-                &quot;url_2x&quot;: &quot;https://static-cdn.jtvnw.net/custom-reward-images/default-2.png&quot;,
-                &quot;url_4x&quot;: &quot;https://static-cdn.jtvnw.net/custom-reward-images/default-4.png&quot;
+    "type": "custom-reward-updated",
+    "data": {
+        "timestamp": "2020-10-19T19:40:19.637568468Z",
+        "updated_reward": {
+            "id": "071397fb-cd09-420d-8d64-f9fd35f5cdfa",
+            "channel_id": "27620241",
+            "title": "Up the difficulty ",
+            "prompt": "stuff.",
+            "cost": 20000,
+            "is_user_input_required": true,
+            "is_sub_only": false,
+            "image": null,
+            "default_image": {
+                "url_1x": "https://static-cdn.jtvnw.net/custom-reward-images/default-1.png",
+                "url_2x": "https://static-cdn.jtvnw.net/custom-reward-images/default-2.png",
+                "url_4x": "https://static-cdn.jtvnw.net/custom-reward-images/default-4.png"
             },
-            &quot;background_color&quot;: &quot;#FF6C00&quot;,
-            &quot;is_enabled&quot;: true,
-            &quot;is_paused&quot;: true,
-            &quot;is_in_stock&quot;: true,
-            &quot;max_per_stream&quot;: {
-                &quot;is_enabled&quot;: true,
-                &quot;max_per_stream&quot;: 6
+            "background_color": "#FF6C00",
+            "is_enabled": true,
+            "is_paused": true,
+            "is_in_stock": true,
+            "max_per_stream": {
+                "is_enabled": true,
+                "max_per_stream": 6
             },
-            &quot;should_redemptions_skip_request_queue&quot;: false,
-            &quot;template_id&quot;: null,
-            &quot;updated_for_indicator_at&quot;: &quot;2020-06-09T16:02:06.943429808Z&quot;,
-            &quot;max_per_user_per_stream&quot;: {
-                &quot;is_enabled&quot;: false,
-                &quot;max_per_user_per_stream&quot;: 0
+            "should_redemptions_skip_request_queue": false,
+            "template_id": null,
+            "updated_for_indicator_at": "2020-06-09T16:02:06.943429808Z",
+            "max_per_user_per_stream": {
+                "is_enabled": false,
+                "max_per_user_per_stream": 0
             },
-            &quot;global_cooldown&quot;: {
-                &quot;is_enabled&quot;: false,
-                &quot;global_cooldown_seconds&quot;: 0
+            "global_cooldown": {
+                "is_enabled": false,
+                "global_cooldown_seconds": 0
             },
-            &quot;redemptions_redeemed_current_stream&quot;: 0,
-            &quot;cooldown_expires_at&quot;: null
+            "redemptions_redeemed_current_stream": 0,
+            "cooldown_expires_at": null
         }
     }
 }
-        &quot;##</span>;
+        "##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;,&quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-points-channel-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -797,62 +799,62 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>redemption_status_update() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;redemption-status-update&quot;,
-    &quot;data&quot;: {
-        &quot;timestamp&quot;: &quot;2020-10-19T19:41:00.590084358Z&quot;,
-        &quot;redemption&quot;: {
-            &quot;id&quot;: &quot;844fff0c-6185-44c7-8c30-3d68a565fe1b&quot;,
-            &quot;user&quot;: {
-                &quot;id&quot;: &quot;27620241&quot;,
-                &quot;login&quot;: &quot;emilgardis&quot;,
-                &quot;display_name&quot;: &quot;emilgardis&quot;
+    "type": "redemption-status-update",
+    "data": {
+        "timestamp": "2020-10-19T19:41:00.590084358Z",
+        "redemption": {
+            "id": "844fff0c-6185-44c7-8c30-3d68a565fe1b",
+            "user": {
+                "id": "27620241",
+                "login": "emilgardis",
+                "display_name": "emilgardis"
             },
-            &quot;channel_id&quot;: &quot;27620241&quot;,
-            &quot;redeemed_at&quot;: &quot;2020-10-19T15:01:18.453334233Z&quot;,
-            &quot;reward&quot;: {
-                &quot;id&quot;: &quot;252e209d-4f16-4886-a0d1-97f458ad5698&quot;,
-                &quot;channel_id&quot;: &quot;27620241&quot;,
-                &quot;title&quot;: &quot;Hydration&quot;,
-                &quot;prompt&quot;: &quot;Make Emilgardis drink water&quot;,
-                &quot;cost&quot;: 2000,
-                &quot;is_user_input_required&quot;: false,
-                &quot;is_sub_only&quot;: false,
-                &quot;image&quot;: null,
-                &quot;default_image&quot;: null,
-                &quot;background_color&quot;: &quot;#81AEFF&quot;,
-                &quot;is_enabled&quot;: false,
-                &quot;is_paused&quot;: false,
-                &quot;is_in_stock&quot;: false,
-                &quot;max_per_stream&quot;: {
-                    &quot;is_enabled&quot;: false,
-                    &quot;max_per_stream&quot;: 0
+            "channel_id": "27620241",
+            "redeemed_at": "2020-10-19T15:01:18.453334233Z",
+            "reward": {
+                "id": "252e209d-4f16-4886-a0d1-97f458ad5698",
+                "channel_id": "27620241",
+                "title": "Hydration",
+                "prompt": "Make Emilgardis drink water",
+                "cost": 2000,
+                "is_user_input_required": false,
+                "is_sub_only": false,
+                "image": null,
+                "default_image": null,
+                "background_color": "#81AEFF",
+                "is_enabled": false,
+                "is_paused": false,
+                "is_in_stock": false,
+                "max_per_stream": {
+                    "is_enabled": false,
+                    "max_per_stream": 0
                 },
-                &quot;should_redemptions_skip_request_queue&quot;: false,
-                &quot;template_id&quot;: null,
-                &quot;updated_for_indicator_at&quot;: null,
-                &quot;max_per_user_per_stream&quot;: {
-                    &quot;is_enabled&quot;: false,
-                    &quot;max_per_user_per_stream&quot;: 0
+                "should_redemptions_skip_request_queue": false,
+                "template_id": null,
+                "updated_for_indicator_at": null,
+                "max_per_user_per_stream": {
+                    "is_enabled": false,
+                    "max_per_user_per_stream": 0
                 },
-                &quot;global_cooldown&quot;: {
-                    &quot;is_enabled&quot;: false,
-                    &quot;global_cooldown_seconds&quot;: 0
+                "global_cooldown": {
+                    "is_enabled": false,
+                    "global_cooldown_seconds": 0
                 },
-                &quot;redemptions_redeemed_current_stream&quot;: null,
-                &quot;cooldown_expires_at&quot;: null
+                "redemptions_redeemed_current_stream": null,
+                "cooldown_expires_at": null
             },
-            &quot;user_input&quot;: &quot;a&quot;,
-            &quot;status&quot;: &quot;ACTION_TAKEN&quot;,
-            &quot;cursor&quot;: &quot;ODQ0ZmZmMGMtNjE4NS00NGM3LThjMzAtM2Q2OGE1NjVmZTFiX18yMDIwLTEwLTE5VDE1OjAxOjE4LjQ1MzMzNDIzM1o=&quot;
+            "user_input": "a",
+            "status": "ACTION_TAKEN",
+            "cursor": "ODQ0ZmZmMGMtNjE4NS00NGM3LThjMzAtM2Q2OGE1NjVmZTFiX18yMDIwLTEwLTE5VDE1OjAxOjE4LjQ1MzMzNDIzM1o="
         }
     }
 }
-        &quot;##</span>;
+        "##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;,&quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-points-channel-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -865,25 +867,25 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>update_redemption_statuses_finished() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;update-redemption-statuses-finished&quot;,
-    &quot;data&quot;: {
-        &quot;timestamp&quot;: &quot;2021-02-15T00:36:55.938819818Z&quot;,
-        &quot;progress&quot;: {
-            &quot;id&quot;: &quot;Y29wb0J1bGtFZGl0UmVkZW1wdGlvblN0YXR1c1Byb2dyZXNzOjEzMzc6QlVMS19FRElUX1JFREVNUFRJT05fU1RBVFVTX01FVEhPRF9CWV9DSEFOTkVMOg==&quot;,
-            &quot;channel_id&quot;: &quot;1337&quot;,
-            &quot;method&quot;: &quot;BY_CHANNEL&quot;,
-            &quot;new_status&quot;: &quot;FULFILLED&quot;,
-            &quot;processed&quot;: 2,
-            &quot;total&quot;: 2
+    "type": "update-redemption-statuses-finished",
+    "data": {
+        "timestamp": "2021-02-15T00:36:55.938819818Z",
+        "progress": {
+            "id": "Y29wb0J1bGtFZGl0UmVkZW1wdGlvblN0YXR1c1Byb2dyZXNzOjEzMzc6QlVMS19FRElUX1JFREVNUFRJT05fU1RBVFVTX01FVEhPRF9CWV9DSEFOTkVMOg==",
+            "channel_id": "1337",
+            "method": "BY_CHANNEL",
+            "new_status": "FULFILLED",
+            "processed": 2,
+            "total": 2
         }
     }
 }
-        &quot;##</span>;
+        "##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;,&quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-points-channel-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -896,25 +898,25 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>update_redemption_statuses_progress() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;update-redemption-statuses-progress&quot;,
-    &quot;data&quot;: {
-        &quot;timestamp&quot;: &quot;2021-02-15T00:36:55.916689548Z&quot;,
-        &quot;progress&quot;: {
-            &quot;id&quot;: &quot;Y29wb0J1bGtFZGl0UmVkZW1wdGlvblN0YXR1c1Byb2dyZXNzOjEzMzc6QlVMS19FRElUX1JFREVNUFRJT05fU1RBVFVTX01FVEhPRF9CWV9DSEFOTkVMOg==&quot;,
-            &quot;channel_id&quot;: &quot;1337&quot;,
-            &quot;method&quot;: &quot;BY_CHANNEL&quot;,
-            &quot;new_status&quot;: &quot;FULFILLED&quot;,
-            &quot;processed&quot;: 1,
-            &quot;total&quot;: 2
+    "type": "update-redemption-statuses-progress",
+    "data": {
+        "timestamp": "2021-02-15T00:36:55.916689548Z",
+        "progress": {
+            "id": "Y29wb0J1bGtFZGl0UmVkZW1wdGlvblN0YXR1c1Byb2dyZXNzOjEzMzc6QlVMS19FRElUX1JFREVNUFRJT05fU1RBVFVTX01FVEhPRF9CWV9DSEFOTkVMOg==",
+            "channel_id": "1337",
+            "method": "BY_CHANNEL",
+            "new_status": "FULFILLED",
+            "processed": 1,
+            "total": 2
         }
     }
 }
-        &quot;##</span>;
+        "##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;,&quot;data&quot;: {{ &quot;topic&quot;: &quot;channel-points-channel-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE","data": {{ "topic": "channel-points-channel-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -928,7 +930,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
-        <span class="kw">let </span>s = <span class="string">&quot;channel-points-channel-v1.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"channel-points-channel-v1.1234"</span>;
         <span class="macro">assert_eq!</span>(
             ChannelPointsChannelV1 { channel_id: <span class="number">1234 </span>},
             s.to_string().try_into().unwrap()
@@ -937,7 +939,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
-        <span class="kw">let </span>s = <span class="string">&quot;channel-points-channel-v1.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"channel-points-channel-v1.1234"</span>;
         <span class="kw">let </span>right: String = ChannelPointsChannelV1 { channel_id: <span class="number">1234 </span>}.into();
         <span class="macro">assert_eq!</span>(s.to_string(), right);
     }

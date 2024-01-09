@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/hypetrain.rs`."><title>hypetrain.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/hypetrain.rs`."><title>hypetrain.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2056,15 +2058,15 @@
 <a href="#2056" id="2056">2056</a>
 <a href="#2057" id="2057">2057</a>
 <a href="#2058" id="2058">2058</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;hype-train-events-v1&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"hype-train-events-v1"</span>)]
 </span><span class="doccomment">//! PubSub messages for hype-trains
 </span><span class="kw">use crate</span>::{pubsub, types};
 <span class="kw">use </span>serde_derive::{Deserialize, Serialize};
 
 <span class="doccomment">/// A user redeems an reward using channel points.
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>HypeTrainEventsV1 {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
     </span><span class="kw">pub </span>channel_id: u32,
@@ -2072,12 +2074,12 @@
 
 <span class="macro">impl_de_ser!</span>(
     HypeTrainEventsV1,
-    <span class="string">&quot;hype-train-events-v1&quot;</span>,
+    <span class="string">"hype-train-events-v1"</span>,
     channel_id <span class="comment">// FIXME: add trailing comma
 </span>);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>HypeTrainEventsV1 {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::HypeTrainEventsV1(<span class="self">self</span>) }
@@ -2085,8 +2087,8 @@
 
 <span class="doccomment">/// A user redeems an reward using channel points.
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>HypeTrainEventsV1Rewards {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
     </span><span class="kw">pub </span>channel_id: u32,
@@ -2094,12 +2096,12 @@
 
 <span class="macro">impl_de_ser!</span>(
     HypeTrainEventsV1Rewards,
-    <span class="string">&quot;hype-train-events-v1.rewards&quot;</span>,
+    <span class="string">"hype-train-events-v1.rewards"</span>,
     channel_id <span class="comment">// FIXME: add trailing comma
 </span>);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>HypeTrainEventsV1Rewards {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::HypeTrainEventsV1Rewards(<span class="self">self</span>) }
@@ -2107,7 +2109,7 @@
 
 <span class="doccomment">/// Hype train rewards
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainRewards {
     <span class="comment">// FIXME: Channel ID is sometimes missing, might be depending on your token
@@ -2121,7 +2123,7 @@
 
 <span class="doccomment">/// Hype train started in channel
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainStart {
     <span class="comment">// FIXME: Channel ID is sometimes missing, might be depending on your token
@@ -2155,7 +2157,7 @@
 
 <span class="doccomment">/// Hype train ended
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainEnd {
     <span class="doccomment">/// Server time epoch in milliseconds when hype train ended
@@ -2166,13 +2168,13 @@
 
 <span class="doccomment">/// Hype train cooldown expired
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainCooldownExpiration {}
 
 <span class="doccomment">/// Hype train conductor updated
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainConductorUpdate {
     <span class="doccomment">/// Conductor source
@@ -2185,7 +2187,7 @@
 
 <span class="doccomment">/// Hype train progression. Akin to [Participations]
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainProgression {
     <span class="doccomment">/// Unknown
@@ -2212,7 +2214,7 @@
 
 <span class="doccomment">/// Hype train leveled up
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainLevelUp {
     <span class="doccomment">/// Server time epoch in milliseconds when hype train expires
@@ -2223,7 +2225,7 @@
 
 <span class="doccomment">/// Hype train is approaching
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainApproaching {
     <span class="comment">// FIXME: COPIED FROM HypeTrainStart Channel ID is sometimes missing, might be depending on your token
@@ -2232,7 +2234,7 @@
     <span class="doccomment">/// Creator color
     </span><span class="attr">#[serde(
         default,
-        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+        deserialize_with = <span class="string">"pubsub::deserialize_none_from_empty_string"
     </span>)]
     </span><span class="kw">pub </span>creator_color: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Participation points needed for this level
@@ -2240,8 +2242,8 @@
     <span class="doccomment">/// Participators
     </span><span class="kw">pub </span>participants: Vec&lt;types::UserId&gt;,
     <span class="doccomment">/// remaining events
-    </span><span class="comment">// FIXME: example: &quot;1&quot;: 258708980297
-    // What does 258708980297 stand for? is &quot;1&quot; perhaps BADGE type? just not stringified
+    </span><span class="comment">// FIXME: example: "1": 258708980297
+    // What does 258708980297 stand for? is "1" perhaps BADGE type? just not stringified
     </span><span class="kw">pub </span>events_remaining_durations: std::collections::HashMap&lt;String, i64&gt;,
     <span class="doccomment">/// Possible rewards for level one
     </span><span class="kw">pub </span>level_one_rewards: Vec&lt;Reward&gt;,
@@ -2251,43 +2253,43 @@
 
 <span class="doccomment">/// Reply from [HypeTrainEventsV1] or [HypeTrainEventsV1Rewards]
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[serde(tag = <span class="string">&quot;type&quot;</span>, content = <span class="string">&quot;data&quot;</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[serde(tag = <span class="string">"type"</span>, content = <span class="string">"data"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>HypeTrainEventsV1Reply {
     <span class="doccomment">/// Hype train rewards
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-rewards&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"hype-train-rewards"</span>)]
     </span>HypeTrainRewards(HypeTrainRewards),
     <span class="doccomment">/// Hype train started in channel
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-start&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"hype-train-start"</span>)]
     </span>HypeTrainStart(HypeTrainStart),
     <span class="doccomment">/// Hype train ended
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-end&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"hype-train-end"</span>)]
     </span>HypeTrainEnd(HypeTrainEnd),
     <span class="doccomment">/// Hype train cooldown expired
     ///
     /// # Note
     ///
     /// There is no data associated with this event.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-cooldown-expiration&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"hype-train-cooldown-expiration"</span>)]
     </span>HypeTrainCooldownExpiration(<span class="prelude-ty">Option</span>&lt;HypeTrainCooldownExpiration&gt;),
     <span class="doccomment">/// Hype train conductor updated
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-conductor-update&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"hype-train-conductor-update"</span>)]
     </span>HypeTrainConductorUpdate(HypeTrainConductorUpdate),
     <span class="doccomment">/// Hype train progression. Akin to [Participations]
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-progression&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"hype-train-progression"</span>)]
     </span>HypeTrainProgression(HypeTrainProgression),
     <span class="doccomment">/// Hype train leveled up
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-level-up&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"hype-train-level-up"</span>)]
     </span>HypeTrainLevelUp(HypeTrainLevelUp),
     <span class="doccomment">/// Hype train is approaching
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;hype-train-approaching&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"hype-train-approaching"</span>)]
     </span>HypeTrainApproaching(HypeTrainApproaching),
 }
 
 <span class="doccomment">/// Configuration of hype train
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Config {
     <span class="doccomment">/// Hype train public callout emote ID
@@ -2306,7 +2308,7 @@
     <span class="doccomment">/// Difficulty settings
     </span><span class="kw">pub </span>difficulty_settings: std::collections::HashMap&lt;HypeTrainDifficulty, Vec&lt;Level&gt;&gt;,
     <span class="attr">#[doc(hidden)]
-    #[serde(default = <span class="string">&quot;bool_true&quot;</span>)]
+    #[serde(default = <span class="string">"bool_true"</span>)]
     </span><span class="kw">pub </span>has_conductor_badges: bool,
     <span class="doccomment">/// Whether or not Hype Train is enabled in channel
     </span><span class="kw">pub </span>is_enabled: bool,
@@ -2342,25 +2344,25 @@
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>HypeTrainDifficulty {
     <span class="doccomment">/// Easy difficulty
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;EASY&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"EASY"</span>)]
     </span>Easy,
     <span class="doccomment">/// Medium difficulty
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;MEDIUM&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"MEDIUM"</span>)]
     </span>Medium,
     <span class="doccomment">/// Hard difficulty
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;HARD&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"HARD"</span>)]
     </span>Hard,
     <span class="doccomment">/// Super Hard difficulty
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUPER HARD&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUPER HARD"</span>)]
     </span>SuperHard,
     <span class="doccomment">/// Insane difficulty
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;INSANE&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"INSANE"</span>)]
     </span>Insane,
 }
 
 <span class="doccomment">/// How many support events needed to start Hype Train
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Kickoff {
     <span class="doccomment">/// Period in nanoseconds that events must occur
@@ -2374,178 +2376,178 @@
 
 <span class="doccomment">/// Conversion table of event to participation points
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ParticipationConversionRates {
     <span class="doccomment">/// Bits
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.CHEER&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"BITS.CHEER"</span>)]
     </span><span class="kw">pub </span>bits_cheer: i64,
     <span class="doccomment">/// Bits by extension
     ///
     /// # Notes
     ///
-    /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.EXTENSION&quot;</span>)]
+    /// This seems to be for future usage. Right now, the helix endpoint doesn't have this.
+    </span><span class="attr">#[serde(rename = <span class="string">"BITS.EXTENSION"</span>)]
     </span><span class="kw">pub </span>bits_extension: i64,
     <span class="doccomment">/// Bits by poll
     ///
     /// # Notes
     ///
-    /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.POLL&quot;</span>)]
+    /// This seems to be for future usage. Right now, the helix endpoint doesn't have this.
+    </span><span class="attr">#[serde(rename = <span class="string">"BITS.POLL"</span>)]
     </span><span class="kw">pub </span>bits_poll: i64,
     <span class="doccomment">/// Tier 1 gifted subs
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_1_GIFTED_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_1_gifted_sub: i64,
     <span class="doccomment">/// Tier 1 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_1_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_1_sub: i64,
     <span class="doccomment">/// Tier 2 gifted subs
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_2_GIFTED_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_2_gifted_sub: i64,
     <span class="doccomment">/// Tier 2 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_2_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_2_sub: i64,
     <span class="doccomment">/// Tier 3 gifted subs
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_3_GIFTED_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_3_gifted_sub: i64,
     <span class="doccomment">/// Tier 3 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_3_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_3_sub: i64,
 }
 
 <span class="doccomment">/// Thresholds for notifications
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>NotificationThresholds {
     <span class="doccomment">/// Bits
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.CHEER&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"BITS.CHEER"</span>)]
     </span><span class="kw">pub </span>bits_cheer: i64,
     <span class="doccomment">/// Bits by extension
     ///
     /// # Notes
     ///
-    /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.EXTENSION&quot;</span>)]
+    /// This seems to be for future usage. Right now, the helix endpoint doesn't have this.
+    </span><span class="attr">#[serde(rename = <span class="string">"BITS.EXTENSION"</span>)]
     </span><span class="kw">pub </span>bits_extension: i64,
     <span class="doccomment">/// Bits by poll
     ///
     /// # Notes
     ///
-    /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.POLL&quot;</span>)]
+    /// This seems to be for future usage. Right now, the helix endpoint doesn't have this.
+    </span><span class="attr">#[serde(rename = <span class="string">"BITS.POLL"</span>)]
     </span><span class="kw">pub </span>bits_poll: i64,
     <span class="doccomment">/// Tier 1 gifted subs
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_1_GIFTED_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_1_gifted_sub: i64,
     <span class="doccomment">/// Tier 1 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_1_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_1_sub: i64,
     <span class="doccomment">/// Tier 2 gifted subs
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_2_GIFTED_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_2_gifted_sub: i64,
     <span class="doccomment">/// Tier 2 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_2_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_2_sub: i64,
     <span class="doccomment">/// Tier 3 gifted subs
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_3_GIFTED_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_3_gifted_sub: i64,
     <span class="doccomment">/// Tier 3 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_3_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_3_sub: i64,
 }
 
 <span class="doccomment">/// Reward given to conductors
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ConductorRewards {
     <span class="doccomment">/// Reward to conductor of bits
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"BITS"</span>)]
     </span><span class="kw">pub </span>bits: BitsRewards,
     <span class="doccomment">/// Reward to conductor of subscriptions
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS"</span>)]
     </span><span class="kw">pub </span>subs: SubsRewards,
 }
 
 <span class="doccomment">/// Rewards
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>BitsRewards {
     <span class="doccomment">/// Rewards to bits conductor
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;CURRENT&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"CURRENT"</span>)]
     </span><span class="kw">pub </span>current: Vec&lt;Reward&gt;,
     <span class="doccomment">/// Rewards to former bits conductor
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;FORMER&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"FORMER"</span>)]
     </span><span class="kw">pub </span>former: Vec&lt;Reward&gt;,
 }
 
 <span class="doccomment">/// Rewards
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>SubsRewards {
     <span class="doccomment">/// Rewards to subscriptions conductor
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;CURRENT&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"CURRENT"</span>)]
     </span><span class="kw">pub </span>current: Vec&lt;Reward&gt;,
     <span class="doccomment">/// Rewards to former subscriptions conductor
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;FORMER&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"FORMER"</span>)]
     </span><span class="kw">pub </span>former: Vec&lt;Reward&gt;,
 }
 
 <span class="doccomment">/// Participations in hype train
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Participations {
     <span class="doccomment">/// Bits
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.CHEER&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"BITS.CHEER"</span>)]
     </span><span class="kw">pub </span>bits_cheer: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Bits by extension
     ///
     /// # Notes
     ///
-    /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.EXTENSION&quot;</span>)]
+    /// This seems to be for future usage. Right now, the helix endpoint doesn't have this.
+    </span><span class="attr">#[serde(rename = <span class="string">"BITS.EXTENSION"</span>)]
     </span><span class="kw">pub </span>bits_extension: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Bits by poll
     ///
     /// # Notes
     ///
-    /// This seems to be for future usage. Right now, the helix endpoint doesn&#39;t have this.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BITS.POLL&quot;</span>)]
+    /// This seems to be for future usage. Right now, the helix endpoint doesn't have this.
+    </span><span class="attr">#[serde(rename = <span class="string">"BITS.POLL"</span>)]
     </span><span class="kw">pub </span>bits_poll: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 1 gifted subs
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_1_GIFTED_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_1_gifted_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 1 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_1_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_1_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_1_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 2 gifted subs
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_2_GIFTED_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_2_gifted_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 2 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_2_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_2_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_2_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 3 gifted subs
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_3_GIFTED_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_3_gifted_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="doccomment">/// Tier 3 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;SUBS.TIER_3_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"SUBS.TIER_3_SUB"</span>)]
     </span><span class="kw">pub </span>subs_tier_3_sub: <span class="prelude-ty">Option</span>&lt;i64&gt;,
 }
 
 <span class="doccomment">/// Unknown
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Conductors {}
 
 <span class="doccomment">/// Progress of hype train
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>HypeTrainProgress {
     <span class="doccomment">/// Participation points needed in this level
@@ -2563,7 +2565,7 @@
 
 <span class="doccomment">/// Description of a hype-train level
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Level {
     <span class="doccomment">/// Participation points needed for this level
@@ -2577,12 +2579,12 @@
 
 <span class="doccomment">/// A reward
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[serde(tag = <span class="string">&quot;type&quot;</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[serde(tag = <span class="string">"type"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Reward {
     <span class="doccomment">/// Reward is a emote
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;EMOTE&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"EMOTE"</span>)]
     </span>Emote {
         <span class="doccomment">/// Group ID of emote
         </span>group_id: String,
@@ -2597,7 +2599,7 @@
         </span>set_id: <span class="prelude-ty">Option</span>&lt;types::EmoteSetId&gt;,
     },
     <span class="doccomment">/// Reward is a badge
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;BADGE&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"BADGE"</span>)]
     </span>Badge {
         <span class="comment">// FIXME: Is this the same as in get chat badges?
         </span><span class="doccomment">/// ID of badge
@@ -2617,7 +2619,7 @@
 <span class="comment">// FIXME: intradoclink to helix
 </span><span class="doccomment">/// Source type, same as helix hype-train events type
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
+#[serde(rename_all = <span class="string">"UPPERCASE"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>SourceType {
     <span class="doccomment">/// Bits
@@ -2629,34 +2631,34 @@
 <span class="doccomment">/// The specific action that was used
 </span><span class="comment">// FIXME: Might be the same as channel_bits::BitsContext or channel_cheer::TriggerType
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
+#[serde(rename_all = <span class="string">"UPPERCASE"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ActionType {
     <span class="doccomment">/// A cheer
     </span>Cheer,
     <span class="doccomment">/// Tier 1 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_1_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"TIER_1_SUB"</span>)]
     </span>Tier1,
     <span class="doccomment">/// Tier 2 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_2_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"TIER_2_SUB"</span>)]
     </span>Tier2,
     <span class="doccomment">/// Tier 3 sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_3_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"TIER_3_SUB"</span>)]
     </span>Tier3,
     <span class="doccomment">/// Tier 1 gifted sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_1_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"TIER_1_GIFTED_SUB"</span>)]
     </span>Tier1GiftedSub,
     <span class="doccomment">/// Tier 2 gifted sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_2_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"TIER_2_GIFTED_SUB"</span>)]
     </span>Tier2GiftedSub,
     <span class="doccomment">/// Tier 3 gifted sub
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;TIER_3_GIFTED_SUB&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"TIER_3_GIFTED_SUB"</span>)]
     </span>Tier3GiftedSub,
 }
 
 <span class="doccomment">/// Reason hype-train ended
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = <span class="string">&quot;UPPERCASE&quot;</span>)]
+#[serde(rename_all = <span class="string">"UPPERCASE"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>EndingReason {
     <span class="doccomment">/// Hype train was completed
@@ -2674,401 +2676,401 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_start1() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;hype-train-start&quot;,
-    &quot;data&quot;: {
-        &quot;channel_id&quot;: &quot;1234&quot;,
-        &quot;id&quot;: &quot;4375b14c-acae-4ce4-9ef1-800482bb6022&quot;,
-        &quot;started_at&quot;: 1603127828000,
-        &quot;expires_at&quot;: 1603128128000,
-        &quot;updated_at&quot;: 1603127828000,
-        &quot;ended_at&quot;: null,
-        &quot;ending_reason&quot;: null,
-        &quot;config&quot;: {
-            &quot;channel_id&quot;: &quot;1234&quot;,
-            &quot;is_enabled&quot;: true,
-            &quot;is_whitelisted&quot;: true,
-            &quot;kickoff&quot;: {
-                &quot;num_of_events&quot;: 4,
-                &quot;min_points&quot;: 100,
-                &quot;duration&quot;: 300000000000
+    "type": "hype-train-start",
+    "data": {
+        "channel_id": "1234",
+        "id": "4375b14c-acae-4ce4-9ef1-800482bb6022",
+        "started_at": 1603127828000,
+        "expires_at": 1603128128000,
+        "updated_at": 1603127828000,
+        "ended_at": null,
+        "ending_reason": null,
+        "config": {
+            "channel_id": "1234",
+            "is_enabled": true,
+            "is_whitelisted": true,
+            "kickoff": {
+                "num_of_events": 4,
+                "min_points": 100,
+                "duration": 300000000000
             },
-            &quot;cooldown_duration&quot;: 7200000000000,
-            &quot;level_duration&quot;: 300000000000,
-            &quot;difficulty&quot;: &quot;MEDIUM&quot;,
-            &quot;reward_end_date&quot;: null,
-            &quot;participation_conversion_rates&quot;: {
-                &quot;BITS.CHEER&quot;: 1,
-                &quot;BITS.EXTENSION&quot;: 1,
-                &quot;BITS.POLL&quot;: 1,
-                &quot;SUBS.TIER_1_GIFTED_SUB&quot;: 500,
-                &quot;SUBS.TIER_1_SUB&quot;: 500,
-                &quot;SUBS.TIER_2_GIFTED_SUB&quot;: 1000,
-                &quot;SUBS.TIER_2_SUB&quot;: 1000,
-                &quot;SUBS.TIER_3_GIFTED_SUB&quot;: 2500,
-                &quot;SUBS.TIER_3_SUB&quot;: 2500
+            "cooldown_duration": 7200000000000,
+            "level_duration": 300000000000,
+            "difficulty": "MEDIUM",
+            "reward_end_date": null,
+            "participation_conversion_rates": {
+                "BITS.CHEER": 1,
+                "BITS.EXTENSION": 1,
+                "BITS.POLL": 1,
+                "SUBS.TIER_1_GIFTED_SUB": 500,
+                "SUBS.TIER_1_SUB": 500,
+                "SUBS.TIER_2_GIFTED_SUB": 1000,
+                "SUBS.TIER_2_SUB": 1000,
+                "SUBS.TIER_3_GIFTED_SUB": 2500,
+                "SUBS.TIER_3_SUB": 2500
             },
-            &quot;notification_thresholds&quot;: {
-                &quot;BITS.CHEER&quot;: 1000,
-                &quot;BITS.EXTENSION&quot;: 1000,
-                &quot;BITS.POLL&quot;: 1000,
-                &quot;SUBS.TIER_1_GIFTED_SUB&quot;: 5,
-                &quot;SUBS.TIER_1_SUB&quot;: 5,
-                &quot;SUBS.TIER_2_GIFTED_SUB&quot;: 5,
-                &quot;SUBS.TIER_2_SUB&quot;: 5,
-                &quot;SUBS.TIER_3_GIFTED_SUB&quot;: 5,
-                &quot;SUBS.TIER_3_SUB&quot;: 5
+            "notification_thresholds": {
+                "BITS.CHEER": 1000,
+                "BITS.EXTENSION": 1000,
+                "BITS.POLL": 1000,
+                "SUBS.TIER_1_GIFTED_SUB": 5,
+                "SUBS.TIER_1_SUB": 5,
+                "SUBS.TIER_2_GIFTED_SUB": 5,
+                "SUBS.TIER_2_SUB": 5,
+                "SUBS.TIER_3_GIFTED_SUB": 5,
+                "SUBS.TIER_3_SUB": 5
             },
-            &quot;difficulty_settings&quot;: {
-                &quot;MEDIUM&quot;: [
+            "difficulty_settings": {
+                "MEDIUM": [
                     {
-                        &quot;value&quot;: 1,
-                        &quot;goal&quot;: 2000,
-                        &quot;rewards&quot;: [
+                        "value": 1,
+                        "goal": 2000,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739462&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeChimp&quot;
+                                "type": "EMOTE",
+                                "id": "301739462",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeChimp"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739463&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeGhost&quot;
+                                "type": "EMOTE",
+                                "id": "301739463",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeGhost"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739465&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeChest&quot;
+                                "type": "EMOTE",
+                                "id": "301739465",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeChest"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739466&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeFrog&quot;
+                                "type": "EMOTE",
+                                "id": "301739466",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeFrog"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739468&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeCherry&quot;
+                                "type": "EMOTE",
+                                "id": "301739468",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeCherry"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 2,
-                        &quot;goal&quot;: 4500,
-                        &quot;rewards&quot;: [
+                        "value": 2,
+                        "goal": 4500,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739479&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeSideeye&quot;
+                                "type": "EMOTE",
+                                "id": "301739479",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeSideeye"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739472&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeBrain&quot;
+                                "type": "EMOTE",
+                                "id": "301739472",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeBrain"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739475&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeZap&quot;
+                                "type": "EMOTE",
+                                "id": "301739475",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeZap"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739476&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeShip&quot;
+                                "type": "EMOTE",
+                                "id": "301739476",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeShip"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739478&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeSign&quot;
+                                "type": "EMOTE",
+                                "id": "301739478",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeSign"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 3,
-                        &quot;goal&quot;: 7600,
-                        &quot;rewards&quot;: [
+                        "value": 3,
+                        "goal": 7600,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739481&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeYikes&quot;
+                                "type": "EMOTE",
+                                "id": "301739481",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeYikes"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739482&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeRacer&quot;
+                                "type": "EMOTE",
+                                "id": "301739482",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeRacer"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739483&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeCar&quot;
+                                "type": "EMOTE",
+                                "id": "301739483",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeCar"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739484&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeFirst&quot;
+                                "type": "EMOTE",
+                                "id": "301739484",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeFirst"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739485&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeTrophy&quot;
+                                "type": "EMOTE",
+                                "id": "301739485",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeTrophy"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 4,
-                        &quot;goal&quot;: 11500,
-                        &quot;rewards&quot;: [
+                        "value": 4,
+                        "goal": 11500,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739489&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeBlock&quot;
+                                "type": "EMOTE",
+                                "id": "301739489",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeBlock"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739490&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeDaze&quot;
+                                "type": "EMOTE",
+                                "id": "301739490",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeDaze"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739491&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeBounce&quot;
+                                "type": "EMOTE",
+                                "id": "301739491",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeBounce"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739492&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeJewel&quot;
+                                "type": "EMOTE",
+                                "id": "301739492",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeJewel"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739493&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeBlob&quot;
+                                "type": "EMOTE",
+                                "id": "301739493",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeBlob"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 5,
-                        &quot;goal&quot;: 17000,
-                        &quot;rewards&quot;: [
+                        "value": 5,
+                        "goal": 17000,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739495&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeLove&quot;
+                                "type": "EMOTE",
+                                "id": "301739495",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeLove"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739496&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypePunk&quot;
+                                "type": "EMOTE",
+                                "id": "301739496",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypePunk"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739497&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeKO&quot;
+                                "type": "EMOTE",
+                                "id": "301739497",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeKO"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739499&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypePunch&quot;
+                                "type": "EMOTE",
+                                "id": "301739499",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypePunch"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739501&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeFire&quot;
+                                "type": "EMOTE",
+                                "id": "301739501",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeFire"
                             }
                         ]
                     }
                 ]
             },
-            &quot;conductor_rewards&quot;: {
-                &quot;BITS&quot;: {
-                    &quot;CURRENT&quot;: [
+            "conductor_rewards": {
+                "BITS": {
+                    "CURRENT": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;1&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsxOzgwNTI1Nzk5&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2&quot;
+                            "type": "BADGE",
+                            "id": "1",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsxOzgwNTI1Nzk5",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2"
                         }
                     ],
-                    &quot;FORMER&quot;: [
+                    "FORMER": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;2&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsyOzgwNTI1Nzk5&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2&quot;
+                            "type": "BADGE",
+                            "id": "2",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsyOzgwNTI1Nzk5",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2"
                         }
                     ]
                 },
-                &quot;SUBS&quot;: {
-                    &quot;CURRENT&quot;: [
+                "SUBS": {
+                    "CURRENT": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;1&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsxOzgwNTI1Nzk5&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2&quot;
+                            "type": "BADGE",
+                            "id": "1",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsxOzgwNTI1Nzk5",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2"
                         }
                     ],
-                    &quot;FORMER&quot;: [
+                    "FORMER": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;2&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsyOzgwNTI1Nzk5&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2&quot;
+                            "type": "BADGE",
+                            "id": "2",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsyOzgwNTI1Nzk5",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2"
                         }
                     ]
                 }
             },
-            &quot;callout_emote_id&quot;: &quot;300640072&quot;,
-            &quot;callout_emote_token&quot;: &quot;PogChamp&quot;,
-            &quot;theme_color&quot;: &quot;#a970ff&quot;,
-            &quot;has_conductor_badges&quot;: true
+            "callout_emote_id": "300640072",
+            "callout_emote_token": "PogChamp",
+            "theme_color": "#a970ff",
+            "has_conductor_badges": true
         },
-        &quot;participations&quot;: {
-            &quot;SUBS.TIER_1_GIFTED_SUB&quot;: 2,
-            &quot;SUBS.TIER_1_SUB&quot;: 1,
-            &quot;SUBS.TIER_3_SUB&quot;: 1
+        "participations": {
+            "SUBS.TIER_1_GIFTED_SUB": 2,
+            "SUBS.TIER_1_SUB": 1,
+            "SUBS.TIER_3_SUB": 1
         },
-        &quot;conductors&quot;: {},
-        &quot;progress&quot;: {
-            &quot;level&quot;: {
-                &quot;value&quot;: 2,
-                &quot;goal&quot;: 4500,
-                &quot;rewards&quot;: [
+        "conductors": {},
+        "progress": {
+            "level": {
+                "value": 2,
+                "goal": 4500,
+                "rewards": [
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739479&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeSideeye&quot;
+                        "type": "EMOTE",
+                        "id": "301739479",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeSideeye"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739472&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeBrain&quot;
+                        "type": "EMOTE",
+                        "id": "301739472",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeBrain"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739475&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeZap&quot;
+                        "type": "EMOTE",
+                        "id": "301739475",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeZap"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739476&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeShip&quot;
+                        "type": "EMOTE",
+                        "id": "301739476",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeShip"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739478&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeSign&quot;
+                        "type": "EMOTE",
+                        "id": "301739478",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeSign"
                     }
                 ]
             },
-            &quot;value&quot;: 2000,
-            &quot;goal&quot;: 2500,
-            &quot;total&quot;: 4000,
-            &quot;remaining_seconds&quot;: 299
+            "value": 2000,
+            "goal": 2500,
+            "total": 4000,
+            "remaining_seconds": 299
         }
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -3081,395 +3083,395 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_start2() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;hype-train-start&quot;,
-    &quot;data&quot;: {
-        &quot;config&quot;: {
-            &quot;channel_id&quot;: &quot;1234&quot;,
-            &quot;is_enabled&quot;: true,
-            &quot;is_whitelisted&quot;: true,
-            &quot;kickoff&quot;: {
-                &quot;num_of_events&quot;: 4,
-                &quot;min_points&quot;: 100,
-                &quot;duration&quot;: 300000000000
+    "type": "hype-train-start",
+    "data": {
+        "config": {
+            "channel_id": "1234",
+            "is_enabled": true,
+            "is_whitelisted": true,
+            "kickoff": {
+                "num_of_events": 4,
+                "min_points": 100,
+                "duration": 300000000000
             },
-            &quot;cooldown_duration&quot;: 7200000000000,
-            &quot;level_duration&quot;: 300000000000,
-            &quot;difficulty&quot;: &quot;MEDIUM&quot;,
-            &quot;reward_end_date&quot;: null,
-            &quot;participation_conversion_rates&quot;: {
-                &quot;BITS.CHEER&quot;: 1,
-                &quot;BITS.EXTENSION&quot;: 1,
-                &quot;BITS.POLL&quot;: 1,
-                &quot;SUBS.TIER_1_GIFTED_SUB&quot;: 500,
-                &quot;SUBS.TIER_1_SUB&quot;: 500,
-                &quot;SUBS.TIER_2_GIFTED_SUB&quot;: 1000,
-                &quot;SUBS.TIER_2_SUB&quot;: 1000,
-                &quot;SUBS.TIER_3_GIFTED_SUB&quot;: 2500,
-                &quot;SUBS.TIER_3_SUB&quot;: 2500
+            "cooldown_duration": 7200000000000,
+            "level_duration": 300000000000,
+            "difficulty": "MEDIUM",
+            "reward_end_date": null,
+            "participation_conversion_rates": {
+                "BITS.CHEER": 1,
+                "BITS.EXTENSION": 1,
+                "BITS.POLL": 1,
+                "SUBS.TIER_1_GIFTED_SUB": 500,
+                "SUBS.TIER_1_SUB": 500,
+                "SUBS.TIER_2_GIFTED_SUB": 1000,
+                "SUBS.TIER_2_SUB": 1000,
+                "SUBS.TIER_3_GIFTED_SUB": 2500,
+                "SUBS.TIER_3_SUB": 2500
             },
-            &quot;notification_thresholds&quot;: {
-                &quot;BITS.CHEER&quot;: 1000,
-                &quot;BITS.EXTENSION&quot;: 1000,
-                &quot;BITS.POLL&quot;: 1000,
-                &quot;SUBS.TIER_1_GIFTED_SUB&quot;: 5,
-                &quot;SUBS.TIER_1_SUB&quot;: 5,
-                &quot;SUBS.TIER_2_GIFTED_SUB&quot;: 5,
-                &quot;SUBS.TIER_2_SUB&quot;: 5,
-                &quot;SUBS.TIER_3_GIFTED_SUB&quot;: 5,
-                &quot;SUBS.TIER_3_SUB&quot;: 5
+            "notification_thresholds": {
+                "BITS.CHEER": 1000,
+                "BITS.EXTENSION": 1000,
+                "BITS.POLL": 1000,
+                "SUBS.TIER_1_GIFTED_SUB": 5,
+                "SUBS.TIER_1_SUB": 5,
+                "SUBS.TIER_2_GIFTED_SUB": 5,
+                "SUBS.TIER_2_SUB": 5,
+                "SUBS.TIER_3_GIFTED_SUB": 5,
+                "SUBS.TIER_3_SUB": 5
             },
-            &quot;difficulty_settings&quot;: {
-                &quot;MEDIUM&quot;: [
+            "difficulty_settings": {
+                "MEDIUM": [
                     {
-                        &quot;value&quot;: 1,
-                        &quot;goal&quot;: 2000,
-                        &quot;rewards&quot;: [
+                        "value": 1,
+                        "goal": 2000,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739462&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeChimp&quot;
+                                "type": "EMOTE",
+                                "id": "301739462",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeChimp"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739463&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeGhost&quot;
+                                "type": "EMOTE",
+                                "id": "301739463",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeGhost"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739465&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeChest&quot;
+                                "type": "EMOTE",
+                                "id": "301739465",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeChest"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739466&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeFrog&quot;
+                                "type": "EMOTE",
+                                "id": "301739466",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeFrog"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739468&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeCherry&quot;
+                                "type": "EMOTE",
+                                "id": "301739468",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeCherry"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 2,
-                        &quot;goal&quot;: 4500,
-                        &quot;rewards&quot;: [
+                        "value": 2,
+                        "goal": 4500,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739479&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeSideeye&quot;
+                                "type": "EMOTE",
+                                "id": "301739479",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeSideeye"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739472&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeBrain&quot;
+                                "type": "EMOTE",
+                                "id": "301739472",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeBrain"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739475&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeZap&quot;
+                                "type": "EMOTE",
+                                "id": "301739475",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeZap"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739476&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeShip&quot;
+                                "type": "EMOTE",
+                                "id": "301739476",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeShip"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739478&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeSign&quot;
+                                "type": "EMOTE",
+                                "id": "301739478",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeSign"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 3,
-                        &quot;goal&quot;: 7600,
-                        &quot;rewards&quot;: [
+                        "value": 3,
+                        "goal": 7600,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739481&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeYikes&quot;
+                                "type": "EMOTE",
+                                "id": "301739481",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeYikes"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739482&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeRacer&quot;
+                                "type": "EMOTE",
+                                "id": "301739482",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeRacer"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739483&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeCar&quot;
+                                "type": "EMOTE",
+                                "id": "301739483",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeCar"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739484&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeFirst&quot;
+                                "type": "EMOTE",
+                                "id": "301739484",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeFirst"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739485&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeTrophy&quot;
+                                "type": "EMOTE",
+                                "id": "301739485",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeTrophy"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 4,
-                        &quot;goal&quot;: 11500,
-                        &quot;rewards&quot;: [
+                        "value": 4,
+                        "goal": 11500,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739489&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeBlock&quot;
+                                "type": "EMOTE",
+                                "id": "301739489",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeBlock"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739490&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeDaze&quot;
+                                "type": "EMOTE",
+                                "id": "301739490",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeDaze"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739491&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeBounce&quot;
+                                "type": "EMOTE",
+                                "id": "301739491",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeBounce"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739492&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeJewel&quot;
+                                "type": "EMOTE",
+                                "id": "301739492",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeJewel"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739493&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeBlob&quot;
+                                "type": "EMOTE",
+                                "id": "301739493",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeBlob"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 5,
-                        &quot;goal&quot;: 17000,
-                        &quot;rewards&quot;: [
+                        "value": 5,
+                        "goal": 17000,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739495&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeLove&quot;
+                                "type": "EMOTE",
+                                "id": "301739495",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeLove"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739496&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypePunk&quot;
+                                "type": "EMOTE",
+                                "id": "301739496",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypePunk"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739497&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeKO&quot;
+                                "type": "EMOTE",
+                                "id": "301739497",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeKO"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739499&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypePunch&quot;
+                                "type": "EMOTE",
+                                "id": "301739499",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypePunch"
                             },
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739501&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeFire&quot;
+                                "type": "EMOTE",
+                                "id": "301739501",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeFire"
                             }
                         ]
                     }
                 ]
             },
-            &quot;conductor_rewards&quot;: {
-                &quot;BITS&quot;: {
-                    &quot;CURRENT&quot;: [
+            "conductor_rewards": {
+                "BITS": {
+                    "CURRENT": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;1&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsxOzgwNTI1Nzk5&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2&quot;
+                            "type": "BADGE",
+                            "id": "1",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsxOzgwNTI1Nzk5",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2"
                         }
                     ],
-                    &quot;FORMER&quot;: [
+                    "FORMER": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;2&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsyOzgwNTI1Nzk5&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2&quot;
+                            "type": "BADGE",
+                            "id": "2",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsyOzgwNTI1Nzk5",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2"
                         }
                     ]
                 },
-                &quot;SUBS&quot;: {
-                    &quot;CURRENT&quot;: [
+                "SUBS": {
+                    "CURRENT": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;1&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsxOzgwNTI1Nzk5&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2&quot;
+                            "type": "BADGE",
+                            "id": "1",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsxOzgwNTI1Nzk5",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2"
                         }
                     ],
-                    &quot;FORMER&quot;: [
+                    "FORMER": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;2&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsyOzgwNTI1Nzk5&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2&quot;
+                            "type": "BADGE",
+                            "id": "2",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsyOzgwNTI1Nzk5",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2"
                         }
                     ]
                 }
             },
-            &quot;callout_emote_id&quot;: &quot;300640072&quot;,
-            &quot;callout_emote_token&quot;: &quot;sessPog&quot;,
-            &quot;use_theme_color&quot;: false,
-            &quot;has_conductor_badges&quot;: true,
-            &quot;primary_hex_color&quot;: &quot;5247FF&quot;,
-            &quot;use_creator_color&quot;: true
+            "callout_emote_id": "300640072",
+            "callout_emote_token": "sessPog",
+            "use_theme_color": false,
+            "has_conductor_badges": true,
+            "primary_hex_color": "5247FF",
+            "use_creator_color": true
         },
-        &quot;participations&quot;: {
-            &quot;BITS.CHEER&quot;: 419,
-            &quot;SUBS.TIER_1_SUB&quot;: 2
+        "participations": {
+            "BITS.CHEER": 419,
+            "SUBS.TIER_1_SUB": 2
         },
-        &quot;conductors&quot;: {},
-        &quot;progress&quot;: {
-            &quot;level&quot;: {
-                &quot;value&quot;: 1,
-                &quot;goal&quot;: 2000,
-                &quot;rewards&quot;: [
+        "conductors": {},
+        "progress": {
+            "level": {
+                "value": 1,
+                "goal": 2000,
+                "rewards": [
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739462&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeChimp&quot;
+                        "type": "EMOTE",
+                        "id": "301739462",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeChimp"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739463&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeGhost&quot;
+                        "type": "EMOTE",
+                        "id": "301739463",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeGhost"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739465&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeChest&quot;
+                        "type": "EMOTE",
+                        "id": "301739465",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeChest"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739466&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeFrog&quot;
+                        "type": "EMOTE",
+                        "id": "301739466",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeFrog"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739468&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeCherry&quot;
+                        "type": "EMOTE",
+                        "id": "301739468",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeCherry"
                     }
                 ]
             },
-            &quot;value&quot;: 1419,
-            &quot;goal&quot;: 2000,
-            &quot;total&quot;: 1419,
-            &quot;remaining_seconds&quot;: 299
+            "value": 1419,
+            "goal": 2000,
+            "total": 1419,
+            "remaining_seconds": 299
         }
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -3482,27 +3484,27 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_conductor_update() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;hype-train-conductor-update&quot;,
-    &quot;data&quot;: {
-        &quot;source&quot;: &quot;SUBS&quot;,
-        &quot;user&quot;: {
-            &quot;id&quot;: &quot;1234&quot;,
-            &quot;login&quot;: &quot;tmi&quot;,
-            &quot;display_name&quot;: &quot;TMI&quot;,
-            &quot;profile_image_url&quot;: &quot;https://static-cdn.jtvnw.net/jtv_user_pictures/deadbeef-profile_image-50x50.png&quot;
+    "type": "hype-train-conductor-update",
+    "data": {
+        "source": "SUBS",
+        "user": {
+            "id": "1234",
+            "login": "tmi",
+            "display_name": "TMI",
+            "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/deadbeef-profile_image-50x50.png"
         },
-        &quot;participations&quot;: {
-            &quot;BITS.CHEER&quot;: 101,
-            &quot;SUBS.TIER_1_SUB&quot;: 1
+        "participations": {
+            "BITS.CHEER": 101,
+            "SUBS.TIER_1_SUB": 1
         }
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -3515,75 +3517,75 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_progression1() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;hype-train-progression&quot;,
-    &quot;data&quot;: {
-        &quot;user_id&quot;: &quot;52309415&quot;,
-        &quot;user_login&quot;: &quot;tmi&quot;,
-        &quot;user_display_name&quot;: &quot;TMI&quot;,
-        &quot;sequence_id&quot;: 4101,
-        &quot;action&quot;: &quot;TIER_1_GIFTED_SUB&quot;,
-        &quot;source&quot;: &quot;BITS&quot;,
-        &quot;quantity&quot;: 101,
-        &quot;progress&quot;: {
-            &quot;level&quot;: {
-                &quot;value&quot;: 2,
-                &quot;goal&quot;: 4500,
-                &quot;rewards&quot;: [
+    "type": "hype-train-progression",
+    "data": {
+        "user_id": "52309415",
+        "user_login": "tmi",
+        "user_display_name": "TMI",
+        "sequence_id": 4101,
+        "action": "TIER_1_GIFTED_SUB",
+        "source": "BITS",
+        "quantity": 101,
+        "progress": {
+            "level": {
+                "value": 2,
+                "goal": 4500,
+                "rewards": [
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739479&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeSideeye&quot;
+                        "type": "EMOTE",
+                        "id": "301739479",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeSideeye"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739472&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeBrain&quot;
+                        "type": "EMOTE",
+                        "id": "301739472",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeBrain"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739475&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeZap&quot;
+                        "type": "EMOTE",
+                        "id": "301739475",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeZap"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739476&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeShip&quot;
+                        "type": "EMOTE",
+                        "id": "301739476",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeShip"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739478&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeSign&quot;
+                        "type": "EMOTE",
+                        "id": "301739478",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeSign"
                     }
                 ]
             },
-            &quot;value&quot;: 2101,
-            &quot;goal&quot;: 2500,
-            &quot;total&quot;: 4101,
-            &quot;remaining_seconds&quot;: 252
+            "value": 2101,
+            "goal": 2500,
+            "total": 4101,
+            "remaining_seconds": 252
         }
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -3596,84 +3598,84 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_progression2() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;hype-train-progression&quot;,
-    &quot;data&quot;: {
-        &quot;user_id&quot;: &quot;1234&quot;,
-        &quot;user_login&quot;: &quot;tmi&quot;,
-        &quot;user_display_name&quot;: &quot;TMI&quot;,
-        &quot;user_profile_image_url&quot;: &quot;https://static-cdn.jtvnw.net/user-default-pictures-uv/deadbeaf-profile_image-50x50.png&quot;,
-        &quot;sequence_id&quot;: 6500,
-        &quot;action&quot;: &quot;TIER_1_SUB&quot;,
-        &quot;source&quot;: &quot;SUBS&quot;,
-        &quot;quantity&quot;: 1,
-        &quot;progress&quot;: {
-            &quot;level&quot;: {
-                &quot;value&quot;: 2,
-                &quot;goal&quot;: 12500,
-                &quot;rewards&quot;: [
+    "type": "hype-train-progression",
+    "data": {
+        "user_id": "1234",
+        "user_login": "tmi",
+        "user_display_name": "TMI",
+        "user_profile_image_url": "https://static-cdn.jtvnw.net/user-default-pictures-uv/deadbeaf-profile_image-50x50.png",
+        "sequence_id": 6500,
+        "action": "TIER_1_SUB",
+        "source": "SUBS",
+        "quantity": 1,
+        "progress": {
+            "level": {
+                "value": 2,
+                "goal": 12500,
+                "rewards": [
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739479&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeSideeye&quot;
+                        "type": "EMOTE",
+                        "id": "301739479",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeSideeye"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739472&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeBrain&quot;
+                        "type": "EMOTE",
+                        "id": "301739472",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeBrain"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739475&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeZap&quot;
+                        "type": "EMOTE",
+                        "id": "301739475",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeZap"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739476&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeShip&quot;
+                        "type": "EMOTE",
+                        "id": "301739476",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeShip"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739478&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeSign&quot;
+                        "type": "EMOTE",
+                        "id": "301739478",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeSign"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739471&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeBug&quot;
+                        "type": "EMOTE",
+                        "id": "301739471",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeBug"
                     }
                 ]
             },
-            &quot;value&quot;: 1500,
-            &quot;goal&quot;: 7500,
-            &quot;total&quot;: 6500,
-            &quot;remaining_seconds&quot;: 237
+            "value": 1500,
+            "goal": 7500,
+            "total": 6500,
+            "remaining_seconds": 237
         }
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -3686,68 +3688,68 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_level_up() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;hype-train-level-up&quot;,
-    &quot;data&quot;: {
-        &quot;time_to_expire&quot;: 1603128256000,
-        &quot;progress&quot;: {
-            &quot;level&quot;: {
-                &quot;value&quot;: 3,
-                &quot;goal&quot;: 7600,
-                &quot;rewards&quot;: [
+    "type": "hype-train-level-up",
+    "data": {
+        "time_to_expire": 1603128256000,
+        "progress": {
+            "level": {
+                "value": 3,
+                "goal": 7600,
+                "rewards": [
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739481&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeYikes&quot;
+                        "type": "EMOTE",
+                        "id": "301739481",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeYikes"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739482&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeRacer&quot;
+                        "type": "EMOTE",
+                        "id": "301739482",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeRacer"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739483&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeCar&quot;
+                        "type": "EMOTE",
+                        "id": "301739483",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeCar"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739484&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeFirst&quot;
+                        "type": "EMOTE",
+                        "id": "301739484",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeFirst"
                     },
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739485&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeTrophy&quot;
+                        "type": "EMOTE",
+                        "id": "301739485",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeTrophy"
                     }
                 ]
             },
-            &quot;value&quot;: 101,
-            &quot;goal&quot;: 3100,
-            &quot;total&quot;: 4601,
-            &quot;remaining_seconds&quot;: 299
+            "value": 101,
+            "goal": 3100,
+            "total": 4601,
+            "remaining_seconds": 299
         }
     }
 }
-&quot;##</span>;
+"##</span>;
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -3760,18 +3762,18 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_end_completed() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;hype-train-end&quot;,
-    &quot;data&quot;: {
-        &quot;ended_at&quot;: 1603128366000,
-        &quot;ending_reason&quot;: &quot;COMPLETED&quot;
+    "type": "hype-train-end",
+    "data": {
+        "ended_at": 1603128366000,
+        "ending_reason": "COMPLETED"
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -3784,18 +3786,18 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_end_expired() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;hype-train-end&quot;,
-    &quot;data&quot;: {
-        &quot;ended_at&quot;: 1603314902000,
-        &quot;ending_reason&quot;: &quot;EXPIRED&quot;
+    "type": "hype-train-end",
+    "data": {
+        "ended_at": 1603314902000,
+        "ending_reason": "EXPIRED"
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -3808,26 +3810,26 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_rewards() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;hype-train-rewards&quot;,
-    &quot;data&quot;: {
-        &quot;channel_id&quot;: &quot;27620241&quot;,
-        &quot;completed_level&quot;: 4,
-        &quot;rewards&quot;: [
+    "type": "hype-train-rewards",
+    "data": {
+        "channel_id": "27620241",
+        "completed_level": 4,
+        "rewards": [
             {
-                &quot;type&quot;: &quot;EMOTE&quot;,
-                &quot;id&quot;: &quot;&quot;,
-                &quot;group_id&quot;: &quot;&quot;,
-                &quot;reward_level&quot;: 4
+                "type": "EMOTE",
+                "id": "",
+                "group_id": "",
+                "reward_level": 4
             }
         ]
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.rewards.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.rewards.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -3840,209 +3842,209 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_redeemed_settings() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;hype-train-start&quot;,
-    &quot;data&quot;: {
-        &quot;channel_id&quot;: &quot;233300375&quot;,
-        &quot;id&quot;: &quot;39042897-10cd-4944-a056-e6c7fc6f54d2&quot;,
-        &quot;started_at&quot;: 1605378998000,
-        &quot;expires_at&quot;: 1605379298000,
-        &quot;updated_at&quot;: 1605378998000,
-        &quot;ended_at&quot;: null,
-        &quot;ending_reason&quot;: null,
-        &quot;config&quot;: {
-            &quot;channel_id&quot;: &quot;233300375&quot;,
-            &quot;is_enabled&quot;: true,
-            &quot;is_whitelisted&quot;: true,
-            &quot;kickoff&quot;: {
-                &quot;num_of_events&quot;: 6,
-                &quot;min_points&quot;: 100,
-                &quot;duration&quot;: 300000000000
+    "type": "hype-train-start",
+    "data": {
+        "channel_id": "233300375",
+        "id": "39042897-10cd-4944-a056-e6c7fc6f54d2",
+        "started_at": 1605378998000,
+        "expires_at": 1605379298000,
+        "updated_at": 1605378998000,
+        "ended_at": null,
+        "ending_reason": null,
+        "config": {
+            "channel_id": "233300375",
+            "is_enabled": true,
+            "is_whitelisted": true,
+            "kickoff": {
+                "num_of_events": 6,
+                "min_points": 100,
+                "duration": 300000000000
             },
-            &quot;cooldown_duration&quot;: 7200000000000,
-            &quot;level_duration&quot;: 300000000000,
-            &quot;difficulty&quot;: &quot;SUPER HARD&quot;,
-            &quot;reward_end_date&quot;: null,
-            &quot;participation_conversion_rates&quot;: {
-                &quot;BITS.CHEER&quot;: 1,
-                &quot;BITS.EXTENSION&quot;: 1,
-                &quot;BITS.POLL&quot;: 1,
-                &quot;SUBS.TIER_1_GIFTED_SUB&quot;: 500,
-                &quot;SUBS.TIER_1_SUB&quot;: 500,
-                &quot;SUBS.TIER_2_GIFTED_SUB&quot;: 1000,
-                &quot;SUBS.TIER_2_SUB&quot;: 1000,
-                &quot;SUBS.TIER_3_GIFTED_SUB&quot;: 2500,
-                &quot;SUBS.TIER_3_SUB&quot;: 2500
+            "cooldown_duration": 7200000000000,
+            "level_duration": 300000000000,
+            "difficulty": "SUPER HARD",
+            "reward_end_date": null,
+            "participation_conversion_rates": {
+                "BITS.CHEER": 1,
+                "BITS.EXTENSION": 1,
+                "BITS.POLL": 1,
+                "SUBS.TIER_1_GIFTED_SUB": 500,
+                "SUBS.TIER_1_SUB": 500,
+                "SUBS.TIER_2_GIFTED_SUB": 1000,
+                "SUBS.TIER_2_SUB": 1000,
+                "SUBS.TIER_3_GIFTED_SUB": 2500,
+                "SUBS.TIER_3_SUB": 2500
             },
-            &quot;notification_thresholds&quot;: {
-                &quot;BITS.CHEER&quot;: 1000,
-                &quot;BITS.EXTENSION&quot;: 1000,
-                &quot;BITS.POLL&quot;: 1000,
-                &quot;SUBS.TIER_1_GIFTED_SUB&quot;: 5,
-                &quot;SUBS.TIER_1_SUB&quot;: 5,
-                &quot;SUBS.TIER_2_GIFTED_SUB&quot;: 5,
-                &quot;SUBS.TIER_2_SUB&quot;: 5,
-                &quot;SUBS.TIER_3_GIFTED_SUB&quot;: 5,
-                &quot;SUBS.TIER_3_SUB&quot;: 5
+            "notification_thresholds": {
+                "BITS.CHEER": 1000,
+                "BITS.EXTENSION": 1000,
+                "BITS.POLL": 1000,
+                "SUBS.TIER_1_GIFTED_SUB": 5,
+                "SUBS.TIER_1_SUB": 5,
+                "SUBS.TIER_2_GIFTED_SUB": 5,
+                "SUBS.TIER_2_SUB": 5,
+                "SUBS.TIER_3_GIFTED_SUB": 5,
+                "SUBS.TIER_3_SUB": 5
             },
-            &quot;difficulty_settings&quot;: {
-                &quot;SUPER HARD&quot;: [
+            "difficulty_settings": {
+                "SUPER HARD": [
                     {
-                        &quot;value&quot;: 1,
-                        &quot;goal&quot;: 5000,
-                        &quot;rewards&quot;: [
+                        "value": 1,
+                        "goal": 5000,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739462&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeChimp&quot;
+                                "type": "EMOTE",
+                                "id": "301739462",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeChimp"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 2,
-                        &quot;goal&quot;: 12500,
-                        &quot;rewards&quot;: [
+                        "value": 2,
+                        "goal": 12500,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739479&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeSideeye&quot;
+                                "type": "EMOTE",
+                                "id": "301739479",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeSideeye"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 3,
-                        &quot;goal&quot;: 23100,
-                        &quot;rewards&quot;: [
+                        "value": 3,
+                        "goal": 23100,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739481&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeYikes&quot;
+                                "type": "EMOTE",
+                                "id": "301739481",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeYikes"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 4,
-                        &quot;goal&quot;: 37700,
-                        &quot;rewards&quot;: [
+                        "value": 4,
+                        "goal": 37700,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739489&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeBlock&quot;
+                                "type": "EMOTE",
+                                "id": "301739489",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeBlock"
                             }
                         ]
                     },
                     {
-                        &quot;value&quot;: 5,
-                        &quot;goal&quot;: 60000,
-                        &quot;rewards&quot;: [
+                        "value": 5,
+                        "goal": 60000,
+                        "rewards": [
                             {
-                                &quot;type&quot;: &quot;EMOTE&quot;,
-                                &quot;id&quot;: &quot;301739495&quot;,
-                                &quot;group_id&quot;: &quot;&quot;,
-                                &quot;reward_level&quot;: 0,
-                                &quot;set_id&quot;: &quot;301040478&quot;,
-                                &quot;token&quot;: &quot;HypeLove&quot;
+                                "type": "EMOTE",
+                                "id": "301739495",
+                                "group_id": "",
+                                "reward_level": 0,
+                                "set_id": "301040478",
+                                "token": "HypeLove"
                             }
                         ]
                     }
                 ]
             },
-            &quot;conductor_rewards&quot;: {
-                &quot;BITS&quot;: {
-                    &quot;CURRENT&quot;: [
+            "conductor_rewards": {
+                "BITS": {
+                    "CURRENT": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;1&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsxOzIzMzMwMDM3NQ==&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2&quot;
+                            "type": "BADGE",
+                            "id": "1",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsxOzIzMzMwMDM3NQ==",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2"
                         }
                     ],
-                    &quot;FORMER&quot;: [
+                    "FORMER": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;2&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsyOzIzMzMwMDM3NQ==&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2&quot;
+                            "type": "BADGE",
+                            "id": "2",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsyOzIzMzMwMDM3NQ==",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2"
                         }
                     ]
                 },
-                &quot;SUBS&quot;: {
-                    &quot;CURRENT&quot;: [
+                "SUBS": {
+                    "CURRENT": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;1&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsxOzIzMzMwMDM3NQ==&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2&quot;
+                            "type": "BADGE",
+                            "id": "1",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsxOzIzMzMwMDM3NQ==",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/fae4086c-3190-44d4-83c8-8ef0cbe1a515/2"
                         }
                     ],
-                    &quot;FORMER&quot;: [
+                    "FORMER": [
                         {
-                            &quot;type&quot;: &quot;BADGE&quot;,
-                            &quot;id&quot;: &quot;2&quot;,
-                            &quot;group_id&quot;: &quot;hype-train&quot;,
-                            &quot;reward_level&quot;: 0,
-                            &quot;badge_id&quot;: &quot;aHlwZS10cmFpbjsyOzIzMzMwMDM3NQ==&quot;,
-                            &quot;image_url&quot;: &quot;https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2&quot;
+                            "type": "BADGE",
+                            "id": "2",
+                            "group_id": "hype-train",
+                            "reward_level": 0,
+                            "badge_id": "aHlwZS10cmFpbjsyOzIzMzMwMDM3NQ==",
+                            "image_url": "https://static-cdn.jtvnw.net/badges/v1/9c8d038a-3a29-45ea-96d4-5031fb1a7a81/2"
                         }
                     ]
                 }
             },
-            &quot;callout_emote_id&quot;: &quot;88&quot;,
-            &quot;callout_emote_token&quot;: &quot;PogChamp&quot;,
-            &quot;use_creator_color&quot;: true,
-            &quot;primary_hex_color&quot;: &quot;&quot;,
-            &quot;use_personalized_settings&quot;: false,
-            &quot;has_conductor_badges&quot;: true
+            "callout_emote_id": "88",
+            "callout_emote_token": "PogChamp",
+            "use_creator_color": true,
+            "primary_hex_color": "",
+            "use_personalized_settings": false,
+            "has_conductor_badges": true
         },
-        &quot;participations&quot;: {
-            &quot;SUBS.TIER_1_SUB&quot;: 6
+        "participations": {
+            "SUBS.TIER_1_SUB": 6
         },
-        &quot;conductors&quot;: {},
-        &quot;progress&quot;: {
-            &quot;level&quot;: {
-                &quot;value&quot;: 1,
-                &quot;goal&quot;: 5000,
-                &quot;rewards&quot;: [
+        "conductors": {},
+        "progress": {
+            "level": {
+                "value": 1,
+                "goal": 5000,
+                "rewards": [
                     {
-                        &quot;type&quot;: &quot;EMOTE&quot;,
-                        &quot;id&quot;: &quot;301739462&quot;,
-                        &quot;group_id&quot;: &quot;&quot;,
-                        &quot;reward_level&quot;: 0,
-                        &quot;set_id&quot;: &quot;301040478&quot;,
-                        &quot;token&quot;: &quot;HypeChimp&quot;
+                        "type": "EMOTE",
+                        "id": "301739462",
+                        "group_id": "",
+                        "reward_level": 0,
+                        "set_id": "301040478",
+                        "token": "HypeChimp"
                     }
                 ]
             },
-            &quot;value&quot;: 3000,
-            &quot;goal&quot;: 5000,
-            &quot;total&quot;: 3000,
-            &quot;remaining_seconds&quot;: 299
+            "value": 3000,
+            "goal": 5000,
+            "total": 3000,
+            "remaining_seconds": 299
         }
     }
 }
-&quot;##</span>;
+"##</span>;
 
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;, &quot;data&quot;: {{ &quot;topic&quot;: &quot;hype-train-events-v1.rewards.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE", "data": {{ "topic": "hype-train-events-v1.rewards.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -4055,7 +4057,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_cooldown() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;hype-train-events-v1.233300375&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;hype-train-cooldown-expiration\&quot;}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>source = <span class="string">r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.233300375","message":"{\"type\":\"hype-train-cooldown-expiration\"}"}}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -4067,7 +4069,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_approaching() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;hype-train-events-v1.1337&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;hype-train-approaching\&quot;,\&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;1337\&quot;,\&quot;goal\&quot;:3,\&quot;events_remaining_durations\&quot;:{\&quot;1\&quot;:47},\&quot;level_one_rewards\&quot;:[{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_6d27dcab0df7442b88260a25d60bd807\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypeCozy1\&quot;},{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_e7a6e7e24a844e709c4d93c0845422e1\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypeLUL\&quot;},{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_e2a11d74a4824cbf9a8b28079e5e67dd\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypeCool\&quot;},{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_036fd741be4141198999b2ca4300668e\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypeLove1\&quot;},{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_3114c3d12dc44f53810140f632128b54\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypeSleep\&quot;},{\&quot;type\&quot;:\&quot;EMOTE\&quot;,\&quot;id\&quot;:\&quot;emotesv2_7d457ecda087479f98501f80e23b5a04\&quot;,\&quot;group_id\&quot;:\&quot;\&quot;,\&quot;reward_level\&quot;:0,\&quot;set_id\&quot;:\&quot;1a8f0108-5aee-4125-8067-d39e983e934b\&quot;,\&quot;token\&quot;:\&quot;HypePat\&quot;}],\&quot;creator_color\&quot;:\&quot;5247FF\&quot;,\&quot;participants\&quot;:[\&quot;123\&quot;,\&quot;1234\&quot;],\&quot;approaching_hype_train_id\&quot;:\&quot;1d76561e-a477-4418-a43c-6e8f0441f8c1\&quot;}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>source = <span class="string">r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.1337","message":"{\"type\":\"hype-train-approaching\",\"data\":{\"channel_id\":\"1337\",\"goal\":3,\"events_remaining_durations\":{\"1\":47},\"level_one_rewards\":[{\"type\":\"EMOTE\",\"id\":\"emotesv2_6d27dcab0df7442b88260a25d60bd807\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypeCozy1\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_e7a6e7e24a844e709c4d93c0845422e1\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypeLUL\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_e2a11d74a4824cbf9a8b28079e5e67dd\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypeCool\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_036fd741be4141198999b2ca4300668e\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypeLove1\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_3114c3d12dc44f53810140f632128b54\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypeSleep\"},{\"type\":\"EMOTE\",\"id\":\"emotesv2_7d457ecda087479f98501f80e23b5a04\",\"group_id\":\"\",\"reward_level\":0,\"set_id\":\"1a8f0108-5aee-4125-8067-d39e983e934b\",\"token\":\"HypePat\"}],\"creator_color\":\"5247FF\",\"participants\":[\"123\",\"1234\"],\"approaching_hype_train_id\":\"1d76561e-a477-4418-a43c-6e8f0441f8c1\"}}"}}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -4079,7 +4081,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hype_train_conductor() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;hype-train-events-v1.159498717&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;hype-train-conductor-update\&quot;,\&quot;data\&quot;:{\&quot;source\&quot;:\&quot;SUBS\&quot;,\&quot;user\&quot;:{\&quot;id\&quot;:\&quot;478358701\&quot;,\&quot;login\&quot;:\&quot;darkscarlatti\&quot;,\&quot;display_name\&quot;:\&quot;DarkScarlatti\&quot;,\&quot;profile_image_url\&quot;:\&quot;https://static-cdn.jtvnw.net/jtv_user_pictures/b332ddad-b1a6-42b2-ab03-ef157ab89f1c-profile_image-50x50.png\&quot;},\&quot;participations\&quot;:{\&quot;SUBS.TIER_3_SUB\&quot;:1}}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>source = <span class="string">r#"{"type":"MESSAGE","data":{"topic":"hype-train-events-v1.159498717","message":"{\"type\":\"hype-train-conductor-update\",\"data\":{\"source\":\"SUBS\",\"user\":{\"id\":\"478358701\",\"login\":\"darkscarlatti\",\"display_name\":\"DarkScarlatti\",\"profile_image_url\":\"https://static-cdn.jtvnw.net/jtv_user_pictures/b332ddad-b1a6-42b2-ab03-ef157ab89f1c-profile_image-50x50.png\"},\"participations\":{\"SUBS.TIER_3_SUB\":1}}}"}}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -4092,12 +4094,12 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
-        <span class="kw">let </span>s = <span class="string">&quot;hype-train-events-v1.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"hype-train-events-v1.1234"</span>;
         <span class="macro">assert_eq!</span>(
             HypeTrainEventsV1 { channel_id: <span class="number">1234 </span>},
             s.to_string().try_into().unwrap()
         );
-        <span class="kw">let </span>s = <span class="string">&quot;hype-train-events-v1.rewards.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"hype-train-events-v1.rewards.1234"</span>;
         <span class="macro">assert_eq!</span>(
             HypeTrainEventsV1Rewards { channel_id: <span class="number">1234 </span>},
             s.to_string().try_into().unwrap()
@@ -4106,10 +4108,10 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
-        <span class="kw">let </span>s = <span class="string">&quot;hype-train-events-v1.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"hype-train-events-v1.1234"</span>;
         <span class="kw">let </span>right: String = HypeTrainEventsV1 { channel_id: <span class="number">1234 </span>}.into();
         <span class="macro">assert_eq!</span>(s.to_string(), right);
-        <span class="kw">let </span>s = <span class="string">&quot;hype-train-events-v1.rewards.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"hype-train-events-v1.rewards.1234"</span>;
         <span class="kw">let </span>right: String = HypeTrainEventsV1Rewards { channel_id: <span class="number">1234 </span>}.into();
         <span class="macro">assert_eq!</span>(s.to_string(), right);
     }

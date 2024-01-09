@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client.rs`."><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client.rs`."><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -256,12 +258,12 @@
 <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>client_ext;
-<span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
 </span><span class="kw">mod </span>custom;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
-</span><span class="kw">impl</span>&lt;C: <span class="kw">crate</span>::HttpClient + <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">&#39;static</span>&gt;&gt; Default
-    <span class="kw">for </span>HelixClient&lt;<span class="lifetime">&#39;static</span>, C&gt;
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
+</span><span class="kw">impl</span>&lt;C: <span class="kw">crate</span>::HttpClient + <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">'static</span>&gt;&gt; Default
+    <span class="kw">for </span>HelixClient&lt;<span class="lifetime">'static</span>, C&gt;
 {
     <span class="doccomment">/// Creates a new [`HelixClient`] with a default [`HttpClient`][crate::HttpClient].
     ///
@@ -286,12 +288,12 @@
 /// [`req_patch`](HelixClient::req_patch) for [`PATCH`](RequestPatch) and
 /// [`req_delete`](HelixClient::req_delete) for [`DELETE`](RequestDelete)
 ///
-/// Most [clients][crate::HttpClient] will be able to use the `&#39;static` lifetime, which typically means it can be elided.
+/// Most [clients][crate::HttpClient] will be able to use the `'static` lifetime, which typically means it can be elided.
 ///
 /// ```rust,no_run
 /// # use twitch_api::{HelixClient}; pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
 /// pub struct MyStruct {
-///     twitch: HelixClient&lt;&#39;static, reqwest::Client&gt;,
+///     twitch: HelixClient&lt;'static, reqwest::Client&gt;,
 ///     token: twitch_oauth2::AppAccessToken,
 /// }
 /// // etc
@@ -305,27 +307,27 @@
 ///
 /// ```rust,no_run
 /// # #[tokio::main]
-/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
+/// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
 /// # pub mod reqwest {pub type Client = twitch_api::client::DummyHttpClient;}
 /// use twitch_api::helix::{users::User, HelixClient};
-/// let client: HelixClient&lt;&#39;static, reqwest::Client&gt; = HelixClient::default();
-/// # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+/// let client: HelixClient&lt;'static, reqwest::Client&gt; = HelixClient::default();
+/// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
 /// let user: Option&lt;User&gt; = client
-///     .get_user_from_login(&quot;justintv&quot;, &amp;token)
+///     .get_user_from_login("justintv", &amp;token)
 ///     .await
 ///     .unwrap();
 /// # Ok(()) }
 /// ```
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;helix&quot;</span>)] </span><span class="comment">// this is needed due to a bug?
-</span><span class="kw">pub struct </span>HelixClient&lt;<span class="lifetime">&#39;a</span>, C: <span class="lifetime">&#39;a</span>&gt; {
+</span><span class="attr">#[cfg(feature = <span class="string">"helix"</span>)] </span><span class="comment">// this is needed due to a bug?
+</span><span class="kw">pub struct </span>HelixClient&lt;<span class="lifetime">'a</span>, C: <span class="lifetime">'a</span>&gt; {
     <span class="kw">pub</span>(<span class="kw">crate</span>) client: C,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) _pd: std::marker::PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>()&gt;, <span class="comment">// TODO: Implement rate limiter...
+    <span class="kw">pub</span>(<span class="kw">crate</span>) _pd: std::marker::PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>()&gt;, <span class="comment">// TODO: Implement rate limiter...
 </span>}
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;helix&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, C&gt; Clone <span class="kw">for </span>HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt;
-<span class="kw">where </span>C: <span class="kw">crate</span>::HttpClient + Clone + <span class="lifetime">&#39;a
+<span class="attr">#[cfg(feature = <span class="string">"helix"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, C&gt; Clone <span class="kw">for </span>HelixClient&lt;<span class="lifetime">'a</span>, C&gt;
+<span class="kw">where </span>C: <span class="kw">crate</span>::HttpClient + Clone + <span class="lifetime">'a
 </span>{
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
@@ -335,9 +337,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, C: <span class="kw">crate</span>::HttpClient + <span class="lifetime">&#39;a</span>&gt; HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, C: <span class="kw">crate</span>::HttpClient + <span class="lifetime">'a</span>&gt; HelixClient&lt;<span class="lifetime">'a</span>, C&gt; {
     <span class="doccomment">/// Create a new client with an existing client
-    </span><span class="kw">pub fn </span>with_client(client: C) -&gt; HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt; {
+    </span><span class="kw">pub fn </span>with_client(client: C) -&gt; HelixClient&lt;<span class="lifetime">'a</span>, C&gt; {
         HelixClient {
             client,
             _pd: std::marker::PhantomData,
@@ -345,8 +347,8 @@
     }
 
     <span class="doccomment">/// Create a new [`HelixClient`] with a default [`HttpClient`][crate::HttpClient]
-    </span><span class="kw">pub fn </span>new() -&gt; HelixClient&lt;<span class="lifetime">&#39;a</span>, C&gt;
-    <span class="kw">where </span>C: <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">&#39;a</span>&gt; {
+    </span><span class="kw">pub fn </span>new() -&gt; HelixClient&lt;<span class="lifetime">'a</span>, C&gt;
+    <span class="kw">where </span>C: <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">'a</span>&gt; {
         <span class="kw">let </span>client = C::default_client();
         HelixClient::with_client(client)
     }
@@ -367,9 +369,9 @@
     /// # async fn main() {
     /// #   use twitch_api::helix::{HelixClient, channels};
     /// #   let token = Box::new(twitch_oauth2::UserToken::from_existing_unchecked(
-    /// #       twitch_oauth2::AccessToken::new(&quot;totallyvalidtoken&quot;.to_string()), None,
-    /// #       twitch_oauth2::ClientId::new(&quot;validclientid&quot;.to_string()), None, &quot;justintv&quot;.into(), &quot;1337&quot;.into(), None, None));
-    /// let ids: &amp;[&amp;twitch_types::UserIdRef] = &amp;[&quot;123456&quot;.into()];
+    /// #       twitch_oauth2::AccessToken::new("totallyvalidtoken".to_string()), None,
+    /// #       twitch_oauth2::ClientId::new("validclientid".to_string()), None, "justintv".into(), "1337".into(), None, None));
+    /// let ids: &amp;[&amp;twitch_types::UserIdRef] = &amp;["123456".into()];
     /// let req = channels::GetChannelInformationRequest::broadcaster_ids(ids);
     /// let client = HelixClient::new();
     /// # let _: &amp;HelixClient&lt;twitch_api::DummyHttpClient&gt; = &amp;client;
@@ -379,7 +381,7 @@
     /// # // fn main() {run()}
     /// ```
     </span><span class="kw">pub async fn </span>req_get&lt;R, D, T&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
         request: R,
         token: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
@@ -403,7 +405,7 @@
 
     <span class="doccomment">/// Request on a valid [`RequestPost`] endpoint
     </span><span class="kw">pub async fn </span>req_post&lt;R, B, D, T&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
         request: R,
         body: B,
         token: <span class="kw-2">&amp;</span>T,
@@ -429,7 +431,7 @@
 
     <span class="doccomment">/// Request on a valid [`RequestPatch`] endpoint
     </span><span class="kw">pub async fn </span>req_patch&lt;R, B, D, T&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
         request: R,
         body: B,
         token: <span class="kw-2">&amp;</span>T,
@@ -455,7 +457,7 @@
 
     <span class="doccomment">/// Request on a valid [`RequestDelete`] endpoint
     </span><span class="kw">pub async fn </span>req_delete&lt;R, D, T&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
         request: R,
         token: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;R, D&gt;, ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
@@ -478,7 +480,7 @@
 
     <span class="doccomment">/// Request on a valid [`RequestPut`] endpoint
     </span><span class="kw">pub async fn </span>req_put&lt;R, B, D, T&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
         request: R,
         body: B,
         token: <span class="kw-2">&amp;</span>T,

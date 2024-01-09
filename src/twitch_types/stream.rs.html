@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/stream.rs`."><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_types/src/stream.rs`."><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../twitch_types/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -361,7 +363,7 @@
 <a href="#361" id="361">361</a>
 <a href="#362" id="362">362</a>
 <a href="#363" id="363">363</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
 </span><span class="kw">use </span>serde::Serialize;
 
 <span class="macro">manual_braid! </span>{
@@ -444,10 +446,10 @@
 <span class="doccomment">/// A game or category as defined by Twitch
 </span><span class="attr">#[derive(PartialEq, Eq, Debug, Clone)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>TwitchCategory {
     <span class="doccomment">/// Template URL for the game’s box art.
@@ -460,9 +462,9 @@
     ///
     /// An empty value may indicate the endpoint does not return an id or that the category/game is not available on IGDB
     </span><span class="attr">#[cfg_attr(
-        feature = <span class="string">&quot;serde&quot;</span>,
+        feature = <span class="string">"serde"</span>,
         serde(
-            deserialize_with = <span class="string">&quot;crate::deserialize_none_from_empty_string&quot;</span>,
+            deserialize_with = <span class="string">"crate::deserialize_none_from_empty_string"</span>,
             default
         )
     )]
@@ -471,17 +473,17 @@
 
 <span class="doccomment">/// Subscription tiers
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq)]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, derive(serde_derive::Deserialize))]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(field_identifier))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, derive(serde_derive::Deserialize))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(field_identifier))]
 </span><span class="kw">pub enum </span>SubscriptionTier {
     <span class="doccomment">/// Tier 1. $4.99
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(rename = <span class="string">&quot;1000&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename = <span class="string">"1000"</span>))]
     </span>Tier1,
     <span class="doccomment">/// Tier 1. $9.99
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(rename = <span class="string">&quot;2000&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename = <span class="string">"2000"</span>))]
     </span>Tier2,
     <span class="doccomment">/// Tier 1. $24.99
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(rename = <span class="string">&quot;3000&quot;</span>))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename = <span class="string">"3000"</span>))]
     </span>Tier3,
     <span class="doccomment">/// Prime subscription
     </span>Prime,
@@ -489,15 +491,15 @@
     </span>Other(String),
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
 </span><span class="kw">impl </span>Serialize <span class="kw">for </span>SubscriptionTier {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where </span>S: serde::Serializer {
         serializer.serialize_str(<span class="kw">match </span><span class="self">self </span>{
-            SubscriptionTier::Tier1 =&gt; <span class="string">&quot;1000&quot;</span>,
-            SubscriptionTier::Tier2 =&gt; <span class="string">&quot;2000&quot;</span>,
-            SubscriptionTier::Tier3 =&gt; <span class="string">&quot;3000&quot;</span>,
-            SubscriptionTier::Prime =&gt; <span class="string">&quot;Prime&quot;</span>,
+            SubscriptionTier::Tier1 =&gt; <span class="string">"1000"</span>,
+            SubscriptionTier::Tier2 =&gt; <span class="string">"2000"</span>,
+            SubscriptionTier::Tier3 =&gt; <span class="string">"3000"</span>,
+            SubscriptionTier::Prime =&gt; <span class="string">"Prime"</span>,
             SubscriptionTier::Other(o) =&gt; o,
         })
     }
@@ -506,10 +508,10 @@
 <span class="doccomment">/// Period during which the video was created
 </span><span class="attr">#[derive(PartialEq, Eq, Clone, Debug)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(rename_all = <span class="string">&quot;lowercase&quot;</span>))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename_all = <span class="string">"lowercase"</span>))]
 </span><span class="kw">pub enum </span>VideoPeriod {
     <span class="doccomment">/// Filter by all. Effectively a no-op
     </span>All,
@@ -524,10 +526,10 @@
 <span class="doccomment">/// Type of video
 </span><span class="attr">#[derive(PartialEq, Eq, Clone, Debug)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(rename_all = <span class="string">&quot;snake_case&quot;</span>))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename_all = <span class="string">"snake_case"</span>))]
 </span><span class="kw">pub enum </span>VideoType {
     <span class="doccomment">/// A live video
     </span>Live,
@@ -555,10 +557,10 @@
 <span class="doccomment">/// Type of video
 </span><span class="attr">#[derive(PartialEq, Eq, Clone, Debug)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde&quot;</span>,
+    feature = <span class="string">"serde"</span>,
     derive(serde_derive::Serialize, serde_derive::Deserialize)
 )]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(rename_all = <span class="string">&quot;lowercase&quot;</span>))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename_all = <span class="string">"lowercase"</span>))]
 </span><span class="kw">pub enum </span>VideoPrivacy {
     <span class="doccomment">/// Video is public
     </span>Public,
@@ -584,7 +586,7 @@
     <span class="doccomment">/// 180s
     </span>Length180 = <span class="number">180</span>,
 }
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
 </span><span class="kw">impl </span>serde::Serialize <span class="kw">for </span>CommercialLength {
     <span class="attr">#[allow(clippy::use_self)]
     </span><span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; core::result::Result&lt;S::Ok, S::Error&gt;
@@ -595,11 +597,11 @@
 }
 
 <span class="doccomment">/// TODO: macroify?
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>CommercialLength {
+</span><span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>CommercialLength {
     <span class="attr">#[allow(clippy::use_self)]
     </span><span class="kw">fn </span>deserialize&lt;D&gt;(deserializer: D) -&gt; core::result::Result&lt;<span class="self">Self</span>, D::Error&gt;
-    <span class="kw">where </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; {
+    <span class="kw">where </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt; {
         <span class="attr">#[allow(non_camel_case_types)]
         </span><span class="kw">struct </span>discriminant;
 
@@ -620,7 +622,7 @@
             discriminant::Length150 =&gt; core::result::Result::Ok(CommercialLength::Length150),
             discriminant::Length180 =&gt; core::result::Result::Ok(CommercialLength::Length180),
             other =&gt; core::result::Result::Err(serde::de::Error::custom(<span class="macro">format_args!</span>(
-                <span class="string">&quot;invalid value: {}, expected one of: {}, {}, {}, {}, {}, {}&quot;</span>,
+                <span class="string">"invalid value: {}, expected one of: {}, {}, {}, {}, {}, {}"</span>,
                 other,
                 discriminant::Length30,
                 discriminant::Length60,
@@ -634,8 +636,8 @@
 }
 
 <span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>CommercialLength {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;{}s&quot;</span>, <span class="kw-2">*</span><span class="self">self </span><span class="kw">as </span>u64)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"{}s"</span>, <span class="kw-2">*</span><span class="self">self </span><span class="kw">as </span>u64)
     }
 }
 
@@ -669,7 +671,7 @@
         <span class="attr">#[allow(unused_variables)]
         </span><span class="kw">match </span><span class="self">self </span>{
             CommercialLengthParseError::InvalidLength(len) =&gt; {
-                <span class="macro">write!</span>(formatter, <span class="string">&quot;invalid length of {len}&quot;</span>)
+                <span class="macro">write!</span>(formatter, <span class="string">"invalid length of {len}"</span>)
             }
         }
     }
@@ -678,8 +680,8 @@
 <span class="doccomment">/// IDs for [content classification labels](https://help.twitch.tv/s/article/content-classification-labels) also known as CCLs
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq)]
 #[non_exhaustive]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, derive(serde_derive::Deserialize))]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(field_identifier))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, derive(serde_derive::Deserialize))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(field_identifier))]
 </span><span class="kw">pub enum </span>ContentClassificationId {
     <span class="doccomment">/// Drugs, Intoxication, or Excessive Tobacco Use
     ///
@@ -709,17 +711,17 @@
     </span>Other(String),
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
 </span><span class="kw">impl </span>Serialize <span class="kw">for </span>ContentClassificationId {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where </span>S: serde::Serializer {
         serializer.serialize_str(<span class="kw">match </span><span class="self">self </span>{
-            ContentClassificationId::DrugsIntoxication =&gt; <span class="string">&quot;DrugsIntoxication&quot;</span>,
-            ContentClassificationId::SexualThemes =&gt; <span class="string">&quot;SexualThemes&quot;</span>,
-            ContentClassificationId::ViolentGraphic =&gt; <span class="string">&quot;ViolentGraphic&quot;</span>,
-            ContentClassificationId::Gambling =&gt; <span class="string">&quot;Gambling&quot;</span>,
-            ContentClassificationId::ProfanityVulgarity =&gt; <span class="string">&quot;ProfanityVulgarity&quot;</span>,
-            ContentClassificationId::MatureGame =&gt; <span class="string">&quot;MatureGame&quot;</span>,
+            ContentClassificationId::DrugsIntoxication =&gt; <span class="string">"DrugsIntoxication"</span>,
+            ContentClassificationId::SexualThemes =&gt; <span class="string">"SexualThemes"</span>,
+            ContentClassificationId::ViolentGraphic =&gt; <span class="string">"ViolentGraphic"</span>,
+            ContentClassificationId::Gambling =&gt; <span class="string">"Gambling"</span>,
+            ContentClassificationId::ProfanityVulgarity =&gt; <span class="string">"ProfanityVulgarity"</span>,
+            ContentClassificationId::MatureGame =&gt; <span class="string">"MatureGame"</span>,
             ContentClassificationId::Other(o) =&gt; o,
         })
     }

@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/videos/get_videos.rs`."><title>get_videos.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/videos/get_videos.rs`."><title>get_videos.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -248,7 +250,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::videos::get_videos;
-//! let request = get_videos::GetVideosRequest::user_id(&quot;1234&quot;);
+//! let request = get_videos::GetVideosRequest::user_id("1234");
 //! ```
 //!
 //! ## Response: [Video]
@@ -259,11 +261,11 @@
 //! use twitch_api::helix::{self, videos::get_videos};
 //! # use twitch_api::client;
 //! # #[tokio::main]
-//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
-//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
-//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+//! # let client: helix::HelixClient&lt;'static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+//! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
-//! let request = get_videos::GetVideosRequest::user_id(&quot;1234&quot;);
+//! let request = get_videos::GetVideosRequest::user_id("1234");
 //! let response: Vec&lt;get_videos::Video&gt; = client.req_get(request, &amp;token).await?.data;
 //! # Ok(())
 //! # }
@@ -280,57 +282,57 @@
 ///
 /// [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
-#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, derive(typed_builder::TypedBuilder))]
+#[cfg_attr(feature = <span class="string">"typed-builder"</span>, derive(typed_builder::TypedBuilder))]
 #[must_use]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>GetVideosRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>GetVideosRequest&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// ID of the video being queried. Limit: 100. If this is specified, you cannot use any of the optional query parameters below.
     </span><span class="attr">#[cfg_attr(
-        feature = <span class="string">&quot;typed-builder&quot;</span>,
-        builder(default_code = <span class="string">&quot;Cow::Borrowed(&amp;[])&quot;</span>, setter(into))
+        feature = <span class="string">"typed-builder"</span>,
+        builder(default_code = <span class="string">"Cow::Borrowed(&amp;[])"</span>, setter(into))
     )]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
     </span><span class="comment">// FIXME: This is essentially the same as borrow, but worse
-    </span><span class="attr">#[cfg_attr(not(feature = <span class="string">&quot;deser_borrow&quot;</span>), serde(bound(deserialize = <span class="string">&quot;&#39;de: &#39;a&quot;</span>)))]
-    </span><span class="kw">pub </span>id: Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>types::VideoIdRef]&gt;,
+    </span><span class="attr">#[cfg_attr(not(feature = <span class="string">"deser_borrow"</span>), serde(bound(deserialize = <span class="string">"'de: 'a"</span>)))]
+    </span><span class="kw">pub </span>id: Cow&lt;<span class="lifetime">'a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">'a </span>types::VideoIdRef]&gt;,
     <span class="doccomment">/// ID of the user who owns the video.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>user_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt;&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default, setter(into)))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>user_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, types::UserIdRef&gt;&gt;,
     <span class="doccomment">/// ID of the game the video is of.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>game_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, types::CategoryIdRef&gt;&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default, setter(into)))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>game_id: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, types::CategoryIdRef&gt;&gt;,
     <span class="doccomment">/// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>after: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, helix::CursorRef&gt;&gt;,
     <span class="doccomment">/// Cursor for backward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>before: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, helix::CursorRef&gt;&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>before: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, helix::CursorRef&gt;&gt;,
     <span class="doccomment">/// Number of values to be returned when getting videos by user or game ID. Limit: 100. Default: 20.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>first: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// Language of the video being queried. Limit: 1.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
-    #[cfg_attr(feature = <span class="string">&quot;deser_borrow&quot;</span>, serde(borrow = <span class="string">&quot;&#39;a&quot;</span>))]
-    </span><span class="kw">pub </span>language: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
-    <span class="doccomment">/// Period during which the video was created. Valid values: &quot;all&quot;, &quot;day&quot;, &quot;week&quot;, &quot;month&quot;. Default: &quot;all&quot;.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default, setter(into)))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>language: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, str&gt;&gt;,
+    <span class="doccomment">/// Period during which the video was created. Valid values: "all", "day", "week", "month". Default: "all".
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>period: <span class="prelude-ty">Option</span>&lt;VideoPeriod&gt;,
-    <span class="doccomment">/// Sort order of the videos. Valid values: &quot;time&quot;, &quot;trending&quot;, &quot;views&quot;. Default: &quot;time&quot;.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    <span class="doccomment">/// Sort order of the videos. Valid values: "time", "trending", "views". Default: "time".
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>sort: <span class="prelude-ty">Option</span>&lt;Sort&gt;,
-    <span class="doccomment">/// Type of video. Valid values: &quot;all&quot;, &quot;upload&quot;, &quot;archive&quot;, &quot;highlight&quot;. Default: &quot;all&quot;.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
-    #[cfg_attr(feature = <span class="string">&quot;typed-builder&quot;</span>, builder(default, setter(into)))]
+    <span class="doccomment">/// Type of video. Valid values: "all", "upload", "archive", "highlight". Default: "all".
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
+    #[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default, setter(into)))]
     </span><span class="kw">pub </span>type_: <span class="prelude-ty">Option</span>&lt;VideoTypeFilter&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; GetVideosRequest&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; GetVideosRequest&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// IDs of the videos being queried.
-    </span><span class="kw">pub fn </span>ids(ids: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>types::VideoIdRef]&gt;&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>ids(ids: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'a</span>, [<span class="kw-2">&amp;</span><span class="lifetime">'a </span>types::VideoIdRef]&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             id: ids.into(),
             ..<span class="self">Self</span>::default()
@@ -338,7 +340,7 @@
     }
 
     <span class="doccomment">/// ID of the user who owns the video.
-    </span><span class="kw">pub fn </span>user_id(user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::UserIdRef&gt; + <span class="lifetime">&#39;a</span>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>user_id(user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">'a</span>, types::UserIdRef&gt; + <span class="lifetime">'a</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             user_id: <span class="prelude-val">Some</span>(user_id.into_cow()),
             ..<span class="self">Self</span>::default()
@@ -346,7 +348,7 @@
     }
 
     <span class="doccomment">/// ID of the game the video is of.
-    </span><span class="kw">pub fn </span>game_id(game_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">&#39;a</span>, types::CategoryIdRef&gt; + <span class="lifetime">&#39;a</span>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>game_id(game_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">'a</span>, types::CategoryIdRef&gt; + <span class="lifetime">'a</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             game_id: <span class="prelude-val">Some</span>(game_id.into_cow()),
             ..<span class="self">Self</span>::default()
@@ -358,7 +360,7 @@
 ///
 /// [`get-videos`](https://dev.twitch.tv/docs/api/reference#get-videos)
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Video {
     <span class="doccomment">/// Date when the video was created.
@@ -372,18 +374,18 @@
     <span class="doccomment">/// Language of the video.
     </span><span class="kw">pub </span>language: String,
     <span class="doccomment">/// Muted segments in the video.
-    </span><span class="attr">#[serde(deserialize_with = <span class="string">&quot;helix::deserialize_default_from_null&quot;</span>)]
+    </span><span class="attr">#[serde(deserialize_with = <span class="string">"helix::deserialize_default_from_null"</span>)]
     </span><span class="kw">pub </span>muted_segments: Vec&lt;MutedSegment&gt;,
     <span class="doccomment">/// Date when the video was published.
     </span><span class="kw">pub </span>published_at: types::Timestamp,
-    <span class="doccomment">/// ID of the stream that the video originated from if the type is &quot;archive&quot;. Otherwise set to null.
+    <span class="doccomment">/// ID of the stream that the video originated from if the type is "archive". Otherwise set to null.
     </span><span class="kw">pub </span>stream_id: <span class="prelude-ty">Option</span>&lt;types::StreamId&gt;,
     <span class="doccomment">/// Template URL for the thumbnail of the video.
     </span><span class="kw">pub </span>thumbnail_url: String,
     <span class="doccomment">/// Title of the video.
     </span><span class="kw">pub </span>title: String,
-    <span class="doccomment">/// Type of video. Valid values: &quot;upload&quot;, &quot;archive&quot;, &quot;highlight&quot;.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    <span class="doccomment">/// Type of video. Valid values: "upload", "archive", "highlight".
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>type_: types::VideoType,
     <span class="doccomment">/// URL of the video.
     </span><span class="kw">pub </span>url: String,
@@ -395,13 +397,13 @@
     </span><span class="kw">pub </span>user_login: types::UserName,
     <span class="doccomment">/// Number of times the video has been viewed.
     </span><span class="kw">pub </span>view_count: i64,
-    <span class="doccomment">/// Indicates whether the video is publicly viewable. Valid values: &quot;public&quot;, &quot;private&quot;.
+    <span class="doccomment">/// Indicates whether the video is publicly viewable. Valid values: "public", "private".
     </span><span class="kw">pub </span>viewable: types::VideoPrivacy,
 }
 
 <span class="doccomment">/// muted segment in a video.
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>MutedSegment {
     <span class="doccomment">/// Duration of the muted segment.
@@ -410,17 +412,17 @@
     </span><span class="kw">pub </span>offset: i64,
 }
 
-<span class="kw">impl </span>Request <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>Request <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>Response = Vec&lt;Video&gt;;
 
-    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;videos&quot;</span>;
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"videos"</span>;
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
 }
 
-<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">&#39;_</span>&gt; {}
+<span class="kw">impl </span>RequestGet <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">'_</span>&gt; {}
 
-<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
         <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
     }
@@ -430,40 +432,40 @@
 #[test]
 </span><span class="kw">fn </span>test_request() {
     <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-    <span class="kw">let </span>req = GetVideosRequest::ids(<span class="macro">vec!</span>[<span class="string">&quot;234482848&quot;</span>.into()]);
+    <span class="kw">let </span>req = GetVideosRequest::ids(<span class="macro">vec!</span>[<span class="string">"234482848"</span>.into()]);
 
     <span class="comment">// From twitch docs
-    </span><span class="kw">let </span>data = <span class="string">br#&quot;
+    </span><span class="kw">let </span>data = <span class="string">br#"
 {
-  &quot;data&quot;: [
+  "data": [
     {
-      &quot;id&quot;: &quot;335921245&quot;,
-      &quot;stream_id&quot;: null,
-      &quot;user_id&quot;: &quot;141981764&quot;,
-      &quot;user_login&quot;: &quot;twitchdev&quot;,
-      &quot;user_name&quot;: &quot;TwitchDev&quot;,
-      &quot;title&quot;: &quot;Twitch Developers 101&quot;,
-      &quot;description&quot;: &quot;Welcome to Twitch development! Here is a quick overview of our products and information to help you get started.&quot;,
-      &quot;created_at&quot;: &quot;2018-11-14T21:30:18Z&quot;,
-      &quot;published_at&quot;: &quot;2018-11-14T22:04:30Z&quot;,
-      &quot;url&quot;: &quot;https://www.twitch.tv/videos/335921245&quot;,
-      &quot;thumbnail_url&quot;: &quot;https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/twitchdev/335921245/ce0f3a7f-57a3-4152-bc06-0c6610189fb3/thumb/index-0000000000-%{width}x%{height}.jpg&quot;,
-      &quot;viewable&quot;: &quot;public&quot;,
-      &quot;view_count&quot;: 1863062,
-      &quot;language&quot;: &quot;en&quot;,
-      &quot;type&quot;: &quot;upload&quot;,
-      &quot;duration&quot;: &quot;3m21s&quot;,
-      &quot;muted_segments&quot;: [
+      "id": "335921245",
+      "stream_id": null,
+      "user_id": "141981764",
+      "user_login": "twitchdev",
+      "user_name": "TwitchDev",
+      "title": "Twitch Developers 101",
+      "description": "Welcome to Twitch development! Here is a quick overview of our products and information to help you get started.",
+      "created_at": "2018-11-14T21:30:18Z",
+      "published_at": "2018-11-14T22:04:30Z",
+      "url": "https://www.twitch.tv/videos/335921245",
+      "thumbnail_url": "https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/twitchdev/335921245/ce0f3a7f-57a3-4152-bc06-0c6610189fb3/thumb/index-0000000000-%{width}x%{height}.jpg",
+      "viewable": "public",
+      "view_count": 1863062,
+      "language": "en",
+      "type": "upload",
+      "duration": "3m21s",
+      "muted_segments": [
         {
-          &quot;duration&quot;: 30,
-          &quot;offset&quot;: 120
+          "duration": 30,
+          "offset": 120
         }
       ]
     }
   ],
-  &quot;pagination&quot;: {}
+  "pagination": {}
 }
-&quot;#
+"#
         </span>.to_vec();
 
     <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
@@ -471,7 +473,7 @@
     <span class="kw">let </span>uri = req.get_uri().unwrap();
     <span class="macro">assert_eq!</span>(
         uri.to_string(),
-        <span class="string">&quot;https://api.twitch.tv/helix/videos?id=234482848&quot;
+        <span class="string">"https://api.twitch.tv/helix/videos?id=234482848"
     </span>);
 
     <span class="macro">dbg!</span>(GetVideosRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());

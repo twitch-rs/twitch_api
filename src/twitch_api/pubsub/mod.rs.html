@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -699,22 +701,22 @@
 //!
 //! This crate has some pubsub topics that are not documented by twitch. These may stop working at any time. To enable these, use feature
 //! &lt;span
-//!   class=&quot;module-item stab portability&quot;
-//!   style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;
+//!   class="module-item stab portability"
+//!   style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"
 //! &gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt;
-//! to use them. Note that this crate doesn&#39;t try to keep changes to these pubsub topics semver compatible.
+//! to use them. Note that this crate doesn't try to keep changes to these pubsub topics semver compatible.
 
-</span><span class="kw">static </span>ERROR_TRYFROM: <span class="kw-2">&amp;</span>str = <span class="string">&quot;no match&quot;</span>;
+</span><span class="kw">static </span>ERROR_TRYFROM: <span class="kw-2">&amp;</span>str = <span class="string">"no match"</span>;
 
 <span class="doccomment">/// Implement `From&lt;$type&gt; for String` for serializing and `TryFrom&lt;String&gt; for $type` for deserializing.
 </span><span class="macro">macro_rules! </span>impl_de_ser {
-    (@field <span class="macro-nonterminal">$e</span>:expr) =&gt; {<span class="string">&quot;.{}&quot;</span>};
+    (@field <span class="macro-nonterminal">$e</span>:expr) =&gt; {<span class="string">".{}"</span>};
     (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$fmt</span>:literal, $(<span class="macro-nonterminal">$field</span>:ident),* $(,)<span class="question-mark">? </span>$(<span class="question-mark">?</span><span class="macro-nonterminal">$opt_field</span>:ident),* $(,)<span class="question-mark">?</span>) =&gt; {
         <span class="kw">impl </span>From&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">String </span>{
-            <span class="kw">fn </span>from(t: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self </span>{ <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$fmt</span>, $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$field</span>),)+ $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$opt_field</span>),)<span class="kw-2">*</span>), $(t.<span class="macro-nonterminal">$field</span>,)<span class="kw-2">*</span>$(t.<span class="macro-nonterminal">$opt_field</span>.map(|f| f.to_string()).unwrap_or_default(),)<span class="kw-2">*</span>).trim_end_matches(<span class="string">&quot;.&quot;</span>).to_owned() }
+            <span class="kw">fn </span>from(t: <span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self </span>{ <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$fmt</span>, $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$field</span>),)+ $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$opt_field</span>),)<span class="kw-2">*</span>), $(t.<span class="macro-nonterminal">$field</span>,)<span class="kw-2">*</span>$(t.<span class="macro-nonterminal">$opt_field</span>.map(|f| f.to_string()).unwrap_or_default(),)<span class="kw-2">*</span>).trim_end_matches(<span class="string">"."</span>).to_owned() }
         }
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">String </span>{
-            <span class="kw">fn </span>from(t: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self </span>{ <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$fmt</span>, $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$field</span>),)+ $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$opt_field</span>),)<span class="kw-2">*</span>), $(t.<span class="macro-nonterminal">$field</span>,)<span class="kw-2">*</span>$(t.<span class="macro-nonterminal">$opt_field</span>.map(|f| f.to_string()).unwrap_or_default(),)<span class="kw-2">*</span>).trim_end_matches(<span class="string">&quot;.&quot;</span>).to_owned() }
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">String </span>{
+            <span class="kw">fn </span>from(t: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="macro-nonterminal">$</span><span class="kw">type</span>) -&gt; <span class="macro-nonterminal">Self </span>{ <span class="macro">format!</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$fmt</span>, $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$field</span>),)+ $(<span class="macro">impl_de_ser!</span>(@field <span class="macro-nonterminal">$opt_field</span>),)<span class="kw-2">*</span>), $(t.<span class="macro-nonterminal">$field</span>,)<span class="kw-2">*</span>$(t.<span class="macro-nonterminal">$opt_field</span>.map(|f| f.to_string()).unwrap_or_default(),)<span class="kw-2">*</span>).trim_end_matches(<span class="string">"."</span>).to_owned() }
         }
 
         <span class="kw">impl </span>From&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">super::Topics </span>{
@@ -726,37 +728,37 @@
 
         <span class="kw">impl </span>::std::fmt::Display <span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">type </span>{
             <span class="doccomment">///
-            </span><span class="kw">fn </span><span class="macro-nonterminal">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; ::std::fmt::Result {
+            </span><span class="kw">fn </span><span class="macro-nonterminal">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; ::std::fmt::Result {
                 <span class="kw">let </span>s: String = ::std::convert::TryInto::try_into(<span class="self">self</span>).map_err(|<span class="kw">_</span>| ::std::fmt::Error)<span class="question-mark">?</span>;
                 f.write_str(<span class="kw-2">&amp;</span>s)
             }
         }
 
         <span class="kw">impl </span>::std::convert::TryFrom&lt;String&gt; <span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">type </span>{
-            <span class="kw">type </span><span class="macro-nonterminal">Error </span>= <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str;
+            <span class="kw">type </span><span class="macro-nonterminal">Error </span>= <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str;
 
             <span class="kw">fn </span>try_from(s: String) -&gt; ::std::result::Result&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
                 <span class="kw">if </span>s.starts_with(<span class="macro-nonterminal">$fmt</span>) {
-                    <span class="kw">let </span>sub_s = s.strip_prefix(<span class="macro-nonterminal">$fmt</span>).ok_or(<span class="string">&quot;could not strip str, this should never be hit&quot;</span>)<span class="question-mark">?</span>;
-                    <span class="kw">match </span>sub_s.split(<span class="string">&#39;.&#39;</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;().as_slice() {
-                        [<span class="string">&quot;&quot;</span>, $(<span class="macro-nonterminal">$field</span>,)* $(<span class="macro-nonterminal">$opt_field</span>,)<span class="kw-2">*</span>] =&gt; {
+                    <span class="kw">let </span>sub_s = s.strip_prefix(<span class="macro-nonterminal">$fmt</span>).ok_or(<span class="string">"could not strip str, this should never be hit"</span>)<span class="question-mark">?</span>;
+                    <span class="kw">match </span>sub_s.split(<span class="string">'.'</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;().as_slice() {
+                        [<span class="string">""</span>, $(<span class="macro-nonterminal">$field</span>,)* $(<span class="macro-nonterminal">$opt_field</span>,)<span class="kw-2">*</span>] =&gt; {
                             <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="kw">type </span>{
                                 $(
                                     <span class="macro-nonterminal">$field</span>: <span class="macro-nonterminal">$field</span>.parse()
-                                            .map_err(|<span class="kw">_</span>| <span class="macro">concat!</span>(<span class="string">&quot;could not parse field &lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$field</span>), <span class="string">&quot;&gt;&quot;</span>))<span class="question-mark">?</span>,
+                                            .map_err(|<span class="kw">_</span>| <span class="macro">concat!</span>(<span class="string">"could not parse field &lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$field</span>), <span class="string">"&gt;"</span>))<span class="question-mark">?</span>,
                                 )*
                                 $(
                                     <span class="macro-nonterminal">$opt_field</span>: <span class="prelude-val">Some</span>(<span class="macro-nonterminal">$opt_field</span>.parse()
-                                            .map_err(|<span class="kw">_</span>| <span class="macro">concat!</span>(<span class="string">&quot;could not parse field &lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$opt_field</span>), <span class="string">&quot;&gt;&quot;</span>))<span class="question-mark">?</span>),
+                                            .map_err(|<span class="kw">_</span>| <span class="macro">concat!</span>(<span class="string">"could not parse field &lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$opt_field</span>), <span class="string">"&gt;"</span>))<span class="question-mark">?</span>),
                                 )*
                             } )
                         }
                         <span class="attr">#[allow(unreachable_patterns)]
-                        </span>[<span class="string">&quot;&quot;</span>, $(<span class="macro-nonterminal">$field</span>,)<span class="kw-2">*</span>] =&gt; {
+                        </span>[<span class="string">""</span>, $(<span class="macro-nonterminal">$field</span>,)<span class="kw-2">*</span>] =&gt; {
                             <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="kw">type </span>{
                                 $(
                                     <span class="macro-nonterminal">$field</span>: <span class="macro-nonterminal">$field</span>.parse()
-                                            .map_err(|<span class="kw">_</span>| <span class="macro">concat!</span>(<span class="string">&quot;could not parse field &lt;&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$field</span>), <span class="string">&quot;&gt;&quot;</span>))<span class="question-mark">?</span>,
+                                            .map_err(|<span class="kw">_</span>| <span class="macro">concat!</span>(<span class="string">"could not parse field &lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$field</span>), <span class="string">"&gt;"</span>))<span class="question-mark">?</span>,
                                 )*
                                 $(
                                     <span class="macro-nonterminal">$opt_field</span>: <span class="prelude-val">None</span>,
@@ -779,23 +781,23 @@
 <span class="kw">pub mod </span>automod_queue;
 <span class="kw">pub mod </span>channel_bits;
 <span class="kw">pub mod </span>channel_bits_badge;
-<span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
 </span><span class="kw">pub mod </span>channel_cheer;
 <span class="kw">pub mod </span>channel_points;
-<span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
 </span><span class="kw">pub mod </span>channel_sub_gifts;
 <span class="kw">pub mod </span>channel_subscriptions;
-<span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
 </span><span class="kw">pub mod </span>community_points;
-<span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
 </span><span class="kw">pub mod </span>following;
-<span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
 </span><span class="kw">pub mod </span>hypetrain;
 <span class="kw">pub mod </span>moderation;
-<span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
 </span><span class="kw">pub mod </span>raid;
 <span class="kw">pub mod </span>user_moderation_notifications;
-<span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
 </span><span class="kw">pub mod </span>video_playback;
 
 <span class="kw">use </span><span class="kw">crate</span>::parse_json;
@@ -808,11 +810,11 @@
     ///
     /// This constant
     /// &lt;span
-    ///   class=&quot;module-item stab portability&quot;
-    ///   style=&quot;display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;&quot;
+    ///   class="module-item stab portability"
+    ///   style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"
     /// &gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt;
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
-    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+    #[cfg_attr(nightly, doc(cfg(feature = <span class="string">"twitch_oauth2"</span>)))]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator;
 
     <span class="doccomment">/// Convert this into a [`Topics`]
@@ -827,17 +829,17 @@
     <span class="doccomment">/// AutoMod flags a message as potentially inappropriate, and when a moderator takes action on a message.
     </span>AutoModQueue(automod_queue::AutoModQueue),
     <span class="doccomment">/// A user redeems an reward using channel points.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>CommunityPointsChannelV1(community_points::CommunityPointsChannelV1),
     <span class="doccomment">/// Anyone cheers in a specified channel.
     </span>ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2),
     <span class="doccomment">/// Anyone shares a bit badge in a specified channel.
     </span>ChannelBitsBadgeUnlocks(channel_bits_badge::ChannelBitsBadgeUnlocks),
     <span class="doccomment">/// A user redeems a cheer with shared rewards.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>ChannelCheerEventsPublicV1(channel_cheer::ChannelCheerEventsPublicV1),
     <span class="doccomment">/// A user gifts subs.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>ChannelSubGiftsV1(channel_sub_gifts::ChannelSubGiftsV1),
     <span class="doccomment">/// A moderator performs an action in the channel.
     </span>ChatModeratorActions(moderation::ChatModeratorActions),
@@ -846,54 +848,54 @@
     <span class="doccomment">/// A subscription event happens in channel
     </span>ChannelSubscribeEventsV1(channel_subscriptions::ChannelSubscribeEventsV1),
     <span class="doccomment">/// Statistics about stream
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>VideoPlayback(video_playback::VideoPlayback),
     <span class="doccomment">/// Statistics about stream
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>VideoPlaybackById(video_playback::VideoPlaybackById),
     <span class="doccomment">/// A user redeems an reward using channel points.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>HypeTrainEventsV1(hypetrain::HypeTrainEventsV1),
     <span class="doccomment">/// A user redeems an reward using channel points.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>HypeTrainEventsV1Rewards(hypetrain::HypeTrainEventsV1Rewards),
     <span class="doccomment">/// A user follows the channel
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>Following(following::Following),
     <span class="doccomment">/// A user raids the channel
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>Raid(raid::Raid),
     <span class="doccomment">/// A user’s message held by AutoMod has been approved or denied.
     </span>UserModerationNotifications(user_moderation_notifications::UserModerationNotifications),
 }
 
 <span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>Topics {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="kw">use </span><span class="self">self</span>::Topics::<span class="kw-2">*</span>;
         <span class="kw">let </span>s = <span class="kw">match </span><span class="self">self </span>{
             AutoModQueue(t) =&gt; t.to_string(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>CommunityPointsChannelV1(t) =&gt; t.to_string(),
             ChannelBitsEventsV2(t) =&gt; t.to_string(),
             ChannelBitsBadgeUnlocks(t) =&gt; t.to_string(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>ChannelCheerEventsPublicV1(t) =&gt; t.to_string(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>ChannelSubGiftsV1(t) =&gt; t.to_string(),
             ChatModeratorActions(t) =&gt; t.to_string(),
             ChannelPointsChannelV1(t) =&gt; t.to_string(),
             ChannelSubscribeEventsV1(t) =&gt; t.to_string(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>VideoPlayback(t) =&gt; t.to_string(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>VideoPlaybackById(t) =&gt; t.to_string(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>HypeTrainEventsV1(t) =&gt; t.to_string(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>HypeTrainEventsV1Rewards(t) =&gt; t.to_string(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Following(t) =&gt; t.to_string(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Raid(t) =&gt; t.to_string(),
             UserModerationNotifications(t) =&gt; t.to_string(),
         };
@@ -902,17 +904,17 @@
 }
 
 <span class="attr">#[derive(Serialize)]
-</span><span class="kw">struct </span>ITopicSubscribeData&lt;<span class="lifetime">&#39;a</span>&gt; {
-    topics: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[String],
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span>auth_token: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;,
+</span><span class="kw">struct </span>ITopicSubscribeData&lt;<span class="lifetime">'a</span>&gt; {
+    topics: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[String],
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
+    </span>auth_token: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt;,
 }
 <span class="attr">#[derive(Serialize)]
-</span><span class="kw">struct </span>ITopicSubscribe&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
-    </span>_type: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-    nonce: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;,
-    data: ITopicSubscribeData&lt;<span class="lifetime">&#39;a</span>&gt;,
+</span><span class="kw">struct </span>ITopicSubscribe&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="attr">#[serde(rename = <span class="string">"type"</span>)]
+    </span>_type: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+    nonce: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt;,
+    data: ITopicSubscribeData&lt;<span class="lifetime">'a</span>&gt;,
 }
 
 <span class="doccomment">/// Create a listen command.
@@ -937,27 +939,27 @@
 /// // Create the topic command to send to twitch
 /// let command = pubsub::listen_command(
 ///     &amp;[chat_mod_actions, follows],
-///     &quot;authtoken&quot;,
-///     &quot;super se3re7 random string&quot;,
+///     "authtoken",
+///     "super se3re7 random string",
 /// )
-/// .expect(&quot;serializing failed&quot;);
+/// .expect("serializing failed");
 /// // Send the message with your favorite websocket client
 /// send_command(command).unwrap();
 /// // To parse the websocket messages, use pubsub::Response::parse
 /// # fn send_command(command: String) -&gt; Result&lt;(),()&gt; {Ok(())}
 /// ```
-</span><span class="kw">pub fn </span>listen_command&lt;<span class="lifetime">&#39;t</span>, T, N&gt;(
-    topics: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t </span>[Topics],
+</span><span class="kw">pub fn </span>listen_command&lt;<span class="lifetime">'t</span>, T, N&gt;(
+    topics: <span class="kw-2">&amp;</span><span class="lifetime">'t </span>[Topics],
     auth_token: T,
     nonce: N,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;String, serde_json::Error&gt;
 <span class="kw">where
-    </span>T: Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;t </span>str&gt;&gt;,
-    N: Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;t </span>str&gt;&gt;,
+    </span>T: Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'t </span>str&gt;&gt;,
+    N: Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'t </span>str&gt;&gt;,
 {
     <span class="kw">let </span>topics = topics.iter().map(|t| t.to_string()).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
     serde_json::to_string(<span class="kw-2">&amp;</span>ITopicSubscribe {
-        _type: <span class="string">&quot;LISTEN&quot;</span>,
+        _type: <span class="string">"LISTEN"</span>,
         nonce: nonce.into(),
         data: ITopicSubscribeData {
             topics: <span class="kw-2">&amp;</span>topics,
@@ -988,24 +990,24 @@
 ///     &amp;[chat_mod_actions, follows],
 ///     // This does not need to be the same nonce that was sent for listening.
 ///     // The nonce is only there to identify the payload and the response.
-///     &quot;super se3re7 random string&quot;,
+///     "super se3re7 random string",
 /// )
-/// .expect(&quot;serializing failed&quot;);
+/// .expect("serializing failed");
 /// // Send the message with your favorite websocket client
 /// send_command(command).unwrap();
 /// // To parse the websocket messages, use pubsub::Response::parse
 /// # fn send_command(command: String) -&gt; Result&lt;(),()&gt; {Ok(())}
 /// ```
-</span><span class="kw">pub fn </span>unlisten_command&lt;<span class="lifetime">&#39;t</span>, O&gt;(
-    topics: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t </span>[Topics],
+</span><span class="kw">pub fn </span>unlisten_command&lt;<span class="lifetime">'t</span>, O&gt;(
+    topics: <span class="kw-2">&amp;</span><span class="lifetime">'t </span>[Topics],
     nonce: O,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;String, serde_json::Error&gt;
 <span class="kw">where
-    </span>O: Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;t </span>str&gt;&gt;,
+    </span>O: Into&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'t </span>str&gt;&gt;,
 {
     <span class="kw">let </span>topics = topics.iter().map(|t| t.to_string()).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
     serde_json::to_string(<span class="kw-2">&amp;</span>ITopicSubscribe {
-        _type: <span class="string">&quot;UNLISTEN&quot;</span>,
+        _type: <span class="string">"UNLISTEN"</span>,
         nonce: nonce.into(),
         data: ITopicSubscribeData {
             topics: <span class="kw-2">&amp;</span>topics,
@@ -1040,7 +1042,7 @@
         <span class="doccomment">/// Topic message
         </span>topic: automod_queue::AutoModQueue,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;automod_queue::AutoModQueueReply&gt;,
     },
     <span class="doccomment">/// Response from the [channel_bits::ChannelBitsEventsV2] topic.
@@ -1048,7 +1050,7 @@
         <span class="doccomment">/// Topic message
         </span>topic: channel_bits::ChannelBitsEventsV2,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;channel_bits::ChannelBitsEventsV2Reply&gt;,
     },
     <span class="doccomment">/// Response from the [channel_bits_badge::ChannelBitsBadgeUnlocks] topic.
@@ -1056,7 +1058,7 @@
         <span class="doccomment">/// Topic message
         </span>topic: channel_bits_badge::ChannelBitsBadgeUnlocks,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;channel_bits_badge::ChannelBitsBadgeUnlocksReply&gt;,
     },
     <span class="doccomment">/// Response from the [moderation::ChatModeratorActions] topic.
@@ -1064,7 +1066,7 @@
         <span class="doccomment">/// Topic message
         </span>topic: moderation::ChatModeratorActions,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;moderation::ChatModeratorActionsReply&gt;,
     },
     <span class="doccomment">/// Response from the [channel_points::ChannelPointsChannelV1] topic.
@@ -1072,7 +1074,7 @@
         <span class="doccomment">/// Topic message
         </span>topic: channel_points::ChannelPointsChannelV1,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;channel_points::ChannelPointsChannelV1Reply&gt;,
     },
     <span class="doccomment">/// Response from the [channel_subscriptions::ChannelSubscribeEventsV1] topic.
@@ -1080,89 +1082,89 @@
         <span class="doccomment">/// Topic message
         </span>topic: channel_subscriptions::ChannelSubscribeEventsV1,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;channel_subscriptions::ChannelSubscribeEventsV1Reply&gt;, <span class="comment">// FIXME: :)
     </span>},
     <span class="doccomment">/// Response from the [community_points::CommunityPointsChannelV1] topic.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>CommunityPointsChannelV1 {
         <span class="doccomment">/// Topic message
         </span>topic: community_points::CommunityPointsChannelV1,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;channel_points::ChannelPointsChannelV1Reply&gt;,
     },
     <span class="doccomment">/// Response from the [channel_cheer::ChannelCheerEventsPublicV1] topic.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>ChannelCheerEventsPublicV1 {
         <span class="doccomment">/// Topic message
         </span>topic: channel_cheer::ChannelCheerEventsPublicV1,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;channel_cheer::ChannelCheerEventsPublicV1Reply&gt;,
     },
     <span class="doccomment">/// Response from the [channel_sub_gifts::ChannelSubGiftsV1] topic.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>ChannelSubGiftsV1 {
         <span class="doccomment">/// Topic message
         </span>topic: channel_sub_gifts::ChannelSubGiftsV1,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;channel_sub_gifts::ChannelSubGiftsV1Reply&gt;,
     },
 
     <span class="doccomment">/// Response from the [video_playback::VideoPlayback] topic.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>VideoPlayback {
         <span class="doccomment">/// Topic message
         </span>topic: video_playback::VideoPlayback,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;video_playback::VideoPlaybackReply&gt;,
     },
     <span class="doccomment">/// Response from the [video_playback::VideoPlaybackById] topic.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>VideoPlaybackById {
         <span class="doccomment">/// Topic message
         </span>topic: video_playback::VideoPlaybackById,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;video_playback::VideoPlaybackReply&gt;,
     },
     <span class="doccomment">/// Response from the [hypetrain::HypeTrainEventsV1] topic.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>HypeTrainEventsV1 {
         <span class="doccomment">/// Topic message
         </span>topic: hypetrain::HypeTrainEventsV1,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;hypetrain::HypeTrainEventsV1Reply&gt;, <span class="comment">// FIXME: May not be correct
     </span>},
     <span class="doccomment">/// Response from the [hypetrain::HypeTrainEventsV1Rewards] topic.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>HypeTrainEventsV1Rewards {
         <span class="doccomment">/// Topic message
         </span>topic: hypetrain::HypeTrainEventsV1Rewards,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;hypetrain::HypeTrainEventsV1Reply&gt;,
     },
     <span class="doccomment">/// Response from the [following::Following] topic.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>Following {
         <span class="doccomment">/// Topic message
         </span>topic: following::Following,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;following::FollowingReply&gt;,
     },
     <span class="doccomment">/// Response from the [raid::Raid] topic.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span>Raid {
         <span class="doccomment">/// Topic message
         </span>topic: raid::Raid,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;raid::RaidReply&gt;,
     },
     <span class="doccomment">/// A user’s message held by AutoMod has been approved or denied.
@@ -1170,15 +1172,15 @@
         <span class="doccomment">/// Topic message
         </span>topic: user_moderation_notifications::UserModerationNotifications,
         <span class="doccomment">/// Message reply from topic subscription
-        </span><span class="attr">#[serde(rename = <span class="string">&quot;message&quot;</span>)]
+        </span><span class="attr">#[serde(rename = <span class="string">"message"</span>)]
         </span>reply: Box&lt;user_moderation_notifications::UserModerationNotificationsReply&gt;,
     },
 }
 
 <span class="comment">// This impl is here because otherwise we hide the errors from deser
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>TopicData {
-    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
-        <span class="comment">// FIXME: make into macro or actually upstream into serde..., untagged_force = &quot;field&quot;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>TopicData {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="comment">// FIXME: make into macro or actually upstream into serde..., untagged_force = "field"
 
         </span><span class="attr">#[derive(Deserialize, Debug)]
         </span><span class="kw">struct </span>ITopicData {
@@ -1186,14 +1188,14 @@
             message: String,
         }
         <span class="kw">let </span>reply = ITopicData::deserialize(deserializer).map_err(|e| {
-            serde::de::Error::custom(<span class="macro">format!</span>(<span class="string">&quot;could not deserialize topic reply: {e}&quot;</span>))
+            serde::de::Error::custom(<span class="macro">format!</span>(<span class="string">"could not deserialize topic reply: {e}"</span>))
         })<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="kw">match </span>reply.topic {
             Topics::AutoModQueue(topic) =&gt; TopicData::AutoModQueue {
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Topics::CommunityPointsChannelV1(topic) =&gt; TopicData::CommunityPointsChannelV1 {
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
@@ -1206,12 +1208,12 @@
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Topics::ChannelSubGiftsV1(topic) =&gt; TopicData::ChannelSubGiftsV1 {
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Topics::ChannelCheerEventsPublicV1(topic) =&gt; TopicData::ChannelCheerEventsPublicV1 {
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
@@ -1228,32 +1230,32 @@
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Topics::VideoPlayback(topic) =&gt; TopicData::VideoPlayback {
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Topics::VideoPlaybackById(topic) =&gt; TopicData::VideoPlaybackById {
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Topics::HypeTrainEventsV1(topic) =&gt; TopicData::HypeTrainEventsV1 {
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Topics::HypeTrainEventsV1Rewards(topic) =&gt; TopicData::HypeTrainEventsV1Rewards {
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Topics::Following(topic) =&gt; TopicData::Following {
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
             },
-            <span class="attr">#[cfg(feature = <span class="string">&quot;unsupported&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
             </span>Topics::Raid(topic) =&gt; TopicData::Raid {
                 topic,
                 reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
@@ -1269,23 +1271,23 @@
 <span class="doccomment">/// Response from twitchs PubSub server.
 /// Either a response indicating status of something or a message from a topic
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Deserialize)]
-#[serde(tag = <span class="string">&quot;type&quot;</span>)]
+#[serde(tag = <span class="string">"type"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Response {
     <span class="doccomment">/// Response from a subscription/unsubscription
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;RESPONSE&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"RESPONSE"</span>)]
     </span>Response(TwitchResponse),
     <span class="doccomment">/// Message received containing all applicable data
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;MESSAGE&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"MESSAGE"</span>)]
     </span>Message {
         <span class="doccomment">/// Data corresponding to [topic](Topic) message
         </span>data: TopicData,
     },
     <span class="doccomment">/// Response from a ping
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;PONG&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"PONG"</span>)]
     </span>Pong,
     <span class="doccomment">/// Request for the client to reconnect
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;RECONNECT&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"RECONNECT"</span>)]
     </span>Reconnect,
 }
 
@@ -1295,36 +1297,36 @@
     </span><span class="kw">pub fn </span>parse(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Response, <span class="kw">crate</span>::DeserError&gt; { parse_json(source, <span class="bool-val">true</span>) }
 }
 
-<span class="doccomment">/// Deserialize &#39;null&#39; as &lt;T as Default&gt;::Default
-</span><span class="kw">fn </span>deserialize_default_from_null&lt;<span class="lifetime">&#39;de</span>, D, T&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;T, D::Error&gt;
+<span class="doccomment">/// Deserialize 'null' as &lt;T as Default&gt;::Default
+</span><span class="kw">fn </span>deserialize_default_from_null&lt;<span class="lifetime">'de</span>, D, T&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;T, D::Error&gt;
 <span class="kw">where
-    </span>D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
-    T: serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; + Default, {
+    </span>D: Deserializer&lt;<span class="lifetime">'de</span>&gt;,
+    T: serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; + Default, {
     <span class="kw">use </span>serde::Deserialize;
 
     <span class="prelude-val">Ok</span>(Option::deserialize(deserializer)<span class="question-mark">?</span>.unwrap_or_default())
 }
 
-<span class="doccomment">/// Deserialize &quot;&quot; as &lt;T as Default&gt;::Default
-</span><span class="kw">fn </span>deserialize_none_from_empty_string&lt;<span class="lifetime">&#39;de</span>, D, S&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;S&gt;, D::Error&gt;
+<span class="doccomment">/// Deserialize "" as &lt;T as Default&gt;::Default
+</span><span class="kw">fn </span>deserialize_none_from_empty_string&lt;<span class="lifetime">'de</span>, D, S&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;S&gt;, D::Error&gt;
 <span class="kw">where
-    </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
-    S: serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;, {
+    </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
+    S: serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;, {
     <span class="kw">use </span>serde::de::IntoDeserializer;
     <span class="kw">struct </span>Inner&lt;S&gt;(std::marker::PhantomData&lt;S&gt;);
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>, S&gt; serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Inner&lt;S&gt;
-    <span class="kw">where </span>S: serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;
+    <span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, S&gt; serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Inner&lt;S&gt;
+    <span class="kw">where </span>S: serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;
     {
         <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;S&gt;;
 
-        <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-            formatter.write_str(<span class="string">&quot;any string&quot;</span>)
+        <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+            formatter.write_str(<span class="string">"any string"</span>)
         }
 
         <span class="kw">fn </span>visit_str&lt;E&gt;(<span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, E&gt;
         <span class="kw">where </span>E: serde::de::Error {
             <span class="kw">match </span>value {
-                <span class="string">&quot;&quot; </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+                <span class="string">"" </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
                 v =&gt; S::deserialize(v.into_deserializer()).map(<span class="prelude-val">Some</span>),
             }
         }
@@ -1332,7 +1334,7 @@
         <span class="kw">fn </span>visit_string&lt;E&gt;(<span class="self">self</span>, value: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, E&gt;
         <span class="kw">where </span>E: serde::de::Error {
             <span class="kw">match </span><span class="kw-2">&amp;*</span>value {
-                <span class="string">&quot;&quot; </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+                <span class="string">"" </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
                 v =&gt; S::deserialize(v.into_deserializer()).map(<span class="prelude-val">Some</span>),
             }
         }
@@ -1351,15 +1353,15 @@
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="attr">#[test]
     </span><span class="kw">fn </span>error() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;RESPONSE&quot;,
-    &quot;nonce&quot;: &quot;44h1k13746815ab1r2&quot;,
-    &quot;error&quot;: &quot;&quot;
+    "type": "RESPONSE",
+    "nonce": "44h1k13746815ab1r2",
+    "error": ""
 }
-&quot;#</span>;
+"#</span>;
         <span class="kw">let </span>expected = Response::Response(TwitchResponse {
-            nonce: <span class="prelude-val">Some</span>(String::from(<span class="string">&quot;44h1k13746815ab1r2&quot;</span>)),
+            nonce: <span class="prelude-val">Some</span>(String::from(<span class="string">"44h1k13746815ab1r2"</span>)),
             error: <span class="prelude-val">Some</span>(String::new()),
         });
         <span class="kw">let </span>actual = Response::parse(source).unwrap();
@@ -1370,8 +1372,8 @@
     </span><span class="kw">fn </span>listen() {
         <span class="kw">let </span>topic =
             Topics::ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2 { channel_id: <span class="number">12345 </span>});
-        <span class="kw">let </span>expected = <span class="string">r#&quot;{&quot;type&quot;:&quot;LISTEN&quot;,&quot;nonce&quot;:&quot;my nonce&quot;,&quot;data&quot;:{&quot;topics&quot;:[&quot;channel-bits-events-v2.12345&quot;],&quot;auth_token&quot;:&quot;my token&quot;}}&quot;#</span>;
-        <span class="kw">let </span>actual = listen_command(<span class="kw-2">&amp;</span>[topic], <span class="string">&quot;my token&quot;</span>, <span class="string">&quot;my nonce&quot;</span>).expect(<span class="string">&quot;should serialize&quot;</span>);
+        <span class="kw">let </span>expected = <span class="string">r#"{"type":"LISTEN","nonce":"my nonce","data":{"topics":["channel-bits-events-v2.12345"],"auth_token":"my token"}}"#</span>;
+        <span class="kw">let </span>actual = listen_command(<span class="kw-2">&amp;</span>[topic], <span class="string">"my token"</span>, <span class="string">"my nonce"</span>).expect(<span class="string">"should serialize"</span>);
         <span class="macro">assert_eq!</span>(expected, actual);
     }
 
@@ -1379,8 +1381,8 @@
     </span><span class="kw">fn </span>unlisten() {
         <span class="kw">let </span>topic =
             Topics::ChannelBitsEventsV2(channel_bits::ChannelBitsEventsV2 { channel_id: <span class="number">12345 </span>});
-        <span class="kw">let </span>expected = <span class="string">r#&quot;{&quot;type&quot;:&quot;UNLISTEN&quot;,&quot;nonce&quot;:&quot;my nonce&quot;,&quot;data&quot;:{&quot;topics&quot;:[&quot;channel-bits-events-v2.12345&quot;]}}&quot;#</span>;
-        <span class="kw">let </span>actual = unlisten_command(<span class="kw-2">&amp;</span>[topic], <span class="string">&quot;my nonce&quot;</span>).expect(<span class="string">&quot;should serialize&quot;</span>);
+        <span class="kw">let </span>expected = <span class="string">r#"{"type":"UNLISTEN","nonce":"my nonce","data":{"topics":["channel-bits-events-v2.12345"]}}"#</span>;
+        <span class="kw">let </span>actual = unlisten_command(<span class="kw-2">&amp;</span>[topic], <span class="string">"my nonce"</span>).expect(<span class="string">"should serialize"</span>);
         <span class="macro">assert_eq!</span>(expected, actual);
     }
 }

@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/community_points.rs`."><title>community_points.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/community_points.rs`."><title>community_points.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -119,7 +121,7 @@
 <a href="#119" id="119">119</a>
 <a href="#120" id="120">120</a>
 <a href="#121" id="121">121</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;community-points-channel-v1&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"community-points-channel-v1"</span>)]
 </span><span class="doccomment">//! PubSub messages for community points.
 //!
 //! See also [`pubsub::channel_points`]
@@ -130,7 +132,7 @@
 ///
 /// Reply is [`pubsub::channel_points::ChannelPointsChannelV1Reply`]
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>CommunityPointsChannelV1 {
     <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
     </span><span class="kw">pub </span>channel_id: u32,
@@ -138,12 +140,12 @@
 
 <span class="macro">impl_de_ser!</span>(
     CommunityPointsChannelV1,
-    <span class="string">&quot;community-points-channel-v1&quot;</span>,
+    <span class="string">"community-points-channel-v1"</span>,
     channel_id <span class="comment">// FIXME: add trailing comma
 </span>);
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>CommunityPointsChannelV1 {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
 
     <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::CommunityPointsChannelV1(<span class="self">self</span>) }
@@ -155,64 +157,64 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>channel_point_redeem() {
-        <span class="kw">let </span>message = <span class="string">r##&quot;
+        <span class="kw">let </span>message = <span class="string">r##"
 {
-    &quot;type&quot;: &quot;reward-redeemed&quot;,
-    &quot;data&quot;: {
-        &quot;timestamp&quot;: &quot;2020-10-10T19:13:30.536153182Z&quot;,
-        &quot;redemption&quot;: {
-            &quot;id&quot;: &quot;b021f290-bedb-49c2-b90f-e6ceb1c0d4ab&quot;,
-            &quot;user&quot;: {
-                &quot;id&quot;: &quot;27620241&quot;,
-                &quot;login&quot;: &quot;emilgardis&quot;,
-                &quot;display_name&quot;: &quot;emilgardis&quot;
+    "type": "reward-redeemed",
+    "data": {
+        "timestamp": "2020-10-10T19:13:30.536153182Z",
+        "redemption": {
+            "id": "b021f290-bedb-49c2-b90f-e6ceb1c0d4ab",
+            "user": {
+                "id": "27620241",
+                "login": "emilgardis",
+                "display_name": "emilgardis"
             },
-            &quot;channel_id&quot;: &quot;27620241&quot;,
-            &quot;redeemed_at&quot;: &quot;2020-10-10T19:13:30.536153182Z&quot;,
-            &quot;reward&quot;: {
-                &quot;id&quot;: &quot;252e209d-4f16-4886-a0d1-97f458ad5698&quot;,
-                &quot;channel_id&quot;: &quot;27620241&quot;,
-                &quot;title&quot;: &quot;Hydration&quot;,
-                &quot;prompt&quot;: &quot;Make Emilgardis drink water&quot;,
-                &quot;cost&quot;: 2000,
-                &quot;is_user_input_required&quot;: true,
-                &quot;is_sub_only&quot;: false,
-                &quot;image&quot;: null,
-                &quot;default_image&quot;: {
-                    &quot;url_1x&quot;: &quot;https://static-cdn.jtvnw.net/custom-reward-images/default-1.png&quot;,
-                    &quot;url_2x&quot;: &quot;https://static-cdn.jtvnw.net/custom-reward-images/default-2.png&quot;,
-                    &quot;url_4x&quot;: &quot;https://static-cdn.jtvnw.net/custom-reward-images/default-4.png&quot;
+            "channel_id": "27620241",
+            "redeemed_at": "2020-10-10T19:13:30.536153182Z",
+            "reward": {
+                "id": "252e209d-4f16-4886-a0d1-97f458ad5698",
+                "channel_id": "27620241",
+                "title": "Hydration",
+                "prompt": "Make Emilgardis drink water",
+                "cost": 2000,
+                "is_user_input_required": true,
+                "is_sub_only": false,
+                "image": null,
+                "default_image": {
+                    "url_1x": "https://static-cdn.jtvnw.net/custom-reward-images/default-1.png",
+                    "url_2x": "https://static-cdn.jtvnw.net/custom-reward-images/default-2.png",
+                    "url_4x": "https://static-cdn.jtvnw.net/custom-reward-images/default-4.png"
                 },
-                &quot;background_color&quot;: &quot;#81AEFF&quot;,
-                &quot;is_enabled&quot;: true,
-                &quot;is_paused&quot;: false,
-                &quot;is_in_stock&quot;: true,
-                &quot;max_per_stream&quot;: {
-                    &quot;is_enabled&quot;: false,
-                    &quot;max_per_stream&quot;: 10
+                "background_color": "#81AEFF",
+                "is_enabled": true,
+                "is_paused": false,
+                "is_in_stock": true,
+                "max_per_stream": {
+                    "is_enabled": false,
+                    "max_per_stream": 10
                 },
-                &quot;should_redemptions_skip_request_queue&quot;: false,
-                &quot;template_id&quot;: null,
-                &quot;updated_for_indicator_at&quot;: &quot;2020-02-06T17:29:19.737311439Z&quot;,
-                &quot;max_per_user_per_stream&quot;: {
-                    &quot;is_enabled&quot;: false,
-                    &quot;max_per_user_per_stream&quot;: 0
+                "should_redemptions_skip_request_queue": false,
+                "template_id": null,
+                "updated_for_indicator_at": "2020-02-06T17:29:19.737311439Z",
+                "max_per_user_per_stream": {
+                    "is_enabled": false,
+                    "max_per_user_per_stream": 0
                 },
-                &quot;global_cooldown&quot;: {
-                    &quot;is_enabled&quot;: false,
-                    &quot;global_cooldown_seconds&quot;: 0
+                "global_cooldown": {
+                    "is_enabled": false,
+                    "global_cooldown_seconds": 0
                 },
-                &quot;redemptions_redeemed_current_stream&quot;: 0,
-                &quot;cooldown_expires_at&quot;: null
+                "redemptions_redeemed_current_stream": 0,
+                "cooldown_expires_at": null
             },
-            &quot;user_input&quot;: &quot;bap&quot;,
-            &quot;status&quot;: &quot;UNFULFILLED&quot;
+            "user_input": "bap",
+            "status": "UNFULFILLED"
         }
     }
 }
-&quot;##</span>;
+"##</span>;
         <span class="kw">let </span>source = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{&quot;type&quot;: &quot;MESSAGE&quot;,&quot;data&quot;: {{ &quot;topic&quot;: &quot;community-points-channel-v1.27620241&quot;, &quot;message&quot;: {message:?} }}}}&quot;#
+            <span class="string">r#"{{"type": "MESSAGE","data": {{ "topic": "community-points-channel-v1.27620241", "message": {message:?} }}}}"#
         </span>);
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(<span class="kw-2">&amp;</span>source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
@@ -226,7 +228,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
-        <span class="kw">let </span>s = <span class="string">&quot;community-points-channel-v1.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"community-points-channel-v1.1234"</span>;
         <span class="macro">assert_eq!</span>(
             CommunityPointsChannelV1 { channel_id: <span class="number">1234 </span>},
             s.to_string().try_into().unwrap()
@@ -235,7 +237,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
-        <span class="kw">let </span>s = <span class="string">&quot;community-points-channel-v1.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"community-points-channel-v1.1234"</span>;
         <span class="kw">let </span>right: String = CommunityPointsChannelV1 { channel_id: <span class="number">1234 </span>}.into();
         <span class="macro">assert_eq!</span>(s.to_string(), right);
     }

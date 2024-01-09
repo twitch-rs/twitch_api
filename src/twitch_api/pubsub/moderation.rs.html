@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/moderation.rs`."><title>moderation.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/moderation.rs`."><title>moderation.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -654,8 +656,8 @@
 <a href="#654" id="654">654</a>
 <a href="#655" id="655">655</a>
 <a href="#656" id="656">656</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">&quot;mod&quot;</span>)]
-#![doc(alias = <span class="string">&quot;chat_moderator_actions&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"mod"</span>)]
+#![doc(alias = <span class="string">"chat_moderator_actions"</span>)]
 #![allow(deprecated)]
 </span><span class="doccomment">//! PubSub messages for moderator actions
 </span><span class="kw">use crate</span>::{pubsub, types};
@@ -663,7 +665,7 @@
 
 <span class="doccomment">/// A moderator performs an action in the channel.
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
-#[serde(into = <span class="string">&quot;String&quot;</span>, try_from = <span class="string">&quot;String&quot;</span>)]
+#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
 </span><span class="kw">pub struct </span>ChatModeratorActions {
     <span class="doccomment">/// The user_id to listen as. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
     </span><span class="kw">pub </span>user_id: u32,
@@ -673,13 +675,13 @@
 
 <span class="macro">impl_de_ser!</span>(
     ChatModeratorActions,
-    <span class="string">&quot;chat_moderator_actions&quot;</span>,
+    <span class="string">"chat_moderator_actions"</span>,
     user_id,
     channel_id
 );
 
 <span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>ChatModeratorActions {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
         <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::ChannelModerate];
 
@@ -688,22 +690,22 @@
 
 <span class="doccomment">/// A moderation action. `moderation_action`
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ModerationAction {
     <span class="doccomment">/// Arguments for moderation_action
-    </span><span class="attr">#[serde(deserialize_with = <span class="string">&quot;pubsub::deserialize_default_from_null&quot;</span>)]
+    </span><span class="attr">#[serde(deserialize_with = <span class="string">"pubsub::deserialize_default_from_null"</span>)]
     </span><span class="kw">pub </span>args: Vec&lt;String&gt;,
     <span class="doccomment">/// User that did moderation action
     </span><span class="attr">#[serde(
         default,
-        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+        deserialize_with = <span class="string">"pubsub::deserialize_none_from_empty_string"
     </span>)]
     </span><span class="kw">pub </span>created_by: <span class="prelude-ty">Option</span>&lt;types::UserName&gt;,
     <span class="doccomment">/// ID of user that did moderation action
     </span><span class="attr">#[serde(
         default,
-        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+        deserialize_with = <span class="string">"pubsub::deserialize_none_from_empty_string"
     </span>)]
     </span><span class="kw">pub </span>created_by_user_id: <span class="prelude-ty">Option</span>&lt;types::UserId&gt;,
     <span class="doccomment">/// Moderation action is triggered from automod
@@ -714,33 +716,33 @@
     <span class="doccomment">/// ID of message associated with moderation action
     </span><span class="attr">#[serde(
         default,
-        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+        deserialize_with = <span class="string">"pubsub::deserialize_none_from_empty_string"
     </span>)]
     </span><span class="kw">pub </span>msg_id: <span class="prelude-ty">Option</span>&lt;types::MsgId&gt;,
     <span class="doccomment">/// Target of moderation action
     </span><span class="kw">pub </span>target_user_id: types::UserId,
     <span class="doccomment">/// Type of moderation
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>type_: ModerationType,
     <span class="comment">// FIXME: Never filled
     </span><span class="attr">#[doc(hidden)]
     #[serde(
         default,
-        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+        deserialize_with = <span class="string">"pubsub::deserialize_none_from_empty_string"
     </span>)]
     </span><span class="kw">pub </span>target_user_login: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="comment">// FIXME: Not sure what this does
     </span><span class="attr">#[doc(hidden)]
     #[serde(
         default,
-        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+        deserialize_with = <span class="string">"pubsub::deserialize_none_from_empty_string"
     </span>)]
     </span><span class="kw">pub </span>created_at: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
 }
 
 <span class="doccomment">/// A moderator was added. `moderator_added`
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ModeratorAdded {
     <span class="doccomment">/// ID of channel where moderator was added
@@ -759,7 +761,7 @@
 
 <span class="doccomment">/// A moderator was removed. `moderator_removed`
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ModeratorRemoved {
     <span class="doccomment">/// ID of channel where moderator was added
@@ -778,7 +780,7 @@
 
 <span class="doccomment">/// Channel Term actions
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChannelTermsAction {
     <span class="doccomment">/// ID of channel where channel terms were changed
@@ -786,7 +788,7 @@
     <span class="doccomment">/// If the term added is temporary or not and if not, when it will expire.
     </span><span class="attr">#[serde(
         default,
-        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+        deserialize_with = <span class="string">"pubsub::deserialize_none_from_empty_string"
     </span>)]
     </span><span class="kw">pub </span>expires_at: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
     <span class="doccomment">/// If the term was permitted/denied because of a previous automod message
@@ -800,48 +802,48 @@
     <span class="doccomment">/// Term definition
     </span><span class="kw">pub </span>text: String,
     <span class="doccomment">/// Type of action done
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>type_: ChannelAction,
     <span class="doccomment">/// Defined if the term was updated, None if new.
     </span><span class="attr">#[serde(
         default,
-        deserialize_with = <span class="string">&quot;pubsub::deserialize_none_from_empty_string&quot;
+        deserialize_with = <span class="string">"pubsub::deserialize_none_from_empty_string"
     </span>)]
     </span><span class="kw">pub </span>updated_at: <span class="prelude-ty">Option</span>&lt;types::Timestamp&gt;,
 }
 
 <span class="doccomment">/// Reply from [ChatModeratorActions]
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
-#[serde(tag = <span class="string">&quot;type&quot;</span>, content = <span class="string">&quot;data&quot;</span>)]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+#[serde(tag = <span class="string">"type"</span>, content = <span class="string">"data"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ChatModeratorActionsReply {
     <span class="doccomment">/// A moderation action. `moderation_action`
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;moderation_action&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"moderation_action"</span>)]
     </span>ModerationAction(ModerationAction),
     <span class="doccomment">/// A channel term was modified, added or removed
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;channel_terms_action&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"channel_terms_action"</span>)]
     </span>ChannelTermsAction(ChannelTermsAction),
     <span class="doccomment">/// A moderator was added. `moderator_added`
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;moderator_added&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"moderator_added"</span>)]
     </span>ModeratorAdded(ModeratorAdded),
     <span class="doccomment">/// A moderator was removed. `moderator_removed`
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;moderator_removed&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"moderator_removed"</span>)]
     </span>ModeratorRemoved(ModeratorRemoved),
     <span class="doccomment">/// Unban request denied
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;deny_unban_request&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"deny_unban_request"</span>)]
     </span>DenyUnbanRequest(UnbanRequest),
     <span class="doccomment">/// Unban request approved
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;approve_unban_request&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"approve_unban_request"</span>)]
     </span>ApproveUnbanRequest(UnbanRequest),
     <span class="doccomment">/// VIP Added
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;vip_added&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"vip_added"</span>)]
     </span>VipAdded(VipAdded),
 }
 
 <span class="doccomment">/// User added as VIP
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 </span><span class="kw">pub struct </span>VipAdded {
     <span class="doccomment">/// Id of channel where VIP was added
     </span><span class="kw">pub </span>channel_id: types::UserId,
@@ -857,7 +859,7 @@
 
 <span class="doccomment">/// Unban request
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UnbanRequest {
     <span class="doccomment">/// Unban response created by user with id
@@ -876,7 +878,7 @@
 
 <span class="doccomment">/// A command
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
+#[serde(rename_all = <span class="string">"snake_case"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ModerationActionCommand {
     <span class="doccomment">/// Delete
@@ -930,36 +932,36 @@
     </span>Unraid,
     <span class="doccomment">/// Slow-mode chat enabled
     </span>Slow,
-    <span class="attr">#[serde(rename = <span class="string">&quot;slowoff&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"slowoff"</span>)]
     </span><span class="doccomment">/// Slow-mode chat disabled
     </span>SlowOff,
     <span class="doccomment">/// Followers-only chat enabled
     </span>Followers,
     <span class="doccomment">/// Followers-only chat disabled
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;followersoff&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"followersoff"</span>)]
     </span>FollowersOff,
     <span class="doccomment">/// Subscriber-only chat enabled
     </span>Subscribers,
     <span class="doccomment">/// Subscriber-only chat disabled
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;subscribersoff&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"subscribersoff"</span>)]
     </span>SubscribersOff,
     <span class="doccomment">/// Emote-only chat enabled
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;emoteonly&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"emoteonly"</span>)]
     </span>EmoteOnly,
     <span class="doccomment">/// Emote-only chat disabled
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;emoteonlyoff&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"emoteonlyoff"</span>)]
     </span>EmoteOnlyOff,
     <span class="doccomment">/// Chat cleared for all viewers
     </span>Clear,
     <span class="doccomment">/// Unique chat enabled
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;r9kbeta&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"r9kbeta"</span>)]
     </span>R9KBeta,
     <span class="doccomment">/// Unique chat disabled
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;r9kbetaoff&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"r9kbetaoff"</span>)]
     </span>R9KBetaOff,
     <span class="doccomment">/// User added as VIP
     ///
-    /// See also: [VipAdded], which **isn&#39;t** the same event.
+    /// See also: [VipAdded], which **isn't** the same event.
     </span>Vip,
     <span class="doccomment">/// User removed as VIP
     </span>Unvip,
@@ -968,10 +970,10 @@
     <span class="doccomment">/// Channel host removed
     </span>Unhost,
     <span class="doccomment">/// Unban Request Approved
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;APPROVE_UNBAN_REQUEST&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"APPROVE_UNBAN_REQUEST"</span>)]
     </span>ApproveUnbanRequest,
     <span class="doccomment">/// Unban Request Denied
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;DENY_UNBAN_REQUEST&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"DENY_UNBAN_REQUEST"</span>)]
     </span>DenyUnbanRequest,
     <span class="doccomment">/// Users own message was deleted.
     </span>DeleteNotification,
@@ -979,7 +981,7 @@
 
 <span class="doccomment">/// A command
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
+#[serde(rename_all = <span class="string">"snake_case"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ChannelAction {
     <span class="doccomment">/// Automod permitted term added
@@ -993,7 +995,7 @@
 }
 
 <span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>ModerationActionCommand {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="kw">use </span>serde::Serialize;
         <span class="self">self</span>.serialize(f)
     }
@@ -1001,7 +1003,7 @@
 
 <span class="doccomment">/// Moderation type
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
+#[serde(rename_all = <span class="string">"snake_case"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ModerationType {
     <span class="doccomment">/// Chat moderated
@@ -1022,14 +1024,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>mod_action_delete() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;chat_moderator_actions.27620241.27620241&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;delete\&quot;,\&quot;args\&quot;:[\&quot;tmo\&quot;,\&quot;bop\&quot;,\&quot;e513c02d-dca5-4480-9af5-e6078d954e42\&quot;],\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;1234\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "chat_moderator_actions.27620241.27620241",
+        "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"delete\",\"args\":[\"tmo\",\"bop\",\"e513c02d-dca5-4480-9af5-e6078d954e42\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"msg_id\":\"\",\"target_user_id\":\"1234\",\"target_user_login\":\"\",\"from_automod\":false}}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1041,7 +1043,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_deser() {
         <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
-        <span class="kw">let </span>s = <span class="string">&quot;chat_moderator_actions.1337.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"chat_moderator_actions.1337.1234"</span>;
         <span class="macro">assert_eq!</span>(
             ChatModeratorActions {
                 user_id: <span class="number">1337</span>,
@@ -1053,7 +1055,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>check_ser() {
-        <span class="kw">let </span>s = <span class="string">&quot;chat_moderator_actions.1337.1234&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"chat_moderator_actions.1337.1234"</span>;
         <span class="kw">let </span>right: String = ChatModeratorActions {
             user_id: <span class="number">1337</span>,
             channel_id: <span class="number">1234</span>,
@@ -1064,7 +1066,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>mod_action_timeout() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.27620241&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;timeout\&quot;,\&quot;args\&quot;:[\&quot;tmo\&quot;,\&quot;1\&quot;,\&quot;\&quot;],\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;1234\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>source = <span class="string">r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.27620241","message":"{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"timeout\",\"args\":[\"tmo\",\"1\",\"\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"msg_id\":\"\",\"target_user_id\":\"1234\",\"target_user_login\":\"\",\"from_automod\":false}}"}}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1075,7 +1077,7 @@
     }
     <span class="attr">#[test]
     </span><span class="kw">fn </span>mod_add_moderator() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.27620241&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderator_added\&quot;,  \&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;27620241\&quot;,\&quot;target_user_id\&quot;:\&quot;19264788\&quot;,\&quot;moderation_action\&quot;:\&quot;mod\&quot;,\&quot;target_user_login\&quot;:\&quot;nightbot\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;created_by\&quot;:\&quot;emilgardis\&quot;}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>source = <span class="string">r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.27620241","message":"{\"type\":\"moderator_added\",  \"data\":{\"channel_id\":\"27620241\",\"target_user_id\":\"19264788\",\"moderation_action\":\"mod\",\"target_user_login\":\"nightbot\",\"created_by_user_id\":\"27620241\",\"created_by\":\"emilgardis\"}}"}}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1087,7 +1089,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>mod_add_moderator_no_user_id() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.27620241&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderator_added\&quot;,  \&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;27620241\&quot;,\&quot;target_user_id\&quot;:\&quot;19264788\&quot;,\&quot;moderation_action\&quot;:\&quot;mod\&quot;,\&quot;target_user_login\&quot;:\&quot;nightbot\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;created_by\&quot;:\&quot;emilgardis\&quot;}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>source = <span class="string">r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.27620241","message":"{\"type\":\"moderator_added\",  \"data\":{\"channel_id\":\"27620241\",\"target_user_id\":\"19264788\",\"moderation_action\":\"mod\",\"target_user_login\":\"nightbot\",\"created_by_user_id\":\"27620241\",\"created_by\":\"emilgardis\"}}"}}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1099,7 +1101,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>mod_remove_moderator() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.691109305.129546453&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderator_removed\&quot;,\&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;129546453\&quot;,\&quot;target_user_id\&quot;:\&quot;691109305\&quot;,\&quot;moderation_action\&quot;:\&quot;unmod\&quot;,\&quot;target_user_login\&quot;:\&quot;rewardmore\&quot;,\&quot;created_by_user_id\&quot;:\&quot;129546453\&quot;,\&quot;created_by\&quot;:\&quot;nerixyz\&quot;}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>source = <span class="string">r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.691109305.129546453","message":"{\"type\":\"moderator_removed\",\"data\":{\"channel_id\":\"129546453\",\"target_user_id\":\"691109305\",\"moderation_action\":\"unmod\",\"target_user_login\":\"rewardmore\",\"created_by_user_id\":\"129546453\",\"created_by\":\"nerixyz\"}}"}}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1110,7 +1112,7 @@
     }
     <span class="attr">#[test]
     </span><span class="kw">fn </span>mod_targeted_delete() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;{&quot;type&quot;:&quot;MESSAGE&quot;,&quot;data&quot;:{&quot;topic&quot;:&quot;chat_moderator_actions.27620241.80525799&quot;,&quot;message&quot;:&quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_targeted_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;delete_notification\&quot;,\&quot;args\&quot;:[\&quot;you have the moonpool no?\&quot;],\&quot;msg_id\&quot;:\&quot;b7ffbf8a-ca9f-497e-bc6f-ae0e606e99dc\&quot;,\&quot;target_user_id\&quot;:\&quot;27620241\&quot;,\&quot;target_user_login\&quot;:\&quot;emilgardis\&quot;}}&quot;}}&quot;#</span>;
+        <span class="kw">let </span>source = <span class="string">r#"{"type":"MESSAGE","data":{"topic":"chat_moderator_actions.27620241.80525799","message":"{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_targeted_login_moderation\",\"moderation_action\":\"delete_notification\",\"args\":[\"you have the moonpool no?\"],\"msg_id\":\"b7ffbf8a-ca9f-497e-bc6f-ae0e606e99dc\",\"target_user_id\":\"27620241\",\"target_user_login\":\"emilgardis\"}}"}}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1121,14 +1123,14 @@
     }
     <span class="attr">#[test]
     </span><span class="kw">fn </span>mod_automod() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;chat_moderator_actions.27620241.27620241&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_channel_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;modified_automod_properties\&quot;,\&quot;args\&quot;:null,\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "chat_moderator_actions.27620241.27620241",
+        "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"modified_automod_properties\",\"args\":null,\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1140,14 +1142,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>mod_automod_delete_blocked_term() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;chat_moderator_actions.27620241.27620241&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;channel_terms_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;delete_blocked_term\&quot;,\&quot;id\&quot;:\&quot;41a8f582-4c60-4ca1-aa10-91ec06161118\&quot;,\&quot;text\&quot;:\&quot;Hype\&quot;,\&quot;requester_id\&quot;:\&quot;27620241\&quot;,\&quot;requester_login\&quot;:\&quot;emilgardis\&quot;,\&quot;channel_id\&quot;:\&quot;27620241\&quot;,\&quot;expires_at\&quot;:\&quot;\&quot;,\&quot;updated_at\&quot;:\&quot;2021-05-10T21:35:28.745222679Z\&quot;,\&quot;from_automod\&quot;:false}}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "chat_moderator_actions.27620241.27620241",
+        "message": "{\"type\":\"channel_terms_action\",\"data\":{\"type\":\"delete_blocked_term\",\"id\":\"41a8f582-4c60-4ca1-aa10-91ec06161118\",\"text\":\"Hype\",\"requester_id\":\"27620241\",\"requester_login\":\"emilgardis\",\"channel_id\":\"27620241\",\"expires_at\":\"\",\"updated_at\":\"2021-05-10T21:35:28.745222679Z\",\"from_automod\":false}}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1159,14 +1161,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>mod_slowmode() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;chat_moderator_actions.27620241.27620241&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_channel_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;slow\&quot;,\&quot;args\&quot;:[\&quot;5\&quot;],\&quot;created_by\&quot;:\&quot;tmo\&quot;,\&quot;created_by_user_id\&quot;:\&quot;1234\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "chat_moderator_actions.27620241.27620241",
+        "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"slow\",\"args\":[\"5\"],\"created_by\":\"tmo\",\"created_by_user_id\":\"1234\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1177,16 +1179,16 @@
     }
 
     <span class="attr">#[test]
-    #[cfg(not(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>))]
+    #[cfg(not(feature = <span class="string">"deny_unknown_fields"</span>))]
     </span><span class="kw">fn </span>allow_unknown() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;chat_moderator_actions.27620241.27620241&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_channel_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;slow\&quot;,\&quot;unknownfield\&quot;: 1,\&quot;args\&quot;:[\&quot;5\&quot;],\&quot;created_by\&quot;:\&quot;tmo\&quot;,\&quot;created_by_user_id\&quot;:\&quot;1234\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "chat_moderator_actions.27620241.27620241",
+        "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"slow\",\"unknownfield\": 1,\"args\":[\"5\"],\"created_by\":\"tmo\",\"created_by_user_id\":\"1234\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1198,14 +1200,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>deny_unban_request() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;chat_moderator_actions.80525799.80525799&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;deny_unban_request\&quot;,\&quot;data\&quot;:{\&quot;moderation_action\&quot;:\&quot;DENY_UNBAN_REQUEST\&quot;,\&quot;created_by_id\&quot;:\&quot;27620241\&quot;,\&quot;created_by_login\&quot;:\&quot;emilgardis\&quot;,\&quot;moderator_message\&quot;:\&quot;ok\&quot;,\&quot;target_user_id\&quot;:\&quot;465894629\&quot;,\&quot;target_user_login\&quot;:\&quot;emil_the_impostor\&quot;}}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "chat_moderator_actions.80525799.80525799",
+        "message": "{\"type\":\"deny_unban_request\",\"data\":{\"moderation_action\":\"DENY_UNBAN_REQUEST\",\"created_by_id\":\"27620241\",\"created_by_login\":\"emilgardis\",\"moderator_message\":\"ok\",\"target_user_id\":\"465894629\",\"target_user_login\":\"emil_the_impostor\"}}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1217,14 +1219,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>approve_unban_request() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
 {
-    &quot;type&quot;: &quot;MESSAGE&quot;,
-    &quot;data&quot;: {
-        &quot;topic&quot;: &quot;chat_moderator_actions.80525799.80525799&quot;,
-        &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;approve_unban_request\&quot;,\&quot;data\&quot;:{\&quot;moderation_action\&quot;:\&quot;APPROVE_UNBAN_REQUEST\&quot;,\&quot;created_by_id\&quot;:\&quot;27620241\&quot;,\&quot;created_by_login\&quot;:\&quot;emilgardis\&quot;,\&quot;moderator_message\&quot;:\&quot;ok\&quot;,\&quot;target_user_id\&quot;:\&quot;465894629\&quot;,\&quot;target_user_login\&quot;:\&quot;emil_the_impostor\&quot;}}&quot;
+    "type": "MESSAGE",
+    "data": {
+        "topic": "chat_moderator_actions.80525799.80525799",
+        "message": "{\"type\":\"approve_unban_request\",\"data\":{\"moderation_action\":\"APPROVE_UNBAN_REQUEST\",\"created_by_id\":\"27620241\",\"created_by_login\":\"emilgardis\",\"moderator_message\":\"ok\",\"target_user_id\":\"465894629\",\"target_user_login\":\"emil_the_impostor\"}}"
     }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1236,14 +1238,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>vip_added() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
         {
-            &quot;type&quot;: &quot;MESSAGE&quot;,
-            &quot;data&quot;: {
-                &quot;topic&quot;: &quot;chat_moderator_actions.80525799.80525799&quot;,
-                &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;vip_added\&quot;,\&quot;data\&quot;:{\&quot;channel_id\&quot;:\&quot;80525799\&quot;,\&quot;target_user_id\&quot;:\&quot;56345511\&quot;,\&quot;target_user_login\&quot;:\&quot;bossquest\&quot;,\&quot;created_by_user_id\&quot;:\&quot;80525799\&quot;,\&quot;created_by\&quot;:\&quot;sessis\&quot;}}&quot;
+            "type": "MESSAGE",
+            "data": {
+                "topic": "chat_moderator_actions.80525799.80525799",
+                "message": "{\"type\":\"vip_added\",\"data\":{\"channel_id\":\"80525799\",\"target_user_id\":\"56345511\",\"target_user_login\":\"bossquest\",\"created_by_user_id\":\"80525799\",\"created_by\":\"sessis\"}}"
             }
-        }&quot;#</span>;
+        }"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1255,14 +1257,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>vip_added_mod_action() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
         {
-            &quot;type&quot;: &quot;MESSAGE&quot;,
-            &quot;data&quot;: {
-                &quot;topic&quot;: &quot;chat_moderator_actions.691109305.120183018&quot;,
-                &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;vip\&quot;,\&quot;args\&quot;:[\&quot;Floikka\&quot;],\&quot;created_by\&quot;:\&quot;nam______________________\&quot;,\&quot;created_by_user_id\&quot;:\&quot;120183018\&quot;,\&quot;created_at\&quot;:\&quot;2022-12-20T16:41:26.168122804Z\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;85262774\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
+            "type": "MESSAGE",
+            "data": {
+                "topic": "chat_moderator_actions.691109305.120183018",
+                "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"vip\",\"args\":[\"Floikka\"],\"created_by\":\"nam______________________\",\"created_by_user_id\":\"120183018\",\"created_at\":\"2022-12-20T16:41:26.168122804Z\",\"msg_id\":\"\",\"target_user_id\":\"85262774\",\"target_user_login\":\"\",\"from_automod\":false}}"
             }
-        }&quot;#</span>;
+        }"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1274,14 +1276,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>vip_removed() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
         {
-            &quot;type&quot;: &quot;MESSAGE&quot;,
-            &quot;data&quot;: {
-                &quot;topic&quot;: &quot;chat_moderator_actions.27620241.27620241&quot;,
-                &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_login_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;unvip\&quot;,\&quot;args\&quot;:[\&quot;emil_the_impostor\&quot;],\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;created_at\&quot;:\&quot;2021-07-27T22:28:31.075027599Z\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;465894629\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
+            "type": "MESSAGE",
+            "data": {
+                "topic": "chat_moderator_actions.27620241.27620241",
+                "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_login_moderation\",\"moderation_action\":\"unvip\",\"args\":[\"emil_the_impostor\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"created_at\":\"2021-07-27T22:28:31.075027599Z\",\"msg_id\":\"\",\"target_user_id\":\"465894629\",\"target_user_login\":\"\",\"from_automod\":false}}"
             }
-        }&quot;#</span>;
+        }"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,
@@ -1293,14 +1295,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>unraid() {
-        <span class="kw">let </span>source = <span class="string">r#&quot;
+        <span class="kw">let </span>source = <span class="string">r#"
         {
-            &quot;type&quot;: &quot;MESSAGE&quot;,
-            &quot;data&quot;: {
-                &quot;topic&quot;: &quot;chat_moderator_actions.27620241.27620241&quot;,
-                &quot;message&quot;: &quot;{\&quot;type\&quot;:\&quot;moderation_action\&quot;,\&quot;data\&quot;:{\&quot;type\&quot;:\&quot;chat_channel_moderation\&quot;,\&quot;moderation_action\&quot;:\&quot;unraid\&quot;,\&quot;args\&quot;:[\&quot;emilgradis\&quot;],\&quot;created_by\&quot;:\&quot;emilgardis\&quot;,\&quot;created_by_user_id\&quot;:\&quot;27620241\&quot;,\&quot;created_at\&quot;:\&quot;\&quot;,\&quot;msg_id\&quot;:\&quot;\&quot;,\&quot;target_user_id\&quot;:\&quot;\&quot;,\&quot;target_user_login\&quot;:\&quot;\&quot;,\&quot;from_automod\&quot;:false}}&quot;
+            "type": "MESSAGE",
+            "data": {
+                "topic": "chat_moderator_actions.27620241.27620241",
+                "message": "{\"type\":\"moderation_action\",\"data\":{\"type\":\"chat_channel_moderation\",\"moderation_action\":\"unraid\",\"args\":[\"emilgradis\"],\"created_by\":\"emilgardis\",\"created_by_user_id\":\"27620241\",\"created_at\":\"\",\"msg_id\":\"\",\"target_user_id\":\"\",\"target_user_login\":\"\",\"from_automod\":false}}"
             }
-        }&quot;#</span>;
+        }"#</span>;
         <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             actual,

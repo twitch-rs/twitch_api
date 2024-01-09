@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/ser.rs`."><title>ser.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/ser.rs`."><title>ser.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -991,17 +993,17 @@
 <span class="kw">use </span>url::form_urlencoded::Serializer <span class="kw">as </span>UrlEncodedSerializer;
 
 <span class="kw">pub fn </span>to_string&lt;T: ser::Serialize&gt;(input: T) -&gt; <span class="prelude-ty">Result</span>&lt;String, Error&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>urlencoder = UrlEncodedSerializer::new(<span class="string">&quot;&quot;</span>.to_owned());
+    <span class="kw">let </span><span class="kw-2">mut </span>urlencoder = UrlEncodedSerializer::new(<span class="string">""</span>.to_owned());
     input.serialize(Serializer::new(<span class="kw-2">&amp;mut </span>urlencoder))<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(urlencoder.finish())
 }
 
-<span class="kw">pub struct </span>Serializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
-    urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;,
+<span class="kw">pub struct </span>Serializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
+    urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; Serializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
-    <span class="kw">fn </span>new(urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; Serializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
+    <span class="kw">fn </span>new(urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;) -&gt; <span class="self">Self </span>{
         Serializer { urlencoder }
     }
 }
@@ -1011,26 +1013,26 @@
 </span><span class="doccomment">/// Errors from the query serializer
 </span><span class="kw">pub enum </span>Error {
     <span class="doccomment">/// {0}
-    </span>Custom(Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;),
+    </span>Custom(Cow&lt;<span class="lifetime">'static</span>, str&gt;),
     <span class="doccomment">/// serializer only supports structs and maps on top-level
     </span>TopLevelNotSupported {
         <span class="doccomment">/// Location where this was triggered
-        </span>location: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>std::panic::Location&lt;<span class="lifetime">&#39;static</span>&gt;,
+        </span>location: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>std::panic::Location&lt;<span class="lifetime">'static</span>&gt;,
     },
     <span class="doccomment">/// field serializer only supports strings, sequences, options, maps and tuples
     </span>FieldNotSupported {
         <span class="doccomment">/// Location where this was triggered
-        </span>location: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>std::panic::Location&lt;<span class="lifetime">&#39;static</span>&gt;,
+        </span>location: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>std::panic::Location&lt;<span class="lifetime">'static</span>&gt;,
     },
     <span class="doccomment">/// pair serializer only supports strings, integers, floats, bools. options
     </span>PairNotSupported {
         <span class="doccomment">/// Location where this was triggered
-        </span>location: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>std::panic::Location&lt;<span class="lifetime">&#39;static</span>&gt;,
+        </span>location: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>std::panic::Location&lt;<span class="lifetime">'static</span>&gt;,
     },
     <span class="doccomment">/// value serializer only supports primitive types
     </span>ValueNotSupported {
         <span class="doccomment">/// Location where this was triggered
-        </span>location: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>std::panic::Location&lt;<span class="lifetime">&#39;static</span>&gt;,
+        </span>location: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>std::panic::Location&lt;<span class="lifetime">'static</span>&gt;,
     },
 }
 
@@ -1068,12 +1070,12 @@
     <span class="kw">fn </span>custom&lt;T: std::fmt::Display&gt;(msg: T) -&gt; <span class="self">Self </span>{ Error::Custom(msg.to_string().into()) }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; ser::Serializer <span class="kw">for </span>Serializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; ser::Serializer <span class="kw">for </span>Serializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
     <span class="kw">type </span>Error = Error;
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;;
-    <span class="kw">type </span>SerializeMap = MapSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt;;
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;;
+    <span class="kw">type </span>SerializeMap = MapSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt;;
     <span class="kw">type </span>SerializeSeq = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
-    <span class="kw">type </span>SerializeStruct = StructSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt;;
+    <span class="kw">type </span>SerializeStruct = StructSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt;;
     <span class="kw">type </span>SerializeStructVariant = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
     <span class="comment">// FIXME: This should be implemented.
     </span><span class="kw">type </span>SerializeTuple = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
@@ -1082,7 +1084,7 @@
 
     <span class="kw">fn </span>serialize_struct(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeStruct, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Ok</span>(StructSerializer {
@@ -1098,9 +1100,9 @@
 
     <span class="kw">fn </span>serialize_tuple_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTupleVariant, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::top_level_not_supported())
@@ -1175,22 +1177,22 @@
         <span class="prelude-val">Err</span>(Error::top_level_not_supported())
     }
 
-    <span class="kw">fn </span>serialize_unit_struct(<span class="self">self</span>, _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+    <span class="kw">fn </span>serialize_unit_struct(<span class="self">self</span>, _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::top_level_not_supported())
     }
 
     <span class="kw">fn </span>serialize_unit_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::top_level_not_supported())
     }
 
     <span class="kw">fn </span>serialize_newtype_struct&lt;T: <span class="question-mark">?</span>Sized&gt;(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _value: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
@@ -1201,9 +1203,9 @@
 
     <span class="kw">fn </span>serialize_newtype_variant&lt;T: <span class="question-mark">?</span>Sized&gt;(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _value: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
@@ -1222,7 +1224,7 @@
 
     <span class="kw">fn </span>serialize_tuple_struct(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTupleStruct, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::top_level_not_supported())
@@ -1230,22 +1232,22 @@
 
     <span class="kw">fn </span>serialize_struct_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeStructVariant, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::top_level_not_supported())
     }
 }
 
-<span class="kw">pub struct </span>MapSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
-    urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;,
+<span class="kw">pub struct </span>MapSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
+    urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; ser::SerializeMap <span class="kw">for </span>MapSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; ser::SerializeMap <span class="kw">for </span>MapSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
     <span class="kw">type </span>Error = Error;
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;;
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;;
 
     <span class="kw">fn </span>serialize_entry&lt;K: <span class="question-mark">?</span>Sized, V: <span class="question-mark">?</span>Sized&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -1276,17 +1278,17 @@
     <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; { <span class="prelude-val">Ok</span>(<span class="self">self</span>.urlencoder) }
 }
 
-<span class="kw">pub struct </span>StructSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
-    urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;,
+<span class="kw">pub struct </span>StructSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
+    urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; ser::SerializeStruct <span class="kw">for </span>StructSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; ser::SerializeStruct <span class="kw">for </span>StructSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
     <span class="kw">type </span>Error = Error;
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;;
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;;
 
     <span class="kw">fn </span>serialize_field&lt;T: <span class="question-mark">?</span>Sized&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        key: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         value: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
     <span class="kw">where
@@ -1302,15 +1304,15 @@
     <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; { <span class="prelude-val">Ok</span>(<span class="self">self</span>.urlencoder) }
 }
 
-<span class="kw">pub struct </span>FieldSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
-    key: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-    urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;,
+<span class="kw">pub struct </span>FieldSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
+    key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+    urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; ser::Serializer <span class="kw">for </span>FieldSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; ser::Serializer <span class="kw">for </span>FieldSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
     <span class="kw">type </span>Error = Error;
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;;
-    <span class="kw">type </span>SerializeMap = MapSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt;;
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;;
+    <span class="kw">type </span>SerializeMap = MapSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt;;
     <span class="kw">type </span>SerializeSeq = <span class="self">Self</span>;
     <span class="kw">type </span>SerializeStruct = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
     <span class="kw">type </span>SerializeStructVariant = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
@@ -1353,9 +1355,9 @@
 
     <span class="kw">fn </span>serialize_unit_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
         variant.serialize(PairSerializer {
             key: <span class="self">self</span>.key,
@@ -1458,13 +1460,13 @@
 
     <span class="kw">fn </span>serialize_unit(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; { <span class="prelude-val">Err</span>(Error::field_not_supported()) }
 
-    <span class="kw">fn </span>serialize_unit_struct(<span class="self">self</span>, _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+    <span class="kw">fn </span>serialize_unit_struct(<span class="self">self</span>, _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::field_not_supported())
     }
 
     <span class="kw">fn </span>serialize_newtype_struct&lt;T: <span class="question-mark">?</span>Sized&gt;(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _value: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
@@ -1475,9 +1477,9 @@
 
     <span class="kw">fn </span>serialize_newtype_variant&lt;T: <span class="question-mark">?</span>Sized&gt;(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _value: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
@@ -1488,7 +1490,7 @@
 
     <span class="kw">fn </span>serialize_tuple_struct(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTupleStruct, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::field_not_supported())
@@ -1496,9 +1498,9 @@
 
     <span class="kw">fn </span>serialize_tuple_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTupleVariant, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::field_not_supported())
@@ -1506,7 +1508,7 @@
 
     <span class="kw">fn </span>serialize_struct(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeStruct, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::field_not_supported())
@@ -1514,18 +1516,18 @@
 
     <span class="kw">fn </span>serialize_struct_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeStructVariant, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::field_not_supported())
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; ser::SerializeSeq <span class="kw">for </span>FieldSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; ser::SerializeSeq <span class="kw">for </span>FieldSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
     <span class="kw">type </span>Error = Error;
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;;
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;;
 
     <span class="kw">fn </span>serialize_element&lt;T: <span class="question-mark">?</span>Sized&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
     <span class="kw">where </span>T: serde::Serialize {
@@ -1539,9 +1541,9 @@
     <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; { <span class="prelude-val">Ok</span>(<span class="self">self</span>.urlencoder) }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; ser::SerializeTuple <span class="kw">for </span>FieldSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; ser::SerializeTuple <span class="kw">for </span>FieldSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
     <span class="kw">type </span>Error = Error;
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;;
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;;
 
     <span class="kw">fn </span>serialize_element&lt;T: <span class="question-mark">?</span>Sized&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
     <span class="kw">where </span>T: serde::Serialize {
@@ -1555,14 +1557,14 @@
     <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; { <span class="prelude-val">Ok</span>(<span class="self">self</span>.urlencoder) }
 }
 
-<span class="kw">struct </span>PairSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
-    key: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-    urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;,
+<span class="kw">struct </span>PairSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
+    key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+    urlencoder: <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; ser::Serializer <span class="kw">for </span>PairSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; ser::Serializer <span class="kw">for </span>PairSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
     <span class="kw">type </span>Error = Error;
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;;
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;;
     <span class="kw">type </span>SerializeMap = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
     <span class="kw">type </span>SerializeSeq = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
     <span class="kw">type </span>SerializeStruct = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
@@ -1654,9 +1656,9 @@
 
     <span class="kw">fn </span>serialize_unit_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
         <span class="self">self</span>.urlencoder.append_pair(<span class="self">self</span>.key, variant);
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.urlencoder)
@@ -1672,13 +1674,13 @@
 
     <span class="kw">fn </span>serialize_unit(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; { <span class="prelude-val">Err</span>(Error::pair_not_supported()) }
 
-    <span class="kw">fn </span>serialize_unit_struct(<span class="self">self</span>, _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+    <span class="kw">fn </span>serialize_unit_struct(<span class="self">self</span>, _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::pair_not_supported())
     }
 
     <span class="kw">fn </span>serialize_newtype_struct&lt;T: <span class="question-mark">?</span>Sized&gt;(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _value: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
@@ -1689,9 +1691,9 @@
 
     <span class="kw">fn </span>serialize_newtype_variant&lt;T: <span class="question-mark">?</span>Sized&gt;(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _value: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
@@ -1708,7 +1710,7 @@
 
     <span class="kw">fn </span>serialize_tuple_struct(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTupleStruct, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::pair_not_supported())
@@ -1716,9 +1718,9 @@
 
     <span class="kw">fn </span>serialize_tuple_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTupleVariant, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::pair_not_supported())
@@ -1730,7 +1732,7 @@
 
     <span class="kw">fn </span>serialize_struct(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeStruct, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::pair_not_supported())
@@ -1738,18 +1740,18 @@
 
     <span class="kw">fn </span>serialize_struct_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeStructVariant, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::pair_not_supported())
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; ser::SerializeTuple <span class="kw">for </span>PairSerializer&lt;<span class="lifetime">&#39;input</span>, <span class="lifetime">&#39;output</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; ser::SerializeTuple <span class="kw">for </span>PairSerializer&lt;<span class="lifetime">'input</span>, <span class="lifetime">'output</span>&gt; {
     <span class="kw">type </span>Error = Error;
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">&#39;output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">&#39;input</span>, String&gt;;
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="kw-2">&amp;</span><span class="lifetime">'output </span><span class="kw-2">mut </span>UrlEncodedSerializer&lt;<span class="lifetime">'input</span>, String&gt;;
 
     <span class="kw">fn </span>serialize_element&lt;T: <span class="question-mark">?</span>Sized&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
     <span class="kw">where </span>T: serde::Serialize {
@@ -1765,7 +1767,7 @@
 
 <span class="kw">impl </span>ser::Serializer <span class="kw">for </span>ValueSerializer {
     <span class="kw">type </span>Error = Error;
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;;
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= Cow&lt;<span class="lifetime">'static</span>, str&gt;;
     <span class="kw">type </span>SerializeMap = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
     <span class="kw">type </span>SerializeSeq = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
     <span class="kw">type </span>SerializeStruct = Impossible&lt;<span class="self">Self</span>::Ok, Error&gt;;
@@ -1836,22 +1838,22 @@
 
     <span class="kw">fn </span>serialize_unit(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; { <span class="prelude-val">Err</span>(Error::value_not_supported()) }
 
-    <span class="kw">fn </span>serialize_unit_struct(<span class="self">self</span>, _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+    <span class="kw">fn </span>serialize_unit_struct(<span class="self">self</span>, _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::value_not_supported())
     }
 
     <span class="kw">fn </span>serialize_unit_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::value_not_supported())
     }
 
     <span class="kw">fn </span>serialize_newtype_struct&lt;T: <span class="question-mark">?</span>Sized&gt;(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _value: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
@@ -1862,9 +1864,9 @@
 
     <span class="kw">fn </span>serialize_newtype_variant&lt;T: <span class="question-mark">?</span>Sized&gt;(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _value: <span class="kw-2">&amp;</span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
@@ -1883,7 +1885,7 @@
 
     <span class="kw">fn </span>serialize_tuple_struct(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTupleStruct, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::value_not_supported())
@@ -1891,9 +1893,9 @@
 
     <span class="kw">fn </span>serialize_tuple_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTupleVariant, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::value_not_supported())
@@ -1905,7 +1907,7 @@
 
     <span class="kw">fn </span>serialize_struct(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeStruct, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::value_not_supported())
@@ -1913,9 +1915,9 @@
 
     <span class="kw">fn </span>serialize_struct_variant(
         <span class="self">self</span>,
-        _name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _variant_index: u32,
-        _variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        _variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         _len: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeStructVariant, <span class="self">Self</span>::Error&gt; {
         <span class="prelude-val">Err</span>(Error::value_not_supported())
@@ -1926,7 +1928,7 @@
 #[test]
 </span><span class="kw">fn </span>serialize_query() {
     <span class="attr">#[derive(serde_derive::Serialize)]
-    #[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+    #[serde(rename_all = <span class="string">"lowercase"</span>)]
     </span><span class="kw">pub enum </span>Variant {
         Hello,
         World,
@@ -1938,8 +1940,8 @@
         possibly: <span class="prelude-ty">Option</span>&lt;(String,)&gt;,
         ids: Vec&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::types::UserId&gt;&gt;,
         ids2: Vec&lt;u64&gt;,
-        stuff: (u8, f32, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
-        extras: std::collections::BTreeMap&lt;i32, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;,
+        stuff: (u8, f32, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str),
+        extras: std::collections::BTreeMap&lt;i32, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;,
         username: <span class="kw">crate</span>::types::UserName,
         variant: Variant,
         variant2: <span class="prelude-ty">Option</span>&lt;Variant&gt;,
@@ -1947,21 +1949,21 @@
     }
 
     <span class="kw">let </span>req = Request {
-        filter: <span class="string">&quot;1&quot;</span>.to_string(),
+        filter: <span class="string">"1"</span>.to_string(),
         maybe: <span class="prelude-val">None</span>,
-        possibly: <span class="prelude-val">Some</span>((<span class="string">&quot;sure thing&quot;</span>.to_string(),)),
-        ids: <span class="macro">vec!</span>[<span class="prelude-val">Some</span>(<span class="string">&quot;2&quot;</span>.into()), <span class="prelude-val">Some</span>(<span class="string">&quot;3&quot;</span>.into())],
+        possibly: <span class="prelude-val">Some</span>((<span class="string">"sure thing"</span>.to_string(),)),
+        ids: <span class="macro">vec!</span>[<span class="prelude-val">Some</span>(<span class="string">"2"</span>.into()), <span class="prelude-val">Some</span>(<span class="string">"3"</span>.into())],
         ids2: <span class="macro">vec!</span>[<span class="number">4</span>],
-        stuff: (<span class="number">32</span>, -<span class="number">35f32</span>, <span class="string">&quot;ha&quot;</span>),
-        extras: [(<span class="number">1i32</span>, <span class="string">&quot;one&quot;</span>), (<span class="number">2</span>, <span class="string">&quot;two&quot;</span>)].iter().copied().collect(),
-        username: <span class="kw">crate</span>::types::UserName::from(<span class="string">&quot;justintv&quot;</span>),
+        stuff: (<span class="number">32</span>, -<span class="number">35f32</span>, <span class="string">"ha"</span>),
+        extras: [(<span class="number">1i32</span>, <span class="string">"one"</span>), (<span class="number">2</span>, <span class="string">"two"</span>)].iter().copied().collect(),
+        username: <span class="kw">crate</span>::types::UserName::from(<span class="string">"justintv"</span>),
         variant: Variant::Hello,
         variant2: <span class="prelude-val">Some</span>(Variant::World),
         num: <span class="number">123</span>,
     };
     <span class="macro">assert_eq!</span>(
         to_string(req).unwrap(),
-        <span class="string">&quot;filter=1&amp;possibly=sure+thing&amp;ids=2&amp;ids=3&amp;ids2=4&amp;stuff=32&amp;stuff=-35&amp;stuff=ha&amp;1=one&amp;2=two&amp;username=justintv&amp;variant=hello&amp;variant2=world&amp;num=123&quot;
+        <span class="string">"filter=1&amp;possibly=sure+thing&amp;ids=2&amp;ids=3&amp;ids2=4&amp;stuff=32&amp;stuff=-35&amp;stuff=ha&amp;1=one&amp;2=two&amp;username=justintv&amp;variant=hello&amp;variant2=world&amp;num=123"
     </span>)
 }
 </code></pre></div></section></main></body></html>

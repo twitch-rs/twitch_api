@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (4b85902b4 2023-11-04)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (ca663b06c 2024-01-08)" data-channel="nightly" data-search-js="search-1cefe72944ee87e6.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -953,9 +955,9 @@
 //! # Examples
 //!
 //! See [`examples/`](https://github.com/twitch-rs/twitch_api/tree/main/examples/eventsub) for a more complete example of using eventsub.
-</span><span class="comment">// FIXME: Use the actual link to the source files, currently can&#39;t do that on docs.rs since the workspace member is removed in the tarball
+</span><span class="comment">// FIXME: Use the actual link to the source files, currently can't do that on docs.rs since the workspace member is removed in the tarball
 </span><span class="doccomment">//!
-//! Subscribe to a channel&#39;s follow events:
+//! Subscribe to a channel's follow events:
 //!
 //! ```rust, no_run
 //! use twitch_api::{
@@ -964,36 +966,36 @@
 //! };
 //! # use twitch_api::client;
 //! # #[tokio::main]
-//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
-//! # let client: helix::HelixClient&lt;&#39;static, client::DummyHttpClient&gt; = helix::HelixClient::default();
-//! # let token = twitch_oauth2::AccessToken::new(&quot;validtoken&quot;.to_string());
+//! # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+//! # let client: helix::HelixClient&lt;'static, client::DummyHttpClient&gt; = helix::HelixClient::default();
+//! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
 //!
-//! let event = ChannelFollowV2::new(&quot;1234&quot;, &quot;5678&quot;);
+//! let event = ChannelFollowV2::new("1234", "5678");
 //! let transport = Transport::webhook(
-//!     &quot;https://example.org/eventsub/channelfollow&quot;,
-//!     String::from(&quot;secretabcd&quot;),
+//!     "https://example.org/eventsub/channelfollow",
+//!     String::from("secretabcd"),
 //! );
 //!
 //! let event_information = client
 //!     .create_eventsub_subscription(event, transport, &amp;token)
 //!     .await?;
 //!
-//! println!(&quot;event id: {:?}&quot;, event_information.id);
+//! println!("event id: {:?}", event_information.id);
 //! # Ok(())
 //! # }
 //! ```
 //!
-//! You&#39;ll now get a http POST request to the url you specified as the `callback`.
+//! You'll now get a http POST request to the url you specified as the `callback`.
 //! You need to respond to this request from your webserver with a 200 OK response with the [`challenge`](VerificationRequest::challenge) as the body.
-//! After this, you&#39;ll get notifications
+//! After this, you'll get notifications
 //! ```rust
 //! use twitch_api::eventsub::{Event, Payload, Message};
 //! pub fn parse_request(
 //!     request: &amp;http::Request&lt;Vec&lt;u8&gt;&gt;,
-//! ) -&gt; Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, Box&lt;dyn std::error::Error + Send + Sync + &#39;static&gt;&gt; {
-//!     // First, we verify the response, assuring it&#39;s legit.
-//!     if !Event::verify_payload(request, b&quot;secretabcd&quot;) {
+//! ) -&gt; Result&lt;http::Response&lt;Vec&lt;u8&gt;&gt;, Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+//!     // First, we verify the response, assuring it's legit.
+//!     if !Event::verify_payload(request, b"secretabcd") {
 //!         return Err(todo!());
 //!     }
 //!     match Event::parse_http(request)? {
@@ -1001,7 +1003,7 @@
 //!             message: Message::VerificationRequest(ver),
 //!             ..
 //!         }) =&gt; {
-//!             // We&#39;ve verified the request, so we can respond to it with the challenge
+//!             // We've verified the request, so we can respond to it with the challenge
 //!             Ok(http::Response::builder()
 //!                 .status(200)
 //!                 .body(ver.challenge.into_bytes())?)
@@ -1014,7 +1016,7 @@
 //!             // twitch may resend notifications, and in those cases you should just return 200 OK.
 //!
 //!             // Do whatever you need to do with the event. Preferably send the event to a channel.
-//!             println!(&quot;user {:?} followed {:?}&quot;, notif.user_name, notif.broadcaster_user_name);
+//!             println!("user {:?} followed {:?}", notif.user_name, notif.broadcaster_user_name);
 //!             Ok(http::Response::builder().status(200).body(vec![])?)
 //!         }
 //!         _ =&gt; Ok(http::Response::builder().status(200).body(vec![])?),
@@ -1046,13 +1048,13 @@
     </span><span class="kw">type </span>Payload: PartialEq + std::fmt::Debug + DeserializeOwned + serde::Serialize + Clone;
 
     <span class="doccomment">/// Scopes needed by this subscription
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator;
     <span class="doccomment">/// Optional scopes needed by this subscription
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;twitch_oauth2&quot;</span>)]
-    </span><span class="kw">const </span>OPT_SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
+    </span><span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+    </span><span class="kw">const </span>OPT_SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
     <span class="doccomment">/// Subscription type version
-    </span><span class="kw">const </span>VERSION: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str;
+    </span><span class="kw">const </span>VERSION: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str;
     <span class="doccomment">/// Subscription type name.
     </span><span class="kw">const </span>EVENT_TYPE: EventType;
 
@@ -1064,7 +1066,7 @@
 
 <span class="doccomment">/// Verification Request
 </span><span class="attr">#[derive(PartialEq, Eq, Debug, Serialize, Deserialize, Clone)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>VerificationRequest {
     <span class="doccomment">/// Challenge string.
@@ -1086,7 +1088,7 @@
     <span class="doccomment">/// A [subscription revocation](https://dev.twitch.tv/docs/eventsub#subscription-revocation)
     </span>Revocation(),
     <span class="doccomment">/// A notification holding some event data.
-    </span><span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+    </span><span class="attr">#[serde(bound = <span class="string">"E: EventSubscription"</span>)]
     </span>Notification(&lt;E <span class="kw">as </span>EventSubscription&gt;::Payload),
 }
 
@@ -1116,46 +1118,46 @@
     ///
     /// ```rust
     /// use twitch_api::eventsub::{channel::ChannelFollowV2, Payload};
-    /// let notification = r#&quot;
+    /// let notification = r#"
     /// {
-    ///     &quot;subscription&quot;: {
-    ///         &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
-    ///         &quot;type&quot;: &quot;channel.follow&quot;,
-    ///         &quot;version&quot;: &quot;2&quot;,
-    ///         &quot;status&quot;: &quot;enabled&quot;,
-    ///         &quot;cost&quot;: 0,
-    ///         &quot;condition&quot;: {
-    ///            &quot;broadcaster_user_id&quot;: &quot;1337&quot;,
-    ///            &quot;moderator_user_id&quot;: &quot;1337&quot;
+    ///     "subscription": {
+    ///         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+    ///         "type": "channel.follow",
+    ///         "version": "2",
+    ///         "status": "enabled",
+    ///         "cost": 0,
+    ///         "condition": {
+    ///            "broadcaster_user_id": "1337",
+    ///            "moderator_user_id": "1337"
     ///         },
-    ///          &quot;transport&quot;: {
-    ///             &quot;method&quot;: &quot;webhook&quot;,
-    ///             &quot;callback&quot;: &quot;https://example.com/webhooks/callback&quot;
+    ///          "transport": {
+    ///             "method": "webhook",
+    ///             "callback": "https://example.com/webhooks/callback"
     ///         },
-    ///         &quot;created_at&quot;: &quot;2019-11-16T10:11:12.634234626Z&quot;
+    ///         "created_at": "2019-11-16T10:11:12.634234626Z"
     ///     },
-    ///     &quot;event&quot;: {
-    ///         &quot;user_id&quot;: &quot;1234&quot;,
-    ///         &quot;user_login&quot;: &quot;cool_user&quot;,
-    ///         &quot;user_name&quot;: &quot;Cool_User&quot;,
-    ///         &quot;broadcaster_user_id&quot;: &quot;1337&quot;,
-    ///         &quot;broadcaster_user_login&quot;: &quot;cooler_user&quot;,
-    ///         &quot;broadcaster_user_name&quot;: &quot;Cooler_User&quot;,
-    ///         &quot;followed_at&quot;: &quot;2020-07-15T18:16:11.17106713Z&quot;
+    ///     "event": {
+    ///         "user_id": "1234",
+    ///         "user_login": "cool_user",
+    ///         "user_name": "Cool_User",
+    ///         "broadcaster_user_id": "1337",
+    ///         "broadcaster_user_login": "cooler_user",
+    ///         "broadcaster_user_name": "Cooler_User",
+    ///         "followed_at": "2020-07-15T18:16:11.17106713Z"
     ///     }
     /// }
-    /// &quot;#;
+    /// "#;
     /// let payload: Payload&lt;ChannelFollowV2&gt; =
     ///     Payload::parse_notification(notification)?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
     </span><span class="kw">pub fn </span>parse_notification(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
         <span class="attr">#[derive(Deserialize)]
-        #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+        #[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
         </span><span class="kw">struct </span>Notification&lt;E: EventSubscription&gt; {
-            <span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+            <span class="attr">#[serde(bound = <span class="string">"E: EventSubscription"</span>)]
             </span><span class="kw">pub </span>subscription: EventSubscriptionInformation&lt;E&gt;,
-            <span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+            <span class="attr">#[serde(bound = <span class="string">"E: EventSubscription"</span>)]
             </span><span class="kw">pub </span>event: &lt;E <span class="kw">as </span>EventSubscription&gt;::Payload,
         }
 
@@ -1176,35 +1178,35 @@
     ///
     /// ```rust
     /// use twitch_api::eventsub::{channel::ChannelFollowV2, Payload};
-    /// let notification = r#&quot;
+    /// let notification = r#"
     /// {
-    ///     &quot;subscription&quot;: {
-    ///         &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
-    ///         &quot;status&quot;: &quot;authorization_revoked&quot;,
-    ///         &quot;type&quot;: &quot;channel.follow&quot;,
-    ///         &quot;cost&quot;: 0,
-    ///         &quot;version&quot;: &quot;2&quot;,
-    ///         &quot;condition&quot;: {
-    ///             &quot;broadcaster_user_id&quot;: &quot;1337&quot;,
-    ///             &quot;moderator_user_id&quot;: &quot;1337&quot;
+    ///     "subscription": {
+    ///         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+    ///         "status": "authorization_revoked",
+    ///         "type": "channel.follow",
+    ///         "cost": 0,
+    ///         "version": "2",
+    ///         "condition": {
+    ///             "broadcaster_user_id": "1337",
+    ///             "moderator_user_id": "1337"
     ///         },
-    ///         &quot;transport&quot;: {
-    ///             &quot;method&quot;: &quot;webhook&quot;,
-    ///             &quot;callback&quot;: &quot;https://example.com/webhooks/callback&quot;
+    ///         "transport": {
+    ///             "method": "webhook",
+    ///             "callback": "https://example.com/webhooks/callback"
     ///         },
-    ///         &quot;created_at&quot;: &quot;2019-11-16T10:11:12.123Z&quot;
+    ///         "created_at": "2019-11-16T10:11:12.123Z"
     ///     }
     /// }
-    /// &quot;#;
+    /// "#;
     /// let payload: Payload&lt;ChannelFollowV2&gt; =
     ///     Payload::parse_revocation(notification)?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
     </span><span class="kw">pub fn </span>parse_revocation(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
         <span class="attr">#[derive(Deserialize)]
-        #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+        #[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
         </span><span class="kw">struct </span>Notification&lt;E: EventSubscription&gt; {
-            <span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+            <span class="attr">#[serde(bound = <span class="string">"E: EventSubscription"</span>)]
             </span><span class="kw">pub </span>subscription: EventSubscriptionInformation&lt;E&gt;,
         }
 
@@ -1222,38 +1224,38 @@
     ///
     /// ```rust
     /// use twitch_api::eventsub::{channel::ChannelFollowV2, Payload};
-    /// let notification = r#&quot;
+    /// let notification = r#"
     /// {
-    ///     &quot;challenge&quot;: &quot;pogchamp-kappa-360noscope-vohiyo&quot;,
-    ///     &quot;subscription&quot;: {
-    ///         &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
-    ///         &quot;status&quot;: &quot;webhook_callback_verification_pending&quot;,
-    ///         &quot;type&quot;: &quot;channel.follow&quot;,
-    ///         &quot;version&quot;: &quot;2&quot;,
-    ///         &quot;cost&quot;: 1,
-    ///         &quot;condition&quot;: {
-    ///             &quot;broadcaster_user_id&quot;: &quot;12826&quot;,
-    ///             &quot;moderator_user_id&quot;: &quot;12826&quot;
+    ///     "challenge": "pogchamp-kappa-360noscope-vohiyo",
+    ///     "subscription": {
+    ///         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+    ///         "status": "webhook_callback_verification_pending",
+    ///         "type": "channel.follow",
+    ///         "version": "2",
+    ///         "cost": 1,
+    ///         "condition": {
+    ///             "broadcaster_user_id": "12826",
+    ///             "moderator_user_id": "12826"
     ///         },
-    ///         &quot;transport&quot;: {
-    ///             &quot;method&quot;: &quot;webhook&quot;,
-    ///             &quot;callback&quot;: &quot;https://example.com/webhooks/callback&quot;
+    ///         "transport": {
+    ///             "method": "webhook",
+    ///             "callback": "https://example.com/webhooks/callback"
     ///         },
-    ///         &quot;created_at&quot;: &quot;2019-11-16T10:11:12.123Z&quot;
+    ///         "created_at": "2019-11-16T10:11:12.123Z"
     ///     }
     /// }
-    /// &quot;#;
+    /// "#;
     /// let payload: Payload&lt;ChannelFollowV2&gt; =
     ///     Payload::parse_verification_request(notification)?;
     /// # Ok::&lt;(), Box&lt;dyn std::error::Error&gt;&gt;(())
     /// ```
     </span><span class="kw">pub fn </span>parse_verification_request(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
         <span class="attr">#[derive(Deserialize)]
-        #[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+        #[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
         </span><span class="kw">struct </span>Notification&lt;E: EventSubscription&gt; {
-            <span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+            <span class="attr">#[serde(bound = <span class="string">"E: EventSubscription"</span>)]
             </span><span class="kw">pub </span>subscription: EventSubscriptionInformation&lt;E&gt;,
-            <span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+            <span class="attr">#[serde(bound = <span class="string">"E: EventSubscription"</span>)]
             </span><span class="kw">pub </span>challenge: String,
         }
 
@@ -1270,16 +1272,16 @@
 
     <span class="doccomment">/// Parse http post request as a [Payload] with a specific [event](EventSubscription).
     ///
-    /// If you don&#39;t know what event this payload is, use [`Event::parse_http`] instead.
+    /// If you don't know what event this payload is, use [`Event::parse_http`] instead.
     ///
-    /// If your [`Request&lt;B&gt;`](http::Request) is of another type that doesn&#39;t implement `AsRef&lt;[u8]&gt;`, try converting it with [`Request::map`](http::Request::map)
+    /// If your [`Request&lt;B&gt;`](http::Request) is of another type that doesn't implement `AsRef&lt;[u8]&gt;`, try converting it with [`Request::map`](http::Request::map)
     ///
     /// ```rust
     /// use http::Request;
     /// use twitch_api::eventsub::{Payload, channel::ChannelFollowV2};
     /// # struct Body {} impl Body { fn new() -&gt; Self {Body {}} fn to_bytes(&amp;self) -&gt; &amp;[u8] { &amp;[] } }
     /// # fn a() -&gt; Result&lt;(), twitch_api::eventsub::PayloadParseError&gt; {
-    /// // Example of a request with a body that doesn&#39;t implement `AsRef&lt;[u8]&gt;`
+    /// // Example of a request with a body that doesn't implement `AsRef&lt;[u8]&gt;`
     /// let original_request: Request&lt;Body&gt; = http::Request::new(Body::new());
     /// // Convert to a request with a body of `Vec&lt;u8&gt;`, which does implement `AsRef&lt;[u8]&gt;`
     /// let converted_request: Request&lt;Vec&lt;u8&gt;&gt; = original_request.map(|r| r.to_bytes().to_owned());
@@ -1293,18 +1295,18 @@
         </span><span class="kw">let </span>source = request.body().as_ref().into();
         <span class="kw">let </span>ty = request
             .headers()
-            .get(<span class="string">&quot;Twitch-Eventsub-Message-Type&quot;</span>)
+            .get(<span class="string">"Twitch-Eventsub-Message-Type"</span>)
             .map(|v| v.as_bytes())
-            .unwrap_or_else(|| <span class="string">b&quot;notification&quot;</span>)
+            .unwrap_or_else(|| <span class="string">b"notification"</span>)
             .into();
         <span class="self">Self</span>::parse_request(ty, source)
     }
 
     <span class="doccomment">/// Parse a slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or the specific `parse_*` functions
     </span><span class="attr">#[doc(hidden)]
-    </span><span class="kw">pub fn </span>parse_request&lt;<span class="lifetime">&#39;a</span>&gt;(
-        ty: Cow&lt;<span class="lifetime">&#39;a</span>, [u8]&gt;,
-        source: Cow&lt;<span class="lifetime">&#39;a</span>, [u8]&gt;,
+    </span><span class="kw">pub fn </span>parse_request&lt;<span class="lifetime">'a</span>&gt;(
+        ty: Cow&lt;<span class="lifetime">'a</span>, [u8]&gt;,
+        source: Cow&lt;<span class="lifetime">'a</span>, [u8]&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
         <span class="kw">let </span>source = std::str::from_utf8(<span class="kw-2">&amp;</span>source)<span class="question-mark">?</span>;
         <span class="self">Self</span>::parse_request_str(ty.as_ref(), source)
@@ -1312,14 +1314,14 @@
 
     <span class="doccomment">/// Parse a string slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or the specific `parse_*` functions
     </span><span class="attr">#[doc(hidden)]
-    </span><span class="kw">pub fn </span>parse_request_str&lt;<span class="lifetime">&#39;a</span>&gt;(
-        ty: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8],
-        source: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub fn </span>parse_request_str&lt;<span class="lifetime">'a</span>&gt;(
+        ty: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8],
+        source: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Payload&lt;E&gt;, PayloadParseError&gt; {
         <span class="kw">match </span>ty {
-            <span class="string">b&quot;notification&quot; </span>=&gt; Payload::parse_notification(source),
-            <span class="string">b&quot;webhook_callback_verification&quot; </span>=&gt; Payload::parse_verification_request(source),
-            <span class="string">b&quot;revocation&quot; </span>=&gt; Payload::parse_revocation(source),
+            <span class="string">b"notification" </span>=&gt; Payload::parse_notification(source),
+            <span class="string">b"webhook_callback_verification" </span>=&gt; Payload::parse_verification_request(source),
+            <span class="string">b"revocation" </span>=&gt; Payload::parse_revocation(source),
             typ =&gt; <span class="prelude-val">Err</span>(PayloadParseError::UnknownMessageType(
                 String::from_utf8_lossy(typ).into_owned(),
             )),
@@ -1352,14 +1354,14 @@
 
 <span class="doccomment">/// Notification received
 </span><span class="attr">#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Payload&lt;E: EventSubscription + Clone&gt; {
     <span class="doccomment">/// Subscription information.
-    </span><span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+    </span><span class="attr">#[serde(bound = <span class="string">"E: EventSubscription"</span>)]
     </span><span class="kw">pub </span>subscription: EventSubscriptionInformation&lt;E&gt;,
     <span class="doccomment">/// Event information.
-    </span><span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+    </span><span class="attr">#[serde(bound = <span class="string">"E: EventSubscription"</span>)]
     </span><span class="kw">pub </span>message: Message&lt;E&gt;,
 }
 
@@ -1368,12 +1370,12 @@
     </span><span class="kw">pub fn </span>get_event_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; EventType { E::EVENT_TYPE }
 
     <span class="doccomment">/// Convenience method for getting the event version from the payload.
-    </span><span class="kw">pub fn </span>get_event_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str { E::VERSION }
+    </span><span class="kw">pub fn </span>get_event_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str { E::VERSION }
 }
 
 <span class="doccomment">/// Metadata about the subscription.
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>EventSubscriptionInformation&lt;E: EventSubscription&gt; {
     <span class="doccomment">/// ID of the subscription.
@@ -1383,21 +1385,21 @@
     <span class="doccomment">/// How much the subscription counts against your limit.
     </span><span class="kw">pub </span>cost: usize,
     <span class="doccomment">/// Subscription-specific parameters.
-    </span><span class="attr">#[serde(bound = <span class="string">&quot;E: EventSubscription&quot;</span>)]
+    </span><span class="attr">#[serde(bound = <span class="string">"E: EventSubscription"</span>)]
     </span><span class="kw">pub </span>condition: E,
     <span class="doccomment">/// The time the notification was created.
     </span><span class="kw">pub </span>created_at: types::Timestamp,
     <span class="doccomment">/// Transport method
     </span><span class="kw">pub </span>transport: TransportResponse,
     <span class="doccomment">/// Event type. Consider using [`E::EVENT_TYPE`](EventSubscription::EVENT_TYPE) instead.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>type_: EventType,
     <span class="doccomment">/// Event version. Consider using [`E::VERSION`](EventSubscription::VERSION) instead.
     </span><span class="kw">pub </span>version: String,
 }
 
 <span class="attr">#[derive(Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="doccomment">/// Webhook transport
 </span><span class="kw">pub struct </span>WebhookTransport {
@@ -1412,16 +1414,16 @@
 }
 
 <span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>WebhookTransport {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        f.debug_struct(<span class="string">&quot;WebhookTransport&quot;</span>)
-            .field(<span class="string">&quot;callback&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.callback)
-            .field(<span class="string">&quot;secret&quot;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;[redacted]&quot;</span>)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">"WebhookTransport"</span>)
+            .field(<span class="string">"callback"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.callback)
+            .field(<span class="string">"secret"</span>, <span class="kw-2">&amp;</span><span class="string">"[redacted]"</span>)
             .finish()
     }
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="doccomment">/// Websocket transport
 </span><span class="kw">pub struct </span>WebsocketTransport {
@@ -1433,7 +1435,7 @@
 
 <span class="doccomment">/// Transport setting for event notification
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(tag = <span class="string">&quot;method&quot;</span>, rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[serde(tag = <span class="string">"method"</span>, rename_all = <span class="string">"lowercase"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Transport {
     <span class="doccomment">/// Webhook transport
@@ -1508,7 +1510,7 @@
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="doccomment">/// Websocket transport
 </span><span class="kw">pub struct </span>WebsocketTransportResponse {
@@ -1529,7 +1531,7 @@
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">&quot;deny_unknown_fields&quot;</span>, serde(deny_unknown_fields))]
+#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
 #[non_exhaustive]
 </span><span class="doccomment">/// Webhook transport
 </span><span class="kw">pub struct </span>WebhookTransportResponse {
@@ -1541,7 +1543,7 @@
 ///
 /// Does not include secret.
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(tag = <span class="string">&quot;method&quot;</span>, rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[serde(tag = <span class="string">"method"</span>, rename_all = <span class="string">"lowercase"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>TransportResponse {
     <span class="doccomment">/// Webhook transport response
@@ -1605,7 +1607,7 @@
 /// Currently, only webhooks are supported
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
-#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[serde(rename_all = <span class="string">"lowercase"</span>)]
 </span><span class="kw">pub enum </span>TransportMethod {
     <span class="doccomment">/// Webhook
     </span>Webhook,
@@ -1618,49 +1620,49 @@
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Status {
     <span class="doccomment">/// Twitch has verified your callback and is able to send you notifications.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;enabled&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"enabled"</span>)]
     </span>Enabled,
     <span class="doccomment">/// Twitch is verifying that you own the callback specified in the create subscription request. For information about how it does this, see [Verifying your callback](https://dev.twitch.tv/docs/eventsub/handling-webhook-events/#responding-to-a-challenge-request). Used only for webhook subscriptions.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;webhook_callback_verification_pending&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"webhook_callback_verification_pending"</span>)]
     </span>WebhookCallbackVerificationPending,
     <span class="doccomment">/// Twitch failed to verify that you own the callback specified in the create subscription request. Fix your event handler to correctly respond to the challenge, and then try subscribing again. Used only for webhook subscriptions.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;webhook_callback_verification_failed&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"webhook_callback_verification_failed"</span>)]
     </span>WebhookCallbackVerificationFailed,
     <span class="doccomment">/// Twitch revoked your subscription because the notification delivery failure rate was too high. Used only for webhook subscriptions.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;notification_failures_exceeded&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"notification_failures_exceeded"</span>)]
     </span>NotificationFailuresExceeded,
     <span class="doccomment">/// Twitch revoked your subscription because the users in the [`condition`](EventSubSubscription::condition) object revoked their authorization letting you get events on their behalf, or changed their password.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;authorization_revoked&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"authorization_revoked"</span>)]
     </span>AuthorizationRevoked,
-    <span class="doccomment">/// The moderator that authorized the subscription is no longer one of the broadcaster&#39;s moderators.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;moderator_removed&quot;</span>)]
+    <span class="doccomment">/// The moderator that authorized the subscription is no longer one of the broadcaster's moderators.
+    </span><span class="attr">#[serde(rename = <span class="string">"moderator_removed"</span>)]
     </span>ModeratorRemoved,
     <span class="doccomment">/// Twitch revoked your subscription because the users in the [`condition`](EventSubSubscription::condition) object are no longer Twitch users.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;user_removed&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"user_removed"</span>)]
     </span>UserRemoved,
     <span class="doccomment">/// Twitch revoked your subscription because the subscribed to subscription type and version is no longer supported.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;version_removed&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"version_removed"</span>)]
     </span>VersionRemoved,
     <span class="doccomment">/// The client closed the connection.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_disconnected&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"websocket_disconnected"</span>)]
     </span>WebsocketDisconnected,
     <span class="doccomment">/// The client failed to respond to a ping message.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_failed_ping_pong&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"websocket_failed_ping_pong"</span>)]
     </span>WebsocketFailedPingPong,
     <span class="doccomment">/// The client sent a non-pong message. Clients may only send pong messages (and only in response to a ping message).
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_received_inbound_traffic&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"websocket_received_inbound_traffic"</span>)]
     </span>WebsocketReceivedInboundTraffic,
     <span class="doccomment">/// The client failed to subscribe to events within the required time.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_connection_unused&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"websocket_connection_unused"</span>)]
     </span>WebsocketConnectionUnused,
     <span class="doccomment">/// The Twitch WebSocket server experienced an unexpected error.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_internal_error&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"websocket_internal_error"</span>)]
     </span>WebsocketInternalError,
     <span class="doccomment">/// The Twitch WebSocket server timed out writing the message to the client.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_network_timeout&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"websocket_network_timeout"</span>)]
     </span>WebsocketNetworkTimeout,
     <span class="doccomment">/// The Twitch WebSocket server experienced a network error writing the message to the client.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;websocket_network_error&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"websocket_network_error"</span>)]
     </span>WebsocketNetworkError,
 }
 
@@ -1671,8 +1673,8 @@
 /// See also [`EventSubscriptionInformation`]
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[non_exhaustive]
-#[cfg(feature = <span class="string">&quot;eventsub&quot;</span>)]
-#[cfg_attr(nightly, doc(cfg(feature = <span class="string">&quot;eventsub&quot;</span>)))]
+#[cfg(feature = <span class="string">"eventsub"</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"eventsub"</span>)))]
 </span><span class="kw">pub struct </span>EventSubSubscription {
     <span class="doccomment">/// How much the subscription counts against your limit.
     </span><span class="kw">pub </span>cost: usize,
@@ -1688,7 +1690,7 @@
     <span class="doccomment">/// Notification delivery specific information. Includes the transport method and callback URL.
     </span><span class="kw">pub </span>transport: TransportResponse,
     <span class="doccomment">/// The category of the subscription.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>type_: EventType,
     <span class="doccomment">/// The version of the subscription.
     </span><span class="kw">pub </span>version: String,
@@ -1699,42 +1701,42 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_websocket_notification() {
-        <span class="kw">let </span>frame = <span class="string">r#&quot;
+        <span class="kw">let </span>frame = <span class="string">r#"
         {
-            &quot;metadata&quot;: {
-                &quot;message_id&quot;: &quot;befa7b53-d79d-478f-86b9-120f112b044e&quot;,
-                &quot;message_type&quot;: &quot;notification&quot;,
-                &quot;message_timestamp&quot;: &quot;2019-11-16T10:11:12.123Z&quot;,
-                &quot;subscription_type&quot;: &quot;channel.follow&quot;,
-                &quot;subscription_version&quot;: &quot;1&quot;
+            "metadata": {
+                "message_id": "befa7b53-d79d-478f-86b9-120f112b044e",
+                "message_type": "notification",
+                "message_timestamp": "2019-11-16T10:11:12.123Z",
+                "subscription_type": "channel.follow",
+                "subscription_version": "1"
             },
-            &quot;payload&quot;: {
-                &quot;subscription&quot;: {
-                    &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
-                    &quot;status&quot;: &quot;enabled&quot;,
-                    &quot;type&quot;: &quot;channel.follow&quot;,
-                    &quot;version&quot;: &quot;1&quot;,
-                    &quot;cost&quot;: 1,
-                    &quot;condition&quot;: {
-                        &quot;broadcaster_user_id&quot;: &quot;12826&quot;
+            "payload": {
+                "subscription": {
+                    "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+                    "status": "enabled",
+                    "type": "channel.follow",
+                    "version": "1",
+                    "cost": 1,
+                    "condition": {
+                        "broadcaster_user_id": "12826"
                     },
-                    &quot;transport&quot;: {
-                        &quot;method&quot;: &quot;websocket&quot;,
-                        &quot;session_id&quot;: &quot;AQoQexAWVYKSTIu4ec_2VAxyuhAB&quot;
+                    "transport": {
+                        "method": "websocket",
+                        "session_id": "AQoQexAWVYKSTIu4ec_2VAxyuhAB"
                     },
-                    &quot;created_at&quot;: &quot;2019-11-16T10:11:12.123Z&quot;
+                    "created_at": "2019-11-16T10:11:12.123Z"
                 },
-                &quot;event&quot;: {
-                    &quot;user_id&quot;: &quot;1337&quot;,
-                    &quot;user_login&quot;: &quot;awesome_user&quot;,
-                    &quot;user_name&quot;: &quot;Awesome_User&quot;,
-                    &quot;broadcaster_user_id&quot;: &quot;12826&quot;,
-                    &quot;broadcaster_user_login&quot;: &quot;twitch&quot;,
-                    &quot;broadcaster_user_name&quot;: &quot;Twitch&quot;,
-                    &quot;followed_at&quot;: &quot;2020-07-15T18:16:11.17106713Z&quot;
+                "event": {
+                    "user_id": "1337",
+                    "user_login": "awesome_user",
+                    "user_name": "Awesome_User",
+                    "broadcaster_user_id": "12826",
+                    "broadcaster_user_login": "twitch",
+                    "broadcaster_user_name": "Twitch",
+                    "followed_at": "2020-07-15T18:16:11.17106713Z"
                 }
             }
-        }&quot;#</span>;
+        }"#</span>;
 
         <span class="kw">crate</span>::eventsub::Event::parse_websocket(frame).unwrap();
     }
@@ -1745,13 +1747,13 @@
 
         <span class="attr">#[rustfmt::skip]
         </span><span class="kw">let </span>headers: HeaderMap = <span class="macro">vec!</span>[
-            (<span class="string">&quot;Twitch-Eventsub-Message-Id&quot;</span>, <span class="string">&quot;e76c6bd4-55c9-4987-8304-da1588d8988b&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Retry&quot;</span>, <span class="string">&quot;0&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Type&quot;</span>, <span class="string">&quot;webhook_callback_verification&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Signature&quot;</span>, <span class="string">&quot;sha256=f56bf6ce06a1adf46fa27831d7d15d&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Timestamp&quot;</span>, <span class="string">&quot;2019-11-16T10:11:12.123Z&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Subscription-Type&quot;</span>, <span class="string">&quot;channel.follow&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Subscription-Version&quot;</span>, <span class="string">&quot;1&quot;</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Id"</span>, <span class="string">"e76c6bd4-55c9-4987-8304-da1588d8988b"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Retry"</span>, <span class="string">"0"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Type"</span>, <span class="string">"webhook_callback_verification"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Signature"</span>, <span class="string">"sha256=f56bf6ce06a1adf46fa27831d7d15d"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Timestamp"</span>, <span class="string">"2019-11-16T10:11:12.123Z"</span>),
+            (<span class="string">"Twitch-Eventsub-Subscription-Type"</span>, <span class="string">"channel.follow"</span>),
+            (<span class="string">"Twitch-Eventsub-Subscription-Version"</span>, <span class="string">"1"</span>),
             ].into_iter()
         .map(|(h, v)| {
             (
@@ -1761,24 +1763,24 @@
         })
         .collect();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;challenge&quot;: &quot;pogchamp-kappa-360noscope-vohiyo&quot;,
-            &quot;subscription&quot;: {
-                &quot;id&quot;: &quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,
-                &quot;status&quot;: &quot;webhook_callback_verification_pending&quot;,
-                &quot;type&quot;: &quot;channel.follow&quot;,
-                &quot;version&quot;: &quot;1&quot;,
-                &quot;cost&quot;: 1,
-                &quot;condition&quot;: {
-                        &quot;broadcaster_user_id&quot;: &quot;12826&quot;
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "challenge": "pogchamp-kappa-360noscope-vohiyo",
+            "subscription": {
+                "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+                "status": "webhook_callback_verification_pending",
+                "type": "channel.follow",
+                "version": "1",
+                "cost": 1,
+                "condition": {
+                        "broadcaster_user_id": "12826"
                 },
-                &quot;transport&quot;: {
-                    &quot;method&quot;: &quot;webhook&quot;,
-                    &quot;callback&quot;: &quot;https://example.com/webhooks/callback&quot;
+                "transport": {
+                    "method": "webhook",
+                    "callback": "https://example.com/webhooks/callback"
                 },
-                &quot;created_at&quot;: &quot;2019-11-16T10:11:12.123Z&quot;
+                "created_at": "2019-11-16T10:11:12.123Z"
             }
-        }&quot;#</span>;
+        }"#</span>;
 
         <span class="kw">let </span><span class="kw-2">mut </span>request = http::Request::builder();
         <span class="kw">let _ </span>= std::mem::replace(request.headers_mut().unwrap(), headers);
@@ -1797,14 +1799,14 @@
 
         <span class="attr">#[rustfmt::skip]
         </span><span class="kw">let </span>headers: HeaderMap = <span class="macro">vec!</span>[
-            (<span class="string">&quot;Content-Length&quot;</span>, <span class="string">&quot;458&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Id&quot;</span>, <span class="string">&quot;84c1e79a-2a4b-4c13-ba0b-4312293e9308&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Retry&quot;</span>, <span class="string">&quot;0&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Type&quot;</span>, <span class="string">&quot;revocation&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Signature&quot;</span>, <span class="string">&quot;sha256=c1f92c51dab9888b0d6fb5f7e8e758&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Timestamp&quot;</span>, <span class="string">&quot;2019-11-16T10:11:12.123Z&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Subscription-Type&quot;</span>, <span class="string">&quot;channel.follow&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Subscription-Version&quot;</span>, <span class="string">&quot;1&quot;</span>),
+            (<span class="string">"Content-Length"</span>, <span class="string">"458"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Id"</span>, <span class="string">"84c1e79a-2a4b-4c13-ba0b-4312293e9308"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Retry"</span>, <span class="string">"0"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Type"</span>, <span class="string">"revocation"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Signature"</span>, <span class="string">"sha256=c1f92c51dab9888b0d6fb5f7e8e758"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Timestamp"</span>, <span class="string">"2019-11-16T10:11:12.123Z"</span>),
+            (<span class="string">"Twitch-Eventsub-Subscription-Type"</span>, <span class="string">"channel.follow"</span>),
+            (<span class="string">"Twitch-Eventsub-Subscription-Version"</span>, <span class="string">"1"</span>),
             ].into_iter()
         .map(|(h, v)| {
             (
@@ -1814,7 +1816,7 @@
         })
         .collect();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{&quot;subscription&quot;:{&quot;id&quot;:&quot;f1c2a387-161a-49f9-a165-0f21d7a4e1c4&quot;,&quot;status&quot;:&quot;authorization_revoked&quot;,&quot;type&quot;:&quot;channel.follow&quot;,&quot;cost&quot;:1,&quot;version&quot;:&quot;1&quot;,&quot;condition&quot;:{&quot;broadcaster_user_id&quot;:&quot;12826&quot;},&quot;transport&quot;:{&quot;method&quot;:&quot;webhook&quot;,&quot;callback&quot;:&quot;https://example.com/webhooks/callback&quot;},&quot;created_at&quot;:&quot;2019-11-16T10:11:12.123Z&quot;}}&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{"subscription":{"id":"f1c2a387-161a-49f9-a165-0f21d7a4e1c4","status":"authorization_revoked","type":"channel.follow","cost":1,"version":"1","condition":{"broadcaster_user_id":"12826"},"transport":{"method":"webhook","callback":"https://example.com/webhooks/callback"},"created_at":"2019-11-16T10:11:12.123Z"}}"#</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>request = http::Request::builder();
         <span class="kw">let _ </span>= std::mem::replace(request.headers_mut().unwrap(), headers);
         <span class="kw">let </span>request = request.body(body.as_bytes().to_vec()).unwrap();
@@ -1826,22 +1828,22 @@
         <span class="kw">crate</span>::tests::roundtrip(<span class="kw-2">&amp;</span>payload)
     }
     <span class="attr">#[test]
-    #[cfg(feature = <span class="string">&quot;hmac&quot;</span>)]
+    #[cfg(feature = <span class="string">"hmac"</span>)]
     </span><span class="kw">fn </span>verify_request() {
         <span class="kw">use </span>http::header::{HeaderMap, HeaderName, HeaderValue};
 
-        <span class="kw">let </span>secret = <span class="string">b&quot;secretabcd&quot;</span>;
+        <span class="kw">let </span>secret = <span class="string">b"secretabcd"</span>;
         <span class="attr">#[rustfmt::skip]
     </span><span class="kw">let </span>headers: HeaderMap = <span class="macro">vec!</span>[
-        (<span class="string">&quot;Content-Length&quot;</span>, <span class="string">&quot;458&quot;</span>),
-        (<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>),
-        (<span class="string">&quot;Twitch-Eventsub-Message-Id&quot;</span>, <span class="string">&quot;ae2ff348-e102-16be-a3eb-6830c1bf38d2&quot;</span>),
-        (<span class="string">&quot;Twitch-Eventsub-Message-Retry&quot;</span>, <span class="string">&quot;0&quot;</span>),
-        (<span class="string">&quot;Twitch-Eventsub-Message-Signature&quot;</span>, <span class="string">&quot;sha256=d10f5bd9474b7ac7bd7105eb79c2d52768b4d0cd2a135982c3bf5a1d59a78823&quot;</span>),
-        (<span class="string">&quot;Twitch-Eventsub-Message-Timestamp&quot;</span>, <span class="string">&quot;2021-02-19T23:47:00.8091512Z&quot;</span>),
-        (<span class="string">&quot;Twitch-Eventsub-Message-Type&quot;</span>, <span class="string">&quot;notification&quot;</span>),
-        (<span class="string">&quot;Twitch-Eventsub-Subscription-Type&quot;</span>, <span class="string">&quot;channel.follow&quot;</span>),
-        (<span class="string">&quot;Twitch-Eventsub-Subscription-Version&quot;</span>, <span class="string">&quot;1&quot;</span>),
+        (<span class="string">"Content-Length"</span>, <span class="string">"458"</span>),
+        (<span class="string">"Content-Type"</span>, <span class="string">"application/json"</span>),
+        (<span class="string">"Twitch-Eventsub-Message-Id"</span>, <span class="string">"ae2ff348-e102-16be-a3eb-6830c1bf38d2"</span>),
+        (<span class="string">"Twitch-Eventsub-Message-Retry"</span>, <span class="string">"0"</span>),
+        (<span class="string">"Twitch-Eventsub-Message-Signature"</span>, <span class="string">"sha256=d10f5bd9474b7ac7bd7105eb79c2d52768b4d0cd2a135982c3bf5a1d59a78823"</span>),
+        (<span class="string">"Twitch-Eventsub-Message-Timestamp"</span>, <span class="string">"2021-02-19T23:47:00.8091512Z"</span>),
+        (<span class="string">"Twitch-Eventsub-Message-Type"</span>, <span class="string">"notification"</span>),
+        (<span class="string">"Twitch-Eventsub-Subscription-Type"</span>, <span class="string">"channel.follow"</span>),
+        (<span class="string">"Twitch-Eventsub-Subscription-Version"</span>, <span class="string">"1"</span>),
     ].into_iter()
         .map(|(h, v)| {
             (
@@ -1851,7 +1853,7 @@
         })
         .collect();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{&quot;subscription&quot;:{&quot;id&quot;:&quot;ae2ff348-e102-16be-a3eb-6830c1bf38d2&quot;,&quot;status&quot;:&quot;enabled&quot;,&quot;type&quot;:&quot;channel.follow&quot;,&quot;version&quot;:&quot;1&quot;,&quot;condition&quot;:{&quot;broadcaster_user_id&quot;:&quot;44429626&quot;},&quot;transport&quot;:{&quot;method&quot;:&quot;webhook&quot;,&quot;callback&quot;:&quot;null&quot;},&quot;created_at&quot;:&quot;2021-02-19T23:47:00.7621315Z&quot;},&quot;event&quot;:{&quot;user_id&quot;:&quot;28408015&quot;,&quot;user_login&quot;:&quot;testFromUser&quot;,&quot;user_name&quot;:&quot;testFromUser&quot;,&quot;broadcaster_user_id&quot;:&quot;44429626&quot;,&quot;broadcaster_user_login&quot;:&quot;44429626&quot;,&quot;broadcaster_user_name&quot;:&quot;testBroadcaster&quot;}}&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{"subscription":{"id":"ae2ff348-e102-16be-a3eb-6830c1bf38d2","status":"enabled","type":"channel.follow","version":"1","condition":{"broadcaster_user_id":"44429626"},"transport":{"method":"webhook","callback":"null"},"created_at":"2021-02-19T23:47:00.7621315Z"},"event":{"user_id":"28408015","user_login":"testFromUser","user_name":"testFromUser","broadcaster_user_id":"44429626","broadcaster_user_login":"44429626","broadcaster_user_name":"testBroadcaster"}}"#</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>request = http::Request::builder();
         <span class="kw">let _ </span>= std::mem::replace(request.headers_mut().unwrap(), headers);
         <span class="kw">let </span>request = request.body(body.as_bytes().to_vec()).unwrap();
@@ -1860,20 +1862,20 @@
     }
 
     <span class="attr">#[test]
-    #[cfg(feature = <span class="string">&quot;hmac&quot;</span>)]
+    #[cfg(feature = <span class="string">"hmac"</span>)]
     </span><span class="kw">fn </span>verify_request_challenge() {
         <span class="kw">use </span>http::header::{HeaderMap, HeaderName, HeaderValue};
 
-        <span class="kw">let </span>secret = <span class="string">b&quot;HELLOabc2321&quot;</span>;
+        <span class="kw">let </span>secret = <span class="string">b"HELLOabc2321"</span>;
         <span class="attr">#[rustfmt::skip]
         </span><span class="kw">let </span>headers: HeaderMap = <span class="macro">vec!</span>[
-            (<span class="string">&quot;Twitch-Eventsub-Message-Id&quot;</span>, <span class="string">&quot;8d8fa82b-9792-79da-4e11-a6fa58a7a582&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Retry&quot;</span>, <span class="string">&quot;0&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Signature&quot;</span>, <span class="string">&quot;sha256=091f6a5c74fba820f2d50e9d0c5e7650556ee009375af2cc662e610e670bc412&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Timestamp&quot;</span>, <span class="string">&quot;2022-02-06T04:03:24.2726598Z&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Message-Type&quot;</span>, <span class="string">&quot;webhook_callback_verification&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Subscription-Type&quot;</span>, <span class="string">&quot;channel.subscribe&quot;</span>),
-            (<span class="string">&quot;Twitch-Eventsub-Subscription-Version&quot;</span>, <span class="string">&quot;1&quot;</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Id"</span>, <span class="string">"8d8fa82b-9792-79da-4e11-a6fa58a7a582"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Retry"</span>, <span class="string">"0"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Signature"</span>, <span class="string">"sha256=091f6a5c74fba820f2d50e9d0c5e7650556ee009375af2cc662e610e670bc412"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Timestamp"</span>, <span class="string">"2022-02-06T04:03:24.2726598Z"</span>),
+            (<span class="string">"Twitch-Eventsub-Message-Type"</span>, <span class="string">"webhook_callback_verification"</span>),
+            (<span class="string">"Twitch-Eventsub-Subscription-Type"</span>, <span class="string">"channel.subscribe"</span>),
+            (<span class="string">"Twitch-Eventsub-Subscription-Version"</span>, <span class="string">"1"</span>),
             ].into_iter()
         .map(|(h, v)| {
             (
@@ -1883,7 +1885,7 @@
         })
         .collect();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{&quot;challenge&quot;:&quot;11535768-497e-14ec-8197-ba2cb5341a01&quot;,&quot;subscription&quot;:{&quot;id&quot;:&quot;8d8fa82b-9792-79da-4e11-a6fa58a7a582&quot;,&quot;status&quot;:&quot;webhook_callback_verification_pending&quot;,&quot;type&quot;:&quot;channel.subscribe&quot;,&quot;version&quot;:&quot;1&quot;,&quot;condition&quot;:{&quot;broadcaster_user_id&quot;:&quot;88525095&quot;},&quot;transport&quot;:{&quot;method&quot;:&quot;webhook&quot;,&quot;callback&quot;:&quot;http://localhost:80/twitch/eventsub&quot;},&quot;created_at&quot;:&quot;2022-02-06T04:03:24.2706497Z&quot;,&quot;cost&quot;:0}}&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{"challenge":"11535768-497e-14ec-8197-ba2cb5341a01","subscription":{"id":"8d8fa82b-9792-79da-4e11-a6fa58a7a582","status":"webhook_callback_verification_pending","type":"channel.subscribe","version":"1","condition":{"broadcaster_user_id":"88525095"},"transport":{"method":"webhook","callback":"http://localhost:80/twitch/eventsub"},"created_at":"2022-02-06T04:03:24.2706497Z","cost":0}}"#</span>;
 
         <span class="kw">let </span><span class="kw-2">mut </span>request = http::Request::builder();
         <span class="kw">let _ </span>= std::mem::replace(request.headers_mut().unwrap(), headers);
