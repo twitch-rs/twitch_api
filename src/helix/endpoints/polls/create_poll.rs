@@ -112,16 +112,6 @@ pub struct CreatePollBody<'a> {
     /// Number of Channel Points required to vote once with Channel Points. Minimum: 0. Maximum: 1000000.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub channel_points_per_vote: Option<i64>,
-    /// Indicates if Bits can be used for voting. Default: false
-    #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
-    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub bits_voting_enabled: Option<bool>,
-    /// Number of Bits required to vote once with Bits. Minimum: 0. Maximum: 10000.
-    #[deprecated(since = "0.7.0", note = "bit options for polls has been removed")]
-    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub bits_per_vote: Option<i64>,
     /// Total duration for the poll (in seconds). Minimum: 15. Maximum: 1800.
     pub duration: i64,
 }
@@ -151,8 +141,6 @@ impl<'a> CreatePollBody<'a> {
             title: title.into(),
             duration,
             choices: choices.into(),
-            bits_voting_enabled: Default::default(),
-            bits_per_vote: Default::default(),
             channel_points_voting_enabled: Default::default(),
             channel_points_per_vote: Default::default(),
         }
@@ -266,19 +254,15 @@ fn test_request() {
             "id": "4c123012-1351-4f33-84b7-43856e7a0f47",
             "title": "Heads",
             "votes": 0,
-            "channel_points_votes": 0,
-            "bits_votes": 0
+            "channel_points_votes": 0
             },
             {
             "id": "279087e3-54a7-467e-bcd0-c1393fcea4f0",
             "title": "Tails",
             "votes": 0,
-            "channel_points_votes": 0,
-            "bits_votes": 0
+            "channel_points_votes": 0
             }
         ],
-        "bits_voting_enabled": false,
-        "bits_per_vote": 0,
         "channel_points_voting_enabled": true,
         "channel_points_per_vote": 100,
         "status": "ACTIVE",
