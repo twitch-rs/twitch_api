@@ -72,7 +72,7 @@ impl<'a> GetCustomRewardRequest<'a> {
         }
     }
 
-    /// Get rewards with these ids
+    /// Get rewards with these ids. Maximum 50
     pub fn ids(mut self, id: impl Into<Cow<'a, [&'a types::RewardIdRef]>>) -> Self {
         self.id = id.into();
         self

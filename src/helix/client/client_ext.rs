@@ -1,5 +1,6 @@
 //! Convenience functions for [HelixClient]
 #![warn(clippy::future_not_send)]
+use futures::{StreamExt, TryStreamExt};
 use std::borrow::Cow;
 
 use crate::helix::{self, ClientRequestError, HelixClient};
@@ -160,7 +161,6 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        use futures::StreamExt;
         futures::stream::iter(ids.chunks(100).map(move |c| {
             let req = helix::streams::GetStreamsRequest::user_ids(c).first(100);
             make_stream(req, token, self, std::collections::VecDeque::from)
@@ -197,7 +197,6 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        use futures::StreamExt;
         futures::stream::iter(logins.chunks(100).map(move |c| {
             let req = helix::streams::GetStreamsRequest::user_logins(c).first(100);
             make_stream(req, token, self, std::collections::VecDeque::from)
@@ -394,8 +393,6 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        use futures::StreamExt;
-
         let user_id = match token
             .user_id()
             .ok_or_else(|| ClientRequestError::Custom("no user_id found on token".into()))
@@ -437,8 +434,6 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        use futures::StreamExt;
-
         let user_id = match token
             .user_id()
             .ok_or_else(|| ClientRequestError::Custom("no user_id found on token".into()))
@@ -629,29 +624,23 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         Ok(resp.data.total)
     }
 
-    /// Get games by ID. Can only be at max 100 ids.
-    pub async fn get_games_by_id<T>(
+    /// Get games by ID.
+    pub fn get_games_by_id<T>(
         &'client self,
-        ids: impl AsRef<[&'client types::CategoryIdRef]> + Send,
-        token: &T,
-    ) -> Result<std::collections::HashMap<types::CategoryId, helix::games::Game>, ClientError<C>>
+        ids: &'client [&'client types::CategoryIdRef],
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<helix::games::Game, ClientError<C>>> + Send + Unpin + 'client
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let ids = ids.as_ref();
-        if ids.len() > 100 {
-            return Err(ClientRequestError::Custom("too many IDs, max 100".into()));
-        }
-
-        let resp = self
-            .req_get(helix::games::GetGamesRequest::ids(ids), token)
-            .await?;
-
-        Ok(resp
-            .data
-            .into_iter()
-            .map(|g: helix::games::Game| (g.id.clone(), g))
-            .collect())
+        futures::stream::iter(ids.chunks(100))
+            .map(move |c| {
+                let req = helix::games::GetGamesRequest::ids(c);
+                futures::stream::once(self.req_get(req, token)).boxed()
+            })
+            .flatten_unordered(None)
+            .map_ok(|resp| futures::stream::iter(resp.data.into_iter().map(Ok)))
+            .try_flatten_unordered(None)
     }
 
     /// Block a user
@@ -830,17 +819,25 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 
     /// Get emotes in emote set
-    pub async fn get_emote_sets<T>(
+    pub fn get_emote_sets<T>(
         &'client self,
-        emote_sets: impl AsRef<[&types::EmoteSetIdRef]> + Send,
-        token: &T,
-    ) -> Result<Vec<helix::chat::get_emote_sets::Emote>, ClientError<C>>
+        emote_sets: &'client [&'client types::EmoteSetIdRef],
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<helix::chat::get_emote_sets::Emote, ClientError<C>>>
+           + Send
+           + Unpin
+           + 'client
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let emote_sets = emote_sets.as_ref();
-        let req = helix::chat::GetEmoteSetsRequest::emote_set_ids(emote_sets);
-        Ok(self.req_get(req, token).await?.data)
+        futures::stream::iter(emote_sets.chunks(100))
+            .map(move |c| {
+                let req = helix::chat::GetEmoteSetsRequest::emote_set_ids(c);
+                futures::stream::once(self.req_get(req, token)).boxed()
+            })
+            .flatten_unordered(None)
+            .map_ok(|r| futures::stream::iter(r.data.into_iter().map(Ok)))
+            .try_flatten_unordered(None)
     }
 
     /// Get a broadcaster's chat settings
@@ -939,24 +936,6 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 
     /// Get a users chat color
-    pub async fn get_user_chat_color<T>(
-        &'client self,
-        user_id: impl Into<&types::UserIdRef> + Send,
-        token: &T,
-    ) -> Result<Option<helix::chat::UserChatColor>, ClientError<C>>
-    where
-        T: TwitchToken + Send + Sync + ?Sized,
-    {
-        Ok(self
-            .req_get(
-                helix::chat::GetUserChatColorRequest::user_ids(&[user_id.into()][..]),
-                token,
-            )
-            .await?
-            .first())
-    }
-
-    /// Get a users chat color
     pub async fn update_user_chat_color<'b, T>(
         &'client self,
         user_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
@@ -974,22 +953,44 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         Ok(self.req_put(req, helix::EmptyBody, token).await?.data)
     }
 
-    /// Get multiple users chat colors
-    pub async fn get_users_chat_colors<T>(
+    /// Get a users chat color
+    pub async fn get_user_chat_color<T>(
         &'client self,
-        user_ids: impl AsRef<[&types::UserIdRef]> + Send,
+        user_id: impl Into<&types::UserIdRef> + Send,
         token: &T,
-    ) -> Result<Vec<helix::chat::UserChatColor>, ClientError<C>>
+    ) -> Result<Option<helix::chat::UserChatColor>, ClientError<C>>
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let user_ids = user_ids.as_ref();
-        if user_ids.len() > 100 {
-            return Err(ClientRequestError::Custom("too many IDs, max 100".into()));
-        }
-        let req = helix::chat::GetUserChatColorRequest::user_ids(user_ids);
+        Ok(self
+            .req_get(
+                helix::chat::GetUserChatColorRequest::user_ids(&[user_id.into()][..]),
+                token,
+            )
+            .await?
+            .first())
+    }
 
-        Ok(self.req_get(req, token).await?.data)
+    /// Get multiple users chat colors
+    pub fn get_users_chat_colors<T>(
+        &'client self,
+        user_ids: &'client [&'client types::UserIdRef],
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<helix::chat::UserChatColor, ClientError<C>>>
+           + Send
+           + Unpin
+           + 'client
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        futures::stream::iter(user_ids.chunks(100))
+            .map(move |c| {
+                let req = helix::chat::GetUserChatColorRequest::user_ids(c);
+                futures::stream::once(self.req_get(req, token)).boxed()
+            })
+            .flatten_unordered(None)
+            .map_ok(move |o| futures::stream::iter(o.data.into_iter().map(Ok)))
+            .try_flatten_unordered(None)
     }
 
     /// Add a channel moderator
@@ -1132,6 +1133,10 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
 
     /// Get specific custom rewards, see [`get_all_custom_rewards`](HelixClient::get_all_custom_rewards) to get all rewards
     ///
+    /// # Notes
+    ///
+    /// Takes a max of 50 ids
+    ///
     /// # Examples
     ///
     /// ```rust, no_run
@@ -1159,6 +1164,9 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
+        if ids.len() > 50 {
+            return Err(ClientRequestError::Custom("too many IDs, max 50".into()));
+        }
         Ok(self
             .req_get(
                 helix::points::GetCustomRewardRequest::broadcaster_id(broadcaster_id)
@@ -1335,7 +1343,6 @@ where
     // I also want to keep allocations low, so std::mem::take is perfect, but that makes get_next not work optimally.
     <Req as super::Request>::Response: Send + Sync + std::fmt::Debug + Clone,
 {
-    use futures::StreamExt;
     enum StateMode<Req: super::Request + super::RequestGet, Item> {
         /// A request needs to be done.
         Req(Option<Req>),
