@@ -625,6 +625,23 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 
     /// Get games by ID.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// let channels: &[&types::CategoryIdRef] = &["509658".into(), "32982".into(), "27471".into()];
+    /// let games: Vec<helix::games::Game> = client.get_games_by_id(&channels, &token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
     pub fn get_games_by_id<T>(
         &'client self,
         ids: &'client [&'client types::CategoryIdRef],
@@ -734,7 +751,6 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     ///
     /// Make sure to limit the data here using [`try_take_while`](futures::stream::TryStreamExt::try_take_while), otherwise this will never end on recurring scheduled streams.
     ///
-    ///
     /// # Examples
     ///
     /// ```rust, no_run
@@ -818,7 +834,24 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         }
     }
 
-    /// Get emotes in emote set
+    /// Get emotes in emote sets
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// let emote_sets: &[&types::EmoteSetIdRef] = &["0".into()];
+    /// let games: Vec<helix::chat::get_emote_sets::Emote> = client.get_emote_sets(&emote_sets, &token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
     pub fn get_emote_sets<T>(
         &'client self,
         emote_sets: &'client [&'client types::EmoteSetIdRef],
@@ -830,7 +863,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        futures::stream::iter(emote_sets.chunks(100))
+        futures::stream::iter(emote_sets.chunks(25))
             .map(move |c| {
                 let req = helix::chat::GetEmoteSetsRequest::emote_set_ids(c);
                 futures::stream::once(self.req_get(req, token)).boxed()
@@ -972,6 +1005,23 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 
     /// Get multiple users chat colors
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// let user_ids: &[&types::UserIdRef] = &["1234".into()];
+    /// let games: Vec<helix::chat::UserChatColor> = client.get_users_chat_colors(&user_ids, &token).try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
     pub fn get_users_chat_colors<T>(
         &'client self,
         user_ids: &'client [&'client types::UserIdRef],
