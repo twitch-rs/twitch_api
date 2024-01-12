@@ -34,10 +34,10 @@ where
     /// ```rust
     /// use twitch_api::helix::{self, Request, RequestPost};
     ///
-    /// #[derive(serde::Serialize, Debug, PartialEq)]
+    /// #[derive(serde_derive::Serialize, Debug, PartialEq)]
     /// pub struct MyTwitchRequest {}
     ///
-    /// #[derive(serde::Deserialize, Debug, PartialEq)]
+    /// #[derive(serde_derive::Deserialize, Debug, PartialEq)]
     /// pub enum MyTwitchResponse {
     ///     Success,
     /// }
@@ -106,10 +106,10 @@ where
     /// ```rust
     /// use twitch_api::helix::{self, Request, RequestPut};
     ///
-    /// #[derive(serde::Serialize, Debug, PartialEq)]
+    /// #[derive(serde_derive::Serialize, Debug, PartialEq)]
     /// pub struct MyTwitchRequest {}
     ///
-    /// #[derive(serde::Deserialize, Debug, PartialEq)]
+    /// #[derive(serde_derive::Deserialize, Debug, PartialEq)]
     /// pub enum MyTwitchResponse {
     ///     Success,
     /// }

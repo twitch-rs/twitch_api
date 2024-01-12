@@ -19,9 +19,9 @@
 //!
 //! ```
 //! # use twitch_api::helix::streams::replace_stream_tags;
-//! let body = replace_stream_tags::ReplaceStreamTagsBody::tag_ids(vec![
-//!     "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
-//!     "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
+//! let body = replace_stream_tags::ReplaceStreamTagsBody::tag_ids(&[
+//!     "621fb5bf-5498-4d8f-b4ac-db4d40d401bf",
+//!     "79977fb9-f106-4a87-a386-f1b0f99783dd",
 //! ]);
 //! ```
 //!
@@ -40,9 +40,9 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = replace_stream_tags::ReplaceStreamTagsRequest::broadcaster_id("1234");
-//! let body = replace_stream_tags::ReplaceStreamTagsBody::tag_ids(vec![
-//!     "621fb5bf-5498-4d8f-b4ac-db4d40d401bf".into(),
-//!     "79977fb9-f106-4a87-a386-f1b0f99783dd".into(),
+//! let body = replace_stream_tags::ReplaceStreamTagsBody::tag_ids(&[
+//!     "621fb5bf-5498-4d8f-b4ac-db4d40d401bf",
+//!     "79977fb9-f106-4a87-a386-f1b0f99783dd",
 //! ]);
 //! let response: replace_stream_tags::ReplaceStreamTags = client.req_put(request, body, &token).await?.data;
 //! # Ok(())
@@ -100,12 +100,12 @@ pub struct ReplaceStreamTagsBody<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub tag_ids: Cow<'a, [&'a types::TagIdRef]>,
+    pub tag_ids: types::Collection<'a, types::TagId>,
 }
 
 impl<'a> ReplaceStreamTagsBody<'a> {
     /// IDs of tags to be applied to the stream.
-    pub fn tag_ids(tag_ids: impl Into<Cow<'a, [&'a types::TagIdRef]>>) -> Self {
+    pub fn tag_ids(tag_ids: impl Into<types::Collection<'a, types::TagId>>) -> Self {
         Self {
             tag_ids: tag_ids.into(),
             ..Self::default()

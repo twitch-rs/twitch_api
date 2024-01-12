@@ -72,7 +72,7 @@ pub struct GetCustomRewardRedemptionRequest<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub id: Cow<'a, [&'a types::RedemptionIdRef]>,
+    pub id: types::Collection<'a, types::RedemptionId>,
 
     /// The order to sort redemptions by.
     #[cfg_attr(feature = "typed-builder", builder(default))]
@@ -124,7 +124,7 @@ impl<'a> GetCustomRewardRedemptionRequest<'a> {
     }
 
     /// Get redemptions with these ids
-    pub fn ids(mut self, id: impl Into<Cow<'a, [&'a types::RedemptionIdRef]>>) -> Self {
+    pub fn ids(mut self, id: impl Into<types::Collection<'a, types::RedemptionId>>) -> Self {
         self.id = id.into();
         self
     }

@@ -9,9 +9,8 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_user_chat_color;
-//! let request = get_user_chat_color::GetUserChatColorRequest::user_ids(
-//!     &["4321".into()][..],
-//! );
+//! let request =
+//!     get_user_chat_color::GetUserChatColorRequest::user_ids(&["4321"]);
 //! ```
 //!
 //! ## Response: [UserChatColor]
@@ -26,9 +25,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let ids: &[&types::UserIdRef] = &["4321".into()];
 //! let request = get_user_chat_color::GetUserChatColorRequest::
-//!     user_ids(ids);
+//!     user_ids(&["4321"]);
 //! let response: Vec<helix::chat::UserChatColor> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -51,12 +49,12 @@ pub struct GetUserChatColorRequest<'a> {
     /// The ID of the user whose color you want to get.
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
+    pub user_id: types::Collection<'a, types::UserId>,
 }
 
 impl<'a> GetUserChatColorRequest<'a> {
@@ -70,7 +68,7 @@ impl<'a> GetUserChatColorRequest<'a> {
     /// let ids: &[&types::UserIdRef] = &["1234".into()];
     /// GetUserChatColorRequest::user_ids(ids);
     /// ```
-    pub fn user_ids(user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+    pub fn user_ids(user_ids: impl Into<types::Collection<'a, types::UserId>>) -> Self {
         Self {
             user_id: user_ids.into(),
         }

@@ -54,7 +54,7 @@ pub struct GetChannelInformationRequest<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub broadcaster_id: Cow<'a, [&'a types::UserIdRef]>,
+    pub broadcaster_id: types::Collection<'a, types::UserId>,
 }
 
 impl<'a> GetChannelInformationRequest<'a> {
@@ -70,7 +70,9 @@ impl<'a> GetChannelInformationRequest<'a> {
     ///         ids,
     ///     );
     /// ```
-    pub fn broadcaster_ids(broadcaster_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+    pub fn broadcaster_ids(
+        broadcaster_ids: impl Into<types::Collection<'a, types::UserId>>,
+    ) -> Self {
         Self {
             broadcaster_id: broadcaster_ids.into(),
         }

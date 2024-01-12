@@ -48,12 +48,12 @@ pub struct GetVideosRequest<'a> {
     /// ID of the video being queried. Limit: 100. If this is specified, you cannot use any of the optional query parameters below.
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub id: Cow<'a, [&'a types::VideoIdRef]>,
+    pub id: types::Collection<'a, types::VideoId>,
     /// ID of the user who owns the video.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
@@ -91,7 +91,7 @@ pub struct GetVideosRequest<'a> {
 
 impl<'a> GetVideosRequest<'a> {
     /// IDs of the videos being queried.
-    pub fn ids(ids: impl Into<Cow<'a, [&'a types::VideoIdRef]>>) -> Self {
+    pub fn ids(ids: impl Into<types::Collection<'a, types::VideoId>>) -> Self {
         Self {
             id: ids.into(),
             ..Self::default()
@@ -191,7 +191,7 @@ impl helix::Paginated for GetVideosRequest<'_> {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetVideosRequest::ids(vec!["234482848".into()]);
+    let req = GetVideosRequest::ids(vec!["234482848"]);
 
     // From twitch docs
     let data = br#"

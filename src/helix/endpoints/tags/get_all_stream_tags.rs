@@ -25,8 +25,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_all_stream_tags::GetAllStreamTagsRequest::builder()
-//!     .build();
+//! let request = get_all_stream_tags::GetAllStreamTagsRequest::default();
 //! let response: Vec<get_all_stream_tags::Tag> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -41,7 +40,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get All Stream Tags](super::get_all_stream_tags)
 ///
 /// [`get-all-stream-tags`](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[deprecated(
     note = "Twitch-defined tags have been deprecated. See https://discuss.dev.twitch.tv/t/adding-customizable-tags-to-the-twitch-api/42921"
@@ -61,12 +60,12 @@ pub struct GetAllStreamTagsRequest<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub tag_id: Cow<'a, [&'a types::TagIdRef]>,
+    pub tag_id: types::Collection<'a, types::TagId>,
 }
 
 impl<'a> GetAllStreamTagsRequest<'a> {
     /// Filter the results for specific tag.
-    pub fn tag_ids(mut self, tag_ids: impl Into<Cow<'a, [&'a types::TagIdRef]>>) -> Self {
+    pub fn tag_ids(mut self, tag_ids: impl Into<types::Collection<'a, types::TagId>>) -> Self {
         self.tag_id = tag_ids.into();
         self
     }
@@ -75,16 +74,6 @@ impl<'a> GetAllStreamTagsRequest<'a> {
     pub fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
         self
-    }
-}
-
-impl Default for GetAllStreamTagsRequest<'_> {
-    fn default() -> Self {
-        Self {
-            after: None,
-            first: None,
-            tag_id: Cow::Borrowed(&[]),
-        }
     }
 }
 

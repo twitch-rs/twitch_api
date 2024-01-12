@@ -58,7 +58,7 @@ pub struct GetClipsRequest<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub id: Cow<'a, [&'a types::ClipIdRef]>,
+    pub id: types::Collection<'a, types::ClipId>,
     // one of above is needed.
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. This applies only to queries specifying broadcaster_id or game_id. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
@@ -94,7 +94,7 @@ impl<'a> GetClipsRequest<'a> {
         Self {
             broadcaster_id: Default::default(),
             game_id: Default::default(),
-            id: Cow::Borrowed(&[]),
+            id: types::Collection::default(),
             after: Default::default(),
             before: Default::default(),
             ended_at: Default::default(),
@@ -121,7 +121,7 @@ impl<'a> GetClipsRequest<'a> {
     }
 
     /// IDs of clips being queried
-    pub fn clip_ids(clip_ids: impl Into<Cow<'a, [&'a types::ClipIdRef]>>) -> Self {
+    pub fn clip_ids(clip_ids: impl Into<types::Collection<'a, types::ClipId>>) -> Self {
         Self {
             id: clip_ids.into(),
             ..Self::empty()
@@ -219,7 +219,7 @@ impl helix::Paginated for GetClipsRequest<'_> {
 fn test_request() {
     use helix::*;
 
-    let req = GetClipsRequest::clip_ids(vec!["AwkwardHelplessSalamanderSwiftRage".into()]);
+    let req = GetClipsRequest::clip_ids(vec!["AwkwardHelplessSalamanderSwiftRage"]);
 
     // From twitch docs
     let data = br#"

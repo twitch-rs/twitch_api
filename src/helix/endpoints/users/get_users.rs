@@ -50,19 +50,19 @@ pub struct GetUsersRequest<'a> {
     /// User ID. Multiple user IDs can be specified. Limit: 100.
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub id: Cow<'a, [&'a types::UserIdRef]>,
+    pub id: types::Collection<'a, types::UserId>,
     /// User login name. Multiple login names can be specified. Limit: 100.
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
-    pub login: Cow<'a, [&'a types::UserNameRef]>,
+    pub login: types::Collection<'a, types::UserName>,
 }
 
 impl<'a> GetUsersRequest<'a> {
@@ -70,28 +70,28 @@ impl<'a> GetUsersRequest<'a> {
     ///
     /// ```rust
     /// use twitch_api::helix::users::get_users::GetUsersRequest;
-    /// GetUsersRequest::logins(&["twitch".into(), "justintv".into()][..]);
+    /// GetUsersRequest::logins(&["twitch", "justintv"]);
     /// ```
-    pub fn logins(login: impl Into<Cow<'a, [&'a types::UserNameRef]>>) -> Self {
+    pub fn logins(login: impl Into<types::Collection<'a, types::UserName>>) -> Self {
         Self {
-            id: Cow::Borrowed(&[]),
+            id: types::Collection::default(),
             login: login.into(),
         }
     }
 
     /// Get multiple user by their [`UserId`](types::UserId)
-    pub fn ids(ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+    pub fn ids(ids: impl Into<types::Collection<'a, types::UserId>>) -> Self {
         Self {
             id: ids.into(),
-            login: Cow::Borrowed(&[]),
+            login: types::Collection::default(),
         }
     }
 
     /// Returns an empty [`GetUsersRequest`]
     pub fn new() -> Self {
         Self {
-            id: Cow::Borrowed(&[]),
-            login: Cow::Borrowed(&[]),
+            id: types::Collection::default(),
+            login: types::Collection::default(),
         }
     }
 }
