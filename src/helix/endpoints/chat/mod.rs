@@ -17,6 +17,7 @@ pub mod get_global_emotes;
 pub mod get_user_chat_color;
 pub mod send_a_shoutout;
 pub mod send_chat_announcement;
+pub mod send_chat_message;
 pub mod update_chat_settings;
 pub mod update_user_chat_color;
 
@@ -41,6 +42,11 @@ pub use send_a_shoutout::{SendAShoutoutRequest, SendAShoutoutResponse};
 #[doc(inline)]
 pub use send_chat_announcement::{
     SendChatAnnouncementBody, SendChatAnnouncementRequest, SendChatAnnouncementResponse,
+};
+#[doc(inline)]
+pub use send_chat_message::{
+    ChatMessageDropCode, ChatMessageDropReason, SendChatMessageBody, SendChatMessageRequest,
+    SendChatMessageResponse,
 };
 #[doc(inline)]
 pub use update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};
