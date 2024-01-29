@@ -87,7 +87,7 @@ exceptions = [
 # The name of the crate the clarification applies to
 name = "ring"
 # The optional version constraint for the crate
-version = "0.16.15"
+version = "0.17.7"
 # The SPDX expression for the license requirements of the crate
 expression = "MIT AND ISC AND OpenSSL"
 # One or more files in the crate's source used as the "source of truth" for
