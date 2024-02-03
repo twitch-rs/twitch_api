@@ -1,6 +1,7 @@
 #![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![allow(clippy::needless_raw_string_hashes)]
 #![doc(html_root_url = "https://docs.rs/twitch_api/0.7.0-rc.7")]
 //! [![github]](https://github.com/twitch-rs/twitch_api)&ensp;[![crates-io]](https://crates.io/crates/twitch_api)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.7.0-rc.7/twitch_api)
 //!

@@ -72,6 +72,7 @@
 - Added `helix::Response::new` and `helix::Response::with_data` to make it possible to create your own responses.
 - Added `is_branded_content` and `content_classification_labels` to `Get Channel Information` and `Modify Channel information`
 - Added `channel.update` v2 EventSub event
+- Added `HelixClient` functions `get_streams_from_logins` and `get_streams_from_ids`
 
 ### Fixed
 

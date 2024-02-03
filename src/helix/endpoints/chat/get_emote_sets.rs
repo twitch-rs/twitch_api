@@ -46,8 +46,7 @@ use helix::RequestGet;
 #[must_use]
 #[non_exhaustive]
 pub struct GetEmoteSetsRequest<'a> {
-    // FIXME: twitch doc specifies maximum as 25, but it actually is 10
-    /// The broadcaster whose emotes are being requested. Minimum: 1. Maximum: 10
+    /// The broadcaster whose emotes are being requested. Minimum: 1. Maximum: 25
     #[cfg_attr(
         feature = "typed-builder",
         builder(default_code = "Cow::Borrowed(&[])", setter(into))
