@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ChatMessageDropCode"],"struct":["ChatMessageDropReason","SendChatMessageBody","SendChatMessageRequest","SendChatMessageResponse"]};
