@@ -6,6 +6,7 @@ use serde_derive::{Deserialize, Serialize};
 
 pub mod clear;
 pub mod clear_user_messages;
+pub mod message;
 pub mod message_delete;
 pub mod notification;
 
@@ -16,9 +17,22 @@ pub use clear_user_messages::{
     ChannelChatClearUserMessagesV1, ChannelChatClearUserMessagesV1Payload,
 };
 #[doc(inline)]
+pub use message::{ChannelChatMessageV1, ChannelChatMessageV1Payload};
+#[doc(inline)]
 pub use message_delete::{ChannelChatMessageDeleteV1, ChannelChatMessageDeleteV1Payload};
 #[doc(inline)]
 pub use notification::{ChannelChatNotificationV1, ChannelChatNotificationV1Payload};
+
+/// A message
+// XXX: this struct can never be deny_unknown_fields
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[non_exhaustive]
+pub struct Message {
+    /// The chat message in plain text.
+    pub text: String,
+    /// Ordered list of chat message fragments.
+    pub fragments: Vec<Fragment>,
+}
 
 /// A chat message fragment
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -111,4 +125,17 @@ pub struct Mention {
     pub user_name: types::DisplayName,
     /// The user login of the mentioned user.
     pub user_login: types::UserName,
+}
+
+/// A badge
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct Badge {
+    /// An ID that identifies this set of chat badges. For example, Bits or Subscriber.
+    pub set_id: types::BadgeSetId,
+    /// An ID that identifies this version of the badge. The ID can be any value. For example, for Bits, the ID is the Bits tier level, but for World of Warcraft, it could be Alliance or Horde.
+    pub id: types::ChatBadgeId,
+    /// Contains metadata related to the chat badges in the badges tag. Currently, this tag contains metadata only for subscriber badges, to indicate the number of months the user has been a subscriber.
+    pub info: String,
 }

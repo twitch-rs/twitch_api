@@ -19,6 +19,7 @@ macro_rules! fill_events {
             channel::ChannelCharityCampaignStopV1;
             channel::ChannelChatClearUserMessagesV1;
             channel::ChannelChatClearV1;
+            channel::ChannelChatMessageV1;
             channel::ChannelChatMessageDeleteV1;
             channel::ChannelChatNotificationV1;
             channel::ChannelCheerV1;
@@ -139,6 +140,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelChatClear => "channel.chat.clear",
     "a moderator or bot clears all messages for a specific user.":
     ChannelChatClearUserMessages => "channel.chat.clear_user_messages",
+    "any user sends a message to a specific chat room.":
+    ChannelChatMessage => "channel.chat.message",
     "a moderator removes a specific message.":
     ChannelChatMessageDelete => "channel.chat.message_delete",
     "an event that appears in chat occurs, such as someone subscribing to the channel or a subscription is gifted.":
@@ -250,6 +253,8 @@ pub enum Event {
     ChannelChatClearV1(Payload<channel::ChannelChatClearV1>),
     /// Channel Chat ClearUserMessages V1 Event
     ChannelChatClearUserMessagesV1(Payload<channel::ChannelChatClearUserMessagesV1>),
+    /// Channel Chat Message V1 Event
+    ChannelChatMessageV1(Payload<channel::ChannelChatMessageV1>),
     /// Channel Chat MessageDelete V1 Event
     ChannelChatMessageDeleteV1(Payload<channel::ChannelChatMessageDeleteV1>),
     /// Channel Chat Notification V1 Event

@@ -66,6 +66,8 @@ pub use chat::{ChannelChatClearV1, ChannelChatClearV1Payload};
 #[doc(inline)]
 pub use chat::{ChannelChatMessageDeleteV1, ChannelChatMessageDeleteV1Payload};
 #[doc(inline)]
+pub use chat::{ChannelChatMessageV1, ChannelChatMessageV1Payload};
+#[doc(inline)]
 pub use chat::{ChannelChatNotificationV1, ChannelChatNotificationV1Payload};
 #[doc(inline)]
 pub use cheer::{ChannelCheerV1, ChannelCheerV1Payload};

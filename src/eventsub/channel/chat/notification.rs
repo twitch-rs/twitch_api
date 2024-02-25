@@ -78,8 +78,10 @@ pub enum Chatter {
         chatter_user_name: types::DisplayName,
         /// The user login of the user that sent the message.
         chatter_user_login: types::UserName,
-        /// The color of the user’s name in the chat room.
-        color: Option<types::NamedUserColor<'static>>,
+        /// The color of the user's name in the chat room.
+        /// This is a hexadecimal RGB color code in the form, `#<RGB>`.
+        /// This may be empty if it is never set.
+        color: types::HexColor,
     },
     /// Chatter is anonymous
     Anonymous,
@@ -107,7 +109,7 @@ impl serde::Serialize for Chatter {
             chatter_user_id: Option<&'a types::UserIdRef>,
             chatter_user_name: Option<&'a types::DisplayNameRef>,
             chatter_user_login: Option<&'a types::UserNameRef>,
-            color: String,
+            color: Option<&'a types::HexColor>,
             chatter_is_anonymous: bool,
         }
 
@@ -121,7 +123,7 @@ impl serde::Serialize for Chatter {
                 chatter_user_id: Some(chatter_user_id),
                 chatter_user_name: Some(chatter_user_name),
                 chatter_user_login: Some(chatter_user_login),
-                color: color.as_ref().map(|c| c.to_string()).unwrap_or_default(),
+                color: Some(color),
                 chatter_is_anonymous: false,
             },
             Chatter::Anonymous => InnerChatter {
@@ -137,12 +139,11 @@ impl<'de> serde::Deserialize<'de> for Chatter {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where D: serde::Deserializer<'de> {
         #[derive(Deserialize)]
-        struct InnerChatter<'c> {
+        struct InnerChatter {
             chatter_user_id: Option<types::UserId>,
             chatter_user_name: Option<types::DisplayName>,
             chatter_user_login: Option<types::UserName>,
-            #[serde(borrow)]
-            color: Option<types::NamedUserColor<'c>>,
+            color: Option<types::HexColor>,
             chatter_is_anonymous: bool,
         }
 
@@ -150,8 +151,8 @@ impl<'de> serde::Deserialize<'de> for Chatter {
         if chatter.chatter_is_anonymous {
             #[cfg(feature = "tracing")]
             if let Some(c) = chatter.color {
-                if c.as_hex().as_str() != "" {
-                    tracing::error!("got a anonymous user with color set to {c}");
+                if c.as_str() != "" {
+                    tracing::error!("got an anonymous user with color set to {c}");
                 }
             }
             Ok(Chatter::Anonymous)
@@ -166,13 +167,9 @@ impl<'de> serde::Deserialize<'de> for Chatter {
                 chatter_user_login: chatter
                     .chatter_user_login
                     .ok_or_else(|| serde::de::Error::missing_field("chatter_user_login"))?,
-                color: Some(
-                    chatter
-                        .color
-                        .ok_or_else(|| serde::de::Error::missing_field("color"))?
-                        .to_owned(),
-                )
-                .filter(|s| s.as_hex().as_str() != ""),
+                color: chatter
+                    .color
+                    .ok_or_else(|| serde::de::Error::missing_field("color"))?,
             })
         }
     }
@@ -259,30 +256,6 @@ impl crate::eventsub::NamedField for CharityDonation {
 }
 impl crate::eventsub::NamedField for BitsBadgeTier {
     const NAME: &'static str = "bits_badge_tier";
-}
-
-/// A badge
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub struct Badge {
-    /// An ID that identifies this set of chat badges. For example, Bits or Subscriber.
-    pub set_id: types::BadgeSetId,
-    /// An ID that identifies this version of the badge. The ID can be any value. For example, for Bits, the ID is the Bits tier level, but for World of Warcraft, it could be Alliance or Horde.
-    pub id: types::ChatBadgeId,
-    /// Contains metadata related to the chat badges in the badges tag. Currently, this tag contains metadata only for subscriber badges, to indicate the number of months the user has been a subscriber.
-    pub info: String,
-}
-
-/// A message
-// XXX: this struct can never be deny_unknown_fields
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[non_exhaustive]
-pub struct Message {
-    /// The chat message in plain text.
-    pub text: String,
-    /// Ordered list of chat message fragments.
-    pub fragments: Vec<Fragment>,
 }
 
 /// A subscription notification
