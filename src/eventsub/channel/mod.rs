@@ -5,10 +5,12 @@ use super::{EventSubscription, EventType};
 use crate::types;
 use serde_derive::{Deserialize, Serialize};
 
+pub mod ad_break;
 pub mod ban;
 pub mod channel_points_custom_reward;
 pub mod channel_points_custom_reward_redemption;
 pub mod charity_campaign;
+pub mod chat;
 pub mod cheer;
 pub mod follow;
 pub mod goal;
@@ -23,6 +25,8 @@ pub mod subscription;
 pub mod unban;
 pub mod update;
 
+#[doc(inline)]
+pub use ad_break::{ChannelAdBreakBeginV1, ChannelAdBreakBeginV1Payload};
 #[doc(inline)]
 pub use ban::{ChannelBanV1, ChannelBanV1Payload};
 #[doc(inline)]
@@ -55,6 +59,16 @@ pub use charity_campaign::{
 pub use charity_campaign::{ChannelCharityCampaignStartV1, ChannelCharityCampaignStartV1Payload};
 #[doc(inline)]
 pub use charity_campaign::{ChannelCharityCampaignStopV1, ChannelCharityCampaignStopV1Payload};
+#[doc(inline)]
+pub use chat::{ChannelChatClearUserMessagesV1, ChannelChatClearUserMessagesV1Payload};
+#[doc(inline)]
+pub use chat::{ChannelChatClearV1, ChannelChatClearV1Payload};
+#[doc(inline)]
+pub use chat::{ChannelChatMessageDeleteV1, ChannelChatMessageDeleteV1Payload};
+#[doc(inline)]
+pub use chat::{ChannelChatMessageV1, ChannelChatMessageV1Payload};
+#[doc(inline)]
+pub use chat::{ChannelChatNotificationV1, ChannelChatNotificationV1Payload};
 #[doc(inline)]
 pub use cheer::{ChannelCheerV1, ChannelCheerV1Payload};
 #[doc(inline)]

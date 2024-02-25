@@ -1,4 +1,5 @@
 #![deny(missing_docs, rustdoc::broken_intra_doc_links)]
+#![allow(clippy::needless_raw_string_hashes)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![doc(html_root_url = "https://docs.rs/twitch_api/0.7.0-rc.7")]
@@ -143,7 +144,7 @@ pub use crate::helix::HelixClient;
 #[allow(deprecated)]
 pub use crate::tmi::TmiClient;
 
-/// Extra types not defined in [`twitch_types`](types)
+/// Extra types not defined in [`twitch_types`]
 pub mod extra;
 
 #[cfg(any(feature = "twitch_oauth2", all(feature = "helix", feature = "client")))]
@@ -280,7 +281,7 @@ impl<'a, C: HttpClient + 'a> TwitchClient<'a, C> {
         }
     }
 
-    /// Retrieve a reference of the [`HttpClient`][crate::HttpClient] inside this [`TwitchClient`]
+    /// Retrieve a reference of the [`HttpClient`] inside this [`TwitchClient`]
     pub fn get_client(&self) -> &C {
         #[cfg(feature = "helix")]
         {
@@ -394,6 +395,49 @@ where
     T: serde::Deserialize<'de> + Default, {
     use serde::Deserialize;
     Ok(Option::deserialize(deserializer)?.unwrap_or_default())
+}
+
+#[cfg(any(feature = "helix", feature = "eventsub"))]
+#[allow(dead_code)]
+/// Deserialize "" as <T as Default>::Default
+fn deserialize_none_from_empty_string<'de, D, S>(deserializer: D) -> Result<Option<S>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+    S: serde::Deserialize<'de>, {
+    use serde::de::IntoDeserializer;
+    struct Inner<S>(std::marker::PhantomData<S>);
+    impl<'de, S> serde::de::Visitor<'de> for Inner<S>
+    where S: serde::Deserialize<'de>
+    {
+        type Value = Option<S>;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            formatter.write_str("any string")
+        }
+
+        fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+        where E: serde::de::Error {
+            match value {
+                "" => Ok(None),
+                v => S::deserialize(v.into_deserializer()).map(Some),
+            }
+        }
+
+        fn visit_string<E>(self, value: String) -> Result<Self::Value, E>
+        where E: serde::de::Error {
+            match &*value {
+                "" => Ok(None),
+                v => S::deserialize(v.into_deserializer()).map(Some),
+            }
+        }
+
+        fn visit_unit<E>(self) -> Result<Self::Value, E>
+        where E: serde::de::Error {
+            Ok(None)
+        }
+    }
+
+    deserializer.deserialize_any(Inner(std::marker::PhantomData))
 }
 
 #[cfg(test)]

@@ -57,6 +57,13 @@ impl<'a> GetCheermotesRequest<'a> {
     pub fn new() -> Self { Self::default() }
 
     /// Get Cheermotes in a specific broadcasters channel.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::bits::GetCheermotesRequest;
+    /// let request = GetCheermotesRequest::broadcaster_id("1234");
+    /// ```
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
             broadcaster_id: Some(broadcaster_id.into_cow()),

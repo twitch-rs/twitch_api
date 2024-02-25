@@ -747,6 +747,57 @@ pub struct EventSubSubscription {
     pub version: String,
 }
 
+pub(crate) trait NamedField {
+    const NAME: &'static str;
+}
+
+/// Deserialize {"field": field} as { field ...} and serialize in reverse
+mod enum_field_as_inner {
+    use serde::ser::SerializeMap;
+
+    use super::*;
+    pub(crate) fn deserialize<'de, D, S>(deserializer: D) -> Result<S, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+        S: serde::Deserialize<'de> + NamedField, {
+        struct Inner<S>(std::marker::PhantomData<S>);
+        impl<'de, S> serde::de::Visitor<'de> for Inner<S>
+        where S: serde::Deserialize<'de> + NamedField
+        {
+            type Value = S;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                formatter.write_str("any object")
+            }
+
+            fn visit_map<A>(self, map: A) -> Result<Self::Value, A::Error>
+            where A: serde::de::MapAccess<'de> {
+                let mut map = map;
+                let mut value = None;
+                while let Some(key) = map.next_key::<String>()? {
+                    if key == S::NAME {
+                        value = Some(map.next_value()?);
+                    } else {
+                        map.next_value::<serde::de::IgnoredAny>()?;
+                    }
+                }
+                value.ok_or_else(|| serde::de::Error::missing_field(S::NAME))
+            }
+        }
+
+        deserializer.deserialize_any(Inner(std::marker::PhantomData))
+    }
+
+    pub(crate) fn serialize<S, T>(value: &T, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        T: serde::Serialize + NamedField,
+        S: serde::Serializer, {
+        let mut map = serializer.serialize_map(Some(1))?;
+        map.serialize_entry(T::NAME, value)?;
+        map.end()
+    }
+}
+
 #[cfg(test)]
 mod test {
 

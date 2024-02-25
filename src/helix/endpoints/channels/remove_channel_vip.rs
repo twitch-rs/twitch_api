@@ -57,6 +57,13 @@ pub struct RemoveChannelVipRequest<'a> {
 
 impl<'a> RemoveChannelVipRequest<'a> {
     /// Remove channel VIP
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::RemoveChannelVipRequest;
+    /// let request = RemoveChannelVipRequest::new("1337", "1234");
+    /// ```
     pub fn new(
         broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,
         user_id: impl types::IntoCow<'a, types::UserIdRef> + 'a,

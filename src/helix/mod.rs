@@ -96,8 +96,10 @@ struct HelixRequestError {
     message: String,
 }
 
-/// Deserialize "" as <T as Default>::Default
-fn deserialize_none_from_empty_string<'de, D, S>(deserializer: D) -> Result<Option<S>, D::Error>
+/// Deserialize 0, "0" or "" as None
+fn deserialize_none_from_empty_or_zero_string<'de, D, S>(
+    deserializer: D,
+) -> Result<Option<S>, D::Error>
 where
     D: serde::Deserializer<'de>,
     S: serde::Deserialize<'de>, {
@@ -109,13 +111,14 @@ where
         type Value = Option<S>;
 
         fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            formatter.write_str("any string")
+            formatter.write_str("any string or integer")
         }
 
         fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
         where E: serde::de::Error {
             match value {
                 "" => Ok(None),
+                "0" => Ok(None),
                 v => S::deserialize(v.into_deserializer()).map(Some),
             }
         }
@@ -124,7 +127,26 @@ where
         where E: serde::de::Error {
             match &*value {
                 "" => Ok(None),
+                "0" => Ok(None),
                 v => S::deserialize(v.into_deserializer()).map(Some),
+            }
+        }
+
+        fn visit_i64<E>(self, v: i64) -> Result<Self::Value, E>
+        where E: serde::de::Error {
+            if v == 0 {
+                Ok(None)
+            } else {
+                S::deserialize(v.into_deserializer()).map(Some)
+            }
+        }
+
+        fn visit_u64<E>(self, v: u64) -> Result<Self::Value, E>
+        where E: serde::de::Error {
+            if v == 0 {
+                Ok(None)
+            } else {
+                S::deserialize(v.into_deserializer()).map(Some)
             }
         }
 

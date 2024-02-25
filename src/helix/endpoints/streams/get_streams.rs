@@ -92,6 +92,14 @@ pub struct GetStreamsRequest<'a> {
 
 impl<'a> GetStreamsRequest<'a> {
     /// Return streams for specified user ids
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::streams::GetStreamsRequest;
+    /// let ids: &[&twitch_types::UserIdRef] = &["1234".into()];
+    /// let request = GetStreamsRequest::user_ids(ids);
+    /// ```
     pub fn user_ids(user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
         Self {
             user_id: user_ids.into(),
@@ -100,6 +108,14 @@ impl<'a> GetStreamsRequest<'a> {
     }
 
     /// Return streams for specified users by [nickname](types::UserName)
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::streams::GetStreamsRequest;
+    /// let ids: &[&twitch_types::UserNameRef] = &["justintvfan".into()];
+    /// let request = GetStreamsRequest::user_logins(ids);
+    /// ```
     pub fn user_logins(user_logins: impl Into<Cow<'a, [&'a types::UserNameRef]>>) -> Self {
         Self {
             user_login: user_logins.into(),

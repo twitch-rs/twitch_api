@@ -58,7 +58,7 @@ pub struct GetChannelInformationRequest<'a> {
 }
 
 impl<'a> GetChannelInformationRequest<'a> {
-    /// Get channel information for a specific broadcaster.
+    /// Get channel information for specific broadcasters.
     ///
     /// # Examples
     ///

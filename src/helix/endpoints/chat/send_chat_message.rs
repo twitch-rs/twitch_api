@@ -166,12 +166,12 @@ impl<'a> helix::HelixRequestBody for [SendChatMessageBody<'a>] {
 
 /// Code for why a message was dropped.
 ///
-/// See https://dev.twitch.tv/docs/irc/msg-id/
+/// See <https://dev.twitch.tv/docs/irc/msg-id/>
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 #[non_exhaustive]
 pub enum ChatMessageDropCode {
-    /// You are permanently banned from talking in <channel>.
+    /// You are permanently banned from talking in `<channel>`.
     MsgBanned,
     /// Your message was not sent because it contained too many unprocessable characters. If you believe this is an error, please rephrase and try again.
     MsgBadCharacters,
@@ -183,11 +183,11 @@ pub enum ChatMessageDropCode {
     MsgDuplicate,
     /// This room is in emote-only mode. You can find your currently available emoticons using the smiley in the chat text area.
     MsgEmoteonly,
-    /// This room is in <duration> followers-only mode. Follow <channel> to join the community! Note: These msg_followers tags are kickbacks to a user who does not meet the criteria; that is, does not follow or has not followed long enough.
+    /// This room is in `<duration>` followers-only mode. Follow `<channel>` to join the community! Note: These msg_followers tags are kickbacks to a user who does not meet the criteria; that is, does not follow or has not followed long enough.
     MsgFollowersonly,
-    /// This room is in <duration1> followers-only mode. You have been following for <duration2>. Continue following to chat!
+    /// This room is in `<duration1>` followers-only mode. You have been following for `<duration2>`. Continue following to chat!
     MsgFollowersonlyFollowed,
-    /// This room is in followers-only mode. Follow <channel> to join the community!
+    /// This room is in followers-only mode. Follow `<channel>` to join the community!
     MsgFollowersonlyZero,
     /// This room is in unique-chat mode and the message you attempted to send is not unique.
     MsgR9k,
@@ -197,17 +197,17 @@ pub enum ChatMessageDropCode {
     MsgRejected,
     /// Your message wasn’t posted due to conflicts with the channel’s moderation settings.
     MsgRejectedMandatory,
-    /// A verified phone number is required to chat in this channel. Please visit https://www.twitch.tv/settings/security to verify your phone number.
+    /// A verified phone number is required to chat in this channel. Please visit <https://www.twitch.tv/settings/security> to verify your phone number.
     MsgRequiresVerifiedPhoneNumber,
-    /// This room is in slow mode and you are sending messages too quickly. You will be able to talk again in <number> seconds.
+    /// This room is in slow mode and you are sending messages too quickly. You will be able to talk again in `<number>` seconds.
     MsgSlowmode,
-    /// This room is in subscribers only mode. To talk, purchase a channel subscription at https://www.twitch.tv/products/<broadcaster login name>/ticket?ref=subscriber_only_mode_chat.
+    /// This room is in subscribers only mode. To talk, purchase a channel subscription at `https://www.twitch.tv/products/<broadcaster login name>/ticket?ref=subscriber_only_mode_chat`.
     MsgSubsonly,
     /// You don’t have permission to perform that action.
     MsgSuspended,
-    /// You are timed out for <number> more seconds.
+    /// You are timed out for `<number>` more seconds.
     MsgTimedout,
-    /// This room requires a verified account to chat. Please verify your account at https://www.twitch.tv/settings/security.
+    /// This room requires a verified account to chat. Please verify your account at <https://www.twitch.tv/settings/security>.
     MsgVerifiedEmail,
     /// An unknown drop-code.
     #[serde(untagged)]
@@ -239,7 +239,7 @@ pub struct ChatMessageDropReason {
 #[non_exhaustive]
 pub struct SendChatMessageResponse {
     /// The message id for the message that was sent.
-    #[serde(deserialize_with = "helix::deserialize_none_from_empty_string")]
+    #[serde(deserialize_with = "crate::deserialize_none_from_empty_string")]
     pub message_id: Option<types::MsgId>,
     /// If the message passed all checks and was sent.
     pub is_sent: bool,
@@ -354,7 +354,7 @@ fn test_reject() {
           }
         }
       ]
-    }      
+    }
     "#
     .to_vec();
 
@@ -380,7 +380,7 @@ fn test_reject() {
           }
         }
       ]
-    }      
+    }
     "#
     .to_vec();
 

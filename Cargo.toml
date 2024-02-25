@@ -77,7 +77,6 @@ trace_unknown_fields = ["dep:serde_ignored", "tracing"]
 serde_json = ["dep:serde_json", "dep:serde_path_to_error"]
 helix = [
     "twitch_types/color",
-    "twitch_types/color",
     "twitch_types/emote",
     "twitch_types/goal",
     "twitch_types/moderation",
@@ -126,6 +125,8 @@ eventsub = [
     "twitch_types/points",
     "twitch_types/stream",
     "twitch_types/timestamp",
+    "twitch_types/sub",
+    "twitch_types/color",
 ]
 
 hmac = ["dep:crypto_hmac", "dep:sha2"]

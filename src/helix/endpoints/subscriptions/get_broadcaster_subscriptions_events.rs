@@ -146,7 +146,7 @@ pub struct BroadcasterSubscriptionEventData {
     /// Name of the subscription.
     #[serde(
         default,
-        deserialize_with = "helix::deserialize_none_from_empty_string"
+        deserialize_with = "crate::deserialize_none_from_empty_string"
     )]
     pub plan_name: Option<String>,
     /// ID of the subscribed user.
@@ -156,13 +156,13 @@ pub struct BroadcasterSubscriptionEventData {
     /// ID of the subscribed user.
     #[serde(
         default,
-        deserialize_with = "helix::deserialize_none_from_empty_string"
+        deserialize_with = "crate::deserialize_none_from_empty_string"
     )]
     pub gifter_id: Option<types::UserId>,
     /// Display name of the gifter.
     #[serde(
         default,
-        deserialize_with = "helix::deserialize_none_from_empty_string"
+        deserialize_with = "crate::deserialize_none_from_empty_string"
     )]
     pub gifter_name: Option<types::DisplayName>,
 }

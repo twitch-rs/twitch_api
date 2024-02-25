@@ -54,6 +54,13 @@ pub struct GetChannelEditorsRequest<'a> {
 
 impl<'a> GetChannelEditorsRequest<'a> {
     /// Get specified broadcasters channel editors
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use twitch_api::helix::channels::GetChannelEditorsRequest;
+    /// let request = GetChannelEditorsRequest::broadcaster_id("1234");
+    /// ```
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into_cow(),

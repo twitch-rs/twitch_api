@@ -11,49 +11,55 @@ use super::*;
 macro_rules! fill_events {
     ($callback:ident( $($args:tt)* )) => {
         $callback!($($args)*
-            channel::ChannelUpdateV1;
-            channel::ChannelUpdateV2;
-            channel::ChannelFollowV1;
-            channel::ChannelFollowV2;
-            channel::ChannelSubscribeV1;
-            channel::ChannelCheerV1;
+            channel::ChannelAdBreakBeginV1;
             channel::ChannelBanV1;
-            channel::ChannelUnbanV1;
             channel::ChannelCharityCampaignDonateV1;
             channel::ChannelCharityCampaignProgressV1;
             channel::ChannelCharityCampaignStartV1;
             channel::ChannelCharityCampaignStopV1;
+            channel::ChannelChatClearUserMessagesV1;
+            channel::ChannelChatClearV1;
+            channel::ChannelChatMessageV1;
+            channel::ChannelChatMessageDeleteV1;
+            channel::ChannelChatNotificationV1;
+            channel::ChannelCheerV1;
+            channel::ChannelFollowV1;
+            channel::ChannelFollowV2;
+            channel::ChannelGoalBeginV1;
+            channel::ChannelGoalEndV1;
+            channel::ChannelGoalProgressV1;
+            channel::ChannelHypeTrainBeginV1;
+            channel::ChannelHypeTrainEndV1;
+            channel::ChannelHypeTrainProgressV1;
             channel::ChannelPointsCustomRewardAddV1;
-            channel::ChannelPointsCustomRewardUpdateV1;
-            channel::ChannelPointsCustomRewardRemoveV1;
             channel::ChannelPointsCustomRewardRedemptionAddV1;
             channel::ChannelPointsCustomRewardRedemptionUpdateV1;
+            channel::ChannelPointsCustomRewardRemoveV1;
+            channel::ChannelPointsCustomRewardUpdateV1;
             channel::ChannelPollBeginV1;
-            channel::ChannelPollProgressV1;
             channel::ChannelPollEndV1;
+            channel::ChannelPollProgressV1;
             channel::ChannelPredictionBeginV1;
-            channel::ChannelPredictionProgressV1;
-            channel::ChannelPredictionLockV1;
             channel::ChannelPredictionEndV1;
+            channel::ChannelPredictionLockV1;
+            channel::ChannelPredictionProgressV1;
             channel::ChannelRaidV1;
             channel::ChannelShieldModeBeginV1;
             channel::ChannelShieldModeEndV1;
             channel::ChannelShoutoutCreateV1;
             channel::ChannelShoutoutReceiveV1;
+            channel::ChannelSubscribeV1;
             channel::ChannelSubscriptionEndV1;
             channel::ChannelSubscriptionGiftV1;
             channel::ChannelSubscriptionMessageV1;
-            channel::ChannelGoalBeginV1;
-            channel::ChannelGoalProgressV1;
-            channel::ChannelGoalEndV1;
-            channel::ChannelHypeTrainBeginV1;
-            channel::ChannelHypeTrainProgressV1;
-            channel::ChannelHypeTrainEndV1;
-            stream::StreamOnlineV1;
+            channel::ChannelUnbanV1;
+            channel::ChannelUpdateV1;
+            channel::ChannelUpdateV2;
             stream::StreamOfflineV1;
-            user::UserUpdateV1;
+            stream::StreamOnlineV1;
             user::UserAuthorizationGrantV1;
             user::UserAuthorizationRevokeV1;
+            user::UserUpdateV1;
         )
     };
 }
@@ -128,6 +134,18 @@ macro_rules! make_event_type {
 pub struct EventTypeParseError;
 
 make_event_type!("Event Types": pub enum EventType {
+    "a user runs a midroll commercial break, either manually or automatically via ads manager.":
+    ChannelAdBreakBegin => "channel.ad_break.begin",
+    "a moderator or bot clears all messages from the chat room.":
+    ChannelChatClear => "channel.chat.clear",
+    "a moderator or bot clears all messages for a specific user.":
+    ChannelChatClearUserMessages => "channel.chat.clear_user_messages",
+    "any user sends a message to a specific chat room.":
+    ChannelChatMessage => "channel.chat.message",
+    "a moderator removes a specific message.":
+    ChannelChatMessageDelete => "channel.chat.message_delete",
+    "an event that appears in chat occurs, such as someone subscribing to the channel or a subscription is gifted.":
+    ChannelChatNotification => "channel.chat.notification",
     "a user donates to the broadcaster’s charity campaign.":
     ChannelCharityCampaignDonate => "channel.charity_campaign.donate",
     "progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal.":
@@ -229,6 +247,18 @@ fn main() {
 #[allow(clippy::large_enum_variant)]
 #[non_exhaustive]
 pub enum Event {
+    /// Channel Ad Break Begin V1 Event
+    ChannelAdBreakBeginV1(Payload<channel::ChannelAdBreakBeginV1>),
+    /// Channel Chat Clear V1 Event
+    ChannelChatClearV1(Payload<channel::ChannelChatClearV1>),
+    /// Channel Chat ClearUserMessages V1 Event
+    ChannelChatClearUserMessagesV1(Payload<channel::ChannelChatClearUserMessagesV1>),
+    /// Channel Chat Message V1 Event
+    ChannelChatMessageV1(Payload<channel::ChannelChatMessageV1>),
+    /// Channel Chat MessageDelete V1 Event
+    ChannelChatMessageDeleteV1(Payload<channel::ChannelChatMessageDeleteV1>),
+    /// Channel Chat Notification V1 Event
+    ChannelChatNotificationV1(Payload<channel::ChannelChatNotificationV1>),
     /// Channel Charity Campaign Donate V1 Event
     ChannelCharityCampaignDonateV1(Payload<channel::ChannelCharityCampaignDonateV1>),
     /// Channel Charity Campaign Progress V1 Event

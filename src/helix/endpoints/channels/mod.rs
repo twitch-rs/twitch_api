@@ -28,6 +28,7 @@ use serde_derive::{Deserialize, Serialize};
 use std::borrow::Cow;
 
 pub mod add_channel_vip;
+pub mod get_ad_schedule;
 pub mod get_channel_editors;
 pub mod get_channel_followers;
 pub mod get_channel_information;
@@ -35,10 +36,13 @@ pub mod get_followed_channels;
 pub mod get_vips;
 pub mod modify_channel_information;
 pub mod remove_channel_vip;
+pub mod snooze_next_ad;
 pub mod start_commercial;
 
 #[doc(inline)]
 pub use add_channel_vip::{AddChannelVipRequest, AddChannelVipResponse};
+#[doc(inline)]
+pub use get_ad_schedule::{AdSchedule, GetAdScheduleRequest};
 #[doc(inline)]
 pub use get_channel_editors::{Editor, GetChannelEditorsRequest};
 #[doc(inline)]
@@ -56,5 +60,6 @@ pub use modify_channel_information::{
 };
 #[doc(inline)]
 pub use remove_channel_vip::{RemoveChannelVipRequest, RemoveChannelVipResponse};
+pub use snooze_next_ad::{SnoozeNextAdRequest, SnoozedAdSchedule};
 #[doc(inline)]
 pub use start_commercial::{StartCommercial, StartCommercialBody, StartCommercialRequest};
