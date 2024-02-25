@@ -34,7 +34,7 @@ impl EventSubscription for ChannelAdBreakBeginV1 {
     const VERSION: &'static str = "1";
 }
 
-/// [`channel.ad_break.begin`](ChannelAdBreakBeginBeta) response payload.
+/// [`channel.ad_break.begin`](ChannelAdBreakBeginV1) response payload.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]

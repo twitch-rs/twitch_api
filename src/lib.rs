@@ -144,7 +144,7 @@ pub use crate::helix::HelixClient;
 #[allow(deprecated)]
 pub use crate::tmi::TmiClient;
 
-/// Extra types not defined in [`twitch_types`](types)
+/// Extra types not defined in [`twitch_types`]
 pub mod extra;
 
 #[cfg(any(feature = "twitch_oauth2", all(feature = "helix", feature = "client")))]
@@ -281,7 +281,7 @@ impl<'a, C: HttpClient + 'a> TwitchClient<'a, C> {
         }
     }
 
-    /// Retrieve a reference of the [`HttpClient`][crate::HttpClient] inside this [`TwitchClient`]
+    /// Retrieve a reference of the [`HttpClient`] inside this [`TwitchClient`]
     pub fn get_client(&self) -> &C {
         #[cfg(feature = "helix")]
         {
