@@ -261,30 +261,6 @@ impl crate::eventsub::NamedField for BitsBadgeTier {
     const NAME: &'static str = "bits_badge_tier";
 }
 
-/// A badge
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub struct Badge {
-    /// An ID that identifies this set of chat badges. For example, Bits or Subscriber.
-    pub set_id: types::BadgeSetId,
-    /// An ID that identifies this version of the badge. The ID can be any value. For example, for Bits, the ID is the Bits tier level, but for World of Warcraft, it could be Alliance or Horde.
-    pub id: types::ChatBadgeId,
-    /// Contains metadata related to the chat badges in the badges tag. Currently, this tag contains metadata only for subscriber badges, to indicate the number of months the user has been a subscriber.
-    pub info: String,
-}
-
-/// A message
-// XXX: this struct can never be deny_unknown_fields
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[non_exhaustive]
-pub struct Message {
-    /// The chat message in plain text.
-    pub text: String,
-    /// Ordered list of chat message fragments.
-    pub fragments: Vec<Fragment>,
-}
-
 /// A subscription notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
