@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (bf3c6c5be 2024-02-01)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (381d69953 2024-02-24)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c37d3936c59ababd.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
             <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
@@ -690,6 +690,36 @@
 <a href="#688" id="688">688</a>
 <a href="#689" id="689">689</a>
 <a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! EventSub events and their types
 </span><span class="attr">#![allow(deprecated)]
 </span><span class="kw">pub mod </span>websocket;
@@ -703,49 +733,55 @@
 <span class="macro">macro_rules! </span>fill_events {
     (<span class="macro-nonterminal">$callback</span>:ident( $(<span class="macro-nonterminal">$args</span>:tt)* )) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>($(<span class="macro-nonterminal">$args</span>)*
-            channel::ChannelUpdateV1;
-            channel::ChannelUpdateV2;
-            channel::ChannelFollowV1;
-            channel::ChannelFollowV2;
-            channel::ChannelSubscribeV1;
-            channel::ChannelCheerV1;
+            channel::ChannelAdBreakBeginV1;
             channel::ChannelBanV1;
-            channel::ChannelUnbanV1;
             channel::ChannelCharityCampaignDonateV1;
             channel::ChannelCharityCampaignProgressV1;
             channel::ChannelCharityCampaignStartV1;
             channel::ChannelCharityCampaignStopV1;
+            channel::ChannelChatClearUserMessagesV1;
+            channel::ChannelChatClearV1;
+            channel::ChannelChatMessageV1;
+            channel::ChannelChatMessageDeleteV1;
+            channel::ChannelChatNotificationV1;
+            channel::ChannelCheerV1;
+            channel::ChannelFollowV1;
+            channel::ChannelFollowV2;
+            channel::ChannelGoalBeginV1;
+            channel::ChannelGoalEndV1;
+            channel::ChannelGoalProgressV1;
+            channel::ChannelHypeTrainBeginV1;
+            channel::ChannelHypeTrainEndV1;
+            channel::ChannelHypeTrainProgressV1;
             channel::ChannelPointsCustomRewardAddV1;
-            channel::ChannelPointsCustomRewardUpdateV1;
-            channel::ChannelPointsCustomRewardRemoveV1;
             channel::ChannelPointsCustomRewardRedemptionAddV1;
             channel::ChannelPointsCustomRewardRedemptionUpdateV1;
+            channel::ChannelPointsCustomRewardRemoveV1;
+            channel::ChannelPointsCustomRewardUpdateV1;
             channel::ChannelPollBeginV1;
-            channel::ChannelPollProgressV1;
             channel::ChannelPollEndV1;
+            channel::ChannelPollProgressV1;
             channel::ChannelPredictionBeginV1;
-            channel::ChannelPredictionProgressV1;
-            channel::ChannelPredictionLockV1;
             channel::ChannelPredictionEndV1;
+            channel::ChannelPredictionLockV1;
+            channel::ChannelPredictionProgressV1;
             channel::ChannelRaidV1;
             channel::ChannelShieldModeBeginV1;
             channel::ChannelShieldModeEndV1;
             channel::ChannelShoutoutCreateV1;
             channel::ChannelShoutoutReceiveV1;
+            channel::ChannelSubscribeV1;
             channel::ChannelSubscriptionEndV1;
             channel::ChannelSubscriptionGiftV1;
             channel::ChannelSubscriptionMessageV1;
-            channel::ChannelGoalBeginV1;
-            channel::ChannelGoalProgressV1;
-            channel::ChannelGoalEndV1;
-            channel::ChannelHypeTrainBeginV1;
-            channel::ChannelHypeTrainProgressV1;
-            channel::ChannelHypeTrainEndV1;
-            stream::StreamOnlineV1;
+            channel::ChannelUnbanV1;
+            channel::ChannelUpdateV1;
+            channel::ChannelUpdateV2;
             stream::StreamOfflineV1;
-            user::UserUpdateV1;
+            stream::StreamOnlineV1;
             user::UserAuthorizationGrantV1;
             user::UserAuthorizationRevokeV1;
+            user::UserUpdateV1;
         )
     };
 }
@@ -820,6 +856,18 @@
 </span><span class="kw">pub struct </span>EventTypeParseError;
 
 <span class="macro">make_event_type!</span>(<span class="string">"Event Types"</span>: <span class="kw">pub enum </span>EventType {
+    <span class="string">"a user runs a midroll commercial break, either manually or automatically via ads manager."</span>:
+    ChannelAdBreakBegin =&gt; <span class="string">"channel.ad_break.begin"</span>,
+    <span class="string">"a moderator or bot clears all messages from the chat room."</span>:
+    ChannelChatClear =&gt; <span class="string">"channel.chat.clear"</span>,
+    <span class="string">"a moderator or bot clears all messages for a specific user."</span>:
+    ChannelChatClearUserMessages =&gt; <span class="string">"channel.chat.clear_user_messages"</span>,
+    <span class="string">"any user sends a message to a specific chat room."</span>:
+    ChannelChatMessage =&gt; <span class="string">"channel.chat.message"</span>,
+    <span class="string">"a moderator removes a specific message."</span>:
+    ChannelChatMessageDelete =&gt; <span class="string">"channel.chat.message_delete"</span>,
+    <span class="string">"an event that appears in chat occurs, such as someone subscribing to the channel or a subscription is gifted."</span>:
+    ChannelChatNotification =&gt; <span class="string">"channel.chat.notification"</span>,
     <span class="string">"a user donates to the broadcaster’s charity campaign."</span>:
     ChannelCharityCampaignDonate =&gt; <span class="string">"channel.charity_campaign.donate"</span>,
     <span class="string">"progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal."</span>:
@@ -921,6 +969,18 @@ fn main() {
 #[allow(clippy::large_enum_variant)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Event {
+    <span class="doccomment">/// Channel Ad Break Begin V1 Event
+    </span>ChannelAdBreakBeginV1(Payload&lt;channel::ChannelAdBreakBeginV1&gt;),
+    <span class="doccomment">/// Channel Chat Clear V1 Event
+    </span>ChannelChatClearV1(Payload&lt;channel::ChannelChatClearV1&gt;),
+    <span class="doccomment">/// Channel Chat ClearUserMessages V1 Event
+    </span>ChannelChatClearUserMessagesV1(Payload&lt;channel::ChannelChatClearUserMessagesV1&gt;),
+    <span class="doccomment">/// Channel Chat Message V1 Event
+    </span>ChannelChatMessageV1(Payload&lt;channel::ChannelChatMessageV1&gt;),
+    <span class="doccomment">/// Channel Chat MessageDelete V1 Event
+    </span>ChannelChatMessageDeleteV1(Payload&lt;channel::ChannelChatMessageDeleteV1&gt;),
+    <span class="doccomment">/// Channel Chat Notification V1 Event
+    </span>ChannelChatNotificationV1(Payload&lt;channel::ChannelChatNotificationV1&gt;),
     <span class="doccomment">/// Channel Charity Campaign Donate V1 Event
     </span>ChannelCharityCampaignDonateV1(Payload&lt;channel::ChannelCharityCampaignDonateV1&gt;),
     <span class="doccomment">/// Channel Charity Campaign Progress V1 Event

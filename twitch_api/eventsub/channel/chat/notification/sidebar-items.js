@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Chatter","Gifter","Notification"],"struct":["Announcement","BitsBadgeTier","ChannelChatNotificationV1","ChannelChatNotificationV1Payload","CharityDonation","CommunitySubGift","GiftPaidUpgrade","PayItForward","PrimePaidUpgrade","Raid","Resubscription","SubGift","Subscription","Unraid"]};

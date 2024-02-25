@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["DonationAmount"]};
+window.SIDEBAR_ITEMS = {"enum":["AnnouncementColor"],"struct":["AnnouncementColorError","DonationAmount"]};

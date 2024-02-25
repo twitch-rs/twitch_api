@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["MessageType"],"struct":["Badge","ChannelChatMessageV1","ChannelChatMessageV1Payload","Cheer","Reply"]};
