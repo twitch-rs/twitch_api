@@ -72,6 +72,7 @@
 <a href="#70" id="70">70</a>
 <a href="#71" id="71">71</a>
 <a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
 </pre></div><pre class="rust"><code><span class="kw">use super</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use </span>tower_service::Service;
@@ -95,7 +96,7 @@
     S: Clone + Send + Sync + <span class="lifetime">'static</span>,
     S::Error: Into&lt;Box&lt;<span class="kw">dyn </span>std::error::Error + Send + Sync&gt;&gt;,
     S::Future: Future&lt;Output = <span class="prelude-ty">Result</span>&lt;http::Response&lt;ResBody&gt;, S::Error&gt;&gt; + Send + <span class="lifetime">'static</span>,
-    ResBody: hyper::body::HttpBody + Sync + Send + <span class="lifetime">'static</span>,
+    ResBody: hyper::body::Body + Sync + Send + <span class="lifetime">'static</span>,
     ResBody::Error: Into&lt;Box&lt;<span class="kw">dyn </span>std::error::Error + Send + Sync&gt;&gt;,
     ResBody::Data: Sync + Send,
     ReqBody: From&lt;hyper::body::Bytes&gt; + Sync + Send + <span class="lifetime">'static</span>,
@@ -115,11 +116,12 @@
                 </span>.map_err(|e| TowerError::ServiceError(e.into()))<span class="question-mark">?
                 </span>.into_parts();
 
-            <span class="kw">let </span>b = hyper::body::to_bytes(body)
+            <span class="kw">let </span>b = http_body_util::BodyExt::collect(body)
                 .<span class="kw">await
-                </span>.map_err(|e| TowerError::BodyError(e.into()))<span class="question-mark">?</span>;
+                </span>.map_err(|e| TowerError::BodyError(e.into()))<span class="question-mark">?
+                </span>.to_bytes();
 
-            <span class="prelude-val">Ok</span>(http::Response::from_parts(parts, b.into()))
+            <span class="prelude-val">Ok</span>(http::Response::from_parts(parts, b))
         })
     }
 }

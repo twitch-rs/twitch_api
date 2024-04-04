@@ -247,10 +247,10 @@
             .req(req)
             .<span class="kw">await
             </span>.map_err(|e| RequestError::RequestError(Box::new(e)))<span class="question-mark">?</span>;
-        <span class="kw">let </span>(parts, <span class="kw-2">mut </span>body) = resp.into_parts();
-        <span class="kw">let </span>resp = http::Response::from_parts(parts, hyper::body::to_bytes(<span class="kw-2">&amp;mut </span>body).<span class="kw">await</span><span class="question-mark">?</span>);
+        <span class="kw">let </span>(parts, body) = resp.into_parts();
+        <span class="kw">let </span>resp = http::Response::from_parts(parts, body.to_vec());
         <span class="kw">let </span>text = std::str::from_utf8(resp.body())
-            .map_err(|e| RequestError::Utf8Error(resp.body().to_vec(), e))<span class="question-mark">?</span>;
+            .map_err(|e| RequestError::Utf8Error(resp.body().clone(), e))<span class="question-mark">?</span>;
         <span class="kw">crate</span>::parse_json(text, <span class="bool-val">true</span>).map_err(Into::into)
     }
 }

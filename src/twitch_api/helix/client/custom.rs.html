@@ -359,16 +359,6 @@
 <a href="#357" id="357">357</a>
 <a href="#358" id="358">358</a>
 <a href="#359" id="359">359</a>
-<a href="#360" id="360">360</a>
-<a href="#361" id="361">361</a>
-<a href="#362" id="362">362</a>
-<a href="#363" id="363">363</a>
-<a href="#364" id="364">364</a>
-<a href="#365" id="365">365</a>
-<a href="#366" id="366">366</a>
-<a href="#367" id="367">367</a>
-<a href="#368" id="368">368</a>
-<a href="#369" id="369">369</a>
 </pre></div><pre class="rust"><code><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span>std::convert::TryInto;
 
@@ -423,9 +413,7 @@
             </span>.client
             .req(req)
             .<span class="kw">await
-            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
-            </span>.into_response_bytes()
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?</span>;
         {
             <span class="kw">let </span>request = <span class="prelude-val">Some</span>(request);
             <span class="kw">let </span>uri = <span class="kw-2">&amp;</span>uri;
@@ -487,9 +475,7 @@
             </span>.client
             .req(req)
             .<span class="kw">await
-            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
-            </span>.into_response_bytes()
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?</span>;
         {
             <span class="kw">let </span>request = <span class="prelude-val">Some</span>(request);
             <span class="kw">let </span>uri = <span class="kw-2">&amp;</span>uri;
@@ -558,9 +544,7 @@
             </span>.client
             .req(req)
             .<span class="kw">await
-            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
-            </span>.into_response_bytes()
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?</span>;
         {
             <span class="kw">let </span>uri = <span class="kw-2">&amp;</span>uri;
             <span class="kw">let </span>text = std::str::from_utf8(response.body()).map_err(|e| {
@@ -625,9 +609,7 @@
             </span>.client
             .req(req)
             .<span class="kw">await
-            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
-            </span>.into_response_bytes()
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?</span>;
         {
             <span class="kw">let </span>uri = <span class="kw-2">&amp;</span>uri;
             <span class="kw">let </span>text = std::str::from_utf8(response.body()).map_err(|e| {
@@ -695,9 +677,7 @@
             </span>.client
             .req(req)
             .<span class="kw">await
-            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?
-            </span>.into_response_bytes()
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            </span>.map_err(ClientRequestError::RequestError)<span class="question-mark">?</span>;
         {
             <span class="kw">let </span>uri = <span class="kw-2">&amp;</span>uri;
             <span class="kw">let </span>text = std::str::from_utf8(response.body()).map_err(|e| {

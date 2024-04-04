@@ -95,7 +95,7 @@
             std::mem::swap(headers, response.headers_mut());
             <span class="kw">let </span>result = result.version(response.version());
             <span class="prelude-val">Ok</span>(result
-                .body(response.bytes().<span class="kw">await</span><span class="question-mark">?</span>.into())
+                .body(response.bytes().<span class="kw">await</span><span class="question-mark">?</span>)
                 .expect(<span class="string">"mismatch reqwest -&gt; http conversion should not fail"</span>))
         })
     }

@@ -166,6 +166,26 @@
 <a href="#164" id="164">164</a>
 <a href="#165" id="165">165</a>
 <a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
 </pre></div><pre class="rust"><code><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="doccomment">/// Possible errors from [`Client::req()`] when using the [surf](https://crates.io/crates/surf) client
 ///
@@ -185,6 +205,23 @@
 
 <span class="kw">use </span>surf::Client <span class="kw">as </span>SurfClient;
 
+<span class="comment">// same as in twitch_oauth2/src/client.rs
+</span><span class="attr">#[cfg(feature = <span class="string">"surf"</span>)]
+</span><span class="kw">fn </span>http1_to_surf(m: <span class="kw-2">&amp;</span>http::Method) -&gt; surf::http::Method {
+    <span class="kw">match </span><span class="kw-2">*</span>m {
+        http::Method::GET =&gt; surf::http::Method::Get,
+        http::Method::CONNECT =&gt; http_types::Method::Connect,
+        http::Method::DELETE =&gt; http_types::Method::Delete,
+        http::Method::HEAD =&gt; http_types::Method::Head,
+        http::Method::OPTIONS =&gt; http_types::Method::Options,
+        http::Method::PATCH =&gt; http_types::Method::Patch,
+        http::Method::POST =&gt; http_types::Method::Post,
+        http::Method::PUT =&gt; http_types::Method::Put,
+        http::Method::TRACE =&gt; http_types::Method::Trace,
+        <span class="kw">_ </span>=&gt; <span class="macro">unimplemented!</span>(),
+    }
+}
+
 <span class="attr">#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"surf"</span>)))] </span><span class="comment">// FIXME: This doc_cfg does nothing
 </span><span class="kw">impl </span>Client <span class="kw">for </span>SurfClient {
     <span class="kw">type </span>Error = SurfError;
@@ -192,7 +229,7 @@
     <span class="kw">fn </span>req(<span class="kw-2">&amp;</span><span class="self">self</span>, request: Request) -&gt; BoxedFuture&lt;<span class="lifetime">'static</span>, <span class="prelude-ty">Result</span>&lt;Response, <span class="self">Self</span>::Error&gt;&gt; {
         <span class="comment">// First we translate the `http::Request` method and uri into types that surf understands.
 
-        </span><span class="kw">let </span>method: surf::http::Method = request.method().clone().into();
+        </span><span class="kw">let </span>method = http1_to_surf(request.method());
 
         <span class="kw">let </span>url = <span class="kw">match </span>url::Url::parse(<span class="kw-2">&amp;</span>request.uri().to_string()) {
             <span class="prelude-val">Ok</span>(url) =&gt; url,
@@ -219,7 +256,10 @@
             </span>req.body_bytes(request.into_body());
             <span class="comment">// Send the request and translate the response into a `http::Response`
             </span><span class="kw">let </span><span class="kw-2">mut </span>response = client.send(req).<span class="kw">await</span>.map_err(SurfError::Surf)<span class="question-mark">?</span>;
-            <span class="kw">let </span><span class="kw-2">mut </span>result = http::Response::builder().status(response.status());
+            <span class="kw">let </span><span class="kw-2">mut </span>result = http::Response::builder().status(
+                http::StatusCode::from_u16(response.status().into())
+                    .expect(<span class="string">"http_types::StatusCode only contains valid status codes"</span>),
+            );
 
             <span class="kw">let </span><span class="kw-2">mut </span>response_headers: http::header::HeaderMap = response
                 .iter()
