@@ -11,8 +11,8 @@ color-eyre = { version = "0.6", features = ["capture-spantrace"] }
 dotenvy = "0.15.7"
 eyre = { version = "0.6" }
 futures = "0.3.28"
-hyper = "0.14"
-reqwest = { version = "0.11.22", features = ["json"] }
+hyper = "1.2.0"
+reqwest = { version = "0.12.2", features = ["json"] }
 serde = "1"
 serde_json = { version = "1" }
 tokio = { version = "1.33.0", features = ["macros", "rt-multi-thread"] }

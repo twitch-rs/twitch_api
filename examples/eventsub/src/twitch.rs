@@ -8,6 +8,7 @@ use axum::{
 };
 use eyre::Context;
 use futures::TryStreamExt;
+use http_body_util::BodyExt;
 use hyper::StatusCode;
 use tokio::sync::{watch, RwLock};
 use twitch_api::{
@@ -143,7 +144,7 @@ pub async fn twitch_eventsub(
         None => MAX_ALLOWED_RESPONSE_SIZE + 1, /* Just to protect ourselves from a malicious response */
     };
     let body = if response_content_length < MAX_ALLOWED_RESPONSE_SIZE {
-        hyper::body::to_bytes(body).await.unwrap()
+        body.collect().await.unwrap().to_bytes().to_vec()
     } else {
         panic!("too big data given")
     };

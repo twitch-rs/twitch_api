@@ -86,7 +86,7 @@ impl Client for UreqAgent {
                 .bytes()
                 .collect::<Result<hyper::body::Bytes, _>>()
             {
-                Ok(v) => result.body(v.into()).map_err(Into::into),
+                Ok(v) => result.body(v).map_err(Into::into),
                 Err(e) => Err(e.into()),
             }
         })

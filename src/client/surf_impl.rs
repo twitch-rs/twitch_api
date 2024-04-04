@@ -17,6 +17,23 @@ pub enum SurfError {
 
 use surf::Client as SurfClient;
 
+// same as in twitch_oauth2/src/client.rs
+#[cfg(feature = "surf")]
+fn http1_to_surf(m: &http::Method) -> surf::http::Method {
+    match *m {
+        http::Method::GET => surf::http::Method::Get,
+        http::Method::CONNECT => http_types::Method::Connect,
+        http::Method::DELETE => http_types::Method::Delete,
+        http::Method::HEAD => http_types::Method::Head,
+        http::Method::OPTIONS => http_types::Method::Options,
+        http::Method::PATCH => http_types::Method::Patch,
+        http::Method::POST => http_types::Method::Post,
+        http::Method::PUT => http_types::Method::Put,
+        http::Method::TRACE => http_types::Method::Trace,
+        _ => unimplemented!(),
+    }
+}
+
 #[cfg_attr(nightly, doc(cfg(feature = "surf")))] // FIXME: This doc_cfg does nothing
 impl Client for SurfClient {
     type Error = SurfError;
@@ -24,7 +41,7 @@ impl Client for SurfClient {
     fn req(&self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
         // First we translate the `http::Request` method and uri into types that surf understands.
 
-        let method: surf::http::Method = request.method().clone().into();
+        let method = http1_to_surf(request.method());
 
         let url = match url::Url::parse(&request.uri().to_string()) {
             Ok(url) => url,
@@ -51,7 +68,10 @@ impl Client for SurfClient {
             req.body_bytes(request.into_body());
             // Send the request and translate the response into a `http::Response`
             let mut response = client.send(req).await.map_err(SurfError::Surf)?;
-            let mut result = http::Response::builder().status(response.status());
+            let mut result = http::Response::builder().status(
+                http::StatusCode::from_u16(response.status().into())
+                    .expect("http_types::StatusCode only contains valid status codes"),
+            );
 
             let mut response_headers: http::header::HeaderMap = response
                 .iter()

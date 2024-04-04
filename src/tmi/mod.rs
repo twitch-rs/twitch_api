@@ -90,10 +90,10 @@ impl<'a, C: crate::HttpClient + 'a> TmiClient<'a, C> {
             .req(req)
             .await
             .map_err(|e| RequestError::RequestError(Box::new(e)))?;
-        let (parts, mut body) = resp.into_parts();
-        let resp = http::Response::from_parts(parts, hyper::body::to_bytes(&mut body).await?);
+        let (parts, body) = resp.into_parts();
+        let resp = http::Response::from_parts(parts, body.to_vec());
         let text = std::str::from_utf8(resp.body())
-            .map_err(|e| RequestError::Utf8Error(resp.body().to_vec(), e))?;
+            .map_err(|e| RequestError::Utf8Error(resp.body().clone(), e))?;
         crate::parse_json(text, true).map_err(Into::into)
     }
 }

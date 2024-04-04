@@ -21,7 +21,7 @@ where
     S: Clone + Send + Sync + 'static,
     S::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
     S::Future: Future<Output = Result<http::Response<ResBody>, S::Error>> + Send + 'static,
-    ResBody: hyper::body::HttpBody + Sync + Send + 'static,
+    ResBody: hyper::body::Body + Sync + Send + 'static,
     ResBody::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
     ResBody::Data: Sync + Send,
     ReqBody: From<hyper::body::Bytes> + Sync + Send + 'static,
@@ -41,11 +41,12 @@ where
                 .map_err(|e| TowerError::ServiceError(e.into()))?
                 .into_parts();
 
-            let b = hyper::body::to_bytes(body)
+            let b = http_body_util::BodyExt::collect(body)
                 .await
-                .map_err(|e| TowerError::BodyError(e.into()))?;
+                .map_err(|e| TowerError::BodyError(e.into()))?
+                .to_bytes();
 
-            Ok(http::Response::from_parts(parts, b.into()))
+            Ok(http::Response::from_parts(parts, b))
         })
     }
 }

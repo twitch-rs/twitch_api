@@ -52,9 +52,7 @@ impl<C: crate::HttpClient> HelixClient<'_, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?
-            .into_response_bytes()
-            .await?;
+            .map_err(ClientRequestError::RequestError)?;
         {
             let request = Some(request);
             let uri = &uri;
@@ -116,9 +114,7 @@ impl<C: crate::HttpClient> HelixClient<'_, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?
-            .into_response_bytes()
-            .await?;
+            .map_err(ClientRequestError::RequestError)?;
         {
             let request = Some(request);
             let uri = &uri;
@@ -187,9 +183,7 @@ impl<C: crate::HttpClient> HelixClient<'_, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?
-            .into_response_bytes()
-            .await?;
+            .map_err(ClientRequestError::RequestError)?;
         {
             let uri = &uri;
             let text = std::str::from_utf8(response.body()).map_err(|e| {
@@ -254,9 +248,7 @@ impl<C: crate::HttpClient> HelixClient<'_, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?
-            .into_response_bytes()
-            .await?;
+            .map_err(ClientRequestError::RequestError)?;
         {
             let uri = &uri;
             let text = std::str::from_utf8(response.body()).map_err(|e| {
@@ -324,9 +316,7 @@ impl<C: crate::HttpClient> HelixClient<'_, C> {
             .client
             .req(req)
             .await
-            .map_err(ClientRequestError::RequestError)?
-            .into_response_bytes()
-            .await?;
+            .map_err(ClientRequestError::RequestError)?;
         {
             let uri = &uri;
             let text = std::str::from_utf8(response.body()).map_err(|e| {

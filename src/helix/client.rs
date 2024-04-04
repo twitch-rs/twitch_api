@@ -147,8 +147,7 @@ impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?
-            .into_response_vec()
-            .await?;
+            .into_response_vec();
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
@@ -173,8 +172,7 @@ impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?
-            .into_response_vec()
-            .await?;
+            .into_response_vec();
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
@@ -199,8 +197,7 @@ impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?
-            .into_response_vec()
-            .await?;
+            .into_response_vec();
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
@@ -222,8 +219,7 @@ impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?
-            .into_response_vec()
-            .await?;
+            .into_response_vec();
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 
@@ -248,8 +244,7 @@ impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
             .req(req)
             .await
             .map_err(ClientRequestError::RequestError)?
-            .into_response_vec()
-            .await?;
+            .into_response_vec();
         <R>::parse_response(Some(request), &uri, response).map_err(Into::into)
     }
 }
