@@ -7,7 +7,7 @@ use clap::Parser;
 pub use opts::SignSecret;
 use twitch::LiveStatus;
 
-use std::{error::Error, sync::Arc};
+use std::{error::Error, net::SocketAddr, sync::Arc};
 
 use axum::{
     extract::{
@@ -29,7 +29,7 @@ use opts::Opts;
 use eyre::Context;
 
 use reqwest::StatusCode;
-use tokio::{sync::watch, task::JoinHandle};
+use tokio::{net::TcpListener, sync::watch, task::JoinHandle};
 use tower_http::{catch_panic::CatchPanicLayer, services::ServeDir, trace::TraceLayer};
 use twitch_api::{client::ClientDefault, HelixClient};
 
@@ -155,10 +155,9 @@ pub async fn run(opts: &Opts) -> eyre::Result<()> {
         );
 
     // spawn the server
-    let address = (opts.interface, opts.port).into();
+    let address = SocketAddr::new(opts.interface, opts.port);
     let server = tokio::spawn(async move {
-        axum::Server::bind(&address)
-            .serve(app.into_make_service())
+        axum::serve(TcpListener::bind(address).await?, app.into_make_service())
             .await
             .wrap_err_with(|| "when serving")?;
         Ok::<(), eyre::Report>(())

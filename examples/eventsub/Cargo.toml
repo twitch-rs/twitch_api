@@ -6,16 +6,17 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-askama = { version = "0.11", features = ["with-axum"], git = "https://github.com/djc/askama", rev = "eeec6f0", default-features = false }
-askama_axum = { version = "0.1", git = "https://github.com/djc/askama", rev = "eeec6f0" }
-axum = { version = "0.6.20", features = ["tower-log", "http2", "ws"] }
+askama = { version = "0.12", features = ["with-axum"], default-features = false }
+askama_axum = "0.4"
+axum = { version = "0.7.5", features = ["tower-log", "http2", "ws"] }
 clap = { version = "4.4.7", features = ["derive", "env"] }
 color-eyre = { version = "0.6", features = ["capture-spantrace"] }
 dotenvy = "0.15.7"
 eyre = { version = "0.6" }
 futures = "0.3.28"
-hyper = "0.14"
-reqwest = "0.11.22"
+hyper = "1.2.0"
+http-body-util = "0.1.1"
+reqwest = "0.12.2"
 retainer = "0.3.0"
 serde = "1.0.190"
 serde_derive = "1.0.190"
@@ -23,7 +24,7 @@ serde_json = { version = "1" }
 tokio = { version = "1.33.0", features = ["macros", "rt-multi-thread"] }
 tokio-tungstenite = "0.20.1"
 tower = "0.4"
-tower-http = { version = "0.4.4", features = ["fs", "trace", "catch-panic"] }
+tower-http = { version = "0.5.2", features = ["fs", "trace", "catch-panic"] }
 tracing = "0.1.40"
 tracing-error = "0.2.0"
 tracing-log = "0.2.0"

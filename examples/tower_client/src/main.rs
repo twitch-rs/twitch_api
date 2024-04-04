@@ -1,5 +1,7 @@
 use futures::TryStreamExt;
 use http::header::USER_AGENT;
+use hyper_tls::HttpsConnector;
+use hyper_util::rt::TokioExecutor;
 use tower::ServiceBuilder;
 use tower_http::{
     classify::StatusInRangeAsFailures, decompression::DecompressionLayer,
@@ -52,7 +54,8 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         ))
         // Use hyper
         .service(
-            hyper::Client::builder().build::<_, hyper::Body>(hyper_tls::HttpsConnector::new()),
+            hyper_util::client::legacy::Builder::new(TokioExecutor::new())
+                .build::<_, http_body_util::Full<hyper::body::Bytes>>(HttpsConnector::new()),
         );
 
     tracing::info!("Creating client");

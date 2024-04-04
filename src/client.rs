@@ -5,8 +5,9 @@
 //!
 //! That client has a function `call` which looks something like this
 //! ```rust,no_run
+//! # use twitch_api::client::Bytes;
 //! # struct Client;type ClientError = std::io::Error; impl Client {
-//! fn call(&self, req: http::Request<Vec<u8>>) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>> {
+//! fn call(&self, req: http::Request<Bytes>) -> futures::future::BoxFuture<'static, Result<http::Response<Bytes>, ClientError>> {
 //! # stringify!(
 //!     ...
 //! # ); todo!()
@@ -16,16 +17,18 @@
 //! To use that for requests we do the following.
 //!
 //! ```no_run
-//! use twitch_api::client::{BoxedFuture, Request, RequestExt as _, Response};
+//! use twitch_api::client::{BoxedFuture, Request, Response};
 //! mod foo {
-//!     use twitch_api::client::{BoxedFuture, Response};
+//!     use twitch_api::client::{BoxedFuture, Bytes, Response};
 //!     pub struct Client;
 //!     impl Client {
 //!         pub fn call(
 //!             &self,
-//!             req: http::Request<Vec<u8>>,
-//!         ) -> futures::future::BoxFuture<'static, Result<http::Response<Vec<u8>>, ClientError>>
-//!         {
+//!             req: http::Request<Bytes>,
+//!         ) -> futures::future::BoxFuture<
+//!             'static,
+//!             Result<http::Response<Bytes>, ClientError>,
+//!         > {
 //!             unimplemented!()
 //!         }
 //!     }
@@ -34,20 +37,11 @@
 //! impl twitch_api::HttpClient for foo::Client {
 //!     type Error = foo::ClientError;
 //!
-//!     fn req(&self, request: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
-//!         Box::pin(async move {
-//!             Ok(self
-//!                 .call(
-//!                     request
-//!                         // The `RequestExt` trait provides a convenience function to convert
-//!                         // a `Request<impl Into<hyper::body::Body>>` into a `Request<Vec<u8>>`
-//!                         .into_request_vec()
-//!                         .await
-//!                         .expect("a request given to the client should always be valid"),
-//!                 )
-//!                 .await?
-//!                 .map(|body| body.into()))
-//!         })
+//!     fn req(
+//!         &self,
+//!         request: Request,
+//!     ) -> BoxedFuture<'_, Result<Response, Self::Error>> {
+//!         Box::pin(async move { self.call(request).await })
 //!     }
 //! }
 //! // And for full usage
@@ -67,7 +61,6 @@ use std::error::Error;
 use std::future::Future;
 
 pub use hyper::body::Bytes;
-pub use hyper::Body;
 
 #[cfg(feature = "ureq")]
 mod ureq_impl;
@@ -103,70 +96,18 @@ pub type BoxedFuture<'a, T> = std::pin::Pin<Box<dyn Future<Output = T> + Send + 
 /// The request type we're expecting with body.
 pub type Request = http::Request<Bytes>;
 /// The response type we're expecting with body
-pub type Response = http::Response<Body>;
+pub type Response = http::Response<Bytes>;
 
 /// Extension trait for [`Response`]
 pub trait ResponseExt {
-    /// Error returned
-    type Error;
     /// Return the body as a vector of bytes
-    fn into_response_vec<'a>(self)
-        -> BoxedFuture<'a, Result<http::Response<Vec<u8>>, Self::Error>>;
-    /// Return the body as a [`Bytes`]
-    fn into_response_bytes<'a>(
-        self,
-    ) -> BoxedFuture<'a, Result<http::Response<hyper::body::Bytes>, Self::Error>>;
+    fn into_response_vec(self) -> http::Response<Vec<u8>>;
 }
 
-impl<Buffer> ResponseExt for http::Response<Buffer>
-where Buffer: Into<hyper::body::Body>
-{
-    type Error = hyper::Error;
-
-    fn into_response_vec<'a>(
-        self,
-    ) -> BoxedFuture<'a, Result<http::Response<Vec<u8>>, Self::Error>> {
+impl ResponseExt for http::Response<Bytes> {
+    fn into_response_vec(self) -> http::Response<Vec<u8>> {
         let (parts, body) = self.into_parts();
-        let body: Body = body.into();
-        Box::pin(async move {
-            let body = hyper::body::to_bytes(body).await?.to_vec();
-            Ok(http::Response::from_parts(parts, body))
-        })
-    }
-
-    fn into_response_bytes<'a>(
-        self,
-    ) -> BoxedFuture<'a, Result<http::Response<hyper::body::Bytes>, Self::Error>> {
-        let (parts, body) = self.into_parts();
-        let body: Body = body.into();
-        Box::pin(async move {
-            let body = hyper::body::to_bytes(body).await?;
-            Ok(http::Response::from_parts(parts, body))
-        })
-    }
-}
-
-/// Extension trait for [`Request`]
-pub trait RequestExt {
-    /// Error returned
-    type Error;
-    /// Return the body as a vector of bytes
-    fn into_request_vec<'a>(self) -> BoxedFuture<'a, Result<http::Request<Vec<u8>>, Self::Error>>;
-}
-
-impl<Buffer> RequestExt for http::Request<Buffer>
-where Buffer: Into<hyper::body::Body>
-{
-    type Error = hyper::Error;
-
-    // TODO: Specialize for Buffer = AsRef<[u8]> or Vec<u8>
-    fn into_request_vec<'a>(self) -> BoxedFuture<'a, Result<http::Request<Vec<u8>>, Self::Error>> {
-        let (parts, body) = self.into_parts();
-        let body = body.into();
-        Box::pin(async move {
-            let body = hyper::body::to_bytes(body).await?.to_vec();
-            Ok(http::Request::from_parts(parts, body))
-        })
+        http::Response::from_parts(parts, body.to_vec())
     }
 }
 
@@ -282,14 +223,8 @@ impl<'c, C: Client + Sync + 'c> twitch_oauth2::client::Client for crate::HelixCl
             let resp = client.req(request);
             Box::pin(async {
                 let resp = resp.await?;
-                let (parts, mut body) = resp.into_parts();
-                Ok(http::Response::from_parts(
-                    parts,
-                    hyper::body::to_bytes(&mut body)
-                        .await
-                        .map_err(CompatError::BodyError)?
-                        .to_vec(),
-                ))
+                let (parts, body) = resp.into_parts();
+                Ok(http::Response::from_parts(parts, body.to_vec()))
             })
         }
     }
@@ -313,14 +248,8 @@ impl<'c, C: Client + Sync + 'c> twitch_oauth2::client::Client for crate::TmiClie
             let resp = client.req(request);
             Box::pin(async {
                 let resp = resp.await?;
-                let (parts, mut body) = resp.into_parts();
-                Ok(http::Response::from_parts(
-                    parts,
-                    hyper::body::to_bytes(&mut body)
-                        .await
-                        .map_err(CompatError::BodyError)?
-                        .to_vec(),
-                ))
+                let (parts, body) = resp.into_parts();
+                Ok(http::Response::from_parts(parts, body.to_vec()))
             })
         }
     }
@@ -343,14 +272,8 @@ impl<'c, C: Client + Sync> twitch_oauth2::client::Client for crate::TwitchClient
             let resp = client.req(request);
             Box::pin(async {
                 let resp = resp.await?;
-                let (parts, mut body) = resp.into_parts();
-                Ok(http::Response::from_parts(
-                    parts,
-                    hyper::body::to_bytes(&mut body)
-                        .await
-                        .map_err(CompatError::BodyError)?
-                        .to_vec(),
-                ))
+                let (parts, body) = resp.into_parts();
+                Ok(http::Response::from_parts(parts, body.to_vec()))
             })
         }
     }
