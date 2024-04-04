@@ -252,6 +252,9 @@
 <a href="#250" id="250">250</a>
 <a href="#251" id="251">251</a>
 <a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Client for Helix endpoints
 </span><span class="kw">use </span><span class="kw">crate</span>::client::ResponseExt;
 
@@ -260,6 +263,9 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>client_ext;
 <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
 </span><span class="kw">mod </span>custom;
+
+<span class="attr">#[doc(inline)]
+</span><span class="kw">pub use </span>client_ext::ClientExtError;
 
 <span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">impl</span>&lt;C: <span class="kw">crate</span>::HttpClient + <span class="kw">crate</span>::client::ClientDefault&lt;<span class="lifetime">'static</span>&gt;&gt; Default

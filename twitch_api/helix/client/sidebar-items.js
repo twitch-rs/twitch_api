@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["HelixClient"]};
+window.SIDEBAR_ITEMS = {"enum":["ClientExtError"],"struct":["HelixClient"]};

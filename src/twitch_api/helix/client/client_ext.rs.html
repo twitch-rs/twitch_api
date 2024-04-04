@@ -1387,6 +1387,9 @@
 <a href="#1385" id="1385">1385</a>
 <a href="#1386" id="1386">1386</a>
 <a href="#1387" id="1387">1387</a>
+<a href="#1388" id="1388">1388</a>
+<a href="#1389" id="1389">1389</a>
+<a href="#1390" id="1390">1390</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]
 </span><span class="attr">#![warn(clippy::future_not_send)]
 </span><span class="kw">use </span>std::borrow::Cow;
@@ -2593,11 +2596,14 @@
     }
 }
 
-<span class="attr">#[derive(Debug, thiserror::Error)]
+<span class="doccomment">/// Error type to combine a http client error with a other error
+</span><span class="attr">#[derive(Debug, thiserror::Error)]
 </span><span class="kw">pub enum </span>ClientExtError&lt;C: <span class="kw">crate</span>::HttpClient, E&gt; {
-    <span class="attr">#[error(transparent)]
+    <span class="doccomment">/// Http client error
+    </span><span class="attr">#[error(transparent)]
     </span>ClientError(ClientError&lt;C&gt;),
-    <span class="attr">#[error(transparent)]
+    <span class="doccomment">/// Other error
+    </span><span class="attr">#[error(transparent)]
     </span>Other(<span class="attr">#[from] </span>E),
 }
 
