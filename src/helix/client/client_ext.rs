@@ -1204,10 +1204,13 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 }
 
+/// Error type to combine a http client error with a other error
 #[derive(Debug, thiserror::Error)]
 pub enum ClientExtError<C: crate::HttpClient, E> {
+    /// Http client error
     #[error(transparent)]
     ClientError(ClientError<C>),
+    /// Other error
     #[error(transparent)]
     Other(#[from] E),
 }
