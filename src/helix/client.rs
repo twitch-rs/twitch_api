@@ -7,6 +7,9 @@ pub(crate) mod client_ext;
 #[cfg(feature = "unsupported")]
 mod custom;
 
+#[doc(inline)]
+pub use client_ext::ClientExtError;
+
 #[cfg(feature = "client")]
 impl<C: crate::HttpClient + crate::client::ClientDefault<'static>> Default
     for HelixClient<'static, C>
