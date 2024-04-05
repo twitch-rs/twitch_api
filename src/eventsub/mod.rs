@@ -694,6 +694,9 @@ pub enum Status {
     /// Twitch revoked your subscription because the subscribed to subscription type and version is no longer supported.
     #[serde(rename = "version_removed")]
     VersionRemoved,
+    /// The subscription to the beta subscription type was removed due to maintenance.
+    #[serde(rename = "beta_maintenance")]
+    BetaMaintenance,
     /// The client closed the connection.
     #[serde(rename = "websocket_disconnected")]
     WebsocketDisconnected,
@@ -715,6 +718,9 @@ pub enum Status {
     /// The Twitch WebSocket server experienced a network error writing the message to the client.
     #[serde(rename = "websocket_network_error")]
     WebsocketNetworkError,
+    /// The Twitch WebSocket server experienced a network error writing the message to the client.
+    #[serde(rename = "websocket_failed_to_reconnect")]
+    WebsocketFailedToReconnect,
 }
 
 /// General information about an EventSub subscription.
