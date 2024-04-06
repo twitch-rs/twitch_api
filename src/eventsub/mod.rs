@@ -718,7 +718,7 @@ pub enum Status {
     /// The Twitch WebSocket server experienced a network error writing the message to the client.
     #[serde(rename = "websocket_network_error")]
     WebsocketNetworkError,
-    /// The Twitch WebSocket server experienced a network error writing the message to the client.
+    /// The client failed to reconnect to the Twitch WebSocket server within the required time after a Reconnect Message.
     #[serde(rename = "websocket_failed_to_reconnect")]
     WebsocketFailedToReconnect,
 }
