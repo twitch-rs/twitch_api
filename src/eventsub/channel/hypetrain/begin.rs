@@ -61,6 +61,8 @@ pub struct ChannelHypeTrainBeginV1Payload {
     pub top_contributions: Vec<Contribution>,
     /// Total points contributed to the hype train.
     pub total: i64,
+    /// The starting level of the Hype Train.
+    pub level: i64,
 }
 
 #[cfg(test)]
@@ -96,6 +98,7 @@ fn parse_payload() {
                 { "user_id": "456", "user_login": "kappa", "user_name": "Kappa", "type": "subscription", "total": 45 }
             ],
             "last_contribution": { "user_id": "123", "user_login": "pogchamp", "user_name": "PogChamp", "type": "bits", "total": 50 },
+            "level": 2,
             "started_at": "2020-07-15T17:16:03.17106713Z",
             "expires_at": "2020-07-15T17:16:11.17106713Z"
         }
