@@ -410,50 +410,6 @@
 <a href="#408" id="408">408</a>
 <a href="#409" id="409">409</a>
 <a href="#410" id="410">410</a>
-<a href="#411" id="411">411</a>
-<a href="#412" id="412">412</a>
-<a href="#413" id="413">413</a>
-<a href="#414" id="414">414</a>
-<a href="#415" id="415">415</a>
-<a href="#416" id="416">416</a>
-<a href="#417" id="417">417</a>
-<a href="#418" id="418">418</a>
-<a href="#419" id="419">419</a>
-<a href="#420" id="420">420</a>
-<a href="#421" id="421">421</a>
-<a href="#422" id="422">422</a>
-<a href="#423" id="423">423</a>
-<a href="#424" id="424">424</a>
-<a href="#425" id="425">425</a>
-<a href="#426" id="426">426</a>
-<a href="#427" id="427">427</a>
-<a href="#428" id="428">428</a>
-<a href="#429" id="429">429</a>
-<a href="#430" id="430">430</a>
-<a href="#431" id="431">431</a>
-<a href="#432" id="432">432</a>
-<a href="#433" id="433">433</a>
-<a href="#434" id="434">434</a>
-<a href="#435" id="435">435</a>
-<a href="#436" id="436">436</a>
-<a href="#437" id="437">437</a>
-<a href="#438" id="438">438</a>
-<a href="#439" id="439">439</a>
-<a href="#440" id="440">440</a>
-<a href="#441" id="441">441</a>
-<a href="#442" id="442">442</a>
-<a href="#443" id="443">443</a>
-<a href="#444" id="444">444</a>
-<a href="#445" id="445">445</a>
-<a href="#446" id="446">446</a>
-<a href="#447" id="447">447</a>
-<a href="#448" id="448">448</a>
-<a href="#449" id="449">449</a>
-<a href="#450" id="450">450</a>
-<a href="#451" id="451">451</a>
-<a href="#452" id="452">452</a>
-<a href="#453" id="453">453</a>
-<a href="#454" id="454">454</a>
 </pre></div><pre class="rust"><code><span class="attr">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![allow(clippy::needless_raw_string_hashes)]
 #![cfg_attr(nightly, feature(doc_cfg))]
@@ -553,9 +509,8 @@
 //! | Feature |         |
 //! | -------: | :------- |
 //! | &lt;span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"&gt;&lt;code&gt;twitch_oauth2&lt;/code&gt;&lt;/span&gt; | Gives [scopes](twitch_oauth2::Scope) for endpoints and topics that are needed to call them. |
-//! | &lt;span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"&gt;&lt;code&gt;client&lt;/code&gt;&lt;/span&gt; | Gives a [client abstraction](HttpClient) for endpoints. See for example [`TmiClient`] and [`HelixClient`] |
+//! | &lt;span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"&gt;&lt;code&gt;client&lt;/code&gt;&lt;/span&gt; | Gives a [client abstraction](HttpClient) for endpoints. See [`HelixClient`] |
 //! | &lt;span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"&gt;&lt;code&gt;helix&lt;/code&gt;&lt;/span&gt; | Enables [Helix](helix) endpoints |
-//! | &lt;span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"&gt;&lt;code&gt;tmi&lt;/code&gt;&lt;/span&gt; | Enables [TMI](tmi) endpoints |
 //! | &lt;span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"&gt;&lt;code&gt;eventsub&lt;/code&gt;&lt;/span&gt; | Enables deserializable structs for [EventSub](eventsub) |
 //! | &lt;span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"&gt;&lt;code&gt;pubsub&lt;/code&gt;&lt;/span&gt; | Enables deserializable structs for [PubSub](pubsub) |
 //! | &lt;span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"&gt;&lt;code&gt;hmac&lt;/code&gt;&lt;/span&gt; | Enable [message authentication](eventsub::Event::verify_payload) using HMAC on [EventSub](eventsub) |
@@ -580,8 +535,6 @@
 
 <span class="attr">#[cfg(feature = <span class="string">"helix"</span>)]
 </span><span class="kw">pub mod </span>helix;
-<span class="attr">#[cfg(feature = <span class="string">"tmi"</span>)]
-</span><span class="kw">pub mod </span>tmi;
 
 <span class="attr">#[cfg(feature = <span class="string">"pubsub"</span>)]
 </span><span class="kw">pub mod </span>pubsub;
@@ -592,13 +545,6 @@
 <span class="attr">#[cfg(all(feature = <span class="string">"helix"</span>, feature = <span class="string">"client"</span>))]
 #[doc(inline)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::helix::HelixClient;
-<span class="attr">#[cfg(all(feature = <span class="string">"tmi"</span>, feature = <span class="string">"client"</span>))]
-#[doc(inline)]
-#[deprecated(
-    note = <span class="string">"All TMI functionality has been implemented with helix endpoint Get Chatters"
-</span>)]
-#[allow(deprecated)]
-</span><span class="kw">pub use </span><span class="kw">crate</span>::tmi::TmiClient;
 
 <span class="doccomment">/// Extra types not defined in [`twitch_types`]
 </span><span class="kw">pub mod </span>extra;
@@ -616,12 +562,7 @@
 #[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">pub use </span>client::DummyHttpClient;
 
-<span class="attr">#[cfg(any(
-    feature = <span class="string">"helix"</span>,
-    feature = <span class="string">"tmi"</span>,
-    feature = <span class="string">"pubsub"</span>,
-    feature = <span class="string">"eventsub"
-</span>))]
+<span class="attr">#[cfg(any(feature = <span class="string">"helix"</span>, feature = <span class="string">"pubsub"</span>, feature = <span class="string">"eventsub"</span>))]
 </span><span class="doccomment">/// Generate a url with a default if `mock_api` feature is disabled, or env var is not defined or is invalid utf8
 </span><span class="macro">macro_rules!</span> mock_env_url {
     (<span class="macro-nonterminal">$var</span>:literal, <span class="macro-nonterminal">$default</span>:expr $(,)<span class="question-mark">?</span>) =&gt; {
@@ -649,12 +590,6 @@
 </span><span class="attr">#[cfg(feature = <span class="string">"helix"</span>)]
 </span><span class="kw">pub static </span>TWITCH_HELIX_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
     <span class="macro">mock_env_url!</span>(<span class="string">"TWITCH_HELIX_URL"</span>, <span class="string">"https://api.twitch.tv/helix/"</span>);
-<span class="doccomment">/// Location of Twitch TMI
-///
-/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_TMI_URL`.
-</span><span class="attr">#[cfg(feature = <span class="string">"tmi"</span>)]
-</span><span class="kw">pub static </span>TWITCH_TMI_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
-    <span class="macro">mock_env_url!</span>(<span class="string">"TWITCH_TMI_URL"</span>, <span class="string">"https://tmi.twitch.tv/"</span>);
 <span class="doccomment">/// Location to twitch PubSub
 ///
 /// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_PUBSUB_URL`.
@@ -685,7 +620,7 @@
 /// ```
 ///
 /// See [`client`] for implemented clients, you can also define your own if needed.
-</span><span class="attr">#[cfg(all(feature = <span class="string">"client"</span>, any(feature = <span class="string">"helix"</span>, feature = <span class="string">"tmi"</span>)))]
+</span><span class="attr">#[cfg(all(feature = <span class="string">"client"</span>, feature = <span class="string">"helix"</span>))]
 #[derive(Clone)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>TwitchClient&lt;<span class="lifetime">'a</span>, C&gt;
@@ -693,16 +628,12 @@
     <span class="doccomment">/// Helix endpoint. See [`helix`]
     </span><span class="attr">#[cfg(feature = <span class="string">"helix"</span>)]
     </span><span class="kw">pub </span>helix: HelixClient&lt;<span class="lifetime">'a</span>, C&gt;,
-    <span class="doccomment">/// TMI endpoint. See [`tmi`]
-    </span><span class="attr">#[cfg(feature = <span class="string">"tmi"</span>)]
-    #[allow(deprecated)]
-    </span><span class="kw">pub </span>tmi: TmiClient&lt;<span class="lifetime">'a</span>, C&gt;,
 }
 
-<span class="attr">#[cfg(all(feature = <span class="string">"client"</span>, any(feature = <span class="string">"helix"</span>, feature = <span class="string">"tmi"</span>)))]
+<span class="attr">#[cfg(all(feature = <span class="string">"client"</span>, feature = <span class="string">"helix"</span>))]
 </span><span class="kw">impl</span>&lt;C: HttpClient + <span class="lifetime">'static</span>&gt; TwitchClient&lt;<span class="lifetime">'static</span>, C&gt; {
     <span class="doccomment">/// Create a new [`TwitchClient`]
-    </span><span class="attr">#[cfg(any(feature = <span class="string">"helix"</span>, feature = <span class="string">"tmi"</span>))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"helix"</span>)]
     </span><span class="kw">pub fn </span>new() -&gt; TwitchClient&lt;<span class="lifetime">'static</span>, C&gt;
     <span class="kw">where </span>C: Clone + client::ClientDefault&lt;<span class="lifetime">'static</span>&gt; {
         <span class="kw">let </span>client = C::default_client();
@@ -710,47 +641,28 @@
     }
 }
 
-<span class="attr">#[cfg(all(feature = <span class="string">"client"</span>, any(feature = <span class="string">"helix"</span>, feature = <span class="string">"tmi"</span>)))]
+<span class="attr">#[cfg(all(feature = <span class="string">"client"</span>, feature = <span class="string">"helix"</span>))]
 </span><span class="kw">impl</span>&lt;C: HttpClient + client::ClientDefault&lt;<span class="lifetime">'static</span>&gt; + <span class="lifetime">'static</span>&gt; Default
     <span class="kw">for </span>TwitchClient&lt;<span class="lifetime">'static</span>, C&gt;
 {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{ <span class="self">Self</span>::new() }
 }
 
-<span class="attr">#[cfg(all(feature = <span class="string">"client"</span>, any(feature = <span class="string">"helix"</span>, feature = <span class="string">"tmi"</span>)))]
+<span class="attr">#[cfg(all(feature = <span class="string">"client"</span>, feature = <span class="string">"helix"</span>))]
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, C: HttpClient + <span class="lifetime">'a</span>&gt; TwitchClient&lt;<span class="lifetime">'a</span>, C&gt; {
     <span class="doccomment">/// Create a new [`TwitchClient`] with an existing [`HttpClient`]
-    </span><span class="attr">#[cfg_attr(
-        nightly,
-        doc(cfg(all(feature = <span class="string">"client"</span>, any(feature = <span class="string">"helix"</span>, feature = <span class="string">"tmi"</span>))))
-    )]
-    #[cfg(any(feature = <span class="string">"helix"</span>, feature = <span class="string">"tmi"</span>))]
+    </span><span class="attr">#[cfg_attr(nightly, doc(cfg(all(feature = <span class="string">"client"</span>, feature = <span class="string">"helix"</span>))))]
+    #[cfg(feature = <span class="string">"helix"</span>)]
     </span><span class="kw">pub fn </span>with_client(client: C) -&gt; TwitchClient&lt;<span class="lifetime">'a</span>, C&gt;
     <span class="kw">where </span>C: Clone + <span class="lifetime">'a </span>{
-        <span class="comment">// FIXME: This Clone is not used when only using one of the endpoints
-        </span><span class="attr">#[allow(deprecated)]
-        </span>TwitchClient {
-            <span class="attr">#[cfg(feature = <span class="string">"tmi"</span>)]
-            </span>tmi: TmiClient::with_client(client.clone()),
+        TwitchClient {
             <span class="attr">#[cfg(feature = <span class="string">"helix"</span>)]
             </span>helix: HelixClient::with_client(client),
         }
     }
 
     <span class="doccomment">/// Retrieve a reference of the [`HttpClient`] inside this [`TwitchClient`]
-    </span><span class="kw">pub fn </span>get_client(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>C {
-        <span class="attr">#[cfg(feature = <span class="string">"helix"</span>)]
-        </span>{
-            <span class="self">self</span>.helix.get_client()
-        }
-        <span class="attr">#[cfg(not(feature = <span class="string">"helix"</span>))]
-        </span>{
-            <span class="attr">#[cfg(feature = <span class="string">"tmi"</span>)]
-            </span>{
-                <span class="self">self</span>.tmi.get_client()
-            }
-        }
-    }
+    </span><span class="kw">pub fn </span>get_client(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>C { <span class="self">self</span>.helix.get_client() }
 }
 
 <span class="doccomment">/// A deserialization error

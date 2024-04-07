@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["DeserError"],"fn":["parse_json","parse_json_value"],"mod":["client","eventsub","extra","helix","pubsub","tmi"],"static":["TWITCH_EVENTSUB_WEBSOCKET_URL","TWITCH_HELIX_URL","TWITCH_PUBSUB_URL","TWITCH_TMI_URL"],"struct":["HelixClient","TmiClient","TwitchClient"]};
+window.SIDEBAR_ITEMS = {"enum":["DeserError"],"fn":["parse_json","parse_json_value"],"mod":["client","eventsub","extra","helix","pubsub"],"static":["TWITCH_EVENTSUB_WEBSOCKET_URL","TWITCH_HELIX_URL","TWITCH_PUBSUB_URL"],"struct":["HelixClient","TwitchClient"]};
