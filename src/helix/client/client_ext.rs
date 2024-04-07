@@ -1204,7 +1204,8 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 
     #[cfg(feature = "eventsub")]
-    /// Get all [Conduits](crate::eventsub::Conduit) for this [Client](twitch_oauth2::TwitchToken)
+    /// Get all [Conduits](crate::eventsub::Conduit) for the Twitch Developer Application
+    /// associated with this token
     ///
     /// # Notes
     ///
@@ -1238,7 +1239,8 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 
     #[cfg(feature = "eventsub")]
-    /// Create a [Conduit](crate::eventsub) for this [Client](twitch_oauth2::TwitchToken)
+    /// Create a [Conduit](crate::eventsub) for the Twitch Developer Application
+    /// associated with this token
     ///
     /// # Notes
     ///
