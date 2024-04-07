@@ -5,7 +5,7 @@ use super::*;
 use crate::eventsub;
 use helix::RequestGet;
 
-/// Query Parameters for [Get Conduits](super::create_conduit)
+/// Query Parameters for [Get Conduits](super::get_conduits)
 ///
 /// [`get-conduits`](https://dev.twitch.tv/docs/api/reference/#get-conduits)
 #[derive(PartialEq, Eq, Serialize, Clone, Debug, Default)]
