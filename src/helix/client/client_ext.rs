@@ -1202,6 +1202,81 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             vec
         })
     }
+
+    #[cfg(feature = "eventsub")]
+    /// Get all [Conduits](crate::eventsub::Conduit) for the Twitch Developer Application
+    /// associated with this token
+    ///
+    /// # Notes
+    ///
+    /// The token must be an App Access Token
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client_id = twitch_oauth2::types::ClientId::from_static("your_client_id");
+    /// # let client_secret = twitch_oauth2::types::ClientSecret::from_static("your_client_id");
+    /// # let token = twitch_oauth2::AppAccessToken::get_app_access_token(&client, client_id, client_secret, vec![]).await?;
+    /// use twitch_api::{helix, eventsub};
+    ///
+    /// let conduits = client.get_conduits(&token).await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub async fn get_conduits<'b: 'client, T>(
+        &'client self,
+        token: &'client T,
+    ) -> Result<Vec<crate::eventsub::Conduit>, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        self.req_get(helix::eventsub::GetConduitsRequest {}, token)
+            .await
+            .map(|response| response.data)
+    }
+
+    #[cfg(feature = "eventsub")]
+    /// Create a [Conduit](crate::eventsub) for the Twitch Developer Application
+    /// associated with this token
+    ///
+    /// # Notes
+    ///
+    /// The token must be an App Access Token
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client_id = twitch_oauth2::types::ClientId::from_static("your_client_id");
+    /// # let client_secret = twitch_oauth2::types::ClientSecret::from_static("your_client_id");
+    /// # let token = twitch_oauth2::AppAccessToken::get_app_access_token(&client, client_id, client_secret, vec![]).await?;
+    /// use twitch_api::{helix, eventsub};
+    ///
+    /// let shard_count = 5;
+    /// let created_conduit = client.create_conduit(shard_count, &token).await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub async fn create_conduit<'b: 'client, T>(
+        &'client self,
+        shard_count: usize,
+        token: &'client T,
+    ) -> Result<crate::eventsub::Conduit, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::eventsub::CreateConduitRequest {};
+        let body = helix::eventsub::CreateConduitBody::new(shard_count);
+
+        self.req_post(req, body, token)
+            .await
+            .map(|response| response.data)
+    }
 }
 
 /// Error type to combine a http client error with a other error

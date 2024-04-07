@@ -753,6 +753,18 @@ pub struct EventSubSubscription {
     pub version: String,
 }
 
+/// General information about a [Conduit](https://dev.twitch.tv/docs/eventsub/handling-conduit-events/)
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[non_exhaustive]
+#[cfg(feature = "eventsub")]
+#[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
+pub struct Conduit {
+    /// Conduit ID
+    pub id: String,
+    /// Number of shards associated with this conduit
+    pub shard_count: usize,
+}
+
 pub(crate) trait NamedField {
     const NAME: &'static str;
 }
