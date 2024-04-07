@@ -92,7 +92,6 @@ jobs:
       - run: cargo clippy --locked --all-targets --no-default-features -p twitch_api
       - run: cargo clippy --locked --all-targets --no-default-features --features "helix" -p twitch_api
       - run: cargo clippy --locked --all-targets --no-default-features --features "helix client" -p twitch_api
-      - run: cargo clippy --locked --all-targets --no-default-features --features "tmi" -p twitch_api
       - run: cargo clippy --locked --all-targets --no-default-features --features "pubsub" -p twitch_api
       - run: cargo clippy --locked --all-targets --no-default-features --features "eventsub" -p twitch_api
       - run: cargo clippy --locked --all-targets --features "${{ env.CI_TWITCH_API_FEATURES }} trace_unknown_fields" -p twitch_api

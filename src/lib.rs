@@ -97,9 +97,8 @@
 //! | Feature |         |
 //! | -------: | :------- |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>twitch_oauth2</code></span> | Gives [scopes](twitch_oauth2::Scope) for endpoints and topics that are needed to call them. |
-//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>client</code></span> | Gives a [client abstraction](HttpClient) for endpoints. See for example [`TmiClient`] and [`HelixClient`] |
+//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>client</code></span> | Gives a [client abstraction](HttpClient) for endpoints. See [`HelixClient`] |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>helix</code></span> | Enables [Helix](helix) endpoints |
-//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>tmi</code></span> | Enables [TMI](tmi) endpoints |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>eventsub</code></span> | Enables deserializable structs for [EventSub](eventsub) |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>pubsub</code></span> | Enables deserializable structs for [PubSub](pubsub) |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>hmac</code></span> | Enable [message authentication](eventsub::Event::verify_payload) using HMAC on [EventSub](eventsub) |
@@ -124,8 +123,6 @@ pub use twitch_types as types;
 
 #[cfg(feature = "helix")]
 pub mod helix;
-#[cfg(feature = "tmi")]
-pub mod tmi;
 
 #[cfg(feature = "pubsub")]
 pub mod pubsub;
@@ -136,13 +133,6 @@ pub mod eventsub;
 #[cfg(all(feature = "helix", feature = "client"))]
 #[doc(inline)]
 pub use crate::helix::HelixClient;
-#[cfg(all(feature = "tmi", feature = "client"))]
-#[doc(inline)]
-#[deprecated(
-    note = "All TMI functionality has been implemented with helix endpoint Get Chatters"
-)]
-#[allow(deprecated)]
-pub use crate::tmi::TmiClient;
 
 /// Extra types not defined in [`twitch_types`]
 pub mod extra;
@@ -160,12 +150,7 @@ pub use client::Client as HttpClient;
 #[cfg(feature = "client")]
 pub use client::DummyHttpClient;
 
-#[cfg(any(
-    feature = "helix",
-    feature = "tmi",
-    feature = "pubsub",
-    feature = "eventsub"
-))]
+#[cfg(any(feature = "helix", feature = "pubsub", feature = "eventsub"))]
 /// Generate a url with a default if `mock_api` feature is disabled, or env var is not defined or is invalid utf8
 macro_rules! mock_env_url {
     ($var:literal, $default:expr $(,)?) => {
@@ -193,12 +178,6 @@ macro_rules! mock_env_url {
 #[cfg(feature = "helix")]
 pub static TWITCH_HELIX_URL: once_cell::sync::Lazy<url::Url> =
     mock_env_url!("TWITCH_HELIX_URL", "https://api.twitch.tv/helix/");
-/// Location of Twitch TMI
-///
-/// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_TMI_URL`.
-#[cfg(feature = "tmi")]
-pub static TWITCH_TMI_URL: once_cell::sync::Lazy<url::Url> =
-    mock_env_url!("TWITCH_TMI_URL", "https://tmi.twitch.tv/");
 /// Location to twitch PubSub
 ///
 /// Can be overriden when feature `mock_api` is enabled with environment variable `TWITCH_PUBSUB_URL`.
@@ -229,7 +208,7 @@ pub static TWITCH_EVENTSUB_WEBSOCKET_URL: once_cell::sync::Lazy<url::Url> = mock
 /// ```
 ///
 /// See [`client`] for implemented clients, you can also define your own if needed.
-#[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
+#[cfg(all(feature = "client", feature = "helix"))]
 #[derive(Clone)]
 #[non_exhaustive]
 pub struct TwitchClient<'a, C>
@@ -237,16 +216,12 @@ where C: HttpClient + 'a {
     /// Helix endpoint. See [`helix`]
     #[cfg(feature = "helix")]
     pub helix: HelixClient<'a, C>,
-    /// TMI endpoint. See [`tmi`]
-    #[cfg(feature = "tmi")]
-    #[allow(deprecated)]
-    pub tmi: TmiClient<'a, C>,
 }
 
-#[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
+#[cfg(all(feature = "client", feature = "helix"))]
 impl<C: HttpClient + 'static> TwitchClient<'static, C> {
     /// Create a new [`TwitchClient`]
-    #[cfg(any(feature = "helix", feature = "tmi"))]
+    #[cfg(feature = "helix")]
     pub fn new() -> TwitchClient<'static, C>
     where C: Clone + client::ClientDefault<'static> {
         let client = C::default_client();
@@ -254,47 +229,28 @@ impl<C: HttpClient + 'static> TwitchClient<'static, C> {
     }
 }
 
-#[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
+#[cfg(all(feature = "client", feature = "helix"))]
 impl<C: HttpClient + client::ClientDefault<'static> + 'static> Default
     for TwitchClient<'static, C>
 {
     fn default() -> Self { Self::new() }
 }
 
-#[cfg(all(feature = "client", any(feature = "helix", feature = "tmi")))]
+#[cfg(all(feature = "client", feature = "helix"))]
 impl<'a, C: HttpClient + 'a> TwitchClient<'a, C> {
     /// Create a new [`TwitchClient`] with an existing [`HttpClient`]
-    #[cfg_attr(
-        nightly,
-        doc(cfg(all(feature = "client", any(feature = "helix", feature = "tmi"))))
-    )]
-    #[cfg(any(feature = "helix", feature = "tmi"))]
+    #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "helix"))))]
+    #[cfg(feature = "helix")]
     pub fn with_client(client: C) -> TwitchClient<'a, C>
     where C: Clone + 'a {
-        // FIXME: This Clone is not used when only using one of the endpoints
-        #[allow(deprecated)]
         TwitchClient {
-            #[cfg(feature = "tmi")]
-            tmi: TmiClient::with_client(client.clone()),
             #[cfg(feature = "helix")]
             helix: HelixClient::with_client(client),
         }
     }
 
     /// Retrieve a reference of the [`HttpClient`] inside this [`TwitchClient`]
-    pub fn get_client(&self) -> &C {
-        #[cfg(feature = "helix")]
-        {
-            self.helix.get_client()
-        }
-        #[cfg(not(feature = "helix"))]
-        {
-            #[cfg(feature = "tmi")]
-            {
-                self.tmi.get_client()
-            }
-        }
-    }
+    pub fn get_client(&self) -> &C { self.helix.get_client() }
 }
 
 /// A deserialization error

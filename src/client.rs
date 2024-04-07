@@ -230,32 +230,7 @@ impl<'c, C: Client + Sync + 'c> twitch_oauth2::client::Client for crate::HelixCl
     }
 }
 
-#[cfg(feature = "tmi")]
-#[allow(deprecated)]
-impl<'c, C: Client + Sync + 'c> twitch_oauth2::client::Client for crate::TmiClient<'c, C> {
-    type Error = CompatError<<C as Client>::Error>;
-
-    fn req(
-        &self,
-        request: http::Request<Vec<u8>>,
-    ) -> BoxedFuture<
-        '_,
-        Result<http::Response<Vec<u8>>, <Self as twitch_oauth2::client::Client>::Error>,
-    > {
-        let client = self.get_client();
-        {
-            let request = request.map(Bytes::from);
-            let resp = client.req(request);
-            Box::pin(async {
-                let resp = resp.await?;
-                let (parts, body) = resp.into_parts();
-                Ok(http::Response::from_parts(parts, body.to_vec()))
-            })
-        }
-    }
-}
-
-#[cfg(any(feature = "tmi", feature = "helix"))]
+#[cfg(all(feature = "client", feature = "helix"))]
 impl<'c, C: Client + Sync> twitch_oauth2::client::Client for crate::TwitchClient<'c, C> {
     type Error = CompatError<<C as Client>::Error>;
 
