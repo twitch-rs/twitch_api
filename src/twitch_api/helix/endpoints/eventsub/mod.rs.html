@@ -23,6 +23,12 @@
 <a href="#21" id="21">21</a>
 <a href="#22" id="22">22</a>
 <a href="#23" id="23">23</a>
+<a href="#24" id="24">24</a>
+<a href="#25" id="25">25</a>
+<a href="#26" id="26">26</a>
+<a href="#27" id="27">27</a>
+<a href="#28" id="28">28</a>
+<a href="#29" id="29">29</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding EventSub
 
 </span><span class="kw">use crate</span>::{
@@ -32,10 +38,14 @@
 <span class="kw">use </span>serde_derive::{Deserialize, Serialize};
 <span class="kw">use </span>std::borrow::Cow;
 
+<span class="kw">pub mod </span>create_conduit;
 <span class="kw">pub mod </span>create_eventsub_subscription;
 <span class="kw">pub mod </span>delete_eventsub_subscription;
+<span class="kw">pub mod </span>get_conduits;
 <span class="kw">pub mod </span>get_eventsub_subscriptions;
 
+<span class="attr">#[doc(inline)]
+</span><span class="kw">pub use </span>create_conduit::{CreateConduitBody, CreateConduitRequest};
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>create_eventsub_subscription::{
     CreateEventSubSubscription, CreateEventSubSubscriptionBody, CreateEventSubSubscriptionRequest,
@@ -44,6 +54,8 @@
 </span><span class="kw">pub use </span>delete_eventsub_subscription::{
     DeleteEventSubSubscription, DeleteEventSubSubscriptionRequest,
 };
+<span class="attr">#[doc(inline)]
+</span><span class="kw">pub use </span>get_conduits::GetConduitsRequest;
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>get_eventsub_subscriptions::{EventSubSubscriptions, GetEventSubSubscriptionsRequest};
 </code></pre></div></section></main></body></html>

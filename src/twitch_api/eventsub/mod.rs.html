@@ -1004,6 +1004,18 @@
 <a href="#1002" id="1002">1002</a>
 <a href="#1003" id="1003">1003</a>
 <a href="#1004" id="1004">1004</a>
+<a href="#1005" id="1005">1005</a>
+<a href="#1006" id="1006">1006</a>
+<a href="#1007" id="1007">1007</a>
+<a href="#1008" id="1008">1008</a>
+<a href="#1009" id="1009">1009</a>
+<a href="#1010" id="1010">1010</a>
+<a href="#1011" id="1011">1011</a>
+<a href="#1012" id="1012">1012</a>
+<a href="#1013" id="1013">1013</a>
+<a href="#1014" id="1014">1014</a>
+<a href="#1015" id="1015">1015</a>
+<a href="#1016" id="1016">1016</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Holds serializable EventSub stuff
 //!
 //! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).
@@ -1757,6 +1769,18 @@
     </span><span class="kw">pub </span>type_: EventType,
     <span class="doccomment">/// The version of the subscription.
     </span><span class="kw">pub </span>version: String,
+}
+
+<span class="doccomment">/// General information about a [Conduit](https://dev.twitch.tv/docs/eventsub/handling-conduit-events/)
+</span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[non_exhaustive]
+#[cfg(feature = <span class="string">"eventsub"</span>)]
+#[cfg_attr(nightly, doc(cfg(feature = <span class="string">"eventsub"</span>)))]
+</span><span class="kw">pub struct </span>Conduit {
+    <span class="doccomment">/// Conduit ID
+    </span><span class="kw">pub </span>id: String,
+    <span class="doccomment">/// Number of shards associated with this conduit
+    </span><span class="kw">pub </span>shard_count: usize,
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait </span>NamedField {
