@@ -15,7 +15,8 @@
 //! );
 //! ```
 //!
-//! //! ## Body: [UpdateShieldModeStatusBody]
+//! ## Body: [UpdateShieldModeStatusBody]
+//!
 //! We also need to provide a body to the request.
 //!
 //! ```
