@@ -92,8 +92,6 @@ helix = [
 
 deser_borrow = []
 
-tmi = ["serde_json", "dep:serde_path_to_error", "dep:hyper"]
-
 surf = [
     "dep:surf",
     "dep:http-types",
@@ -134,7 +132,6 @@ hmac = ["dep:crypto_hmac", "dep:sha2"]
 mock_api = ["twitch_oauth2?/mock_api"]
 
 all = [
-    "tmi",
     "helix",
     "client",
     "pubsub",
@@ -187,7 +184,7 @@ required-features = ["reqwest", "helix"]
 [[example]]
 name = "get_streams"
 path = "examples/get_streams.rs"
-required-features = ["reqwest", "helix", "tmi"]
+required-features = ["reqwest", "helix"]
 
 [[example]]
 name = "modify_channel"

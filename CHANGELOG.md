@@ -30,6 +30,7 @@
 - Changed `SCOPES` on `helix::Request`, `pubsub::Topic` and `eventsub::EventSubscription` to be `twitch_oauth2::Validator`
 - Updated `twitch_oauth2` dependency
 - Added EventSub WebSocket support, changing many methods on transport and eventsub to take this into account.
+- Removed `tmi` feature ([shut down in April 2023](https://discuss.dev.twitch.com/t/legacy-chatters-endpoint-shutdown-details-and-timeline-april-2023/43161))
 
 ### Changes
 
