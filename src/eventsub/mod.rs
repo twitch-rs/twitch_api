@@ -484,6 +484,17 @@ pub struct WebsocketTransport {
     pub session_id: String,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+/// Conduit transport
+pub struct ConduitTransport {
+    /// An ID that identifies the conduit to send notifications to.
+    ///
+    /// When you create a conduit, the server returns the conduit ID.
+    pub conduit_id: String,
+}
+
 /// Transport setting for event notification
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "method", rename_all = "lowercase")]
@@ -493,6 +504,8 @@ pub enum Transport {
     Webhook(WebhookTransport),
     /// Websocket transport
     Websocket(WebsocketTransport),
+    /// Conduit transport
+    Conduit(ConduitTransport),
 }
 
 impl Transport {
@@ -508,6 +521,13 @@ impl Transport {
     pub fn websocket(session_id: impl std::string::ToString) -> Transport {
         Transport::Websocket(WebsocketTransport {
             session_id: session_id.to_string(),
+        })
+    }
+
+    /// Convenience method for making a conduit transport
+    pub fn conduit(conduit_id: impl std::string::ToString) -> Transport {
+        Transport::Conduit(ConduitTransport {
+            conduit_id: conduit_id.to_string(),
         })
     }
 
@@ -590,6 +610,15 @@ pub struct WebhookTransportResponse {
     pub callback: String,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+/// Conduit transport
+pub struct ConduitTransportResponse {
+    /// The conduit ID
+    pub conduit_id: String,
+}
+
 /// Transport response on event notification
 ///
 /// Does not include secret.
@@ -601,6 +630,8 @@ pub enum TransportResponse {
     Webhook(WebhookTransportResponse),
     /// Websocket transport response
     Websocket(WebsocketTransportResponse),
+    /// Conduit transport response
+    Conduit(ConduitTransportResponse),
 }
 
 impl TransportResponse {
@@ -763,6 +794,99 @@ pub struct Conduit {
     pub id: String,
     /// Number of shards associated with this conduit
     pub shard_count: usize,
+}
+
+/// General information about a [Shard](https://dev.twitch.tv/docs/eventsub/handling-conduit-events/)
+///
+/// A shard is a Webhook or WebSocket connection, while a conduit is a collection of shards. The conduit transport type is for backend server applications and requires app access tokens.
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[non_exhaustive]
+#[cfg(feature = "eventsub")]
+#[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
+pub struct Shard {
+    /// Shard ID.
+    pub id: String,
+
+    /// The transport details that you want Twitch to use when sending you notifications.
+    pub transport: Transport,
+}
+
+impl Shard {
+    /// Create a shard with a transport set
+    pub fn new(id: impl std::string::ToString, transport: Transport) -> Self {
+        Self {
+            id: id.to_string(),
+
+            transport,
+        }
+    }
+}
+
+/// The shard status.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+#[non_exhaustive]
+pub enum ShardStatus {
+    /// The shard is enabled.
+    Enabled,
+
+    /// The shard is pending verification of the specified callback URL.
+    WebhookCallbackVerificationPending,
+
+    /// The specified callback URL failed verification.
+    WebhookCallbackVerificationFailed,
+
+    /// The notification delivery failure rate was too high.
+    NotificationFailuresExceeded,
+
+    /// The client closed the connection.
+    WebsocketDisconnected,
+
+    /// The client failed to respond to a ping message.
+    WebsocketFailedPingPong,
+
+    /// The client sent a non-pong message. Clients may only send pong messages (and only in response to a ping message).
+    WebsocketReceivedInboundTraffic,
+
+    /// The Twitch WebSocket server experienced an unexpected error.
+    WebsocketInternalError,
+
+    /// The Twitch WebSocket server timed out writing the message to the client.
+    WebsocketNetworkTimeout,
+
+    /// The Twitch WebSocket server experienced a network error writing the message to the client.
+    WebsocketNetworkError,
+
+    /// The client failed to reconnect to the Twitch WebSocket server within the required time after a Reconnect Message.
+    WebsocketFailedToReconnect,
+}
+
+/// A structured error that occurred with a shard
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[non_exhaustive]
+pub struct ShardError {
+    /// Shard ID.
+    pub id: String,
+
+    /// The error that occurred while updating the shard.
+    pub message: String,
+
+    /// Error codes used to represent a specific error condition while attempting to update shards.
+    pub code: String,
+}
+
+/// A shard when described by Twitch
+#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[non_exhaustive]
+pub struct ShardResponse {
+    /// Shard ID.
+    pub id: String,
+
+    /// The shard status. The subscriber receives events only for enabled shards.
+    pub status: ShardStatus,
+
+    /// The transport details that you want Twitch to use when sending you notifications.
+    pub transport: TransportResponse,
 }
 
 pub(crate) trait NamedField {
