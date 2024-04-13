@@ -12,6 +12,7 @@ pub mod create_eventsub_subscription;
 pub mod delete_eventsub_subscription;
 pub mod get_conduits;
 pub mod get_eventsub_subscriptions;
+pub mod update_conduit_shards;
 
 #[doc(inline)]
 pub use create_conduit::{CreateConduitBody, CreateConduitRequest};
@@ -27,3 +28,7 @@ pub use delete_eventsub_subscription::{
 pub use get_conduits::GetConduitsRequest;
 #[doc(inline)]
 pub use get_eventsub_subscriptions::{EventSubSubscriptions, GetEventSubSubscriptionsRequest};
+#[doc(inline)]
+pub use update_conduit_shards::{
+    UpdateConduitShardsBody, UpdateConduitShardsRequest, UpdateConduitShardsResponse,
+};

@@ -1277,6 +1277,61 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .await
             .map(|response| response.data)
     }
+
+    #[cfg(feature = "eventsub")]
+    /// Updates the [Shard](crate::eventsub) for the given [Conduit](crate::eventsub).
+    ///
+    /// This is used to connect a Webhook or Websocket transport to a conduit, which you can read
+    /// more about [here](https://dev.twitch.tv/docs/eventsub/handling-conduit-events/)
+    ///
+    /// # Notes
+    ///
+    /// Shard IDs are indexed starting at 0, so a conduit with a shard_count of 5 will have shards with IDs 0 through 4.
+    ///
+    /// The token must be an App Access Token
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client_id = twitch_oauth2::types::ClientId::from_static("your_client_id");
+    /// # let client_secret = twitch_oauth2::types::ClientSecret::from_static("your_client_id");
+    /// # let token = twitch_oauth2::AppAccessToken::get_app_access_token(&client, client_id, client_secret, vec![]).await?;
+    /// use twitch_api::{helix, eventsub};
+    ///
+    /// // The conduit ID of a previously created Conduit
+    /// let conduit_id = "bb7a1803-eb03-41ef-a1ab-e9242e72053e";
+    /// // The session ID of your WebSocket EventSub connection
+    /// let session_id = "AgoQMpdhHZ-dSoyv7NLALgOGHhIGY2VsbC1j";
+    /// let shard = twitch_api::eventsub::Shard::new(
+    ///     "0",
+    ///     twitch_api::eventsub::Transport::websocket(session_id),
+    /// );
+
+    /// let response = client
+    ///     .update_conduit_shards(conduit_id, vec![shard], &token)
+    ///     .await;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub async fn update_conduit_shards<'b: 'client, T>(
+        &'client self,
+        conduit_id: impl Into<String>,
+        shards: Vec<crate::eventsub::Shard>,
+        token: &'client T,
+    ) -> Result<helix::eventsub::UpdateConduitShardsResponse, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::eventsub::UpdateConduitShardsRequest {};
+        let body = helix::eventsub::UpdateConduitShardsBody::new(conduit_id.into(), shards);
+
+        self.req_patch(req, body, token)
+            .await
+            .map(|response| response.data)
+    }
 }
 
 /// Error type to combine a http client error with a other error
