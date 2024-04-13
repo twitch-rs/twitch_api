@@ -543,6 +543,12 @@ impl Transport {
     #[must_use]
     pub fn is_websocket(&self) -> bool { matches!(self, Self::Websocket(..)) }
 
+    /// Returns `true` if the transport is [`Conduit`].
+    ///
+    /// [`Conduit`]: Transport::Conduit
+    #[must_use]
+    pub fn is_conduit(&self) -> bool { matches!(self, Self::Conduit(..)) }
+
     /// Returns `Some(&WebhookTransport)` if this transport is a [webhook](WebhookTransport)
     pub fn as_webhook(&self) -> Option<&WebhookTransport> {
         if let Self::Webhook(v) = self {
@@ -561,6 +567,15 @@ impl Transport {
         }
     }
 
+    /// Returns `Some(&ConduitTransport)` if this transport is a [conduit](ConduitTransport)
+    pub fn as_conduit(&self) -> Option<&ConduitTransport> {
+        if let Self::Conduit(v) = self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
     /// Returns `Some(WebhookTransport)` if this transport is a [webhook](WebhookTransport), `None` if not
     pub fn try_into_webhook(self) -> Option<WebhookTransport> {
         if let Self::Webhook(v) = self {
@@ -573,6 +588,15 @@ impl Transport {
     /// Returns `Some(WebsocketTransport)` if this transport is a [websocket](WebsocketTransport), `Err(())` if not
     pub fn try_into_websocket(self) -> Option<WebsocketTransport> {
         if let Self::Websocket(v) = self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    /// Returns `Some(ConduitTransport)` if this transport is a [conduit](ConduitTransport), `Err(())` if not
+    pub fn try_into_conduit(self) -> Option<ConduitTransport> {
+        if let Self::Conduit(v) = self {
             Some(v)
         } else {
             None
