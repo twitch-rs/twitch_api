@@ -647,6 +647,12 @@ impl TransportResponse {
     #[must_use]
     pub fn is_websocket(&self) -> bool { matches!(self, Self::Websocket(..)) }
 
+    /// Returns `true` if the transport response is [`Conduit`].
+    ///
+    /// [`Conduit`]: TransportResponse::Conduit
+    #[must_use]
+    pub fn is_conduit(&self) -> bool { matches!(self, Self::Conduit(..)) }
+
     /// Returns `Some(&WebhookTransport)` if this transport response is a [webhook](WebhookTransportResponse)
     pub fn as_webhook(&self) -> Option<&WebhookTransportResponse> {
         if let Self::Webhook(v) = self {
@@ -665,6 +671,15 @@ impl TransportResponse {
         }
     }
 
+    /// Returns `Some(&ConduitTransport)` if this transport response is a [conduit](ConduitTransportResponse)
+    pub fn as_conduit(&self) -> Option<&ConduitTransportResponse> {
+        if let Self::Conduit(v) = self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
     /// Returns `Ok(WebhookTransport)` if this transport response is a [webhook](WebhookTransportResponse)
     pub fn try_into_webhook(self) -> Result<WebhookTransportResponse, Self> {
         if let Self::Webhook(v) = self {
@@ -677,6 +692,15 @@ impl TransportResponse {
     /// Returns `Ok(WebsocketTransport)` if this transport response is a [websocket](WebsocketTransportResponse)
     pub fn try_into_websocket(self) -> Result<WebsocketTransportResponse, Self> {
         if let Self::Websocket(v) = self {
+            Ok(v)
+        } else {
+            Err(self)
+        }
+    }
+
+    /// Returns `Ok(ConduitTransport)` if this transport response is a [conduit](ConduitTransportResponse)
+    pub fn try_into_conduit(self) -> Result<ConduitTransportResponse, Self> {
+        if let Self::Conduit(v) = self {
             Ok(v)
         } else {
             Err(self)
