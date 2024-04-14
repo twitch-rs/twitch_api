@@ -10,6 +10,7 @@ use std::borrow::Cow;
 pub mod create_conduit;
 pub mod create_eventsub_subscription;
 pub mod delete_eventsub_subscription;
+pub mod get_conduit_shards;
 pub mod get_conduits;
 pub mod get_eventsub_subscriptions;
 pub mod update_conduit_shards;
@@ -24,6 +25,8 @@ pub use create_eventsub_subscription::{
 pub use delete_eventsub_subscription::{
     DeleteEventSubSubscription, DeleteEventSubSubscriptionRequest,
 };
+#[doc(inline)]
+pub use get_conduit_shards::{ConduitShards, GetConduitShardsRequest};
 #[doc(inline)]
 pub use get_conduits::GetConduitsRequest;
 #[doc(inline)]

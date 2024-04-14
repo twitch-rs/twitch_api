@@ -1423,6 +1423,77 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 
     #[cfg(feature = "eventsub")]
+    /// Gets a list of all shards for a conduit.
+    ///
+    /// # Notes
+    ///
+    /// The token must be an App Access Token
+    ///
+    /// # Examples
+    ///
+    /// ## Get all shards from the given conduit
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client_id = twitch_oauth2::types::ClientId::from_static("your_client_id");
+    /// # let client_secret = twitch_oauth2::types::ClientSecret::from_static("your_client_id");
+    /// # let token = twitch_oauth2::AppAccessToken::get_app_access_token(&client, client_id, client_secret, vec![]).await?;
+    /// use twitch_api::{helix, eventsub};
+    /// use futures::TryStreamExt;
+    ///
+    /// let conduit_id = "26b1c993-bfcf-44d9-b876-379dacafe75a";
+    /// let status = None;
+    /// let all_shards: Vec<eventsub::ShardResponse> = client
+    ///     .get_conduit_shards(conduit_id, status, &token)
+    ///     .try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    ///
+    /// ## Get all enabled shards from the given conduit
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client_id = twitch_oauth2::types::ClientId::from_static("your_client_id");
+    /// # let client_secret = twitch_oauth2::types::ClientSecret::from_static("your_client_id");
+    /// # let token = twitch_oauth2::AppAccessToken::get_app_access_token(&client, client_id, client_secret, vec![]).await?;
+    /// use twitch_api::{helix, eventsub};
+    /// use futures::TryStreamExt;
+    ///
+    /// let conduit_id = "26b1c993-bfcf-44d9-b876-379dacafe75a";
+    /// let status = eventsub::ShardStatus::Enabled;
+    /// let enabled_shards: Vec<eventsub::ShardResponse> = client
+    ///     .get_conduit_shards(conduit_id, status, &token)
+    ///     .try_collect().await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub fn get_conduit_shards<'b: 'client, T>(
+        &'client self,
+        conduit_id: impl Into<Cow<'b, str>>,
+        status: impl Into<Option<crate::eventsub::ShardStatus>>,
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<crate::eventsub::ShardResponse, ClientError<C>>>
+           + Send
+           + Unpin
+           + 'client
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::eventsub::GetConduitShardsRequest {
+            conduit_id: conduit_id.into(),
+            status: status.into(),
+            after: None,
+        };
+
+        make_stream(req, token, self, std::collections::VecDeque::from)
+    }
+
+    #[cfg(feature = "eventsub")]
     /// Updates the [Shard](crate::eventsub) for the given [Conduit](crate::eventsub).
     ///
     /// This is used to connect a Webhook or Websocket transport to a conduit, which you can read
