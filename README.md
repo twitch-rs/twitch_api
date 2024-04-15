@@ -48,13 +48,11 @@ This crate aims to target
   - See [implemented endpoints](https://github.com/twitch-rs/twitch_api/wiki/Implemented-Features#helix)
 - [EventSub](https://dev.twitch.tv/docs/eventsub/eventsub-reference)
   - See [implemented eventsub Helix endpoints](https://github.com/twitch-rs/twitch_api/wiki/Implemented-Features#eventsub)
-- [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
-  - See [implemented topics](https://github.com/twitch-rs/twitch_api/wiki/Implemented-Features#pubsub)
-  - PubSub is planned to be deprecated, with a EventSub websocket implementation
 - [Extensions](https://dev.twitch.tv/docs/extensions/reference)
   - No functionality implemented yet
-
-This crate should also be able to be used for
+- [PubSub](https://dev.twitch.tv/docs/pubsub) (without a client)
+  - See [implemented topics](https://github.com/twitch-rs/twitch_api/wiki/Implemented-Features#pubsub)
+  - PubSub [is deprecated](https://discuss.dev.twitch.com/t/legacy-pubsub-deprecation-and-shutdown-timeline/58043), replaced with EventSub websockets
 
 There are no current plans to support
 
