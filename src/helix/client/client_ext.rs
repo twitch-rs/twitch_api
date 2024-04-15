@@ -57,7 +57,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use futures::TryStreamExt;
     ///
     /// let users: Vec<helix::users::User> = client
-    ///    .get_users_from_ids(&["1234", "4321"][..].into(), &token).try_collect().await?;
+    ///     .get_users_from_ids(&["1234", "4321"][..].into(), &token).try_collect().await?;
     /// # Ok(()) }
     /// ```
     pub fn get_users_from_ids<T>(
@@ -126,7 +126,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use futures::TryStreamExt;
     ///
     /// let chatters: Vec<helix::channels::ChannelInformation> = client
-    ///    .get_channels_from_ids(&["1234", "4321"][..].into(), &token).try_collect().await?;
+    ///     .get_channels_from_ids(&["1234", "4321"][..].into(), &token).try_collect().await?;
     /// # Ok(()) }
     /// ```
     pub fn get_channels_from_ids<T>(
@@ -163,7 +163,10 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::{types, helix};
     /// use futures::TryStreamExt;
     ///
-    /// let live: Vec<helix::streams::Stream> = client.get_streams_from_ids(&["123456", "987654"][..].into(), &token).try_collect().await?;
+    /// let live: Vec<helix::streams::Stream> = client
+    ///     .get_streams_from_ids(&["123456", "987654"][..].into(), &token)
+    ///     .try_collect()
+    ///     .await?;
     /// # Ok(()) }
     /// ```
     pub fn get_streams_from_ids<T>(
@@ -198,7 +201,10 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::{types, helix};
     /// use futures::TryStreamExt;
     ///
-    /// let live: Vec<helix::streams::Stream> = client.get_streams_from_logins(&["twitchdev", "justinfan"][..].into(), &token).try_collect().await?;
+    /// let live: Vec<helix::streams::Stream> = client
+    ///     .get_streams_from_logins(&["twitchdev", "justinfan"][..].into(), &token)
+    ///     .try_collect()
+    ///     .await?;
     /// # Ok(()) }
     /// ```
     pub fn get_streams_from_logins<T>(
@@ -644,7 +650,8 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::{types, helix};
     /// use futures::TryStreamExt;
     ///
-    /// let games: Vec<helix::games::Game> = client.get_games_by_id(&["509658", "32982", "27471"][..].into(), &token).try_collect().await?;
+    /// let games: Vec<helix::games::Game> = client
+    ///     .get_games_by_id(&["509658", "32982", "27471"][..].into(), &token).try_collect().await?;
     /// # Ok(()) }
     /// ```
     pub fn get_games_by_id<T>(
@@ -851,7 +858,8 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::{types, helix};
     /// use futures::TryStreamExt;
     ///
-    /// let games: Vec<helix::chat::get_emote_sets::Emote> = client.get_emote_sets(&["0"][..].into(), &token).try_collect().await?;
+    /// let emotes: Vec<helix::chat::get_emote_sets::Emote> = client
+    ///     .get_emote_sets(&["0"][..].into(), &token).try_collect().await?;
     /// # Ok(()) }
     /// ```
     pub fn get_emote_sets<T>(
@@ -970,7 +978,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         Ok(self.req_delete(req, token).await?.data)
     }
 
-    /// Get a users chat color
+    /// Update a user's chat color
     pub async fn update_user_chat_color<'b, T>(
         &'client self,
         user_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
@@ -988,7 +996,9 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         Ok(self.req_put(req, helix::EmptyBody, token).await?.data)
     }
 
-    /// Get a users chat color
+    /// Get a user's chat color
+    ///
+    /// [`None`](Option::None) is returned if the user never set their color in the settings.
     pub async fn get_user_chat_color<T>(
         &'client self,
         user_id: impl Into<&types::UserIdRef> + Send,
@@ -999,14 +1009,16 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     {
         Ok(self
             .req_get(
-                helix::chat::GetUserChatColorRequest::user_ids(&[user_id.into()][..]),
+                helix::chat::GetUserChatColorRequest::user_ids(&user_id.into()),
                 token,
             )
             .await?
             .first())
     }
 
-    /// Get multiple users chat colors
+    /// Get multiple users' chat colors
+    ///
+    /// Users that never set their color in the settings are not returned.
     ///
     /// # Examples
     ///
@@ -1019,7 +1031,8 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// use twitch_api::{types, helix};
     /// use futures::TryStreamExt;
     ///
-    /// let games: Vec<helix::chat::UserChatColor> = client.get_users_chat_colors(&["1234"][..].into(), &token).try_collect().await?;
+    /// let colors: Vec<helix::chat::UserChatColor> = client
+    ///     .get_users_chat_colors(&["1234"][..].into(), &token).try_collect().await?;
     /// # Ok(()) }
     /// ```
     pub fn get_users_chat_colors<T>(
@@ -1217,9 +1230,6 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        if ids.len() > 50 {
-            return Err(ClientRequestError::Custom("too many IDs, max 50".into()));
-        }
         Ok(self
             .req_get(
                 helix::points::GetCustomRewardRequest::broadcaster_id(broadcaster_id)
@@ -1276,8 +1286,9 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     ///
     /// # Notes
     ///
-    /// The return item is a struct [`EventSubSubscriptions`](helix::eventsub::EventSubSubscriptions) which contains the subscriptions.
-    /// See the example for getting only the subscriptions
+    /// The return item is a struct [`EventSubSubscriptions`](helix::eventsub::EventSubSubscriptions)
+    /// which contains a field with all the subscriptions.
+    /// See the example for collecting all _specific_ subscriptions
     ///
     /// # Examples
     ///

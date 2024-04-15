@@ -13,8 +13,6 @@
 //!
 //! To use this endpoint, construct a [`GetStreamsRequest`] with the [`GetStreamsRequest::user_ids()`], [`GetStreamsRequest::user_logins()`] or [`GetStreamsRequest::game_ids()`] method.
 //!
-//! See also
-//!
 //! ```rust
 //! use twitch_api::helix::streams::get_streams;
 //! let request = get_streams::GetStreamsRequest::user_logins(&["justintvfan"]);

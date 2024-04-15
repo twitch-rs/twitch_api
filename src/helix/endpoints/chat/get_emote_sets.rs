@@ -9,7 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_emote_sets;
-//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(&["1234"]);
+//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(&"1234");
 //! ```
 //!
 //! ## Response: [Emote]
@@ -24,7 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(&["1234"]);
+//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(&"1234");
 //! let response: Vec<helix::chat::get_emote_sets::Emote> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

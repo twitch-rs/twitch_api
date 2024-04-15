@@ -9,7 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::videos::delete_videos;
-//! let request = delete_videos::DeleteVideosRequest::ids(&["1234"]);
+//! let request = delete_videos::DeleteVideosRequest::ids(&"1234");
 //! ```
 //!
 //! ## Response: [DeleteVideo]
@@ -24,7 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = delete_videos::DeleteVideosRequest::ids(&["1234"]);
+//! let request = delete_videos::DeleteVideosRequest::ids(&"1234");
 //! let response: delete_videos::DeleteVideo = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
