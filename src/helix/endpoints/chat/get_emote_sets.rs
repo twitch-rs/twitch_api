@@ -9,8 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_emote_sets;
-//! let ids: &[&twitch_types::EmoteSetIdRef] = &["1234".into()];
-//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(ids);
+//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(&"1234");
 //! ```
 //!
 //! ## Response: [Emote]
@@ -25,8 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let ids: &[&twitch_types::EmoteSetIdRef] = &["1234".into()];
-//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(ids);
+//! let request = get_emote_sets::GetEmoteSetsRequest::emote_set_ids(&"1234");
 //! let response: Vec<helix::chat::get_emote_sets::Emote> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -46,21 +44,22 @@ use helix::RequestGet;
 #[must_use]
 #[non_exhaustive]
 pub struct GetEmoteSetsRequest<'a> {
-    // FIXME: twitch doc specifies maximum as 25, but it actually is 10
-    /// The broadcaster whose emotes are being requested. Minimum: 1. Maximum: 10
+    /// The broadcaster whose emotes are being requested. Minimum: 1. Maximum: 25
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub emote_set_id: Cow<'a, [&'a types::EmoteSetIdRef]>,
+    pub emote_set_id: types::Collection<'a, types::EmoteSetId>,
 }
 
 impl<'a> GetEmoteSetsRequest<'a> {
     /// Get emotes in these sets
-    pub fn emote_set_ids(emote_set_ids: impl Into<Cow<'a, [&'a types::EmoteSetIdRef]>>) -> Self {
+    pub fn emote_set_ids(
+        emote_set_ids: impl Into<types::Collection<'a, types::EmoteSetId>>,
+    ) -> Self {
         Self {
             emote_set_id: emote_set_ids.into(),
         }
@@ -102,14 +101,14 @@ impl Emote {
     ///
     /// ```rust, no_run
     /// use twitch_api::helix::{self, chat::get_channel_emotes};
+    /// use futures::TryStreamExt;
     /// # use twitch_api::{client, types};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// let ids: &[&types::EmoteSetIdRef] = &["301590448".into()];
-    /// let emotes = client.get_emote_sets(ids, &token).await?;
+    /// let emotes: Vec<_> = client.get_emote_sets(&["301590448"][..].into(), &token).try_collect().await?;
     /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0");
     /// # Ok(())
     /// # }

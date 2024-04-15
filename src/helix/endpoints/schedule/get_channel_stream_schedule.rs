@@ -4,6 +4,7 @@
 //! ## Notes
 //!
 //! See also [`get_channel_schedule`](helix::HelixClient::get_channel_schedule)
+//!
 //! ## Request: [GetChannelStreamScheduleRequest]
 //!
 //! To use this endpoint, construct a [`GetChannelStreamScheduleRequest`] with the [`GetChannelStreamScheduleRequest::broadcaster_id()`] method.

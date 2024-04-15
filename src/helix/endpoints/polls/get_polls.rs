@@ -8,7 +8,7 @@
 //! ```rust
 //! use twitch_api::helix::polls::get_polls;
 //! let request = get_polls::GetPollsRequest::broadcaster_id("1234")
-//!     .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()]);
+//!     .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a"]);
 //! ```
 //!
 //! ## Response: [Poll]
@@ -24,7 +24,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = get_polls::GetPollsRequest::broadcaster_id("1234")
-//!     .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()]);
+//!     .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a"]);
 //! let response: Vec<get_polls::Poll> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -54,7 +54,7 @@ pub struct GetPollsRequest<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub id: Cow<'a, [&'a types::PollIdRef]>,
+    pub id: types::Collection<'a, types::PollId>,
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
@@ -76,7 +76,7 @@ impl<'a> GetPollsRequest<'a> {
     }
 
     /// IDs of the polls to query.
-    pub fn ids(mut self, id: impl Into<Cow<'a, [&'a types::PollIdRef]>>) -> Self {
+    pub fn ids(mut self, id: impl Into<types::Collection<'a, types::PollId>>) -> Self {
         self.id = id.into();
         self
     }
@@ -139,7 +139,7 @@ impl helix::Paginated for GetPollsRequest<'_> {
 fn test_request() {
     use helix::*;
     let req = GetPollsRequest::broadcaster_id("141981764")
-        .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()]);
+        .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a"]);
 
     // From twitch docs
     let data = br#"

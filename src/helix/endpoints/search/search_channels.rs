@@ -24,9 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = search_channels::SearchChannelsRequest::builder()
-//!     .query("hello")
-//!     .build();
+//! let request = search_channels::SearchChannelsRequest::query("hello");
 //! let response: Vec<search_channels::Channel> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }

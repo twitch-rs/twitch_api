@@ -9,7 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::videos::delete_videos;
-//! let request = delete_videos::DeleteVideosRequest::ids(&["1234".into()][..]);
+//! let request = delete_videos::DeleteVideosRequest::ids(&"1234");
 //! ```
 //!
 //! ## Response: [DeleteVideo]
@@ -24,8 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let ids: &[&types::VideoIdRef] = &["1234".into()];
-//! let request = delete_videos::DeleteVideosRequest::ids(ids);
+//! let request = delete_videos::DeleteVideosRequest::ids(&"1234");
 //! let response: delete_videos::DeleteVideo = client.req_delete(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -49,17 +48,19 @@ pub struct DeleteVideosRequest<'a> {
     /// ID of the video(s) to be deleted. Limit: 5.
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub id: Cow<'a, [&'a types::VideoIdRef]>,
+    pub id: types::Collection<'a, types::VideoId>,
 }
 
 impl<'a> DeleteVideosRequest<'a> {
     /// ID of the videos to be deleted
-    pub fn ids(ids: impl Into<Cow<'a, [&'a types::VideoIdRef]>>) -> Self { Self { id: ids.into() } }
+    pub fn ids(ids: impl Into<types::Collection<'a, types::VideoId>>) -> Self {
+        Self { id: ids.into() }
+    }
 }
 // FIXME: Should return VideoIds
 /// Return Values for [Delete Videos](super::delete_videos)
@@ -109,7 +110,7 @@ impl RequestDelete for DeleteVideosRequest<'_> {
 #[test]
 fn test_request() {
     use helix::*;
-    let req = DeleteVideosRequest::ids(vec!["234482848".into()]);
+    let req = DeleteVideosRequest::ids(vec!["234482848"]);
 
     // From twitch docs
     let data = br#""#.to_vec();

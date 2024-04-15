@@ -56,7 +56,7 @@ pub struct GetBannedUsersRequest<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
+    pub user_id: types::Collection<'a, types::UserId>,
     /// Cursor for forward pagination: tells the server where to start fetching the next set of results, in a multi-page response. The cursor value specified here is from the pagination response field of a prior query.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
@@ -75,7 +75,7 @@ impl<'a> GetBannedUsersRequest<'a> {
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into_cow(),
-            user_id: Cow::Borrowed(&[]),
+            user_id: types::Collection::default(),
             after: Default::default(),
             before: Default::default(),
             first: Default::default(),
@@ -83,7 +83,7 @@ impl<'a> GetBannedUsersRequest<'a> {
     }
 
     /// Check if supplied users are banned.
-    pub fn users(mut self, user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+    pub fn users(mut self, user_ids: impl Into<types::Collection<'a, types::UserId>>) -> Self {
         self.user_id = user_ids.into();
         self
     }

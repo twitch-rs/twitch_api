@@ -21,10 +21,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::schedule::update_channel_stream_schedule_segment;
-//! let body =
-//!     update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::builder()
-//!         .duration(Some("120".into()))
-//!         .build();
+//! let mut body = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::default();
+//! body.duration = Some("120".into());
 //! ```
 //!
 //! ## Response: [UpdateChannelStreamScheduleSegmentResponse]
@@ -45,9 +43,8 @@
 //!     "141981764",
 //!     "eyJzZWdtZW50SUQiOiJlNGFjYzcyNC0zNzFmLTQwMmMtODFjYS0yM2FkYTc5NzU5ZDQiLCJpc29ZZWFyIjoyMDIxLCJpc29XZWVrIjoyNn0=",
 //! );
-//! let body = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::builder()
-//!     .duration(Some("120".into()))
-//!     .build();
+//! let mut body = update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentBody::default();
+//! body.duration = Some("120".into());
 //! let response: update_channel_stream_schedule_segment::UpdateChannelStreamScheduleSegmentResponse = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

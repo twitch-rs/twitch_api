@@ -56,7 +56,7 @@ pub struct GetCustomRewardRequest<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub id: Cow<'a, [&'a types::RewardIdRef]>,
+    pub id: types::Collection<'a, types::RewardId>,
     /// When set to true, only returns custom rewards that the calling client_id can manage. Defaults false.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     pub only_manageable_rewards: Option<bool>,
@@ -67,13 +67,13 @@ impl<'a> GetCustomRewardRequest<'a> {
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into_cow(),
-            id: Cow::Borrowed(&[]),
+            id: types::Collection::default(),
             only_manageable_rewards: Default::default(),
         }
     }
 
-    /// Get rewards with these ids
-    pub fn ids(mut self, id: impl Into<Cow<'a, [&'a types::RewardIdRef]>>) -> Self {
+    /// Get rewards with these ids. Maximum 50
+    pub fn ids(mut self, id: impl Into<types::Collection<'a, types::RewardId>>) -> Self {
         self.id = id.into();
         self
     }

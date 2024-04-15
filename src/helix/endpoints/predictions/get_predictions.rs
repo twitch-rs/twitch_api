@@ -9,7 +9,7 @@
 //! use twitch_api::helix::predictions::get_predictions;
 //! let request =
 //!     get_predictions::GetPredictionsRequest::broadcaster_id("1234")
-//!         .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()]);
+//!         .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a"]);
 //! ```
 //!
 //! ## Response: [Prediction]
@@ -25,7 +25,7 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = get_predictions::GetPredictionsRequest::broadcaster_id("1234")
-//!     .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a".into()]);
+//!     .ids(vec!["ed961efd-8a3f-4cf5-a9d0-e616c590cd2a"]);
 //! let response: Vec<get_predictions::Prediction> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -58,7 +58,7 @@ pub struct GetPredictionsRequest<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub id: Cow<'a, [&'a types::PredictionIdRef]>,
+    pub id: types::Collection<'a, types::PredictionId>,
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
@@ -73,14 +73,14 @@ impl<'a> GetPredictionsRequest<'a> {
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into_cow(),
-            id: Cow::Borrowed(&[]),
+            id: types::Collection::default(),
             after: Default::default(),
             first: Default::default(),
         }
     }
 
     /// IDs of a Predictions.
-    pub fn ids(mut self, ids: impl Into<Cow<'a, [&'a types::PredictionIdRef]>>) -> Self {
+    pub fn ids(mut self, ids: impl Into<types::Collection<'a, types::PredictionId>>) -> Self {
         self.id = ids.into();
         self
     }
@@ -142,7 +142,7 @@ fn test_request() {
     use helix::*;
 
     let req = GetPredictionsRequest::broadcaster_id("55696719")
-        .ids(vec!["d6676d5c-c86e-44d2-bfc4-100fb48f0656".into()]);
+        .ids(vec!["d6676d5c-c86e-44d2-bfc4-100fb48f0656"]);
 
     // From twitch docs
     let data = br#"

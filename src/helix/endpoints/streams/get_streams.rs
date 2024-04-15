@@ -3,15 +3,19 @@
 //!
 //! # Accessing the endpoint
 //!
+//! ## Notes
+//!
+//! See also [`HelixClient::get_streams_from_logins`](crate::helix::HelixClient::get_streams_from_logins) and
+//! [`HelixClient::get_streams_from_ids`](crate::helix::HelixClient::get_streams_from_ids)
+//!
+//!
 //! ## Request: [GetStreamsRequest]
 //!
 //! To use this endpoint, construct a [`GetStreamsRequest`] with the [`GetStreamsRequest::user_ids()`], [`GetStreamsRequest::user_logins()`] or [`GetStreamsRequest::game_ids()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::streams::get_streams;
-//! let request = get_streams::GetStreamsRequest::builder()
-//!     .user_login(&["justintvfan".into()][..])
-//!     .build();
+//! let request = get_streams::GetStreamsRequest::user_logins(&["justintvfan"]);
 //! ```
 //!
 //! ## Response: [Stream]
@@ -27,10 +31,7 @@
 //!     helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let logins: &[&types::UserNameRef] = &["justintvfan".into()];
-//! let request = get_streams::GetStreamsRequest::builder()
-//!     .user_login(logins)
-//!     .build();
+//! let request = get_streams::GetStreamsRequest::user_logins(&["justintvfan"]);
 //! let response: Vec<get_streams::Stream> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -45,7 +46,7 @@ use helix::RequestGet;
 /// Query Parameters for [Get Streams](super::get_streams)
 ///
 /// [`get-streams`](https://dev.twitch.tv/docs/api/reference#get-streams)
-#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug, Default)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[must_use]
 #[non_exhaustive]
@@ -64,12 +65,12 @@ pub struct GetStreamsRequest<'a> {
     /// Returns streams broadcasting a specified game ID. You can specify up to 10 IDs.
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub game_id: Cow<'a, [&'a types::CategoryIdRef]>,
+    pub game_id: types::Collection<'a, types::CategoryId>,
     /// Stream language. You can specify up to 100 languages.
     #[cfg_attr(feature = "typed-builder", builder(default))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
@@ -77,17 +78,17 @@ pub struct GetStreamsRequest<'a> {
     /// Returns streams broadcast by one or more specified user IDs. You can specify up to 100 IDs.
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
-    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
+    pub user_id: types::Collection<'a, types::UserId>,
     /// Returns streams broadcast by one or more specified user login names. You can specify up to 100 names.
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
-    pub user_login: Cow<'a, [&'a types::UserNameRef]>,
+    pub user_login: types::Collection<'a, types::UserName>,
 }
 
 impl<'a> GetStreamsRequest<'a> {
@@ -100,7 +101,7 @@ impl<'a> GetStreamsRequest<'a> {
     /// let ids: &[&twitch_types::UserIdRef] = &["1234".into()];
     /// let request = GetStreamsRequest::user_ids(ids);
     /// ```
-    pub fn user_ids(user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+    pub fn user_ids(user_ids: impl Into<types::Collection<'a, types::UserId>>) -> Self {
         Self {
             user_id: user_ids.into(),
             ..Self::default()
@@ -116,7 +117,7 @@ impl<'a> GetStreamsRequest<'a> {
     /// let ids: &[&twitch_types::UserNameRef] = &["justintvfan".into()];
     /// let request = GetStreamsRequest::user_logins(ids);
     /// ```
-    pub fn user_logins(user_logins: impl Into<Cow<'a, [&'a types::UserNameRef]>>) -> Self {
+    pub fn user_logins(user_logins: impl Into<types::Collection<'a, types::UserName>>) -> Self {
         Self {
             user_login: user_logins.into(),
             ..Self::default()
@@ -130,24 +131,10 @@ impl<'a> GetStreamsRequest<'a> {
     }
 
     /// Return streams with these [Id](types::CategoryId)s
-    pub fn game_ids(game_ids: impl Into<Cow<'a, [&'a types::CategoryIdRef]>>) -> Self {
+    pub fn game_ids(game_ids: impl Into<types::Collection<'a, types::CategoryId>>) -> Self {
         Self {
             game_id: game_ids.into(),
             ..Self::default()
-        }
-    }
-}
-
-impl Default for GetStreamsRequest<'_> {
-    fn default() -> Self {
-        Self {
-            after: None,
-            before: None,
-            first: None,
-            game_id: Cow::Borrowed(&[]),
-            language: None,
-            user_id: Cow::Borrowed(&[]),
-            user_login: Cow::Borrowed(&[]),
         }
     }
 }

@@ -9,7 +9,7 @@
 //!
 //! ```rust
 //! use twitch_api::helix::games::get_games;
-//! let request = get_games::GetGamesRequest::ids(&["4321".into()][..]);
+//! let request = get_games::GetGamesRequest::ids(&["4321"]);
 //! ```
 //!
 //! ## Response: [Game](types::TwitchCategory)
@@ -24,8 +24,7 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let ids: &[&types::CategoryIdRef] = &["4321".into()];
-//! let request = get_games::GetGamesRequest::ids(ids);
+//! let request = get_games::GetGamesRequest::ids(&["4321"]);
 //! let response: Vec<get_games::Game> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -48,24 +47,24 @@ pub struct GetGamesRequest<'a> {
     /// Game ID. At most 100 id values can be specified.
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub id: Cow<'a, [&'a types::CategoryIdRef]>,
+    pub id: types::Collection<'a, types::CategoryId>,
     /// Game name. The name must be an exact match. For instance, “Pokemon” will not return a list of Pokemon games; instead, query the specific Pokemon game(s) in which you are interested. At most 100 name values can be specified.
     #[cfg_attr(
         feature = "typed-builder",
-        builder(default_code = "Cow::Borrowed(&[])", setter(into))
+        builder(default_code = "types::Collection::default()", setter(into))
     )]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
-    pub name: Cow<'a, [&'a str]>,
+    pub name: types::Collection<'a, String>,
 }
 
 impl<'a> GetGamesRequest<'a> {
     /// Get games with specific exact name match.
-    pub fn names(names: impl Into<Cow<'a, [&'a str]>>) -> Self {
+    pub fn names(names: impl Into<types::Collection<'a, String>>) -> Self {
         Self {
             name: names.into(),
             ..Self::empty()
@@ -73,7 +72,7 @@ impl<'a> GetGamesRequest<'a> {
     }
 
     /// Get games with specific exact id match.
-    pub fn ids(ids: impl Into<Cow<'a, [&'a types::CategoryIdRef]>>) -> Self {
+    pub fn ids(ids: impl Into<types::Collection<'a, types::CategoryId>>) -> Self {
         Self {
             id: ids.into(),
             ..Self::empty()
@@ -83,8 +82,8 @@ impl<'a> GetGamesRequest<'a> {
     /// Returns an empty [`GetGamesRequest`]
     fn empty() -> Self {
         Self {
-            id: Cow::Borrowed(&[]),
-            name: Cow::Borrowed(&[]),
+            id: types::Collection::default(),
+            name: types::Collection::default(),
         }
     }
 }
@@ -108,7 +107,7 @@ impl RequestGet for GetGamesRequest<'_> {}
 #[test]
 fn test_request() {
     use helix::*;
-    let req = GetGamesRequest::ids(vec!["493057".into()]);
+    let req = GetGamesRequest::ids(vec!["493057"]);
 
     // From twitch docs
     let data = br#"

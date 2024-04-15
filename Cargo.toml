@@ -19,7 +19,7 @@ include = [
     "CHANGELOG.md",
     "LICENSE*",
 ]
-rust-version = "1.67.0"
+rust-version = "1.77.0"
 
 
 [workspace]
@@ -29,7 +29,7 @@ exclude = ["twitch_types", "twitch_oauth2"]
 [workspace.dependencies]
 twitch_api = { version = "0.7.0-rc.6", path = "." }
 twitch_oauth2 = { version = "0.13.0", path = "twitch_oauth2/" }
-twitch_types = { version = "0.4.3", features = [
+twitch_types = { version = "0.4.5", features = [
     "serde",
 ], path = "./twitch_types" }
 

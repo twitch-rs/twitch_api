@@ -12,8 +12,7 @@
 //! # let _: &HelixClient<twitch_api::DummyHttpClient> = &client;
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let logins: &[&types::UserNameRef] = &["justintvfan".into()];
-//! let req = GetUsersRequest::builder().login(logins).build();
+//! let req = GetUsersRequest::logins(&["justintvfan"]);
 //!
 //! println!("{:?}", &client.req_get(req, &token).await?.data);
 //! # Ok(())

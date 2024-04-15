@@ -54,7 +54,7 @@ pub struct GetVipsRequest<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     // FIXME: This is essentially the same as borrow, but worse
     #[cfg_attr(not(feature = "deser_borrow"), serde(bound(deserialize = "'de: 'a")))]
-    pub user_id: Cow<'a, [&'a types::UserIdRef]>,
+    pub user_id: types::Collection<'a, types::UserId>,
     /// The maximum number of items to return per page in the response. The minimum page size is 1 item per page and the maximum is 100. The default is 20.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub first: Option<usize>,
@@ -76,7 +76,7 @@ impl<'a> GetVipsRequest<'a> {
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into_cow(),
-            user_id: Cow::Borrowed(&[]),
+            user_id: types::Collection::default(),
             first: None,
             after: None,
         }
@@ -105,7 +105,7 @@ impl<'a> GetVipsRequest<'a> {
     /// let user_ids: &[&twitch_types::UserIdRef] = &["1234".into()];
     /// let request = GetVipsRequest::broadcaster_id("1337").user_ids(user_ids);
     /// ```
-    pub fn user_ids(self, user_ids: impl Into<Cow<'a, [&'a types::UserIdRef]>>) -> Self {
+    pub fn user_ids(self, user_ids: impl Into<types::Collection<'a, types::UserId>>) -> Self {
         Self {
             user_id: user_ids.into(),
             ..self

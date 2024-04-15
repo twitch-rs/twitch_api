@@ -19,10 +19,9 @@
 //!
 //! ```
 //! # use twitch_api::helix::chat::update_chat_settings;
-//! let body = update_chat_settings::UpdateChatSettingsBody::builder()
-//!     .slow_mode(true)
-//!     .slow_mode_wait_time(10)
-//!     .build();
+//! let mut body = update_chat_settings::UpdateChatSettingsBody::default();
+//! body.slow_mode = Some(true);
+//! body.slow_mode_wait_time = Some(10);
 //! ```
 //!
 //! ## Response: [ChatSettings]
@@ -40,10 +39,9 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = update_chat_settings::UpdateChatSettingsRequest::new("1234", "5678");
-//! let body = update_chat_settings::UpdateChatSettingsBody::builder()
-//!     .slow_mode(true)
-//!     .slow_mode_wait_time(10)
-//!     .build();
+//! let mut body = update_chat_settings::UpdateChatSettingsBody::default();
+//! body.slow_mode = Some(true);
+//! body.slow_mode_wait_time = Some(10);
 //! let response: helix::chat::ChatSettings = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }

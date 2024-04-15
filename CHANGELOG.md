@@ -8,7 +8,7 @@
 
 ### Breaking changes
 
-- MSRV: 1.67.0
+- MSRV: 1.77.0
 - Requests for helix endpoints have been converted to take `Cow`s.
   This change means the `builder()` methods are harder to use, consider using the new methods on
   each request which provide the same functionality but with better ergonomics.
@@ -73,6 +73,7 @@
 - Added `helix::Response::new` and `helix::Response::with_data` to make it possible to create your own responses.
 - Added `is_branded_content` and `content_classification_labels` to `Get Channel Information` and `Modify Channel information`
 - Added `channel.update` v2 EventSub event
+- Added `HelixClient` functions `get_streams_from_logins` and `get_streams_from_ids`
 - Added `is_featured` to Get Clips
 - Added beta `Get Ad Schedule` and `Snooze Next Ad` endpoint
 - Added beta `channel.ad_break.begin` eventsub event

@@ -40,10 +40,13 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         .get_games_by_id(
             &streams
                 .iter()
-                .map(|s| s.game_id.as_ref())
-                .collect::<Vec<_>>(),
+                .map(|s| &s.game_id)
+                .collect::<Vec<_>>()
+                .into(),
             &token,
         )
+        .map_ok(|g| (g.id.clone(), g))
+        .try_collect::<std::collections::HashMap<_, _>>()
         .await?;
 
     println!(
