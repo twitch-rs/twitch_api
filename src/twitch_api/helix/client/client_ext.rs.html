@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/client_ext.rs`."><title>client_ext.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-2c208a72533b4dd0.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (79424056b 2024-04-12)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/client_ext.rs`."><title>client_ext.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-2c208a72533b4dd0.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (0d8b3346a 2024-04-14)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../twitch_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1518,9 +1518,153 @@
 <a href="#1518" id="1518">1518</a>
 <a href="#1519" id="1519">1519</a>
 <a href="#1520" id="1520">1520</a>
+<a href="#1521" id="1521">1521</a>
+<a href="#1522" id="1522">1522</a>
+<a href="#1523" id="1523">1523</a>
+<a href="#1524" id="1524">1524</a>
+<a href="#1525" id="1525">1525</a>
+<a href="#1526" id="1526">1526</a>
+<a href="#1527" id="1527">1527</a>
+<a href="#1528" id="1528">1528</a>
+<a href="#1529" id="1529">1529</a>
+<a href="#1530" id="1530">1530</a>
+<a href="#1531" id="1531">1531</a>
+<a href="#1532" id="1532">1532</a>
+<a href="#1533" id="1533">1533</a>
+<a href="#1534" id="1534">1534</a>
+<a href="#1535" id="1535">1535</a>
+<a href="#1536" id="1536">1536</a>
+<a href="#1537" id="1537">1537</a>
+<a href="#1538" id="1538">1538</a>
+<a href="#1539" id="1539">1539</a>
+<a href="#1540" id="1540">1540</a>
+<a href="#1541" id="1541">1541</a>
+<a href="#1542" id="1542">1542</a>
+<a href="#1543" id="1543">1543</a>
+<a href="#1544" id="1544">1544</a>
+<a href="#1545" id="1545">1545</a>
+<a href="#1546" id="1546">1546</a>
+<a href="#1547" id="1547">1547</a>
+<a href="#1548" id="1548">1548</a>
+<a href="#1549" id="1549">1549</a>
+<a href="#1550" id="1550">1550</a>
+<a href="#1551" id="1551">1551</a>
+<a href="#1552" id="1552">1552</a>
+<a href="#1553" id="1553">1553</a>
+<a href="#1554" id="1554">1554</a>
+<a href="#1555" id="1555">1555</a>
+<a href="#1556" id="1556">1556</a>
+<a href="#1557" id="1557">1557</a>
+<a href="#1558" id="1558">1558</a>
+<a href="#1559" id="1559">1559</a>
+<a href="#1560" id="1560">1560</a>
+<a href="#1561" id="1561">1561</a>
+<a href="#1562" id="1562">1562</a>
+<a href="#1563" id="1563">1563</a>
+<a href="#1564" id="1564">1564</a>
+<a href="#1565" id="1565">1565</a>
+<a href="#1566" id="1566">1566</a>
+<a href="#1567" id="1567">1567</a>
+<a href="#1568" id="1568">1568</a>
+<a href="#1569" id="1569">1569</a>
+<a href="#1570" id="1570">1570</a>
+<a href="#1571" id="1571">1571</a>
+<a href="#1572" id="1572">1572</a>
+<a href="#1573" id="1573">1573</a>
+<a href="#1574" id="1574">1574</a>
+<a href="#1575" id="1575">1575</a>
+<a href="#1576" id="1576">1576</a>
+<a href="#1577" id="1577">1577</a>
+<a href="#1578" id="1578">1578</a>
+<a href="#1579" id="1579">1579</a>
+<a href="#1580" id="1580">1580</a>
+<a href="#1581" id="1581">1581</a>
+<a href="#1582" id="1582">1582</a>
+<a href="#1583" id="1583">1583</a>
+<a href="#1584" id="1584">1584</a>
+<a href="#1585" id="1585">1585</a>
+<a href="#1586" id="1586">1586</a>
+<a href="#1587" id="1587">1587</a>
+<a href="#1588" id="1588">1588</a>
+<a href="#1589" id="1589">1589</a>
+<a href="#1590" id="1590">1590</a>
+<a href="#1591" id="1591">1591</a>
+<a href="#1592" id="1592">1592</a>
+<a href="#1593" id="1593">1593</a>
+<a href="#1594" id="1594">1594</a>
+<a href="#1595" id="1595">1595</a>
+<a href="#1596" id="1596">1596</a>
+<a href="#1597" id="1597">1597</a>
+<a href="#1598" id="1598">1598</a>
+<a href="#1599" id="1599">1599</a>
+<a href="#1600" id="1600">1600</a>
+<a href="#1601" id="1601">1601</a>
+<a href="#1602" id="1602">1602</a>
+<a href="#1603" id="1603">1603</a>
+<a href="#1604" id="1604">1604</a>
+<a href="#1605" id="1605">1605</a>
+<a href="#1606" id="1606">1606</a>
+<a href="#1607" id="1607">1607</a>
+<a href="#1608" id="1608">1608</a>
+<a href="#1609" id="1609">1609</a>
+<a href="#1610" id="1610">1610</a>
+<a href="#1611" id="1611">1611</a>
+<a href="#1612" id="1612">1612</a>
+<a href="#1613" id="1613">1613</a>
+<a href="#1614" id="1614">1614</a>
+<a href="#1615" id="1615">1615</a>
+<a href="#1616" id="1616">1616</a>
+<a href="#1617" id="1617">1617</a>
+<a href="#1618" id="1618">1618</a>
+<a href="#1619" id="1619">1619</a>
+<a href="#1620" id="1620">1620</a>
+<a href="#1621" id="1621">1621</a>
+<a href="#1622" id="1622">1622</a>
+<a href="#1623" id="1623">1623</a>
+<a href="#1624" id="1624">1624</a>
+<a href="#1625" id="1625">1625</a>
+<a href="#1626" id="1626">1626</a>
+<a href="#1627" id="1627">1627</a>
+<a href="#1628" id="1628">1628</a>
+<a href="#1629" id="1629">1629</a>
+<a href="#1630" id="1630">1630</a>
+<a href="#1631" id="1631">1631</a>
+<a href="#1632" id="1632">1632</a>
+<a href="#1633" id="1633">1633</a>
+<a href="#1634" id="1634">1634</a>
+<a href="#1635" id="1635">1635</a>
+<a href="#1636" id="1636">1636</a>
+<a href="#1637" id="1637">1637</a>
+<a href="#1638" id="1638">1638</a>
+<a href="#1639" id="1639">1639</a>
+<a href="#1640" id="1640">1640</a>
+<a href="#1641" id="1641">1641</a>
+<a href="#1642" id="1642">1642</a>
+<a href="#1643" id="1643">1643</a>
+<a href="#1644" id="1644">1644</a>
+<a href="#1645" id="1645">1645</a>
+<a href="#1646" id="1646">1646</a>
+<a href="#1647" id="1647">1647</a>
+<a href="#1648" id="1648">1648</a>
+<a href="#1649" id="1649">1649</a>
+<a href="#1650" id="1650">1650</a>
+<a href="#1651" id="1651">1651</a>
+<a href="#1652" id="1652">1652</a>
+<a href="#1653" id="1653">1653</a>
+<a href="#1654" id="1654">1654</a>
+<a href="#1655" id="1655">1655</a>
+<a href="#1656" id="1656">1656</a>
+<a href="#1657" id="1657">1657</a>
+<a href="#1658" id="1658">1658</a>
+<a href="#1659" id="1659">1659</a>
+<a href="#1660" id="1660">1660</a>
+<a href="#1661" id="1661">1661</a>
+<a href="#1662" id="1662">1662</a>
+<a href="#1663" id="1663">1663</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]
 </span><span class="attr">#![warn(clippy::future_not_send)]
-</span><span class="kw">use </span>std::borrow::Cow;
+</span><span class="kw">use </span>futures::{StreamExt, TryStreamExt};
+<span class="kw">use </span>std::borrow::Cow;
 
 <span class="kw">use </span><span class="kw">crate</span>::helix::{<span class="self">self</span>, ClientRequestError, HelixClient};
 <span class="kw">use </span><span class="kw">crate</span>::types;
@@ -1563,21 +1707,38 @@
     }
 
     <span class="doccomment">/// Get multiple [User](helix::users::User)s from user ids.
-    </span><span class="kw">pub async fn </span>get_users_from_ids&lt;T&gt;(
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;'static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::{helix, types};
+    /// use futures::TryStreamExt;
+    ///
+    /// let users: Vec&lt;helix::users::User&gt; = client
+    ///     .get_users_from_ids(&amp;["1234", "4321"][..].into(), &amp;token).try_collect().await?;
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_users_from_ids&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
-        ids: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::UserIdRef]&gt; + Send,
-        token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::users::User&gt;, ClientError&lt;C&gt;&gt;
-    <span class="kw">where
+        ids: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>types::Collection&lt;<span class="lifetime">'client</span>, types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
+    ) -&gt; <span class="kw">impl </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::users::User, ClientError&lt;C&gt;&gt;&gt; + Send + Unpin + <span class="lifetime">'client
+    </span><span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>ids = ids.as_ref();
-        <span class="kw">if </span>ids.len() &gt; <span class="number">100 </span>{
-            <span class="kw">return </span><span class="prelude-val">Err</span>(ClientRequestError::Custom(<span class="string">"too many IDs, max 100"</span>.into()));
-        }
-        <span class="self">self</span>.req_get(helix::users::GetUsersRequest::ids(ids), token)
-            .<span class="kw">await
-            </span>.map(|response| response.first())
+        futures::stream::iter(ids.chunks(<span class="number">100</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;())
+            .map(<span class="kw">move </span>|c| {
+                <span class="kw">let </span>req = helix::users::GetUsersRequest::ids(c);
+                futures::stream::once(<span class="self">self</span>.req_get(req, token)).boxed()
+            })
+            .flatten_unordered(<span class="prelude-val">None</span>)
+            .map_ok(|resp| futures::stream::iter(resp.data.into_iter().map(<span class="prelude-val">Ok</span>)))
+            .try_flatten_unordered(<span class="prelude-val">None</span>)
     }
 
     <span class="doccomment">/// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters login
@@ -1625,30 +1786,107 @@
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
     /// use twitch_api::{helix, types};
+    /// use futures::TryStreamExt;
     ///
-    /// let ids: &amp;[&amp;types::UserIdRef] = &amp;["1234".into(), "4321".into()];
     /// let chatters: Vec&lt;helix::channels::ChannelInformation&gt; = client
-    ///    .get_channels_from_ids(ids, &amp;token).await?;
+    ///     .get_channels_from_ids(&amp;["1234", "4321"][..].into(), &amp;token).try_collect().await?;
     /// # Ok(()) }
     /// ```
-    </span><span class="kw">pub async fn </span>get_channels_from_ids&lt;<span class="lifetime">'b</span>, T&gt;(
+    </span><span class="kw">pub fn </span>get_channels_from_ids&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
-        ids: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::UserIdRef]&gt; + Send,
-        token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::channels::ChannelInformation&gt;, ClientError&lt;C&gt;&gt;
-    <span class="kw">where
+        ids: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>types::Collection&lt;<span class="lifetime">'client</span>, types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
+    ) -&gt; <span class="kw">impl </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::channels::ChannelInformation, ClientError&lt;C&gt;&gt;&gt;
+           + Send
+           + Unpin
+           + <span class="lifetime">'client
+    </span><span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>ids = ids.as_ref();
-        <span class="kw">if </span>ids.len() &gt; <span class="number">100 </span>{
-            <span class="kw">return </span><span class="prelude-val">Err</span>(ClientRequestError::Custom(<span class="string">"too many IDs, max 100"</span>.into()));
-        }
-        <span class="self">self</span>.req_get(
-            helix::channels::GetChannelInformationRequest::broadcaster_ids(ids),
-            token,
-        )
-        .<span class="kw">await
-        </span>.map(|response| response.data)
+        futures::stream::iter(ids.chunks(<span class="number">100</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;())
+            .map(<span class="kw">move </span>|c| {
+                <span class="kw">let </span>req = helix::channels::GetChannelInformationRequest::broadcaster_ids(c);
+                futures::stream::once(<span class="self">self</span>.req_get(req, token)).boxed()
+            })
+            .flatten_unordered(<span class="prelude-val">None</span>)
+            .map_ok(|resp| futures::stream::iter(resp.data.into_iter().map(<span class="prelude-val">Ok</span>)))
+            .try_flatten_unordered(<span class="prelude-val">None</span>)
+    }
+
+    <span class="doccomment">/// Get multiple [Stream](helix::streams::Stream)s from user ids.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;'static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// let live: Vec&lt;helix::streams::Stream&gt; = client
+    ///     .get_streams_from_ids(&amp;["123456", "987654"][..].into(), &amp;token)
+    ///     .try_collect()
+    ///     .await?;
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_streams_from_ids&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
+        ids: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>types::Collection&lt;<span class="lifetime">'client</span>, types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
+    ) -&gt; <span class="kw">impl </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::streams::Stream, ClientError&lt;C&gt;&gt;&gt;
+           + Send
+           + Unpin
+           + <span class="lifetime">'client
+    </span><span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
+    {
+        <span class="kw">let </span>ids = ids.chunks(<span class="number">100</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+        futures::stream::iter(ids.into_iter().map(<span class="kw">move </span>|c| {
+            <span class="kw">let </span>req = helix::streams::GetStreamsRequest::user_ids(c).first(<span class="number">100</span>);
+            make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
+        }))
+        .flatten_unordered(<span class="prelude-val">None</span>)
+    }
+
+    <span class="doccomment">/// Get multiple [Stream](helix::streams::Stream)s from user logins.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;'static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// let live: Vec&lt;helix::streams::Stream&gt; = client
+    ///     .get_streams_from_logins(&amp;["twitchdev", "justinfan"][..].into(), &amp;token)
+    ///     .try_collect()
+    ///     .await?;
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_streams_from_logins&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
+        logins: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>types::Collection&lt;<span class="lifetime">'client</span>, types::UserName&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
+    ) -&gt; <span class="kw">impl </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::streams::Stream, ClientError&lt;C&gt;&gt;&gt;
+           + Send
+           + Unpin
+           + <span class="lifetime">'client
+    </span><span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
+    {
+        <span class="kw">let </span>logins = logins.chunks(<span class="number">100</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+        futures::stream::iter(logins.into_iter().map(<span class="kw">move </span>|c| {
+            <span class="kw">let </span>req = helix::streams::GetStreamsRequest::user_logins(c).first(<span class="number">100</span>);
+            make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
+        }))
+        .flatten_unordered(<span class="prelude-val">None</span>)
     }
 
     <span class="doccomment">/// Get chatters in a stream [Chatter][helix::chat::Chatter]
@@ -1669,10 +1907,8 @@
     /// let chatters: Vec&lt;helix::chat::Chatter&gt; = client
     ///    .get_chatters("1234", "4321", 1000, &amp;token)
     ///    .try_collect().await?;
-    ///
     /// # Ok(()) }
     /// ```
-    </span><span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
     </span><span class="kw">pub fn </span>get_chatters&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
         broadcaster_id: <span class="kw">impl </span>Into&lt;<span class="kw-2">&amp;</span><span class="lifetime">'client </span>types::UserIdRef&gt;,
@@ -1707,7 +1943,6 @@
     /// let categories: Vec&lt;helix::search::Category&gt; = client
     ///     .search_categories("Fortnite", &amp;token)
     ///     .try_collect().await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>search_categories&lt;T&gt;(
@@ -1741,7 +1976,6 @@
     /// let channel: Vec&lt;helix::search::Channel&gt; = client
     ///     .search_channels("twitchdev", false, &amp;token)
     ///     .try_collect().await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>search_channels&lt;<span class="lifetime">'b</span>, T&gt;(
@@ -1780,7 +2014,6 @@
     /// let followers: Vec&lt;helix::users::FollowRelationship&gt; = client
     ///     .get_follow_relationships(Some("1234".into()), None, &amp;token)
     ///     .try_collect().await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="attr">#[deprecated(
@@ -1828,7 +2061,6 @@
     /// let channels: Vec&lt;helix::streams::Stream&gt; = client
     ///     .get_followed_streams(&amp;token)
     ///     .try_collect().await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>get_followed_streams&lt;T&gt;(
@@ -1841,8 +2073,6 @@
     </span><span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">use </span>futures::StreamExt;
-
         <span class="kw">let </span>user_id = <span class="kw">match </span>token
             .user_id()
             .ok_or_else(|| ClientRequestError::Custom(<span class="string">"no user_id found on token"</span>.into()))
@@ -1870,7 +2100,6 @@
     /// let subs: Vec&lt;helix::subscriptions::BroadcasterSubscription&gt; = client
     ///     .get_broadcaster_subscriptions(&amp;token)
     ///     .try_collect().await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>get_broadcaster_subscriptions&lt;T&gt;(
@@ -1884,8 +2113,6 @@
     </span><span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">use </span>futures::StreamExt;
-
         <span class="kw">let </span>user_id = <span class="kw">match </span>token
             .user_id()
             .ok_or_else(|| ClientRequestError::Custom(<span class="string">"no user_id found on token"</span>.into()))
@@ -1914,7 +2141,6 @@
     /// let moderators: Vec&lt;helix::moderation::Moderator&gt; = client
     ///     .get_moderators_in_channel_from_id("twitchdev", &amp;token)
     ///     .try_collect().await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>get_moderators_in_channel_from_id&lt;<span class="lifetime">'b</span>: <span class="lifetime">'client</span>, T&gt;(
@@ -1947,7 +2173,6 @@
     /// use futures::TryStreamExt;
     ///
     /// let moderators: Vec&lt;helix::moderation::BannedUser&gt; = client.get_banned_users_in_channel_from_id("twitchdev", &amp;token).try_collect().await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>get_banned_users_in_channel_from_id&lt;<span class="lifetime">'b</span>: <span class="lifetime">'client</span>, T&gt;(
@@ -2029,7 +2254,6 @@
     ///     .get_followed_channels("1234", &amp;token)
     ///     .try_collect()
     ///     .await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>get_followed_channels&lt;<span class="lifetime">'b</span>: <span class="lifetime">'client</span>, T&gt;(
@@ -2076,29 +2300,39 @@
         <span class="prelude-val">Ok</span>(resp.data.total)
     }
 
-    <span class="doccomment">/// Get games by ID. Can only be at max 100 ids.
-    </span><span class="kw">pub async fn </span>get_games_by_id&lt;T&gt;(
+    <span class="doccomment">/// Get games by ID.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;'static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// let games: Vec&lt;helix::games::Game&gt; = client
+    ///     .get_games_by_id(&amp;["509658", "32982", "27471"][..].into(), &amp;token).try_collect().await?;
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_games_by_id&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
-        ids: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span><span class="lifetime">'client </span>types::CategoryIdRef]&gt; + Send,
-        token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;std::collections::HashMap&lt;types::CategoryId, helix::games::Game&gt;, ClientError&lt;C&gt;&gt;
-    <span class="kw">where
+        ids: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>types::Collection&lt;<span class="lifetime">'client</span>, types::CategoryId&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
+    ) -&gt; <span class="kw">impl </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::games::Game, ClientError&lt;C&gt;&gt;&gt; + Send + Unpin + <span class="lifetime">'client
+    </span><span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>ids = ids.as_ref();
-        <span class="kw">if </span>ids.len() &gt; <span class="number">100 </span>{
-            <span class="kw">return </span><span class="prelude-val">Err</span>(ClientRequestError::Custom(<span class="string">"too many IDs, max 100"</span>.into()));
-        }
-
-        <span class="kw">let </span>resp = <span class="self">self
-            </span>.req_get(helix::games::GetGamesRequest::ids(ids), token)
-            .<span class="kw">await</span><span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(resp
-            .data
-            .into_iter()
-            .map(|g: helix::games::Game| (g.id.clone(), g))
-            .collect())
+        futures::stream::iter(ids.chunks(<span class="number">100</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;())
+            .map(<span class="kw">move </span>|c| {
+                <span class="kw">let </span>req = helix::games::GetGamesRequest::ids(c);
+                futures::stream::once(<span class="self">self</span>.req_get(req, token)).boxed()
+            })
+            .flatten_unordered(<span class="prelude-val">None</span>)
+            .map_ok(|resp| futures::stream::iter(resp.data.into_iter().map(<span class="prelude-val">Ok</span>)))
+            .try_flatten_unordered(<span class="prelude-val">None</span>)
     }
 
     <span class="doccomment">/// Block a user
@@ -2192,7 +2426,6 @@
     ///
     /// Make sure to limit the data here using [`try_take_while`](futures::stream::TryStreamExt::try_take_while), otherwise this will never end on recurring scheduled streams.
     ///
-    ///
     /// # Examples
     ///
     /// ```rust, no_run
@@ -2211,7 +2444,6 @@
     ///     })
     ///     .try_collect()
     ///     .await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>get_channel_schedule&lt;<span class="lifetime">'b</span>: <span class="lifetime">'client</span>, T&gt;(
@@ -2276,18 +2508,42 @@
         }
     }
 
-    <span class="doccomment">/// Get emotes in emote set
-    </span><span class="kw">pub async fn </span>get_emote_sets&lt;T&gt;(
+    <span class="doccomment">/// Get emotes in emote sets
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;'static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// let emotes: Vec&lt;helix::chat::get_emote_sets::Emote&gt; = client
+    ///     .get_emote_sets(&amp;["0"][..].into(), &amp;token).try_collect().await?;
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_emote_sets&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
-        emote_sets: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::EmoteSetIdRef]&gt; + Send,
-        token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::get_emote_sets::Emote&gt;, ClientError&lt;C&gt;&gt;
-    <span class="kw">where
+        emote_sets: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>types::Collection&lt;<span class="lifetime">'client</span>, types::EmoteSetId&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
+    ) -&gt; <span class="kw">impl </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::chat::get_emote_sets::Emote, ClientError&lt;C&gt;&gt;&gt;
+           + Send
+           + Unpin
+           + <span class="lifetime">'client
+    </span><span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>emote_sets = emote_sets.as_ref();
-        <span class="kw">let </span>req = helix::chat::GetEmoteSetsRequest::emote_set_ids(emote_sets);
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
+        futures::stream::iter(emote_sets.chunks(<span class="number">25</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;())
+            .map(<span class="kw">move </span>|c| {
+                <span class="kw">let </span>req = helix::chat::GetEmoteSetsRequest::emote_set_ids(c);
+                futures::stream::once(<span class="self">self</span>.req_get(req, token)).boxed()
+            })
+            .flatten_unordered(<span class="prelude-val">None</span>)
+            .map_ok(|r| futures::stream::iter(r.data.into_iter().map(<span class="prelude-val">Ok</span>)))
+            .try_flatten_unordered(<span class="prelude-val">None</span>)
     }
 
     <span class="doccomment">/// Get a broadcaster's chat settings
@@ -2385,25 +2641,7 @@
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_delete(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
-    <span class="doccomment">/// Get a users chat color
-    </span><span class="kw">pub async fn </span>get_user_chat_color&lt;T&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
-        user_id: <span class="kw">impl </span>Into&lt;<span class="kw-2">&amp;</span>types::UserIdRef&gt; + Send,
-        token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::chat::UserChatColor&gt;, ClientError&lt;C&gt;&gt;
-    <span class="kw">where
-        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
-    {
-        <span class="prelude-val">Ok</span>(<span class="self">self
-            </span>.req_get(
-                helix::chat::GetUserChatColorRequest::user_ids(<span class="kw-2">&amp;</span>[user_id.into()][..]),
-                token,
-            )
-            .<span class="kw">await</span><span class="question-mark">?
-            </span>.first())
-    }
-
-    <span class="doccomment">/// Get a users chat color
+    <span class="doccomment">/// Update a user's chat color
     </span><span class="kw">pub async fn </span>update_user_chat_color&lt;<span class="lifetime">'b</span>, T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
         user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">'b</span>, types::UserIdRef&gt; + Send + <span class="lifetime">'b</span>,
@@ -2421,22 +2659,64 @@
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_put(req, helix::EmptyBody, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
     }
 
-    <span class="doccomment">/// Get multiple users chat colors
-    </span><span class="kw">pub async fn </span>get_users_chat_colors&lt;T&gt;(
+    <span class="doccomment">/// Get a user's chat color
+    ///
+    /// [`None`](Option::None) is returned if the user never set their color in the settings.
+    </span><span class="kw">pub async fn </span>get_user_chat_color&lt;T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
-        user_ids: <span class="kw">impl </span>AsRef&lt;[<span class="kw-2">&amp;</span>types::UserIdRef]&gt; + Send,
+        user_id: <span class="kw">impl </span>Into&lt;<span class="kw-2">&amp;</span>types::UserIdRef&gt; + Send,
         token: <span class="kw-2">&amp;</span>T,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::chat::UserChatColor&gt;, ClientError&lt;C&gt;&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;helix::chat::UserChatColor&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="kw">let </span>user_ids = user_ids.as_ref();
-        <span class="kw">if </span>user_ids.len() &gt; <span class="number">100 </span>{
-            <span class="kw">return </span><span class="prelude-val">Err</span>(ClientRequestError::Custom(<span class="string">"too many IDs, max 100"</span>.into()));
-        }
-        <span class="kw">let </span>req = helix::chat::GetUserChatColorRequest::user_ids(user_ids);
+        <span class="prelude-val">Ok</span>(<span class="self">self
+            </span>.req_get(
+                helix::chat::GetUserChatColorRequest::user_ids(<span class="kw-2">&amp;</span>user_id.into()),
+                token,
+            )
+            .<span class="kw">await</span><span class="question-mark">?
+            </span>.first())
+    }
 
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.req_get(req, token).<span class="kw">await</span><span class="question-mark">?</span>.data)
+    <span class="doccomment">/// Get multiple users' chat colors
+    ///
+    /// Users that never set their color in the settings are not returned.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;'static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// let colors: Vec&lt;helix::chat::UserChatColor&gt; = client
+    ///     .get_users_chat_colors(&amp;["1234"][..].into(), &amp;token).try_collect().await?;
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_users_chat_colors&lt;T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
+        user_ids: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>types::Collection&lt;<span class="lifetime">'client</span>, types::UserId&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
+    ) -&gt; <span class="kw">impl </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::chat::UserChatColor, ClientError&lt;C&gt;&gt;&gt;
+           + Send
+           + Unpin
+           + <span class="lifetime">'client
+    </span><span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
+    {
+        futures::stream::iter(user_ids.chunks(<span class="number">100</span>))
+            .map(<span class="kw">move </span>|c| {
+                <span class="kw">let </span>req = helix::chat::GetUserChatColorRequest::user_ids(c);
+                futures::stream::once(<span class="self">self</span>.req_get(req, token)).boxed()
+            })
+            .flatten_unordered(<span class="prelude-val">None</span>)
+            .map_ok(<span class="kw">move </span>|o| futures::stream::iter(o.data.into_iter().map(<span class="prelude-val">Ok</span>)))
+            .try_flatten_unordered(<span class="prelude-val">None</span>)
     }
 
     <span class="doccomment">/// Add a channel moderator
@@ -2561,7 +2841,6 @@
     /// let rewards: Vec&lt;helix::points::CustomReward&gt; = client
     ///     .get_all_custom_rewards("1234", true, &amp;token)
     ///     .await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub async fn </span>get_all_custom_rewards&lt;<span class="lifetime">'b</span>, T&gt;(
@@ -2573,11 +2852,20 @@
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
     {
-        <span class="self">self</span>.get_custom_rewards(broadcaster_id, only_managable_rewards, <span class="kw-2">&amp;</span>[], token)
-            .<span class="kw">await
+        <span class="self">self</span>.get_custom_rewards(
+            broadcaster_id,
+            only_managable_rewards,
+            <span class="kw-2">&amp;</span>types::Collection::EMPTY,
+            token,
+        )
+        .<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Get specific custom rewards, see [`get_all_custom_rewards`](HelixClient::get_all_custom_rewards) to get all rewards
+    ///
+    /// # Notes
+    ///
+    /// Takes a max of 50 ids
     ///
     /// # Examples
     ///
@@ -2590,18 +2878,17 @@
     /// use twitch_api::helix;
     ///
     /// let rewards: Vec&lt;helix::points::CustomReward&gt; = client
-    ///     .get_custom_rewards("1234", true, &amp;["8969ec47-55b6-4559-a8fe-3f1fc4e6fe58".into()], &amp;token)
+    ///     .get_custom_rewards("1234", true, &amp;["8969ec47-55b6-4559-a8fe-3f1fc4e6fe58"][..].into(), &amp;token)
     ///     .await?;
-    ///
     /// # Ok(()) }
     /// ```
+    </span><span class="comment">// XXX: This function is useless as a stream, since you can never have more than 50 rewards on a channel
     </span><span class="kw">pub async fn </span>get_custom_rewards&lt;<span class="lifetime">'b</span>, T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
         broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">'b</span>, types::UserIdRef&gt; + Send + <span class="lifetime">'b</span>,
         only_managable_rewards: bool,
-        <span class="comment">// FIXME: This should be `impl AsRef&lt;[&amp;'b T]&gt; + 'b`
-        </span>ids: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>[<span class="kw-2">&amp;</span><span class="lifetime">'b </span>types::RewardIdRef],
-        token: <span class="kw-2">&amp;</span>T,
+        ids: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>types::Collection&lt;<span class="lifetime">'b</span>, types::RewardId&gt;,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::points::CustomReward&gt;, ClientError&lt;C&gt;&gt;
     <span class="kw">where
         </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
@@ -2610,7 +2897,7 @@
             </span>.req_get(
                 helix::points::GetCustomRewardRequest::broadcaster_id(broadcaster_id)
                     .only_manageable_rewards(only_managable_rewards)
-                    .ids(ids),
+                    .ids(ids.clone()),
                 token,
             )
             .<span class="kw">await</span><span class="question-mark">?
@@ -2662,8 +2949,9 @@
     ///
     /// # Notes
     ///
-    /// The return item is a struct [`EventSubSubscriptions`](helix::eventsub::EventSubSubscriptions) which contains the subscriptions.
-    /// See the example for getting only the subscriptions
+    /// The return item is a struct [`EventSubSubscriptions`](helix::eventsub::EventSubSubscriptions)
+    /// which contains a field with all the subscriptions.
+    /// See the example for collecting all _specific_ subscriptions
     ///
     /// # Examples
     ///
@@ -2691,7 +2979,6 @@
     ///     .try_flatten()
     ///     .try_collect()
     ///     .await?;
-    ///
     /// # Ok(()) }
     /// ```
     </span><span class="kw">pub fn </span>get_eventsub_subscriptions&lt;<span class="lifetime">'b</span>: <span class="lifetime">'client</span>, T&gt;(
@@ -2915,7 +3202,6 @@
     // I also want to keep allocations low, so std::mem::take is perfect, but that makes get_next not work optimally.
     </span>&lt;Req <span class="kw">as </span><span class="kw">super</span>::Request&gt;::Response: Send + Sync + std::fmt::Debug + Clone,
 {
-    <span class="kw">use </span>futures::StreamExt;
     <span class="kw">enum </span>StateMode&lt;Req: <span class="kw">super</span>::Request + <span class="kw">super</span>::RequestGet, Item&gt; {
         <span class="doccomment">/// A request needs to be done.
         </span>Req(<span class="prelude-ty">Option</span>&lt;Req&gt;),
