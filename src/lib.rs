@@ -100,7 +100,6 @@
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>client</code></span> | Gives a [client abstraction](HttpClient) for endpoints. See [`HelixClient`] |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>helix</code></span> | Enables [Helix](helix) endpoints |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>eventsub</code></span> | Enables deserializable structs for [EventSub](eventsub) |
-//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>pubsub</code></span> | Enables deserializable structs for [PubSub](pubsub) |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>hmac</code></span> | Enable [message authentication](eventsub::Event::verify_payload) using HMAC on [EventSub](eventsub) |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>time</code></span> | Enable time utilities on [Timestamp](types::Timestamp) |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>all</code></span> | Enables all above features. Do not use this in production, it's better if you specify exactly what you need |
@@ -125,6 +124,10 @@ pub use twitch_types as types;
 pub mod helix;
 
 #[cfg(feature = "pubsub")]
+#[deprecated(
+    since = "0.7.0",
+    note = "use `EventSub` instead, see https://discuss.dev.twitch.com/t/legacy-pubsub-deprecation-and-shutdown-timeline/58043"
+)]
 pub mod pubsub;
 
 #[cfg(feature = "eventsub")]

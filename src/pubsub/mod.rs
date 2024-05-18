@@ -1,3 +1,4 @@
+#![allow(deprecated)]
 //! Holds serializable pubsub stuff
 //!
 //! Use [`listen_command()`] to send subscription listen and parse the responses with [`Response::parse`]
