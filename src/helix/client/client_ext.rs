@@ -845,6 +845,28 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         }
     }
 
+    /// Get the emotes of the user associated with this token.
+    pub fn get_user_emotes<T>(
+        &'client self,
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<helix::chat::UserEmote, ClientError<C>>>
+           + Send
+           + Unpin
+           + 'client
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let user_id = match token
+            .user_id()
+            .ok_or_else(|| ClientRequestError::Custom("no user_id found on token".into()))
+        {
+            Ok(t) => t,
+            Err(e) => return futures::stream::once(async { Err(e) }).boxed(),
+        };
+        let req = helix::chat::GetUserEmotesRequest::user_id(user_id);
+        make_stream(req, token, self, std::collections::VecDeque::from)
+    }
+
     /// Get emotes in emote sets
     ///
     /// # Examples
