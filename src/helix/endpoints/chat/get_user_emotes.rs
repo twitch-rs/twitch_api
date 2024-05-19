@@ -5,11 +5,11 @@
 //!
 //! ## Request: [GetUserEmotesRequest]
 //!
-//! To use this endpoint, construct a [`GetUserEmotesRequest`] with the [`GetUserEmotesRequest::emote_set_ids()`] method.
+//! To use this endpoint, construct a [`GetUserEmotesRequest`] with the [`GetUserEmotesRequest::user_id()`] method.
 //!
 //! ```rust
 //! use twitch_api::helix::chat::get_user_emotes;
-//! let request = get_user_emotes::GetUserEmotesRequest::emote_set_ids(&"1234");
+//! let request = get_user_emotes::GetUserEmotesRequest::user_id(&"1234");
 //! ```
 //!
 //! ## Response: [Emote]
@@ -24,8 +24,8 @@
 //! # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-//! let request = get_user_emotes::GetUserEmotesRequest::emote_set_ids(&"1234");
-//! let response: Vec<helix::chat::get_user_emotes::Emote> = client.req_get(request, &token).await?.data;
+//! let request = get_user_emotes::GetUserEmotesRequest::user_id(&"1234");
+//! let response: Vec<helix::chat::get_user_emotes::UserEmote> = client.req_get(request, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -115,7 +115,7 @@ impl UserEmote {
     /// # let client: helix::HelixClient<'static, client::DummyHttpClient> = helix::HelixClient::default();
     /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
     /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
-    /// let emotes: Vec<_> = client.get_user_emotes("301590448", &token).try_collect().await?;
+    /// let emotes: Vec<_> = client.get_user_emotes(&token).try_collect().await?;
     /// assert_eq!(emotes[0].url().size_3x().dark_mode().render(), "https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_dc24652ada1e4c84a5e3ceebae4de709/default/dark/3.0");
     /// # Ok(())
     /// # }
