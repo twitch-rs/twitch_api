@@ -75,8 +75,9 @@
 - Added `channel.update` v2 EventSub event
 - Added `HelixClient` functions `get_streams_from_logins` and `get_streams_from_ids`
 - Added `is_featured` to Get Clips
-- Added beta `Get Ad Schedule` and `Snooze Next Ad` endpoint
-- Added beta `channel.ad_break.begin` eventsub event
+- Added `Get Ad Schedule` and `Snooze Next Ad` endpoint
+- Added `channel.ad_break.begin` eventsub event
+- Added `Get User Emotes` endpoint
 
 ### Fixed
 
