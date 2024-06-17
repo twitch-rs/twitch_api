@@ -11,7 +11,7 @@ use super::*;
 pub struct ConduitShardDisabledV1 {
     /// Your application’s client id. The provided client_id must match the client ID in the application access token.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
-    pub client_id: twitch_oauth2::ClientId,
+    pub client_id: String,
     /// Optional. The conduit ID to receive events for. If omitted, events for all of this client’s conduits are sent.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub conduit_id: Option<String>,
@@ -19,7 +19,7 @@ pub struct ConduitShardDisabledV1 {
 
 impl ConduitShardDisabledV1 {
     /// Your application’s client id. The provided client_id must match the client ID in the application access token.
-    pub fn client_id(client_id: impl Into<twitch_oauth2::ClientId>) -> Self {
+    pub fn client_id(client_id: impl Into<String>) -> Self {
         Self {
             client_id: client_id.into(),
             conduit_id: None,
