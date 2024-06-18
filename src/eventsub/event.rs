@@ -55,6 +55,7 @@ macro_rules! fill_events {
             channel::ChannelUnbanV1;
             channel::ChannelUpdateV1;
             channel::ChannelUpdateV2;
+            conduit::ConduitShardDisabledV1;
             stream::StreamOfflineV1;
             stream::StreamOnlineV1;
             user::UserAuthorizationGrantV1;
@@ -218,6 +219,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelHypeTrainProgress => "channel.hype_train.progress",
     "a hype train ends on the specified channel.":
     ChannelHypeTrainEnd => "channel.hype_train.end",
+    "sends a notification when eventsub disables a shard due to the status of the underlying transport changing.":
+    ConduitShardDisabled => "conduit.shard.disabled",
     "the specified broadcaster starts a stream.":
     StreamOnline => "stream.online",
     "the specified broadcaster stops a stream.":
@@ -335,6 +338,8 @@ pub enum Event {
     ChannelHypeTrainProgressV1(Payload<channel::ChannelHypeTrainProgressV1>),
     /// Channel Hype Train End V1 Event
     ChannelHypeTrainEndV1(Payload<channel::ChannelHypeTrainEndV1>),
+    /// Conduit Shard Disabled V1 Event
+    ConduitShardDisabledV1(Payload<conduit::ConduitShardDisabledV1>),
     /// StreamOnline V1 Event
     StreamOnlineV1(Payload<stream::StreamOnlineV1>),
     /// StreamOffline V1 Event
