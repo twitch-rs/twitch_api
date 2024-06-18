@@ -1,4 +1,3 @@
-#![doc()]
 //! Subscription types regarding conduits.
 use super::{EventSubscription, EventType};
 

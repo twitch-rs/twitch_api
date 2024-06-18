@@ -77,6 +77,7 @@
 - Added `is_featured` to Get Clips
 - Added beta `Get Ad Schedule` and `Snooze Next Ad` endpoint
 - Added beta `channel.ad_break.begin` eventsub event
+- Added `conduit.shard.disable` EventSub event
 
 ### Fixed
 
