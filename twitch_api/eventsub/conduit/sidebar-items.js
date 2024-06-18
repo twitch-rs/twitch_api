@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["shard"],"struct":["ConduitShardDisabledV1","ConduitShardDisabledV1Payload"]};
