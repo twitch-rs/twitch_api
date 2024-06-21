@@ -222,6 +222,9 @@ rustc-args = ["--cfg", "nightly"]
 rustdoc-args = ["--cfg", "nightly"]
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
 
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nightly)'] }
+
 [profile.dev.package.backtrace]
 opt-level = 3
 
