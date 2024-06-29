@@ -93,6 +93,10 @@ pub enum MessageType {
     ChannelPointsSubOnly,
     /// A first message from a user
     UserIntro,
+    /// A gigantified emote
+    PowerUpsGigantifiedEmote,
+    /// A message sent with effects
+    PowerUpsMessageEffect,
 }
 
 /// Chat badge
