@@ -22,6 +22,8 @@ pub mod remove_blocked_term;
 pub mod remove_channel_moderator;
 pub mod unban_user;
 pub mod update_shield_mode_status;
+#[cfg(feature = "beta")]
+pub mod warn_chat_user;
 
 #[doc(inline)]
 pub use add_blocked_term::{AddBlockedTermBody, AddBlockedTermRequest};
@@ -52,6 +54,9 @@ pub use remove_blocked_term::{RemoveBlockedTerm, RemoveBlockedTermRequest};
 pub use remove_channel_moderator::{RemoveChannelModeratorRequest, RemoveChannelModeratorResponse};
 #[doc(inline)]
 pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
+#[cfg(feature = "beta")]
+#[doc(inline)]
+pub use warn_chat_user::{WarnChatUserRequest, WarnChatUserBody, WarnChatUser};
 
 /// A blocked term in automod
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
