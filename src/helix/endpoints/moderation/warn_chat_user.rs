@@ -18,7 +18,8 @@
 //!
 //! ```
 //! # use twitch_api::helix::moderation::warn_chat_user;
-//! let body = warn_chat_user::WarnChatUserBody::new("9876", "stop doing that!");
+//! let body =
+//!     warn_chat_user::WarnChatUserBody::new("9876", "stop doing that!");
 //! ```
 //!
 //! ## Response: [WarnChatUser]
@@ -45,10 +46,10 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`WarnChatUserRequest::parse_response(None, &request.get_uri(), response)`](WarnChatUserRequest::parse_response)
 
-use std::borrow::Cow;
-use serde_derive::{Deserialize, Serialize};
-use crate::{helix, types};
 use crate::helix::{Request, RequestPost};
+use crate::{helix, types};
+use serde_derive::{Deserialize, Serialize};
+use std::borrow::Cow;
 /// Query Parameters for [Warn Chat User](super::warn_chat_user)
 ///
 /// [`warn-chat-user`](https://dev.twitch.tv/docs/api/reference#warn-chat-user)
