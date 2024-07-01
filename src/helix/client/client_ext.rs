@@ -756,6 +756,29 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .data)
     }
 
+    #[cfg(feature = "beta")]
+    /// Warn a user
+    pub async fn warn_chat_user<'b, T>(
+        &'client self,
+        target_user_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        reason: impl Into<&'b str> + Send,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<helix::moderation::WarnChatUser, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        Ok(self
+            .req_post(
+                helix::moderation::WarnChatUserRequest::new(broadcaster_id, moderator_id),
+                helix::moderation::WarnChatUserBody::new(target_user_id, reason.into()),
+                token,
+            )
+            .await?
+            .data)
+    }
+
     // FIXME: Example should use https://github.com/twitch-rs/twitch_api/issues/162
     /// Get all scheduled streams in a channel.
     ///
