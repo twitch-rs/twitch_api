@@ -232,3 +232,34 @@ fn test_request() {
 
     dbg!(WarnChatUserRequest::parse_response(Some(req), &uri, http_response).unwrap());
 }
+
+#[cfg(test)]
+#[test]
+fn test_request_error() {
+    use helix::*;
+    let req = WarnChatUserRequest::new("404040", "404041");
+
+    let body = WarnChatUserBody::new("9876", "");
+
+    dbg!(req.create_request(body, "token", "clientid").unwrap());
+
+    // From twitch docs
+    let data = br#"
+    {
+        "error": "Bad Request",
+        "status": 400,
+        "message": "Missing required parameter \"reason\""
+    }
+"#
+        .to_vec();
+
+    let http_response = http::Response::builder().status(400).body(data).unwrap();
+
+    let uri = req.get_uri().unwrap();
+    assert_eq!(
+        uri.to_string(),
+        "https://api.twitch.tv/helix/moderation/warnings?broadcaster_id=404040&moderator_id=404041"
+    );
+
+    dbg!(WarnChatUserRequest::parse_response(Some(req), &uri, http_response).unwrap_err());
+}
