@@ -14,7 +14,7 @@ jobs:
     # cov is broken upstream, see https://github.com/rust-lang/rust/issues/79645, fix in https://github.com/rust-lang/rust/issues/93054
     if: "false"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Toolchain setup
@@ -42,7 +42,7 @@ jobs:
       #   if: ${{ github.ref == 'refs/heads/trying' }}
       #   run: git rev-parse HEAD~1 | awk '{ print "ACTUAL_COMMIT_SHA=" $NF }' >> $GITHUB_ENV
       - name: Upload to codecov.io
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ./lcov.info
           override_pr: ${{env.PR_NUMBER}}
