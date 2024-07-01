@@ -95,7 +95,9 @@ pub struct WarnChatUserBody<'a> {
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub user_id: Cow<'a, types::UserIdRef>,
-    /// The reason the user is being warned. The text is user defined and limited to a maximum of 500 characters.
+    /// The reason the user is being warned.
+    ///
+    /// The reason must contain a minimum of 1 character and may contain up to a maximum of 500 characters.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub reason: Cow<'a, str>,
