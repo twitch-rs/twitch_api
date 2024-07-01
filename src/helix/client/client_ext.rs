@@ -758,7 +758,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
 
     #[cfg(feature = "beta")]
     #[cfg_attr(feature = "beta", doc = "Warn a user")]
-    pub async fn warn_user<'b, T>(
+    pub async fn warn_chat_user<'b, T>(
         &'client self,
         target_user_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
         reason: impl Into<&'b str> + Send,
