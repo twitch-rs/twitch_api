@@ -154,7 +154,7 @@ impl Request for WarnChatUserRequest<'_> {
         twitch_oauth2::validator![twitch_oauth2::Scope::ModeratorManageWarnings];
 }
 
-impl<'a> RequestPost for  WarnChatUserRequest<'a> {
+impl<'a> RequestPost for WarnChatUserRequest<'a> {
     type Body = WarnChatUserBody<'a>;
 
     fn parse_inner_response(
@@ -163,8 +163,8 @@ impl<'a> RequestPost for  WarnChatUserRequest<'a> {
         response: &str,
         status: http::StatusCode,
     ) -> Result<helix::Response<Self, Self::Response>, helix::HelixRequestPostError>
-        where
-            Self: Sized,
+    where
+        Self: Sized,
     {
         #[derive(PartialEq, Deserialize, Debug, Clone)]
         struct InnerResponse {
@@ -220,7 +220,7 @@ fn test_request() {
       ]
     }
 "#
-        .to_vec();
+    .to_vec();
 
     let http_response = http::Response::builder().body(data).unwrap();
 
@@ -243,7 +243,6 @@ fn test_request_error() {
 
     dbg!(req.create_request(body, "token", "clientid").unwrap());
 
-    // From twitch docs
     let data = br#"
     {
         "error": "Bad Request",
@@ -251,7 +250,7 @@ fn test_request_error() {
         "message": "Missing required parameter \"reason\""
     }
 "#
-        .to_vec();
+    .to_vec();
 
     let http_response = http::Response::builder().status(400).body(data).unwrap();
 

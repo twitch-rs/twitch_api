@@ -56,7 +56,7 @@ pub use remove_channel_moderator::{RemoveChannelModeratorRequest, RemoveChannelM
 pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
 #[cfg(feature = "beta")]
 #[doc(inline)]
-pub use warn_chat_user::{WarnChatUserRequest, WarnChatUserBody, WarnChatUser};
+pub use warn_chat_user::{WarnChatUser, WarnChatUserBody, WarnChatUserRequest};
 
 /// A blocked term in automod
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]

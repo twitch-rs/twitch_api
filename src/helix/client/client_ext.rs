@@ -773,11 +773,10 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .req_post(
                 helix::moderation::WarnChatUserRequest::new(broadcaster_id, moderator_id),
                 helix::moderation::WarnChatUserBody::new(target_user_id, reason.into()),
-                token
+                token,
             )
             .await?
-            .data
-        )
+            .data)
     }
 
     // FIXME: Example should use https://github.com/twitch-rs/twitch_api/issues/162
