@@ -78,6 +78,7 @@
 - Added beta `Get Ad Schedule` and `Snooze Next Ad` endpoint
 - Added beta `channel.ad_break.begin` eventsub event
 - Added `conduit.shard.disable` EventSub event
+- Added `title` and `description` as fields in the response of `Get Channel Chat Badges` and `Get Global Chat Badges`
 
 ### Fixed
 

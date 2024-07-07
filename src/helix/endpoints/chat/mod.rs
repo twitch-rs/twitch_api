@@ -81,6 +81,10 @@ pub struct ChatBadge {
     pub image_url_2x: String,
     /// URL to png of size 112x112
     pub image_url_4x: String,
+    /// Title of the badge
+    pub title: String,
+    /// Descrition of the badge
+    pub description: String,
 }
 
 /// A chat emote
