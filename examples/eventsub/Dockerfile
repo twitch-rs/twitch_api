@@ -1,4 +1,4 @@
-# syntax = docker/dockerfile:1.2
+# syntax = docker/dockerfile:1.8
 # expects the build context to be the twitch_api workspace root, i.e
 # docker build -f examples/eventsub/Dockerfile .
 # No dockerignore
@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=$CARGO_HOME/git \
   --mount=type=cache,sharing=private,target=/app/target \
   cargo -V
 cargo build --release -p eventsub && mv /app/target/release/eventsub /app/is_live
-FROM alpine:3.16 as runtime
+FROM alpine:3.20 as runtime
 WORKDIR /app
 ARG RUN_DEPS="ca-certificates openssl libgcc"
 RUN apk add --no-cache \
