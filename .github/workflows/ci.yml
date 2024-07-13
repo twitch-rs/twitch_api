@@ -72,8 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check formatting with Prettier
-        # Explicit commit, because this isn't tagged yet.
-        uses: actionsx/prettier@3d9f7c3fa44c9cb819e68292a328d7f4384be206
+        uses: actionsx/prettier@v3
         with:
           args: -c .
 
