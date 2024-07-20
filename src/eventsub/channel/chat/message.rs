@@ -217,7 +217,8 @@ fn parse_payload() {
             "message_type": "text",
             "cheer": null,
             "reply": null,
-            "channel_points_custom_reward_id": null
+            "channel_points_custom_reward_id": null,
+            "channel_points_animation_id": null
         }
     }
     "##;

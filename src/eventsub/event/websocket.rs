@@ -263,7 +263,8 @@ mod tests {
                 "status": "connected",
                 "connected_at": "2022-10-19T14:56:51.616329898Z",
                 "keepalive_timeout_seconds": 10,
-                "reconnect_url": null
+                "reconnect_url": null,
+                "recovery_url": null
               }
             }
           }
