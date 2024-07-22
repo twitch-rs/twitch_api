@@ -62,7 +62,7 @@ pub struct SessionData<'a> {
     /// The UTC date and time that the connection was created.
     #[serde(borrow = "'a")]
     pub connected_at: Cow<'a, types::TimestampRef>,
-    /// Undocumented field
+    #[doc(hidden)]
     #[serde(borrow = "'a")]
     pub recovery_url: Option<Cow<'a, str>>,
 }
