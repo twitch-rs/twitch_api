@@ -78,6 +78,8 @@ pub struct ChannelChatMessageV1Payload {
     pub reply: Option<Reply>,
     /// The ID of a channel points custom reward that was redeemed.
     pub channel_points_custom_reward_id: Option<types::RewardId>,
+    /// An ID for the type of animation selected as part of an “animate my message” redemption.
+    pub channel_points_animation_id: Option<String>,
 }
 
 /// The type a message.
@@ -215,7 +217,8 @@ fn parse_payload() {
             "message_type": "text",
             "cheer": null,
             "reply": null,
-            "channel_points_custom_reward_id": null
+            "channel_points_custom_reward_id": null,
+            "channel_points_animation_id": null
         }
     }
     "##;
