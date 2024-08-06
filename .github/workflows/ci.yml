@@ -107,6 +107,18 @@ jobs:
         with:
           toolchain: nightly
       - uses: Swatinem/rust-cache@v2
+
+      # Check if overviews are up-to-date
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - name: Generate JSON docs
+        run: RUSTDOCFLAGS='-Zunstable-options --output-format json' cargo doc --no-deps --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
+      - name: Generate overviews
+        run: deno run --allow-net --allow-read --allow-write tools/collect-endpoints.ts
+      - name: Check overview diff
+        run: git --no-pager diff --exit-code
+
       # We do the following to make sure docs.rs can document properly without anything broken, and that docs are working.
       - name: Run doc tests
         run: cargo test --doc --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
