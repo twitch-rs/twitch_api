@@ -865,7 +865,7 @@ fn parse_payload_sub_gift_anon() {
 
 #[cfg(test)]
 #[test]
-pub fn resub_doesnt_eat_gifter_error() {
+fn resub_doesnt_eat_gifter_error() {
     let payload = r#"
     {
         "cumulative_months": 2,

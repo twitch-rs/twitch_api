@@ -230,7 +230,7 @@ impl<'a> ModifyChannelInformationBody<'a> {
 }
 
 #[test]
-pub fn t() {
+fn t() {
     let mut body = ModifyChannelInformationBody::new();
     body.content_classification_labels(vec![
         (true, types::ContentClassificationId::SexualThemes).into()
