@@ -6,17 +6,17 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = { version = "4.4.7", features = ["derive", "env"] }
+clap = { version = "4.5.18", features = ["derive", "env"] }
 color-eyre = { version = "0.6", features = ["capture-spantrace"] }
 dotenvy = "0.15.7"
 eyre = { version = "0.6" }
 futures = "0.3.28"
-hyper = "1.2.0"
+hyper = "1.4.1"
 reqwest = { version = "0.12.2", features = ["json"] }
 serde = "1"
 serde_json = { version = "1" }
-tokio = { version = "1.33.0", features = ["macros", "rt-multi-thread"] }
-tokio-tungstenite = { version = "0.24.0", features = ["native-tls"] }
+tokio = { version = "1.40.0", features = ["macros", "rt-multi-thread"] }
+tokio-tungstenite = { version = "0.24.0", features = ["native-tls", "url"] }
 tracing = "0.1.40"
 tracing-error = "0.2.0"
 tracing-log = "0.2.0"
@@ -29,4 +29,4 @@ twitch_api = { workspace = true, features = [
     "deny_unknown_fields",
 ] }
 twitch_oauth2 = { workspace = true }
-url = "2.4.1"
+url = "2.5.2"

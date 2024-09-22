@@ -9,19 +9,19 @@ edition = "2021"
 askama = { version = "0.12", features = ["with-axum"], default-features = false }
 askama_axum = "0.4"
 axum = { version = "0.7.5", features = ["tower-log", "http2", "ws"] }
-clap = { version = "4.4.7", features = ["derive", "env"] }
+clap = { version = "4.5.18", features = ["derive", "env"] }
 color-eyre = { version = "0.6", features = ["capture-spantrace"] }
 dotenvy = "0.15.7"
 eyre = { version = "0.6" }
 futures = "0.3.28"
-hyper = "1.2.0"
+hyper = "1.4.1"
 http-body-util = "0.1.1"
 reqwest = "0.12.2"
 retainer = "0.3.0"
 serde = "1.0.190"
 serde_derive = "1.0.190"
 serde_json = { version = "1" }
-tokio = { version = "1.33.0", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.40.0", features = ["macros", "rt-multi-thread"] }
 tokio-tungstenite = "0.24.0"
 tower = "0.5"
 tower-http = { version = "0.6.0", features = ["fs", "trace", "catch-panic"] }
