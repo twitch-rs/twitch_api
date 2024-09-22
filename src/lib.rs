@@ -399,8 +399,12 @@ where
     deserializer.deserialize_any(Inner(std::marker::PhantomData))
 }
 
+/// Helper functions for tests
 #[cfg(test)]
 pub mod tests {
+    /// Checks that `val` can be serialized and deserialized to `T` with JSON and CBOR.
+    ///
+    /// In pseudocode, this tests `deserialize(serialize(val))`.
     #[track_caller]
     pub fn roundtrip<T: serde::de::DeserializeOwned + serde::Serialize>(val: &T) {
         serde_json::from_slice::<T>(&serde_json::to_vec(val).expect("could not make into json"))
