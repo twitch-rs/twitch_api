@@ -3169,11 +3169,11 @@ dependencies = [
 
 [[package]]
 name = "twitch_oauth2"
-version = "0.13.0"
+version = "0.14.0"
 dependencies = [
  "aliri_braid",
  "async-trait",
- "base64 0.21.7",
+ "base64 0.22.1",
  "displaydoc",
  "http 1.1.0",
  "http-types",
