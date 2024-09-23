@@ -75,7 +75,7 @@ pub struct SubscriptionMessage {
 }
 
 #[cfg(test)]
-pub mod tests {
+mod tests {
     use super::*;
     #[test]
     fn parse_payload() {
