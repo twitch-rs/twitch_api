@@ -1,5 +1,6 @@
 #![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![allow(clippy::needless_raw_string_hashes)]
+#![cfg_attr(test, allow(deprecated))] // for pubsub tests
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![allow(clippy::needless_raw_string_hashes)]

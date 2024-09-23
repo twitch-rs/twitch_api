@@ -203,7 +203,5 @@ fn test_successful_unexpected_response() {
 
     let uri = req.get_uri().unwrap();
     let response = UpdateConduitShardsRequest::parse_response(Some(req), &uri, http_response);
-    assert_eq!(response.is_err(), true);
-
-    dbg!("{:#?}", response);
+    assert!(response.is_err());
 }

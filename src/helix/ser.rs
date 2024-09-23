@@ -183,8 +183,8 @@ impl<'input, 'output> ser::Serializer for Serializer<'input, 'output> {
         Err(Error::top_level_not_supported())
     }
 
-    fn serialize_some<T: ?Sized>(self, _value: &T) -> Result<Self::Ok, Self::Error>
-    where T: serde::Serialize {
+    fn serialize_some<T>(self, _value: &T) -> Result<Self::Ok, Self::Error>
+    where T: serde::Serialize + ?Sized {
         Err(Error::top_level_not_supported())
     }
 
@@ -205,18 +205,18 @@ impl<'input, 'output> ser::Serializer for Serializer<'input, 'output> {
         Err(Error::top_level_not_supported())
     }
 
-    fn serialize_newtype_struct<T: ?Sized>(
+    fn serialize_newtype_struct<T>(
         self,
         _name: &'static str,
         _value: &T,
     ) -> Result<Self::Ok, Self::Error>
     where
-        T: serde::Serialize,
+        T: serde::Serialize + ?Sized,
     {
         Err(Error::top_level_not_supported())
     }
 
-    fn serialize_newtype_variant<T: ?Sized>(
+    fn serialize_newtype_variant<T>(
         self,
         _name: &'static str,
         _variant_index: u32,
@@ -224,7 +224,7 @@ impl<'input, 'output> ser::Serializer for Serializer<'input, 'output> {
         _value: &T,
     ) -> Result<Self::Ok, Self::Error>
     where
-        T: serde::Serialize,
+        T: serde::Serialize + ?Sized,
     {
         Err(Error::top_level_not_supported())
     }
@@ -264,15 +264,10 @@ impl<'input, 'output> ser::SerializeMap for MapSerializer<'input, 'output> {
     type Error = Error;
     type Ok = &'output mut UrlEncodedSerializer<'input, String>;
 
-    fn serialize_entry<K: ?Sized, V: ?Sized>(
-        &mut self,
-        key: &K,
-        value: &V,
-    ) -> Result<(), Self::Error>
+    fn serialize_entry<K, V>(&mut self, key: &K, value: &V) -> Result<(), Self::Error>
     where
-        K: serde::Serialize,
-        V: serde::Serialize,
-    {
+        K: serde::Serialize + ?Sized,
+        V: serde::Serialize + ?Sized, {
         self.urlencoder.append_pair(
             &key.serialize(ValueSerializer)?,
             &value.serialize(ValueSerializer)?,
@@ -280,13 +275,13 @@ impl<'input, 'output> ser::SerializeMap for MapSerializer<'input, 'output> {
         Ok(())
     }
 
-    fn serialize_key<T: ?Sized>(&mut self, _key: &T) -> Result<(), Self::Error>
-    where T: serde::Serialize {
+    fn serialize_key<T>(&mut self, _key: &T) -> Result<(), Self::Error>
+    where T: serde::Serialize + ?Sized {
         Ok(())
     }
 
-    fn serialize_value<T: ?Sized>(&mut self, _value: &T) -> Result<(), Self::Error>
-    where T: serde::Serialize {
+    fn serialize_value<T>(&mut self, _value: &T) -> Result<(), Self::Error>
+    where T: serde::Serialize + ?Sized {
         Ok(())
     }
 
@@ -301,14 +296,8 @@ impl<'input, 'output> ser::SerializeStruct for StructSerializer<'input, 'output>
     type Error = Error;
     type Ok = &'output mut UrlEncodedSerializer<'input, String>;
 
-    fn serialize_field<T: ?Sized>(
-        &mut self,
-        key: &'static str,
-        value: &T,
-    ) -> Result<(), Self::Error>
-    where
-        T: serde::Serialize,
-    {
+    fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error>
+    where T: serde::Serialize + ?Sized {
         value.serialize(FieldSerializer {
             key,
             urlencoder: self.urlencoder,
@@ -350,8 +339,8 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
 
     fn serialize_none(self) -> Result<Self::Ok, Self::Error> { Ok(self.urlencoder) }
 
-    fn serialize_some<T: ?Sized>(self, value: &T) -> Result<Self::Ok, Self::Error>
-    where T: serde::Serialize {
+    fn serialize_some<T>(self, value: &T) -> Result<Self::Ok, Self::Error>
+    where T: serde::Serialize + ?Sized {
         //self.urlencoder.append_pair(self.key, v);
         value.serialize(PairSerializer {
             key: self.key,
@@ -479,18 +468,18 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
         Err(Error::field_not_supported())
     }
 
-    fn serialize_newtype_struct<T: ?Sized>(
+    fn serialize_newtype_struct<T>(
         self,
         _name: &'static str,
         _value: &T,
     ) -> Result<Self::Ok, Self::Error>
     where
-        T: serde::Serialize,
+        T: serde::Serialize + ?Sized,
     {
         Err(Error::field_not_supported())
     }
 
-    fn serialize_newtype_variant<T: ?Sized>(
+    fn serialize_newtype_variant<T>(
         self,
         _name: &'static str,
         _variant_index: u32,
@@ -498,7 +487,7 @@ impl<'input, 'output> ser::Serializer for FieldSerializer<'input, 'output> {
         _value: &T,
     ) -> Result<Self::Ok, Self::Error>
     where
-        T: serde::Serialize,
+        T: serde::Serialize + ?Sized,
     {
         Err(Error::field_not_supported())
     }
@@ -544,8 +533,8 @@ impl<'input, 'output> ser::SerializeSeq for FieldSerializer<'input, 'output> {
     type Error = Error;
     type Ok = &'output mut UrlEncodedSerializer<'input, String>;
 
-    fn serialize_element<T: ?Sized>(&mut self, value: &T) -> Result<(), Self::Error>
-    where T: serde::Serialize {
+    fn serialize_element<T>(&mut self, value: &T) -> Result<(), Self::Error>
+    where T: serde::Serialize + ?Sized {
         value.serialize(PairSerializer {
             key: self.key,
             urlencoder: self.urlencoder,
@@ -560,8 +549,8 @@ impl<'input, 'output> ser::SerializeTuple for FieldSerializer<'input, 'output> {
     type Error = Error;
     type Ok = &'output mut UrlEncodedSerializer<'input, String>;
 
-    fn serialize_element<T: ?Sized>(&mut self, value: &T) -> Result<(), Self::Error>
-    where T: serde::Serialize {
+    fn serialize_element<T>(&mut self, value: &T) -> Result<(), Self::Error>
+    where T: serde::Serialize + ?Sized {
         value.serialize(PairSerializer {
             key: self.key,
             urlencoder: self.urlencoder,
@@ -662,8 +651,8 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
 
     fn serialize_none(self) -> Result<Self::Ok, Self::Error> { Ok(self.urlencoder) }
 
-    fn serialize_some<T: ?Sized>(self, value: &T) -> Result<Self::Ok, Self::Error>
-    where T: serde::Serialize {
+    fn serialize_some<T>(self, value: &T) -> Result<Self::Ok, Self::Error>
+    where T: serde::Serialize + ?Sized {
         self.urlencoder
             .append_pair(self.key, &value.serialize(ValueSerializer)?);
         Ok(self.urlencoder)
@@ -693,18 +682,18 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         Err(Error::pair_not_supported())
     }
 
-    fn serialize_newtype_struct<T: ?Sized>(
+    fn serialize_newtype_struct<T>(
         self,
         _name: &'static str,
         _value: &T,
     ) -> Result<Self::Ok, Self::Error>
     where
-        T: serde::Serialize,
+        T: serde::Serialize + ?Sized,
     {
         Err(Error::pair_not_supported())
     }
 
-    fn serialize_newtype_variant<T: ?Sized>(
+    fn serialize_newtype_variant<T>(
         self,
         _name: &'static str,
         _variant_index: u32,
@@ -712,7 +701,7 @@ impl<'input, 'output> ser::Serializer for PairSerializer<'input, 'output> {
         _value: &T,
     ) -> Result<Self::Ok, Self::Error>
     where
-        T: serde::Serialize,
+        T: serde::Serialize + ?Sized,
     {
         Err(Error::pair_not_supported())
     }
@@ -768,8 +757,8 @@ impl<'input, 'output> ser::SerializeTuple for PairSerializer<'input, 'output> {
     type Error = Error;
     type Ok = &'output mut UrlEncodedSerializer<'input, String>;
 
-    fn serialize_element<T: ?Sized>(&mut self, value: &T) -> Result<(), Self::Error>
-    where T: serde::Serialize {
+    fn serialize_element<T>(&mut self, value: &T) -> Result<(), Self::Error>
+    where T: serde::Serialize + ?Sized {
         self.urlencoder
             .append_pair(self.key, &value.serialize(ValueSerializer)?);
         Ok(())
@@ -846,8 +835,8 @@ impl ser::Serializer for ValueSerializer {
 
     fn serialize_none(self) -> Result<Self::Ok, Self::Error> { Err(Error::value_not_supported()) }
 
-    fn serialize_some<T: ?Sized>(self, _value: &T) -> Result<Self::Ok, Self::Error>
-    where T: serde::Serialize {
+    fn serialize_some<T>(self, _value: &T) -> Result<Self::Ok, Self::Error>
+    where T: serde::Serialize + ?Sized {
         Err(Error::value_not_supported())
     }
 
@@ -866,18 +855,18 @@ impl ser::Serializer for ValueSerializer {
         Err(Error::value_not_supported())
     }
 
-    fn serialize_newtype_struct<T: ?Sized>(
+    fn serialize_newtype_struct<T>(
         self,
         _name: &'static str,
         _value: &T,
     ) -> Result<Self::Ok, Self::Error>
     where
-        T: serde::Serialize,
+        T: serde::Serialize + ?Sized,
     {
         Err(Error::value_not_supported())
     }
 
-    fn serialize_newtype_variant<T: ?Sized>(
+    fn serialize_newtype_variant<T>(
         self,
         _name: &'static str,
         _variant_index: u32,
@@ -885,7 +874,7 @@ impl ser::Serializer for ValueSerializer {
         _value: &T,
     ) -> Result<Self::Ok, Self::Error>
     where
-        T: serde::Serialize,
+        T: serde::Serialize + ?Sized,
     {
         Err(Error::value_not_supported())
     }

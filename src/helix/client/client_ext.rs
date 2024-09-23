@@ -1556,7 +1556,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// ```
     pub async fn update_conduit_shards<'b: 'client, T>(
         &'client self,
-        conduit_id: impl Into<String>,
+        conduit_id: impl Into<String> + Send,
         shards: Vec<crate::eventsub::Shard>,
         token: &'client T,
     ) -> Result<helix::eventsub::UpdateConduitShardsResponse, ClientError<C>>

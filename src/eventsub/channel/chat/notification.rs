@@ -354,7 +354,7 @@ impl<'de> serde::Deserialize<'de> for Gifter {
         let gifter = InnerGifter::deserialize(deserializer)?;
         if let Some(true) = gifter.gifter_is_anonymous {
             Ok(Gifter::Anonymous)
-        } else if let None = gifter.gifter_is_anonymous {
+        } else if gifter.gifter_is_anonymous.is_none() {
             Ok(Gifter::None)
         } else {
             Ok(Gifter::Gifter {
