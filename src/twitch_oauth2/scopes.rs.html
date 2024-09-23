@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/scopes.rs`."><title>scopes.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-d10b2a06af903387.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (e57f3090a 2024-08-05)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9345f17bf569ecba.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `twitch_oauth2/src/scopes.rs`."><title>scopes.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9d5ec5f3536319c6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (6c6d21008 2024-09-22)" data-channel="nightly" data-search-js="search-0cfde64e8ad3a7fe.js" data-settings-js="settings-7e3bb6c46e92e77c.js" ><script src="../../static.files/storage-29b1d5a9048d38fe.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-2a73ac97dd39bfde.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-40f72c9259523cb3.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -269,7 +270,18 @@
 <a href="#269" id="269">269</a>
 <a href="#270" id="270">270</a>
 <a href="#271" id="271">271</a>
-</pre></div><pre class="rust"><code><span class="doccomment">//! Module for all possible scopes in twitch.
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a></pre></div><pre class="rust"><code><span class="doccomment">//! Module for all possible scopes in twitch.
 </span><span class="kw">pub mod </span>validator;
 <span class="kw">pub use </span>validator::Validator;
 
@@ -433,6 +445,7 @@
     ChannelManageAds,               scope: <span class="string">"channel:manage:ads"</span>,                doc: <span class="string">"Manage ads schedule on a channel."</span>;
     ChannelManageBroadcast,         scope: <span class="string">"channel:manage:broadcast"</span>,          doc: <span class="string">"Manage a channel’s broadcast configuration, including updating channel configuration and managing stream markers and stream tags."</span>;
     ChannelManageExtensions,        scope: <span class="string">"channel:manage:extensions"</span>,         doc: <span class="string">"Manage a channel’s Extension configuration, including activating Extensions."</span>;
+    ChannelManageGuestStar,         scope: <span class="string">"channel:manage:guest_star"</span>,         doc: <span class="string">"Manage Guest Star for your channel."</span>;
     ChannelManageModerators,        scope: <span class="string">"channel:manage:moderators"</span>,         doc: <span class="string">"Add or remove the moderator role from users in your channel."</span>;
     ChannelManagePolls,             scope: <span class="string">"channel:manage:polls"</span>,              doc: <span class="string">"Manage a channel’s polls."</span>;
     ChannelManagePredictions,       scope: <span class="string">"channel:manage:predictions"</span>,        doc: <span class="string">"Manage of channel’s Channel Points Predictions"</span>;
@@ -446,6 +459,7 @@
     ChannelReadCharity,             scope: <span class="string">"channel:read:charity"</span>,              doc: <span class="string">"Read charity campaign details and user donations on your channel."</span>;
     ChannelReadEditors,             scope: <span class="string">"channel:read:editors"</span>,              doc: <span class="string">"View a list of users with the editor role for a channel."</span>;
     ChannelReadGoals,               scope: <span class="string">"channel:read:goals"</span>,                doc: <span class="string">"View Creator Goals for a channel."</span>;
+    ChannelReadGuestStar,           scope: <span class="string">"channel:read:guest_star"</span>,           doc: <span class="string">"Read Guest Star details for your channel."</span>;
     ChannelReadHypeTrain,           scope: <span class="string">"channel:read:hype_train"</span>,           doc: <span class="string">"View Hype Train information for a channel."</span>;
     ChannelReadPolls,               scope: <span class="string">"channel:read:polls"</span>,                doc: <span class="string">"View a channel’s polls."</span>;
     ChannelReadPredictions,         scope: <span class="string">"channel:read:predictions"</span>,          doc: <span class="string">"View a channel’s Channel Points Predictions."</span>;
@@ -466,16 +480,25 @@
     ModeratorManageBlockedTerms,    scope: <span class="string">"moderator:manage:blocked_terms"</span>,    doc: <span class="string">"Manage a broadcaster’s list of blocked terms."</span>;
     ModeratorManageChatMessages,    scope: <span class="string">"moderator:manage:chat_messages"</span>,    doc: <span class="string">"Delete chat messages in channels where you have the moderator role"</span>;
     ModeratorManageChatSettings,    scope: <span class="string">"moderator:manage:chat_settings"</span>,    doc: <span class="string">"View a broadcaster’s chat room settings."</span>;
+    ModeratorManageGuestStart,      scope: <span class="string">"moderator:manage:guest_star"</span>,       doc: <span class="string">"Manage Guest Star for channels where you are a Guest Star moderator."</span>;
     ModeratorManageShieldMode,      scope: <span class="string">"moderator:manage:shield_mode"</span>,      doc: <span class="string">"Manage a broadcaster’s Shield Mode status."</span>;
     ModeratorManageShoutouts,       scope: <span class="string">"moderator:manage:shoutouts"</span>,        doc: <span class="string">"Manage a broadcaster’s shoutouts."</span>;
+    ModeratorManageUnbanRequests,   scope: <span class="string">"moderator:manage:unban_requests"</span>,   doc: <span class="string">"Manage a broadcaster’s unban requests."</span>;
     ModeratorManageWarnings,        scope: <span class="string">"moderator:manage:warnings"</span>,         doc: <span class="string">"Manage a broadcaster’s chat warnings."</span>;
     ModeratorReadAutomodSettings,   scope: <span class="string">"moderator:read:automod_settings"</span>,   doc: <span class="string">"View a broadcaster’s AutoMod settings."</span>;
+    ModeratorReadBannedUsers,       scope: <span class="string">"moderator:read:banned_users"</span>,       doc: <span class="string">"Read the list of bans or unbans in channels where you have the moderator role."</span>;
     ModeratorReadBlockedTerms,      scope: <span class="string">"moderator:read:blocked_terms"</span>,      doc: <span class="string">"View a broadcaster’s list of blocked terms."</span>;
+    ModeratorReadChatMessages,      scope: <span class="string">"moderator:read:chat_messages"</span>,      doc: <span class="string">"Read deleted chat messages in channels where you have the moderator role."</span>;
     ModeratorReadChatSettings,      scope: <span class="string">"moderator:read:chat_settings"</span>,      doc: <span class="string">"View a broadcaster’s chat room settings."</span>;
     ModeratorReadChatters,          scope: <span class="string">"moderator:read:chatters"</span>,           doc: <span class="string">"View the chatters in a broadcaster’s chat room."</span>;
     ModeratorReadFollowers,         scope: <span class="string">"moderator:read:followers"</span>,          doc: <span class="string">"Read the followers of a broadcaster."</span>;
+    ModeratorReadGuestStar,         scope: <span class="string">"moderator:read:guest_star"</span>,         doc: <span class="string">"Read Guest Star details for channels where you are a Guest Star moderator."</span>;
+    ModeratorReadModerators,        scope: <span class="string">"moderator:read:moderators"</span>,         doc: <span class="string">"Read the list of moderators in channels where you have the moderator role."</span>;
     ModeratorReadShieldMode,        scope: <span class="string">"moderator:read:shield_mode"</span>,        doc: <span class="string">"View a broadcaster’s Shield Mode status."</span>;
     ModeratorReadShoutouts,         scope: <span class="string">"moderator:read:shoutouts"</span>,          doc: <span class="string">"View a broadcaster’s shoutouts."</span>;
+    ModeratorReadSuspiciousUsers,   scope: <span class="string">"moderator:read:suspicious_users"</span>,   doc: <span class="string">"Read chat messages from suspicious users and see users flagged as suspicious in channels where you have the moderator role."</span>;
+    ModeratorReadUnbanRequests,     scope: <span class="string">"moderator:read:unban_requests"</span>,     doc: <span class="string">"View a broadcaster’s unban requests."</span>;
+    ModeratorReadVips,              scope: <span class="string">"moderator:read:vips"</span>,               doc: <span class="string">"Read the list of VIPs in channels where you have the moderator role."</span>;
     ModeratorReadWarnings,          scope: <span class="string">"moderator:read:warnings"</span>,           doc: <span class="string">"View a broadcaster’s chat warnings."</span>;
     UserBot,                        scope: <span class="string">"user:bot"</span>,                          doc: <span class="string">"Allows client’s bot to act as this user."</span>;
     UserEdit,                       scope: <span class="string">"user:edit"</span>,                         doc: <span class="string">"Manage a user object."</span>;
@@ -489,6 +512,7 @@
     UserReadBroadcast,              scope: <span class="string">"user:read:broadcast"</span>,               doc: <span class="string">"View a user’s broadcasting configuration, including Extension configurations."</span>;
     UserReadChat,                   scope: <span class="string">"user:read:chat"</span>,                    doc: <span class="string">"View live stream chat and room messages."</span>;
     UserReadEmail,                  scope: <span class="string">"user:read:email"</span>,                   doc: <span class="string">"View a user’s email address."</span>;
+    UserReadEmotes,                 scope: <span class="string">"user:read:emotes"</span>,                  doc: <span class="string">"View emotes available to a user"</span>;
     UserReadFollows,                scope: <span class="string">"user:read:follows"</span>,                 doc: <span class="string">"View the list of channels a user follows."</span>;
     UserReadModeratedChannels,      scope: <span class="string">"user:read:moderated_channels"</span>,      doc: <span class="string">"Read the list of channels you have moderator privileges in."</span>;
     UserReadSubscriptions,          scope: <span class="string">"user:read:subscriptions"</span>,           doc: <span class="string">"View if an authorized user is subscribed to specific channels."</span>;
