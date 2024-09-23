@@ -8,8 +8,8 @@
 //! This crate has some pubsub topics that are not documented by twitch. These may stop working at any time. To enable these, use feature
 //! <span
 //!   class="module-item stab portability"
-//!   style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"
-//! ><code>unsupported</code></span>
+//!   style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>unsupported</code>
+//! </span>
 //! to use them. Note that this crate doesn't try to keep changes to these pubsub topics semver compatible.
 
 static ERROR_TRYFROM: &str = "no match";
@@ -33,7 +33,6 @@ macro_rules! impl_de_ser {
         }
 
         impl ::std::fmt::Display for $type {
-            ///
             fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
                 let s: String = ::std::convert::TryInto::try_into(self).map_err(|_| ::std::fmt::Error)?;
                 f.write_str(&s)
@@ -113,12 +112,6 @@ use crate::parse_json;
 /// also known as event
 pub trait Topic: serde::Serialize + Into<String> {
     /// Scopes needed by this topic
-    ///
-    /// This constant
-    /// <span
-    ///   class="module-item stab portability"
-    ///   style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"
-    /// ><code>unsupported</code></span>
     #[cfg(feature = "twitch_oauth2")]
     #[cfg_attr(nightly, doc(cfg(feature = "twitch_oauth2")))]
     const SCOPE: twitch_oauth2::Validator;

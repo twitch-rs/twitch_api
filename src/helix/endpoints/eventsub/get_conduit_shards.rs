@@ -75,8 +75,7 @@ fn test_request() {
     use types::Timestamp;
 
     use crate::eventsub::{
-        ShardStatus, Transport, TransportResponse, WebhookTransportResponse,
-        WebsocketTransportResponse,
+        ShardStatus, TransportResponse, WebhookTransportResponse, WebsocketTransportResponse,
     };
     let req: GetConduitShardsRequest = GetConduitShardsRequest::default();
 
