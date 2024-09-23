@@ -685,14 +685,7 @@
 <a href="#684" id="684">684</a>
 <a href="#685" id="685">685</a>
 <a href="#686" id="686">686</a>
-<a href="#687" id="687">687</a>
-<a href="#688" id="688">688</a>
-<a href="#689" id="689">689</a>
-<a href="#690" id="690">690</a>
-<a href="#691" id="691">691</a>
-<a href="#692" id="692">692</a>
-<a href="#693" id="693">693</a>
-<a href="#694" id="694">694</a></pre></div><pre class="rust"><code><span class="attr">#![allow(deprecated)]
+<a href="#687" id="687">687</a></pre></div><pre class="rust"><code><span class="attr">#![allow(deprecated)]
 </span><span class="doccomment">//! Holds serializable pubsub stuff
 //!
 //! Use [`listen_command()`] to send subscription listen and parse the responses with [`Response::parse`]
@@ -702,8 +695,8 @@
 //! This crate has some pubsub topics that are not documented by twitch. These may stop working at any time. To enable these, use feature
 //! &lt;span
 //!   class="module-item stab portability"
-//!   style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"
-//! &gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt;
+//!   style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"&gt;&lt;code&gt;unsupported&lt;/code&gt;
+//! &lt;/span&gt;
 //! to use them. Note that this crate doesn't try to keep changes to these pubsub topics semver compatible.
 
 </span><span class="kw">static </span>ERROR_TRYFROM: <span class="kw-2">&amp;</span>str = <span class="string">"no match"</span>;
@@ -727,8 +720,7 @@
         }
 
         <span class="kw">impl </span>::std::fmt::Display <span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">type </span>{
-            <span class="doccomment">///
-            </span><span class="kw">fn </span><span class="macro-nonterminal">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; ::std::fmt::Result {
+            <span class="kw">fn </span><span class="macro-nonterminal">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; ::std::fmt::Result {
                 <span class="kw">let </span>s: String = ::std::convert::TryInto::try_into(<span class="self">self</span>).map_err(|<span class="kw">_</span>| ::std::fmt::Error)<span class="question-mark">?</span>;
                 f.write_str(<span class="kw-2">&amp;</span>s)
             }
@@ -807,12 +799,6 @@
 /// also known as event
 </span><span class="kw">pub trait </span>Topic: serde::Serialize + Into&lt;String&gt; {
     <span class="doccomment">/// Scopes needed by this topic
-    ///
-    /// This constant
-    /// &lt;span
-    ///   class="module-item stab portability"
-    ///   style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"
-    /// &gt;&lt;code&gt;unsupported&lt;/code&gt;&lt;/span&gt;
     </span><span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
     #[cfg_attr(nightly, doc(cfg(feature = <span class="string">"twitch_oauth2"</span>)))]
     </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator;

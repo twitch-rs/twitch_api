@@ -3313,7 +3313,7 @@
     /// ```
     </span><span class="kw">pub async fn </span>update_conduit_shards&lt;<span class="lifetime">'b</span>: <span class="lifetime">'client</span>, T&gt;(
         <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
-        conduit_id: <span class="kw">impl </span>Into&lt;String&gt;,
+        conduit_id: <span class="kw">impl </span>Into&lt;String&gt; + Send,
         shards: Vec&lt;<span class="kw">crate</span>::eventsub::Shard&gt;,
         token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::eventsub::UpdateConduitShardsResponse, ClientError&lt;C&gt;&gt;

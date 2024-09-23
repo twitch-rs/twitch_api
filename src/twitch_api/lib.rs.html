@@ -415,9 +415,11 @@
 <a href="#414" id="414">414</a>
 <a href="#415" id="415">415</a>
 <a href="#416" id="416">416</a>
-<a href="#417" id="417">417</a></pre></div><pre class="rust"><code><span class="attr">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a></pre></div><pre class="rust"><code><span class="attr">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![allow(clippy::needless_raw_string_hashes)]
-#![cfg_attr(nightly, feature(doc_cfg))]
+#![cfg_attr(test, allow(deprecated))] </span><span class="comment">// for pubsub tests
+</span><span class="attr">#![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![allow(clippy::needless_raw_string_hashes)]
 #![doc(html_root_url = <span class="string">"https://docs.rs/twitch_api/0.7.0-rc.7"</span>)]

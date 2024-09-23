@@ -1411,7 +1411,7 @@
         <span class="kw">let </span>gifter = InnerGifter::deserialize(deserializer)<span class="question-mark">?</span>;
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="bool-val">true</span>) = gifter.gifter_is_anonymous {
             <span class="prelude-val">Ok</span>(Gifter::Anonymous)
-        } <span class="kw">else if let </span><span class="prelude-val">None </span>= gifter.gifter_is_anonymous {
+        } <span class="kw">else if </span>gifter.gifter_is_anonymous.is_none() {
             <span class="prelude-val">Ok</span>(Gifter::None)
         } <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(Gifter::Gifter {

@@ -135,9 +135,7 @@
 <a href="#134" id="134">134</a>
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
-<a href="#137" id="137">137</a>
-<a href="#138" id="138">138</a>
-<a href="#139" id="139">139</a></pre></div><pre class="rust"><code><span class="doccomment">//! Creates a new conduit for your Client.
+<a href="#137" id="137">137</a></pre></div><pre class="rust"><code><span class="doccomment">//! Creates a new conduit for your Client.
 //! [`create-conduit`](https://dev.twitch.tv/docs/api/reference/#create-conduits)
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
@@ -272,8 +270,6 @@
 
     <span class="kw">let </span>uri = req.get_uri().unwrap();
     <span class="kw">let </span>response = CreateConduitRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response);
-    <span class="macro">assert_eq!</span>(response.is_err(), <span class="bool-val">true</span>);
-
-    <span class="macro">dbg!</span>(<span class="string">"{:#?}"</span>, response);
+    <span class="macro">assert!</span>(response.is_err());
 }
 </code></pre></div></section></main></body></html>
