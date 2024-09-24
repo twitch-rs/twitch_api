@@ -11,6 +11,5 @@
     "tracing-attributes": ["instrument"],
     "tracing": ["info", "debug", "error", "warn", "span", "instrument"]
   },
-  "rust-analyzer.procMacro.attributes.enable": true, // Broken on dyn -> impl, https://github.com/rust-analyzer/rust-analyzer/issues/11815
-  "deno.enable": true
+  "rust-analyzer.procMacro.attributes.enable": true // Broken on dyn -> impl, https://github.com/rust-analyzer/rust-analyzer/issues/11815
 }

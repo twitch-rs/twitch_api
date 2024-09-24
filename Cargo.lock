@@ -2201,6 +2201,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "rustdoc-types"
+version = "0.30.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "89e3124c5a7883153fe3e762da9998cf36c302dbf1cc237869d297f9713e5655"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "rustix"
 version = "0.37.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2809,6 +2818,12 @@ name = "tinyvec_macros"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
+
+[[package]]
+name = "tl"
+version = "0.7.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b130bd8a58c163224b44e217b4239ca7b927d82bf6cc2fea1fc561d15056e3f7"
 
 [[package]]
 name = "tokio"
@@ -3641,9 +3656,13 @@ dependencies = [
  "clap",
  "color-eyre",
  "once_cell",
+ "rustdoc-types",
  "serde",
  "serde_derive",
  "serde_json",
+ "tl",
+ "ureq",
+ "url",
  "xshell",
 ]
 

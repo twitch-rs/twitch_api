@@ -32,7 +32,7 @@
 //!
 //! ## Implemented Endpoints
 //!
-//! <!-- generated with tools/collect-endpoints.ts -->
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
 //! <details><summary style="cursor: pointer">Ads 🟢 3/3</summary>
 //!
@@ -63,15 +63,11 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Channels 🟢 5/5</summary>
+//! <details><summary style="cursor: pointer">CCLs 🔴 0/1</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
-//! | [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information) | - | [`channels::get_channel_information`] |
-//! | [Modify Channel Information](https://dev.twitch.tv/docs/api/reference#modify-channel-information) | - | [`channels::modify_channel_information`] |
-//! | [Get Channel Editors](https://dev.twitch.tv/docs/api/reference#get-channel-editors) | - | [`channels::get_channel_editors`] |
-//! | [Get Followed Channels](https://dev.twitch.tv/docs/api/reference#get-followed-channels) | [`HelixClient::get_followed_channels`] | [`channels::get_followed_channels`] |
-//! | [Get Channel Followers](https://dev.twitch.tv/docs/api/reference#get-channel-followers) | - | [`channels::get_channel_followers`] |
+//! | [Get Content Classification Labels](https://dev.twitch.tv/docs/api/reference#get-content-classification-labels) | - | - |
 //!
 //! </details>
 //!
@@ -88,6 +84,18 @@
 //!
 //! </details>
 //!
+//! <details><summary style="cursor: pointer">Channels 🟢 5/5</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information) | - | [`channels::get_channel_information`] |
+//! | [Modify Channel Information](https://dev.twitch.tv/docs/api/reference#modify-channel-information) | - | [`channels::modify_channel_information`] |
+//! | [Get Channel Editors](https://dev.twitch.tv/docs/api/reference#get-channel-editors) | - | [`channels::get_channel_editors`] |
+//! | [Get Followed Channels](https://dev.twitch.tv/docs/api/reference#get-followed-channels) | [`HelixClient::get_followed_channels`] | [`channels::get_followed_channels`] |
+//! | [Get Channel Followers](https://dev.twitch.tv/docs/api/reference#get-channel-followers) | - | [`channels::get_channel_followers`] |
+//!
+//! </details>
+//!
 //! <details><summary style="cursor: pointer">Charity 🟢 2/2</summary>
 //!
 //! | Endpoint | Helper | Module |
@@ -97,7 +105,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Chat 🟡 13/14</summary>
+//! <details><summary style="cursor: pointer">Chat 🟡 13/15</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -108,6 +116,7 @@
 //! | [Get Channel Chat Badges](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges) | - | [`chat::get_channel_chat_badges`] |
 //! | [Get Global Chat Badges](https://dev.twitch.tv/docs/api/reference#get-global-chat-badges) | - | [`chat::get_global_chat_badges`] |
 //! | [Get Chat Settings](https://dev.twitch.tv/docs/api/reference#get-chat-settings) | [`HelixClient::get_chat_settings`] | [`chat::get_chat_settings`] |
+//! | [Get Shared Chat Session](https://dev.twitch.tv/docs/api/reference#get-shared-chat-session) | - | - |
 //! | [Get User Emotes](https://dev.twitch.tv/docs/api/reference#get-user-emotes) | - | - |
 //! | [Update Chat Settings](https://dev.twitch.tv/docs/api/reference#update-chat-settings) | - | [`chat::update_chat_settings`] |
 //! | [Send Chat Announcement](https://dev.twitch.tv/docs/api/reference#send-chat-announcement) | [`HelixClient::send_chat_announcement`] | [`chat::send_chat_announcement`] |
@@ -127,7 +136,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Conduits 🟡 3/6</summary>
+//! <details><summary style="cursor: pointer">Conduits 🟡 4/6</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -135,16 +144,8 @@
 //! | [Create Conduits](https://dev.twitch.tv/docs/api/reference#create-conduits) | [`HelixClient::create_conduit`] | [`eventsub::create_conduit`] |
 //! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | - | - |
 //! | [Delete Conduit](https://dev.twitch.tv/docs/api/reference#delete-conduit) | - | - |
-//! | [Get Conduit Shards](https://dev.twitch.tv/docs/api/reference#get-conduit-shards) | - | - |
+//! | [Get Conduit Shards](https://dev.twitch.tv/docs/api/reference#get-conduit-shards) | [`HelixClient::get_conduit_shards`] | [`eventsub::get_conduit_shards`] |
 //! | [Update Conduit Shards](https://dev.twitch.tv/docs/api/reference#update-conduit-shards) | [`HelixClient::update_conduit_shards`] | [`eventsub::update_conduit_shards`] |
-//!
-//! </details>
-//!
-//! <details><summary style="cursor: pointer">CCLs 🔴 0/1</summary>
-//!
-//! | Endpoint | Helper | Module |
-//! |---|---|---|
-//! | [Get Content Classification Labels](https://dev.twitch.tv/docs/api/reference#get-content-classification-labels) | - | - |
 //!
 //! </details>
 //!
@@ -154,6 +155,16 @@
 //! |---|---|---|
 //! | [Get Drops Entitlements](https://dev.twitch.tv/docs/api/reference#get-drops-entitlements) | - | - |
 //! | [Update Drops Entitlements](https://dev.twitch.tv/docs/api/reference#update-drops-entitlements) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">EventSub 🟢 3/3</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Create EventSub Subscription](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription) | [`HelixClient::create_eventsub_subscription`] | [`eventsub::create_eventsub_subscription`] |
+//! | [Delete EventSub Subscription](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription) | [`HelixClient::delete_eventsub_subscription`] | [`eventsub::delete_eventsub_subscription`] |
+//! | [Get EventSub Subscriptions](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions) | [`HelixClient::get_eventsub_subscriptions`] | [`eventsub::get_eventsub_subscriptions`] |
 //!
 //! </details>
 //!
@@ -173,16 +184,6 @@
 //! | [Get Released Extensions](https://dev.twitch.tv/docs/api/reference#get-released-extensions) | - | - |
 //! | [Get Extension Bits Products](https://dev.twitch.tv/docs/api/reference#get-extension-bits-products) | - | - |
 //! | [Update Extension Bits Product](https://dev.twitch.tv/docs/api/reference#update-extension-bits-product) | - | - |
-//!
-//! </details>
-//!
-//! <details><summary style="cursor: pointer">EventSub 🟢 3/3</summary>
-//!
-//! | Endpoint | Helper | Module |
-//! |---|---|---|
-//! | [Create EventSub Subscription](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription) | [`HelixClient::create_eventsub_subscription`] | [`eventsub::create_eventsub_subscription`] |
-//! | [Delete EventSub Subscription](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription) | [`HelixClient::delete_eventsub_subscription`] | [`eventsub::delete_eventsub_subscription`] |
-//! | [Get EventSub Subscriptions](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions) | [`HelixClient::get_eventsub_subscriptions`] | [`eventsub::get_eventsub_subscriptions`] |
 //!
 //! </details>
 //!
@@ -230,7 +231,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Moderation 🟡 17/22</summary>
+//! <details><summary style="cursor: pointer">Moderation 🟡 18/23</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -253,9 +254,10 @@
 //! | [Remove Channel Moderator](https://dev.twitch.tv/docs/api/reference#remove-channel-moderator) | [`HelixClient::remove_channel_moderator`] | [`moderation::remove_channel_moderator`] |
 //! | [Get VIPs](https://dev.twitch.tv/docs/api/reference#get-vips) | - | [`channels::get_vips`] |
 //! | [Add Channel VIP](https://dev.twitch.tv/docs/api/reference#add-channel-vip) | [`HelixClient::add_channel_vip`] | [`channels::add_channel_vip`] |
-//! | [Remove Channel VIP](https://dev.twitch.tv/docs/api/reference#remove-channel-vip) | [`HelixClient::remove_channel_vip`] | - |
+//! | [Remove Channel VIP](https://dev.twitch.tv/docs/api/reference#remove-channel-vip) | [`HelixClient::remove_channel_vip`] | [`channels::remove_channel_vip`] |
 //! | [Update Shield Mode Status](https://dev.twitch.tv/docs/api/reference#update-shield-mode-status) | - | [`moderation::update_shield_mode_status`] |
 //! | [Get Shield Mode Status](https://dev.twitch.tv/docs/api/reference#get-shield-mode-status) | - | [`moderation::get_shield_mode_status`] |
+//! | [Warn Chat User](https://dev.twitch.tv/docs/api/reference#warn-chat-user) | [`HelixClient::warn_chat_user`] | [`moderation::warn_chat_user`] |
 //!
 //! </details>
 //!
