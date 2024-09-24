@@ -4,6 +4,7 @@ use clap::Parser;
 use color_eyre::Help;
 use once_cell::sync::OnceCell;
 use xshell::{cmd, Shell};
+mod collect_endpoints;
 
 static RUSTDOCFLAGS: &[&str] = &["--cfg", "nightly"];
 static RUSTFLAGS: &[&str] = &["--cfg", "nightly"];
@@ -20,6 +21,12 @@ pub enum Args {
         target_dir: String,
         #[clap(last = true)]
         last: Option<String>,
+    },
+    Overview {
+        #[clap(long)]
+        no_build_doc: bool,
+        #[clap(long)]
+        check: bool,
     },
 }
 
@@ -124,6 +131,24 @@ fn main() -> color_eyre::Result<()> {
                 .run()?;
             }
         }
+        Args::Overview {
+            no_build_doc,
+            check,
+        } => {
+            if !cargo_ver(&sh)?.contains("nightly") {
+                color_eyre::eyre::bail!("Not running with a nightly cargo, use `cargo +nightly`");
+            }
+
+            collect_endpoints::run(&sh, !no_build_doc, TWITCH_API_FEATURES)?;
+
+            if check {
+                let helix_src = collect_endpoints::HELIX_SOURCE_FILE;
+                let eventsub_src = collect_endpoints::EVENTSUB_SOURCE_FILE;
+                cmd!(sh, "git --no-pager diff --exit-code -- {helix_src} {eventsub_src}")
+                    .run()
+                    .inspect_err(|_| println!("::error title=Overview not up-to-date::The overview needs to be re-generated with 'cargo xtask overview' (or apply the diff above)"))?;
+            }
+        }
     }
     Ok(())
 }
@@ -132,7 +157,7 @@ fn cargo_ver(sh: &Shell) -> Result<String, color_eyre::Report> {
     cmd!(sh, "cargo -V").read().map_err(Into::into)
 }
 
-fn section(name: impl Into<String>) -> impl Drop {
+pub fn section(name: impl Into<String>) -> impl Drop {
     use std::io::Write;
     use std::time::Instant;
     let ci = std::env::var("CI").is_ok();

@@ -107,6 +107,11 @@ jobs:
         with:
           toolchain: nightly
       - uses: Swatinem/rust-cache@v2
+
+      # Check if overviews are up-to-date
+      - name: Generate and check overviews
+        run: cargo xtask overview --check
+
       # We do the following to make sure docs.rs can document properly without anything broken, and that docs are working.
       - name: Run doc tests
         run: cargo test --doc --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
