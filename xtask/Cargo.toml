@@ -9,8 +9,12 @@ publish = false
 [dependencies]
 clap = { version = "4.5.18", features = ["derive"] }
 color-eyre = "0.6.2"
+rustdoc-types = "0.30.0"
 xshell = "0.2.5"
 once_cell = "1.19"
 serde_json = "1.0"
 serde = { version = "1.0" }
 serde_derive = { version = "1.0" }
+tl = "0.7.8"
+ureq = { workspace = true }
+url = { workspace = true }

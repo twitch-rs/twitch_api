@@ -1,8 +1,10 @@
 //! Helix endpoints or the [New Twitch API](https://dev.twitch.tv/docs/api)
 //!
+//! [`HelixClient`] provides convenience function for sending requests as described on [the crate documentation](crate).
 //!
-//! Aside from using [`HelixClient`] as described on [the crate documentation](crate),
-//! you can decide to use this library without any specific client implementation.
+//! ### Manual Usage
+//!
+//! Aside from using [`HelixClient`], you can decide to use this library without any specific client implementation.
 //!
 //! ```rust
 //! use twitch_api::{helix::{self, Request, RequestGet, users::{GetUsersRequest, User}}, types};
@@ -27,6 +29,361 @@
 //! # Ok(http::Response::builder().body(r#"{"data":[{"id":"141981764","login":"twitchdev","display_name":"TwitchDev","type":"","broadcaster_type":"partner","description":"Supportingthird-partydevelopersbuildingTwitchintegrationsfromchatbotstogameintegrations.","profile_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-300x300.png","offline_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/3f13ab61-ec78-4fe6-8481-8682cb3b0ac2-channel_offline_image-1920x1080.png","view_count":5980557,"email":"not-real@email.com","created_at":"2016-12-14T20:32:28.894263Z"}]}"#.as_bytes().to_owned().into()).unwrap())
 //! # }
 //! ```
+//!
+//! ## Implemented Endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details><summary style="cursor: pointer">Ads 🟢 3/3</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Start Commercial](https://dev.twitch.tv/docs/api/reference#start-commercial) | - | [`channels::start_commercial`] |
+//! | [Get Ad Schedule](https://dev.twitch.tv/docs/api/reference#get-ad-schedule) | - | [`channels::get_ad_schedule`] |
+//! | [Snooze Next Ad](https://dev.twitch.tv/docs/api/reference#snooze-next-ad) | - | [`channels::snooze_next_ad`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Analytics 🔴 0/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Extension Analytics](https://dev.twitch.tv/docs/api/reference#get-extension-analytics) | - | - |
+//! | [Get Game Analytics](https://dev.twitch.tv/docs/api/reference#get-game-analytics) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Bits 🟡 2/3</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Bits Leaderboard](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard) | - | [`bits::get_bits_leaderboard`] |
+//! | [Get Cheermotes](https://dev.twitch.tv/docs/api/reference#get-cheermotes) | - | [`bits::get_cheermotes`] |
+//! | [Get Extension Transactions](https://dev.twitch.tv/docs/api/reference#get-extension-transactions) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">CCLs 🔴 0/1</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Content Classification Labels](https://dev.twitch.tv/docs/api/reference#get-content-classification-labels) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Channel Points 🟢 6/6</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Create Custom Rewards](https://dev.twitch.tv/docs/api/reference#create-custom-rewards) | - | [`points::create_custom_rewards`] |
+//! | [Delete Custom Reward](https://dev.twitch.tv/docs/api/reference#delete-custom-reward) | - | [`points::delete_custom_reward`] |
+//! | [Get Custom Reward](https://dev.twitch.tv/docs/api/reference#get-custom-reward) | - | [`points::get_custom_reward`] |
+//! | [Get Custom Reward Redemption](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption) | - | [`points::get_custom_reward_redemption`] |
+//! | [Update Custom Reward](https://dev.twitch.tv/docs/api/reference#update-custom-reward) | - | [`points::update_custom_reward`] |
+//! | [Update Redemption Status](https://dev.twitch.tv/docs/api/reference#update-redemption-status) | - | [`points::update_redemption_status`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Channels 🟢 5/5</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information) | - | [`channels::get_channel_information`] |
+//! | [Modify Channel Information](https://dev.twitch.tv/docs/api/reference#modify-channel-information) | - | [`channels::modify_channel_information`] |
+//! | [Get Channel Editors](https://dev.twitch.tv/docs/api/reference#get-channel-editors) | - | [`channels::get_channel_editors`] |
+//! | [Get Followed Channels](https://dev.twitch.tv/docs/api/reference#get-followed-channels) | [`HelixClient::get_followed_channels`] | [`channels::get_followed_channels`] |
+//! | [Get Channel Followers](https://dev.twitch.tv/docs/api/reference#get-channel-followers) | - | [`channels::get_channel_followers`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Charity 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Charity Campaign](https://dev.twitch.tv/docs/api/reference#get-charity-campaign) | - | [`charity::get_charity_campaign`] |
+//! | [Get Charity Campaign Donations](https://dev.twitch.tv/docs/api/reference#get-charity-campaign-donations) | - | [`charity::get_charity_campaign_donations`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Chat 🟡 13/15</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Chatters](https://dev.twitch.tv/docs/api/reference#get-chatters) | [`HelixClient::get_chatters`] | [`chat::get_chatters`] |
+//! | [Get Channel Emotes](https://dev.twitch.tv/docs/api/reference#get-channel-emotes) | - | [`chat::get_channel_emotes`] |
+//! | [Get Global Emotes](https://dev.twitch.tv/docs/api/reference#get-global-emotes) | [`HelixClient::get_global_emotes`] | [`chat::get_global_emotes`] |
+//! | [Get Emote Sets](https://dev.twitch.tv/docs/api/reference#get-emote-sets) | [`HelixClient::get_emote_sets`] | [`chat::get_emote_sets`] |
+//! | [Get Channel Chat Badges](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges) | - | [`chat::get_channel_chat_badges`] |
+//! | [Get Global Chat Badges](https://dev.twitch.tv/docs/api/reference#get-global-chat-badges) | - | [`chat::get_global_chat_badges`] |
+//! | [Get Chat Settings](https://dev.twitch.tv/docs/api/reference#get-chat-settings) | [`HelixClient::get_chat_settings`] | [`chat::get_chat_settings`] |
+//! | [Get Shared Chat Session](https://dev.twitch.tv/docs/api/reference#get-shared-chat-session) | - | - |
+//! | [Get User Emotes](https://dev.twitch.tv/docs/api/reference#get-user-emotes) | - | - |
+//! | [Update Chat Settings](https://dev.twitch.tv/docs/api/reference#update-chat-settings) | - | [`chat::update_chat_settings`] |
+//! | [Send Chat Announcement](https://dev.twitch.tv/docs/api/reference#send-chat-announcement) | [`HelixClient::send_chat_announcement`] | [`chat::send_chat_announcement`] |
+//! | [Send a Shoutout](https://dev.twitch.tv/docs/api/reference#send-a-shoutout) | - | [`chat::send_a_shoutout`] |
+//! | [Send Chat Message](https://dev.twitch.tv/docs/api/reference#send-chat-message) | - | [`chat::send_chat_message`] |
+//! | [Get User Chat Color](https://dev.twitch.tv/docs/api/reference#get-user-chat-color) | [`HelixClient::get_user_chat_color`] | [`chat::get_user_chat_color`] |
+//! | [Update User Chat Color](https://dev.twitch.tv/docs/api/reference#update-user-chat-color) | [`HelixClient::update_user_chat_color`] | [`chat::update_user_chat_color`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Clips 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Create Clip](https://dev.twitch.tv/docs/api/reference#create-clip) | - | [`clips::create_clip`] |
+//! | [Get Clips](https://dev.twitch.tv/docs/api/reference#get-clips) | - | [`clips::get_clips`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Conduits 🟡 4/6</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Conduits](https://dev.twitch.tv/docs/api/reference#get-conduits) | [`HelixClient::get_conduits`] | [`eventsub::get_conduits`] |
+//! | [Create Conduits](https://dev.twitch.tv/docs/api/reference#create-conduits) | [`HelixClient::create_conduit`] | [`eventsub::create_conduit`] |
+//! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | - | - |
+//! | [Delete Conduit](https://dev.twitch.tv/docs/api/reference#delete-conduit) | - | - |
+//! | [Get Conduit Shards](https://dev.twitch.tv/docs/api/reference#get-conduit-shards) | [`HelixClient::get_conduit_shards`] | [`eventsub::get_conduit_shards`] |
+//! | [Update Conduit Shards](https://dev.twitch.tv/docs/api/reference#update-conduit-shards) | [`HelixClient::update_conduit_shards`] | [`eventsub::update_conduit_shards`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Entitlements 🔴 0/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Drops Entitlements](https://dev.twitch.tv/docs/api/reference#get-drops-entitlements) | - | - |
+//! | [Update Drops Entitlements](https://dev.twitch.tv/docs/api/reference#update-drops-entitlements) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">EventSub 🟢 3/3</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Create EventSub Subscription](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription) | [`HelixClient::create_eventsub_subscription`] | [`eventsub::create_eventsub_subscription`] |
+//! | [Delete EventSub Subscription](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription) | [`HelixClient::delete_eventsub_subscription`] | [`eventsub::delete_eventsub_subscription`] |
+//! | [Get EventSub Subscriptions](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions) | [`HelixClient::get_eventsub_subscriptions`] | [`eventsub::get_eventsub_subscriptions`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Extensions 🔴 0/12</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Extension Configuration Segment](https://dev.twitch.tv/docs/api/reference#get-extension-configuration-segment) | - | - |
+//! | [Set Extension Configuration Segment](https://dev.twitch.tv/docs/api/reference#set-extension-configuration-segment) | - | - |
+//! | [Set Extension Required Configuration](https://dev.twitch.tv/docs/api/reference#set-extension-required-configuration) | - | - |
+//! | [Send Extension PubSub Message](https://dev.twitch.tv/docs/api/reference#send-extension-pubsub-message) | - | - |
+//! | [Get Extension Live Channels](https://dev.twitch.tv/docs/api/reference#get-extension-live-channels) | - | - |
+//! | [Get Extension Secrets](https://dev.twitch.tv/docs/api/reference#get-extension-secrets) | - | - |
+//! | [Create Extension Secret](https://dev.twitch.tv/docs/api/reference#create-extension-secret) | - | - |
+//! | [Send Extension Chat Message](https://dev.twitch.tv/docs/api/reference#send-extension-chat-message) | - | - |
+//! | [Get Extensions](https://dev.twitch.tv/docs/api/reference#get-extensions) | - | - |
+//! | [Get Released Extensions](https://dev.twitch.tv/docs/api/reference#get-released-extensions) | - | - |
+//! | [Get Extension Bits Products](https://dev.twitch.tv/docs/api/reference#get-extension-bits-products) | - | - |
+//! | [Update Extension Bits Product](https://dev.twitch.tv/docs/api/reference#update-extension-bits-product) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Games 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Top Games](https://dev.twitch.tv/docs/api/reference#get-top-games) | - | [`games::get_top_games`] |
+//! | [Get Games](https://dev.twitch.tv/docs/api/reference#get-games) | - | [`games::get_games`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Goals 🟢 1/1</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Creator Goals](https://dev.twitch.tv/docs/api/reference#get-creator-goals) | - | [`goals::get_creator_goals`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Guest Star 🔴 0/12</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Channel Guest Star Settings](https://dev.twitch.tv/docs/api/reference#get-channel-guest-star-settings) | - | - |
+//! | [Update Channel Guest Star Settings](https://dev.twitch.tv/docs/api/reference#update-channel-guest-star-settings) | - | - |
+//! | [Get Guest Star Session](https://dev.twitch.tv/docs/api/reference#get-guest-star-session) | - | - |
+//! | [Create Guest Star Session](https://dev.twitch.tv/docs/api/reference#create-guest-star-session) | - | - |
+//! | [End Guest Star Session](https://dev.twitch.tv/docs/api/reference#end-guest-star-session) | - | - |
+//! | [Get Guest Star Invites](https://dev.twitch.tv/docs/api/reference#get-guest-star-invites) | - | - |
+//! | [Send Guest Star Invite](https://dev.twitch.tv/docs/api/reference#send-guest-star-invite) | - | - |
+//! | [Delete Guest Star Invite](https://dev.twitch.tv/docs/api/reference#delete-guest-star-invite) | - | - |
+//! | [Assign Guest Star Slot](https://dev.twitch.tv/docs/api/reference#assign-guest-star-slot) | - | - |
+//! | [Update Guest Star Slot](https://dev.twitch.tv/docs/api/reference#update-guest-star-slot) | - | - |
+//! | [Delete Guest Star Slot](https://dev.twitch.tv/docs/api/reference#delete-guest-star-slot) | - | - |
+//! | [Update Guest Star Slot Settings](https://dev.twitch.tv/docs/api/reference#update-guest-star-slot-settings) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Hype Train 🔴 0/1</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Hype Train Events](https://dev.twitch.tv/docs/api/reference#get-hype-train-events) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Moderation 🟡 18/23</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Check AutoMod Status](https://dev.twitch.tv/docs/api/reference#check-automod-status) | - | [`moderation::check_automod_status`] |
+//! | [Manage Held AutoMod Messages](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages) | - | [`moderation::manage_held_automod_messages`] |
+//! | [Get AutoMod Settings](https://dev.twitch.tv/docs/api/reference#get-automod-settings) | - | - |
+//! | [Update AutoMod Settings](https://dev.twitch.tv/docs/api/reference#update-automod-settings) | - | - |
+//! | [Get Banned Users](https://dev.twitch.tv/docs/api/reference#get-banned-users) | - | [`moderation::get_banned_users`] |
+//! | [Ban User](https://dev.twitch.tv/docs/api/reference#ban-user) | [`HelixClient::ban_user`] | [`moderation::ban_user`] |
+//! | [Unban User](https://dev.twitch.tv/docs/api/reference#unban-user) | [`HelixClient::unban_user`] | [`moderation::unban_user`] |
+//! | [Get Unban Requests](https://dev.twitch.tv/docs/api/reference#get-unban-requests) | - | - |
+//! | [Resolve Unban Requests](https://dev.twitch.tv/docs/api/reference#resolve-unban-requests) | - | - |
+//! | [Get Blocked Terms](https://dev.twitch.tv/docs/api/reference#get-blocked-terms) | - | [`moderation::get_blocked_terms`] |
+//! | [Add Blocked Term](https://dev.twitch.tv/docs/api/reference#add-blocked-term) | - | [`moderation::add_blocked_term`] |
+//! | [Remove Blocked Term](https://dev.twitch.tv/docs/api/reference#remove-blocked-term) | - | [`moderation::remove_blocked_term`] |
+//! | [Delete Chat Messages](https://dev.twitch.tv/docs/api/reference#delete-chat-messages) | - | [`moderation::delete_chat_messages`] |
+//! | [Get Moderated Channels](https://dev.twitch.tv/docs/api/reference#get-moderated-channels) | - | - |
+//! | [Get Moderators](https://dev.twitch.tv/docs/api/reference#get-moderators) | - | [`moderation::get_moderators`] |
+//! | [Add Channel Moderator](https://dev.twitch.tv/docs/api/reference#add-channel-moderator) | [`HelixClient::add_channel_moderator`] | [`moderation::add_channel_moderator`] |
+//! | [Remove Channel Moderator](https://dev.twitch.tv/docs/api/reference#remove-channel-moderator) | [`HelixClient::remove_channel_moderator`] | [`moderation::remove_channel_moderator`] |
+//! | [Get VIPs](https://dev.twitch.tv/docs/api/reference#get-vips) | - | [`channels::get_vips`] |
+//! | [Add Channel VIP](https://dev.twitch.tv/docs/api/reference#add-channel-vip) | [`HelixClient::add_channel_vip`] | [`channels::add_channel_vip`] |
+//! | [Remove Channel VIP](https://dev.twitch.tv/docs/api/reference#remove-channel-vip) | [`HelixClient::remove_channel_vip`] | [`channels::remove_channel_vip`] |
+//! | [Update Shield Mode Status](https://dev.twitch.tv/docs/api/reference#update-shield-mode-status) | - | [`moderation::update_shield_mode_status`] |
+//! | [Get Shield Mode Status](https://dev.twitch.tv/docs/api/reference#get-shield-mode-status) | - | [`moderation::get_shield_mode_status`] |
+//! | [Warn Chat User](https://dev.twitch.tv/docs/api/reference#warn-chat-user) | [`HelixClient::warn_chat_user`] | [`moderation::warn_chat_user`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Polls 🟢 3/3</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Polls](https://dev.twitch.tv/docs/api/reference#get-polls) | - | [`polls::get_polls`] |
+//! | [Create Poll](https://dev.twitch.tv/docs/api/reference#create-poll) | - | [`polls::create_poll`] |
+//! | [End Poll](https://dev.twitch.tv/docs/api/reference#end-poll) | - | [`polls::end_poll`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Predictions 🟢 3/3</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Predictions](https://dev.twitch.tv/docs/api/reference#get-predictions) | - | [`predictions::get_predictions`] |
+//! | [Create Prediction](https://dev.twitch.tv/docs/api/reference#create-prediction) | - | [`predictions::create_prediction`] |
+//! | [End Prediction](https://dev.twitch.tv/docs/api/reference#end-prediction) | - | [`predictions::end_prediction`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Raids 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Start a raid](https://dev.twitch.tv/docs/api/reference#start-a-raid) | [`HelixClient::start_a_raid`] | [`raids::start_a_raid`] |
+//! | [Cancel a raid](https://dev.twitch.tv/docs/api/reference#cancel-a-raid) | [`HelixClient::cancel_a_raid`] | [`raids::cancel_a_raid`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Schedule 🟡 5/6</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Channel Stream Schedule](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule) | - | [`schedule::get_channel_stream_schedule`] |
+//! | [Get Channel iCalendar](https://dev.twitch.tv/docs/api/reference#get-channel-icalendar) | - | - |
+//! | [Update Channel Stream Schedule](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule) | - | [`schedule::update_channel_stream_schedule`] |
+//! | [Create Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment) | - | [`schedule::create_channel_stream_schedule_segment`] |
+//! | [Update Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment) | - | [`schedule::update_channel_stream_schedule_segment`] |
+//! | [Delete Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#delete-channel-stream-schedule-segment) | - | [`schedule::delete_channel_stream_schedule_segment`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Search 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Search Categories](https://dev.twitch.tv/docs/api/reference#search-categories) | [`HelixClient::search_categories`] | [`search::search_categories`] |
+//! | [Search Channels](https://dev.twitch.tv/docs/api/reference#search-channels) | [`HelixClient::search_channels`] | [`search::search_channels`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Streams 🟡 2/5</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Stream Key](https://dev.twitch.tv/docs/api/reference#get-stream-key) | - | - |
+//! | [Get Streams](https://dev.twitch.tv/docs/api/reference#get-streams) | - | [`streams::get_streams`] |
+//! | [Get Followed Streams](https://dev.twitch.tv/docs/api/reference#get-followed-streams) | [`HelixClient::get_followed_streams`] | [`streams::get_followed_streams`] |
+//! | [Create Stream Marker](https://dev.twitch.tv/docs/api/reference#create-stream-marker) | - | - |
+//! | [Get Stream Markers](https://dev.twitch.tv/docs/api/reference#get-stream-markers) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Subscriptions 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Broadcaster Subscriptions](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions) | [`HelixClient::get_broadcaster_subscriptions`] | [`subscriptions::get_broadcaster_subscriptions`] |
+//! | [Check User Subscription](https://dev.twitch.tv/docs/api/reference#check-user-subscription) | - | [`subscriptions::check_user_subscription`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Tags 🟡 1/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get All Stream Tags](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags) | - | [`tags::get_all_stream_tags`] |
+//! | [Get Stream Tags](https://dev.twitch.tv/docs/api/reference#get-stream-tags) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Teams 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Channel Teams](https://dev.twitch.tv/docs/api/reference#get-channel-teams) | - | [`teams::get_channel_teams`] |
+//! | [Get Teams](https://dev.twitch.tv/docs/api/reference#get-teams) | - | [`teams::get_teams`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Users 🟡 4/8</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Users](https://dev.twitch.tv/docs/api/reference#get-users) | - | [`users::get_users`] |
+//! | [Update User](https://dev.twitch.tv/docs/api/reference#update-user) | - | - |
+//! | [Get User Block List](https://dev.twitch.tv/docs/api/reference#get-user-block-list) | - | [`users::get_user_block_list`] |
+//! | [Block User](https://dev.twitch.tv/docs/api/reference#block-user) | [`HelixClient::block_user`] | [`users::block_user`] |
+//! | [Unblock User](https://dev.twitch.tv/docs/api/reference#unblock-user) | [`HelixClient::unblock_user`] | [`users::unblock_user`] |
+//! | [Get User Extensions](https://dev.twitch.tv/docs/api/reference#get-user-extensions) | - | - |
+//! | [Get User Active Extensions](https://dev.twitch.tv/docs/api/reference#get-user-active-extensions) | - | - |
+//! | [Update User Extensions](https://dev.twitch.tv/docs/api/reference#update-user-extensions) | - | - |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Videos 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Videos](https://dev.twitch.tv/docs/api/reference#get-videos) | - | [`videos::get_videos`] |
+//! | [Delete Videos](https://dev.twitch.tv/docs/api/reference#delete-videos) | - | [`videos::delete_videos`] |
+//!
+//! </details>
+//!
+//! <details><summary style="cursor: pointer">Whispers 🟢 1/1</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Send Whisper](https://dev.twitch.tv/docs/api/reference#send-whisper) | [`HelixClient::send_whisper`] | [`whispers::send_whisper`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 
 use serde_derive::Deserialize;
 #[doc(no_inline)]
