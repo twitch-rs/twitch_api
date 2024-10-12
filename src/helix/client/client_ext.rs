@@ -528,6 +528,41 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         make_stream(req, token, self, std::collections::VecDeque::from)
     }
 
+    /// Gets a list of unban requests for a broadcaster’s channel. [Get Unban Requests](helix::moderation::GetUnbanRequestsRequest)
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use futures::TryStreamExt;
+    ///
+    /// let requests: Vec<helix::moderation::UnbanRequest> = client.get_unban_requests("1234", "5678", helix::moderation::UnbanRequestStatus::Pending, &token).try_collect().await?;
+    /// # Ok(()) }
+    /// ```
+    pub fn get_unban_requests<'b: 'client, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        status: helix::moderation::UnbanRequestStatus,
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<helix::moderation::UnbanRequest, ClientError<C>>>
+           + Send
+           + Unpin
+           + 'client
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req =
+            helix::moderation::GetUnbanRequestsRequest::new(broadcaster_id, moderator_id, status);
+
+        make_stream(req, token, self, std::collections::VecDeque::from)
+    }
+
     /// Get a users, with login, follow count
     #[deprecated(
         note = "this method will not work anymore on 3 august, see https://discuss.dev.twitch.tv/t/follows-endpoints-and-eventsub-subscription-type-are-now-available-in-open-beta/43322"
