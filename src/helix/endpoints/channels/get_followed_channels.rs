@@ -127,7 +127,7 @@ pub struct FollowedBroadcaster {
     /// The broadcaster’s display name.
     pub broadcaster_name: types::DisplayName,
     /// The UTC timestamp when the user started following the broadcaster.
-    pub followed_at: types::UserId,
+    pub followed_at: types::Timestamp,
 }
 
 impl Request for GetFollowedChannels<'_> {
