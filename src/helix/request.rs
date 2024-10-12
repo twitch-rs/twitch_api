@@ -440,36 +440,30 @@ pub trait RequestGet: Request {
 /// Parses a response where Helix responds with a single datum inside `data`.
 ///
 /// An example response is `{ "data": [ { "foo": 1 } ]`.
-pub fn parse_single_return<T>(
+pub(crate) fn parse_single_return<T, E>(
     request: Option<T>,
     uri: &http::Uri,
     response: &str,
     status: http::StatusCode,
-) -> Result<Response<T, T::Response>, HelixRequestGetError>
+) -> Result<Response<T, T::Response>, E>
 where
-    T: RequestGet,
+    T: Request,
+    E: errors::HelixRequestDeserError,
 {
     let resp = match status {
         http::StatusCode::OK => {
-            let resp: InnerResponse<[T::Response; 1]> =
-                parse_json(response, true).map_err(|e| {
-                    HelixRequestGetError::DeserializeError(
-                        response.to_string(),
-                        e,
-                        uri.clone(),
-                        status,
-                    )
-                })?;
+            let resp: InnerResponse<[T::Response; 1]> = parse_json(response, true)
+                .map_err(|e| E::deserialize_error(response.to_string(), e, uri.clone(), status))?;
             let [s] = resp.data;
             s
         }
         _ => {
-            return Err(HelixRequestGetError::InvalidResponse {
-                reason: "unexpected status code",
-                response: response.to_string(),
+            return Err(E::invalid_response(
+                "unexpected status code",
+                response.to_string(),
                 status,
-                uri: uri.clone(),
-            })
+                uri.clone(),
+            ));
         }
     };
     Ok(Response::with_data(resp, request))

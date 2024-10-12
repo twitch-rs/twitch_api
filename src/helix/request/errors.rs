@@ -251,3 +251,73 @@ pub enum HelixRequestDeleteError {
         uri: http::Uri,
     },
 }
+
+/// Helper trait to allow construction of any error for an invalid response
+pub(crate) trait HelixRequestError {
+    fn invalid_response(
+        reason: &'static str,
+        response: String,
+        status: http::StatusCode,
+        uri: http::Uri,
+    ) -> Self;
+}
+
+/// Helper trait to allow construction of any error for a deserailization error (not available for DELETE requests)
+pub(crate) trait HelixRequestDeserError: HelixRequestError {
+    fn deserialize_error(
+        body: String,
+        err: crate::DeserError,
+        uri: http::Uri,
+        status: http::StatusCode,
+    ) -> Self;
+}
+
+macro_rules! impl_request_error {
+    ($($t:ty),*) => {
+        $(impl HelixRequestError for $t {
+            fn invalid_response(
+                reason: &'static str,
+                response: String,
+                status: http::StatusCode,
+                uri: http::Uri,
+            ) -> Self {
+                Self::InvalidResponse {
+                    reason,
+                    response,
+                    status,
+                    uri,
+                }
+            }
+        })*
+    };
+}
+
+macro_rules! impl_request_deser_error {
+    ($($t:ty),*) => {
+        $(impl HelixRequestDeserError for $t {
+            fn deserialize_error(
+                body: String,
+                err: crate::DeserError,
+                uri: http::Uri,
+                status: http::StatusCode,
+            ) -> Self {
+                Self::DeserializeError(body, err, uri, status)
+            }
+        })*
+    };
+}
+
+impl_request_error!(
+    HelixRequestGetError,
+    HelixRequestPatchError,
+    HelixRequestPostError,
+    HelixRequestPutError,
+    HelixRequestDeleteError
+);
+
+impl_request_deser_error!(
+    HelixRequestGetError,
+    HelixRequestPatchError,
+    HelixRequestPostError,
+    HelixRequestPutError
+);
