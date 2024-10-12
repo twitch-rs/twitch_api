@@ -18,6 +18,7 @@ pub mod get_banned_users;
 pub mod get_blocked_terms;
 pub mod get_moderators;
 pub mod get_shield_mode_status;
+pub mod get_unban_requests;
 pub mod manage_held_automod_messages;
 pub mod remove_blocked_term;
 pub mod remove_channel_moderator;
@@ -47,6 +48,8 @@ pub use get_banned_users::{BannedUser, GetBannedUsersRequest};
 pub use get_moderators::{GetModeratorsRequest, Moderator};
 #[doc(inline)]
 pub use get_shield_mode_status::{GetShieldModeStatusRequest, LastShieldMode, ShieldModeStatus};
+#[doc(inline)]
+pub use get_unban_requests::{GetUnbanRequestsRequest, UnbanRequest, UnbanRequestStatus};
 #[doc(inline)]
 pub use manage_held_automod_messages::{
     AutoModAction, ManageHeldAutoModMessages, ManageHeldAutoModMessagesBody,

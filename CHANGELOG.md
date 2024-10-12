@@ -80,6 +80,7 @@
 - Added `conduit.shard.disable` EventSub event
 - Added `title` and `description` as fields in the response of `Get Channel Chat Badges` and `Get Global Chat Badges`
 - Added `Get AutoMod Settings` and `Update AutoMod Settings` endpoints
+- Added `Get Unban Requests` endpoint
 
 ### Fixed
 
