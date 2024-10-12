@@ -22,6 +22,7 @@ pub mod get_unban_requests;
 pub mod manage_held_automod_messages;
 pub mod remove_blocked_term;
 pub mod remove_channel_moderator;
+pub mod resolve_unban_request;
 pub mod unban_user;
 pub mod update_automod_settings;
 pub mod update_shield_mode_status;
@@ -59,6 +60,8 @@ pub use manage_held_automod_messages::{
 pub use remove_blocked_term::{RemoveBlockedTerm, RemoveBlockedTermRequest};
 #[doc(inline)]
 pub use remove_channel_moderator::{RemoveChannelModeratorRequest, RemoveChannelModeratorResponse};
+#[doc(inline)]
+pub use resolve_unban_request::ResolveUnbanRequest;
 #[doc(inline)]
 pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
 #[doc(inline)]
