@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/moderation/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-49344e4802b2d48a.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (52fd99839 2024-10-10)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/endpoints/moderation/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/moderation/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0-nightly (1bc403daa 2024-10-11)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/endpoints/moderation/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -82,7 +82,15 @@
 <a href="#81" id="81">81</a>
 <a href="#82" id="82">82</a>
 <a href="#83" id="83">83</a>
-<a href="#84" id="84">84</a></pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"mod"</span>)]
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a></pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"mod"</span>)]
 </span><span class="doccomment">//! Helix endpoints regarding moderation
 
 </span><span class="kw">use crate</span>::{
@@ -97,6 +105,7 @@
 <span class="kw">pub mod </span>ban_user;
 <span class="kw">pub mod </span>check_automod_status;
 <span class="kw">pub mod </span>delete_chat_messages;
+<span class="kw">pub mod </span>get_automod_settings;
 <span class="kw">pub mod </span>get_banned_users;
 <span class="kw">pub mod </span>get_blocked_terms;
 <span class="kw">pub mod </span>get_moderators;
@@ -105,6 +114,7 @@
 <span class="kw">pub mod </span>remove_blocked_term;
 <span class="kw">pub mod </span>remove_channel_moderator;
 <span class="kw">pub mod </span>unban_user;
+<span class="kw">pub mod </span>update_automod_settings;
 <span class="kw">pub mod </span>update_shield_mode_status;
 <span class="attr">#[cfg(feature = <span class="string">"beta"</span>)]
 </span><span class="kw">pub mod </span>warn_chat_user;
@@ -122,6 +132,8 @@
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>delete_chat_messages::{DeleteChatMessagesRequest, DeleteChatMessagesResponse};
 <span class="attr">#[doc(inline)]
+</span><span class="kw">pub use </span>get_automod_settings::{AutoModSettings, GetAutoModSettingsRequest};
+<span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>get_banned_users::{BannedUser, GetBannedUsersRequest};
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>get_moderators::{GetModeratorsRequest, Moderator};
@@ -138,6 +150,10 @@
 </span><span class="kw">pub use </span>remove_channel_moderator::{RemoveChannelModeratorRequest, RemoveChannelModeratorResponse};
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>unban_user::{UnbanUserRequest, UnbanUserResponse};
+<span class="attr">#[doc(inline)]
+</span><span class="kw">pub use </span>update_automod_settings::{
+    UpdateAutoModSettingsBody, UpdateAutoModSettingsIndividual, UpdateAutoModSettingsRequest,
+};
 <span class="attr">#[cfg(feature = <span class="string">"beta"</span>)]
 #[doc(inline)]
 </span><span class="kw">pub use </span>warn_chat_user::{WarnChatUser, WarnChatUserBody, WarnChatUserRequest};
