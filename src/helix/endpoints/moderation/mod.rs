@@ -13,6 +13,7 @@ pub mod add_channel_moderator;
 pub mod ban_user;
 pub mod check_automod_status;
 pub mod delete_chat_messages;
+pub mod get_automod_settings;
 pub mod get_banned_users;
 pub mod get_blocked_terms;
 pub mod get_moderators;
@@ -21,6 +22,7 @@ pub mod manage_held_automod_messages;
 pub mod remove_blocked_term;
 pub mod remove_channel_moderator;
 pub mod unban_user;
+pub mod update_automod_settings;
 pub mod update_shield_mode_status;
 #[cfg(feature = "beta")]
 pub mod warn_chat_user;
@@ -38,6 +40,8 @@ pub use check_automod_status::{
 #[doc(inline)]
 pub use delete_chat_messages::{DeleteChatMessagesRequest, DeleteChatMessagesResponse};
 #[doc(inline)]
+pub use get_automod_settings::{AutoModSettings, GetAutoModSettingsRequest};
+#[doc(inline)]
 pub use get_banned_users::{BannedUser, GetBannedUsersRequest};
 #[doc(inline)]
 pub use get_moderators::{GetModeratorsRequest, Moderator};
@@ -54,6 +58,10 @@ pub use remove_blocked_term::{RemoveBlockedTerm, RemoveBlockedTermRequest};
 pub use remove_channel_moderator::{RemoveChannelModeratorRequest, RemoveChannelModeratorResponse};
 #[doc(inline)]
 pub use unban_user::{UnbanUserRequest, UnbanUserResponse};
+#[doc(inline)]
+pub use update_automod_settings::{
+    UpdateAutoModSettingsBody, UpdateAutoModSettingsIndividual, UpdateAutoModSettingsRequest,
+};
 #[cfg(feature = "beta")]
 #[doc(inline)]
 pub use warn_chat_user::{WarnChatUser, WarnChatUserBody, WarnChatUserRequest};

@@ -231,14 +231,14 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Moderation 🟡 18/23</summary>
+//! <details><summary style="cursor: pointer">Moderation 🟡 20/23</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Check AutoMod Status](https://dev.twitch.tv/docs/api/reference#check-automod-status) | - | [`moderation::check_automod_status`] |
 //! | [Manage Held AutoMod Messages](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages) | - | [`moderation::manage_held_automod_messages`] |
-//! | [Get AutoMod Settings](https://dev.twitch.tv/docs/api/reference#get-automod-settings) | - | - |
-//! | [Update AutoMod Settings](https://dev.twitch.tv/docs/api/reference#update-automod-settings) | - | - |
+//! | [Get AutoMod Settings](https://dev.twitch.tv/docs/api/reference#get-automod-settings) | - | [`moderation::get_automod_settings`] |
+//! | [Update AutoMod Settings](https://dev.twitch.tv/docs/api/reference#update-automod-settings) | - | [`moderation::update_automod_settings`] |
 //! | [Get Banned Users](https://dev.twitch.tv/docs/api/reference#get-banned-users) | - | [`moderation::get_banned_users`] |
 //! | [Ban User](https://dev.twitch.tv/docs/api/reference#ban-user) | [`HelixClient::ban_user`] | [`moderation::ban_user`] |
 //! | [Unban User](https://dev.twitch.tv/docs/api/reference#unban-user) | [`HelixClient::unban_user`] | [`moderation::unban_user`] |
@@ -418,6 +418,7 @@ pub use response::Response;
 pub(crate) mod ser;
 pub(crate) use crate::deserialize_default_from_null;
 use crate::parse_json;
+pub(crate) use request::parse_single_return;
 
 #[derive(PartialEq, Deserialize, Debug)]
 struct InnerResponse<D> {
