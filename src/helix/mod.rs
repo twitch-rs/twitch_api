@@ -231,13 +231,13 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Moderation 🟡 18/23</summary>
+//! <details><summary style="cursor: pointer">Moderation 🟡 19/23</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Check AutoMod Status](https://dev.twitch.tv/docs/api/reference#check-automod-status) | - | [`moderation::check_automod_status`] |
 //! | [Manage Held AutoMod Messages](https://dev.twitch.tv/docs/api/reference#manage-held-automod-messages) | - | [`moderation::manage_held_automod_messages`] |
-//! | [Get AutoMod Settings](https://dev.twitch.tv/docs/api/reference#get-automod-settings) | - | - |
+//! | [Get AutoMod Settings](https://dev.twitch.tv/docs/api/reference#get-automod-settings) | - | [`moderation::get_automod_settings`] |
 //! | [Update AutoMod Settings](https://dev.twitch.tv/docs/api/reference#update-automod-settings) | - | - |
 //! | [Get Banned Users](https://dev.twitch.tv/docs/api/reference#get-banned-users) | - | [`moderation::get_banned_users`] |
 //! | [Ban User](https://dev.twitch.tv/docs/api/reference#ban-user) | [`HelixClient::ban_user`] | [`moderation::ban_user`] |
@@ -411,7 +411,9 @@ pub use request::errors::{
     HelixRequestPostError, HelixRequestPutError, InvalidUri, SerializeError,
 };
 #[doc(inline)]
-pub use request::{Request, RequestDelete, RequestGet, RequestPatch, RequestPost, RequestPut};
+pub use request::{
+    parse_single_return, Request, RequestDelete, RequestGet, RequestPatch, RequestPost, RequestPut,
+};
 #[doc(inline)]
 pub use response::Response;
 
