@@ -231,7 +231,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Moderation 🟡 20/23</summary>
+//! <details><summary style="cursor: pointer">Moderation 🟡 22/23</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -242,8 +242,8 @@
 //! | [Get Banned Users](https://dev.twitch.tv/docs/api/reference#get-banned-users) | - | [`moderation::get_banned_users`] |
 //! | [Ban User](https://dev.twitch.tv/docs/api/reference#ban-user) | [`HelixClient::ban_user`] | [`moderation::ban_user`] |
 //! | [Unban User](https://dev.twitch.tv/docs/api/reference#unban-user) | [`HelixClient::unban_user`] | [`moderation::unban_user`] |
-//! | [Get Unban Requests](https://dev.twitch.tv/docs/api/reference#get-unban-requests) | - | - |
-//! | [Resolve Unban Requests](https://dev.twitch.tv/docs/api/reference#resolve-unban-requests) | - | - |
+//! | [Get Unban Requests](https://dev.twitch.tv/docs/api/reference#get-unban-requests) | [`HelixClient::get_unban_requests`] | [`moderation::get_unban_requests`] |
+//! | [Resolve Unban Requests](https://dev.twitch.tv/docs/api/reference#resolve-unban-requests) | - | [`moderation::resolve_unban_request`] |
 //! | [Get Blocked Terms](https://dev.twitch.tv/docs/api/reference#get-blocked-terms) | - | [`moderation::get_blocked_terms`] |
 //! | [Add Blocked Term](https://dev.twitch.tv/docs/api/reference#add-blocked-term) | - | [`moderation::add_blocked_term`] |
 //! | [Remove Blocked Term](https://dev.twitch.tv/docs/api/reference#remove-blocked-term) | - | [`moderation::remove_blocked_term`] |
