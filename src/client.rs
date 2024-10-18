@@ -231,7 +231,7 @@ impl<'c, C: Client + Sync + 'c> twitch_oauth2::client::Client for crate::HelixCl
 }
 
 #[cfg(all(feature = "client", feature = "helix"))]
-impl<'c, C: Client + Sync> twitch_oauth2::client::Client for crate::TwitchClient<'c, C> {
+impl<C: Client + Sync> twitch_oauth2::client::Client for crate::TwitchClient<'_, C> {
     type Error = CompatError<<C as Client>::Error>;
 
     fn req(

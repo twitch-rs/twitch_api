@@ -1547,7 +1547,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     ///     "0",
     ///     twitch_api::eventsub::Transport::websocket(session_id),
     /// );
-
+    ///
     /// let response = client
     ///     .update_conduit_shards(conduit_id, vec![shard], &token)
     ///     .await;
@@ -1675,12 +1675,11 @@ where
     }
 
     impl<
-            'a,
             C: crate::HttpClient,
             T: TwitchToken + Send + Sync + ?Sized,
             Req: super::Request + super::RequestGet + super::Paginated,
             Item,
-        > State<'a, C, T, Req, Item>
+        > State<'_, C, T, Req, Item>
     {
         /// Process a request, with a given deq
         fn process(
