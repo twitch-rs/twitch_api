@@ -231,7 +231,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Moderation 🟡 22/23</summary>
+//! <details><summary style="cursor: pointer">Moderation 🟢 23/23</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -248,7 +248,7 @@
 //! | [Add Blocked Term](https://dev.twitch.tv/docs/api/reference#add-blocked-term) | - | [`moderation::add_blocked_term`] |
 //! | [Remove Blocked Term](https://dev.twitch.tv/docs/api/reference#remove-blocked-term) | - | [`moderation::remove_blocked_term`] |
 //! | [Delete Chat Messages](https://dev.twitch.tv/docs/api/reference#delete-chat-messages) | - | [`moderation::delete_chat_messages`] |
-//! | [Get Moderated Channels](https://dev.twitch.tv/docs/api/reference#get-moderated-channels) | - | - |
+//! | [Get Moderated Channels](https://dev.twitch.tv/docs/api/reference#get-moderated-channels) | [`HelixClient::get_moderated_channels`] | [`moderation::get_moderated_channels`] |
 //! | [Get Moderators](https://dev.twitch.tv/docs/api/reference#get-moderators) | - | [`moderation::get_moderators`] |
 //! | [Add Channel Moderator](https://dev.twitch.tv/docs/api/reference#add-channel-moderator) | [`HelixClient::add_channel_moderator`] | [`moderation::add_channel_moderator`] |
 //! | [Remove Channel Moderator](https://dev.twitch.tv/docs/api/reference#remove-channel-moderator) | [`HelixClient::remove_channel_moderator`] | [`moderation::remove_channel_moderator`] |
