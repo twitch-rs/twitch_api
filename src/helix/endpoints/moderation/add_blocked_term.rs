@@ -103,7 +103,7 @@ impl<'a> AddBlockedTermBody<'a> {
 
 impl helix::private::SealedSerialize for AddBlockedTermBody<'_> {}
 
-impl<'a> helix::HelixRequestBody for [AddBlockedTermBody<'a>] {
+impl helix::HelixRequestBody for [AddBlockedTermBody<'_>] {
     fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {

@@ -92,7 +92,7 @@ impl Request for SnoozeNextAdRequest<'_> {
         twitch_oauth2::validator![twitch_oauth2::Scope::ChannelManageAds];
 }
 
-impl<'a> RequestPost for SnoozeNextAdRequest<'a> {
+impl RequestPost for SnoozeNextAdRequest<'_> {
     type Body = helix::EmptyBody;
 
     fn parse_inner_response(
