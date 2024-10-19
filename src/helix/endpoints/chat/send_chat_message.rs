@@ -137,7 +137,7 @@ impl<'a> SendChatMessageBody<'a> {
 
 impl helix::private::SealedSerialize for SendChatMessageBody<'_> {}
 
-impl<'a> helix::HelixRequestBody for [SendChatMessageBody<'a>] {
+impl helix::HelixRequestBody for [SendChatMessageBody<'_>] {
     fn try_to_body(&self) -> Result<hyper::body::Bytes, helix::BodyError> {
         #[derive(Serialize)]
         struct InnerBody<'a> {
