@@ -29,7 +29,7 @@ exclude = ["twitch_types", "twitch_oauth2"]
 [workspace.dependencies]
 twitch_api = { version = "0.7.0-rc.8", path = "." }
 twitch_oauth2 = { version = "0.14.0", path = "twitch_oauth2/" }
-twitch_types = { version = "0.4.5", features = [
+twitch_types = { version = "0.4.6", features = [
     "serde",
 ], path = "./twitch_types" }
 ureq = { version = "2.10.1", default-features = false, features = [
