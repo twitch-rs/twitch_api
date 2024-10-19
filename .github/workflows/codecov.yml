@@ -1,9 +1,11 @@
-# This doesn't work currently there is a bug in the output of grcov
 on:
   push:
     branches:
       - main
-      - trying
+  pull_request:
+
+env:
+  CI_TWITCH_API_FEATURES: "twitch_oauth2/all all unsupported deny_unknown_fields ureq"
 
 name: Code Coverage
 jobs:
@@ -11,8 +13,6 @@ jobs:
     name: Run test coverage
     runs-on: ubuntu-latest
     continue-on-error: true
-    # cov is broken upstream, see https://github.com/rust-lang/rust/issues/79645, fix in https://github.com/rust-lang/rust/issues/93054
-    if: "false"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,27 +23,25 @@ jobs:
           toolchain: nightly
           components: llvm-tools-preview
       - uses: Swatinem/rust-cache@v2
+
       - name: Install cargo-llvm-cov
-        run: curl -LsSf https://github.com/taiki-e/cargo-llvm-cov/releases/latest/download/cargo-llvm-cov-x86_64-unknown-linux-gnu.tar.gz | tar xzf - -C ~/.cargo/bin
+        uses: taiki-e/install-action@cargo-llvm-cov
+
       - name: Generate code coverage for tests
-        run: cargo llvm-cov --no-report --tests --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields"
+        run: cargo llvm-cov --no-report --tests --features "${{ env.CI_TWITCH_API_FEATURES }} _all trace_unknown_fields"
       - name: Generate code coverage for tests without any features
         run: cargo llvm-cov --no-report --tests
-      - name: Generate code coverage for examples
-        run: cargo llvm-cov --no-report --examples --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields"
-      #- name: Generate code coverage for docs
-      #  run: cargo llvm-cov --no-report --doc --features "twitch_oauth2/all all unsupported deny_unknown_fields trace_unknown_fields"
+
+      # doctests take too long to complete
+      # - name: Generate code coverage for docs
+      #   run: cargo llvm-cov --no-report --doc --features "${{ env.CI_TWITCH_API_FEATURES }} _all"
+
       - name: Merge lcov.info
-        run: cargo llvm-cov --no-run --lcov --ignore-filename-regex "twitch_oauth2" --output-path lcov.info
-      - name: Determine PR number
-        if: ${{ github.ref == 'refs/heads/trying' }}
-        run: git log -1 --pretty=format:"%s" | awk '{ print "PR_NUMBER=" substr($NF,2,length($NF)-2) }' >> $GITHUB_ENV
-      # - name: Determine actual commit
-      #   if: ${{ github.ref == 'refs/heads/trying' }}
-      #   run: git rev-parse HEAD~1 | awk '{ print "ACTUAL_COMMIT_SHA=" $NF }' >> $GITHUB_ENV
+        run: cargo llvm-cov report --lcov --ignore-filename-regex "twitch_oauth2" --output-path lcov.info
+
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v4
         with:
           files: ./lcov.info
-          override_pr: ${{env.PR_NUMBER}}
-          # override_commit: ${{env.ACTUAL_COMMIT_SHA}}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
