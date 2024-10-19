@@ -79,11 +79,11 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">automod.*</code> 🔴 0/4</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">automod.*</code> 🟡 1/4</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
-//! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold) | -<br>- |
+//! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold) | [AutomodMessageHoldV1](automod::AutomodMessageHoldV1)<br>[AutomodMessageHoldV1Payload](automod::AutomodMessageHoldV1Payload) |
 //! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate) | -<br>- |
 //! | [`automod.settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodsettingsupdate) | -<br>- |
 //! | [`automod.terms.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodtermsupdate) | -<br>- |
@@ -216,6 +216,7 @@ use serde_derive::{Deserialize, Serialize};
 
 use crate::parse_json;
 
+pub mod automod;
 pub mod channel;
 pub mod conduit;
 pub mod event;
