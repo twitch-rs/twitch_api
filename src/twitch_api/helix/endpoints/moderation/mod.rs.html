@@ -90,7 +90,13 @@
 <a href="#89" id="89">89</a>
 <a href="#90" id="90">90</a>
 <a href="#91" id="91">91</a>
-<a href="#92" id="92">92</a></pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"mod"</span>)]
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a></pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"mod"</span>)]
 </span><span class="doccomment">//! Helix endpoints regarding moderation
 
 </span><span class="kw">use crate</span>::{
@@ -110,9 +116,11 @@
 <span class="kw">pub mod </span>get_blocked_terms;
 <span class="kw">pub mod </span>get_moderators;
 <span class="kw">pub mod </span>get_shield_mode_status;
+<span class="kw">pub mod </span>get_unban_requests;
 <span class="kw">pub mod </span>manage_held_automod_messages;
 <span class="kw">pub mod </span>remove_blocked_term;
 <span class="kw">pub mod </span>remove_channel_moderator;
+<span class="kw">pub mod </span>resolve_unban_request;
 <span class="kw">pub mod </span>unban_user;
 <span class="kw">pub mod </span>update_automod_settings;
 <span class="kw">pub mod </span>update_shield_mode_status;
@@ -140,6 +148,8 @@
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>get_shield_mode_status::{GetShieldModeStatusRequest, LastShieldMode, ShieldModeStatus};
 <span class="attr">#[doc(inline)]
+</span><span class="kw">pub use </span>get_unban_requests::{GetUnbanRequestsRequest, UnbanRequest, UnbanRequestStatus};
+<span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>manage_held_automod_messages::{
     AutoModAction, ManageHeldAutoModMessages, ManageHeldAutoModMessagesBody,
     ManageHeldAutoModMessagesRequest,
@@ -148,6 +158,8 @@
 </span><span class="kw">pub use </span>remove_blocked_term::{RemoveBlockedTerm, RemoveBlockedTermRequest};
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>remove_channel_moderator::{RemoveChannelModeratorRequest, RemoveChannelModeratorResponse};
+<span class="attr">#[doc(inline)]
+</span><span class="kw">pub use </span>resolve_unban_request::ResolveUnbanRequest;
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>unban_user::{UnbanUserRequest, UnbanUserResponse};
 <span class="attr">#[doc(inline)]

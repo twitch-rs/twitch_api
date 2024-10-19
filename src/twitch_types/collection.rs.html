@@ -636,7 +636,7 @@
         }
     }
 
-    <span class="kw">fn </span>index(<span class="kw-2">&amp;</span><span class="lifetime">'c </span><span class="self">self</span>, range: <span class="kw">impl </span>std::ops::RangeBounds&lt;usize&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Collection&lt;<span class="lifetime">'_</span>, T&gt;&gt; {
+    <span class="kw">fn </span>index(<span class="kw-2">&amp;</span><span class="lifetime">'c </span><span class="self">self</span>, range: <span class="kw">impl </span>std::ops::RangeBounds&lt;usize&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Collection&lt;<span class="lifetime">'c</span>, T&gt;&gt; {
         <span class="kw">let </span>range = (range.start_bound().cloned(), range.end_bound().cloned());
         <span class="kw">let </span>new: Collection&lt;<span class="lifetime">'_</span>, T&gt; = <span class="kw">match </span><span class="self">self </span>{
             Collection::Owned(v) =&gt; Collection::Owned(Cow::Borrowed(v.get(range)<span class="question-mark">?</span>)),
@@ -652,7 +652,7 @@
     }
 
     <span class="doccomment">/// Returns chunks of items, similar to [`slice::chunks`]
-    </span><span class="kw">pub fn </span>chunks(<span class="kw-2">&amp;</span><span class="lifetime">'c </span><span class="self">self</span>, chunk_size: usize) -&gt; <span class="kw">impl </span>Iterator&lt;Item = Collection&lt;<span class="lifetime">'_</span>, T&gt;&gt; + <span class="lifetime">'_ </span>{
+    </span><span class="kw">pub fn </span>chunks(<span class="kw-2">&amp;</span><span class="lifetime">'c </span><span class="self">self</span>, chunk_size: usize) -&gt; <span class="kw">impl </span>Iterator&lt;Item = Collection&lt;<span class="lifetime">'c</span>, T&gt;&gt; + <span class="lifetime">'c </span>{
         <span class="kw">let </span>len = <span class="self">self</span>.iter().len();
         <span class="kw">let </span><span class="kw-2">mut </span>start = <span class="number">0</span>;
         std::iter::from_fn(<span class="kw">move </span>|| {
@@ -683,7 +683,7 @@
     </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool { <span class="self">self</span>.len() == <span class="number">0 </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: std::ops::Deref + std::fmt::Debug&gt; std::fmt::Debug <span class="kw">for </span>Collection&lt;<span class="lifetime">'a</span>, T&gt;
+<span class="kw">impl</span>&lt;T: std::ops::Deref + std::fmt::Debug&gt; std::fmt::Debug <span class="kw">for </span>Collection&lt;<span class="lifetime">'_</span>, T&gt;
 <span class="kw">where
     </span>[T]: ToOwned,
     &lt;[T] <span class="kw">as </span>ToOwned&gt;::Owned: std::fmt::Debug,

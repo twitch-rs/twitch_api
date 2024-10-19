@@ -26,12 +26,26 @@
 <a href="#25" id="25">25</a>
 <a href="#26" id="26">26</a>
 <a href="#27" id="27">27</a>
-<a href="#28" id="28">28</a></pre></div><pre class="rust"><code><span class="macro">manual_braid!</span> {
+<a href="#28" id="28">28</a>
+<a href="#29" id="29">29</a>
+<a href="#30" id="30">30</a>
+<a href="#31" id="31">31</a>
+<a href="#32" id="32">32</a>
+<a href="#33" id="33">33</a>
+<a href="#34" id="34">34</a>
+<a href="#35" id="35">35</a></pre></div><pre class="rust"><code><span class="macro">manual_braid!</span> {
     <span class="doccomment">/// A blocked term ID
     </span><span class="kw">pub struct </span>BlockedTermId;
     <span class="kw">pub struct </span>BlockedTermIdRef;
 }
 <span class="macro">impl_extra!</span>(BlockedTermId, BlockedTermIdRef);
+
+<span class="macro">manual_braid!</span> {
+    <span class="doccomment">/// An unban request ID
+    </span><span class="kw">pub struct </span>UnbanRequestId;
+    <span class="kw">pub struct </span>UnbanRequestIdRef;
+}
+<span class="macro">impl_extra!</span>(UnbanRequestId, UnbanRequestIdRef);
 
 <span class="doccomment">/// Status of a message that is or was in AutoMod queue
 </span><span class="attr">#[derive(PartialEq, Eq, Debug, Clone)]

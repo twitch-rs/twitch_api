@@ -484,7 +484,7 @@
     <span class="kw">fn </span>from(color: Cow&lt;<span class="lifetime">'a</span>, HexColorRef&gt;) -&gt; <span class="self">Self </span>{ NamedUserColor::Hex(color) }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;HexColor&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">'a</span>&gt; {
+<span class="kw">impl </span>From&lt;HexColor&gt; <span class="kw">for </span>NamedUserColor&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>from(color: HexColor) -&gt; <span class="self">Self </span>{ NamedUserColor::Hex(color.into()) }
 }
 

@@ -211,7 +211,22 @@
 <a href="#210" id="210">210</a>
 <a href="#211" id="211">211</a>
 <a href="#212" id="212">212</a>
-<a href="#213" id="213">213</a></pre></div><pre class="rust"><code><span class="attr">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a></pre></div><pre class="rust"><code><span class="attr">#![deny(missing_docs, rustdoc::broken_intra_doc_links)]
 #![allow(clippy::extra_unused_lifetimes)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
@@ -273,15 +288,24 @@
 
 <span class="kw">mod </span>basic;
 <span class="comment">// cc: https://github.com/rust-lang/rust/issues/83428, can't use glob imports and keep the modules private
-</span><span class="attr">#[cfg(feature = <span class="string">"color"</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"chat"</span>)]
+</span><span class="doccomment">/// types for chat
+</span><span class="kw">pub mod </span>chat;
+<span class="attr">#[cfg(feature = <span class="string">"color"</span>)]
 </span><span class="doccomment">/// types for colors
 </span><span class="kw">pub mod </span>color;
 <span class="attr">#[cfg(feature = <span class="string">"emote"</span>)]
 </span><span class="doccomment">/// types for emotes
 </span><span class="kw">pub mod </span>emote;
+<span class="attr">#[cfg(feature = <span class="string">"entitlement"</span>)]
+</span><span class="doccomment">/// types for entitlements
+</span><span class="kw">pub mod </span>entitlement;
 <span class="attr">#[cfg(feature = <span class="string">"eventsub"</span>)]
 </span><span class="doccomment">/// types for eventsub related things
 </span><span class="kw">pub mod </span>eventsub;
+<span class="attr">#[cfg(feature = <span class="string">"extension"</span>)]
+</span><span class="doccomment">/// types for extensions
+</span><span class="kw">pub mod </span>extension;
 <span class="attr">#[cfg(feature = <span class="string">"goal"</span>)]
 </span><span class="doccomment">/// types for goals
 </span><span class="kw">pub mod </span>goal;
@@ -306,12 +330,18 @@
 
 <span class="kw">pub use </span>basic::<span class="kw-2">*</span>;
 
+<span class="attr">#[cfg(feature = <span class="string">"chat"</span>)]
+</span><span class="kw">pub use </span><span class="kw">crate</span>::chat::<span class="kw-2">*</span>;
 <span class="attr">#[cfg(feature = <span class="string">"color"</span>)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::color::<span class="kw-2">*</span>;
 <span class="attr">#[cfg(feature = <span class="string">"emote"</span>)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::emote::<span class="kw-2">*</span>;
+<span class="attr">#[cfg(feature = <span class="string">"entitlement"</span>)]
+</span><span class="kw">pub use </span><span class="kw">crate</span>::entitlement::<span class="kw-2">*</span>;
 <span class="attr">#[cfg(feature = <span class="string">"eventsub"</span>)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::eventsub::<span class="kw-2">*</span>;
+<span class="attr">#[cfg(feature = <span class="string">"extension"</span>)]
+</span><span class="kw">pub use </span><span class="kw">crate</span>::extension::<span class="kw-2">*</span>;
 <span class="attr">#[cfg(feature = <span class="string">"goal"</span>)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::goal::<span class="kw-2">*</span>;
 <span class="attr">#[cfg(feature = <span class="string">"moderation"</span>)]

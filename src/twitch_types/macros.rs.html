@@ -943,7 +943,7 @@
         </span><span class="kw">impl </span>::std::cmp::PartialOrd <span class="kw">for </span><span class="macro-nonterminal">$Owned </span>{
             <span class="attr">#[inline]
             #[allow(unknown_lints)]
-            #[allow(clippy::incorrect_partial_ord_impl_on_ord_type)]
+            #[allow(clippy::non_canonical_partial_ord_impl)]
             </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; ::std::option::Option&lt;::std::cmp::Ordering&gt; {
                 ::std::option::Option::Some(::std::cmp::Ord::cmp(<span class="self">self</span>, other))
             }
