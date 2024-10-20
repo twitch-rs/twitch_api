@@ -1,11 +1,15 @@
 use std::{borrow::Cow, collections::BTreeMap, fmt::Write, ops::Deref};
 
 use super::html;
-use super::rustdoc::ParsedRustdoc;
+use super::rustdoc::ParsedHelixRustdoc;
 use color_eyre::eyre::{bail, Result};
 use url::Url;
 
-pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Result<String> {
+pub fn make_overview(
+    base_url: &Url,
+    raw: &str,
+    rustdoc: &mut ParsedHelixRustdoc,
+) -> Result<String> {
     let parser = tl::parse(raw, tl::ParserOptions::new())?;
     let table = html::tbody_below_id(&parser, "twitch-api-reference")?;
     let children = table.children();
@@ -29,19 +33,20 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Resu
         endpoint_link: String,
         helper_links: Vec<String>,
         module_link: Option<String>,
+        item_name: String,
     }
 
     let mut doc = String::new();
     for (cat_name, endpoints) in categories.into_iter() {
         let module_name = category_override(to_snake(&cat_name));
 
-        let resolved = endpoints
+        let mut resolved = endpoints
             .into_iter()
             .map(|endpoint| {
                 let item_name = item_override(to_snake(&endpoint.name));
                 let actual_module = module_override(&module_name, &item_name);
                 let module_link = if rustdoc
-                    .helix_mods
+                    .mods
                     .get(&actual_module)
                     .is_some_and(|m| m.contains(item_name.as_str()))
                 {
@@ -50,33 +55,38 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Resu
                     println!("[Helix]: missing {actual_module}::{item_name}");
                     None
                 };
-                let mut helper_links = Vec::new();
-
-                if item_name.ends_with("s") {
-                    let singular = &item_name[..item_name.len() - 1];
-                    for item in rustdoc
-                        .helix_methods
-                        .iter()
-                        .filter(|m| m.starts_with(singular))
-                    {
-                        helper_links.push(format!("[`HelixClient::{item}`]"))
-                    }
+                let helper_links = if rustdoc.methods.remove(&*item_name) {
+                    vec![format!("[`HelixClient::{item_name}`]")]
                 } else {
-                    for item in rustdoc
-                        .helix_methods
-                        .iter()
-                        .filter(|m| m.starts_with(item_name.as_str()))
-                    {
-                        helper_links.push(format!("[`HelixClient::{item}`]"))
-                    }
-                }
+                    vec![]
+                };
+
                 HelixEntry {
                     endpoint_link: format!("[{}]({})", endpoint.name, endpoint.link),
                     helper_links,
                     module_link,
+                    item_name,
                 }
             })
             .collect::<Vec<_>>();
+        // second iteration to find prefix-matches
+        for entry in &mut resolved {
+            if entry.item_name.ends_with("s") {
+                let singular = &entry.item_name[..entry.item_name.len() - 1];
+                for item in rustdoc.methods.iter().filter(|m| m.starts_with(singular)) {
+                    entry.helper_links.push(format!("[`HelixClient::{item}`]"))
+                }
+            } else {
+                for item in rustdoc
+                    .methods
+                    .iter()
+                    .filter(|m| m.starts_with(entry.item_name.as_str()))
+                {
+                    entry.helper_links.push(format!("[`HelixClient::{item}`]"))
+                }
+            }
+        }
+
         let n_implemented = resolved
             .iter()
             .filter(|it| it.module_link.is_some())
@@ -97,6 +107,7 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Resu
             endpoint_link,
             helper_links,
             module_link,
+            ..
         } in resolved
         {
             helper = if helper_links.is_empty() {

@@ -1,17 +1,20 @@
 use color_eyre::eyre::{OptionExt, Result};
 use rustdoc_types::{Crate, Id, ItemEnum};
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeSet, HashMap, HashSet};
 
-pub struct ParsedRustdoc<'a> {
+pub struct ParsedHelixRustdoc<'a> {
     /// Helper methods of HelixClient
-    pub helix_methods: HashSet<&'a str>,
+    pub methods: BTreeSet<&'a str>, // BTreeSet for sorting
     /// Endpoints (helix::endpoints) mapped to their members
-    pub helix_mods: HashMap<&'a str, HashSet<&'a str>>,
-    /// Event categories mapped to their types
-    pub eventsub_types: HashMap<&'a str, HashSet<&'a str>>,
+    pub mods: HashMap<&'a str, HashSet<&'a str>>,
 }
 
-pub fn parse(rustdoc: &Crate) -> Result<ParsedRustdoc<'_>> {
+pub struct ParsedEventsubRustdoc<'a> {
+    /// Event categories mapped to their types
+    pub types: HashMap<&'a str, HashSet<&'a str>>,
+}
+
+pub fn parse(rustdoc: &Crate) -> Result<(ParsedHelixRustdoc<'_>, ParsedEventsubRustdoc<'_>)> {
     let get_item = |id: &Id| get_doc_item(rustdoc, id);
 
     let root = get_item(&rustdoc.root);
@@ -28,17 +31,21 @@ pub fn parse(rustdoc: &Crate) -> Result<ParsedRustdoc<'_>> {
         .and_then(as_module)
         .ok_or_eyre("failed to find 'eventsub' link")?;
 
-    Ok(ParsedRustdoc {
-        helix_methods: parse_helix_methods(rustdoc, helix)?,
-        helix_mods: parse_helix_endpoints(rustdoc, helix)?,
-        eventsub_types: parse_eventsub_types(rustdoc, eventsub),
-    })
+    Ok((
+        ParsedHelixRustdoc {
+            methods: parse_helix_methods(rustdoc, helix)?,
+            mods: parse_helix_endpoints(rustdoc, helix)?,
+        },
+        ParsedEventsubRustdoc {
+            types: parse_eventsub_types(rustdoc, eventsub),
+        },
+    ))
 }
 
 fn parse_helix_methods<'a>(
     rustdoc: &'a Crate,
     helix: &'a rustdoc_types::Module,
-) -> Result<HashSet<&'a str>> {
+) -> Result<BTreeSet<&'a str>> {
     let get_item = |id: &Id| get_doc_item(rustdoc, id);
 
     let client = find_item(rustdoc, &helix.items, "client")
@@ -48,7 +55,7 @@ fn parse_helix_methods<'a>(
         .and_then(as_struct)
         .ok_or_eyre("failed to find helix::client::HelixClient")?;
 
-    let mut methods = HashSet::new();
+    let mut methods = BTreeSet::new();
     for imp in helix_client
         .impls
         .iter()

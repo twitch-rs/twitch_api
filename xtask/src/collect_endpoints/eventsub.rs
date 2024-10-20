@@ -1,11 +1,11 @@
 use std::{borrow::Cow, collections::BTreeMap, fmt::Write};
 
 use super::html;
-use super::rustdoc::ParsedRustdoc;
+use super::rustdoc::ParsedEventsubRustdoc;
 use color_eyre::eyre::{bail, Result};
 use url::Url;
 
-pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Result<String> {
+pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedEventsubRustdoc) -> Result<String> {
     let parser = tl::parse(raw, tl::ParserOptions::new())?;
     let table = html::tbody_below_id(&parser, "subscription-types")?;
     let children = table.children();
@@ -37,7 +37,7 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Resu
 
     let mut doc = String::new();
     for (category, subscriptions) in categories.into_iter() {
-        let implemented = rustdoc.eventsub_types.get(category.as_str());
+        let implemented = rustdoc.types.get(category.as_str());
         let is_implemented = |sub: &str, payload: &str| {
             if let Some(types) = implemented {
                 types.contains(sub) && types.contains(payload)

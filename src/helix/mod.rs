@@ -110,7 +110,7 @@
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Chatters](https://dev.twitch.tv/docs/api/reference#get-chatters) | [`HelixClient::get_chatters`] | [`chat::get_chatters`] |
-//! | [Get Channel Emotes](https://dev.twitch.tv/docs/api/reference#get-channel-emotes) | [`HelixClient::get_channel_emotes_from_login`], [`HelixClient::get_channel_emotes_from_id`] | [`chat::get_channel_emotes`] |
+//! | [Get Channel Emotes](https://dev.twitch.tv/docs/api/reference#get-channel-emotes) | [`HelixClient::get_channel_emotes_from_id`], [`HelixClient::get_channel_emotes_from_login`] | [`chat::get_channel_emotes`] |
 //! | [Get Global Emotes](https://dev.twitch.tv/docs/api/reference#get-global-emotes) | [`HelixClient::get_global_emotes`] | [`chat::get_global_emotes`] |
 //! | [Get Emote Sets](https://dev.twitch.tv/docs/api/reference#get-emote-sets) | [`HelixClient::get_emote_sets`] | [`chat::get_emote_sets`] |
 //! | [Get Channel Chat Badges](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges) | - | [`chat::get_channel_chat_badges`] |
@@ -140,9 +140,9 @@
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
-//! | [Get Conduits](https://dev.twitch.tv/docs/api/reference#get-conduits) | [`HelixClient::get_conduits`], [`HelixClient::get_conduit_shards`] | [`eventsub::get_conduits`] |
+//! | [Get Conduits](https://dev.twitch.tv/docs/api/reference#get-conduits) | [`HelixClient::get_conduits`] | [`eventsub::get_conduits`] |
 //! | [Create Conduits](https://dev.twitch.tv/docs/api/reference#create-conduits) | [`HelixClient::create_conduit`] | [`eventsub::create_conduit`] |
-//! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | [`HelixClient::update_conduit_shards`] | - |
+//! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | - | - |
 //! | [Delete Conduit](https://dev.twitch.tv/docs/api/reference#delete-conduit) | - | - |
 //! | [Get Conduit Shards](https://dev.twitch.tv/docs/api/reference#get-conduit-shards) | [`HelixClient::get_conduit_shards`] | [`eventsub::get_conduit_shards`] |
 //! | [Update Conduit Shards](https://dev.twitch.tv/docs/api/reference#update-conduit-shards) | [`HelixClient::update_conduit_shards`] | [`eventsub::update_conduit_shards`] |
@@ -317,7 +317,7 @@
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Stream Key](https://dev.twitch.tv/docs/api/reference#get-stream-key) | - | - |
-//! | [Get Streams](https://dev.twitch.tv/docs/api/reference#get-streams) | [`HelixClient::get_streams_from_logins`], [`HelixClient::get_streams_from_ids`] | [`streams::get_streams`] |
+//! | [Get Streams](https://dev.twitch.tv/docs/api/reference#get-streams) | [`HelixClient::get_streams_from_ids`], [`HelixClient::get_streams_from_logins`] | [`streams::get_streams`] |
 //! | [Get Followed Streams](https://dev.twitch.tv/docs/api/reference#get-followed-streams) | [`HelixClient::get_followed_streams`] | [`streams::get_followed_streams`] |
 //! | [Create Stream Marker](https://dev.twitch.tv/docs/api/reference#create-stream-marker) | - | - |
 //! | [Get Stream Markers](https://dev.twitch.tv/docs/api/reference#get-stream-markers) | - | - |
@@ -355,8 +355,8 @@
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
-//! | [Get Users](https://dev.twitch.tv/docs/api/reference#get-users) | [`HelixClient::get_users_chat_colors`], [`HelixClient::get_user_from_id`], [`HelixClient::get_users_from_ids`], [`HelixClient::get_user_from_login`], [`HelixClient::get_user_chat_color`] | [`users::get_users`] |
-//! | [Update User](https://dev.twitch.tv/docs/api/reference#update-user) | [`HelixClient::update_user_chat_color`] | - |
+//! | [Get Users](https://dev.twitch.tv/docs/api/reference#get-users) | [`HelixClient::get_user_from_id`], [`HelixClient::get_user_from_login`], [`HelixClient::get_users_chat_colors`], [`HelixClient::get_users_from_ids`] | [`users::get_users`] |
+//! | [Update User](https://dev.twitch.tv/docs/api/reference#update-user) | - | - |
 //! | [Get User Block List](https://dev.twitch.tv/docs/api/reference#get-user-block-list) | - | [`users::get_user_block_list`] |
 //! | [Block User](https://dev.twitch.tv/docs/api/reference#block-user) | [`HelixClient::block_user`] | [`users::block_user`] |
 //! | [Unblock User](https://dev.twitch.tv/docs/api/reference#unblock-user) | [`HelixClient::unblock_user`] | [`users::unblock_user`] |
