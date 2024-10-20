@@ -41,7 +41,7 @@ pub fn run(sh: &Shell, build_json_docs: bool, all_features: &str) -> Result<()> 
     }
     let json = sh.read_file("target/doc/twitch_api.json")?;
     let rustdoc = serde_json::from_str(&json)?;
-    let rustdoc = rustdoc::parse(&rustdoc)?;
+    let (mut helix_rustdoc, eventsub_rustdoc) = rustdoc::parse(&rustdoc)?;
 
     let (helix, eventsub) = (
         helix_h.join().expect("failed to join helix thread")?,
@@ -50,12 +50,16 @@ pub fn run(sh: &Shell, build_json_docs: bool, all_features: &str) -> Result<()> 
 
     std::thread::scope(|s| -> Result<()> {
         let h1 = s.spawn(|| {
-            let overview = helix::make_overview(&Url::parse(HELIX_URL).unwrap(), &helix, &rustdoc)?;
+            let overview =
+                helix::make_overview(&Url::parse(HELIX_URL).unwrap(), &helix, &mut helix_rustdoc)?;
             paste_in_file(HELIX_SOURCE_FILE, overview)
         });
         let h2 = s.spawn(|| {
-            let overview =
-                eventsub::make_overview(&Url::parse(EVENTSUB_URL).unwrap(), &eventsub, &rustdoc)?;
+            let overview = eventsub::make_overview(
+                &Url::parse(EVENTSUB_URL).unwrap(),
+                &eventsub,
+                &eventsub_rustdoc,
+            )?;
             paste_in_file(EVENTSUB_SOURCE_FILE, overview)
         });
 
