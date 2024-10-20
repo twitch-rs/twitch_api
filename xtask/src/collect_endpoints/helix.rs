@@ -27,7 +27,7 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Resu
 
     struct HelixEntry {
         endpoint_link: String,
-        helper_link: Option<String>,
+        helper_links: Vec<String>,
         module_link: Option<String>,
     }
 
@@ -50,14 +50,29 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Resu
                     println!("[Helix]: missing {actual_module}::{item_name}");
                     None
                 };
-                let helper_link = if rustdoc.helix_methods.contains(item_name.as_str()) {
-                    Some(format!("[`HelixClient::{item_name}`]"))
+                let mut helper_links = Vec::new();
+
+                if item_name.ends_with("s") {
+                    let singular = &item_name[..item_name.len() - 1];
+                    for item in rustdoc
+                        .helix_methods
+                        .iter()
+                        .filter(|m| m.starts_with(singular))
+                    {
+                        helper_links.push(format!("[`HelixClient::{item}`]"))
+                    }
                 } else {
-                    None
-                };
+                    for item in rustdoc
+                        .helix_methods
+                        .iter()
+                        .filter(|m| m.starts_with(item_name.as_str()))
+                    {
+                        helper_links.push(format!("[`HelixClient::{item}`]"))
+                    }
+                }
                 HelixEntry {
                     endpoint_link: format!("[{}]({})", endpoint.name, endpoint.link),
-                    helper_link,
+                    helper_links,
                     module_link,
                 }
             })
@@ -77,16 +92,22 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Resu
 //! |---|---|---|
 "#
         )?;
+        let mut helper: String;
         for HelixEntry {
             endpoint_link,
-            helper_link,
+            helper_links,
             module_link,
         } in resolved
         {
+            helper = if helper_links.is_empty() {
+                "-".to_owned()
+            } else {
+                helper_links.join(", ")
+            };
             writeln!(
                 &mut doc,
                 "//! | {endpoint_link} | {} | {} |",
-                helper_link.as_deref().unwrap_or("-"),
+                helper,
                 module_link.as_deref().unwrap_or("-")
             )?;
         }
@@ -122,6 +143,7 @@ fn item_override(i: String) -> String {
     match i.as_str() {
         "create_conduits" => "create_conduit".to_owned(),
         "resolve_unban_requests" => "resolve_unban_request".to_owned(),
+        "get_hype_train_events" => "get_hypetrain_events".to_owned(),
         _ => i,
     }
 }
@@ -129,6 +151,7 @@ fn item_override(i: String) -> String {
 fn module_override<'a>(module: &'a str, item: &'a str) -> &'a str {
     match item {
         "add_channel_vip" | "get_vips" | "remove_channel_vip" => "channels",
+        "get_stream_tags" => "streams",
         _ => module,
     }
 }
