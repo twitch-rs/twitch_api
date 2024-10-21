@@ -16,6 +16,7 @@ pub mod delete_chat_messages;
 pub mod get_automod_settings;
 pub mod get_banned_users;
 pub mod get_blocked_terms;
+pub mod get_moderated_channels;
 pub mod get_moderators;
 pub mod get_shield_mode_status;
 pub mod get_unban_requests;
@@ -45,6 +46,8 @@ pub use delete_chat_messages::{DeleteChatMessagesRequest, DeleteChatMessagesResp
 pub use get_automod_settings::{AutoModSettings, GetAutoModSettingsRequest};
 #[doc(inline)]
 pub use get_banned_users::{BannedUser, GetBannedUsersRequest};
+#[doc(inline)]
+pub use get_moderated_channels::{GetModeratedChannelsRequest, ModeratedChannel};
 #[doc(inline)]
 pub use get_moderators::{GetModeratorsRequest, Moderator};
 #[doc(inline)]
