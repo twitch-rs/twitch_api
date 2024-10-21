@@ -15,6 +15,7 @@ pub mod get_emote_sets;
 pub mod get_global_chat_badges;
 pub mod get_global_emotes;
 pub mod get_user_chat_color;
+pub mod get_user_emotes;
 pub mod send_a_shoutout;
 pub mod send_chat_announcement;
 pub mod send_chat_message;
@@ -37,6 +38,8 @@ pub use get_global_chat_badges::GetGlobalChatBadgesRequest;
 pub use get_global_emotes::GetGlobalEmotesRequest;
 #[doc(inline)]
 pub use get_user_chat_color::{GetUserChatColorRequest, UserChatColor};
+#[doc(inline)]
+pub use get_user_emotes::{GetUserEmotesRequest, UserEmote};
 #[doc(inline)]
 pub use send_a_shoutout::{SendAShoutoutRequest, SendAShoutoutResponse};
 #[doc(inline)]
