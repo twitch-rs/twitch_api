@@ -1,11 +1,15 @@
 use std::{borrow::Cow, collections::BTreeMap, fmt::Write, ops::Deref};
 
 use super::html;
-use super::rustdoc::ParsedRustdoc;
+use super::rustdoc::ParsedHelixRustdoc;
 use color_eyre::eyre::{bail, Result};
 use url::Url;
 
-pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Result<String> {
+pub fn make_overview(
+    base_url: &Url,
+    raw: &str,
+    rustdoc: &mut ParsedHelixRustdoc,
+) -> Result<String> {
     let parser = tl::parse(raw, tl::ParserOptions::new())?;
     let table = html::tbody_below_id(&parser, "twitch-api-reference")?;
     let children = table.children();
@@ -27,21 +31,22 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Resu
 
     struct HelixEntry {
         endpoint_link: String,
-        helper_link: Option<String>,
+        helper_links: Vec<String>,
         module_link: Option<String>,
+        item_name: String,
     }
 
     let mut doc = String::new();
     for (cat_name, endpoints) in categories.into_iter() {
         let module_name = category_override(to_snake(&cat_name));
 
-        let resolved = endpoints
+        let mut resolved = endpoints
             .into_iter()
             .map(|endpoint| {
                 let item_name = item_override(to_snake(&endpoint.name));
                 let actual_module = module_override(&module_name, &item_name);
                 let module_link = if rustdoc
-                    .helix_mods
+                    .mods
                     .get(&actual_module)
                     .is_some_and(|m| m.contains(item_name.as_str()))
                 {
@@ -50,18 +55,47 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Resu
                     println!("[Helix]: missing {actual_module}::{item_name}");
                     None
                 };
-                let helper_link = if rustdoc.helix_methods.contains(item_name.as_str()) {
-                    Some(format!("[`HelixClient::{item_name}`]"))
+                let helper_links = if rustdoc.methods.remove(&*item_name) {
+                    vec![format!("[`HelixClient::{item_name}`]")]
                 } else {
-                    None
+                    vec![]
                 };
+
                 HelixEntry {
                     endpoint_link: format!("[{}]({})", endpoint.name, endpoint.link),
-                    helper_link,
+                    helper_links,
                     module_link,
+                    item_name,
                 }
             })
             .collect::<Vec<_>>();
+        // helper, (distance, endpoint link)
+        let mut distances: BTreeMap<String, (usize, String)> = BTreeMap::new();
+
+        // second iteration to find distance-matches
+        for entry in &mut resolved {
+            for (item, distance) in rustdoc
+                .methods
+                .iter()
+                .map(|m| (m, distance(&entry.item_name, m)))
+            {
+                if let Some((current_distance, _)) = distances.get(*item) {
+                    if distance < *current_distance {
+                        distances.insert((*item).to_owned(), (distance, entry.endpoint_link.clone()));
+                    }
+                } else if distance < 3 {
+                    distances.insert((*item).to_owned(), (distance, entry.endpoint_link.clone()));
+                }
+            }
+        }
+        for entry in &mut resolved {
+            for (item, (_, link)) in distances.iter() {
+                if *link == entry.endpoint_link {
+                    entry.helper_links.push(format!("[`HelixClient::{item}`]"));
+                }
+            }
+        }
+
         let n_implemented = resolved
             .iter()
             .filter(|it| it.module_link.is_some())
@@ -77,16 +111,23 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedRustdoc) -> Resu
 //! |---|---|---|
 "#
         )?;
+        let mut helper: String;
         for HelixEntry {
             endpoint_link,
-            helper_link,
+            helper_links,
             module_link,
+            ..
         } in resolved
         {
+            helper = if helper_links.is_empty() {
+                "-".to_owned()
+            } else {
+                helper_links.join(", ")
+            };
             writeln!(
                 &mut doc,
                 "//! | {endpoint_link} | {} | {} |",
-                helper_link.as_deref().unwrap_or("-"),
+                helper,
                 module_link.as_deref().unwrap_or("-")
             )?;
         }
@@ -122,6 +163,7 @@ fn item_override(i: String) -> String {
     match i.as_str() {
         "create_conduits" => "create_conduit".to_owned(),
         "resolve_unban_requests" => "resolve_unban_request".to_owned(),
+        "get_hype_train_events" => "get_hypetrain_events".to_owned(),
         _ => i,
     }
 }
@@ -129,6 +171,7 @@ fn item_override(i: String) -> String {
 fn module_override<'a>(module: &'a str, item: &'a str) -> &'a str {
     match item {
         "add_channel_vip" | "get_vips" | "remove_channel_vip" => "channels",
+        "get_stream_tags" => "streams",
         _ => module,
     }
 }
@@ -172,5 +215,98 @@ impl<'a> HelixRow<'a> {
                 link: base_url.join(&link)?,
             },
         ))
+    }
+}
+
+
+pub fn distance(src: &str, tar: &str) -> usize {
+    let ignore_phrases = vec!["in_channel", "by_id", "from_ids", "from_id", "from_logins", "from_login"];
+
+    fn remove_ignored_phrases(s: &str, ignore_phrases: &[&str]) -> String {
+        let mut result = s.to_string();
+        for phrase in ignore_phrases {
+            result = result.replace(phrase, "_");
+        }
+        result
+    }
+
+    fn depluralize(token: &str) -> &str {
+        if token.ends_with('s') && token.len() > 1 {
+            &token[..token.len() - 1]
+        } else {
+            token
+        }
+    }
+
+    let src_cleaned = remove_ignored_phrases(src, &ignore_phrases);
+    let tar_cleaned = remove_ignored_phrases(tar, &ignore_phrases);
+
+    let src_tokens: Vec<&str> = src_cleaned
+        .split('_')
+        .filter(|token| !token.is_empty())
+        .map(depluralize)
+        .collect();
+
+    let tar_tokens: Vec<&str> = tar_cleaned
+        .split('_')
+        .filter(|token| !token.is_empty())
+        .map(depluralize)
+        .collect();
+
+    let min_len = usize::min(src_tokens.len(), tar_tokens.len());
+    let mut distance = 0;
+
+    // Compare tokens like `editor` and `emote`
+    for i in 0..min_len {
+        // XXX: could make early tokens penalize heavier
+        let weight = 2;
+
+        if src_tokens[i] == tar_tokens[i] {
+            continue;
+        } else {
+            let token_distance = super::levenshtein(src_tokens[i], tar_tokens[i]);
+            distance += weight * token_distance;
+        }
+    }
+
+    // penalize extra tokens
+    // for example, `get_channel_editors`, `get_channels_from_ids` == 24
+    if src_tokens.len() > min_len {
+        for token in &src_tokens[min_len..] {
+            let weight = 4; // higher penalty for extra tokens
+            let token_len = token.chars().count();
+            distance += weight * token_len;
+        }
+    } else if tar_tokens.len() > min_len {
+        for token in &tar_tokens[min_len..] {
+            let weight = 4;
+            let token_len = token.chars().count();
+            distance += weight * token_len;
+        }
+    }
+
+    distance
+}
+
+#[cfg(test)]
+#[test]
+fn distance_test() {
+    let examples = vec![
+        ("get_channel_emotes_from_id", "get_channel_emotes"),
+        ("get_users_chat_colors", "get_user_chat_color"),
+        ("get_games_by_id", "get_games"),
+        ("get_banned_users_in_channel_from_id", "get_banned_users"),
+        ("get_channel_schedule", "get_ad_schedule"),
+        ("get_game_analytics", "get_games_by_id"),
+        ("get_channel_editors", "get_channel_emotes_from_id"),
+        ("get_channel_editors", "get_channel_schedule"),
+        ("get_channel_editors", "get_channels_from_ids"),
+        ("get_clips", "get_vips_in_channel"),
+        ("get_teams","get_streams_from_ids"),
+    ];
+
+    for (src, tar) in examples {
+        let dist = distance(src, tar);
+        println!("Distance between '{}' and '{}' is: {}", src, tar, dist);
     }
 }
