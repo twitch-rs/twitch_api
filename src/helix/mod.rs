@@ -122,7 +122,7 @@
 //! | [Send Chat Announcement](https://dev.twitch.tv/docs/api/reference#send-chat-announcement) | [`HelixClient::send_chat_announcement`] | [`chat::send_chat_announcement`] |
 //! | [Send a Shoutout](https://dev.twitch.tv/docs/api/reference#send-a-shoutout) | - | [`chat::send_a_shoutout`] |
 //! | [Send Chat Message](https://dev.twitch.tv/docs/api/reference#send-chat-message) | - | [`chat::send_chat_message`] |
-//! | [Get User Chat Color](https://dev.twitch.tv/docs/api/reference#get-user-chat-color) | [`HelixClient::get_user_chat_color`] | [`chat::get_user_chat_color`] |
+//! | [Get User Chat Color](https://dev.twitch.tv/docs/api/reference#get-user-chat-color) | [`HelixClient::get_user_chat_color`], [`HelixClient::get_users_chat_colors`] | [`chat::get_user_chat_color`] |
 //! | [Update User Chat Color](https://dev.twitch.tv/docs/api/reference#update-user-chat-color) | [`HelixClient::update_user_chat_color`] | [`chat::update_user_chat_color`] |
 //!
 //! </details>
@@ -355,7 +355,7 @@
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
-//! | [Get Users](https://dev.twitch.tv/docs/api/reference#get-users) | [`HelixClient::get_user_from_id`], [`HelixClient::get_user_from_login`], [`HelixClient::get_users_chat_colors`], [`HelixClient::get_users_from_ids`] | [`users::get_users`] |
+//! | [Get Users](https://dev.twitch.tv/docs/api/reference#get-users) | [`HelixClient::get_user_from_id`], [`HelixClient::get_user_from_login`], [`HelixClient::get_users_from_ids`] | [`users::get_users`] |
 //! | [Update User](https://dev.twitch.tv/docs/api/reference#update-user) | - | - |
 //! | [Get User Block List](https://dev.twitch.tv/docs/api/reference#get-user-block-list) | - | [`users::get_user_block_list`] |
 //! | [Block User](https://dev.twitch.tv/docs/api/reference#block-user) | [`HelixClient::block_user`] | [`users::block_user`] |
