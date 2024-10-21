@@ -101,3 +101,34 @@ fn paste_in_file(path: impl AsRef<Path>, to_paste: String) -> Result<()> {
 
     Ok(())
 }
+
+pub fn levenshtein(src: &str, tar: &str) -> usize {
+    let src_len = src.chars().count();
+    let tar_len = tar.chars().count();
+
+    // initialize the matrix
+    let mut matrix: Vec<Vec<usize>> = vec![vec![0; tar_len + 1]; src_len + 1];
+
+    for i in 1..(src_len + 1) {
+        matrix[i][0] = i;
+    }
+
+    for i in 1..(tar_len + 1) {
+        matrix[0][i] = i;
+    }
+
+    // apply edit operations
+    for (i, s_char) in src.chars().enumerate() {
+        for (j, t_char) in tar.chars().enumerate() {
+            let substitution_cost = if s_char == t_char { 0 } else { 1 };
+            let operations = [
+                matrix[i][j + 1] + 1,             // deletion
+                matrix[i + 1][j] + 1,             // insertion
+                matrix[i][j] + substitution_cost, // substitution
+            ];
+            matrix[i + 1][j + 1] = *operations.iter().min().unwrap();
+        }
+    }
+
+    matrix[src_len][tar_len]
+}

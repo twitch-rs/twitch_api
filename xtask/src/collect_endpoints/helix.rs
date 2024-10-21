@@ -69,20 +69,30 @@ pub fn make_overview(
                 }
             })
             .collect::<Vec<_>>();
-        // second iteration to find prefix-matches
+        // helper, (distance, endpoint link)
+        let mut distances: BTreeMap<String, (usize, String)> = BTreeMap::new();
+
+        // second iteration to find distance-matches
         for entry in &mut resolved {
-            if entry.item_name.ends_with("s") {
-                let singular = &entry.item_name[..entry.item_name.len() - 1];
-                for item in rustdoc.methods.iter().filter(|m| m.starts_with(singular)) {
-                    entry.helper_links.push(format!("[`HelixClient::{item}`]"))
+            for (item, distance) in rustdoc
+                .methods
+                .iter()
+                .map(|m| (m, distance(&entry.item_name, m)))
+            {
+                if let Some((current_distance, _)) = distances.get(*item) {
+                    if distance < *current_distance {
+                        distances
+                            .insert((*item).to_owned(), (distance, entry.endpoint_link.clone()));
+                    }
+                } else if distance < 3 {
+                    distances.insert((*item).to_owned(), (distance, entry.endpoint_link.clone()));
                 }
-            } else {
-                for item in rustdoc
-                    .methods
-                    .iter()
-                    .filter(|m| m.starts_with(entry.item_name.as_str()))
-                {
-                    entry.helper_links.push(format!("[`HelixClient::{item}`]"))
+            }
+        }
+        for entry in &mut resolved {
+            for (item, (_, link)) in distances.iter() {
+                if *link == entry.endpoint_link {
+                    entry.helper_links.push(format!("[`HelixClient::{item}`]"));
                 }
             }
         }
@@ -206,5 +216,104 @@ impl<'a> HelixRow<'a> {
                 link: base_url.join(&link)?,
             },
         ))
+    }
+}
+
+pub fn distance(src: &str, tar: &str) -> usize {
+    let ignore_phrases = vec![
+        "in_channel",
+        "by_id",
+        "from_ids",
+        "from_id",
+        "from_logins",
+        "from_login",
+    ];
+
+    fn remove_ignored_phrases(s: &str, ignore_phrases: &[&str]) -> String {
+        let mut result = s.to_string();
+        for phrase in ignore_phrases {
+            result = result.replace(phrase, "_");
+        }
+        result
+    }
+
+    fn depluralize(token: &str) -> &str {
+        if token.ends_with('s') && token.len() > 1 {
+            &token[..token.len() - 1]
+        } else {
+            token
+        }
+    }
+
+    let src_cleaned = remove_ignored_phrases(src, &ignore_phrases);
+    let tar_cleaned = remove_ignored_phrases(tar, &ignore_phrases);
+
+    let src_tokens: Vec<&str> = src_cleaned
+        .split('_')
+        .filter(|token| !token.is_empty())
+        .map(depluralize)
+        .collect();
+
+    let tar_tokens: Vec<&str> = tar_cleaned
+        .split('_')
+        .filter(|token| !token.is_empty())
+        .map(depluralize)
+        .collect();
+
+    let min_len = usize::min(src_tokens.len(), tar_tokens.len());
+    let mut distance = 0;
+
+    // Compare tokens like `editor` and `emote`
+    for i in 0..min_len {
+        // XXX: could make early tokens penalize heavier
+        let weight = 2;
+
+        if src_tokens[i] == tar_tokens[i] {
+            continue;
+        } else {
+            let token_distance = super::levenshtein(src_tokens[i], tar_tokens[i]);
+            distance += weight * token_distance;
+        }
+    }
+
+    // penalize extra tokens
+    // for example, `get_channel_editors`, `get_channels_from_ids` == 24
+    if src_tokens.len() > min_len {
+        for token in &src_tokens[min_len..] {
+            let weight = 4; // higher penalty for extra tokens
+            let token_len = token.chars().count();
+            distance += weight * token_len;
+        }
+    } else if tar_tokens.len() > min_len {
+        for token in &tar_tokens[min_len..] {
+            let weight = 4;
+            let token_len = token.chars().count();
+            distance += weight * token_len;
+        }
+    }
+
+    distance
+}
+
+#[cfg(test)]
+#[test]
+fn distance_test() {
+    let examples = vec![
+        ("get_channel_emotes_from_id", "get_channel_emotes"),
+        ("get_users_chat_colors", "get_user_chat_color"),
+        ("get_games_by_id", "get_games"),
+        ("get_banned_users_in_channel_from_id", "get_banned_users"),
+        ("get_channel_schedule", "get_ad_schedule"),
+        ("get_game_analytics", "get_games_by_id"),
+        ("get_channel_editors", "get_channel_emotes_from_id"),
+        ("get_channel_editors", "get_channel_schedule"),
+        ("get_channel_editors", "get_channels_from_ids"),
+        ("get_clips", "get_vips_in_channel"),
+        ("get_teams", "get_streams_from_ids"),
+    ];
+
+    for (src, tar) in examples {
+        let dist = distance(src, tar);
+        println!("Distance between '{}' and '{}' is: {}", src, tar, dist);
     }
 }
