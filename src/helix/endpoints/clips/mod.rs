@@ -16,6 +16,21 @@
 //! # Ok(())
 //! # }
 //! ```
+//!
+//! # Implemented endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details open><summary style="cursor: pointer">Clips 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Create Clip](https://dev.twitch.tv/docs/api/reference#create-clip) | - | [`create_clip`] |
+//! | [Get Clips](https://dev.twitch.tv/docs/api/reference#get-clips) | - | [`get_clips`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 use crate::{
     helix::{self, Request},
     types,

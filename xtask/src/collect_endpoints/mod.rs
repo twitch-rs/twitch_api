@@ -11,6 +11,7 @@ pub mod html;
 pub mod rustdoc;
 
 pub static HELIX_SOURCE_FILE: &str = "src/helix/mod.rs";
+pub static HELIX_ENDPOINTS_FOLDER: &str = "src/helix/endpoints/";
 static HELIX_URL: &str = "https://dev.twitch.tv/docs/api/reference";
 
 pub static EVENTSUB_SOURCE_FILE: &str = "src/eventsub/mod.rs";
@@ -49,10 +50,17 @@ pub fn run(sh: &Shell, build_json_docs: bool, all_features: &str) -> Result<()> 
     );
 
     std::thread::scope(|s| -> Result<()> {
-        let h1 = s.spawn(|| {
+        let h1 = s.spawn(|| -> Result<()> {
             let overview =
                 helix::make_overview(&Url::parse(HELIX_URL).unwrap(), &helix, &mut helix_rustdoc)?;
-            paste_in_file(HELIX_SOURCE_FILE, overview)
+            paste_in_file(HELIX_SOURCE_FILE, overview.0)?;
+            for (module, doc) in overview.1 {
+                let path = format!("{}{}/mod.rs", HELIX_ENDPOINTS_FOLDER, module);
+                if std::fs::exists(path.as_str())? {
+                    paste_in_file(path, doc)?;
+                }
+            }
+            Ok(())
         });
         let h2 = s.spawn(|| {
             let overview = eventsub::make_overview(

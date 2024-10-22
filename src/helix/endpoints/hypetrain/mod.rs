@@ -1,6 +1,20 @@
 //! Helix endpoints regarding hype trains
 //!
 //! See also [PubSub hypetrain](crate::pubsub::hypetrain)
+//!
+//! # Implemented endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details open><summary style="cursor: pointer">Hype Train 🟢 1/1</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Hype Train Events](https://dev.twitch.tv/docs/api/reference#get-hype-train-events) | - | [`get_hypetrain_events`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 use crate::{
     helix::{self, Request},
     types,

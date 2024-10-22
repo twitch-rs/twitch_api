@@ -5,11 +5,11 @@ use super::rustdoc::ParsedHelixRustdoc;
 use color_eyre::eyre::{bail, Result};
 use url::Url;
 
-pub fn make_overview(
+pub fn make_overview<'a>(
     base_url: &Url,
     raw: &str,
-    rustdoc: &mut ParsedHelixRustdoc,
-) -> Result<String> {
+    rustdoc: &'a ParsedHelixRustdoc,
+) -> Result<(String, BTreeMap<String, String>)> {
     let parser = tl::parse(raw, tl::ParserOptions::new())?;
     let table = html::tbody_below_id(&parser, "twitch-api-reference")?;
     let children = table.children();
@@ -31,13 +31,15 @@ pub fn make_overview(
 
     struct HelixEntry {
         endpoint_link: String,
-        helper_links: Vec<String>,
-        module_link: Option<String>,
+        helpers: Vec<String>,
+        module: Option<(String, String)>,
         item_name: String,
     }
 
     let mut doc = String::new();
+    let mut mod_docs = BTreeMap::new();
     for (cat_name, endpoints) in categories.into_iter() {
+        let mut mod_doc = String::new();
         let module_name = category_override(to_snake(&cat_name));
 
         let mut resolved = endpoints
@@ -45,26 +47,20 @@ pub fn make_overview(
             .map(|endpoint| {
                 let item_name = item_override(to_snake(&endpoint.name));
                 let actual_module = module_override(&module_name, &item_name);
-                let module_link = if rustdoc
+                let module = if rustdoc
                     .mods
                     .get(&actual_module)
                     .is_some_and(|m| m.contains(item_name.as_str()))
                 {
-                    Some(format!("[`{actual_module}::{item_name}`]"))
+                    Some((actual_module.to_owned(), item_name.clone()))
                 } else {
                     println!("[Helix]: missing {actual_module}::{item_name}");
                     None
                 };
-                let helper_links = if rustdoc.methods.remove(&*item_name) {
-                    vec![format!("[`HelixClient::{item_name}`]")]
-                } else {
-                    vec![]
-                };
-
                 HelixEntry {
                     endpoint_link: format!("[{}]({})", endpoint.name, endpoint.link),
-                    helper_links,
-                    module_link,
+                    helpers: Vec::new(),
+                    module,
                     item_name,
                 }
             })
@@ -72,7 +68,7 @@ pub fn make_overview(
         // helper, (distance, endpoint link)
         let mut distances: BTreeMap<String, (usize, String)> = BTreeMap::new();
 
-        // second iteration to find distance-matches
+        // second iteration to find distance-matches for helper links
         for entry in &mut resolved {
             for m in &rustdoc.methods {
                 let current_distance = distance(&entry.item_name, m);
@@ -97,15 +93,12 @@ pub fn make_overview(
         for entry in &mut resolved {
             for (item, (_, link)) in distances.iter() {
                 if *link == entry.endpoint_link {
-                    entry.helper_links.push(format!("[`HelixClient::{item}`]"));
+                    entry.helpers.push(item.clone());
                 }
             }
         }
 
-        let n_implemented = resolved
-            .iter()
-            .filter(|it| it.module_link.is_some())
-            .count();
+        let n_implemented = resolved.iter().filter(|it| it.module.is_some()).count();
         let n_items = resolved.len();
         let indicator = super::indicator_for(n_implemented, n_items);
 
@@ -117,30 +110,70 @@ pub fn make_overview(
 //! |---|---|---|
 "#
         )?;
+        write!(
+            &mut mod_doc,
+            r#"//! <details open><summary style="cursor: pointer">{cat_name} {indicator} {n_implemented}/{n_items}</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+"#
+        )?;
         let mut helper: String;
         for HelixEntry {
             endpoint_link,
-            helper_links,
-            module_link,
+            helpers,
+            module,
             ..
         } in resolved
         {
-            helper = if helper_links.is_empty() {
+            helper = if helpers.is_empty() {
                 "-".to_owned()
             } else {
-                helper_links.join(", ")
+                helpers
+                    .iter()
+                    .map(|h| format!("[`HelixClient::{h}`]"))
+                    .collect::<Vec<_>>()
+                    .join(", ")
             };
             writeln!(
                 &mut doc,
                 "//! | {endpoint_link} | {} | {} |",
                 helper,
-                module_link.as_deref().unwrap_or("-")
+                module
+                    .as_ref()
+                    .map(|(cat, e)| format!("[`{cat}::{e}`]"))
+                    .as_deref()
+                    .unwrap_or("-"),
+            )?;
+            helper = if helpers.is_empty() {
+                "-".to_owned()
+            } else {
+                helpers
+                    .iter()
+                    .map(|h| format!("[`HelixClient::{h}`](crate::helix::HelixClient::{h})"))
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            };
+            writeln!(
+                &mut mod_doc,
+                "//! | {endpoint_link} | {} | {} |",
+                helper,
+                module
+                    .as_ref()
+                    .map(|(_, e)| format!("[`{e}`]"))
+                    .as_deref()
+                    .unwrap_or("-"),
             )?;
         }
         doc.push_str("//!\n//! </details>\n//!\n");
+        mod_doc.push_str("//!\n//! </details>\n//!\n");
+        mod_docs
+            .entry(module_name.to_owned())
+            .and_modify(|s: &mut String| s.push_str(&mod_doc))
+            .or_insert(mod_doc);
     }
 
-    Ok(doc)
+    Ok((doc, mod_docs))
 }
 
 fn to_snake(s: &str) -> String {

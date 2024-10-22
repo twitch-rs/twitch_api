@@ -17,6 +17,21 @@
 //! # Ok(())
 //! # }
 //! ```
+//!
+//! # Implemented endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details open><summary style="cursor: pointer">Subscriptions 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Broadcaster Subscriptions](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions) | [`HelixClient::get_broadcaster_subscriptions`](crate::helix::HelixClient::get_broadcaster_subscriptions) | [`get_broadcaster_subscriptions`] |
+//! | [Check User Subscription](https://dev.twitch.tv/docs/api/reference#check-user-subscription) | - | [`check_user_subscription`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 
 use crate::{
     helix::{self, Request},

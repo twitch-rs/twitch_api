@@ -1,4 +1,32 @@
 //! Helix endpoints regarding chat
+//!
+//! # Implemented endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details open><summary style="cursor: pointer">Chat 🟡 14/15</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Chatters](https://dev.twitch.tv/docs/api/reference#get-chatters) | [`HelixClient::get_chatters`](crate::helix::HelixClient::get_chatters) | [`get_chatters`] |
+//! | [Get Channel Emotes](https://dev.twitch.tv/docs/api/reference#get-channel-emotes) | [`HelixClient::get_channel_emotes_from_id`](crate::helix::HelixClient::get_channel_emotes_from_id), [`HelixClient::get_channel_emotes_from_login`](crate::helix::HelixClient::get_channel_emotes_from_login) | [`get_channel_emotes`] |
+//! | [Get Global Emotes](https://dev.twitch.tv/docs/api/reference#get-global-emotes) | [`HelixClient::get_global_emotes`](crate::helix::HelixClient::get_global_emotes) | [`get_global_emotes`] |
+//! | [Get Emote Sets](https://dev.twitch.tv/docs/api/reference#get-emote-sets) | [`HelixClient::get_emote_sets`](crate::helix::HelixClient::get_emote_sets) | [`get_emote_sets`] |
+//! | [Get Channel Chat Badges](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges) | - | [`get_channel_chat_badges`] |
+//! | [Get Global Chat Badges](https://dev.twitch.tv/docs/api/reference#get-global-chat-badges) | - | [`get_global_chat_badges`] |
+//! | [Get Chat Settings](https://dev.twitch.tv/docs/api/reference#get-chat-settings) | [`HelixClient::get_chat_settings`](crate::helix::HelixClient::get_chat_settings) | [`get_chat_settings`] |
+//! | [Get Shared Chat Session](https://dev.twitch.tv/docs/api/reference#get-shared-chat-session) | - | - |
+//! | [Get User Emotes](https://dev.twitch.tv/docs/api/reference#get-user-emotes) | [`HelixClient::get_user_emotes`](crate::helix::HelixClient::get_user_emotes), [`HelixClient::get_user_emotes_in_channel`](crate::helix::HelixClient::get_user_emotes_in_channel) | [`get_user_emotes`] |
+//! | [Update Chat Settings](https://dev.twitch.tv/docs/api/reference#update-chat-settings) | - | [`update_chat_settings`] |
+//! | [Send Chat Announcement](https://dev.twitch.tv/docs/api/reference#send-chat-announcement) | [`HelixClient::send_chat_announcement`](crate::helix::HelixClient::send_chat_announcement) | [`send_chat_announcement`] |
+//! | [Send a Shoutout](https://dev.twitch.tv/docs/api/reference#send-a-shoutout) | - | [`send_a_shoutout`] |
+//! | [Send Chat Message](https://dev.twitch.tv/docs/api/reference#send-chat-message) | - | [`send_chat_message`] |
+//! | [Get User Chat Color](https://dev.twitch.tv/docs/api/reference#get-user-chat-color) | [`HelixClient::get_user_chat_color`](crate::helix::HelixClient::get_user_chat_color), [`HelixClient::get_users_chat_colors`](crate::helix::HelixClient::get_users_chat_colors) | [`get_user_chat_color`] |
+//! | [Update User Chat Color](https://dev.twitch.tv/docs/api/reference#update-user-chat-color) | [`HelixClient::update_user_chat_color`](crate::helix::HelixClient::update_user_chat_color) | [`update_user_chat_color`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 
 use crate::{
     helix::{self, Request},

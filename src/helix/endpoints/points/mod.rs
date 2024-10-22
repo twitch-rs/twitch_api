@@ -19,6 +19,25 @@
 //! # Ok(())
 //! # }
 //! ```
+//!
+//! # Implemented endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details open><summary style="cursor: pointer">Channel Points 🟢 6/6</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Create Custom Rewards](https://dev.twitch.tv/docs/api/reference#create-custom-rewards) | - | [`create_custom_rewards`] |
+//! | [Delete Custom Reward](https://dev.twitch.tv/docs/api/reference#delete-custom-reward) | - | [`delete_custom_reward`] |
+//! | [Get Custom Reward](https://dev.twitch.tv/docs/api/reference#get-custom-reward) | [`HelixClient::get_custom_rewards`](crate::helix::HelixClient::get_custom_rewards) | [`get_custom_reward`] |
+//! | [Get Custom Reward Redemption](https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption) | - | [`get_custom_reward_redemption`] |
+//! | [Update Custom Reward](https://dev.twitch.tv/docs/api/reference#update-custom-reward) | - | [`update_custom_reward`] |
+//! | [Update Redemption Status](https://dev.twitch.tv/docs/api/reference#update-redemption-status) | - | [`update_redemption_status`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 
 use crate::{
     helix::{self, Request},

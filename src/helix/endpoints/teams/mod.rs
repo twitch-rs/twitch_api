@@ -1,4 +1,19 @@
 //! Helix endpoints regarding subscriptions
+//!
+//! # Implemented endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details open><summary style="cursor: pointer">Teams 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Channel Teams](https://dev.twitch.tv/docs/api/reference#get-channel-teams) | - | [`get_channel_teams`] |
+//! | [Get Teams](https://dev.twitch.tv/docs/api/reference#get-teams) | - | [`get_teams`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 
 use crate::{
     helix::{self, Request},

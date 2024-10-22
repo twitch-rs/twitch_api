@@ -1,4 +1,33 @@
 //! Helix endpoints regarding EventSub
+//!
+//! # Implemented endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details open><summary style="cursor: pointer">Conduits 🟡 4/6</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Conduits](https://dev.twitch.tv/docs/api/reference#get-conduits) | [`HelixClient::get_conduits`](crate::helix::HelixClient::get_conduits) | [`get_conduits`] |
+//! | [Create Conduits](https://dev.twitch.tv/docs/api/reference#create-conduits) | [`HelixClient::create_conduit`](crate::helix::HelixClient::create_conduit) | [`create_conduit`] |
+//! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | - | - |
+//! | [Delete Conduit](https://dev.twitch.tv/docs/api/reference#delete-conduit) | - | - |
+//! | [Get Conduit Shards](https://dev.twitch.tv/docs/api/reference#get-conduit-shards) | [`HelixClient::get_conduit_shards`](crate::helix::HelixClient::get_conduit_shards) | [`get_conduit_shards`] |
+//! | [Update Conduit Shards](https://dev.twitch.tv/docs/api/reference#update-conduit-shards) | [`HelixClient::update_conduit_shards`](crate::helix::HelixClient::update_conduit_shards) | [`update_conduit_shards`] |
+//!
+//! </details>
+//!
+//! <details open><summary style="cursor: pointer">EventSub 🟢 3/3</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Create EventSub Subscription](https://dev.twitch.tv/docs/api/reference#create-eventsub-subscription) | [`HelixClient::create_eventsub_subscription`](crate::helix::HelixClient::create_eventsub_subscription) | [`create_eventsub_subscription`] |
+//! | [Delete EventSub Subscription](https://dev.twitch.tv/docs/api/reference#delete-eventsub-subscription) | [`HelixClient::delete_eventsub_subscription`](crate::helix::HelixClient::delete_eventsub_subscription) | [`delete_eventsub_subscription`] |
+//! | [Get EventSub Subscriptions](https://dev.twitch.tv/docs/api/reference#get-eventsub-subscriptions) | [`HelixClient::get_eventsub_subscriptions`](crate::helix::HelixClient::get_eventsub_subscriptions) | [`get_eventsub_subscriptions`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 
 use crate::{
     helix::{self, Request},
