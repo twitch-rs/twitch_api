@@ -937,6 +937,78 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         }
     }
 
+    /// Get all emotes accessible to the user in all chats.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use twitch_oauth2::TwitchToken;
+    /// use futures::TryStreamExt;
+    ///
+    /// // use the associated user-id with the user-access token
+    /// let user_id = token.user_id().expect("no user-id set in token");
+    /// let requests: Vec<helix::chat::UserEmote> = client.get_user_emotes(user_id, &token).try_collect().await?;
+    /// # Ok(()) }
+    /// ```
+    pub fn get_user_emotes<'b: 'client, T>(
+        &'client self,
+        user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<helix::chat::UserEmote, ClientError<C>>>
+           + Send
+           + Unpin
+           + 'client
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::chat::GetUserEmotesRequest::user_id(user_id);
+        make_stream(req, token, self, std::collections::VecDeque::from)
+    }
+
+    /// Get all emotes accessible to the user in a channel.
+    ///
+    /// This will include "follow" emotes if the user isn't subscribed but following.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use twitch_oauth2::TwitchToken;
+    /// use futures::TryStreamExt;
+    ///
+    /// // use the associated user-id with the user-access token
+    /// let user_id = token.user_id().expect("no user-id set in token");
+    /// let requests: Vec<helix::chat::UserEmote> = client.get_user_emotes_in_channel(user_id, "1234", &token).try_collect().await?;
+    /// # Ok(()) }
+    /// ```
+    pub fn get_user_emotes_in_channel<'b: 'client, 'c: 'client, T>(
+        &'client self,
+        user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        channel_id: impl types::IntoCow<'c, types::UserIdRef> + 'c,
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<helix::chat::UserEmote, ClientError<C>>>
+           + Send
+           + Unpin
+           + 'client
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let mut req = helix::chat::GetUserEmotesRequest::user_id(user_id);
+        req.broadcaster_id = Some(twitch_types::IntoCow::into_cow(channel_id));
+        make_stream(req, token, self, std::collections::VecDeque::from)
+    }
+
     /// Get emotes in emote sets
     ///
     /// # Examples
