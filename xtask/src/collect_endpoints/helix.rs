@@ -285,13 +285,13 @@ pub fn distance(src: &str, tar: &str) -> usize {
     // for example, `get_channel_editors`, `get_channels_from_ids` == 24
     if src_tokens.len() > min_len {
         for token in &src_tokens[min_len..] {
-            let weight = 4; // higher penalty for extra tokens
+            let weight = 2; // higher penalty for extra tokens
             let token_len = token.chars().count();
             distance += weight * token_len;
         }
     } else if tar_tokens.len() > min_len {
         for token in &tar_tokens[min_len..] {
-            let weight = 4;
+            let weight = 2;
             let token_len = token.chars().count();
             distance += weight * token_len;
         }
@@ -303,22 +303,29 @@ pub fn distance(src: &str, tar: &str) -> usize {
 #[cfg(test)]
 #[test]
 fn distance_test() {
+    use std::cmp::Ordering::*;
     let examples = vec![
-        ("get_channel_emotes_from_id", "get_channel_emotes"),
-        ("get_users_chat_colors", "get_user_chat_color"),
-        ("get_games_by_id", "get_games"),
-        ("get_banned_users_in_channel_from_id", "get_banned_users"),
-        ("get_channel_schedule", "get_ad_schedule"),
-        ("get_game_analytics", "get_games_by_id"),
-        ("get_channel_editors", "get_channel_emotes_from_id"),
-        ("get_channel_editors", "get_channel_schedule"),
-        ("get_channel_editors", "get_channels_from_ids"),
-        ("get_clips", "get_vips_in_channel"),
-        ("get_teams", "get_streams_from_ids"),
+        ("get_channel_emotes_from_id", "get_channel_emotes", Less),
+        ("get_users_chat_colors", "get_user_chat_color", Less),
+        ("get_games_by_id", "get_games", Less),
+        (
+            "get_banned_users_in_channel_from_id",
+            "get_banned_users",
+            Less,
+        ),
+        ("get_channel_schedule", "get_ad_schedule", Greater),
+        ("get_game_analytics", "get_games_by_id", Greater),
+        ("get_channel_editors", "get_channel_emotes_from_id", Greater),
+        ("get_channel_editors", "get_channel_schedule", Greater),
+        ("get_channel_editors", "get_channels_from_ids", Greater),
+        ("get_clips", "get_vips_in_channel", Greater),
+        ("get_teams", "get_streams_from_ids", Greater),
+        ("get_team_a", "get_teams", Less),
     ];
 
-    for (src, tar) in examples {
+    for (src, tar, ord) in examples {
         let dist = distance(src, tar);
         println!("Distance between '{}' and '{}' is: {}", src, tar, dist);
+        assert!(dist.cmp(&3) == ord)
     }
 }
