@@ -74,18 +74,23 @@ pub fn make_overview(
 
         // second iteration to find distance-matches
         for entry in &mut resolved {
-            for (item, distance) in rustdoc
-                .methods
-                .iter()
-                .map(|m| (m, distance(&entry.item_name, m)))
-            {
-                if let Some((current_distance, _)) = distances.get(*item) {
-                    if distance < *current_distance {
-                        distances
-                            .insert((*item).to_owned(), (distance, entry.endpoint_link.clone()));
-                    }
-                } else if distance < 3 {
-                    distances.insert((*item).to_owned(), (distance, entry.endpoint_link.clone()));
+            for m in &rustdoc.methods {
+                let current_distance = distance(&entry.item_name, m);
+
+                // Only consider distances less than 3
+                if current_distance < 3 {
+                    distances
+                        .entry((*m).to_owned())
+                        .and_modify(|e| {
+                            let new_distance = std::cmp::min(e.0, current_distance);
+                            if new_distance < e.0 {
+                                let _ = std::mem::replace(
+                                    e,
+                                    (new_distance, entry.endpoint_link.clone()),
+                                );
+                            }
+                        })
+                        .or_insert((current_distance, entry.endpoint_link.clone()));
                 }
             }
         }
