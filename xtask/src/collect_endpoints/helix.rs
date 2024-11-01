@@ -80,10 +80,7 @@ pub fn make_overview<'a>(
                         .and_modify(|e| {
                             let new_distance = std::cmp::min(e.0, current_distance);
                             if new_distance < e.0 {
-                                let _ = std::mem::replace(
-                                    e,
-                                    (new_distance, entry.endpoint_link.clone()),
-                                );
+                                *e = (new_distance, entry.endpoint_link.clone());
                             }
                         })
                         .or_insert((current_distance, entry.endpoint_link.clone()));
