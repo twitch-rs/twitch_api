@@ -1,4 +1,23 @@
 //! Helix endpoints regarding stream schedules
+//!
+//! # Implemented endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details open><summary style="cursor: pointer">Schedule 🟡 5/6</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Channel Stream Schedule](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule) | - | [`get_channel_stream_schedule`] |
+//! | [Get Channel iCalendar](https://dev.twitch.tv/docs/api/reference#get-channel-icalendar) | - | - |
+//! | [Update Channel Stream Schedule](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule) | - | [`update_channel_stream_schedule`] |
+//! | [Create Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment) | - | [`create_channel_stream_schedule_segment`] |
+//! | [Update Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment) | - | [`update_channel_stream_schedule_segment`] |
+//! | [Delete Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#delete-channel-stream-schedule-segment) | - | [`delete_channel_stream_schedule_segment`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 use crate::{
     helix::{self, Request},
     types,

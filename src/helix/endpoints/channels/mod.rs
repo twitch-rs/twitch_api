@@ -19,6 +19,34 @@
 //! # Ok(())
 //! # }
 //! ```
+//!
+//! # Implemented endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details open><summary style="cursor: pointer">Ads 🟢 3/3</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Start Commercial](https://dev.twitch.tv/docs/api/reference#start-commercial) | - | [`start_commercial`] |
+//! | [Get Ad Schedule](https://dev.twitch.tv/docs/api/reference#get-ad-schedule) | - | [`get_ad_schedule`] |
+//! | [Snooze Next Ad](https://dev.twitch.tv/docs/api/reference#snooze-next-ad) | - | [`snooze_next_ad`] |
+//!
+//! </details>
+//!
+//! <details open><summary style="cursor: pointer">Channels 🟢 5/5</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information) | - | [`get_channel_information`] |
+//! | [Modify Channel Information](https://dev.twitch.tv/docs/api/reference#modify-channel-information) | - | [`modify_channel_information`] |
+//! | [Get Channel Editors](https://dev.twitch.tv/docs/api/reference#get-channel-editors) | - | [`get_channel_editors`] |
+//! | [Get Followed Channels](https://dev.twitch.tv/docs/api/reference#get-followed-channels) | [`HelixClient::get_followed_channels`](crate::helix::HelixClient::get_followed_channels) | [`get_followed_channels`] |
+//! | [Get Channel Followers](https://dev.twitch.tv/docs/api/reference#get-channel-followers) | - | [`get_channel_followers`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 
 use crate::{
     helix::{self, Request},

@@ -16,6 +16,21 @@
 //! # Ok(())
 //! # }
 //! ```
+//!
+//! # Implemented endpoints
+//!
+//! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
+//! <!-- BEGIN-OVERVIEW -->
+//! <details open><summary style="cursor: pointer">Tags 🟢 2/2</summary>
+//!
+//! | Endpoint | Helper | Module |
+//! |---|---|---|
+//! | [Get All Stream Tags](https://dev.twitch.tv/docs/api/reference#get-all-stream-tags) | - | [`get_all_stream_tags`] |
+//! | [Get Stream Tags](https://dev.twitch.tv/docs/api/reference#get-stream-tags) | - | [`get_stream_tags`] |
+//!
+//! </details>
+//!
+//! <!-- END-OVERVIEW -->
 #![allow(deprecated)]
 
 use crate::{
@@ -31,6 +46,8 @@ pub mod get_all_stream_tags;
 #[doc(inline)]
 #[allow(deprecated)]
 pub use get_all_stream_tags::{GetAllStreamTagsRequest, Tag};
+// endpoints defined in other modules.
+pub use super::streams::get_stream_tags::{self, GetStreamTagsRequest};
 
 /// Language code, formatted as 2 letter language by ISO 639-1, a dash (`-`) and 2 letter region by ISO 3166-1
 ///
