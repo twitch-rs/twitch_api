@@ -12,6 +12,9 @@ macro_rules! fill_events {
     ($callback:ident( $($args:tt)* )) => {
         $callback!($($args)*
             automod::AutomodMessageHoldV1;
+            automod::AutomodMessageUpdateV1;
+            automod::AutomodSettingsUpdateV1;
+            automod::AutomodTermsUpdateV1;
             channel::ChannelAdBreakBeginV1;
             channel::ChannelBanV1;
             channel::ChannelCharityCampaignDonateV1;
@@ -138,6 +141,12 @@ pub struct EventTypeParseError;
 make_event_type!("Event Types": pub enum EventType {
     "a message was caught by automod for review":
     AutomodMessageHold => "automod.message.hold",
+    "a message in the automod queue had its status changed":
+    AutomodMessageUpdate => "automod.message.update",
+    "a notification is sent when a broadcaster’s automod settings are updated.":
+    AutomodSettingsUpdate => "automod.settings.update",
+    "a notification is sent when a broadcaster’s automod terms are updated. Changes to private terms are not sent.":
+    AutomodTermsUpdate => "automod.terms.update",
     "a user runs a midroll commercial break, either manually or automatically via ads manager.":
     ChannelAdBreakBegin => "channel.ad_break.begin",
     "a moderator or bot clears all messages from the chat room.":
@@ -255,6 +264,12 @@ fn main() {
 pub enum Event {
     /// Automod Message Hold V1 Event
     AutomodMessageHoldV1(Payload<automod::AutomodMessageHoldV1>),
+    /// Automod Message Update V1 Event
+    AutomodMessageUpdateV1(Payload<automod::AutomodMessageUpdateV1>),
+    /// Automod Settings Update V1 Event
+    AutomodSettingsUpdateV1(Payload<automod::AutomodSettingsUpdateV1>),
+    /// Automod Terms Update V1 Event
+    AutomodTermsUpdateV1(Payload<automod::AutomodTermsUpdateV1>),
     /// Channel Ad Break Begin V1 Event
     ChannelAdBreakBeginV1(Payload<channel::ChannelAdBreakBeginV1>),
     /// Channel Chat Clear V1 Event

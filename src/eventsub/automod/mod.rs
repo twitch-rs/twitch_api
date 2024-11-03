@@ -4,9 +4,19 @@ use super::{EventSubscription, EventType};
 use serde_derive::{Deserialize, Serialize};
 
 pub mod message;
+pub mod settings;
+pub mod terms;
 
 #[doc(inline)]
 pub use message::{AutomodMessageHoldV1, AutomodMessageHoldV1Payload};
+#[doc(inline)]
+pub use message::{AutomodMessageUpdateV1, AutomodMessageUpdateV1Payload};
+
+#[doc(inline)]
+pub use terms::{AutomodTermsUpdateV1, AutomodTermsUpdateV1Payload};
+
+#[doc(inline)]
+pub use settings::{AutomodSettingsUpdateV1, AutomodSettingsUpdateV1Payload};
 
 /// A category identified by automod for a message.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
