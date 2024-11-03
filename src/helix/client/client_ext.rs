@@ -1220,6 +1220,26 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .try_flatten_unordered(None)
     }
 
+    /// Retrieves the active shared chat session for a channel
+    ///
+    /// [`None`] is returned if no shared chat session is active.
+    pub async fn get_shared_chat_session<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<Option<helix::chat::SharedChatSession>, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        Ok(self
+            .req_get(
+                helix::chat::GetSharedChatSessionRequest::broadcaster_id(broadcaster_id),
+                token,
+            )
+            .await?
+            .first())
+    }
+
     /// Add a channel moderator
     pub async fn add_channel_moderator<'b, T>(
         &'client self,

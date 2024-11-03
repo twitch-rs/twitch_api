@@ -4,7 +4,7 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Chat 🟡 14/15</summary>
+//! <details open><summary style="cursor: pointer">Chat 🟢 15/15</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -15,7 +15,7 @@
 //! | [Get Channel Chat Badges](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges) | - | [`get_channel_chat_badges`] |
 //! | [Get Global Chat Badges](https://dev.twitch.tv/docs/api/reference#get-global-chat-badges) | - | [`get_global_chat_badges`] |
 //! | [Get Chat Settings](https://dev.twitch.tv/docs/api/reference#get-chat-settings) | [`HelixClient::get_chat_settings`](crate::helix::HelixClient::get_chat_settings) | [`get_chat_settings`] |
-//! | [Get Shared Chat Session](https://dev.twitch.tv/docs/api/reference#get-shared-chat-session) | - | - |
+//! | [Get Shared Chat Session](https://dev.twitch.tv/docs/api/reference#get-shared-chat-session) | [`HelixClient::get_shared_chat_session`](crate::helix::HelixClient::get_shared_chat_session) | [`get_shared_chat_session`] |
 //! | [Get User Emotes](https://dev.twitch.tv/docs/api/reference#get-user-emotes) | [`HelixClient::get_user_emotes`](crate::helix::HelixClient::get_user_emotes), [`HelixClient::get_user_emotes_in_channel`](crate::helix::HelixClient::get_user_emotes_in_channel) | [`get_user_emotes`] |
 //! | [Update Chat Settings](https://dev.twitch.tv/docs/api/reference#update-chat-settings) | - | [`update_chat_settings`] |
 //! | [Send Chat Announcement](https://dev.twitch.tv/docs/api/reference#send-chat-announcement) | [`HelixClient::send_chat_announcement`](crate::helix::HelixClient::send_chat_announcement) | [`send_chat_announcement`] |
@@ -42,6 +42,7 @@ pub mod get_chatters;
 pub mod get_emote_sets;
 pub mod get_global_chat_badges;
 pub mod get_global_emotes;
+pub mod get_shared_chat_session;
 pub mod get_user_chat_color;
 pub mod get_user_emotes;
 pub mod send_a_shoutout;
@@ -64,6 +65,10 @@ pub use get_emote_sets::GetEmoteSetsRequest;
 pub use get_global_chat_badges::GetGlobalChatBadgesRequest;
 #[doc(inline)]
 pub use get_global_emotes::GetGlobalEmotesRequest;
+#[doc(inline)]
+pub use get_shared_chat_session::{
+    GetSharedChatSessionRequest, SharedChatParticipant, SharedChatSession,
+};
 #[doc(inline)]
 pub use get_user_chat_color::{GetUserChatColorRequest, UserChatColor};
 #[doc(inline)]

@@ -105,7 +105,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Chat 🟡 14/15</summary>
+//! <details><summary style="cursor: pointer">Chat 🟢 15/15</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -116,7 +116,7 @@
 //! | [Get Channel Chat Badges](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges) | - | [`chat::get_channel_chat_badges`] |
 //! | [Get Global Chat Badges](https://dev.twitch.tv/docs/api/reference#get-global-chat-badges) | - | [`chat::get_global_chat_badges`] |
 //! | [Get Chat Settings](https://dev.twitch.tv/docs/api/reference#get-chat-settings) | [`HelixClient::get_chat_settings`] | [`chat::get_chat_settings`] |
-//! | [Get Shared Chat Session](https://dev.twitch.tv/docs/api/reference#get-shared-chat-session) | - | - |
+//! | [Get Shared Chat Session](https://dev.twitch.tv/docs/api/reference#get-shared-chat-session) | [`HelixClient::get_shared_chat_session`] | [`chat::get_shared_chat_session`] |
 //! | [Get User Emotes](https://dev.twitch.tv/docs/api/reference#get-user-emotes) | [`HelixClient::get_user_emotes`], [`HelixClient::get_user_emotes_in_channel`] | [`chat::get_user_emotes`] |
 //! | [Update Chat Settings](https://dev.twitch.tv/docs/api/reference#update-chat-settings) | - | [`chat::update_chat_settings`] |
 //! | [Send Chat Announcement](https://dev.twitch.tv/docs/api/reference#send-chat-announcement) | [`HelixClient::send_chat_announcement`] | [`chat::send_chat_announcement`] |
