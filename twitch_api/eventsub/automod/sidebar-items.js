@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AutomodCategory"],"mod":["message","settings","terms"],"struct":["AutomodMessageHoldV1","AutomodMessageHoldV1Payload","AutomodMessageUpdateV1","AutomodMessageUpdateV1Payload","AutomodSettingsUpdateV1","AutomodSettingsUpdateV1Payload","AutomodTermsUpdateV1","AutomodTermsUpdateV1Payload"]};

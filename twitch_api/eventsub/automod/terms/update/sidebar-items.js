@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AutomodTermAction"],"struct":["AutomodTermsUpdateV1","AutomodTermsUpdateV1Payload"]};

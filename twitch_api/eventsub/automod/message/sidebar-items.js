@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AutomodMessageStatus"],"mod":["hold","update"],"struct":["AutomodMessageHoldV1","AutomodMessageHoldV1Payload","AutomodMessageUpdateV1","AutomodMessageUpdateV1Payload"]};

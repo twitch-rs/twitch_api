@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><title>event.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (b3f75cc87 2024-11-02)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/eventsub/</div>event.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><title>event.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (b8c8287a2 2024-11-03)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/eventsub/</div>event.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -723,7 +723,27 @@
 <a href="#722" id="722">722</a>
 <a href="#723" id="723">723</a>
 <a href="#724" id="724">724</a>
-<a href="#725" id="725">725</a></pre></div><pre class="rust"><code><span class="doccomment">//! EventSub events and their types
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
+<a href="#741" id="741">741</a>
+<a href="#742" id="742">742</a>
+<a href="#743" id="743">743</a>
+<a href="#744" id="744">744</a>
+<a href="#745" id="745">745</a></pre></div><pre class="rust"><code><span class="doccomment">//! EventSub events and their types
 </span><span class="attr">#![allow(deprecated)]
 </span><span class="kw">pub mod </span>websocket;
 
@@ -736,6 +756,10 @@
 <span class="macro">macro_rules!</span> fill_events {
     (<span class="macro-nonterminal">$callback</span>:ident( $(<span class="macro-nonterminal">$args</span>:tt)* )) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>($(<span class="macro-nonterminal">$args</span>)*
+            automod::AutomodMessageHoldV1;
+            automod::AutomodMessageUpdateV1;
+            automod::AutomodSettingsUpdateV1;
+            automod::AutomodTermsUpdateV1;
             channel::ChannelAdBreakBeginV1;
             channel::ChannelBanV1;
             channel::ChannelCharityCampaignDonateV1;
@@ -860,6 +884,14 @@
 </span><span class="kw">pub struct </span>EventTypeParseError;
 
 <span class="macro">make_event_type!</span>(<span class="string">"Event Types"</span>: <span class="kw">pub enum </span>EventType {
+    <span class="string">"a message was caught by automod for review"</span>:
+    AutomodMessageHold =&gt; <span class="string">"automod.message.hold"</span>,
+    <span class="string">"a message in the automod queue had its status changed"</span>:
+    AutomodMessageUpdate =&gt; <span class="string">"automod.message.update"</span>,
+    <span class="string">"a notification is sent when a broadcaster’s automod settings are updated."</span>:
+    AutomodSettingsUpdate =&gt; <span class="string">"automod.settings.update"</span>,
+    <span class="string">"a notification is sent when a broadcaster’s automod terms are updated. Changes to private terms are not sent."</span>:
+    AutomodTermsUpdate =&gt; <span class="string">"automod.terms.update"</span>,
     <span class="string">"a user runs a midroll commercial break, either manually or automatically via ads manager."</span>:
     ChannelAdBreakBegin =&gt; <span class="string">"channel.ad_break.begin"</span>,
     <span class="string">"a moderator or bot clears all messages from the chat room."</span>:
@@ -975,6 +1007,14 @@ fn main() {
 #[allow(clippy::large_enum_variant)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Event {
+    <span class="doccomment">/// Automod Message Hold V1 Event
+    </span>AutomodMessageHoldV1(Payload&lt;automod::AutomodMessageHoldV1&gt;),
+    <span class="doccomment">/// Automod Message Update V1 Event
+    </span>AutomodMessageUpdateV1(Payload&lt;automod::AutomodMessageUpdateV1&gt;),
+    <span class="doccomment">/// Automod Settings Update V1 Event
+    </span>AutomodSettingsUpdateV1(Payload&lt;automod::AutomodSettingsUpdateV1&gt;),
+    <span class="doccomment">/// Automod Terms Update V1 Event
+    </span>AutomodTermsUpdateV1(Payload&lt;automod::AutomodTermsUpdateV1&gt;),
     <span class="doccomment">/// Channel Ad Break Begin V1 Event
     </span>ChannelAdBreakBeginV1(Payload&lt;channel::ChannelAdBreakBeginV1&gt;),
     <span class="doccomment">/// Channel Chat Clear V1 Event
