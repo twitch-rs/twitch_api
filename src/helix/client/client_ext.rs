@@ -1220,6 +1220,22 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .try_flatten_unordered(None)
     }
 
+    /// Update the user's description
+    ///
+    /// The user ID in the OAuth token identifies the user whose information you want to update.
+    pub async fn update_user_description<'b, T>(
+        &'client self,
+        description: impl Into<Cow<'b, str>> + Send,
+        token: &T,
+    ) -> Result<helix::users::User, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::users::UpdateUserRequest::description(description);
+
+        Ok(self.req_put(req, helix::EmptyBody, token).await?.data)
+    }
+
     /// Retrieves the active shared chat session for a channel
     ///
     /// [`None`] is returned if no shared chat session is active.
