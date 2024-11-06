@@ -28,11 +28,11 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Streams 🟡 2/5</summary>
+//! <details open><summary style="cursor: pointer">Streams 🟡 3/5</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
-//! | [Get Stream Key](https://dev.twitch.tv/docs/api/reference#get-stream-key) | - | - |
+//! | [Get Stream Key](https://dev.twitch.tv/docs/api/reference#get-stream-key) | [`HelixClient::get_stream_key`](crate::helix::HelixClient::get_stream_key) | [`get_stream_key`] |
 //! | [Get Streams](https://dev.twitch.tv/docs/api/reference#get-streams) | [`HelixClient::get_streams_from_ids`](crate::helix::HelixClient::get_streams_from_ids), [`HelixClient::get_streams_from_logins`](crate::helix::HelixClient::get_streams_from_logins) | [`get_streams`] |
 //! | [Get Followed Streams](https://dev.twitch.tv/docs/api/reference#get-followed-streams) | [`HelixClient::get_followed_streams`](crate::helix::HelixClient::get_followed_streams) | [`get_followed_streams`] |
 //! | [Create Stream Marker](https://dev.twitch.tv/docs/api/reference#create-stream-marker) | - | - |
@@ -51,6 +51,8 @@ use std::borrow::Cow;
 #[doc(inline)]
 pub use get_followed_streams::GetFollowedStreamsRequest;
 #[doc(inline)]
+pub use get_stream_key::{GetStreamKeyRequest, GetStreamKeyResponse};
+#[doc(inline)]
 #[allow(deprecated)]
 pub use get_stream_tags::{GetStreamTagsRequest, Tag};
 #[doc(inline)]
@@ -60,6 +62,7 @@ pub use get_streams::{GetStreamsRequest, Stream};
 pub use replace_stream_tags::{ReplaceStreamTags, ReplaceStreamTagsBody, ReplaceStreamTagsRequest};
 
 pub mod get_followed_streams;
+pub mod get_stream_key;
 pub mod get_stream_tags;
 pub mod get_streams;
 pub mod replace_stream_tags;

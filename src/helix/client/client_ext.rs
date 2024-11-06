@@ -226,6 +226,40 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         .flatten_unordered(None)
     }
 
+    /// Gets the channel’s stream key.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use twitch_oauth2::TwitchToken;
+    ///
+    /// // use the associated user-id  with the user-access token
+    /// let user_id = token.user_id().expect("no user-id set in token");
+    /// let key: twitch_types::StreamKey = client.get_stream_key(user_id, &token).await?;
+    /// # Ok(()) }
+    /// ```
+    pub async fn get_stream_key<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b + Send,
+        token: &T,
+    ) -> Result<types::StreamKey, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        self.req_get(
+            helix::streams::GetStreamKeyRequest::broadcaster_id(broadcaster_id),
+            token,
+        )
+        .await
+        .map(|res| res.data.stream_key)
+    }
+
     /// Get chatters in a stream [Chatter][helix::chat::Chatter]
     ///
     /// `batch_size` sets the amount of chatters to retrieve per api call, max 1000, defaults to 100.
