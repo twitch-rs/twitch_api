@@ -296,6 +296,43 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         .map(|res| res.data)
     }
 
+    /// Gets a list of markers from the specified VOD/video.
+    ///
+    /// Markers are grouped per creator and video.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// let groups: Vec<helix::streams::StreamMarkerGroup> = client
+    ///     .get_stream_markers_from_video("1234", &token)
+    ///     .try_collect()
+    ///     .await?;
+    /// # Ok(()) }
+    /// ```
+    pub fn get_stream_markers_from_video<'b: 'client, T>(
+        &'client self,
+        video_id: impl types::IntoCow<'b, types::VideoIdRef> + 'b,
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<helix::streams::StreamMarkerGroup, ClientError<C>>>
+           + Send
+           + Unpin
+           + 'client
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::streams::GetStreamMarkersRequest::video_id(video_id).first(100);
+
+        make_stream(req, token, self, std::collections::VecDeque::from)
+    }
+
     /// Get chatters in a stream [Chatter][helix::chat::Chatter]
     ///
     /// `batch_size` sets the amount of chatters to retrieve per api call, max 1000, defaults to 100.

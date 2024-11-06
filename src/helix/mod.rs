@@ -312,7 +312,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Streams 🟡 4/5</summary>
+//! <details><summary style="cursor: pointer">Streams 🟢 5/5</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -320,7 +320,7 @@
 //! | [Get Streams](https://dev.twitch.tv/docs/api/reference#get-streams) | [`HelixClient::get_streams_from_ids`], [`HelixClient::get_streams_from_logins`] | [`streams::get_streams`] |
 //! | [Get Followed Streams](https://dev.twitch.tv/docs/api/reference#get-followed-streams) | [`HelixClient::get_followed_streams`] | [`streams::get_followed_streams`] |
 //! | [Create Stream Marker](https://dev.twitch.tv/docs/api/reference#create-stream-marker) | [`HelixClient::create_stream_marker`] | [`streams::create_stream_marker`] |
-//! | [Get Stream Markers](https://dev.twitch.tv/docs/api/reference#get-stream-markers) | - | - |
+//! | [Get Stream Markers](https://dev.twitch.tv/docs/api/reference#get-stream-markers) | - | [`streams::get_stream_markers`] |
 //!
 //! </details>
 //!
