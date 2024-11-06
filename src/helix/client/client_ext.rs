@@ -260,6 +260,42 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         .map(|res| res.data.stream_key)
     }
 
+    /// Adds a marker to a live stream.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use twitch_oauth2::TwitchToken;
+    ///
+    /// // use the associated user-id  with the user-access token
+    /// let user_id = token.user_id().expect("no user-id set in token");
+    /// let marker: helix::streams::CreatedStreamMarker = client.create_stream_marker(user_id, "my description", &token).await?;
+    /// # Ok(()) }
+    /// ```
+    pub async fn create_stream_marker<'b, T>(
+        &'client self,
+        user_id: impl types::IntoCow<'b, types::UserIdRef> + 'b + Send,
+        description: impl Into<Cow<'b, str>> + Send,
+        token: &T,
+    ) -> Result<helix::streams::CreatedStreamMarker, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        self.req_post(
+            helix::streams::CreateStreamMarkerRequest::new(),
+            helix::streams::CreateStreamMarkerBody::new(user_id, description),
+            token,
+        )
+        .await
+        .map(|res| res.data)
+    }
+
     /// Get chatters in a stream [Chatter][helix::chat::Chatter]
     ///
     /// `batch_size` sets the amount of chatters to retrieve per api call, max 1000, defaults to 100.

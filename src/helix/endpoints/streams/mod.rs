@@ -28,14 +28,14 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Streams 🟡 3/5</summary>
+//! <details open><summary style="cursor: pointer">Streams 🟡 4/5</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Stream Key](https://dev.twitch.tv/docs/api/reference#get-stream-key) | [`HelixClient::get_stream_key`](crate::helix::HelixClient::get_stream_key) | [`get_stream_key`] |
 //! | [Get Streams](https://dev.twitch.tv/docs/api/reference#get-streams) | [`HelixClient::get_streams_from_ids`](crate::helix::HelixClient::get_streams_from_ids), [`HelixClient::get_streams_from_logins`](crate::helix::HelixClient::get_streams_from_logins) | [`get_streams`] |
 //! | [Get Followed Streams](https://dev.twitch.tv/docs/api/reference#get-followed-streams) | [`HelixClient::get_followed_streams`](crate::helix::HelixClient::get_followed_streams) | [`get_followed_streams`] |
-//! | [Create Stream Marker](https://dev.twitch.tv/docs/api/reference#create-stream-marker) | - | - |
+//! | [Create Stream Marker](https://dev.twitch.tv/docs/api/reference#create-stream-marker) | [`HelixClient::create_stream_marker`](crate::helix::HelixClient::create_stream_marker) | [`create_stream_marker`] |
 //! | [Get Stream Markers](https://dev.twitch.tv/docs/api/reference#get-stream-markers) | - | - |
 //!
 //! </details>
@@ -49,6 +49,10 @@ use serde_derive::{Deserialize, Serialize};
 use std::borrow::Cow;
 
 #[doc(inline)]
+pub use create_stream_marker::{
+    CreateStreamMarkerBody, CreateStreamMarkerRequest, CreatedStreamMarker,
+};
+#[doc(inline)]
 pub use get_followed_streams::GetFollowedStreamsRequest;
 #[doc(inline)]
 pub use get_stream_key::{GetStreamKeyRequest, GetStreamKeyResponse};
@@ -61,6 +65,7 @@ pub use get_streams::{GetStreamsRequest, Stream};
 #[allow(deprecated)]
 pub use replace_stream_tags::{ReplaceStreamTags, ReplaceStreamTagsBody, ReplaceStreamTagsRequest};
 
+pub mod create_stream_marker;
 pub mod get_followed_streams;
 pub mod get_stream_key;
 pub mod get_stream_tags;
