@@ -120,6 +120,7 @@ pubsub = [
 
 eventsub = [
     "serde_json/raw_value",
+    "twitch_types/chat",
     "twitch_types/emote",
     "twitch_types/eventsub",
     "twitch_types/goal",

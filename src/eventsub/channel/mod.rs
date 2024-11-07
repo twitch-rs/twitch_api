@@ -18,6 +18,7 @@ pub mod hypetrain;
 pub mod poll;
 pub mod prediction;
 pub mod raid;
+pub mod shared_chat;
 pub mod shield_mode;
 pub mod shoutout;
 pub mod subscribe;
@@ -103,6 +104,8 @@ pub use prediction::{ChannelPredictionLockV1, ChannelPredictionLockV1Payload};
 pub use prediction::{ChannelPredictionProgressV1, ChannelPredictionProgressV1Payload};
 #[doc(inline)]
 pub use raid::{ChannelRaidV1, ChannelRaidV1Payload};
+#[doc(inline)]
+pub use shared_chat::{ChannelSharedChatBeginV1, ChannelSharedChatBeginV1Payload};
 #[doc(inline)]
 pub use shield_mode::{ChannelShieldModeBeginV1, ChannelShieldModeBeginV1Payload};
 #[doc(inline)]
