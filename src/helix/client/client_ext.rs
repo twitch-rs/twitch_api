@@ -1578,6 +1578,71 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .data)
     }
 
+    /// Get information about Twitch content classification labels, see [`get_content_classification_labels_for_locale`](HelixClient::get_content_classification_labels_for_locale) to get the labels in a specific locale.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    ///
+    /// let labels: Vec<helix::ccls::ContentClassificationLabel> = client
+    ///     .get_content_classification_labels(&token)
+    ///     .await?;
+    /// # Ok(()) }
+    /// ```
+    pub async fn get_content_classification_labels<'b, T>(
+        &'client self,
+        token: &'client T,
+    ) -> Result<Vec<helix::ccls::ContentClassificationLabel>, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        self.req_get(
+            helix::ccls::GetContentClassificationLabelsRequest::new(),
+            token,
+        )
+        .await
+        .map(|res| res.data)
+    }
+
+    /// Get information about Twitch content classification labels for a specific locale.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    ///
+    /// let labels: Vec<helix::ccls::ContentClassificationLabel> = client
+    ///     .get_content_classification_labels_for_locale("fi-FI", &token)
+    ///     .await?;
+    /// # Ok(()) }
+    /// ```
+    pub async fn get_content_classification_labels_for_locale<'b, T>(
+        &'client self,
+        locale: impl Into<Cow<'b, str>> + 'b + Send,
+        token: &'client T,
+    ) -> Result<Vec<helix::ccls::ContentClassificationLabel>, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        self.req_get(
+            helix::ccls::GetContentClassificationLabelsRequest::locale(locale),
+            token,
+        )
+        .await
+        .map(|res| res.data)
+    }
+
     #[cfg(feature = "eventsub")]
     /// Create an [EventSub](crate::eventsub) subscription
     pub async fn create_eventsub_subscription<T, E: crate::eventsub::EventSubscription + Send>(

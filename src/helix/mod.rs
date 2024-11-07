@@ -63,11 +63,11 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">CCLs 🔴 0/1</summary>
+//! <details><summary style="cursor: pointer">CCLs 🟢 1/1</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
-//! | [Get Content Classification Labels](https://dev.twitch.tv/docs/api/reference#get-content-classification-labels) | - | - |
+//! | [Get Content Classification Labels](https://dev.twitch.tv/docs/api/reference#get-content-classification-labels) | [`HelixClient::get_content_classification_labels`], [`HelixClient::get_content_classification_labels_for_locale`] | [`ccls::get_content_classification_labels`] |
 //!
 //! </details>
 //!
