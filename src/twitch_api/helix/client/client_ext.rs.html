@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/client_ext.rs`."><title>client_ext.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (bc5cf994d 2024-11-05)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/client/</div>client_ext.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/client/client_ext.rs`."><title>client_ext.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (854980293 2024-11-06)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/client/</div>client_ext.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -1931,7 +1931,114 @@
 <a href="#1930" id="1930">1930</a>
 <a href="#1931" id="1931">1931</a>
 <a href="#1932" id="1932">1932</a>
-<a href="#1933" id="1933">1933</a></pre></div><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]
+<a href="#1933" id="1933">1933</a>
+<a href="#1934" id="1934">1934</a>
+<a href="#1935" id="1935">1935</a>
+<a href="#1936" id="1936">1936</a>
+<a href="#1937" id="1937">1937</a>
+<a href="#1938" id="1938">1938</a>
+<a href="#1939" id="1939">1939</a>
+<a href="#1940" id="1940">1940</a>
+<a href="#1941" id="1941">1941</a>
+<a href="#1942" id="1942">1942</a>
+<a href="#1943" id="1943">1943</a>
+<a href="#1944" id="1944">1944</a>
+<a href="#1945" id="1945">1945</a>
+<a href="#1946" id="1946">1946</a>
+<a href="#1947" id="1947">1947</a>
+<a href="#1948" id="1948">1948</a>
+<a href="#1949" id="1949">1949</a>
+<a href="#1950" id="1950">1950</a>
+<a href="#1951" id="1951">1951</a>
+<a href="#1952" id="1952">1952</a>
+<a href="#1953" id="1953">1953</a>
+<a href="#1954" id="1954">1954</a>
+<a href="#1955" id="1955">1955</a>
+<a href="#1956" id="1956">1956</a>
+<a href="#1957" id="1957">1957</a>
+<a href="#1958" id="1958">1958</a>
+<a href="#1959" id="1959">1959</a>
+<a href="#1960" id="1960">1960</a>
+<a href="#1961" id="1961">1961</a>
+<a href="#1962" id="1962">1962</a>
+<a href="#1963" id="1963">1963</a>
+<a href="#1964" id="1964">1964</a>
+<a href="#1965" id="1965">1965</a>
+<a href="#1966" id="1966">1966</a>
+<a href="#1967" id="1967">1967</a>
+<a href="#1968" id="1968">1968</a>
+<a href="#1969" id="1969">1969</a>
+<a href="#1970" id="1970">1970</a>
+<a href="#1971" id="1971">1971</a>
+<a href="#1972" id="1972">1972</a>
+<a href="#1973" id="1973">1973</a>
+<a href="#1974" id="1974">1974</a>
+<a href="#1975" id="1975">1975</a>
+<a href="#1976" id="1976">1976</a>
+<a href="#1977" id="1977">1977</a>
+<a href="#1978" id="1978">1978</a>
+<a href="#1979" id="1979">1979</a>
+<a href="#1980" id="1980">1980</a>
+<a href="#1981" id="1981">1981</a>
+<a href="#1982" id="1982">1982</a>
+<a href="#1983" id="1983">1983</a>
+<a href="#1984" id="1984">1984</a>
+<a href="#1985" id="1985">1985</a>
+<a href="#1986" id="1986">1986</a>
+<a href="#1987" id="1987">1987</a>
+<a href="#1988" id="1988">1988</a>
+<a href="#1989" id="1989">1989</a>
+<a href="#1990" id="1990">1990</a>
+<a href="#1991" id="1991">1991</a>
+<a href="#1992" id="1992">1992</a>
+<a href="#1993" id="1993">1993</a>
+<a href="#1994" id="1994">1994</a>
+<a href="#1995" id="1995">1995</a>
+<a href="#1996" id="1996">1996</a>
+<a href="#1997" id="1997">1997</a>
+<a href="#1998" id="1998">1998</a>
+<a href="#1999" id="1999">1999</a>
+<a href="#2000" id="2000">2000</a>
+<a href="#2001" id="2001">2001</a>
+<a href="#2002" id="2002">2002</a>
+<a href="#2003" id="2003">2003</a>
+<a href="#2004" id="2004">2004</a>
+<a href="#2005" id="2005">2005</a>
+<a href="#2006" id="2006">2006</a>
+<a href="#2007" id="2007">2007</a>
+<a href="#2008" id="2008">2008</a>
+<a href="#2009" id="2009">2009</a>
+<a href="#2010" id="2010">2010</a>
+<a href="#2011" id="2011">2011</a>
+<a href="#2012" id="2012">2012</a>
+<a href="#2013" id="2013">2013</a>
+<a href="#2014" id="2014">2014</a>
+<a href="#2015" id="2015">2015</a>
+<a href="#2016" id="2016">2016</a>
+<a href="#2017" id="2017">2017</a>
+<a href="#2018" id="2018">2018</a>
+<a href="#2019" id="2019">2019</a>
+<a href="#2020" id="2020">2020</a>
+<a href="#2021" id="2021">2021</a>
+<a href="#2022" id="2022">2022</a>
+<a href="#2023" id="2023">2023</a>
+<a href="#2024" id="2024">2024</a>
+<a href="#2025" id="2025">2025</a>
+<a href="#2026" id="2026">2026</a>
+<a href="#2027" id="2027">2027</a>
+<a href="#2028" id="2028">2028</a>
+<a href="#2029" id="2029">2029</a>
+<a href="#2030" id="2030">2030</a>
+<a href="#2031" id="2031">2031</a>
+<a href="#2032" id="2032">2032</a>
+<a href="#2033" id="2033">2033</a>
+<a href="#2034" id="2034">2034</a>
+<a href="#2035" id="2035">2035</a>
+<a href="#2036" id="2036">2036</a>
+<a href="#2037" id="2037">2037</a>
+<a href="#2038" id="2038">2038</a>
+<a href="#2039" id="2039">2039</a>
+<a href="#2040" id="2040">2040</a></pre></div><pre class="rust"><code><span class="doccomment">//! Convenience functions for [HelixClient]
 </span><span class="attr">#![warn(clippy::future_not_send)]
 </span><span class="kw">use </span>futures::{StreamExt, TryStreamExt};
 <span class="kw">use </span>std::borrow::Cow;
@@ -2157,6 +2264,113 @@
             make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
         }))
         .flatten_unordered(<span class="prelude-val">None</span>)
+    }
+
+    <span class="doccomment">/// Gets the channel’s stream key.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;'static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use twitch_oauth2::TwitchToken;
+    ///
+    /// // use the associated user-id  with the user-access token
+    /// let user_id = token.user_id().expect("no user-id set in token");
+    /// let key: twitch_types::StreamKey = client.get_stream_key(user_id, &amp;token).await?;
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub async fn </span>get_stream_key&lt;<span class="lifetime">'b</span>, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
+        broadcaster_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">'b</span>, types::UserIdRef&gt; + <span class="lifetime">'b </span>+ Send,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;types::StreamKey, ClientError&lt;C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
+    {
+        <span class="self">self</span>.req_get(
+            helix::streams::GetStreamKeyRequest::broadcaster_id(broadcaster_id),
+            token,
+        )
+        .<span class="kw">await
+        </span>.map(|res| res.data.stream_key)
+    }
+
+    <span class="doccomment">/// Adds a marker to a live stream.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;'static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::helix;
+    /// use twitch_oauth2::TwitchToken;
+    ///
+    /// // use the associated user-id  with the user-access token
+    /// let user_id = token.user_id().expect("no user-id set in token");
+    /// let marker: helix::streams::CreatedStreamMarker = client.create_stream_marker(user_id, "my description", &amp;token).await?;
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub async fn </span>create_stream_marker&lt;<span class="lifetime">'b</span>, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
+        user_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">'b</span>, types::UserIdRef&gt; + <span class="lifetime">'b </span>+ Send,
+        description: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'b</span>, str&gt;&gt; + Send,
+        token: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::streams::CreatedStreamMarker, ClientError&lt;C&gt;&gt;
+    <span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
+    {
+        <span class="self">self</span>.req_post(
+            helix::streams::CreateStreamMarkerRequest::new(),
+            helix::streams::CreateStreamMarkerBody::new(user_id, description),
+            token,
+        )
+        .<span class="kw">await
+        </span>.map(|res| res.data)
+    }
+
+    <span class="doccomment">/// Gets a list of markers from the specified VOD/video.
+    ///
+    /// Markers are grouped per creator and video.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error + Send + Sync + 'static&gt;&gt; {
+    /// # let client: helix::HelixClient&lt;'static, twitch_api::client::DummyHttpClient&gt; = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&amp;client, token, None, None).await?;
+    /// use twitch_api::{types, helix};
+    /// use futures::TryStreamExt;
+    ///
+    /// let groups: Vec&lt;helix::streams::StreamMarkerGroup&gt; = client
+    ///     .get_stream_markers_from_video("1234", &amp;token)
+    ///     .try_collect()
+    ///     .await?;
+    /// # Ok(()) }
+    /// ```
+    </span><span class="kw">pub fn </span>get_stream_markers_from_video&lt;<span class="lifetime">'b</span>: <span class="lifetime">'client</span>, T&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
+        video_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">'b</span>, types::VideoIdRef&gt; + <span class="lifetime">'b</span>,
+        token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
+    ) -&gt; <span class="kw">impl </span>futures::Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;helix::streams::StreamMarkerGroup, ClientError&lt;C&gt;&gt;&gt;
+           + Send
+           + Unpin
+           + <span class="lifetime">'client
+    </span><span class="kw">where
+        </span>T: TwitchToken + Send + Sync + <span class="question-mark">?</span>Sized,
+    {
+        <span class="kw">let </span>req = helix::streams::GetStreamMarkersRequest::video_id(video_id).first(<span class="number">100</span>);
+
+        make_stream(req, token, <span class="self">self</span>, std::collections::VecDeque::from)
     }
 
     <span class="doccomment">/// Get chatters in a stream [Chatter][helix::chat::Chatter]
