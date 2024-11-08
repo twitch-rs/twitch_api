@@ -107,6 +107,8 @@ pub use raid::{ChannelRaidV1, ChannelRaidV1Payload};
 #[doc(inline)]
 pub use shared_chat::{ChannelSharedChatBeginV1, ChannelSharedChatBeginV1Payload};
 #[doc(inline)]
+pub use shared_chat::{ChannelSharedChatEndV1, ChannelSharedChatEndV1Payload};
+#[doc(inline)]
 pub use shared_chat::{ChannelSharedChatUpdateV1, ChannelSharedChatUpdateV1Payload};
 #[doc(inline)]
 pub use shield_mode::{ChannelShieldModeBeginV1, ChannelShieldModeBeginV1Payload};

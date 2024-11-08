@@ -5,10 +5,13 @@ use crate::types;
 use serde_derive::{Deserialize, Serialize};
 
 pub mod begin;
+pub mod end;
 pub mod update;
 
 #[doc(inline)]
 pub use begin::{ChannelSharedChatBeginV1, ChannelSharedChatBeginV1Payload};
+#[doc(inline)]
+pub use end::{ChannelSharedChatEndV1, ChannelSharedChatEndV1Payload};
 #[doc(inline)]
 pub use update::{ChannelSharedChatUpdateV1, ChannelSharedChatUpdateV1Payload};
 

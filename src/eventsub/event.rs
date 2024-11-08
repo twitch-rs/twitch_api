@@ -49,6 +49,7 @@ macro_rules! fill_events {
             channel::ChannelPredictionProgressV1;
             channel::ChannelRaidV1;
             channel::ChannelSharedChatBeginV1;
+            channel::ChannelSharedChatEndV1;
             channel::ChannelSharedChatUpdateV1;
             channel::ChannelShieldModeBeginV1;
             channel::ChannelShieldModeEndV1;
@@ -213,6 +214,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelRaid => "channel.raid",
     "a channel becomes active in an active shared chat session.":
     ChannelSharedChatBegin => "channel.shared_chat.begin",
+    "a channel leaves a shared chat session or the session ends.":
+    ChannelSharedChatEnd => "channel.shared_chat.end",
     "the active shared chat session the channel is in changed.":
     ChannelSharedChatUpdate => "channel.shared_chat.update",
     "a subscription to the specified channel expires.":
@@ -346,6 +349,8 @@ pub enum Event {
     ChannelRaidV1(Payload<channel::ChannelRaidV1>),
     /// Channel SharedChat Begin V1 Event
     ChannelSharedChatBeginV1(Payload<channel::ChannelSharedChatBeginV1>),
+    /// Channel SharedChat End V1 Event
+    ChannelSharedChatEndV1(Payload<channel::ChannelSharedChatEndV1>),
     /// Channel SharedChat Update V1 Event
     ChannelSharedChatUpdateV1(Payload<channel::ChannelSharedChatUpdateV1>),
     /// Channel ShieldMode Begin V1 Event

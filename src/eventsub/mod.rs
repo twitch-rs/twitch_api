@@ -90,7 +90,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 44/65</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 45/65</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
@@ -139,7 +139,7 @@
 //! | [`channel.prediction.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionprogress) | [ChannelPredictionProgressV1](channel::ChannelPredictionProgressV1)<br>[ChannelPredictionProgressV1Payload](channel::ChannelPredictionProgressV1Payload) |
 //! | [`channel.raid`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelraid) | [ChannelRaidV1](channel::ChannelRaidV1)<br>[ChannelRaidV1Payload](channel::ChannelRaidV1Payload) |
 //! | [`channel.shared_chat.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshared_chatbegin) | [ChannelSharedChatBeginV1](channel::ChannelSharedChatBeginV1)<br>[ChannelSharedChatBeginV1Payload](channel::ChannelSharedChatBeginV1Payload) |
-//! | [`channel.shared_chat.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshared_chatend) | -<br>- |
+//! | [`channel.shared_chat.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshared_chatend) | [ChannelSharedChatEndV1](channel::ChannelSharedChatEndV1)<br>[ChannelSharedChatEndV1Payload](channel::ChannelSharedChatEndV1Payload) |
 //! | [`channel.shared_chat.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshared_chatupdate) | [ChannelSharedChatUpdateV1](channel::ChannelSharedChatUpdateV1)<br>[ChannelSharedChatUpdateV1Payload](channel::ChannelSharedChatUpdateV1Payload) |
 //! | [`channel.shield_mode.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshield_modebegin) | [ChannelShieldModeBeginV1](channel::ChannelShieldModeBeginV1)<br>[ChannelShieldModeBeginV1Payload](channel::ChannelShieldModeBeginV1Payload) |
 //! | [`channel.shield_mode.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshield_modeend) | [ChannelShieldModeEndV1](channel::ChannelShieldModeEndV1)<br>[ChannelShieldModeEndV1Payload](channel::ChannelShieldModeEndV1Payload) |
