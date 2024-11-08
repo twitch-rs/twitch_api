@@ -5,9 +5,12 @@ use crate::types;
 use serde_derive::{Deserialize, Serialize};
 
 pub mod begin;
+pub mod update;
 
 #[doc(inline)]
 pub use begin::{ChannelSharedChatBeginV1, ChannelSharedChatBeginV1Payload};
+#[doc(inline)]
+pub use update::{ChannelSharedChatUpdateV1, ChannelSharedChatUpdateV1Payload};
 
 /// A participant in a shared chat session
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
