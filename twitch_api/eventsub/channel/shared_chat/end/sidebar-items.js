@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["ChannelSharedChatEndV1","ChannelSharedChatEndV1Payload"]};
