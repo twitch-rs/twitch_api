@@ -59,7 +59,7 @@ pub struct AutomodMessageHoldV1Payload {
     /// The ID of the message that was flagged by automod.
     pub message_id: types::MsgId,
     /// The body of the message.
-    pub message: crate::eventsub::channel::chat::Message,
+    pub message: AutomodMessage,
     /// The category of the message.
     pub category: super::AutomodCategory,
     /// The level of severity. Measured between 1 to 4.
