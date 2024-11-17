@@ -92,7 +92,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 46/65</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 47/65</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
@@ -114,7 +114,7 @@
 //! | [`channel.chat.message_delete`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatmessage_delete) | [ChannelChatMessageDeleteV1](channel::ChannelChatMessageDeleteV1)<br>[ChannelChatMessageDeleteV1Payload](channel::ChannelChatMessageDeleteV1Payload) |
 //! | [`channel.chat.notification`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatnotification) | [ChannelChatNotificationV1](channel::ChannelChatNotificationV1)<br>[ChannelChatNotificationV1Payload](channel::ChannelChatNotificationV1Payload) |
 //! | [`channel.chat.user_message_hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatuser_message_hold) | [ChannelChatUserMessageHoldV1](channel::ChannelChatUserMessageHoldV1)<br>[ChannelChatUserMessageHoldV1Payload](channel::ChannelChatUserMessageHoldV1Payload) |
-//! | [`channel.chat.user_message_update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatuser_message_update) | -<br>- |
+//! | [`channel.chat.user_message_update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatuser_message_update) | [ChannelChatUserMessageUpdateV1](channel::ChannelChatUserMessageUpdateV1)<br>[ChannelChatUserMessageUpdateV1Payload](channel::ChannelChatUserMessageUpdateV1Payload) |
 //! | [`channel.chat_settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchat_settingsupdate) | -<br>- |
 //! | [`channel.cheer`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcheer) | [ChannelCheerV1](channel::ChannelCheerV1)<br>[ChannelCheerV1Payload](channel::ChannelCheerV1Payload) |
 //! | [`channel.follow`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelfollow) | [ChannelFollowV2](channel::ChannelFollowV2)<br>[ChannelFollowV2Payload](channel::ChannelFollowV2Payload) |

@@ -23,6 +23,8 @@ pub enum AutomodMessageStatus {
     Denied,
     /// The message is too old, it can't be acted upon anymore.
     Expired,
+    /// The message was invalid
+    Invalid,
     /// An unknown Automod message status, contains the raw string provided by Twitch.
     #[serde(untagged)]
     Unknown(String),
