@@ -26,6 +26,7 @@ macro_rules! fill_events {
             channel::ChannelChatMessageV1;
             channel::ChannelChatMessageDeleteV1;
             channel::ChannelChatNotificationV1;
+            channel::ChannelChatUserMessageHoldV1;
             channel::ChannelCheerV1;
             channel::ChannelFollowV1;
             channel::ChannelFollowV2;
@@ -162,6 +163,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelChatMessageDelete => "channel.chat.message_delete",
     "an event that appears in chat occurs, such as someone subscribing to the channel or a subscription is gifted.":
     ChannelChatNotification => "channel.chat.notification",
+    "a user's message is caught by automod.":
+    ChannelChatUserMessageHold => "channel.chat.user_message_hold",
     "a user donates to the broadcaster’s charity campaign.":
     ChannelCharityCampaignDonate => "channel.charity_campaign.donate",
     "progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal.":
@@ -291,6 +294,8 @@ pub enum Event {
     ChannelChatMessageDeleteV1(Payload<channel::ChannelChatMessageDeleteV1>),
     /// Channel Chat Notification V1 Event
     ChannelChatNotificationV1(Payload<channel::ChannelChatNotificationV1>),
+    /// Channel Chat UserMessageHold V1 Event
+    ChannelChatUserMessageHoldV1(Payload<channel::ChannelChatUserMessageHoldV1>),
     /// Channel Charity Campaign Donate V1 Event
     ChannelCharityCampaignDonateV1(Payload<channel::ChannelCharityCampaignDonateV1>),
     /// Channel Charity Campaign Progress V1 Event

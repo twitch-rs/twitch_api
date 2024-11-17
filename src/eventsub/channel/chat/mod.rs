@@ -9,6 +9,7 @@ pub mod clear_user_messages;
 pub mod message;
 pub mod message_delete;
 pub mod notification;
+pub mod user_message_hold;
 
 #[doc(inline)]
 pub use clear::{ChannelChatClearV1, ChannelChatClearV1Payload};
@@ -22,6 +23,8 @@ pub use message::{ChannelChatMessageV1, ChannelChatMessageV1Payload};
 pub use message_delete::{ChannelChatMessageDeleteV1, ChannelChatMessageDeleteV1Payload};
 #[doc(inline)]
 pub use notification::{ChannelChatNotificationV1, ChannelChatNotificationV1Payload};
+#[doc(inline)]
+pub use user_message_hold::{ChannelChatUserMessageHoldV1, ChannelChatUserMessageHoldV1Payload};
 
 /// A message
 // XXX: this struct can never be deny_unknown_fields

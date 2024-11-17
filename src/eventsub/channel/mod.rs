@@ -71,6 +71,8 @@ pub use chat::{ChannelChatMessageV1, ChannelChatMessageV1Payload};
 #[doc(inline)]
 pub use chat::{ChannelChatNotificationV1, ChannelChatNotificationV1Payload};
 #[doc(inline)]
+pub use chat::{ChannelChatUserMessageHoldV1, ChannelChatUserMessageHoldV1Payload};
+#[doc(inline)]
 pub use cheer::{ChannelCheerV1, ChannelCheerV1Payload};
 #[doc(inline)]
 pub use follow::{ChannelFollowV1, ChannelFollowV1Payload};
