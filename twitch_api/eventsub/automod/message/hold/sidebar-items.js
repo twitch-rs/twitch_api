@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["AutomodMessageHoldV1","AutomodMessageHoldV1Payload"]};
+window.SIDEBAR_ITEMS = {"struct":["AutomodMessageHoldBeta","AutomodMessageHoldBetaPayload","AutomodMessageHoldV1","AutomodMessageHoldV1Payload"]};
