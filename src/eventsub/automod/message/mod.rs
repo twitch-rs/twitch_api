@@ -8,6 +8,9 @@ pub mod hold;
 pub mod update;
 
 #[doc(inline)]
+#[cfg(feature = "beta")]
+pub use hold::{AutomodMessageHoldBeta, AutomodMessageHoldBetaPayload};
+#[doc(inline)]
 pub use hold::{AutomodMessageHoldV1, AutomodMessageHoldV1Payload};
 #[doc(inline)]
 pub use update::{AutomodMessageUpdateV1, AutomodMessageUpdateV1Payload};
@@ -94,4 +97,83 @@ pub struct AutomodMessageEmote {
     pub id: types::EmoteId,
     /// An ID that identifies the emote set that the emote belongs to.
     pub emote_set_id: types::EmoteSetId,
+}
+
+/// The reason why a message was held
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "reason", rename_all = "snake_case")]
+#[non_exhaustive]
+pub enum AutomodHeldReason {
+    /// The message was caught by automod's rules
+    Automod {
+        /// Information on why a message was caught by automod
+        automod: AutomodMessageInfo,
+    },
+    /// The message was caught because of one or more blocked terms
+    BlockedTerm {
+        /// Information on which blocked terms were matched in a message
+        blocked_term: AutomodBlockedTermInfo,
+    },
+}
+
+/// Information on why a message was caught by automod
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct AutomodMessageInfo {
+    /// The category of the caught message.
+    pub category: AutomodCategory,
+    /// The level of severity (1-4).
+    pub level: u8,
+    /// The bounds of the text that caused the message to be caught.
+    pub boundaries: Vec<AutomodMessageBoundary>,
+}
+
+/// Information on which blocked terms were matched in a message
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct AutomodBlockedTermInfo {
+    /// The list of blocked terms found in the message.
+    pub terms_found: Vec<AutomodBlockedTerm>,
+}
+
+/// The bounds of the text that caused the message to be caught.
+///
+/// These bounds are given in Unicode code points not in bytes.
+/// See [char] and [str::chars].
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct AutomodMessageBoundary {
+    /// Index in the message for the start of the problem (0 indexed, inclusive).
+    pub start_pos: usize,
+    /// Index in the message for the end of the problem (0 indexed, inclusive).
+    pub end_pos: usize,
+}
+
+/// Information about the blocked terms that caused a message to be caught by automod.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct AutomodBlockedTermsInfo {
+    /// The list of blocked terms found in the message.
+    pub terms_found: Vec<AutomodBlockedTerm>,
+}
+
+/// A blocked term that was found in a message
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct AutomodBlockedTerm {
+    /// The id of the blocked term found.
+    pub term_id: types::BlockedTermId,
+    /// The bounds of the text that caused the message to be caught.
+    pub boundary: AutomodMessageBoundary,
+    /// The id of the broadcaster that owns the blocked term.
+    pub owner_broadcaster_user_id: types::UserId,
+    /// The login of the broadcaster that owns the blocked term.
+    pub owner_broadcaster_user_login: types::UserName,
+    /// The username of the broadcaster that owns the blocked term.
+    pub owner_broadcaster_user_name: types::DisplayName,
 }

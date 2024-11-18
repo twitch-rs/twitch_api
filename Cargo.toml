@@ -124,6 +124,7 @@ eventsub = [
     "twitch_types/emote",
     "twitch_types/eventsub",
     "twitch_types/goal",
+    "twitch_types/moderation",
     "twitch_types/points",
     "twitch_types/stream",
     "twitch_types/timestamp",

@@ -12,6 +12,8 @@ macro_rules! fill_events {
     ($callback:ident( $($args:tt)* )) => {
         $callback!($($args)*
             automod::AutomodMessageHoldV1;
+            #[cfg(feature = "beta")]
+            automod::AutomodMessageHoldBeta;
             automod::AutomodMessageUpdateV1;
             automod::AutomodSettingsUpdateV1;
             automod::AutomodTermsUpdateV1;
@@ -279,6 +281,9 @@ fn main() {
 pub enum Event {
     /// Automod Message Hold V1 Event
     AutomodMessageHoldV1(Payload<automod::AutomodMessageHoldV1>),
+    /// Automod Message Hold Beta Event
+    #[cfg(feature = "beta")]
+    AutomodMessageHoldBeta(Payload<automod::AutomodMessageHoldBeta>),
     /// Automod Message Update V1 Event
     AutomodMessageUpdateV1(Payload<automod::AutomodMessageUpdateV1>),
     /// Automod Settings Update V1 Event

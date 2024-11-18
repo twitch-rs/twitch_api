@@ -8,6 +8,9 @@ pub mod settings;
 pub mod terms;
 
 #[doc(inline)]
+#[cfg(feature = "beta")]
+pub use message::{AutomodMessageHoldBeta, AutomodMessageHoldBetaPayload};
+#[doc(inline)]
 pub use message::{AutomodMessageHoldV1, AutomodMessageHoldV1Payload};
 #[doc(inline)]
 pub use message::{AutomodMessageUpdateV1, AutomodMessageUpdateV1Payload};
