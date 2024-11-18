@@ -12,7 +12,11 @@ macro_rules! fill_events {
     ($callback:ident( $($args:tt)* )) => {
         $callback!($($args)*
             automod::AutomodMessageHoldV1;
+            #[cfg(feature = "beta")]
+            automod::AutomodMessageHoldBeta;
             automod::AutomodMessageUpdateV1;
+            #[cfg(feature = "beta")]
+            automod::AutomodMessageUpdateBeta;
             automod::AutomodSettingsUpdateV1;
             automod::AutomodTermsUpdateV1;
             channel::ChannelAdBreakBeginV1;
@@ -26,6 +30,8 @@ macro_rules! fill_events {
             channel::ChannelChatMessageV1;
             channel::ChannelChatMessageDeleteV1;
             channel::ChannelChatNotificationV1;
+            channel::ChannelChatUserMessageHoldV1;
+            channel::ChannelChatUserMessageUpdateV1;
             channel::ChannelCheerV1;
             channel::ChannelFollowV1;
             channel::ChannelFollowV2;
@@ -162,6 +168,10 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelChatMessageDelete => "channel.chat.message_delete",
     "an event that appears in chat occurs, such as someone subscribing to the channel or a subscription is gifted.":
     ChannelChatNotification => "channel.chat.notification",
+    "a user's message is caught by automod.":
+    ChannelChatUserMessageHold => "channel.chat.user_message_hold",
+    "a user's message's automod status is updated.":
+    ChannelChatUserMessageUpdate => "channel.chat.user_message_update",
     "a user donates to the broadcaster’s charity campaign.":
     ChannelCharityCampaignDonate => "channel.charity_campaign.donate",
     "progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal.":
@@ -273,8 +283,14 @@ fn main() {
 pub enum Event {
     /// Automod Message Hold V1 Event
     AutomodMessageHoldV1(Payload<automod::AutomodMessageHoldV1>),
+    /// Automod Message Hold Beta Event
+    #[cfg(feature = "beta")]
+    AutomodMessageHoldBeta(Payload<automod::AutomodMessageHoldBeta>),
     /// Automod Message Update V1 Event
     AutomodMessageUpdateV1(Payload<automod::AutomodMessageUpdateV1>),
+    /// Automod Message Update Beta Event
+    #[cfg(feature = "beta")]
+    AutomodMessageUpdateBeta(Payload<automod::AutomodMessageUpdateBeta>),
     /// Automod Settings Update V1 Event
     AutomodSettingsUpdateV1(Payload<automod::AutomodSettingsUpdateV1>),
     /// Automod Terms Update V1 Event
@@ -291,6 +307,10 @@ pub enum Event {
     ChannelChatMessageDeleteV1(Payload<channel::ChannelChatMessageDeleteV1>),
     /// Channel Chat Notification V1 Event
     ChannelChatNotificationV1(Payload<channel::ChannelChatNotificationV1>),
+    /// Channel Chat UserMessageHold V1 Event
+    ChannelChatUserMessageHoldV1(Payload<channel::ChannelChatUserMessageHoldV1>),
+    /// Channel Chat UserMessageUpdate V1 Event
+    ChannelChatUserMessageUpdateV1(Payload<channel::ChannelChatUserMessageUpdateV1>),
     /// Channel Charity Campaign Donate V1 Event
     ChannelCharityCampaignDonateV1(Payload<channel::ChannelCharityCampaignDonateV1>),
     /// Channel Charity Campaign Progress V1 Event
