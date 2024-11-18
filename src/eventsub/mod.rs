@@ -79,14 +79,14 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">automod.*</code> 🟡 5/6</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">automod.*</code> 🟢 6/6</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
 //! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold) | [AutomodMessageHoldV1](automod::AutomodMessageHoldV1)<br>[AutomodMessageHoldV1Payload](automod::AutomodMessageHoldV1Payload) |
 //! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold-v2) | [AutomodMessageHoldBeta](automod::AutomodMessageHoldBeta)<br>[AutomodMessageHoldBetaPayload](automod::AutomodMessageHoldBetaPayload) |
 //! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate) | [AutomodMessageUpdateV1](automod::AutomodMessageUpdateV1)<br>[AutomodMessageUpdateV1Payload](automod::AutomodMessageUpdateV1Payload) |
-//! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate-v2) | -<br>- |
+//! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate-v2) | [AutomodMessageUpdateBeta](automod::AutomodMessageUpdateBeta)<br>[AutomodMessageUpdateBetaPayload](automod::AutomodMessageUpdateBetaPayload) |
 //! | [`automod.settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodsettingsupdate) | [AutomodSettingsUpdateV1](automod::AutomodSettingsUpdateV1)<br>[AutomodSettingsUpdateV1Payload](automod::AutomodSettingsUpdateV1Payload) |
 //! | [`automod.terms.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodtermsupdate) | [AutomodTermsUpdateV1](automod::AutomodTermsUpdateV1)<br>[AutomodTermsUpdateV1Payload](automod::AutomodTermsUpdateV1Payload) |
 //!

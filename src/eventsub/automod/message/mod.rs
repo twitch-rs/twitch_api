@@ -13,6 +13,9 @@ pub use hold::{AutomodMessageHoldBeta, AutomodMessageHoldBetaPayload};
 #[doc(inline)]
 pub use hold::{AutomodMessageHoldV1, AutomodMessageHoldV1Payload};
 #[doc(inline)]
+#[cfg(feature = "beta")]
+pub use update::{AutomodMessageUpdateBeta, AutomodMessageUpdateBetaPayload};
+#[doc(inline)]
 pub use update::{AutomodMessageUpdateV1, AutomodMessageUpdateV1Payload};
 
 /// A message's Automod status

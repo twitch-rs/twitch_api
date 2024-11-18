@@ -15,6 +15,8 @@ macro_rules! fill_events {
             #[cfg(feature = "beta")]
             automod::AutomodMessageHoldBeta;
             automod::AutomodMessageUpdateV1;
+            #[cfg(feature = "beta")]
+            automod::AutomodMessageUpdateBeta;
             automod::AutomodSettingsUpdateV1;
             automod::AutomodTermsUpdateV1;
             channel::ChannelAdBreakBeginV1;
@@ -286,6 +288,9 @@ pub enum Event {
     AutomodMessageHoldBeta(Payload<automod::AutomodMessageHoldBeta>),
     /// Automod Message Update V1 Event
     AutomodMessageUpdateV1(Payload<automod::AutomodMessageUpdateV1>),
+    /// Automod Message Update Beta Event
+    #[cfg(feature = "beta")]
+    AutomodMessageUpdateBeta(Payload<automod::AutomodMessageUpdateBeta>),
     /// Automod Settings Update V1 Event
     AutomodSettingsUpdateV1(Payload<automod::AutomodSettingsUpdateV1>),
     /// Automod Terms Update V1 Event
