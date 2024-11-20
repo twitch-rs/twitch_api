@@ -51,13 +51,13 @@ pub struct ChannelChatMessageV1Payload {
     /// The broadcaster user ID.
     pub broadcaster_user_id: types::UserId,
     /// The broadcaster display name.
-    pub broadcaster_user_name: types::UserName,
+    pub broadcaster_user_name: types::DisplayName,
     /// The broadcaster login.
     pub broadcaster_user_login: types::UserName,
     /// The user ID of the user that sent the message.
     pub chatter_user_id: types::UserId,
     /// The user name of the user that sent the message.
-    pub chatter_user_name: types::UserName,
+    pub chatter_user_name: types::DisplayName,
     /// The user login of the user that sent the message.
     pub chatter_user_login: types::UserName,
     /// A UUID that identifies the message.
@@ -137,7 +137,7 @@ pub struct Reply {
     /// User ID of the sender of the parent message.
     pub parent_user_id: types::UserId,
     /// User name of the sender of the parent message.
-    pub parent_user_name: types::UserName,
+    pub parent_user_name: types::DisplayName,
     /// User login of the sender of the parent message.
     pub parent_user_login: types::UserName,
     /// An ID that identifies the parent message of the reply thread.
@@ -145,7 +145,7 @@ pub struct Reply {
     /// User ID of the sender of the thread's parent message.
     pub thread_user_id: types::UserId,
     /// User name of the sender of the thread's parent message.
-    pub thread_user_name: types::UserName,
+    pub thread_user_name: types::DisplayName,
     /// User login of the sender of the thread's parent message.
     pub thread_user_login: types::UserName,
 }

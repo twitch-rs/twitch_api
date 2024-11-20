@@ -40,15 +40,15 @@ pub struct ChannelSubscriptionEndV1Payload {
     /// The broadcaster user ID.
     pub broadcaster_user_id: types::UserId,
     /// The broadcaster login.
-    pub broadcaster_user_login: types::DisplayName,
+    pub broadcaster_user_login: types::UserName,
     /// The broadcaster display name.
-    pub broadcaster_user_name: types::UserName,
+    pub broadcaster_user_name: types::DisplayName,
     /// The user ID for the user whose subscription ended.
     pub user_id: types::UserId,
     /// The user login for the user whose subscription ended.
-    pub user_login: types::DisplayName,
+    pub user_login: types::UserName,
     /// The user display name for the user whose subscription ended.
-    pub user_name: types::UserName,
+    pub user_name: types::DisplayName,
     /// The tier of the subscription that ended. Valid values are 1000, 2000, and 3000.
     pub tier: types::SubscriptionTier,
     /// Whether the subscription was a gift.

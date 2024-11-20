@@ -56,7 +56,7 @@ pub struct ChannelPointsCustomRewardRemoveV1Payload {
     /// The requested broadcaster login.
     pub broadcaster_user_login: types::UserName,
     /// The requested broadcaster display name.
-    pub broadcaster_user_name: types::UserName,
+    pub broadcaster_user_name: types::DisplayName,
     /// Timestamp of the cooldown expiration. null if the reward isn’t on cooldown.
     pub cooldown_expires_at: Option<types::Timestamp>,
     /// The reward cost.
