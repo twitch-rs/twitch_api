@@ -58,7 +58,13 @@ pub fn make_overview(base_url: &Url, raw: &str, rustdoc: &ParsedEventsubRustdoc)
                         format!("<span style=\"font-size: 0.9em\">`{n}`</span>")
                     }
                 };
-                let name = format!("[{}]({})", fmt_name(&sub.name), sub.link);
+                let version = if sub.is_numeric_version() {
+                    format!("v{}", sub.version)
+                } else {
+                    sub.version.to_string()
+                };
+
+                let name = format!("[{}]({}) ({version})", fmt_name(&sub.name), sub.link);
                 if is_implemented(&sub_name, &payload_name) {
                     EventSubEntry {
                         name,
@@ -179,7 +185,7 @@ impl<'a> EventSubRow<'a> {
             append_pascal(&mut buf, part);
         }
 
-        if self.version.chars().all(|it| it.is_numeric()) {
+        if self.is_numeric_version() {
             buf.push('V');
             buf.push_str(&self.version);
         } else {
@@ -188,4 +194,6 @@ impl<'a> EventSubRow<'a> {
 
         buf
     }
+
+    pub fn is_numeric_version(&self) -> bool { self.version.chars().all(|it| it.is_numeric()) }
 }
