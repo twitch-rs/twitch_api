@@ -43,8 +43,10 @@ pub enum AutomodCategory {
     Misogyny,
     /// Racist language or behavior.
     Racism,
-    /// Profane language or swearing.
+    /// Profane language.
     Profanity,
+    /// Use of swear words or expletives.
+    Swearing,
     /// An unknown category identified by Automod, contains the raw string provided by Twitch.
     #[serde(untagged)]
     Unknown(String),
