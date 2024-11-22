@@ -40,9 +40,9 @@ pub struct ChannelSubscriptionGiftV1Payload {
     /// The broadcaster user ID.
     pub broadcaster_user_id: types::UserId,
     /// The broadcaster login.
-    pub broadcaster_user_login: types::DisplayName,
+    pub broadcaster_user_login: types::UserName,
     /// The broadcaster display name.
-    pub broadcaster_user_name: types::UserName,
+    pub broadcaster_user_name: types::DisplayName,
     /// The number of subscriptions gifted by this user in the channel. This value is null for anonymous gifts or if the gifter has opted out of sharing this information.
     pub cumulative_total: Option<i64>,
     /// Whether the subscription gift was anonymous.
@@ -54,9 +54,9 @@ pub struct ChannelSubscriptionGiftV1Payload {
     /// The user ID of the user who sent the subscription gift. Set to null if it was an anonymous subscription gift.
     pub user_id: Option<types::UserId>,
     /// The user login of the user who sent the gift. Set to null if it was an anonymous subscription gift.
-    pub user_login: Option<types::DisplayName>,
+    pub user_login: Option<types::UserName>,
     /// The user display name of the user who sent the gift. Set to null if it was an anonymous subscription gift.
-    pub user_name: Option<types::UserName>,
+    pub user_name: Option<types::DisplayName>,
 }
 
 #[cfg(test)]

@@ -324,10 +324,7 @@ fn parse_payload_v2_automod() {
     let AutomodHeldReason::Automod { automod } = &notif.reason else {
         panic!("invalid held reason");
     };
-    assert_eq!(
-        automod.category,
-        AutomodCategory::Unknown("swearing".to_string())
-    );
+    assert_eq!(automod.category, AutomodCategory::Swearing);
     assert_eq!(automod.level, 4);
     assert_eq!(
         automod.boundaries,

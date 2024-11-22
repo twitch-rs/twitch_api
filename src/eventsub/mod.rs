@@ -83,12 +83,12 @@
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
-//! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold) | [AutomodMessageHoldV1](automod::AutomodMessageHoldV1)<br>[AutomodMessageHoldV1Payload](automod::AutomodMessageHoldV1Payload) |
-//! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold-v2) | [AutomodMessageHoldBeta](automod::AutomodMessageHoldBeta)<br>[AutomodMessageHoldBetaPayload](automod::AutomodMessageHoldBetaPayload) |
-//! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate) | [AutomodMessageUpdateV1](automod::AutomodMessageUpdateV1)<br>[AutomodMessageUpdateV1Payload](automod::AutomodMessageUpdateV1Payload) |
-//! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate-v2) | [AutomodMessageUpdateBeta](automod::AutomodMessageUpdateBeta)<br>[AutomodMessageUpdateBetaPayload](automod::AutomodMessageUpdateBetaPayload) |
-//! | [`automod.settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodsettingsupdate) | [AutomodSettingsUpdateV1](automod::AutomodSettingsUpdateV1)<br>[AutomodSettingsUpdateV1Payload](automod::AutomodSettingsUpdateV1Payload) |
-//! | [`automod.terms.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodtermsupdate) | [AutomodTermsUpdateV1](automod::AutomodTermsUpdateV1)<br>[AutomodTermsUpdateV1Payload](automod::AutomodTermsUpdateV1Payload) |
+//! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold) (v1) | [AutomodMessageHoldV1](automod::AutomodMessageHoldV1)<br>[AutomodMessageHoldV1Payload](automod::AutomodMessageHoldV1Payload) |
+//! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold-v2) (beta) | [AutomodMessageHoldBeta](automod::AutomodMessageHoldBeta)<br>[AutomodMessageHoldBetaPayload](automod::AutomodMessageHoldBetaPayload) |
+//! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate) (v1) | [AutomodMessageUpdateV1](automod::AutomodMessageUpdateV1)<br>[AutomodMessageUpdateV1Payload](automod::AutomodMessageUpdateV1Payload) |
+//! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate-v2) (beta) | [AutomodMessageUpdateBeta](automod::AutomodMessageUpdateBeta)<br>[AutomodMessageUpdateBetaPayload](automod::AutomodMessageUpdateBetaPayload) |
+//! | [`automod.settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodsettingsupdate) (v1) | [AutomodSettingsUpdateV1](automod::AutomodSettingsUpdateV1)<br>[AutomodSettingsUpdateV1Payload](automod::AutomodSettingsUpdateV1Payload) |
+//! | [`automod.terms.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodtermsupdate) (v1) | [AutomodTermsUpdateV1](automod::AutomodTermsUpdateV1)<br>[AutomodTermsUpdateV1Payload](automod::AutomodTermsUpdateV1Payload) |
 //!
 //! </details>
 //!
@@ -96,71 +96,71 @@
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
-//! | [`channel.ad_break.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelad_breakbegin) | [ChannelAdBreakBeginV1](channel::ChannelAdBreakBeginV1)<br>[ChannelAdBreakBeginV1Payload](channel::ChannelAdBreakBeginV1Payload) |
-//! | [`channel.ban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelban) | [ChannelBanV1](channel::ChannelBanV1)<br>[ChannelBanV1Payload](channel::ChannelBanV1Payload) |
-//! | [<span style="font-size: 0.9em">`channel.channel_points_automatic_reward_redemption.add`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_automatic_reward_redemptionadd) | -<br>- |
-//! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward.add`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardadd) | [ChannelPointsCustomRewardAddV1](channel::ChannelPointsCustomRewardAddV1)<br>[ChannelPointsCustomRewardAddV1Payload](channel::ChannelPointsCustomRewardAddV1Payload) |
-//! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward.remove`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardremove) | [ChannelPointsCustomRewardRemoveV1](channel::ChannelPointsCustomRewardRemoveV1)<br>[ChannelPointsCustomRewardRemoveV1Payload](channel::ChannelPointsCustomRewardRemoveV1Payload) |
-//! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward.update`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardupdate) | [ChannelPointsCustomRewardUpdateV1](channel::ChannelPointsCustomRewardUpdateV1)<br>[ChannelPointsCustomRewardUpdateV1Payload](channel::ChannelPointsCustomRewardUpdateV1Payload) |
-//! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward_redemption.add`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionadd) | [ChannelPointsCustomRewardRedemptionAddV1](channel::ChannelPointsCustomRewardRedemptionAddV1)<br>[ChannelPointsCustomRewardRedemptionAddV1Payload](channel::ChannelPointsCustomRewardRedemptionAddV1Payload) |
-//! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward_redemption.update`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionupdate) | [ChannelPointsCustomRewardRedemptionUpdateV1](channel::ChannelPointsCustomRewardRedemptionUpdateV1)<br>[ChannelPointsCustomRewardRedemptionUpdateV1Payload](channel::ChannelPointsCustomRewardRedemptionUpdateV1Payload) |
-//! | [`channel.charity_campaign.donate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcharity_campaigndonate) | [ChannelCharityCampaignDonateV1](channel::ChannelCharityCampaignDonateV1)<br>[ChannelCharityCampaignDonateV1Payload](channel::ChannelCharityCampaignDonateV1Payload) |
-//! | [`channel.charity_campaign.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcharity_campaignprogress) | [ChannelCharityCampaignProgressV1](channel::ChannelCharityCampaignProgressV1)<br>[ChannelCharityCampaignProgressV1Payload](channel::ChannelCharityCampaignProgressV1Payload) |
-//! | [`channel.charity_campaign.start`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcharity_campaignstart) | [ChannelCharityCampaignStartV1](channel::ChannelCharityCampaignStartV1)<br>[ChannelCharityCampaignStartV1Payload](channel::ChannelCharityCampaignStartV1Payload) |
-//! | [`channel.charity_campaign.stop`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcharity_campaignstop) | [ChannelCharityCampaignStopV1](channel::ChannelCharityCampaignStopV1)<br>[ChannelCharityCampaignStopV1Payload](channel::ChannelCharityCampaignStopV1Payload) |
-//! | [`channel.chat.clear`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatclear) | [ChannelChatClearV1](channel::ChannelChatClearV1)<br>[ChannelChatClearV1Payload](channel::ChannelChatClearV1Payload) |
-//! | [`channel.chat.clear_user_messages`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatclear_user_messages) | [ChannelChatClearUserMessagesV1](channel::ChannelChatClearUserMessagesV1)<br>[ChannelChatClearUserMessagesV1Payload](channel::ChannelChatClearUserMessagesV1Payload) |
-//! | [`channel.chat.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatmessage) | [ChannelChatMessageV1](channel::ChannelChatMessageV1)<br>[ChannelChatMessageV1Payload](channel::ChannelChatMessageV1Payload) |
-//! | [`channel.chat.message_delete`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatmessage_delete) | [ChannelChatMessageDeleteV1](channel::ChannelChatMessageDeleteV1)<br>[ChannelChatMessageDeleteV1Payload](channel::ChannelChatMessageDeleteV1Payload) |
-//! | [`channel.chat.notification`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatnotification) | [ChannelChatNotificationV1](channel::ChannelChatNotificationV1)<br>[ChannelChatNotificationV1Payload](channel::ChannelChatNotificationV1Payload) |
-//! | [`channel.chat.user_message_hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatuser_message_hold) | [ChannelChatUserMessageHoldV1](channel::ChannelChatUserMessageHoldV1)<br>[ChannelChatUserMessageHoldV1Payload](channel::ChannelChatUserMessageHoldV1Payload) |
-//! | [`channel.chat.user_message_update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatuser_message_update) | [ChannelChatUserMessageUpdateV1](channel::ChannelChatUserMessageUpdateV1)<br>[ChannelChatUserMessageUpdateV1Payload](channel::ChannelChatUserMessageUpdateV1Payload) |
-//! | [`channel.chat_settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchat_settingsupdate) | -<br>- |
-//! | [`channel.cheer`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcheer) | [ChannelCheerV1](channel::ChannelCheerV1)<br>[ChannelCheerV1Payload](channel::ChannelCheerV1Payload) |
-//! | [`channel.follow`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelfollow) | [ChannelFollowV2](channel::ChannelFollowV2)<br>[ChannelFollowV2Payload](channel::ChannelFollowV2Payload) |
-//! | [`channel.goal.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelgoalbegin) | [ChannelGoalBeginV1](channel::ChannelGoalBeginV1)<br>[ChannelGoalBeginV1Payload](channel::ChannelGoalBeginV1Payload) |
-//! | [`channel.goal.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelgoalend) | [ChannelGoalEndV1](channel::ChannelGoalEndV1)<br>[ChannelGoalEndV1Payload](channel::ChannelGoalEndV1Payload) |
-//! | [`channel.goal.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelgoalprogress) | [ChannelGoalProgressV1](channel::ChannelGoalProgressV1)<br>[ChannelGoalProgressV1Payload](channel::ChannelGoalProgressV1Payload) |
-//! | [`channel.guest_star_guest.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_guestupdate) | -<br>- |
-//! | [`channel.guest_star_session.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_sessionbegin) | -<br>- |
-//! | [`channel.guest_star_session.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_sessionend) | -<br>- |
-//! | [`channel.guest_star_settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_settingsupdate) | -<br>- |
-//! | [`channel.hype_train.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainbegin) | [ChannelHypeTrainBeginV1](channel::ChannelHypeTrainBeginV1)<br>[ChannelHypeTrainBeginV1Payload](channel::ChannelHypeTrainBeginV1Payload) |
-//! | [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainend) | [ChannelHypeTrainEndV1](channel::ChannelHypeTrainEndV1)<br>[ChannelHypeTrainEndV1Payload](channel::ChannelHypeTrainEndV1Payload) |
-//! | [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress) | [ChannelHypeTrainProgressV1](channel::ChannelHypeTrainProgressV1)<br>[ChannelHypeTrainProgressV1Payload](channel::ChannelHypeTrainProgressV1Payload) |
-//! | [`channel.moderate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderate) | -<br>- |
-//! | [`channel.moderate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderate-v2) | -<br>- |
-//! | [`channel.moderator.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderatoradd) | -<br>- |
-//! | [`channel.moderator.remove`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderatorremove) | -<br>- |
-//! | [`channel.poll.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpollbegin) | [ChannelPollBeginV1](channel::ChannelPollBeginV1)<br>[ChannelPollBeginV1Payload](channel::ChannelPollBeginV1Payload) |
-//! | [`channel.poll.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpollend) | [ChannelPollEndV1](channel::ChannelPollEndV1)<br>[ChannelPollEndV1Payload](channel::ChannelPollEndV1Payload) |
-//! | [`channel.poll.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpollprogress) | [ChannelPollProgressV1](channel::ChannelPollProgressV1)<br>[ChannelPollProgressV1Payload](channel::ChannelPollProgressV1Payload) |
-//! | [`channel.prediction.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionbegin) | [ChannelPredictionBeginV1](channel::ChannelPredictionBeginV1)<br>[ChannelPredictionBeginV1Payload](channel::ChannelPredictionBeginV1Payload) |
-//! | [`channel.prediction.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionend) | [ChannelPredictionEndV1](channel::ChannelPredictionEndV1)<br>[ChannelPredictionEndV1Payload](channel::ChannelPredictionEndV1Payload) |
-//! | [`channel.prediction.lock`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionlock) | [ChannelPredictionLockV1](channel::ChannelPredictionLockV1)<br>[ChannelPredictionLockV1Payload](channel::ChannelPredictionLockV1Payload) |
-//! | [`channel.prediction.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionprogress) | [ChannelPredictionProgressV1](channel::ChannelPredictionProgressV1)<br>[ChannelPredictionProgressV1Payload](channel::ChannelPredictionProgressV1Payload) |
-//! | [`channel.raid`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelraid) | [ChannelRaidV1](channel::ChannelRaidV1)<br>[ChannelRaidV1Payload](channel::ChannelRaidV1Payload) |
-//! | [`channel.shared_chat.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshared_chatbegin) | [ChannelSharedChatBeginV1](channel::ChannelSharedChatBeginV1)<br>[ChannelSharedChatBeginV1Payload](channel::ChannelSharedChatBeginV1Payload) |
-//! | [`channel.shared_chat.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshared_chatend) | [ChannelSharedChatEndV1](channel::ChannelSharedChatEndV1)<br>[ChannelSharedChatEndV1Payload](channel::ChannelSharedChatEndV1Payload) |
-//! | [`channel.shared_chat.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshared_chatupdate) | [ChannelSharedChatUpdateV1](channel::ChannelSharedChatUpdateV1)<br>[ChannelSharedChatUpdateV1Payload](channel::ChannelSharedChatUpdateV1Payload) |
-//! | [`channel.shield_mode.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshield_modebegin) | [ChannelShieldModeBeginV1](channel::ChannelShieldModeBeginV1)<br>[ChannelShieldModeBeginV1Payload](channel::ChannelShieldModeBeginV1Payload) |
-//! | [`channel.shield_mode.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshield_modeend) | [ChannelShieldModeEndV1](channel::ChannelShieldModeEndV1)<br>[ChannelShieldModeEndV1Payload](channel::ChannelShieldModeEndV1Payload) |
-//! | [`channel.shoutout.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshoutoutcreate) | [ChannelShoutoutCreateV1](channel::ChannelShoutoutCreateV1)<br>[ChannelShoutoutCreateV1Payload](channel::ChannelShoutoutCreateV1Payload) |
-//! | [`channel.shoutout.receive`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshoutoutreceive) | [ChannelShoutoutReceiveV1](channel::ChannelShoutoutReceiveV1)<br>[ChannelShoutoutReceiveV1Payload](channel::ChannelShoutoutReceiveV1Payload) |
-//! | [`channel.subscribe`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscribe) | [ChannelSubscribeV1](channel::ChannelSubscribeV1)<br>[ChannelSubscribeV1Payload](channel::ChannelSubscribeV1Payload) |
-//! | [`channel.subscription.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptionend) | [ChannelSubscriptionEndV1](channel::ChannelSubscriptionEndV1)<br>[ChannelSubscriptionEndV1Payload](channel::ChannelSubscriptionEndV1Payload) |
-//! | [`channel.subscription.gift`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptiongift) | [ChannelSubscriptionGiftV1](channel::ChannelSubscriptionGiftV1)<br>[ChannelSubscriptionGiftV1Payload](channel::ChannelSubscriptionGiftV1Payload) |
-//! | [`channel.subscription.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptionmessage) | [ChannelSubscriptionMessageV1](channel::ChannelSubscriptionMessageV1)<br>[ChannelSubscriptionMessageV1Payload](channel::ChannelSubscriptionMessageV1Payload) |
-//! | [`channel.suspicious_user.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsuspicious_usermessage) | -<br>- |
-//! | [`channel.suspicious_user.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsuspicious_userupdate) | -<br>- |
-//! | [`channel.unban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban) | [ChannelUnbanV1](channel::ChannelUnbanV1)<br>[ChannelUnbanV1Payload](channel::ChannelUnbanV1Payload) |
-//! | [`channel.unban_request.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban_requestcreate) | -<br>- |
-//! | [`channel.unban_request.resolve`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban_requestresolve) | -<br>- |
-//! | [`channel.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelupdate) | [ChannelUpdateV2](channel::ChannelUpdateV2)<br>[ChannelUpdateV2Payload](channel::ChannelUpdateV2Payload) |
-//! | [`channel.vip.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelvipadd) | -<br>- |
-//! | [`channel.vip.remove`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelvipremove) | -<br>- |
-//! | [`channel.warning.acknowledge`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelwarningacknowledge) | -<br>- |
-//! | [`channel.warning.send`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelwarningsend) | -<br>- |
+//! | [`channel.ad_break.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelad_breakbegin) (v1) | [ChannelAdBreakBeginV1](channel::ChannelAdBreakBeginV1)<br>[ChannelAdBreakBeginV1Payload](channel::ChannelAdBreakBeginV1Payload) |
+//! | [`channel.ban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelban) (v1) | [ChannelBanV1](channel::ChannelBanV1)<br>[ChannelBanV1Payload](channel::ChannelBanV1Payload) |
+//! | [<span style="font-size: 0.9em">`channel.channel_points_automatic_reward_redemption.add`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_automatic_reward_redemptionadd) (v1) | -<br>- |
+//! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward.add`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardadd) (v1) | [ChannelPointsCustomRewardAddV1](channel::ChannelPointsCustomRewardAddV1)<br>[ChannelPointsCustomRewardAddV1Payload](channel::ChannelPointsCustomRewardAddV1Payload) |
+//! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward.remove`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardremove) (v1) | [ChannelPointsCustomRewardRemoveV1](channel::ChannelPointsCustomRewardRemoveV1)<br>[ChannelPointsCustomRewardRemoveV1Payload](channel::ChannelPointsCustomRewardRemoveV1Payload) |
+//! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward.update`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardupdate) (v1) | [ChannelPointsCustomRewardUpdateV1](channel::ChannelPointsCustomRewardUpdateV1)<br>[ChannelPointsCustomRewardUpdateV1Payload](channel::ChannelPointsCustomRewardUpdateV1Payload) |
+//! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward_redemption.add`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionadd) (v1) | [ChannelPointsCustomRewardRedemptionAddV1](channel::ChannelPointsCustomRewardRedemptionAddV1)<br>[ChannelPointsCustomRewardRedemptionAddV1Payload](channel::ChannelPointsCustomRewardRedemptionAddV1Payload) |
+//! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward_redemption.update`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionupdate) (v1) | [ChannelPointsCustomRewardRedemptionUpdateV1](channel::ChannelPointsCustomRewardRedemptionUpdateV1)<br>[ChannelPointsCustomRewardRedemptionUpdateV1Payload](channel::ChannelPointsCustomRewardRedemptionUpdateV1Payload) |
+//! | [`channel.charity_campaign.donate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcharity_campaigndonate) (v1) | [ChannelCharityCampaignDonateV1](channel::ChannelCharityCampaignDonateV1)<br>[ChannelCharityCampaignDonateV1Payload](channel::ChannelCharityCampaignDonateV1Payload) |
+//! | [`channel.charity_campaign.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcharity_campaignprogress) (v1) | [ChannelCharityCampaignProgressV1](channel::ChannelCharityCampaignProgressV1)<br>[ChannelCharityCampaignProgressV1Payload](channel::ChannelCharityCampaignProgressV1Payload) |
+//! | [`channel.charity_campaign.start`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcharity_campaignstart) (v1) | [ChannelCharityCampaignStartV1](channel::ChannelCharityCampaignStartV1)<br>[ChannelCharityCampaignStartV1Payload](channel::ChannelCharityCampaignStartV1Payload) |
+//! | [`channel.charity_campaign.stop`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcharity_campaignstop) (v1) | [ChannelCharityCampaignStopV1](channel::ChannelCharityCampaignStopV1)<br>[ChannelCharityCampaignStopV1Payload](channel::ChannelCharityCampaignStopV1Payload) |
+//! | [`channel.chat.clear`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatclear) (v1) | [ChannelChatClearV1](channel::ChannelChatClearV1)<br>[ChannelChatClearV1Payload](channel::ChannelChatClearV1Payload) |
+//! | [`channel.chat.clear_user_messages`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatclear_user_messages) (v1) | [ChannelChatClearUserMessagesV1](channel::ChannelChatClearUserMessagesV1)<br>[ChannelChatClearUserMessagesV1Payload](channel::ChannelChatClearUserMessagesV1Payload) |
+//! | [`channel.chat.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatmessage) (v1) | [ChannelChatMessageV1](channel::ChannelChatMessageV1)<br>[ChannelChatMessageV1Payload](channel::ChannelChatMessageV1Payload) |
+//! | [`channel.chat.message_delete`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatmessage_delete) (v1) | [ChannelChatMessageDeleteV1](channel::ChannelChatMessageDeleteV1)<br>[ChannelChatMessageDeleteV1Payload](channel::ChannelChatMessageDeleteV1Payload) |
+//! | [`channel.chat.notification`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatnotification) (v1) | [ChannelChatNotificationV1](channel::ChannelChatNotificationV1)<br>[ChannelChatNotificationV1Payload](channel::ChannelChatNotificationV1Payload) |
+//! | [`channel.chat.user_message_hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatuser_message_hold) (v1) | [ChannelChatUserMessageHoldV1](channel::ChannelChatUserMessageHoldV1)<br>[ChannelChatUserMessageHoldV1Payload](channel::ChannelChatUserMessageHoldV1Payload) |
+//! | [`channel.chat.user_message_update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchatuser_message_update) (v1) | [ChannelChatUserMessageUpdateV1](channel::ChannelChatUserMessageUpdateV1)<br>[ChannelChatUserMessageUpdateV1Payload](channel::ChannelChatUserMessageUpdateV1Payload) |
+//! | [`channel.chat_settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchat_settingsupdate) (v1) | -<br>- |
+//! | [`channel.cheer`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelcheer) (v1) | [ChannelCheerV1](channel::ChannelCheerV1)<br>[ChannelCheerV1Payload](channel::ChannelCheerV1Payload) |
+//! | [`channel.follow`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelfollow) (v2) | [ChannelFollowV2](channel::ChannelFollowV2)<br>[ChannelFollowV2Payload](channel::ChannelFollowV2Payload) |
+//! | [`channel.goal.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelgoalbegin) (v1) | [ChannelGoalBeginV1](channel::ChannelGoalBeginV1)<br>[ChannelGoalBeginV1Payload](channel::ChannelGoalBeginV1Payload) |
+//! | [`channel.goal.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelgoalend) (v1) | [ChannelGoalEndV1](channel::ChannelGoalEndV1)<br>[ChannelGoalEndV1Payload](channel::ChannelGoalEndV1Payload) |
+//! | [`channel.goal.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelgoalprogress) (v1) | [ChannelGoalProgressV1](channel::ChannelGoalProgressV1)<br>[ChannelGoalProgressV1Payload](channel::ChannelGoalProgressV1Payload) |
+//! | [`channel.guest_star_guest.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_guestupdate) (beta) | -<br>- |
+//! | [`channel.guest_star_session.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_sessionbegin) (beta) | -<br>- |
+//! | [`channel.guest_star_session.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_sessionend) (beta) | -<br>- |
+//! | [`channel.guest_star_settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_settingsupdate) (beta) | -<br>- |
+//! | [`channel.hype_train.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainbegin) (v1) | [ChannelHypeTrainBeginV1](channel::ChannelHypeTrainBeginV1)<br>[ChannelHypeTrainBeginV1Payload](channel::ChannelHypeTrainBeginV1Payload) |
+//! | [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainend) (v1) | [ChannelHypeTrainEndV1](channel::ChannelHypeTrainEndV1)<br>[ChannelHypeTrainEndV1Payload](channel::ChannelHypeTrainEndV1Payload) |
+//! | [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress) (v1) | [ChannelHypeTrainProgressV1](channel::ChannelHypeTrainProgressV1)<br>[ChannelHypeTrainProgressV1Payload](channel::ChannelHypeTrainProgressV1Payload) |
+//! | [`channel.moderate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderate) (v1) | -<br>- |
+//! | [`channel.moderate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderate-v2) (v2) | -<br>- |
+//! | [`channel.moderator.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderatoradd) (v1) | -<br>- |
+//! | [`channel.moderator.remove`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderatorremove) (v1) | -<br>- |
+//! | [`channel.poll.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpollbegin) (v1) | [ChannelPollBeginV1](channel::ChannelPollBeginV1)<br>[ChannelPollBeginV1Payload](channel::ChannelPollBeginV1Payload) |
+//! | [`channel.poll.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpollend) (v1) | [ChannelPollEndV1](channel::ChannelPollEndV1)<br>[ChannelPollEndV1Payload](channel::ChannelPollEndV1Payload) |
+//! | [`channel.poll.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpollprogress) (v1) | [ChannelPollProgressV1](channel::ChannelPollProgressV1)<br>[ChannelPollProgressV1Payload](channel::ChannelPollProgressV1Payload) |
+//! | [`channel.prediction.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionbegin) (v1) | [ChannelPredictionBeginV1](channel::ChannelPredictionBeginV1)<br>[ChannelPredictionBeginV1Payload](channel::ChannelPredictionBeginV1Payload) |
+//! | [`channel.prediction.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionend) (v1) | [ChannelPredictionEndV1](channel::ChannelPredictionEndV1)<br>[ChannelPredictionEndV1Payload](channel::ChannelPredictionEndV1Payload) |
+//! | [`channel.prediction.lock`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionlock) (v1) | [ChannelPredictionLockV1](channel::ChannelPredictionLockV1)<br>[ChannelPredictionLockV1Payload](channel::ChannelPredictionLockV1Payload) |
+//! | [`channel.prediction.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpredictionprogress) (v1) | [ChannelPredictionProgressV1](channel::ChannelPredictionProgressV1)<br>[ChannelPredictionProgressV1Payload](channel::ChannelPredictionProgressV1Payload) |
+//! | [`channel.raid`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelraid) (v1) | [ChannelRaidV1](channel::ChannelRaidV1)<br>[ChannelRaidV1Payload](channel::ChannelRaidV1Payload) |
+//! | [`channel.shared_chat.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshared_chatbegin) (v1) | [ChannelSharedChatBeginV1](channel::ChannelSharedChatBeginV1)<br>[ChannelSharedChatBeginV1Payload](channel::ChannelSharedChatBeginV1Payload) |
+//! | [`channel.shared_chat.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshared_chatend) (v1) | [ChannelSharedChatEndV1](channel::ChannelSharedChatEndV1)<br>[ChannelSharedChatEndV1Payload](channel::ChannelSharedChatEndV1Payload) |
+//! | [`channel.shared_chat.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshared_chatupdate) (v1) | [ChannelSharedChatUpdateV1](channel::ChannelSharedChatUpdateV1)<br>[ChannelSharedChatUpdateV1Payload](channel::ChannelSharedChatUpdateV1Payload) |
+//! | [`channel.shield_mode.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshield_modebegin) (v1) | [ChannelShieldModeBeginV1](channel::ChannelShieldModeBeginV1)<br>[ChannelShieldModeBeginV1Payload](channel::ChannelShieldModeBeginV1Payload) |
+//! | [`channel.shield_mode.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshield_modeend) (v1) | [ChannelShieldModeEndV1](channel::ChannelShieldModeEndV1)<br>[ChannelShieldModeEndV1Payload](channel::ChannelShieldModeEndV1Payload) |
+//! | [`channel.shoutout.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshoutoutcreate) (v1) | [ChannelShoutoutCreateV1](channel::ChannelShoutoutCreateV1)<br>[ChannelShoutoutCreateV1Payload](channel::ChannelShoutoutCreateV1Payload) |
+//! | [`channel.shoutout.receive`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelshoutoutreceive) (v1) | [ChannelShoutoutReceiveV1](channel::ChannelShoutoutReceiveV1)<br>[ChannelShoutoutReceiveV1Payload](channel::ChannelShoutoutReceiveV1Payload) |
+//! | [`channel.subscribe`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscribe) (v1) | [ChannelSubscribeV1](channel::ChannelSubscribeV1)<br>[ChannelSubscribeV1Payload](channel::ChannelSubscribeV1Payload) |
+//! | [`channel.subscription.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptionend) (v1) | [ChannelSubscriptionEndV1](channel::ChannelSubscriptionEndV1)<br>[ChannelSubscriptionEndV1Payload](channel::ChannelSubscriptionEndV1Payload) |
+//! | [`channel.subscription.gift`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptiongift) (v1) | [ChannelSubscriptionGiftV1](channel::ChannelSubscriptionGiftV1)<br>[ChannelSubscriptionGiftV1Payload](channel::ChannelSubscriptionGiftV1Payload) |
+//! | [`channel.subscription.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptionmessage) (v1) | [ChannelSubscriptionMessageV1](channel::ChannelSubscriptionMessageV1)<br>[ChannelSubscriptionMessageV1Payload](channel::ChannelSubscriptionMessageV1Payload) |
+//! | [`channel.suspicious_user.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsuspicious_usermessage) (v1) | -<br>- |
+//! | [`channel.suspicious_user.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsuspicious_userupdate) (v1) | -<br>- |
+//! | [`channel.unban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban) (v1) | [ChannelUnbanV1](channel::ChannelUnbanV1)<br>[ChannelUnbanV1Payload](channel::ChannelUnbanV1Payload) |
+//! | [`channel.unban_request.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban_requestcreate) (v1) | -<br>- |
+//! | [`channel.unban_request.resolve`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban_requestresolve) (v1) | -<br>- |
+//! | [`channel.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelupdate) (v2) | [ChannelUpdateV2](channel::ChannelUpdateV2)<br>[ChannelUpdateV2Payload](channel::ChannelUpdateV2Payload) |
+//! | [`channel.vip.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelvipadd) (v1) | -<br>- |
+//! | [`channel.vip.remove`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelvipremove) (v1) | -<br>- |
+//! | [`channel.warning.acknowledge`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelwarningacknowledge) (v1) | -<br>- |
+//! | [`channel.warning.send`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelwarningsend) (v1) | -<br>- |
 //!
 //! </details>
 //!
@@ -168,7 +168,7 @@
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
-//! | [`conduit.shard.disabled`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#conduitsharddisabled) | [ConduitShardDisabledV1](conduit::ConduitShardDisabledV1)<br>[ConduitShardDisabledV1Payload](conduit::ConduitShardDisabledV1Payload) |
+//! | [`conduit.shard.disabled`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#conduitsharddisabled) (v1) | [ConduitShardDisabledV1](conduit::ConduitShardDisabledV1)<br>[ConduitShardDisabledV1Payload](conduit::ConduitShardDisabledV1Payload) |
 //!
 //! </details>
 //!
@@ -176,7 +176,7 @@
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
-//! | [`drop.entitlement.grant`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#dropentitlementgrant) | -<br>- |
+//! | [`drop.entitlement.grant`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#dropentitlementgrant) (v1) | -<br>- |
 //!
 //! </details>
 //!
@@ -184,7 +184,7 @@
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
-//! | [`extension.bits_transaction.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#extensionbits_transactioncreate) | -<br>- |
+//! | [`extension.bits_transaction.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#extensionbits_transactioncreate) (v1) | -<br>- |
 //!
 //! </details>
 //!
@@ -192,8 +192,8 @@
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
-//! | [`stream.offline`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamoffline) | [StreamOfflineV1](stream::StreamOfflineV1)<br>[StreamOfflineV1Payload](stream::StreamOfflineV1Payload) |
-//! | [`stream.online`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamonline) | [StreamOnlineV1](stream::StreamOnlineV1)<br>[StreamOnlineV1Payload](stream::StreamOnlineV1Payload) |
+//! | [`stream.offline`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamoffline) (v1) | [StreamOfflineV1](stream::StreamOfflineV1)<br>[StreamOfflineV1Payload](stream::StreamOfflineV1Payload) |
+//! | [`stream.online`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#streamonline) (v1) | [StreamOnlineV1](stream::StreamOnlineV1)<br>[StreamOnlineV1Payload](stream::StreamOnlineV1Payload) |
 //!
 //! </details>
 //!
@@ -201,10 +201,10 @@
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
-//! | [`user.authorization.grant`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationgrant) | [UserAuthorizationGrantV1](user::UserAuthorizationGrantV1)<br>[UserAuthorizationGrantV1Payload](user::UserAuthorizationGrantV1Payload) |
-//! | [`user.authorization.revoke`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationrevoke) | [UserAuthorizationRevokeV1](user::UserAuthorizationRevokeV1)<br>[UserAuthorizationRevokeV1Payload](user::UserAuthorizationRevokeV1Payload) |
-//! | [`user.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userupdate) | [UserUpdateV1](user::UserUpdateV1)<br>[UserUpdateV1Payload](user::UserUpdateV1Payload) |
-//! | [`user.whisper.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userwhispermessage) | -<br>- |
+//! | [`user.authorization.grant`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationgrant) (v1) | [UserAuthorizationGrantV1](user::UserAuthorizationGrantV1)<br>[UserAuthorizationGrantV1Payload](user::UserAuthorizationGrantV1Payload) |
+//! | [`user.authorization.revoke`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationrevoke) (v1) | [UserAuthorizationRevokeV1](user::UserAuthorizationRevokeV1)<br>[UserAuthorizationRevokeV1Payload](user::UserAuthorizationRevokeV1Payload) |
+//! | [`user.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userupdate) (v1) | [UserUpdateV1](user::UserUpdateV1)<br>[UserUpdateV1Payload](user::UserUpdateV1Payload) |
+//! | [`user.whisper.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userwhispermessage) (v1) | -<br>- |
 //!
 //! </details>
 //!
