@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["EmoteAnimationSetting","EmoteScale","EmoteThemeMode"],"struct":["BadgeSetId","BadgeSetIdRef","ChatBadgeId","ChatBadgeIdRef","EmoteId","EmoteIdRef","EmoteSetId","EmoteSetIdRef","EmoteUrlBuilder","Image","ResubscriptionEmote"]};
+window.SIDEBAR_ITEMS = {"enum":["EmoteAnimationSetting","EmoteScale","EmoteThemeMode"],"struct":["BadgeSetId","BadgeSetIdRef","ChatBadgeId","ChatBadgeIdRef","EmoteId","EmoteIdRef","EmoteOccurrence","EmoteSetId","EmoteSetIdRef","EmoteUrlBuilder","Image"],"type":["ResubscriptionEmote"]};
