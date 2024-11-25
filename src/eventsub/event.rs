@@ -30,6 +30,7 @@ macro_rules! fill_events {
             channel::ChannelChatNotificationV1;
             channel::ChannelChatUserMessageHoldV1;
             channel::ChannelChatUserMessageUpdateV1;
+            channel::ChannelChatSettingsUpdateV1;
             channel::ChannelCheerV1;
             channel::ChannelFollowV1;
             channel::ChannelFollowV2;
@@ -171,6 +172,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelChatUserMessageHold => "channel.chat.user_message_hold",
     "a user's message's automod status is updated.":
     ChannelChatUserMessageUpdate => "channel.chat.user_message_update",
+    "a broadcaster’s chat settings are updated.":
+    ChannelChatSettingsUpdate => "channel.chat_settings.update",
     "a user donates to the broadcaster’s charity campaign.":
     ChannelCharityCampaignDonate => "channel.charity_campaign.donate",
     "progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal.":
@@ -310,6 +313,8 @@ pub enum Event {
     ChannelChatUserMessageHoldV1(Payload<channel::ChannelChatUserMessageHoldV1>),
     /// Channel Chat UserMessageUpdate V1 Event
     ChannelChatUserMessageUpdateV1(Payload<channel::ChannelChatUserMessageUpdateV1>),
+    /// Channel ChatSettings Update V1 Event
+    ChannelChatSettingsUpdateV1(Payload<channel::ChannelChatSettingsUpdateV1>),
     /// Channel Charity Campaign Donate V1 Event
     ChannelCharityCampaignDonateV1(Payload<channel::ChannelCharityCampaignDonateV1>),
     /// Channel Charity Campaign Progress V1 Event

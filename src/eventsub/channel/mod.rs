@@ -12,6 +12,7 @@ pub mod channel_points_custom_reward;
 pub mod channel_points_custom_reward_redemption;
 pub mod charity_campaign;
 pub mod chat;
+pub mod chat_settings;
 pub mod cheer;
 pub mod follow;
 pub mod goal;
@@ -79,6 +80,8 @@ pub use chat::{ChannelChatNotificationV1, ChannelChatNotificationV1Payload};
 pub use chat::{ChannelChatUserMessageHoldV1, ChannelChatUserMessageHoldV1Payload};
 #[doc(inline)]
 pub use chat::{ChannelChatUserMessageUpdateV1, ChannelChatUserMessageUpdateV1Payload};
+#[doc(inline)]
+pub use chat_settings::{ChannelChatSettingsUpdateV1, ChannelChatSettingsUpdateV1Payload};
 #[doc(inline)]
 pub use cheer::{ChannelCheerV1, ChannelCheerV1Payload};
 #[doc(inline)]
