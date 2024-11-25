@@ -41,6 +41,7 @@ macro_rules! fill_events {
             channel::ChannelHypeTrainBeginV1;
             channel::ChannelHypeTrainEndV1;
             channel::ChannelHypeTrainProgressV1;
+            channel::ChannelPointsAutomaticRewardRedemptionAddV1;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardRedemptionAddV1;
             channel::ChannelPointsCustomRewardRedemptionUpdateV1;
@@ -192,6 +193,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelBan => "channel.ban",
     "a viewer is unbanned from the specified channel.":
     ChannelUnban => "channel.unban",
+    "a viewer has redeemed an automatic channel points reward on the specified channel.":
+    ChannelPointsAutomaticRewardRedemptionAdd => "channel.channel_points_automatic_reward_redemption.add",
     "a custom channel points reward has been created for the specified channel.":
     ChannelPointsCustomRewardAdd => "channel.channel_points_custom_reward.add",
     "a custom channel points reward has been updated for the specified channel.":
@@ -337,6 +340,10 @@ pub enum Event {
     ChannelBanV1(Payload<channel::ChannelBanV1>),
     /// Channel Unban V1 Event
     ChannelUnbanV1(Payload<channel::ChannelUnbanV1>),
+    /// Channel Points Automatic Reward Redemption Add V1 Event
+    ChannelPointsAutomaticRewardRedemptionAddV1(
+        Payload<channel::ChannelPointsAutomaticRewardRedemptionAddV1>,
+    ),
     /// Channel Points Custom Reward Add V1 Event
     ChannelPointsCustomRewardAddV1(Payload<channel::ChannelPointsCustomRewardAddV1>),
     /// Channel Points Custom Reward Update V1 Event
