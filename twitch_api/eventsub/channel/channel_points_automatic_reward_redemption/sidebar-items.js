@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AutomaticRewardType"],"mod":["add"],"struct":["AutomaticReward","ChannelPointsAutomaticRewardRedemptionAddV1","ChannelPointsAutomaticRewardRedemptionAddV1Payload","RedemptionMessage","UnlockedEmote"]};
