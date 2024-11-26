@@ -73,6 +73,7 @@ macro_rules! fill_events {
             channel::ChannelVipAddV1;
             channel::ChannelVipRemoveV1;
             channel::ChannelWarningAcknowledgeV1;
+            channel::ChannelWarningSendV1;
             conduit::ConduitShardDisabledV1;
             stream::StreamOfflineV1;
             stream::StreamOnlineV1;
@@ -267,6 +268,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelVipAdd => "channel.vip.add",
     "a warning is acknowledged by a user.":
     ChannelWarningAcknowledge => "channel.warning.acknowledge",
+    "a warning is sent to a user.":
+    ChannelWarningSend => "channel.warning.send",
     "a VIP is removed from the channel.":
     ChannelVipRemove => "channel.vip.remove",
     "sends a notification when eventsub disables a shard due to the status of the underlying transport changing.":
@@ -362,6 +365,8 @@ pub enum Event {
     ChannelVipRemoveV1(Payload<channel::ChannelVipRemoveV1>),
     /// Channel Warning Acknowledge V1 Event
     ChannelWarningAcknowledgeV1(Payload<channel::ChannelWarningAcknowledgeV1>),
+    /// Channel Warning Send V1 Event
+    ChannelWarningSendV1(Payload<channel::ChannelWarningSendV1>),
     /// Channel Points Automatic Reward Redemption Add V1 Event
     ChannelPointsAutomaticRewardRedemptionAddV1(
         Payload<channel::ChannelPointsAutomaticRewardRedemptionAddV1>,
