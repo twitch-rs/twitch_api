@@ -70,6 +70,8 @@ macro_rules! fill_events {
             channel::ChannelUnbanV1;
             channel::ChannelUpdateV1;
             channel::ChannelUpdateV2;
+            channel::ChannelVipAddV1;
+            channel::ChannelVipRemoveV1;
             conduit::ConduitShardDisabledV1;
             stream::StreamOfflineV1;
             stream::StreamOnlineV1;
@@ -260,6 +262,10 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelModeratorAdd => "channel.moderator.add",
     "a user has moderator privileges removed on a specified channel.":
     ChannelModeratorRemove => "channel.moderator.remove",
+    "a VIP is added to the channel.":
+    ChannelVipAdd => "channel.vip.add",
+    "a VIP is removed from the channel.":
+    ChannelVipRemove => "channel.vip.remove",
     "sends a notification when eventsub disables a shard due to the status of the underlying transport changing.":
     ConduitShardDisabled => "conduit.shard.disabled",
     "the specified broadcaster starts a stream.":
@@ -347,6 +353,10 @@ pub enum Event {
     ChannelBanV1(Payload<channel::ChannelBanV1>),
     /// Channel Unban V1 Event
     ChannelUnbanV1(Payload<channel::ChannelUnbanV1>),
+    /// Channel VIP Add V1 Event
+    ChannelVipAddV1(Payload<channel::ChannelVipAddV1>),
+    /// Channel VIP Remove V1 Event
+    ChannelVipRemoveV1(Payload<channel::ChannelVipRemoveV1>),
     /// Channel Points Automatic Reward Redemption Add V1 Event
     ChannelPointsAutomaticRewardRedemptionAddV1(
         Payload<channel::ChannelPointsAutomaticRewardRedemptionAddV1>,
