@@ -17,6 +17,7 @@ pub mod cheer;
 pub mod follow;
 pub mod goal;
 pub mod hypetrain;
+pub mod moderator;
 pub mod poll;
 pub mod prediction;
 pub mod raid;
@@ -100,6 +101,8 @@ pub use hypetrain::{ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload};
 pub use hypetrain::{ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload};
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload};
+#[doc(inline)]
+pub use moderator::{ChannelModeratorAddV1, ChannelModeratorAddV1Payload};
 #[doc(inline)]
 pub use poll::{ChannelPollBeginV1, ChannelPollBeginV1Payload};
 #[doc(inline)]
