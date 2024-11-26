@@ -157,3 +157,5 @@ pub use vip::{ChannelVipAddV1, ChannelVipAddV1Payload};
 pub use vip::{ChannelVipRemoveV1, ChannelVipRemoveV1Payload};
 #[doc(inline)]
 pub use warning::{ChannelWarningAcknowledgeV1, ChannelWarningAcknowledgeV1Payload};
+#[doc(inline)]
+pub use warning::{ChannelWarningSendV1, ChannelWarningSendV1Payload};
