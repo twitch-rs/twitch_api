@@ -41,6 +41,7 @@ macro_rules! fill_events {
             channel::ChannelHypeTrainEndV1;
             channel::ChannelHypeTrainProgressV1;
             channel::ChannelModeratorAddV1;
+            channel::ChannelModeratorRemoveV1;
             channel::ChannelPointsAutomaticRewardRedemptionAddV1;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardRedemptionAddV1;
@@ -257,6 +258,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelHypeTrainEnd => "channel.hype_train.end",
     "a user is given moderator privileges on a specified channel.":
     ChannelModeratorAdd => "channel.moderator.add",
+    "a user has moderator privileges removed on a specified channel.":
+    ChannelModeratorRemove => "channel.moderator.remove",
     "sends a notification when eventsub disables a shard due to the status of the underlying transport changing.":
     ConduitShardDisabled => "conduit.shard.disabled",
     "the specified broadcaster starts a stream.":
@@ -406,6 +409,8 @@ pub enum Event {
     ChannelHypeTrainEndV1(Payload<channel::ChannelHypeTrainEndV1>),
     /// Channel Moderator Add V1 Event
     ChannelModeratorAddV1(Payload<channel::ChannelModeratorAddV1>),
+    /// Channel Moderator Remove V1 Event
+    ChannelModeratorRemoveV1(Payload<channel::ChannelModeratorRemoveV1>),
     /// Conduit Shard Disabled V1 Event
     ConduitShardDisabledV1(Payload<conduit::ConduitShardDisabledV1>),
     /// StreamOnline V1 Event

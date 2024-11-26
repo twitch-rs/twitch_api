@@ -104,6 +104,8 @@ pub use hypetrain::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payloa
 #[doc(inline)]
 pub use moderator::{ChannelModeratorAddV1, ChannelModeratorAddV1Payload};
 #[doc(inline)]
+pub use moderator::{ChannelModeratorRemoveV1, ChannelModeratorRemoveV1Payload};
+#[doc(inline)]
 pub use poll::{ChannelPollBeginV1, ChannelPollBeginV1Payload};
 #[doc(inline)]
 pub use poll::{ChannelPollEndV1, ChannelPollEndV1Payload};
