@@ -92,7 +92,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 53/65</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 54/65</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
@@ -159,7 +159,7 @@
 //! | [`channel.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelupdate) (v2) | [ChannelUpdateV2](channel::ChannelUpdateV2)<br>[ChannelUpdateV2Payload](channel::ChannelUpdateV2Payload) |
 //! | [`channel.vip.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelvipadd) (v1) | [ChannelVipAddV1](channel::ChannelVipAddV1)<br>[ChannelVipAddV1Payload](channel::ChannelVipAddV1Payload) |
 //! | [`channel.vip.remove`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelvipremove) (v1) | [ChannelVipRemoveV1](channel::ChannelVipRemoveV1)<br>[ChannelVipRemoveV1Payload](channel::ChannelVipRemoveV1Payload) |
-//! | [`channel.warning.acknowledge`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelwarningacknowledge) (v1) | -<br>- |
+//! | [`channel.warning.acknowledge`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelwarningacknowledge) (v1) | [ChannelWarningAcknowledgeV1](channel::ChannelWarningAcknowledgeV1)<br>[ChannelWarningAcknowledgeV1Payload](channel::ChannelWarningAcknowledgeV1Payload) |
 //! | [`channel.warning.send`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelwarningsend) (v1) | -<br>- |
 //!
 //! </details>
