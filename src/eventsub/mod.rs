@@ -92,7 +92,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 50/65</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 51/65</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
@@ -131,7 +131,7 @@
 //! | [`channel.moderate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderate) (v1) | -<br>- |
 //! | [`channel.moderate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderate-v2) (v2) | -<br>- |
 //! | [`channel.moderator.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderatoradd) (v1) | [ChannelModeratorAddV1](channel::ChannelModeratorAddV1)<br>[ChannelModeratorAddV1Payload](channel::ChannelModeratorAddV1Payload) |
-//! | [`channel.moderator.remove`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderatorremove) (v1) | -<br>- |
+//! | [`channel.moderator.remove`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderatorremove) (v1) | [ChannelModeratorRemoveV1](channel::ChannelModeratorRemoveV1)<br>[ChannelModeratorRemoveV1Payload](channel::ChannelModeratorRemoveV1Payload) |
 //! | [`channel.poll.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpollbegin) (v1) | [ChannelPollBeginV1](channel::ChannelPollBeginV1)<br>[ChannelPollBeginV1Payload](channel::ChannelPollBeginV1Payload) |
 //! | [`channel.poll.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpollend) (v1) | [ChannelPollEndV1](channel::ChannelPollEndV1)<br>[ChannelPollEndV1Payload](channel::ChannelPollEndV1Payload) |
 //! | [`channel.poll.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelpollprogress) (v1) | [ChannelPollProgressV1](channel::ChannelPollProgressV1)<br>[ChannelPollProgressV1Payload](channel::ChannelPollProgressV1Payload) |
