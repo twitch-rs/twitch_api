@@ -29,6 +29,7 @@ pub mod subscription;
 pub mod unban;
 pub mod update;
 pub mod vip;
+pub mod warning;
 
 #[doc(inline)]
 pub use ad_break::{ChannelAdBreakBeginV1, ChannelAdBreakBeginV1Payload};
@@ -154,3 +155,5 @@ pub use update::{ChannelUpdateV2, ChannelUpdateV2Payload};
 pub use vip::{ChannelVipAddV1, ChannelVipAddV1Payload};
 #[doc(inline)]
 pub use vip::{ChannelVipRemoveV1, ChannelVipRemoveV1Payload};
+#[doc(inline)]
+pub use warning::{ChannelWarningAcknowledgeV1, ChannelWarningAcknowledgeV1Payload};
