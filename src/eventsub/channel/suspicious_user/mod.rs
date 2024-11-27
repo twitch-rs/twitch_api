@@ -5,9 +5,12 @@ use crate::types;
 use serde_derive::{Deserialize, Serialize};
 
 pub mod message;
+pub mod update;
 
 #[doc(inline)]
 pub use message::{ChannelSuspiciousUserMessageV1, ChannelSuspiciousUserMessageV1Payload};
+#[doc(inline)]
+pub use update::{ChannelSuspiciousUserUpdateV1, ChannelSuspiciousUserUpdateV1Payload};
 
 /// A user's low trust status
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
