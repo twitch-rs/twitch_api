@@ -70,6 +70,7 @@ macro_rules! fill_events {
             channel::ChannelSuspiciousUserMessageV1;
             channel::ChannelSuspiciousUserUpdateV1;
             channel::ChannelUnbanV1;
+            channel::ChannelUnbanRequestCreateV1;
             channel::ChannelUpdateV1;
             channel::ChannelUpdateV2;
             channel::ChannelVipAddV1;
@@ -202,6 +203,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelBan => "channel.ban",
     "a viewer is unbanned from the specified channel.":
     ChannelUnban => "channel.unban",
+    "a user creates an unban request.":
+    ChannelUnbanRequestCreate => "channel.unban_request.create",
     "a viewer has redeemed an automatic channel points reward on the specified channel.":
     ChannelPointsAutomaticRewardRedemptionAdd => "channel.channel_points_automatic_reward_redemption.add",
     "a custom channel points reward has been created for the specified channel.":
@@ -365,6 +368,8 @@ pub enum Event {
     ChannelBanV1(Payload<channel::ChannelBanV1>),
     /// Channel Unban V1 Event
     ChannelUnbanV1(Payload<channel::ChannelUnbanV1>),
+    /// Channel UnbanRequest Create V1 Event
+    ChannelUnbanRequestCreateV1(Payload<channel::ChannelUnbanRequestCreateV1>),
     /// Channel VIP Add V1 Event
     ChannelVipAddV1(Payload<channel::ChannelVipAddV1>),
     /// Channel VIP Remove V1 Event

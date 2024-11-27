@@ -92,7 +92,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 57/65</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 58/65</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
@@ -154,7 +154,7 @@
 //! | [`channel.suspicious_user.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsuspicious_usermessage) (v1) | [ChannelSuspiciousUserMessageV1](channel::ChannelSuspiciousUserMessageV1)<br>[ChannelSuspiciousUserMessageV1Payload](channel::ChannelSuspiciousUserMessageV1Payload) |
 //! | [`channel.suspicious_user.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsuspicious_userupdate) (v1) | [ChannelSuspiciousUserUpdateV1](channel::ChannelSuspiciousUserUpdateV1)<br>[ChannelSuspiciousUserUpdateV1Payload](channel::ChannelSuspiciousUserUpdateV1Payload) |
 //! | [`channel.unban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban) (v1) | [ChannelUnbanV1](channel::ChannelUnbanV1)<br>[ChannelUnbanV1Payload](channel::ChannelUnbanV1Payload) |
-//! | [`channel.unban_request.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban_requestcreate) (v1) | -<br>- |
+//! | [`channel.unban_request.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban_requestcreate) (v1) | [ChannelUnbanRequestCreateV1](channel::ChannelUnbanRequestCreateV1)<br>[ChannelUnbanRequestCreateV1Payload](channel::ChannelUnbanRequestCreateV1Payload) |
 //! | [`channel.unban_request.resolve`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban_requestresolve) (v1) | -<br>- |
 //! | [`channel.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelupdate) (v2) | [ChannelUpdateV2](channel::ChannelUpdateV2)<br>[ChannelUpdateV2Payload](channel::ChannelUpdateV2Payload) |
 //! | [`channel.vip.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelvipadd) (v1) | [ChannelVipAddV1](channel::ChannelVipAddV1)<br>[ChannelVipAddV1Payload](channel::ChannelVipAddV1Payload) |

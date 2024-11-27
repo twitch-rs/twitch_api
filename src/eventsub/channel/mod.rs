@@ -28,6 +28,7 @@ pub mod subscribe;
 pub mod subscription;
 pub mod suspicious_user;
 pub mod unban;
+pub mod unban_request;
 pub mod update;
 pub mod vip;
 pub mod warning;
@@ -152,6 +153,8 @@ pub use suspicious_user::{ChannelSuspiciousUserMessageV1, ChannelSuspiciousUserM
 pub use suspicious_user::{ChannelSuspiciousUserUpdateV1, ChannelSuspiciousUserUpdateV1Payload};
 #[doc(inline)]
 pub use unban::{ChannelUnbanV1, ChannelUnbanV1Payload};
+#[doc(inline)]
+pub use unban_request::{ChannelUnbanRequestCreateV1, ChannelUnbanRequestCreateV1Payload};
 #[doc(inline)]
 pub use update::{ChannelUpdateV1, ChannelUpdateV1Payload};
 #[doc(inline)]
