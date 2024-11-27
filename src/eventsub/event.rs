@@ -40,6 +40,8 @@ macro_rules! fill_events {
             channel::ChannelHypeTrainBeginV1;
             channel::ChannelHypeTrainEndV1;
             channel::ChannelHypeTrainProgressV1;
+            channel::ChannelModerateV1;
+            channel::ChannelModerateV2;
             channel::ChannelModeratorAddV1;
             channel::ChannelModeratorRemoveV1;
             channel::ChannelPointsAutomaticRewardRedemptionAddV1;
@@ -272,6 +274,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelHypeTrainProgress => "channel.hype_train.progress",
     "a hype train ends on the specified channel.":
     ChannelHypeTrainEnd => "channel.hype_train.end",
+    "a moderator performs a moderation action in a channel.":
+    ChannelModerate => "channel.moderate",
     "a user is given moderator privileges on a specified channel.":
     ChannelModeratorAdd => "channel.moderator.add",
     "a user has moderator privileges removed on a specified channel.":
@@ -447,6 +451,10 @@ pub enum Event {
     ChannelHypeTrainProgressV1(Payload<channel::ChannelHypeTrainProgressV1>),
     /// Channel Hype Train End V1 Event
     ChannelHypeTrainEndV1(Payload<channel::ChannelHypeTrainEndV1>),
+    /// Channel Moderate V1 Event
+    ChannelModerateV1(Payload<channel::ChannelModerateV1>),
+    /// Channel Moderate V2 Event
+    ChannelModerateV2(Payload<channel::ChannelModerateV2>),
     /// Channel Moderator Add V1 Event
     ChannelModeratorAddV1(Payload<channel::ChannelModeratorAddV1>),
     /// Channel Moderator Remove V1 Event
