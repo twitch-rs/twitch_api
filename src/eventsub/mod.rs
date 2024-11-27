@@ -92,7 +92,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 55/65</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 56/65</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
@@ -151,7 +151,7 @@
 //! | [`channel.subscription.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptionend) (v1) | [ChannelSubscriptionEndV1](channel::ChannelSubscriptionEndV1)<br>[ChannelSubscriptionEndV1Payload](channel::ChannelSubscriptionEndV1Payload) |
 //! | [`channel.subscription.gift`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptiongift) (v1) | [ChannelSubscriptionGiftV1](channel::ChannelSubscriptionGiftV1)<br>[ChannelSubscriptionGiftV1Payload](channel::ChannelSubscriptionGiftV1Payload) |
 //! | [`channel.subscription.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptionmessage) (v1) | [ChannelSubscriptionMessageV1](channel::ChannelSubscriptionMessageV1)<br>[ChannelSubscriptionMessageV1Payload](channel::ChannelSubscriptionMessageV1Payload) |
-//! | [`channel.suspicious_user.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsuspicious_usermessage) (v1) | -<br>- |
+//! | [`channel.suspicious_user.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsuspicious_usermessage) (v1) | [ChannelSuspiciousUserMessageV1](channel::ChannelSuspiciousUserMessageV1)<br>[ChannelSuspiciousUserMessageV1Payload](channel::ChannelSuspiciousUserMessageV1Payload) |
 //! | [`channel.suspicious_user.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsuspicious_userupdate) (v1) | -<br>- |
 //! | [`channel.unban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban) (v1) | [ChannelUnbanV1](channel::ChannelUnbanV1)<br>[ChannelUnbanV1Payload](channel::ChannelUnbanV1Payload) |
 //! | [`channel.unban_request.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelunban_requestcreate) (v1) | -<br>- |

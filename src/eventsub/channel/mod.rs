@@ -26,6 +26,7 @@ pub mod shield_mode;
 pub mod shoutout;
 pub mod subscribe;
 pub mod subscription;
+pub mod suspicious_user;
 pub mod unban;
 pub mod update;
 pub mod vip;
@@ -145,6 +146,8 @@ pub use subscription::{ChannelSubscriptionEndV1, ChannelSubscriptionEndV1Payload
 pub use subscription::{ChannelSubscriptionGiftV1, ChannelSubscriptionGiftV1Payload};
 #[doc(inline)]
 pub use subscription::{ChannelSubscriptionMessageV1, ChannelSubscriptionMessageV1Payload};
+#[doc(inline)]
+pub use suspicious_user::{ChannelSuspiciousUserMessageV1, ChannelSuspiciousUserMessageV1Payload};
 #[doc(inline)]
 pub use unban::{ChannelUnbanV1, ChannelUnbanV1Payload};
 #[doc(inline)]

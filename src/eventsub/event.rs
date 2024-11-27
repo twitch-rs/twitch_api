@@ -67,6 +67,7 @@ macro_rules! fill_events {
             channel::ChannelSubscriptionEndV1;
             channel::ChannelSubscriptionGiftV1;
             channel::ChannelSubscriptionMessageV1;
+            channel::ChannelSuspiciousUserMessageV1;
             channel::ChannelUnbanV1;
             channel::ChannelUpdateV1;
             channel::ChannelUpdateV2;
@@ -244,6 +245,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelSubscriptionGift => "channel.subscription.gift",
     "a user sends a resubscription chat message in a specific channel":
     ChannelSubscriptionMessage => "channel.subscription.message",
+    "a chat message has been sent from a suspicious user.":
+    ChannelSuspiciousUserMessage => "channel.suspicious_user.message",
     "a channel activates shield mode":
     ChannelShieldModeBegin => "channel.shield_mode.begin",
     "a channel deactivates shield mode":
@@ -415,6 +418,8 @@ pub enum Event {
     ChannelShoutoutCreateV1(Payload<channel::ChannelShoutoutCreateV1>),
     /// Channel Shoutout Receive V1 Event
     ChannelShoutoutReceiveV1(Payload<channel::ChannelShoutoutReceiveV1>),
+    /// Channel SuspicousUser Message V1 Event
+    ChannelSuspiciousUserMessageV1(Payload<channel::ChannelSuspiciousUserMessageV1>),
     /// Channel Goal Begin V1 Event
     ChannelGoalBeginV1(Payload<channel::ChannelGoalBeginV1>),
     /// Channel Goal Progress V1 Event
