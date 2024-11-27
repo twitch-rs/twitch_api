@@ -156,6 +156,8 @@ pub use unban::{ChannelUnbanV1, ChannelUnbanV1Payload};
 #[doc(inline)]
 pub use unban_request::{ChannelUnbanRequestCreateV1, ChannelUnbanRequestCreateV1Payload};
 #[doc(inline)]
+pub use unban_request::{ChannelUnbanRequestResolveV1, ChannelUnbanRequestResolveV1Payload};
+#[doc(inline)]
 pub use update::{ChannelUpdateV1, ChannelUpdateV1Payload};
 #[doc(inline)]
 pub use update::{ChannelUpdateV2, ChannelUpdateV2Payload};
