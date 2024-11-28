@@ -5,6 +5,9 @@ use crate::types;
 use serde_derive::{Deserialize, Serialize};
 
 pub mod begin;
+pub mod end;
 
 #[doc(inline)]
 pub use begin::{ChannelGuestStarSessionBeginBeta, ChannelGuestStarSessionBeginBetaPayload};
+#[doc(inline)]
+pub use end::{ChannelGuestStarSessionEndBeta, ChannelGuestStarSessionEndBetaPayload};
