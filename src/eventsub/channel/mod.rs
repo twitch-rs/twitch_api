@@ -18,6 +18,8 @@ pub mod follow;
 pub mod goal;
 #[cfg(feature = "beta")]
 pub mod guest_star_session;
+#[cfg(feature = "beta")]
+pub mod guest_star_settings;
 pub mod hypetrain;
 pub mod moderate;
 pub mod moderator;
@@ -110,6 +112,10 @@ pub use guest_star_session::{
 #[cfg(feature = "beta")]
 pub use guest_star_session::{
     ChannelGuestStarSessionEndBeta, ChannelGuestStarSessionEndBetaPayload,
+};
+#[cfg(feature = "beta")]
+pub use guest_star_settings::{
+    ChannelGuestStarSettingsUpdateBeta, ChannelGuestStarSettingsUpdateBetaPayload,
 };
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload};
