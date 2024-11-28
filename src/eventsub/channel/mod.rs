@@ -107,6 +107,10 @@ pub use goal::{ChannelGoalProgressV1, ChannelGoalProgressV1Payload};
 pub use guest_star_session::{
     ChannelGuestStarSessionBeginBeta, ChannelGuestStarSessionBeginBetaPayload,
 };
+#[cfg(feature = "beta")]
+pub use guest_star_session::{
+    ChannelGuestStarSessionEndBeta, ChannelGuestStarSessionEndBetaPayload,
+};
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload};
 #[doc(inline)]
