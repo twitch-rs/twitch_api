@@ -37,6 +37,8 @@ macro_rules! fill_events {
             channel::ChannelGoalBeginV1;
             channel::ChannelGoalEndV1;
             channel::ChannelGoalProgressV1;
+            #[cfg(feature = "beta")]
+            channel::ChannelGuestStarSessionBeginBeta;
             channel::ChannelHypeTrainBeginV1;
             channel::ChannelHypeTrainEndV1;
             channel::ChannelHypeTrainProgressV1;
@@ -268,6 +270,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelGoalProgress => "channel.goal.progress",
     "a goal ends on the specified channel.":
     ChannelGoalEnd => "channel.goal.end",
+    "the host begins a new Guest Star session.":
+    ChannelGuestStarSessionBegin => "channel.guest_star_session.begin",
     "a hype train begins on the specified channel.":
     ChannelHypeTrainBegin => "channel.hype_train.begin",
     "a hype train makes progress on the specified channel.":
@@ -445,6 +449,9 @@ pub enum Event {
     ChannelGoalProgressV1(Payload<channel::ChannelGoalProgressV1>),
     /// Channel Goal End V1 Event
     ChannelGoalEndV1(Payload<channel::ChannelGoalEndV1>),
+    /// Channel GuestStarSession Begin V1 Event
+    #[cfg(feature = "beta")]
+    ChannelGuestStarSessionBeginBeta(Payload<channel::ChannelGuestStarSessionBeginBeta>),
     /// Channel Hype Train Begin V1 Event
     ChannelHypeTrainBeginV1(Payload<channel::ChannelHypeTrainBeginV1>),
     /// Channel Hype Train Progress V1 Event
