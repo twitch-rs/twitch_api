@@ -17,6 +17,8 @@ pub mod cheer;
 pub mod follow;
 pub mod goal;
 #[cfg(feature = "beta")]
+pub mod guest_star_guest;
+#[cfg(feature = "beta")]
 pub mod guest_star_session;
 #[cfg(feature = "beta")]
 pub mod guest_star_settings;
@@ -104,6 +106,10 @@ pub use goal::{ChannelGoalBeginV1, ChannelGoalBeginV1Payload};
 pub use goal::{ChannelGoalEndV1, ChannelGoalEndV1Payload};
 #[doc(inline)]
 pub use goal::{ChannelGoalProgressV1, ChannelGoalProgressV1Payload};
+#[cfg(feature = "beta")]
+pub use guest_star_guest::{
+    ChannelGuestStarGuestUpdateBeta, ChannelGuestStarGuestUpdateBetaPayload,
+};
 #[doc(inline)]
 #[cfg(feature = "beta")]
 pub use guest_star_session::{
