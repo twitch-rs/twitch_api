@@ -16,6 +16,8 @@ pub mod chat_settings;
 pub mod cheer;
 pub mod follow;
 pub mod goal;
+#[cfg(feature = "beta")]
+pub mod guest_star_session;
 pub mod hypetrain;
 pub mod moderate;
 pub mod moderator;
@@ -100,6 +102,11 @@ pub use goal::{ChannelGoalBeginV1, ChannelGoalBeginV1Payload};
 pub use goal::{ChannelGoalEndV1, ChannelGoalEndV1Payload};
 #[doc(inline)]
 pub use goal::{ChannelGoalProgressV1, ChannelGoalProgressV1Payload};
+#[doc(inline)]
+#[cfg(feature = "beta")]
+pub use guest_star_session::{
+    ChannelGuestStarSessionBeginBeta, ChannelGuestStarSessionBeginBetaPayload,
+};
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload};
 #[doc(inline)]
