@@ -92,7 +92,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 63/65</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 64/65</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
@@ -124,7 +124,7 @@
 //! | [`channel.guest_star_guest.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_guestupdate) (beta) | -<br>- |
 //! | [`channel.guest_star_session.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_sessionbegin) (beta) | [ChannelGuestStarSessionBeginBeta](channel::ChannelGuestStarSessionBeginBeta)<br>[ChannelGuestStarSessionBeginBetaPayload](channel::ChannelGuestStarSessionBeginBetaPayload) |
 //! | [`channel.guest_star_session.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_sessionend) (beta) | [ChannelGuestStarSessionEndBeta](channel::ChannelGuestStarSessionEndBeta)<br>[ChannelGuestStarSessionEndBetaPayload](channel::ChannelGuestStarSessionEndBetaPayload) |
-//! | [`channel.guest_star_settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_settingsupdate) (beta) | -<br>- |
+//! | [`channel.guest_star_settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_settingsupdate) (beta) | [ChannelGuestStarSettingsUpdateBeta](channel::ChannelGuestStarSettingsUpdateBeta)<br>[ChannelGuestStarSettingsUpdateBetaPayload](channel::ChannelGuestStarSettingsUpdateBetaPayload) |
 //! | [`channel.hype_train.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainbegin) (v1) | [ChannelHypeTrainBeginV1](channel::ChannelHypeTrainBeginV1)<br>[ChannelHypeTrainBeginV1Payload](channel::ChannelHypeTrainBeginV1Payload) |
 //! | [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainend) (v1) | [ChannelHypeTrainEndV1](channel::ChannelHypeTrainEndV1)<br>[ChannelHypeTrainEndV1Payload](channel::ChannelHypeTrainEndV1Payload) |
 //! | [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress) (v1) | [ChannelHypeTrainProgressV1](channel::ChannelHypeTrainProgressV1)<br>[ChannelHypeTrainProgressV1Payload](channel::ChannelHypeTrainProgressV1Payload) |
