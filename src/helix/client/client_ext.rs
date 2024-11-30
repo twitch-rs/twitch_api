@@ -1269,7 +1269,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
 
     /// Get a user's chat color
     ///
-    /// [`None`](Option::None) is returned if the user never set their color in the settings.
+    /// [`None`] is returned if the user never set their color in the settings.
     pub async fn get_user_chat_color<T>(
         &'client self,
         user_id: impl Into<&types::UserIdRef> + Send,
