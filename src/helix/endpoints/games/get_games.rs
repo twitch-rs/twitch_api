@@ -80,7 +80,7 @@ impl<'a> GetGamesRequest<'a> {
     }
 
     /// Returns an empty [`GetGamesRequest`]
-    fn empty() -> Self {
+    pub fn empty() -> Self {
         Self {
             id: types::Collection::default(),
             name: types::Collection::default(),
