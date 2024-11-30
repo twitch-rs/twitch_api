@@ -351,7 +351,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Users 🟡 6/8</summary>
+//! <details><summary style="cursor: pointer">Users 🟡 7/8</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -361,7 +361,7 @@
 //! | [Block User](https://dev.twitch.tv/docs/api/reference#block-user) | [`HelixClient::block_user`] | [`users::block_user`] |
 //! | [Unblock User](https://dev.twitch.tv/docs/api/reference#unblock-user) | [`HelixClient::unblock_user`] | [`users::unblock_user`] |
 //! | [Get User Extensions](https://dev.twitch.tv/docs/api/reference#get-user-extensions) | [`HelixClient::get_user_extensions`] | [`users::get_user_extensions`] |
-//! | [Get User Active Extensions](https://dev.twitch.tv/docs/api/reference#get-user-active-extensions) | - | - |
+//! | [Get User Active Extensions](https://dev.twitch.tv/docs/api/reference#get-user-active-extensions) | [`HelixClient::get_user_active_extensions`] | [`users::get_user_active_extensions`] |
 //! | [Update User Extensions](https://dev.twitch.tv/docs/api/reference#update-user-extensions) | - | - |
 //!
 //! </details>
