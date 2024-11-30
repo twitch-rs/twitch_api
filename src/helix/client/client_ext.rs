@@ -1343,6 +1343,21 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         Ok(self.req_put(req, helix::EmptyBody, token).await?.data)
     }
 
+    /// Gets a list of all extensions (both active and inactive) that the broadcaster has installed.
+    ///
+    /// The user ID in the access token identifies the broadcaster.
+    pub async fn get_user_extensions<'b, T>(
+        &'client self,
+        token: &T,
+    ) -> Result<Vec<helix::users::Extension>, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::users::GetUserExtensionsRequest::new();
+
+        Ok(self.req_get(req, token).await?.data)
+    }
+
     /// Retrieves the active shared chat session for a channel
     ///
     /// [`None`] is returned if no shared chat session is active.

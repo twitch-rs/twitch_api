@@ -82,6 +82,7 @@ helix = [
     "twitch_types/chat",
     "twitch_types/color",
     "twitch_types/emote",
+    "twitch_types/extension",
     "twitch_types/goal",
     "twitch_types/moderation",
     "twitch_types/points",
