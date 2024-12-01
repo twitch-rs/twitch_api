@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/eventsub/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-dbdb5eec.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (d10a6823f 2024-11-29)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/endpoints/eventsub/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/eventsub/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-dbdb5eec.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (7442931d4 2024-11-30)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/endpoints/eventsub/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -64,20 +64,26 @@
 <a href="#63" id="63">63</a>
 <a href="#64" id="64">64</a>
 <a href="#65" id="65">65</a>
-<a href="#66" id="66">66</a></pre></div><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding EventSub
+<a href="#66" id="66">66</a>
+<a href="#67" id="67">67</a>
+<a href="#68" id="68">68</a>
+<a href="#69" id="69">69</a>
+<a href="#70" id="70">70</a>
+<a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a></pre></div><pre class="rust"><code><span class="doccomment">//! Helix endpoints regarding EventSub
 //!
 //! # Implemented endpoints
 //!
 //! &lt;!-- generate with "cargo xtask overview" (with a nightly toolchain) --&gt;
 //! &lt;!-- BEGIN-OVERVIEW --&gt;
-//! &lt;details open&gt;&lt;summary style="cursor: pointer"&gt;Conduits 🟡 4/6&lt;/summary&gt;
+//! &lt;details open&gt;&lt;summary style="cursor: pointer"&gt;Conduits 🟢 6/6&lt;/summary&gt;
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Conduits](https://dev.twitch.tv/docs/api/reference#get-conduits) | [`HelixClient::get_conduits`](crate::helix::HelixClient::get_conduits) | [`get_conduits`] |
 //! | [Create Conduits](https://dev.twitch.tv/docs/api/reference#create-conduits) | [`HelixClient::create_conduit`](crate::helix::HelixClient::create_conduit) | [`create_conduit`] |
-//! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | - | - |
-//! | [Delete Conduit](https://dev.twitch.tv/docs/api/reference#delete-conduit) | - | - |
+//! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | [`HelixClient::update_conduit`](crate::helix::HelixClient::update_conduit) | [`update_conduit`] |
+//! | [Delete Conduit](https://dev.twitch.tv/docs/api/reference#delete-conduit) | [`HelixClient::delete_conduit`](crate::helix::HelixClient::delete_conduit) | [`delete_conduit`] |
 //! | [Get Conduit Shards](https://dev.twitch.tv/docs/api/reference#get-conduit-shards) | [`HelixClient::get_conduit_shards`](crate::helix::HelixClient::get_conduit_shards) | [`get_conduit_shards`] |
 //! | [Update Conduit Shards](https://dev.twitch.tv/docs/api/reference#update-conduit-shards) | [`HelixClient::update_conduit_shards`](crate::helix::HelixClient::update_conduit_shards) | [`update_conduit_shards`] |
 //!
@@ -104,10 +110,12 @@
 
 <span class="kw">pub mod </span>create_conduit;
 <span class="kw">pub mod </span>create_eventsub_subscription;
+<span class="kw">pub mod </span>delete_conduit;
 <span class="kw">pub mod </span>delete_eventsub_subscription;
 <span class="kw">pub mod </span>get_conduit_shards;
 <span class="kw">pub mod </span>get_conduits;
 <span class="kw">pub mod </span>get_eventsub_subscriptions;
+<span class="kw">pub mod </span>update_conduit;
 <span class="kw">pub mod </span>update_conduit_shards;
 
 <span class="attr">#[doc(inline)]
@@ -116,6 +124,8 @@
 </span><span class="kw">pub use </span>create_eventsub_subscription::{
     CreateEventSubSubscription, CreateEventSubSubscriptionBody, CreateEventSubSubscriptionRequest,
 };
+<span class="attr">#[doc(inline)]
+</span><span class="kw">pub use </span>delete_conduit::{DeleteConduitRequest, DeleteConduitResponse};
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>delete_eventsub_subscription::{
     DeleteEventSubSubscription, DeleteEventSubSubscriptionRequest,
@@ -126,6 +136,8 @@
 </span><span class="kw">pub use </span>get_conduits::GetConduitsRequest;
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>get_eventsub_subscriptions::{EventSubSubscriptions, GetEventSubSubscriptionsRequest};
+<span class="attr">#[doc(inline)]
+</span><span class="kw">pub use </span>update_conduit::{UpdateConduitBody, UpdateConduitRequest};
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>update_conduit_shards::{
     UpdateConduitShardsBody, UpdateConduitShardsRequest, UpdateConduitShardsResponse,

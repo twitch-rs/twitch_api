@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dbdb5eec.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (d10a6823f 2024-11-29)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/eventsub/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dbdb5eec.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (7442931d4 2024-11-30)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/eventsub/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -2301,7 +2301,7 @@
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">"eventsub"</span>)))]
 </span><span class="kw">pub struct </span>Conduit {
     <span class="doccomment">/// Conduit ID
-    </span><span class="kw">pub </span>id: String,
+    </span><span class="kw">pub </span>id: types::ConduitId,
     <span class="doccomment">/// Number of shards associated with this conduit
     </span><span class="kw">pub </span>shard_count: usize,
 }
@@ -2315,7 +2315,7 @@
 #[cfg_attr(nightly, doc(cfg(feature = <span class="string">"eventsub"</span>)))]
 </span><span class="kw">pub struct </span>Shard {
     <span class="doccomment">/// Shard ID.
-    </span><span class="kw">pub </span>id: String,
+    </span><span class="kw">pub </span>id: types::ConduitShardId,
 
     <span class="doccomment">/// The transport details that you want Twitch to use when sending you notifications.
     </span><span class="kw">pub </span>transport: Transport,
@@ -2323,9 +2323,9 @@
 
 <span class="kw">impl </span>Shard {
     <span class="doccomment">/// Create a shard with a transport set
-    </span><span class="kw">pub fn </span>new(id: <span class="kw">impl </span>std::string::ToString, transport: Transport) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(id: <span class="kw">impl </span>Into&lt;types::ConduitShardId&gt;, transport: Transport) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            id: id.to_string(),
+            id: id.into(),
 
             transport,
         }
@@ -2376,7 +2376,7 @@
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ShardError {
     <span class="doccomment">/// Shard ID.
-    </span><span class="kw">pub </span>id: String,
+    </span><span class="kw">pub </span>id: types::ConduitShardId,
 
     <span class="doccomment">/// The error that occurred while updating the shard.
     </span><span class="kw">pub </span>message: String,
@@ -2390,7 +2390,7 @@
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ShardResponse {
     <span class="doccomment">/// Shard ID.
-    </span><span class="kw">pub </span>id: String,
+    </span><span class="kw">pub </span>id: types::ConduitShardId,
 
     <span class="doccomment">/// The shard status. The subscriber receives events only for enabled shards.
     </span><span class="kw">pub </span>status: ShardStatus,

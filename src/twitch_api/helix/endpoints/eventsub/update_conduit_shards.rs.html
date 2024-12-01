@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/eventsub/update_conduit_shards.rs`."><title>update_conduit_shards.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-dbdb5eec.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (d10a6823f 2024-11-29)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/endpoints/eventsub/</div>update_conduit_shards.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/eventsub/update_conduit_shards.rs`."><title>update_conduit_shards.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-dbdb5eec.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (7442931d4 2024-11-30)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/endpoints/eventsub/</div>update_conduit_shards.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -205,7 +205,20 @@
 <a href="#204" id="204">204</a>
 <a href="#205" id="205">205</a>
 <a href="#206" id="206">206</a>
-<a href="#207" id="207">207</a></pre></div><pre class="rust"><code><span class="doccomment">//! Updates shard(s) for a [conduit](https://dev.twitch.tv/docs/eventsub/handling-conduit-events).
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a></pre></div><pre class="rust"><code><span class="doccomment">//! Updates shard(s) for a [conduit](https://dev.twitch.tv/docs/eventsub/handling-conduit-events).
 //! [`update-conduit-shards`](https://dev.twitch.tv/docs/api/reference/#update-conduit-shards)
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
@@ -219,9 +232,13 @@
 #[cfg_attr(feature = <span class="string">"typed-builder"</span>, derive(typed_builder::TypedBuilder))]
 #[must_use]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>UpdateConduitShardsRequest {}
+</span><span class="kw">pub struct </span>UpdateConduitShardsRequest&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="attr">#[serde(skip)]
+    #[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(default))]
+    </span>_phantom: std::marker::PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>()&gt;,
+}
 
-<span class="kw">impl </span>Request <span class="kw">for </span>UpdateConduitShardsRequest {
+<span class="kw">impl </span>Request <span class="kw">for </span>UpdateConduitShardsRequest&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>Response = UpdateConduitShardsResponse;
 
     <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"eventsub/conduits/shards"</span>;
@@ -248,25 +265,34 @@
 </span><span class="attr">#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = <span class="string">"typed-builder"</span>, derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>UpdateConduitShardsBody {
+</span><span class="kw">pub struct </span>UpdateConduitShardsBody&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Conduit ID.
-    </span><span class="kw">pub </span>conduit_id: String,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(setter(into)))]
+    #[cfg_attr(feature = <span class="string">"deser_borrow"</span>, serde(borrow = <span class="string">"'a"</span>))]
+    </span><span class="kw">pub </span>conduit_id: Cow&lt;<span class="lifetime">'a</span>, types::ConduitIdRef&gt;,
 
     <span class="doccomment">/// List of shards to update.
-    </span><span class="kw">pub </span>shards: Vec&lt;eventsub::Shard&gt;,
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typed-builder"</span>, builder(setter(into)))]
+    </span><span class="kw">pub </span>shards: Cow&lt;<span class="lifetime">'a</span>, [eventsub::Shard]&gt;,
 }
 
-<span class="kw">impl </span>UpdateConduitShardsBody {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; UpdateConduitShardsBody&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Conduit body settings
-    </span><span class="kw">pub fn </span>new(conduit_id: String, shards: Vec&lt;eventsub::Shard&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{ conduit_id, shards }
+    </span><span class="kw">pub fn </span>new(
+        conduit_id: <span class="kw">impl </span>types::IntoCow&lt;<span class="lifetime">'a</span>, types::ConduitIdRef&gt; + <span class="lifetime">'a</span>,
+        shards: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'a</span>, [eventsub::Shard]&gt;&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            conduit_id: conduit_id.into_cow(),
+            shards: shards.into(),
+        }
     }
 }
 
-<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>UpdateConduitShardsBody {}
+<span class="kw">impl </span>helix::private::SealedSerialize <span class="kw">for </span>UpdateConduitShardsBody&lt;<span class="lifetime">'_</span>&gt; {}
 
-<span class="kw">impl </span>RequestPatch <span class="kw">for </span>UpdateConduitShardsRequest {
-    <span class="kw">type </span>Body = UpdateConduitShardsBody;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; RequestPatch <span class="kw">for </span>UpdateConduitShardsRequest&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Body = UpdateConduitShardsBody&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>parse_inner_response(
         request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
@@ -363,7 +389,7 @@
         response.data.shards,
         <span class="macro">vec!</span>[
             <span class="kw">crate</span>::eventsub::ShardResponse {
-                id: <span class="string">"0"</span>.to_string(),
+                id: <span class="string">"0"</span>.into(),
                 status: <span class="kw">crate</span>::eventsub::ShardStatus::Enabled,
                 transport: <span class="kw">crate</span>::eventsub::TransportResponse::Webhook(
                     <span class="kw">crate</span>::eventsub::WebhookTransportResponse {
@@ -372,7 +398,7 @@
                 ),
             },
             <span class="kw">crate</span>::eventsub::ShardResponse {
-                id: <span class="string">"1"</span>.to_string(),
+                id: <span class="string">"1"</span>.into(),
                 status: <span class="kw">crate</span>::eventsub::ShardStatus::WebhookCallbackVerificationPending,
                 transport: <span class="kw">crate</span>::eventsub::TransportResponse::Webhook(
                     <span class="kw">crate</span>::eventsub::WebhookTransportResponse {
@@ -386,7 +412,7 @@
     <span class="macro">assert_eq!</span>(
         response.data.errors,
         <span class="macro">vec!</span>[<span class="kw">crate</span>::eventsub::ShardError {
-            id: <span class="string">"3"</span>.to_string(),
+            id: <span class="string">"3"</span>.into(),
             message: <span class="string">"The shard id is outside the conduit's range"</span>.to_string(),
             code: <span class="string">"invalid_parameter"</span>.to_string(),
         },]
