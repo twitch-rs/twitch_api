@@ -110,7 +110,7 @@ fn test_successful_response() {
     assert_eq!(
         response.data,
         crate::eventsub::Conduit {
-            id: "bfcfc993-26b1-b876-44d9-afe75a379dac".to_string(),
+            id: "bfcfc993-26b1-b876-44d9-afe75a379dac".into(),
             shard_count: 5,
         },
     );

@@ -1713,7 +1713,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     ///
     /// # Ok(()) }
     /// ```
-    pub async fn create_conduit<'b: 'client, T>(
+    pub async fn create_conduit<T>(
         &'client self,
         shard_count: usize,
         token: &'client T,
@@ -1781,7 +1781,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// ```
     pub fn get_conduit_shards<'b: 'client, T>(
         &'client self,
-        conduit_id: impl Into<Cow<'b, str>>,
+        conduit_id: impl types::IntoCow<'b, types::ConduitIdRef> + 'b,
         status: impl Into<Option<crate::eventsub::ShardStatus>>,
         token: &'client T,
     ) -> impl futures::Stream<Item = Result<crate::eventsub::ShardResponse, ClientError<C>>>
@@ -1792,7 +1792,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         T: TwitchToken + Send + Sync + ?Sized,
     {
         let req = helix::eventsub::GetConduitShardsRequest {
-            conduit_id: conduit_id.into(),
+            conduit_id: conduit_id.into_cow(),
             status: status.into(),
             after: None,
         };
@@ -1833,22 +1833,22 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// );
     ///
     /// let response = client
-    ///     .update_conduit_shards(conduit_id, vec![shard], &token)
+    ///     .update_conduit_shards(conduit_id, &[shard], &token)
     ///     .await;
     ///
     /// # Ok(()) }
     /// ```
     pub async fn update_conduit_shards<'b: 'client, T>(
         &'client self,
-        conduit_id: impl Into<String> + Send,
-        shards: Vec<crate::eventsub::Shard>,
+        conduit_id: impl types::IntoCow<'b, types::ConduitIdRef> + 'b + Send,
+        shards: impl Into<Cow<'b, [crate::eventsub::Shard]>> + Send,
         token: &'client T,
     ) -> Result<helix::eventsub::UpdateConduitShardsResponse, ClientError<C>>
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        let req = helix::eventsub::UpdateConduitShardsRequest {};
-        let body = helix::eventsub::UpdateConduitShardsBody::new(conduit_id.into(), shards);
+        let req = helix::eventsub::UpdateConduitShardsRequest::default();
+        let body = helix::eventsub::UpdateConduitShardsBody::new(conduit_id, shards);
 
         self.req_patch(req, body, token)
             .await

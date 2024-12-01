@@ -976,7 +976,7 @@ pub struct EventSubSubscription {
 #[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
 pub struct Conduit {
     /// Conduit ID
-    pub id: String,
+    pub id: types::ConduitId,
     /// Number of shards associated with this conduit
     pub shard_count: usize,
 }
@@ -990,7 +990,7 @@ pub struct Conduit {
 #[cfg_attr(nightly, doc(cfg(feature = "eventsub")))]
 pub struct Shard {
     /// Shard ID.
-    pub id: String,
+    pub id: types::ConduitShardId,
 
     /// The transport details that you want Twitch to use when sending you notifications.
     pub transport: Transport,
@@ -998,9 +998,9 @@ pub struct Shard {
 
 impl Shard {
     /// Create a shard with a transport set
-    pub fn new(id: impl std::string::ToString, transport: Transport) -> Self {
+    pub fn new(id: impl Into<types::ConduitShardId>, transport: Transport) -> Self {
         Self {
-            id: id.to_string(),
+            id: id.into(),
 
             transport,
         }
@@ -1051,7 +1051,7 @@ pub enum ShardStatus {
 #[non_exhaustive]
 pub struct ShardError {
     /// Shard ID.
-    pub id: String,
+    pub id: types::ConduitShardId,
 
     /// The error that occurred while updating the shard.
     pub message: String,
@@ -1065,7 +1065,7 @@ pub struct ShardError {
 #[non_exhaustive]
 pub struct ShardResponse {
     /// Shard ID.
-    pub id: String,
+    pub id: types::ConduitShardId,
 
     /// The shard status. The subscriber receives events only for enabled shards.
     pub status: ShardStatus,
