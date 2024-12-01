@@ -4,13 +4,13 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Conduits 🟡 4/6</summary>
+//! <details open><summary style="cursor: pointer">Conduits 🟡 5/6</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Conduits](https://dev.twitch.tv/docs/api/reference#get-conduits) | [`HelixClient::get_conduits`](crate::helix::HelixClient::get_conduits) | [`get_conduits`] |
 //! | [Create Conduits](https://dev.twitch.tv/docs/api/reference#create-conduits) | [`HelixClient::create_conduit`](crate::helix::HelixClient::create_conduit) | [`create_conduit`] |
-//! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | - | - |
+//! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | [`HelixClient::update_conduit`](crate::helix::HelixClient::update_conduit) | [`update_conduit`] |
 //! | [Delete Conduit](https://dev.twitch.tv/docs/api/reference#delete-conduit) | - | - |
 //! | [Get Conduit Shards](https://dev.twitch.tv/docs/api/reference#get-conduit-shards) | [`HelixClient::get_conduit_shards`](crate::helix::HelixClient::get_conduit_shards) | [`get_conduit_shards`] |
 //! | [Update Conduit Shards](https://dev.twitch.tv/docs/api/reference#update-conduit-shards) | [`HelixClient::update_conduit_shards`](crate::helix::HelixClient::update_conduit_shards) | [`update_conduit_shards`] |
@@ -42,6 +42,7 @@ pub mod delete_eventsub_subscription;
 pub mod get_conduit_shards;
 pub mod get_conduits;
 pub mod get_eventsub_subscriptions;
+pub mod update_conduit;
 pub mod update_conduit_shards;
 
 #[doc(inline)]
@@ -60,6 +61,8 @@ pub use get_conduit_shards::{ConduitShards, GetConduitShardsRequest};
 pub use get_conduits::GetConduitsRequest;
 #[doc(inline)]
 pub use get_eventsub_subscriptions::{EventSubSubscriptions, GetEventSubSubscriptionsRequest};
+#[doc(inline)]
+pub use update_conduit::{UpdateConduitBody, UpdateConduitRequest};
 #[doc(inline)]
 pub use update_conduit_shards::{
     UpdateConduitShardsBody, UpdateConduitShardsRequest, UpdateConduitShardsResponse,

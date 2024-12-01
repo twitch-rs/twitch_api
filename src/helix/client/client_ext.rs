@@ -1801,6 +1801,53 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     }
 
     #[cfg(feature = "eventsub")]
+    /// Updates a [conduit](crate::eventsub::Conduit)’s shard count..
+    ///
+    /// # Notes
+    ///
+    /// To delete shards, update the count to a lower number, and the shards above the count will be deleted.
+    /// For example, if the existing shard count is 100, by resetting shard count to 50, shards 50-99 are disabled.
+    ///
+    /// The token must be an App Access Token.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let client_id = twitch_oauth2::types::ClientId::from_static("your_client_id");
+    /// # let client_secret = twitch_oauth2::types::ClientSecret::from_static("your_client_id");
+    /// # let token = twitch_oauth2::AppAccessToken::get_app_access_token(&client, client_id, client_secret, vec![]).await?;
+    /// use twitch_api::{helix, eventsub};
+    ///
+    /// // The conduit ID of a previously created Conduit
+    /// let conduit_id = "bb7a1803-eb03-41ef-a1ab-e9242e72053e";
+    /// let shard_count = 5;
+    /// let updated: eventsub::Conduit = client
+    ///     .update_conduit(conduit_id, shard_count, &token)
+    ///     .await?;
+    ///
+    /// # Ok(()) }
+    /// ```
+    pub async fn update_conduit<'b: 'client, T>(
+        &'client self,
+        conduit_id: impl types::IntoCow<'b, types::ConduitIdRef> + 'b + Send,
+        shard_count: usize,
+        token: &'client T,
+    ) -> Result<crate::eventsub::Conduit, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::eventsub::UpdateConduitRequest::default();
+        let body = helix::eventsub::UpdateConduitBody::new(conduit_id, shard_count);
+
+        self.req_patch(req, body, token)
+            .await
+            .map(|response| response.data)
+    }
+
+    #[cfg(feature = "eventsub")]
     /// Updates the [Shard](crate::eventsub) for the given [Conduit](crate::eventsub).
     ///
     /// This is used to connect a Webhook or Websocket transport to a conduit, which you can read

@@ -136,13 +136,13 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Conduits 🟡 4/6</summary>
+//! <details><summary style="cursor: pointer">Conduits 🟡 5/6</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Conduits](https://dev.twitch.tv/docs/api/reference#get-conduits) | [`HelixClient::get_conduits`] | [`eventsub::get_conduits`] |
 //! | [Create Conduits](https://dev.twitch.tv/docs/api/reference#create-conduits) | [`HelixClient::create_conduit`] | [`eventsub::create_conduit`] |
-//! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | - | - |
+//! | [Update Conduits](https://dev.twitch.tv/docs/api/reference#update-conduits) | [`HelixClient::update_conduit`] | [`eventsub::update_conduit`] |
 //! | [Delete Conduit](https://dev.twitch.tv/docs/api/reference#delete-conduit) | - | - |
 //! | [Get Conduit Shards](https://dev.twitch.tv/docs/api/reference#get-conduit-shards) | [`HelixClient::get_conduit_shards`] | [`eventsub::get_conduit_shards`] |
 //! | [Update Conduit Shards](https://dev.twitch.tv/docs/api/reference#update-conduit-shards) | [`HelixClient::update_conduit_shards`] | [`eventsub::update_conduit_shards`] |
