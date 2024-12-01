@@ -59,7 +59,7 @@ impl<'a> GetConduitShardsRequest<'a> {
 #[non_exhaustive]
 pub struct ConduitShards {
     /// List of information about a conduit's shards.
-    shards: Vec<eventsub::ShardResponse>,
+    pub shards: Vec<eventsub::ShardResponse>,
 }
 
 impl Request for GetConduitShardsRequest<'_> {
