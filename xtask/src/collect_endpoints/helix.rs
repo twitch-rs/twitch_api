@@ -198,6 +198,7 @@ fn category_override(c: String) -> String {
 fn item_override(i: String) -> String {
     match i.as_str() {
         "create_conduits" => "create_conduit".to_owned(),
+        "update_conduits" => "update_conduit".to_owned(),
         "resolve_unban_requests" => "resolve_unban_request".to_owned(),
         "get_hype_train_events" => "get_hypetrain_events".to_owned(),
         _ => i,

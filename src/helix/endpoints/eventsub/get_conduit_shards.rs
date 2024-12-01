@@ -8,15 +8,15 @@ use helix::RequestGet;
 /// Query Parameters for [Get Conduit Shards](super::get_conduit_shards)
 ///
 /// [`get-conduit-shards`](https://dev.twitch.tv/docs/api/reference/#get-conduit-shards)
-#[derive(PartialEq, Eq, Serialize, Clone, Debug, Default)]
+#[derive(PartialEq, Eq, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[must_use]
 #[non_exhaustive]
 pub struct GetConduitShardsRequest<'a> {
     /// Conduit ID.
-    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
-    pub conduit_id: Cow<'a, str>,
+    pub conduit_id: Cow<'a, types::ConduitIdRef>,
 
     /// Status to filter by.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
@@ -28,6 +28,29 @@ pub struct GetConduitShardsRequest<'a> {
     pub after: Option<Cow<'a, helix::CursorRef>>,
 }
 
+impl<'a> GetConduitShardsRequest<'a> {
+    /// Request the shards of a conduit
+    pub fn new(conduit_id: impl types::IntoCow<'a, types::ConduitIdRef> + 'a) -> Self {
+        Self {
+            conduit_id: conduit_id.into_cow(),
+            status: None,
+            after: None,
+        }
+    }
+
+    /// Filter shards by a specific status
+    pub fn status(mut self, status: eventsub::ShardStatus) -> Self {
+        self.status = Some(status);
+        self
+    }
+
+    /// Set the cursor to get a page of results
+    pub fn after(mut self, after: impl types::IntoCow<'a, helix::CursorRef> + 'a) -> Self {
+        self.after = Some(after.into_cow());
+        self
+    }
+}
+
 /// Return Values for [Get Conduit Shards](super::get_conduit_shards)
 ///
 /// [`get-conduit-shards`](https://dev.twitch.tv/docs/api/reference/#get-conduit-shards)
@@ -36,7 +59,7 @@ pub struct GetConduitShardsRequest<'a> {
 #[non_exhaustive]
 pub struct ConduitShards {
     /// List of information about a conduit's shards.
-    shards: Vec<eventsub::ShardResponse>,
+    pub shards: Vec<eventsub::ShardResponse>,
 }
 
 impl Request for GetConduitShardsRequest<'_> {
@@ -59,12 +82,12 @@ impl helix::Paginated for GetConduitShardsRequest<'_> {
 #[test]
 fn test_uri() {
     use helix::*;
-    let req: GetConduitShardsRequest = GetConduitShardsRequest::default();
+    let req = GetConduitShardsRequest::new("12345");
 
     let uri = req.get_uri().unwrap();
     assert_eq!(
         uri.to_string(),
-        "https://api.twitch.tv/helix/eventsub/conduits/shards?conduit_id="
+        "https://api.twitch.tv/helix/eventsub/conduits/shards?conduit_id=12345"
     );
 }
 
@@ -77,7 +100,7 @@ fn test_request() {
     use crate::eventsub::{
         ShardStatus, TransportResponse, WebhookTransportResponse, WebsocketTransportResponse,
     };
-    let req: GetConduitShardsRequest = GetConduitShardsRequest::default();
+    let req = GetConduitShardsRequest::new("12345");
 
     let data = br#"{
   "data": [
@@ -138,21 +161,21 @@ fn test_request() {
         response.data,
         vec![
             crate::eventsub::ShardResponse {
-                id: "0".to_string(),
+                id: "0".into(),
                 status: ShardStatus::Enabled,
                 transport: TransportResponse::Webhook(WebhookTransportResponse {
                     callback: "https://this-is-a-callback.com".to_string(),
                 }),
             },
             crate::eventsub::ShardResponse {
-                id: "1".to_string(),
+                id: "1".into(),
                 status: ShardStatus::WebhookCallbackVerificationPending,
                 transport: TransportResponse::Webhook(WebhookTransportResponse {
                     callback: "https://this-is-a-callback-2.com".to_string(),
                 }),
             },
             crate::eventsub::ShardResponse {
-                id: "2".to_string(),
+                id: "2".into(),
                 status: ShardStatus::Enabled,
                 transport: TransportResponse::Websocket(WebsocketTransportResponse {
                     session_id: "9fd5164a-a958-4c60-b7f4-6a7202506ca0".to_string(),
@@ -161,7 +184,7 @@ fn test_request() {
                 }),
             },
             crate::eventsub::ShardResponse {
-                id: "3".to_string(),
+                id: "3".into(),
                 status: ShardStatus::Enabled,
                 transport: TransportResponse::Websocket(WebsocketTransportResponse {
                     session_id: "238b4b08-13f1-4b8f-8d31-56665a7a9d9f".to_string(),
@@ -170,7 +193,7 @@ fn test_request() {
                 }),
             },
             crate::eventsub::ShardResponse {
-                id: "4".to_string(),
+                id: "4".into(),
                 status: ShardStatus::WebsocketDisconnected,
                 transport: TransportResponse::Websocket(WebsocketTransportResponse {
                     session_id: "ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9".to_string(),

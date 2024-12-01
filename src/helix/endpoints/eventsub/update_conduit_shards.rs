@@ -12,9 +12,13 @@ use helix::RequestPatch;
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[must_use]
 #[non_exhaustive]
-pub struct UpdateConduitShardsRequest {}
+pub struct UpdateConduitShardsRequest<'a> {
+    #[serde(skip)]
+    #[cfg_attr(feature = "typed-builder", builder(default))]
+    _phantom: std::marker::PhantomData<&'a ()>,
+}
 
-impl Request for UpdateConduitShardsRequest {
+impl Request for UpdateConduitShardsRequest<'_> {
     type Response = UpdateConduitShardsResponse;
 
     const PATH: &'static str = "eventsub/conduits/shards";
@@ -41,25 +45,34 @@ pub struct UpdateConduitShardsResponse {
 #[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[non_exhaustive]
-pub struct UpdateConduitShardsBody {
+pub struct UpdateConduitShardsBody<'a> {
     /// Conduit ID.
-    pub conduit_id: String,
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    pub conduit_id: Cow<'a, types::ConduitIdRef>,
 
     /// List of shards to update.
-    pub shards: Vec<eventsub::Shard>,
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    pub shards: Cow<'a, [eventsub::Shard]>,
 }
 
-impl UpdateConduitShardsBody {
+impl<'a> UpdateConduitShardsBody<'a> {
     /// Conduit body settings
-    pub fn new(conduit_id: String, shards: Vec<eventsub::Shard>) -> Self {
-        Self { conduit_id, shards }
+    pub fn new(
+        conduit_id: impl types::IntoCow<'a, types::ConduitIdRef> + 'a,
+        shards: impl Into<Cow<'a, [eventsub::Shard]>>,
+    ) -> Self {
+        Self {
+            conduit_id: conduit_id.into_cow(),
+            shards: shards.into(),
+        }
     }
 }
 
-impl helix::private::SealedSerialize for UpdateConduitShardsBody {}
+impl helix::private::SealedSerialize for UpdateConduitShardsBody<'_> {}
 
-impl RequestPatch for UpdateConduitShardsRequest {
-    type Body = UpdateConduitShardsBody;
+impl<'a> RequestPatch for UpdateConduitShardsRequest<'a> {
+    type Body = UpdateConduitShardsBody<'a>;
 
     fn parse_inner_response(
         request: Option<Self>,
@@ -156,7 +169,7 @@ fn test_successful_response() {
         response.data.shards,
         vec![
             crate::eventsub::ShardResponse {
-                id: "0".to_string(),
+                id: "0".into(),
                 status: crate::eventsub::ShardStatus::Enabled,
                 transport: crate::eventsub::TransportResponse::Webhook(
                     crate::eventsub::WebhookTransportResponse {
@@ -165,7 +178,7 @@ fn test_successful_response() {
                 ),
             },
             crate::eventsub::ShardResponse {
-                id: "1".to_string(),
+                id: "1".into(),
                 status: crate::eventsub::ShardStatus::WebhookCallbackVerificationPending,
                 transport: crate::eventsub::TransportResponse::Webhook(
                     crate::eventsub::WebhookTransportResponse {
@@ -179,7 +192,7 @@ fn test_successful_response() {
     assert_eq!(
         response.data.errors,
         vec![crate::eventsub::ShardError {
-            id: "3".to_string(),
+            id: "3".into(),
             message: "The shard id is outside the conduit's range".to_string(),
             code: "invalid_parameter".to_string(),
         },]
