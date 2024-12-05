@@ -316,7 +316,7 @@ fn parse_payload_v2_automod() {
     assert_eq!(notif.message.fragments.len(), 3);
     assert_eq!(notif.status, AutomodMessageStatus::Denied);
 
-    let AutomodHeldReason::Automod { automod } = &notif.reason else {
+    let AutomodHeldReason::Automod(automod) = &notif.reason else {
         panic!("invalid held reason");
     };
     assert_eq!(automod.category, AutomodCategory::Swearing);
@@ -410,7 +410,7 @@ fn parse_payload_v2_blocked_term() {
     assert_eq!(notif.message.fragments.len(), 1);
     assert_eq!(notif.status, AutomodMessageStatus::Approved);
 
-    let AutomodHeldReason::BlockedTerm { blocked_term } = &notif.reason else {
+    let AutomodHeldReason::BlockedTerm(blocked_term) = &notif.reason else {
         panic!("invalid held reason");
     };
     assert_eq!(blocked_term.terms_found.len(), 1);

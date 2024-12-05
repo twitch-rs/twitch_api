@@ -275,7 +275,7 @@ fn parse_payload_v2_automod() {
     assert_eq!(notif.broadcaster_user_id.as_str(), "129546453");
     assert_eq!(notif.message.fragments.len(), 2);
 
-    let AutomodHeldReason::Automod { automod } = &notif.reason else {
+    let AutomodHeldReason::Automod(automod) = &notif.reason else {
         panic!("invalid held reason");
     };
     assert_eq!(automod.category, AutomodCategory::Swearing);
@@ -413,7 +413,7 @@ fn parse_payload_v2_blocked_term() {
     assert_eq!(notif.broadcaster_user_id.as_str(), "129546453");
     assert_eq!(notif.message.fragments.len(), 7);
 
-    let AutomodHeldReason::BlockedTerm { blocked_term } = &notif.reason else {
+    let AutomodHeldReason::BlockedTerm(blocked_term) = &notif.reason else {
         panic!("invalid held reason");
     };
     assert_eq!(blocked_term.terms_found.len(), 2);

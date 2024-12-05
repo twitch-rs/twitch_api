@@ -106,15 +106,11 @@ pub struct AutomodMessageEmote {
 #[non_exhaustive]
 pub enum AutomodHeldReason {
     /// The message was caught by automod's rules
-    Automod {
-        /// Information on why a message was caught by automod
-        automod: AutomodMessageInfo,
-    },
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Automod(AutomodMessageInfo),
     /// The message was caught because of one or more blocked terms
-    BlockedTerm {
-        /// Information on which blocked terms were matched in a message
-        blocked_term: AutomodBlockedTermInfo,
-    },
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    BlockedTerm(AutomodBlockedTermInfo),
 }
 
 /// Information on why a message was caught by automod
@@ -130,6 +126,10 @@ pub struct AutomodMessageInfo {
     pub boundaries: Vec<AutomodMessageBoundary>,
 }
 
+impl crate::eventsub::NamedField for AutomodMessageInfo {
+    const NAME: &'static str = "automod";
+}
+
 /// Information on which blocked terms were matched in a message
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -137,6 +137,10 @@ pub struct AutomodMessageInfo {
 pub struct AutomodBlockedTermInfo {
     /// The list of blocked terms found in the message.
     pub terms_found: Vec<AutomodBlockedTerm>,
+}
+
+impl crate::eventsub::NamedField for AutomodBlockedTermInfo {
+    const NAME: &'static str = "blocked_term";
 }
 
 /// The bounds of the text that caused the message to be caught.
