@@ -8,15 +8,13 @@ pub mod hold;
 pub mod update;
 
 #[doc(inline)]
-#[cfg(feature = "beta")]
-pub use hold::{AutomodMessageHoldBeta, AutomodMessageHoldBetaPayload};
-#[doc(inline)]
 pub use hold::{AutomodMessageHoldV1, AutomodMessageHoldV1Payload};
 #[doc(inline)]
-#[cfg(feature = "beta")]
-pub use update::{AutomodMessageUpdateBeta, AutomodMessageUpdateBetaPayload};
+pub use hold::{AutomodMessageHoldV2, AutomodMessageHoldV2Payload};
 #[doc(inline)]
 pub use update::{AutomodMessageUpdateV1, AutomodMessageUpdateV1Payload};
+#[doc(inline)]
+pub use update::{AutomodMessageUpdateV2, AutomodMessageUpdateV2Payload};
 
 /// A message's Automod status
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

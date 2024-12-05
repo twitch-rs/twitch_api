@@ -154,8 +154,7 @@ fn parse_payload_v1() {
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
-#[cfg(feature = "beta")]
-pub struct AutomodMessageUpdateBeta {
+pub struct AutomodMessageUpdateV2 {
     /// User ID of the broadcaster (channel).
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     pub broadcaster_user_id: types::UserId,
@@ -164,8 +163,7 @@ pub struct AutomodMessageUpdateBeta {
     pub moderator_user_id: types::UserId,
 }
 
-#[cfg(feature = "beta")]
-impl AutomodMessageUpdateBeta {
+impl AutomodMessageUpdateV2 {
     /// Get automod update notifications for this channel as a moderator
     pub fn new(
         broadcaster_user_id: impl Into<types::UserId>,
@@ -178,23 +176,21 @@ impl AutomodMessageUpdateBeta {
     }
 }
 
-#[cfg(feature = "beta")]
-impl EventSubscription for AutomodMessageUpdateBeta {
-    type Payload = AutomodMessageUpdateBetaPayload;
+impl EventSubscription for AutomodMessageUpdateV2 {
+    type Payload = AutomodMessageUpdateV2Payload;
 
     const EVENT_TYPE: EventType = EventType::AutomodMessageUpdate;
     #[cfg(feature = "twitch_oauth2")]
     const SCOPE: twitch_oauth2::Validator =
         twitch_oauth2::validator![twitch_oauth2::Scope::ModeratorManageAutoMod];
-    const VERSION: &'static str = "beta";
+    const VERSION: &'static str = "2";
 }
 
-/// [`automod.message.hold`](AutomodMessageUpdateBeta) response payload.
+/// [`automod.message.hold`](AutomodMessageUpdateV2) response payload.
 // XXX: this struct can't be deny-unknown-fields because of the flattened reason
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
-#[cfg(feature = "beta")]
-pub struct AutomodMessageUpdateBetaPayload {
+pub struct AutomodMessageUpdateV2Payload {
     /// The ID of the broadcaster specified in the request.
     pub broadcaster_user_id: types::UserId,
     /// The login of the broadcaster specified in the request.
@@ -229,7 +225,6 @@ pub struct AutomodMessageUpdateBetaPayload {
     pub reason: AutomodHeldReason,
 }
 
-#[cfg(all(test, feature = "beta"))]
 #[test]
 fn parse_payload_v2_automod() {
     use crate::eventsub::{Event, Message};
@@ -240,7 +235,7 @@ fn parse_payload_v2_automod() {
             "id": "5d64b907-001e-4cf1-9227-37871c7ce1b0",
             "status": "enabled",
             "type": "automod.message.update",
-            "version": "beta",
+            "version": "2",
             "condition": {
                 "broadcaster_user_id": "129546453",
                 "moderator_user_id": "129546453"
@@ -310,7 +305,7 @@ fn parse_payload_v2_automod() {
     let val = Event::parse(payload).unwrap();
     crate::tests::roundtrip(&val);
 
-    let Event::AutomodMessageUpdateBeta(val) = val else {
+    let Event::AutomodMessageUpdateV2(val) = val else {
         panic!("invalid event type");
     };
     let Message::Notification(notif) = val.message else {
@@ -335,7 +330,6 @@ fn parse_payload_v2_automod() {
     );
 }
 
-#[cfg(all(test, feature = "beta"))]
 #[test]
 fn parse_payload_v2_blocked_term() {
     use crate::eventsub::{Event, Message};
@@ -346,7 +340,7 @@ fn parse_payload_v2_blocked_term() {
             "id": "5d64b907-001e-4cf1-9227-37871c7ce1b0",
             "status": "enabled",
             "type": "automod.message.update",
-            "version": "beta",
+            "version": "2",
             "condition": {
                 "broadcaster_user_id": "129546453",
                 "moderator_user_id": "129546453"
@@ -405,7 +399,7 @@ fn parse_payload_v2_blocked_term() {
     let val = Event::parse(payload).unwrap();
     crate::tests::roundtrip(&val);
 
-    let Event::AutomodMessageUpdateBeta(val) = val else {
+    let Event::AutomodMessageUpdateV2(val) = val else {
         panic!("invalid event type");
     };
     let Message::Notification(notif) = val.message else {
