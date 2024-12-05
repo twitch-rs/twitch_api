@@ -84,9 +84,9 @@
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
 //! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold) (v1) | [AutomodMessageHoldV1](automod::AutomodMessageHoldV1)<br>[AutomodMessageHoldV1Payload](automod::AutomodMessageHoldV1Payload) |
-//! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold-v2) (beta) | [AutomodMessageHoldBeta](automod::AutomodMessageHoldBeta)<br>[AutomodMessageHoldBetaPayload](automod::AutomodMessageHoldBetaPayload) |
+//! | [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessagehold-v2) (v2) | [AutomodMessageHoldV2](automod::AutomodMessageHoldV2)<br>[AutomodMessageHoldV2Payload](automod::AutomodMessageHoldV2Payload) |
 //! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate) (v1) | [AutomodMessageUpdateV1](automod::AutomodMessageUpdateV1)<br>[AutomodMessageUpdateV1Payload](automod::AutomodMessageUpdateV1Payload) |
-//! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate-v2) (beta) | [AutomodMessageUpdateBeta](automod::AutomodMessageUpdateBeta)<br>[AutomodMessageUpdateBetaPayload](automod::AutomodMessageUpdateBetaPayload) |
+//! | [`automod.message.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodmessageupdate-v2) (v2) | [AutomodMessageUpdateV2](automod::AutomodMessageUpdateV2)<br>[AutomodMessageUpdateV2Payload](automod::AutomodMessageUpdateV2Payload) |
 //! | [`automod.settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodsettingsupdate) (v1) | [AutomodSettingsUpdateV1](automod::AutomodSettingsUpdateV1)<br>[AutomodSettingsUpdateV1Payload](automod::AutomodSettingsUpdateV1Payload) |
 //! | [`automod.terms.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#automodtermsupdate) (v1) | [AutomodTermsUpdateV1](automod::AutomodTermsUpdateV1)<br>[AutomodTermsUpdateV1Payload](automod::AutomodTermsUpdateV1Payload) |
 //!
