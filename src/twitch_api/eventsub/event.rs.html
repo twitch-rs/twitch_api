@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><title>event.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dbdb5eec.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (7442931d4 2024-11-30)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/eventsub/</div>event.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/eventsub/event.rs`."><title>event.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dbdb5eec.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0-nightly (c94848c04 2024-12-05)" data-channel="nightly" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/eventsub/</div>event.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -781,11 +781,7 @@
 <a href="#780" id="780">780</a>
 <a href="#781" id="781">781</a>
 <a href="#782" id="782">782</a>
-<a href="#783" id="783">783</a>
-<a href="#784" id="784">784</a>
-<a href="#785" id="785">785</a>
-<a href="#786" id="786">786</a>
-<a href="#787" id="787">787</a></pre></div><pre class="rust"><code><span class="doccomment">//! EventSub events and their types
+<a href="#783" id="783">783</a></pre></div><pre class="rust"><code><span class="doccomment">//! EventSub events and their types
 </span><span class="attr">#![allow(deprecated)]
 </span><span class="kw">pub mod </span>websocket;
 
@@ -799,11 +795,9 @@
     (<span class="macro-nonterminal">$callback</span>:ident( $(<span class="macro-nonterminal">$args</span>:tt)* )) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>($(<span class="macro-nonterminal">$args</span>)*
             automod::AutomodMessageHoldV1;
-            <span class="attr">#[cfg(feature = <span class="string">"beta"</span>)]
-            </span>automod::AutomodMessageHoldBeta;
+            automod::AutomodMessageHoldV2;
             automod::AutomodMessageUpdateV1;
-            <span class="attr">#[cfg(feature = <span class="string">"beta"</span>)]
-            </span>automod::AutomodMessageUpdateBeta;
+            automod::AutomodMessageUpdateV2;
             automod::AutomodSettingsUpdateV1;
             automod::AutomodTermsUpdateV1;
             channel::ChannelAdBreakBeginV1;
@@ -1073,14 +1067,12 @@ fn main() {
 </span><span class="kw">pub enum </span>Event {
     <span class="doccomment">/// Automod Message Hold V1 Event
     </span>AutomodMessageHoldV1(Payload&lt;automod::AutomodMessageHoldV1&gt;),
-    <span class="doccomment">/// Automod Message Hold Beta Event
-    </span><span class="attr">#[cfg(feature = <span class="string">"beta"</span>)]
-    </span>AutomodMessageHoldBeta(Payload&lt;automod::AutomodMessageHoldBeta&gt;),
+    <span class="doccomment">/// Automod Message Hold V2 Event
+    </span>AutomodMessageHoldV2(Payload&lt;automod::AutomodMessageHoldV2&gt;),
     <span class="doccomment">/// Automod Message Update V1 Event
     </span>AutomodMessageUpdateV1(Payload&lt;automod::AutomodMessageUpdateV1&gt;),
-    <span class="doccomment">/// Automod Message Update Beta Event
-    </span><span class="attr">#[cfg(feature = <span class="string">"beta"</span>)]
-    </span>AutomodMessageUpdateBeta(Payload&lt;automod::AutomodMessageUpdateBeta&gt;),
+    <span class="doccomment">/// Automod Message Update V2 Event
+    </span>AutomodMessageUpdateV2(Payload&lt;automod::AutomodMessageUpdateV2&gt;),
     <span class="doccomment">/// Automod Settings Update V1 Event
     </span>AutomodSettingsUpdateV1(Payload&lt;automod::AutomodSettingsUpdateV1&gt;),
     <span class="doccomment">/// Automod Terms Update V1 Event
