@@ -998,6 +998,24 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         make_stream(req, token, self, |broadcasts| broadcasts.segments.into())
     }
 
+    /// Gets the broadcaster’s streaming schedule as an [iCalendar](https://datatracker.ietf.org/doc/html/rfc5545).
+    pub async fn get_channel_icalendar<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<String, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        Ok(self
+            .req_get(
+                helix::schedule::GetChannelICalendar::broadcaster_id(broadcaster_id),
+                token,
+            )
+            .await?
+            .data)
+    }
+
     /// Get all global emotes
     pub async fn get_global_emotes<T>(
         &'client self,
@@ -1341,6 +1359,36 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         let req = helix::users::UpdateUserRequest::description(description);
 
         Ok(self.req_put(req, helix::EmptyBody, token).await?.data)
+    }
+
+    /// Gets a list of all extensions (both active and inactive) that the broadcaster has installed.
+    ///
+    /// The user ID in the access token identifies the broadcaster.
+    pub async fn get_user_extensions<'b, T>(
+        &'client self,
+        token: &T,
+    ) -> Result<Vec<helix::users::Extension>, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::users::GetUserExtensionsRequest::new();
+
+        Ok(self.req_get(req, token).await?.data)
+    }
+
+    /// Gets the active extensions that the broadcaster has installed for each configuration.
+    ///
+    /// The user ID in the access token identifies the broadcaster.
+    pub async fn get_user_active_extensions<'b, T>(
+        &'client self,
+        token: &T,
+    ) -> Result<helix::users::ExtensionConfiguration, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::users::GetUserActiveExtensionsRequest::new();
+
+        Ok(self.req_get(req, token).await?.data)
     }
 
     /// Retrieves the active shared chat session for a channel

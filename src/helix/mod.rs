@@ -290,12 +290,12 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Schedule 🟡 5/6</summary>
+//! <details><summary style="cursor: pointer">Schedule 🟢 6/6</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Channel Stream Schedule](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule) | - | [`schedule::get_channel_stream_schedule`] |
-//! | [Get Channel iCalendar](https://dev.twitch.tv/docs/api/reference#get-channel-icalendar) | - | - |
+//! | [Get Channel iCalendar](https://dev.twitch.tv/docs/api/reference#get-channel-icalendar) | [`HelixClient::get_channel_icalendar`] | [`schedule::get_channel_icalendar`] |
 //! | [Update Channel Stream Schedule](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule) | - | [`schedule::update_channel_stream_schedule`] |
 //! | [Create Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment) | - | [`schedule::create_channel_stream_schedule_segment`] |
 //! | [Update Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment) | - | [`schedule::update_channel_stream_schedule_segment`] |
@@ -351,7 +351,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Users 🟡 5/8</summary>
+//! <details><summary style="cursor: pointer">Users 🟢 8/8</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -360,9 +360,9 @@
 //! | [Get User Block List](https://dev.twitch.tv/docs/api/reference#get-user-block-list) | - | [`users::get_user_block_list`] |
 //! | [Block User](https://dev.twitch.tv/docs/api/reference#block-user) | [`HelixClient::block_user`] | [`users::block_user`] |
 //! | [Unblock User](https://dev.twitch.tv/docs/api/reference#unblock-user) | [`HelixClient::unblock_user`] | [`users::unblock_user`] |
-//! | [Get User Extensions](https://dev.twitch.tv/docs/api/reference#get-user-extensions) | - | - |
-//! | [Get User Active Extensions](https://dev.twitch.tv/docs/api/reference#get-user-active-extensions) | - | - |
-//! | [Update User Extensions](https://dev.twitch.tv/docs/api/reference#update-user-extensions) | - | - |
+//! | [Get User Extensions](https://dev.twitch.tv/docs/api/reference#get-user-extensions) | [`HelixClient::get_user_extensions`] | [`users::get_user_extensions`] |
+//! | [Get User Active Extensions](https://dev.twitch.tv/docs/api/reference#get-user-active-extensions) | [`HelixClient::get_user_active_extensions`] | [`users::get_user_active_extensions`] |
+//! | [Update User Extensions](https://dev.twitch.tv/docs/api/reference#update-user-extensions) | - | [`users::update_user_extensions`] |
 //!
 //! </details>
 //!
