@@ -8,15 +8,13 @@ pub mod hold;
 pub mod update;
 
 #[doc(inline)]
-#[cfg(feature = "beta")]
-pub use hold::{AutomodMessageHoldBeta, AutomodMessageHoldBetaPayload};
-#[doc(inline)]
 pub use hold::{AutomodMessageHoldV1, AutomodMessageHoldV1Payload};
 #[doc(inline)]
-#[cfg(feature = "beta")]
-pub use update::{AutomodMessageUpdateBeta, AutomodMessageUpdateBetaPayload};
+pub use hold::{AutomodMessageHoldV2, AutomodMessageHoldV2Payload};
 #[doc(inline)]
 pub use update::{AutomodMessageUpdateV1, AutomodMessageUpdateV1Payload};
+#[doc(inline)]
+pub use update::{AutomodMessageUpdateV2, AutomodMessageUpdateV2Payload};
 
 /// A message's Automod status
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -108,15 +106,11 @@ pub struct AutomodMessageEmote {
 #[non_exhaustive]
 pub enum AutomodHeldReason {
     /// The message was caught by automod's rules
-    Automod {
-        /// Information on why a message was caught by automod
-        automod: AutomodMessageInfo,
-    },
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Automod(AutomodMessageInfo),
     /// The message was caught because of one or more blocked terms
-    BlockedTerm {
-        /// Information on which blocked terms were matched in a message
-        blocked_term: AutomodBlockedTermInfo,
-    },
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    BlockedTerm(AutomodBlockedTermInfo),
 }
 
 /// Information on why a message was caught by automod
@@ -132,6 +126,10 @@ pub struct AutomodMessageInfo {
     pub boundaries: Vec<AutomodMessageBoundary>,
 }
 
+impl crate::eventsub::NamedField for AutomodMessageInfo {
+    const NAME: &'static str = "automod";
+}
+
 /// Information on which blocked terms were matched in a message
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -139,6 +137,10 @@ pub struct AutomodMessageInfo {
 pub struct AutomodBlockedTermInfo {
     /// The list of blocked terms found in the message.
     pub terms_found: Vec<AutomodBlockedTerm>,
+}
+
+impl crate::eventsub::NamedField for AutomodBlockedTermInfo {
+    const NAME: &'static str = "blocked_term";
 }
 
 /// The bounds of the text that caused the message to be caught.
