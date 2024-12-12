@@ -35,7 +35,7 @@ twitch_types = { version = "0.4.8", features = [
 ureq = { version = "2.10.1", default-features = false, features = [
     "tls",
 ]}
-url = "2.5.2"
+url = "2.5.4"
 
 [dependencies]
 thiserror = "1.0.50"
