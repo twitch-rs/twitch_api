@@ -264,6 +264,7 @@ pub fn distance(src: &str, tar: &str) -> usize {
         "from_logins",
         "from_login",
         "description",
+        "for_locale",
     ];
 
     fn remove_ignored_phrases(s: &str, ignore_phrases: &[&str]) -> String {
