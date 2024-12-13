@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["ActiveExtension","ActivePositionedExtension","ExtensionConfiguration","GetUserActiveExtensionsRequest"]};
