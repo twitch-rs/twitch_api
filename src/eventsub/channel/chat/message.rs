@@ -80,6 +80,17 @@ pub struct ChannelChatMessageV1Payload {
     pub channel_points_custom_reward_id: Option<types::RewardId>,
     /// An ID for the type of animation selected as part of an “animate my message” redemption.
     pub channel_points_animation_id: Option<String>,
+    /// Only present when in a shared chat session. The broadcaster user ID of the channel the message was sent from.
+    pub source_broadcaster_user_id: Option<types::UserId>,
+    /// Only present when in a shared chat session. The user name of the broadcaster of the channel the message was sent from.
+    pub source_broadcaster_user_name: Option<types::DisplayName>,
+    /// Only present when in a shared chat session. The login of the broadcaster of the channel the message was sent from.
+    pub source_broadcaster_user_login: Option<types::UserName>,
+    /// Only present when in a shared chat session. The UUID that identifies the source message from the channel the message was sent from.
+    pub source_message_id: Option<types::MsgId>,
+    /// Only present when in a shared chat session. The list of chat badges for the chatter in the channel the message was sent from.
+    #[serde(deserialize_with = "crate::deserialize_default_from_null")]
+    pub source_badges: Vec<Badge>,
 }
 
 /// The type a message.
@@ -154,62 +165,57 @@ pub struct Reply {
 #[test]
 fn parse_payload() {
     let payload = r##"
-    {
+        {
         "subscription": {
-            "id": "47faedb0-b918-4d79-a974-fe799c9b1f6b",
+            "id": "0b7f3361-672b-4d39-b307-dd5b576c9b27",
             "status": "enabled",
             "type": "channel.chat.message",
             "version": "1",
             "condition": {
-                "broadcaster_user_id": "141981764",
-                "user_id": "129546453"
+                "broadcaster_user_id": "1971641",
+                "user_id": "2914196"
             },
             "transport": {
                 "method": "websocket",
-                "session_id": "AgoQL5tbQXjKS4SBPvF0F-Qz0hIGY2VsbC1j"
+                "session_id": "AgoQHR3s6Mb4T8GFB1l3DlPfiRIGY2VsbC1h"
             },
-            "created_at": "2024-02-24T17:17:49.772726224Z",
+            "created_at": "2023-11-06T18:11:47.492253549Z",
             "cost": 0
         },
         "event": {
-            "broadcaster_user_id": "141981764",
-            "broadcaster_user_login": "twitchdev",
-            "broadcaster_user_name": "TwitchDev",
-            "chatter_user_id": "129546453",
-            "chatter_user_login": "nerixyz",
-            "chatter_user_name": "nerixyz",
-            "message_id": "9d0bcb5e-ee31-4b09-b72f-66eb94ce061e",
+            "broadcaster_user_id": "1971641",
+            "broadcaster_user_login": "streamer",
+            "broadcaster_user_name": "streamer",
+            "chatter_user_id": "4145994",
+            "chatter_user_login": "viewer32",
+            "chatter_user_name": "viewer32",
+            "message_id": "cc106a89-1814-919d-454c-f4f2f970aae7",
             "message": {
-                "text": "Hello, World! DinoDance",
+                "text": "Hi chat",
                 "fragments": [
                     {
                         "type": "text",
-                        "text": "Hello, World! ",
+                        "text": "Hi chat",
                         "cheermote": null,
                         "emote": null,
-                        "mention": null
-                    },
-                    {
-                        "type": "emote",
-                        "text": "DinoDance",
-                        "cheermote": null,
-                        "emote": {
-                            "id": "emotesv2_dcd06b30a5c24f6eb871e8f5edbd44f7",
-                            "emote_set_id": "0",
-                            "owner_id": "0",
-                            "format": [
-                                "static",
-                                "animated"
-                            ]
-                        },
                         "mention": null
                     }
                 ]
             },
-            "color": "#FF0000",
+            "color": "#00FF7F",
             "badges": [
                 {
-                    "set_id": "no_video",
+                    "set_id": "moderator",
+                    "id": "1",
+                    "info": ""
+                },
+                {
+                    "set_id": "subscriber",
+                    "id": "12",
+                    "info": "16"
+                },
+                {
+                    "set_id": "sub-gifter",
                     "id": "1",
                     "info": ""
                 }
@@ -218,7 +224,93 @@ fn parse_payload() {
             "cheer": null,
             "reply": null,
             "channel_points_custom_reward_id": null,
-            "channel_points_animation_id": null
+            "source_broadcaster_user_id": null,
+            "source_broadcaster_user_login": null,
+            "source_broadcaster_user_name": null,
+            "source_message_id": null,
+            "source_badges": null
+        }
+    }
+    "##;
+
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+    crate::tests::roundtrip(&val)
+}
+
+#[cfg(test)]
+#[test]
+fn parse_payload_shared() {
+    let payload = r##"
+    {
+        "subscription": {
+            "id": "0b7f3361-672b-4d39-b307-dd5b576c9b27",
+            "status": "enabled",
+            "type": "channel.chat.message",
+            "version": "1",
+            "condition": {
+                "broadcaster_user_id": "1971641",
+                "user_id": "2914196"
+            },
+            "transport": {
+                "method": "websocket",
+                "session_id": "AgoQHR3s6Mb4T8GFB1l3DlPfiRIGY2VsbC1h"
+            },
+            "created_at": "2023-11-06T18:11:47.492253549Z",
+            "cost": 0
+        },
+        "event": {
+            "broadcaster_user_id": "1971641",
+            "broadcaster_user_login": "streamer",
+            "broadcaster_user_name": "streamer",
+            "chatter_user_id": "4145994",
+            "chatter_user_login": "viewer32",
+            "chatter_user_name": "viewer32",
+            "message_id": "cc106a89-1814-919d-454c-f4f2f970aae7",
+            "message": {
+                "text": "Hi chat",
+                "fragments": [
+                    {
+                        "type": "text",
+                        "text": "Hi chat",
+                        "cheermote": null,
+                        "emote": null,
+                        "mention": null
+                    }
+                ]
+            },
+            "color": "#00FF7F",
+            "badges": [
+                {
+                    "set_id": "moderator",
+                    "id": "1",
+                    "info": ""
+                },
+                {
+                    "set_id": "subscriber",
+                    "id": "12",
+                    "info": "16"
+                },
+                {
+                    "set_id": "sub-gifter",
+                    "id": "1",
+                    "info": ""
+                }
+            ],
+            "message_type": "text",
+            "cheer": null,
+            "reply": null,
+            "channel_points_custom_reward_id": null,
+            "source_broadcaster_user_id": "112233",
+            "source_broadcaster_user_login": "streamer33",
+            "source_broadcaster_user_name": "streamer33",
+            "source_message_id": "e03f6d5d-8ec8-4c63-b473-9e5fe61e289b",
+            "source_badges": [
+                {
+                    "set_id": "subscriber",
+                    "id": "3",
+                    "info": "3"
+                }
+            ]
         }
     }
     "##;
