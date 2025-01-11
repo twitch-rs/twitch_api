@@ -106,6 +106,7 @@ pub use goal::{ChannelGoalBeginV1, ChannelGoalBeginV1Payload};
 pub use goal::{ChannelGoalEndV1, ChannelGoalEndV1Payload};
 #[doc(inline)]
 pub use goal::{ChannelGoalProgressV1, ChannelGoalProgressV1Payload};
+#[doc(inline)]
 #[cfg(feature = "beta")]
 pub use guest_star_guest::{
     ChannelGuestStarGuestUpdateBeta, ChannelGuestStarGuestUpdateBetaPayload,
@@ -115,10 +116,12 @@ pub use guest_star_guest::{
 pub use guest_star_session::{
     ChannelGuestStarSessionBeginBeta, ChannelGuestStarSessionBeginBetaPayload,
 };
+#[doc(inline)]
 #[cfg(feature = "beta")]
 pub use guest_star_session::{
     ChannelGuestStarSessionEndBeta, ChannelGuestStarSessionEndBetaPayload,
 };
+#[doc(inline)]
 #[cfg(feature = "beta")]
 pub use guest_star_settings::{
     ChannelGuestStarSettingsUpdateBeta, ChannelGuestStarSettingsUpdateBetaPayload,
