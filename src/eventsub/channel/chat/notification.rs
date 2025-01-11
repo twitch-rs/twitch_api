@@ -64,6 +64,16 @@ pub struct ChannelChatNotificationV1Payload {
     /// The notification
     #[serde(flatten)]
     pub notification: Notification,
+    /// Only present when in a shared chat session. The broadcaster user ID of the channel the message was sent from.
+    pub source_broadcaster_user_id: Option<types::UserId>,
+    /// Only present when in a shared chat session. The user name of the broadcaster of the channel the message was sent from.
+    pub source_broadcaster_user_name: Option<types::DisplayName>,
+    /// Only present when in a shared chat session. The login of the broadcaster of the channel the message was sent from.
+    pub source_broadcaster_user_login: Option<types::UserName>,
+    /// Only present when in a shared chat session. The UUID that identifies the source message from the channel the message was sent from.
+    pub source_message_id: Option<types::MsgId>,
+    /// Only present when in a shared chat session. The list of chat badges for the chatter in the channel the message was sent from.
+    pub source_badges: Option<Vec<Badge>>,
 }
 
 /// Information about the user that triggered this notification
@@ -219,43 +229,84 @@ pub enum Notification {
     /// Information about the bits badge tier event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     BitsBadgeTier(BitsBadgeTier),
+
+    // Shared chat notifications
+    /// Information about the sub event that happened in a shared chat.
+    #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
+    SharedChatSub(Subscription),
+    /// Information about the resub event that happened in a shared chat.
+    #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
+    SharedChatResub(Resubscription),
+    /// Information about the gift sub event that happened in a shared chat.
+    #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
+    SharedChatSubGift(SubGift),
+    /// Information about the community gift sub event that happened in a shared chat.
+    #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
+    SharedChatCommunitySubGift(CommunitySubGift),
+    /// Information about the community gift paid upgrade event that happened in a shared chat.
+    #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
+    SharedChatGiftPaidUpgrade(GiftPaidUpgrade),
+    /// Information about the Prime gift paid upgrade event that happened in a shared chat.
+    #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
+    SharedChatPrimePaidUpgrade(PrimePaidUpgrade),
+    /// Information about the pay it forward event that happened in a shared chat.
+    #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
+    SharedChatPayItForward(PayItForward),
+    /// Information about the raid event that happened in a shared chat.
+    #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
+    SharedChatRaid(Raid),
+    /// Information about the announcement event that happened in a shared chat.
+    #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
+    SharedChatAnnouncement(Announcement),
 }
 
 impl crate::eventsub::NamedField for Subscription {
     const NAME: &'static str = "sub";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for Resubscription {
     const NAME: &'static str = "resub";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for SubGift {
     const NAME: &'static str = "sub_gift";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for CommunitySubGift {
     const NAME: &'static str = "community_sub_gift";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for GiftPaidUpgrade {
     const NAME: &'static str = "gift_paid_upgrade";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for PrimePaidUpgrade {
     const NAME: &'static str = "prime_paid_upgrade";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for Raid {
     const NAME: &'static str = "raid";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for Unraid {
     const NAME: &'static str = "unraid";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for PayItForward {
     const NAME: &'static str = "pay_it_forward";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for Announcement {
     const NAME: &'static str = "announcement";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for CharityDonation {
     const NAME: &'static str = "charity_donation";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 impl crate::eventsub::NamedField for BitsBadgeTier {
     const NAME: &'static str = "bits_badge_tier";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 
 /// A subscription notification
@@ -389,6 +440,7 @@ pub struct Resubscription {
     /// * `3000` — Third level of paid subscription
     pub sub_tier: types::SubscriptionTier,
     /// Indicates if the resub was obtained through Amazon Prime.
+    #[serde(default)]
     pub is_prime: bool,
     /// Whether or not the resub was a result of a gift.
     pub is_gift: bool,
@@ -539,74 +591,54 @@ pub struct BitsBadgeTier {
 #[cfg(test)]
 #[test]
 fn parse_payload() {
+    // FIXME: examples uses sub_plan: https://github.com/twitchdev/issues/issues/1039
     let payload = r##"
     {
         "subscription": {
-            "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
+            "id": "dc1a3cfc-a930-4972-bf9e-0ffc4e7a8996",
+            "status": "enabled",
             "type": "channel.chat.notification",
             "version": "1",
-            "status": "enabled",
-            "cost": 0,
             "condition": {
-                "broadcaster_user_id": "1337",
-                "user_id": "9001"
+                "broadcaster_user_id": "1971641",
+                "user_id": "2914196"
             },
-             "transport": {
-                "method": "webhook",
-                "callback": "https://example.com/webhooks/callback"
+            "transport": {
+                "method": "websocket",
+                "session_id": "AgoQOtgGkFvXRlSkij343CndhIGY2VsbC1h"
             },
-            "created_at": "2023-04-11T10:11:12.123Z"
+            "created_at": "2023-10-06T18:04:38.807682738Z",
+            "cost": 0
         },
         "event": {
-            "broadcaster_user_id": "1337",
-            "broadcaster_user_name": "Cool_User",
-            "broadcaster_user_login": "cool_user",
-            "chatter_user_id": "444",
-            "chatter_user_login": "cool_chatter",
-            "chatter_user_name": "Cool_Chatter",
+            "broadcaster_user_id": "1971641",
+            "broadcaster_user_login": "streamer",
+            "broadcaster_user_name": "streamer",
+            "chatter_user_id": "49912639",
+            "chatter_user_login": "viewer23",
+            "chatter_user_name": "viewer23",
             "chatter_is_anonymous": false,
-            "color": "red",
-            "badges": [
-              {
-                "set_id": "moderator",
-                "id": "1",
-                "info": ""
-              },
-              {
-                "set_id": "subscriber",
-                "id": "12",
-                "info": "16"
-              },
-              {
-                "set_id": "sub-gifter",
-                "id": "1",
-                "info": ""
-              }
-            ],
-            "system_message": "chat message",
-            "message_id": "message-id",
+            "color": "",
+            "badges": [],
+            "system_message": "viewer23 subscribed at Tier 1. They've subscribed for 10 months!",
+            "message_id": "d62235c8-47ff-a4f4--84e8-5a29a65a9c03",
             "message": {
-                "text": "chat-msg",
-                "fragments": [
-                {
-                    "type": "emote",
-                    "text": "chat-msg",
-                    "cheermote": null,
-                    "emote": {
-                    "id": "emote-id",
-                    "emote_set_id": "emote-set",
-                    "owner_id": "emote-owner",
-                    "format": [
-                        "static"
-                    ]
-                    },
-                    "mention": null
-                }
-                ]
+                "text": "",
+                "fragments": []
             },
-            "notice_type": "announcement",
+            "notice_type": "resub",
             "sub": null,
-            "resub": null,
+            "resub": {
+                "cumulative_months": 10,
+                "duration_months": 0,
+                "streak_months": null,
+                "sub_tier": "1000",
+                "is_gift": false,
+                "gifter_is_anonymous": null,
+                "gifter_user_id": null,
+                "gifter_user_name": null,
+                "gifter_user_login": null
+            },
             "sub_gift": null,
             "community_sub_gift": null,
             "gift_paid_upgrade": null,
@@ -614,11 +646,23 @@ fn parse_payload() {
             "pay_it_forward": null,
             "raid": null,
             "unraid": null,
-            "announcement": {
-                "color": "blue"
-            },
+            "announcement": null,
             "bits_badge_tier": null,
-            "charity_donation": null
+            "charity_donation": null,
+            "shared_chat_sub": null,
+            "shared_chat_resub": null,
+            "shared_chat_sub_gift": null,
+            "shared_chat_community_sub_gift": null,
+            "shared_chat_gift_paid_upgrade": null,
+            "shared_chat_prime_paid_upgrade": null,
+            "shared_chat_pay_it_forward": null,
+            "shared_chat_raid": null,
+            "shared_chat_announcement": null,
+            "source_broadcaster_user_id": null,
+            "source_broadcaster_user_login": null,
+            "source_broadcaster_user_name": null,
+            "source_message_id": null,
+            "source_badges": null
         }
     }
     "##;
@@ -1054,4 +1098,93 @@ fn parse_payload_examples() {
         let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
         crate::tests::roundtrip(&val)
     }
+}
+
+#[cfg(test)]
+#[test]
+fn parse_shared_chat() {
+    // FIXME: examples uses sub_plan: https://github.com/twitchdev/issues/issues/1039
+    let payload = r#"
+{
+    "subscription": {
+        "id": "dc1a3cfc-a930-4972-bf9e-0ffc4e7a8996",
+        "status": "enabled",
+        "type": "channel.chat.notification",
+        "version": "1",
+        "condition": {
+            "broadcaster_user_id": "1971641",
+            "user_id": "2914196"
+        },
+        "transport": {
+            "method": "websocket",
+            "session_id": "AgoQOtgGkFvXRlSkij343CndhIGY2VsbC1h"
+        },
+        "created_at": "2023-10-06T18:04:38.807682738Z",
+        "cost": 0
+    },
+    "event": {
+        "broadcaster_user_id": "1971641",
+        "broadcaster_user_login": "streamer",
+        "broadcaster_user_name": "streamer",
+        "chatter_user_id": "49912639",
+        "chatter_user_login": "viewer23",
+        "chatter_user_name": "viewer23",
+        "chatter_is_anonymous": false,
+        "color": "",
+        "badges": [],
+        "system_message": "viewer23 subscribed at Tier 1. They've subscribed for 10 months!",
+        "message_id": "d62235c8-47ff-a4f4--84e8-5a29a65a9c03",
+        "message": {
+            "text": "",
+            "fragments": []
+        },
+        "notice_type": "shared_chat_resub",
+        "sub": null,
+        "resub": null,
+        "sub_gift": null,
+        "community_sub_gift": null,
+        "gift_paid_upgrade": null,
+        "prime_paid_upgrade": null,
+        "pay_it_forward": null,
+        "raid": null,
+        "unraid": null,
+        "announcement": null,
+        "bits_badge_tier": null,
+        "charity_donation": null,
+        "shared_chat_sub": null,
+        "shared_chat_resub": {
+            "cumulative_months": 10,
+            "duration_months": 0,
+            "streak_months": null,
+            "sub_tier": "1000",
+            "is_gift": false,
+            "gifter_is_anonymous": null,
+            "gifter_user_id": null,
+            "gifter_user_name": null,
+            "gifter_user_login": null
+        },
+        "shared_chat_sub_gift": null,
+        "shared_chat_community_sub_gift": null,
+        "shared_chat_gift_paid_upgrade": null,
+        "shared_chat_prime_paid_upgrade": null,
+        "shared_chat_pay_it_forward": null,
+        "shared_chat_raid": null,
+        "shared_chat_unraid": null,
+        "shared_chat_announcement": null,
+        "shared_chat_bits_badge_tier": null,
+        "shared_chat_charity_donation": null,
+        "source_broadcaster_user_id": "112233",
+        "source_broadcaster_user_login": "streamer33",
+        "source_broadcaster_user_name": "streamer33",
+        "source_message_id": "2be7193d-0366-4453-b6ec-b288ce9f2c39",
+        "source_badges": [{
+            "set_id": "subscriber",
+            "id": "3",
+            "info": "3"
+        }]
+    }
+}
+    "#;
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+    crate::tests::roundtrip(&val)
 }
