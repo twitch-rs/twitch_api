@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["acknowledge","send"],"struct":["ChannelWarningAcknowledgeV1","ChannelWarningAcknowledgeV1Payload","ChannelWarningSendV1","ChannelWarningSendV1Payload"]};

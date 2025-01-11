@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["update"],"struct":["ChannelChatSettingsUpdateV1","ChannelChatSettingsUpdateV1Payload"]};

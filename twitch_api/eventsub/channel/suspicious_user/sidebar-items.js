@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BanEvasionEvaluation","LowTrustStatus","SuspiciousUserType"],"mod":["message","update"],"struct":["ChannelSuspiciousUserMessageV1","ChannelSuspiciousUserMessageV1Payload","ChannelSuspiciousUserUpdateV1","ChannelSuspiciousUserUpdateV1Payload"]};

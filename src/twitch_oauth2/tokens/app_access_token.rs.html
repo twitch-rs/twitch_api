@@ -236,7 +236,8 @@
 <a href="#235" id="235">235</a>
 <a href="#236" id="236">236</a>
 <a href="#237" id="237">237</a>
-<a href="#238" id="238">238</a></pre></div><pre class="rust"><code><span class="kw">use </span>twitch_types::{UserIdRef, UserNameRef};
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a></pre></div><pre class="rust"><code><span class="kw">use </span>twitch_types::{UserIdRef, UserNameRef};
 
 <span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">use </span><span class="kw">super</span>::errors::{AppAccessTokenError, ValidationError};
@@ -307,7 +308,7 @@
         <span class="kw">let </span>(access_token, expires_in, refresh_token) =
             <span class="kw">if let </span><span class="prelude-val">Some</span>(token) = <span class="self">self</span>.refresh_token.take() {
                 token
-                    .refresh_token(http_client, <span class="kw-2">&amp;</span><span class="self">self</span>.client_id, <span class="kw-2">&amp;</span><span class="self">self</span>.client_secret)
+                    .refresh_token(http_client, <span class="kw-2">&amp;</span><span class="self">self</span>.client_id, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.client_secret))
                     .<span class="kw">await</span><span class="question-mark">?
             </span>} <span class="kw">else </span>{
                 <span class="kw">return </span><span class="prelude-val">Err</span>(RefreshTokenError::NoRefreshToken);
@@ -315,6 +316,7 @@
         <span class="self">self</span>.access_token = access_token;
         <span class="self">self</span>.expires_in = expires_in;
         <span class="self">self</span>.refresh_token = refresh_token;
+        <span class="self">self</span>.struct_created = std::time::Instant::now();
         <span class="prelude-val">Ok</span>(())
     }
 

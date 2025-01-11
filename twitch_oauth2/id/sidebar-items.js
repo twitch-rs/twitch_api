@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["TwitchTokenErrorResponse","TwitchTokenResponse"]};
+window.SIDEBAR_ITEMS = {"struct":["DeviceCodeResponse","TwitchTokenErrorResponse","TwitchTokenResponse"]};

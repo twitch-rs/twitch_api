@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["add","remove"],"struct":["ChannelModeratorAddV1","ChannelModeratorAddV1Payload","ChannelModeratorRemoveV1","ChannelModeratorRemoveV1Payload"]};

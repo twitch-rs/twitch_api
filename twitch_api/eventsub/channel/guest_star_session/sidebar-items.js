@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["begin","end"],"struct":["ChannelGuestStarSessionBeginBeta","ChannelGuestStarSessionBeginBetaPayload","ChannelGuestStarSessionEndBeta","ChannelGuestStarSessionEndBetaPayload"]};

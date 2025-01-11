@@ -119,7 +119,19 @@
 <a href="#118" id="118">118</a>
 <a href="#119" id="119">119</a>
 <a href="#120" id="120">120</a>
-<a href="#121" id="121">121</a></pre></div><pre class="rust"><code><span class="doccomment">//! Representation of oauth2 flow in `id.twitch.tv`
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a></pre></div><pre class="rust"><code><span class="doccomment">//! Representation of oauth2 flow in `id.twitch.tv`
 
 </span><span class="kw">use </span>serde_derive::{Deserialize, Serialize};
 
@@ -154,6 +166,18 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;TwitchTokenResponse, RequestParseError&gt; {
         <span class="kw">crate</span>::parse_response(response)
     }
+
+    <span class="doccomment">/// Get the access token from this response
+    </span><span class="kw">pub fn </span>access_token(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">crate</span>::AccessTokenRef { <span class="kw-2">&amp;</span><span class="self">self</span>.access_token }
+
+    <span class="doccomment">/// Get the expires in from this response
+    </span><span class="kw">pub fn </span>expires_in(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Duration&gt; { <span class="self">self</span>.expires_in.map(Duration::from_secs) }
+
+    <span class="doccomment">/// Get the refresh token from this response
+    </span><span class="kw">pub fn </span>refresh_token(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">crate</span>::RefreshTokenRef&gt; { <span class="self">self</span>.refresh_token.as_deref() }
+
+    <span class="doccomment">/// Get the scopes from this response
+    </span><span class="kw">pub fn </span>scopes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[<span class="kw">crate</span>::Scope]&gt; { <span class="self">self</span>.scopes.as_deref() }
 }
 
 <span class="doccomment">/// Twitch's representation of the oauth flow for errors
@@ -180,6 +204,20 @@
             message = <span class="self">self</span>.message
         )
     }
+}
+<span class="doccomment">/// Response from the device code flow
+</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="kw">pub struct </span>DeviceCodeResponse {
+    <span class="doccomment">/// The identifier for a given user.
+    </span><span class="kw">pub </span>device_code: String,
+    <span class="doccomment">/// Time until the code is no longer valid
+    </span><span class="kw">pub </span>expires_in: u64,
+    <span class="doccomment">/// Time until another valid code can be requested
+    </span><span class="kw">pub </span>interval: u64,
+    <span class="doccomment">/// The code that the user will use to authenticate
+    </span><span class="kw">pub </span>user_code: String,
+    <span class="doccomment">/// The address you will send users to, to authenticate
+    </span><span class="kw">pub </span>verification_uri: String,
 }
 
 <span class="attr">#[doc(hidden)]
@@ -225,19 +263,5 @@
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
         }
     }
-}
-
-<span class="kw">impl </span>TwitchTokenResponse {
-    <span class="doccomment">/// Get the access token from this response
-    </span><span class="kw">pub fn </span>access_token(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">crate</span>::AccessTokenRef { <span class="kw-2">&amp;</span><span class="self">self</span>.access_token }
-
-    <span class="doccomment">/// Get the expires in from this response
-    </span><span class="kw">pub fn </span>expires_in(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Duration&gt; { <span class="self">self</span>.expires_in.map(Duration::from_secs) }
-
-    <span class="doccomment">/// Get the refresh token from this response
-    </span><span class="kw">pub fn </span>refresh_token(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">crate</span>::RefreshTokenRef&gt; { <span class="self">self</span>.refresh_token.as_deref() }
-
-    <span class="doccomment">/// Get the scopes from this response
-    </span><span class="kw">pub fn </span>scopes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[<span class="kw">crate</span>::Scope]&gt; { <span class="self">self</span>.scopes.as_deref() }
 }
 </code></pre></div></section></main></body></html>

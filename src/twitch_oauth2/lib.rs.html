@@ -367,7 +367,21 @@
 <a href="#366" id="366">366</a>
 <a href="#367" id="367">367</a>
 <a href="#368" id="368">368</a>
-<a href="#369" id="369">369</a></pre></div><pre class="rust"><code><span class="attr">#![allow(unknown_lints, renamed_and_removed_lints)]
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a></pre></div><pre class="rust"><code><span class="attr">#![allow(unknown_lints, renamed_and_removed_lints)]
 #![deny(missing_docs, broken_intra_doc_links)] </span><span class="comment">// This will be weird until 1.52, see https://github.com/rust-lang/rust/pull/80527
 </span><span class="attr">#![cfg_attr(nightly, deny(rustdoc::broken_intra_doc_links))]
 #![cfg_attr(nightly, feature(doc_cfg))]
@@ -408,6 +422,7 @@
 //! to create user tokens in this library.
 //!
 //! Things like [`UserTokenBuilder`] can be used to create a token from scratch, via the [OAuth authorization code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#authorization-code-grant-flow)
+//! You can also use the newer [OAuth device code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#device-code-grant-flow) with [`DeviceUserTokenBuilder`].
 //!
 //! ## App access token
 //!
@@ -416,7 +431,7 @@
 //!
 //! ## HTTP Requests
 //!
-//! To enable client features with a supported http library, enable the http library feature in `twitch_oauth2`, like `twitch_oauth2 = { features = ["reqwest"], version = "0.14.0" }`.
+//! To enable client features with a supported http library, enable the http library feature in `twitch_oauth2`, like `twitch_oauth2 = { features = ["reqwest"], version = "0.15.0" }`.
 //! If you're using [twitch_api](https://crates.io/crates/twitch_api), you can use its [`HelixClient`](https://docs.rs/twitch_api/latest/twitch_api/struct.HelixClient.html) instead of the underlying http client.
 //!
 //!
@@ -439,8 +454,8 @@
 </span><span class="kw">pub use </span>scopes::{Scope, Validator};
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>tokens::{
-    AppAccessToken, ImplicitUserTokenBuilder, TwitchToken, UserToken, UserTokenBuilder,
-    ValidatedToken,
+    AppAccessToken, DeviceUserTokenBuilder, ImplicitUserTokenBuilder, TwitchToken, UserToken,
+    UserTokenBuilder, ValidatedToken,
 };
 
 <span class="kw">pub use </span>url;
@@ -494,6 +509,17 @@
 </span><span class="kw">pub static </span>TOKEN_URL: once_cell::sync::Lazy&lt;url::Url&gt; = <span class="macro">mock_env_url!</span>(<span class="string">"TWITCH_OAUTH2_TOKEN_URL"</span>, {
     TWITCH_OAUTH2_URL.to_string() + <span class="string">"token"
 </span>},);
+<span class="doccomment">/// Device URL (`https://id.twitch.tv/oauth2/device`) for `id.twitch.tv`
+///
+/// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_OAUTH2_URL` to set the root path, or with `TWITCH_OAUTH2_DEVICE_URL` to override the base (`https://id.twitch.tv/oauth2/`) url.
+///
+/// # Examples
+///
+/// Set the environment variable `TWITCH_OAUTH2_URL` to `http://localhost:8080/auth/` to use [`twitch-cli` mock](https://github.com/twitchdev/twitch-cli/blob/main/docs/mock-api.md) endpoints.
+</span><span class="kw">pub static </span>DEVICE_URL: once_cell::sync::Lazy&lt;url::Url&gt; =
+    <span class="macro">mock_env_url!</span>(<span class="string">"TWITCH_OAUTH2_DEVICE_URL"</span>, {
+        TWITCH_OAUTH2_URL.to_string() + <span class="string">"device"
+    </span>},);
 <span class="doccomment">/// Validation URL (`https://id.twitch.tv/oauth2/validate`) for `id.twitch.tv`
 ///
 /// Can be overridden when feature `mock_api` is enabled with environment variable `TWITCH_OAUTH2_URL` to set the root path, or with `TWITCH_OAUTH2_VALIDATE_URL` to override the base (`https://id.twitch.tv/oauth2/`) url.
@@ -610,14 +636,16 @@
     </span><span class="kw">pub fn </span>refresh_token_request(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         client_id: <span class="kw-2">&amp;</span>ClientId,
-        client_secret: <span class="kw-2">&amp;</span>ClientSecret,
+        client_secret: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>ClientSecret&gt;,
     ) -&gt; http::Request&lt;Vec&lt;u8&gt;&gt; {
         <span class="kw">use </span>http::{HeaderMap, Method};
         <span class="kw">use </span>std::collections::HashMap;
 
         <span class="kw">let </span><span class="kw-2">mut </span>params = HashMap::new();
         params.insert(<span class="string">"client_id"</span>, client_id.as_str());
-        params.insert(<span class="string">"client_secret"</span>, client_secret.secret());
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(client_secret) = client_secret {
+            params.insert(<span class="string">"client_secret"</span>, client_secret.secret());
+        }
         params.insert(<span class="string">"grant_type"</span>, <span class="string">"refresh_token"</span>);
         params.insert(<span class="string">"refresh_token"</span>, <span class="self">self</span>.secret());
 
@@ -638,7 +666,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         http_client: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>C,
         client_id: <span class="kw-2">&amp;</span>ClientId,
-        client_secret: <span class="kw-2">&amp;</span>ClientSecret,
+        client_secret: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>ClientSecret&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;
         (AccessToken, std::time::Duration, <span class="prelude-ty">Option</span>&lt;RefreshToken&gt;),
         RefreshTokenError&lt;&lt;C <span class="kw">as </span>Client&gt;::Error&gt;,

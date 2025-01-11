@@ -254,7 +254,9 @@
 <a href="#253" id="253">253</a>
 <a href="#254" id="254">254</a>
 <a href="#255" id="255">255</a>
-<a href="#256" id="256">256</a></pre></div><pre class="rust"><code><span class="doccomment">//! Twitch token types
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a></pre></div><pre class="rust"><code><span class="doccomment">//! Twitch token types
 
 </span><span class="kw">mod </span>app_access_token;
 <span class="kw">pub mod </span>errors;
@@ -262,7 +264,9 @@
 
 <span class="kw">pub use </span>app_access_token::AppAccessToken;
 <span class="kw">use </span>twitch_types::{UserId, UserIdRef, UserName, UserNameRef};
-<span class="kw">pub use </span>user_token::{ImplicitUserTokenBuilder, UserToken, UserTokenBuilder};
+<span class="kw">pub use </span>user_token::{
+    DeviceUserTokenBuilder, ImplicitUserTokenBuilder, UserToken, UserTokenBuilder,
+};
 
 <span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::client::Client;

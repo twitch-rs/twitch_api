@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["ChannelModeratorRemoveV1","ChannelModeratorRemoveV1Payload"]};
