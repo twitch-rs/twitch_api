@@ -12,10 +12,19 @@ pub mod channel_points_custom_reward;
 pub mod channel_points_custom_reward_redemption;
 pub mod charity_campaign;
 pub mod chat;
+pub mod chat_settings;
 pub mod cheer;
 pub mod follow;
 pub mod goal;
+#[cfg(feature = "beta")]
+pub mod guest_star_guest;
+#[cfg(feature = "beta")]
+pub mod guest_star_session;
+#[cfg(feature = "beta")]
+pub mod guest_star_settings;
 pub mod hypetrain;
+pub mod moderate;
+pub mod moderator;
 pub mod poll;
 pub mod prediction;
 pub mod raid;
@@ -24,8 +33,12 @@ pub mod shield_mode;
 pub mod shoutout;
 pub mod subscribe;
 pub mod subscription;
+pub mod suspicious_user;
 pub mod unban;
+pub mod unban_request;
 pub mod update;
+pub mod vip;
+pub mod warning;
 
 #[doc(inline)]
 pub use ad_break::{ChannelAdBreakBeginV1, ChannelAdBreakBeginV1Payload};
@@ -80,6 +93,8 @@ pub use chat::{ChannelChatUserMessageHoldV1, ChannelChatUserMessageHoldV1Payload
 #[doc(inline)]
 pub use chat::{ChannelChatUserMessageUpdateV1, ChannelChatUserMessageUpdateV1Payload};
 #[doc(inline)]
+pub use chat_settings::{ChannelChatSettingsUpdateV1, ChannelChatSettingsUpdateV1Payload};
+#[doc(inline)]
 pub use cheer::{ChannelCheerV1, ChannelCheerV1Payload};
 #[doc(inline)]
 pub use follow::{ChannelFollowV1, ChannelFollowV1Payload};
@@ -91,12 +106,37 @@ pub use goal::{ChannelGoalBeginV1, ChannelGoalBeginV1Payload};
 pub use goal::{ChannelGoalEndV1, ChannelGoalEndV1Payload};
 #[doc(inline)]
 pub use goal::{ChannelGoalProgressV1, ChannelGoalProgressV1Payload};
+#[cfg(feature = "beta")]
+pub use guest_star_guest::{
+    ChannelGuestStarGuestUpdateBeta, ChannelGuestStarGuestUpdateBetaPayload,
+};
+#[doc(inline)]
+#[cfg(feature = "beta")]
+pub use guest_star_session::{
+    ChannelGuestStarSessionBeginBeta, ChannelGuestStarSessionBeginBetaPayload,
+};
+#[cfg(feature = "beta")]
+pub use guest_star_session::{
+    ChannelGuestStarSessionEndBeta, ChannelGuestStarSessionEndBetaPayload,
+};
+#[cfg(feature = "beta")]
+pub use guest_star_settings::{
+    ChannelGuestStarSettingsUpdateBeta, ChannelGuestStarSettingsUpdateBetaPayload,
+};
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload};
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload};
 #[doc(inline)]
 pub use hypetrain::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload};
+#[doc(inline)]
+pub use moderate::{ChannelModerateV1, ChannelModerateV1Payload};
+#[doc(inline)]
+pub use moderate::{ChannelModerateV2, ChannelModerateV2Payload};
+#[doc(inline)]
+pub use moderator::{ChannelModeratorAddV1, ChannelModeratorAddV1Payload};
+#[doc(inline)]
+pub use moderator::{ChannelModeratorRemoveV1, ChannelModeratorRemoveV1Payload};
 #[doc(inline)]
 pub use poll::{ChannelPollBeginV1, ChannelPollBeginV1Payload};
 #[doc(inline)]
@@ -136,8 +176,24 @@ pub use subscription::{ChannelSubscriptionGiftV1, ChannelSubscriptionGiftV1Paylo
 #[doc(inline)]
 pub use subscription::{ChannelSubscriptionMessageV1, ChannelSubscriptionMessageV1Payload};
 #[doc(inline)]
+pub use suspicious_user::{ChannelSuspiciousUserMessageV1, ChannelSuspiciousUserMessageV1Payload};
+#[doc(inline)]
+pub use suspicious_user::{ChannelSuspiciousUserUpdateV1, ChannelSuspiciousUserUpdateV1Payload};
+#[doc(inline)]
 pub use unban::{ChannelUnbanV1, ChannelUnbanV1Payload};
+#[doc(inline)]
+pub use unban_request::{ChannelUnbanRequestCreateV1, ChannelUnbanRequestCreateV1Payload};
+#[doc(inline)]
+pub use unban_request::{ChannelUnbanRequestResolveV1, ChannelUnbanRequestResolveV1Payload};
 #[doc(inline)]
 pub use update::{ChannelUpdateV1, ChannelUpdateV1Payload};
 #[doc(inline)]
 pub use update::{ChannelUpdateV2, ChannelUpdateV2Payload};
+#[doc(inline)]
+pub use vip::{ChannelVipAddV1, ChannelVipAddV1Payload};
+#[doc(inline)]
+pub use vip::{ChannelVipRemoveV1, ChannelVipRemoveV1Payload};
+#[doc(inline)]
+pub use warning::{ChannelWarningAcknowledgeV1, ChannelWarningAcknowledgeV1Payload};
+#[doc(inline)]
+pub use warning::{ChannelWarningSendV1, ChannelWarningSendV1Payload};

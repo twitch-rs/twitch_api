@@ -30,15 +30,28 @@ macro_rules! fill_events {
             channel::ChannelChatNotificationV1;
             channel::ChannelChatUserMessageHoldV1;
             channel::ChannelChatUserMessageUpdateV1;
+            channel::ChannelChatSettingsUpdateV1;
             channel::ChannelCheerV1;
             channel::ChannelFollowV1;
             channel::ChannelFollowV2;
             channel::ChannelGoalBeginV1;
             channel::ChannelGoalEndV1;
             channel::ChannelGoalProgressV1;
+            #[cfg(feature = "beta")]
+            channel::ChannelGuestStarGuestUpdateBeta;
+            #[cfg(feature = "beta")]
+            channel::ChannelGuestStarSessionBeginBeta;
+            #[cfg(feature = "beta")]
+            channel::ChannelGuestStarSessionEndBeta;
+            #[cfg(feature = "beta")]
+            channel::ChannelGuestStarSettingsUpdateBeta;
             channel::ChannelHypeTrainBeginV1;
             channel::ChannelHypeTrainEndV1;
             channel::ChannelHypeTrainProgressV1;
+            channel::ChannelModerateV1;
+            channel::ChannelModerateV2;
+            channel::ChannelModeratorAddV1;
+            channel::ChannelModeratorRemoveV1;
             channel::ChannelPointsAutomaticRewardRedemptionAddV1;
             channel::ChannelPointsCustomRewardAddV1;
             channel::ChannelPointsCustomRewardRedemptionAddV1;
@@ -64,9 +77,17 @@ macro_rules! fill_events {
             channel::ChannelSubscriptionEndV1;
             channel::ChannelSubscriptionGiftV1;
             channel::ChannelSubscriptionMessageV1;
+            channel::ChannelSuspiciousUserMessageV1;
+            channel::ChannelSuspiciousUserUpdateV1;
             channel::ChannelUnbanV1;
+            channel::ChannelUnbanRequestCreateV1;
+            channel::ChannelUnbanRequestResolveV1;
             channel::ChannelUpdateV1;
             channel::ChannelUpdateV2;
+            channel::ChannelVipAddV1;
+            channel::ChannelVipRemoveV1;
+            channel::ChannelWarningAcknowledgeV1;
+            channel::ChannelWarningSendV1;
             conduit::ConduitShardDisabledV1;
             stream::StreamOfflineV1;
             stream::StreamOnlineV1;
@@ -171,6 +192,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelChatUserMessageHold => "channel.chat.user_message_hold",
     "a user's message's automod status is updated.":
     ChannelChatUserMessageUpdate => "channel.chat.user_message_update",
+    "a broadcaster’s chat settings are updated.":
+    ChannelChatSettingsUpdate => "channel.chat_settings.update",
     "a user donates to the broadcaster’s charity campaign.":
     ChannelCharityCampaignDonate => "channel.charity_campaign.donate",
     "progress is made towards the campaign’s goal or when the broadcaster changes the fundraising goal.":
@@ -191,6 +214,10 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelBan => "channel.ban",
     "a viewer is unbanned from the specified channel.":
     ChannelUnban => "channel.unban",
+    "a user creates an unban request.":
+    ChannelUnbanRequestCreate => "channel.unban_request.create",
+    "an unban request has been resolved.":
+    ChannelUnbanRequestResolve => "channel.unban_request.resolve",
     "a viewer has redeemed an automatic channel points reward on the specified channel.":
     ChannelPointsAutomaticRewardRedemptionAdd => "channel.channel_points_automatic_reward_redemption.add",
     "a custom channel points reward has been created for the specified channel.":
@@ -235,6 +262,10 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelSubscriptionGift => "channel.subscription.gift",
     "a user sends a resubscription chat message in a specific channel":
     ChannelSubscriptionMessage => "channel.subscription.message",
+    "a chat message has been sent from a suspicious user.":
+    ChannelSuspiciousUserMessage => "channel.suspicious_user.message",
+    "a suspicious user has been updated.":
+    ChannelSuspiciousUserUpdate => "channel.suspicious_user.update",
     "a channel activates shield mode":
     ChannelShieldModeBegin => "channel.shield_mode.begin",
     "a channel deactivates shield mode":
@@ -245,12 +276,34 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelGoalProgress => "channel.goal.progress",
     "a goal ends on the specified channel.":
     ChannelGoalEnd => "channel.goal.end",
+    "the host begins a new Guest Star session.":
+    ChannelGuestStarSessionBegin => "channel.guest_star_session.begin",
+    "a running Guest Star session is ended by the host, or automatically by the system.":
+    ChannelGuestStarSessionEnd => "channel.guest_star_session.end",
+    "the host preferences for Guest Star have been updated.":
+    ChannelGuestStarSettingsUpdate => "channel.guest_star_settings.update",
+    "a guest or a slot is updated in an active Guest Star session.":
+    ChannelGuestStarGuestUpdate => "channel.guest_star_guest.update",
     "a hype train begins on the specified channel.":
     ChannelHypeTrainBegin => "channel.hype_train.begin",
     "a hype train makes progress on the specified channel.":
     ChannelHypeTrainProgress => "channel.hype_train.progress",
     "a hype train ends on the specified channel.":
     ChannelHypeTrainEnd => "channel.hype_train.end",
+    "a moderator performs a moderation action in a channel.":
+    ChannelModerate => "channel.moderate",
+    "a user is given moderator privileges on a specified channel.":
+    ChannelModeratorAdd => "channel.moderator.add",
+    "a user has moderator privileges removed on a specified channel.":
+    ChannelModeratorRemove => "channel.moderator.remove",
+    "a VIP is added to the channel.":
+    ChannelVipAdd => "channel.vip.add",
+    "a warning is acknowledged by a user.":
+    ChannelWarningAcknowledge => "channel.warning.acknowledge",
+    "a warning is sent to a user.":
+    ChannelWarningSend => "channel.warning.send",
+    "a VIP is removed from the channel.":
+    ChannelVipRemove => "channel.vip.remove",
     "sends a notification when eventsub disables a shard due to the status of the underlying transport changing.":
     ConduitShardDisabled => "conduit.shard.disabled",
     "the specified broadcaster starts a stream.":
@@ -310,6 +363,8 @@ pub enum Event {
     ChannelChatUserMessageHoldV1(Payload<channel::ChannelChatUserMessageHoldV1>),
     /// Channel Chat UserMessageUpdate V1 Event
     ChannelChatUserMessageUpdateV1(Payload<channel::ChannelChatUserMessageUpdateV1>),
+    /// Channel ChatSettings Update V1 Event
+    ChannelChatSettingsUpdateV1(Payload<channel::ChannelChatSettingsUpdateV1>),
     /// Channel Charity Campaign Donate V1 Event
     ChannelCharityCampaignDonateV1(Payload<channel::ChannelCharityCampaignDonateV1>),
     /// Channel Charity Campaign Progress V1 Event
@@ -336,6 +391,18 @@ pub enum Event {
     ChannelBanV1(Payload<channel::ChannelBanV1>),
     /// Channel Unban V1 Event
     ChannelUnbanV1(Payload<channel::ChannelUnbanV1>),
+    /// Channel UnbanRequest Create V1 Event
+    ChannelUnbanRequestCreateV1(Payload<channel::ChannelUnbanRequestCreateV1>),
+    /// Channel UnbanRequest Resolve V1 Event
+    ChannelUnbanRequestResolveV1(Payload<channel::ChannelUnbanRequestResolveV1>),
+    /// Channel VIP Add V1 Event
+    ChannelVipAddV1(Payload<channel::ChannelVipAddV1>),
+    /// Channel VIP Remove V1 Event
+    ChannelVipRemoveV1(Payload<channel::ChannelVipRemoveV1>),
+    /// Channel Warning Acknowledge V1 Event
+    ChannelWarningAcknowledgeV1(Payload<channel::ChannelWarningAcknowledgeV1>),
+    /// Channel Warning Send V1 Event
+    ChannelWarningSendV1(Payload<channel::ChannelWarningSendV1>),
     /// Channel Points Automatic Reward Redemption Add V1 Event
     ChannelPointsAutomaticRewardRedemptionAddV1(
         Payload<channel::ChannelPointsAutomaticRewardRedemptionAddV1>,
@@ -384,18 +451,42 @@ pub enum Event {
     ChannelShoutoutCreateV1(Payload<channel::ChannelShoutoutCreateV1>),
     /// Channel Shoutout Receive V1 Event
     ChannelShoutoutReceiveV1(Payload<channel::ChannelShoutoutReceiveV1>),
+    /// Channel SuspicousUser Message V1 Event
+    ChannelSuspiciousUserMessageV1(Payload<channel::ChannelSuspiciousUserMessageV1>),
+    /// Channel SuspicousUser Update V1 Event
+    ChannelSuspiciousUserUpdateV1(Payload<channel::ChannelSuspiciousUserUpdateV1>),
     /// Channel Goal Begin V1 Event
     ChannelGoalBeginV1(Payload<channel::ChannelGoalBeginV1>),
     /// Channel Goal Progress V1 Event
     ChannelGoalProgressV1(Payload<channel::ChannelGoalProgressV1>),
     /// Channel Goal End V1 Event
     ChannelGoalEndV1(Payload<channel::ChannelGoalEndV1>),
+    /// Channel GuestStarSession Begin V1 Event
+    #[cfg(feature = "beta")]
+    ChannelGuestStarSessionBeginBeta(Payload<channel::ChannelGuestStarSessionBeginBeta>),
+    /// Channel GuestStarSession End V1 Event
+    #[cfg(feature = "beta")]
+    ChannelGuestStarSessionEndBeta(Payload<channel::ChannelGuestStarSessionEndBeta>),
+    /// Channel GuestStarSettings Update V1 Event
+    #[cfg(feature = "beta")]
+    ChannelGuestStarSettingsUpdateBeta(Payload<channel::ChannelGuestStarSettingsUpdateBeta>),
+    /// Channel GuestStarGuest Update V1 Event
+    #[cfg(feature = "beta")]
+    ChannelGuestStarGuestUpdateBeta(Payload<channel::ChannelGuestStarGuestUpdateBeta>),
     /// Channel Hype Train Begin V1 Event
     ChannelHypeTrainBeginV1(Payload<channel::ChannelHypeTrainBeginV1>),
     /// Channel Hype Train Progress V1 Event
     ChannelHypeTrainProgressV1(Payload<channel::ChannelHypeTrainProgressV1>),
     /// Channel Hype Train End V1 Event
     ChannelHypeTrainEndV1(Payload<channel::ChannelHypeTrainEndV1>),
+    /// Channel Moderate V1 Event
+    ChannelModerateV1(Payload<channel::ChannelModerateV1>),
+    /// Channel Moderate V2 Event
+    ChannelModerateV2(Payload<channel::ChannelModerateV2>),
+    /// Channel Moderator Add V1 Event
+    ChannelModeratorAddV1(Payload<channel::ChannelModeratorAddV1>),
+    /// Channel Moderator Remove V1 Event
+    ChannelModeratorRemoveV1(Payload<channel::ChannelModeratorRemoveV1>),
     /// Conduit Shard Disabled V1 Event
     ConduitShardDisabledV1(Payload<conduit::ConduitShardDisabledV1>),
     /// StreamOnline V1 Event
