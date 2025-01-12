@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["authorization","update"],"struct":["UserAuthorizationGrantV1","UserAuthorizationGrantV1Payload","UserAuthorizationRevokeV1","UserAuthorizationRevokeV1Payload","UserUpdateV1","UserUpdateV1Payload"]};
+window.SIDEBAR_ITEMS = {"mod":["authorization","update","whisper"],"struct":["UserAuthorizationGrantV1","UserAuthorizationGrantV1Payload","UserAuthorizationRevokeV1","UserAuthorizationRevokeV1Payload","UserUpdateV1","UserUpdateV1Payload","UserWhisperMessageV1","UserWhisperMessageV1Payload"]};

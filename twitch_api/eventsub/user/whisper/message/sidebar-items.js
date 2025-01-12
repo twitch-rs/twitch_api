@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["UserWhisperMessageV1","UserWhisperMessageV1Payload","Whisper"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["message"],"struct":["UserWhisperMessageV1","UserWhisperMessageV1Payload","Whisper"]};
