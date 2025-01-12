@@ -197,14 +197,14 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">user.*</code> 🟡 3/4</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">user.*</code> 🟢 4/4</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
 //! | [`user.authorization.grant`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationgrant) (v1) | [UserAuthorizationGrantV1](user::UserAuthorizationGrantV1)<br>[UserAuthorizationGrantV1Payload](user::UserAuthorizationGrantV1Payload) |
 //! | [`user.authorization.revoke`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userauthorizationrevoke) (v1) | [UserAuthorizationRevokeV1](user::UserAuthorizationRevokeV1)<br>[UserAuthorizationRevokeV1Payload](user::UserAuthorizationRevokeV1Payload) |
 //! | [`user.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userupdate) (v1) | [UserUpdateV1](user::UserUpdateV1)<br>[UserUpdateV1Payload](user::UserUpdateV1Payload) |
-//! | [`user.whisper.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userwhispermessage) (v1) | -<br>- |
+//! | [`user.whisper.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#userwhispermessage) (v1) | [UserWhisperMessageV1](user::UserWhisperMessageV1)<br>[UserWhisperMessageV1Payload](user::UserWhisperMessageV1Payload) |
 //!
 //! </details>
 //!
