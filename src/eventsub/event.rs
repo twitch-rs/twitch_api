@@ -94,6 +94,7 @@ macro_rules! fill_events {
             user::UserAuthorizationGrantV1;
             user::UserAuthorizationRevokeV1;
             user::UserUpdateV1;
+            user::UserWhisperMessageV1;
         )
     };
 }
@@ -316,6 +317,8 @@ make_event_type!("Event Types": pub enum EventType {
     UserAuthorizationRevoke => "user.authorization.revoke",
     "a user’s authorization has been granted to your client id.":
     UserAuthorizationGrant => "user.authorization.grant",
+    "a user receives a whisper.":
+    UserWhisperMessage => "user.whisper.message",
 },
     to_str: r#"Get the event string of this event.
 ```
@@ -499,6 +502,8 @@ pub enum Event {
     UserAuthorizationGrantV1(Payload<user::UserAuthorizationGrantV1>),
     /// User Authorization Revoke V1 Event
     UserAuthorizationRevokeV1(Payload<user::UserAuthorizationRevokeV1>),
+    /// User Whisper Message V1 Event
+    UserWhisperMessageV1(Payload<user::UserWhisperMessageV1>),
     /// Channel Subscription End V1 Event
     ChannelSubscriptionEndV1(Payload<channel::ChannelSubscriptionEndV1>),
     /// Channel Subscription Gift V1 Event
