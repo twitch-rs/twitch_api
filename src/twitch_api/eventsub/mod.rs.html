@@ -1323,7 +1323,57 @@
 <a href="#1322" id="1322">1322</a>
 <a href="#1323" id="1323">1323</a>
 <a href="#1324" id="1324">1324</a>
-<a href="#1325" id="1325">1325</a></pre></div><pre class="rust"><code><span class="doccomment">//! Holds serializable EventSub stuff
+<a href="#1325" id="1325">1325</a>
+<a href="#1326" id="1326">1326</a>
+<a href="#1327" id="1327">1327</a>
+<a href="#1328" id="1328">1328</a>
+<a href="#1329" id="1329">1329</a>
+<a href="#1330" id="1330">1330</a>
+<a href="#1331" id="1331">1331</a>
+<a href="#1332" id="1332">1332</a>
+<a href="#1333" id="1333">1333</a>
+<a href="#1334" id="1334">1334</a>
+<a href="#1335" id="1335">1335</a>
+<a href="#1336" id="1336">1336</a>
+<a href="#1337" id="1337">1337</a>
+<a href="#1338" id="1338">1338</a>
+<a href="#1339" id="1339">1339</a>
+<a href="#1340" id="1340">1340</a>
+<a href="#1341" id="1341">1341</a>
+<a href="#1342" id="1342">1342</a>
+<a href="#1343" id="1343">1343</a>
+<a href="#1344" id="1344">1344</a>
+<a href="#1345" id="1345">1345</a>
+<a href="#1346" id="1346">1346</a>
+<a href="#1347" id="1347">1347</a>
+<a href="#1348" id="1348">1348</a>
+<a href="#1349" id="1349">1349</a>
+<a href="#1350" id="1350">1350</a>
+<a href="#1351" id="1351">1351</a>
+<a href="#1352" id="1352">1352</a>
+<a href="#1353" id="1353">1353</a>
+<a href="#1354" id="1354">1354</a>
+<a href="#1355" id="1355">1355</a>
+<a href="#1356" id="1356">1356</a>
+<a href="#1357" id="1357">1357</a>
+<a href="#1358" id="1358">1358</a>
+<a href="#1359" id="1359">1359</a>
+<a href="#1360" id="1360">1360</a>
+<a href="#1361" id="1361">1361</a>
+<a href="#1362" id="1362">1362</a>
+<a href="#1363" id="1363">1363</a>
+<a href="#1364" id="1364">1364</a>
+<a href="#1365" id="1365">1365</a>
+<a href="#1366" id="1366">1366</a>
+<a href="#1367" id="1367">1367</a>
+<a href="#1368" id="1368">1368</a>
+<a href="#1369" id="1369">1369</a>
+<a href="#1370" id="1370">1370</a>
+<a href="#1371" id="1371">1371</a>
+<a href="#1372" id="1372">1372</a>
+<a href="#1373" id="1373">1373</a>
+<a href="#1374" id="1374">1374</a>
+<a href="#1375" id="1375">1375</a></pre></div><pre class="rust"><code><span class="doccomment">//! Holds serializable EventSub stuff
 //!
 //! Use [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) to subscribe to an event according to the [EventSub guide](https://dev.twitch.tv/docs/eventsub).
 //! Parse the response payload text with [`Event::parse_http`] or [`Event::parse_websocket`]
@@ -2401,6 +2451,7 @@
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait </span>NamedField {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str;
+    <span class="kw">const </span>OPT_PREFIX: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">None</span>;
 }
 
 <span class="doccomment">/// Deserialize {"field": field} as { field ...} and serialize in reverse
@@ -2446,6 +2497,55 @@
         S: serde::Serializer, {
         <span class="kw">let </span><span class="kw-2">mut </span>map = serializer.serialize_map(<span class="prelude-val">Some</span>(<span class="number">1</span>))<span class="question-mark">?</span>;
         map.serialize_entry(T::NAME, value)<span class="question-mark">?</span>;
+        map.end()
+    }
+}
+
+<span class="doccomment">/// Deserialize {"field": field} as { field ...} and serialize in reverse
+/// utilizes OPT_PREFIX for prefixing the field name
+</span><span class="kw">mod </span>enum_field_as_inner_prefixed {
+    <span class="kw">use </span>serde::ser::SerializeMap;
+
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>deserialize&lt;<span class="lifetime">'de</span>, D, S&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;S, D::Error&gt;
+    <span class="kw">where
+        </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
+        S: serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; + NamedField, {
+        <span class="kw">struct </span>Inner&lt;S&gt;(std::marker::PhantomData&lt;S&gt;);
+        <span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, S&gt; serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Inner&lt;S&gt;
+        <span class="kw">where </span>S: serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; + NamedField
+        {
+            <span class="kw">type </span>Value = S;
+
+            <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+                formatter.write_str(<span class="string">"any object"</span>)
+            }
+
+            <span class="kw">fn </span>visit_map&lt;A&gt;(<span class="self">self</span>, map: A) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, A::Error&gt;
+            <span class="kw">where </span>A: serde::de::MapAccess&lt;<span class="lifetime">'de</span>&gt; {
+                <span class="kw">let </span><span class="kw-2">mut </span>map = map;
+                <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="prelude-val">None</span>;
+                <span class="kw">let </span>name = S::OPT_PREFIX.unwrap().to_string() + S::NAME;
+                <span class="kw">while let </span><span class="prelude-val">Some</span>(key) = map.next_key::&lt;String&gt;()<span class="question-mark">? </span>{
+                    <span class="kw">if </span>key == name {
+                        value = <span class="prelude-val">Some</span>(map.next_value()<span class="question-mark">?</span>);
+                    } <span class="kw">else </span>{
+                        map.next_value::&lt;serde::de::IgnoredAny&gt;()<span class="question-mark">?</span>;
+                    }
+                }
+                value.ok_or_else(|| serde::de::Error::missing_field(S::NAME))
+            }
+        }
+
+        deserializer.deserialize_any(Inner(std::marker::PhantomData))
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>serialize&lt;S, T&gt;(value: <span class="kw-2">&amp;</span>T, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
+    <span class="kw">where
+        </span>T: serde::Serialize + NamedField,
+        S: serde::Serializer, {
+        <span class="kw">let </span><span class="kw-2">mut </span>map = serializer.serialize_map(<span class="prelude-val">Some</span>(<span class="number">1</span>))<span class="question-mark">?</span>;
+        map.serialize_entry(<span class="kw-2">&amp;</span>(T::OPT_PREFIX.unwrap().to_string() + T::NAME), value)<span class="question-mark">?</span>;
         map.end()
     }
 }
