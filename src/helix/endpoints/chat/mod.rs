@@ -20,7 +20,7 @@
 //! | [Update Chat Settings](https://dev.twitch.tv/docs/api/reference#update-chat-settings) | - | [`update_chat_settings`] |
 //! | [Send Chat Announcement](https://dev.twitch.tv/docs/api/reference#send-chat-announcement) | [`HelixClient::send_chat_announcement`](crate::helix::HelixClient::send_chat_announcement) | [`send_chat_announcement`] |
 //! | [Send a Shoutout](https://dev.twitch.tv/docs/api/reference#send-a-shoutout) | - | [`send_a_shoutout`] |
-//! | [Send Chat Message](https://dev.twitch.tv/docs/api/reference#send-chat-message) | - | [`send_chat_message`] |
+//! | [Send Chat Message](https://dev.twitch.tv/docs/api/reference#send-chat-message) | [`HelixClient::send_chat_message`](crate::helix::HelixClient::send_chat_message), [`HelixClient::send_chat_message_reply`](crate::helix::HelixClient::send_chat_message_reply) | [`send_chat_message`] |
 //! | [Get User Chat Color](https://dev.twitch.tv/docs/api/reference#get-user-chat-color) | [`HelixClient::get_user_chat_color`](crate::helix::HelixClient::get_user_chat_color), [`HelixClient::get_users_chat_colors`](crate::helix::HelixClient::get_users_chat_colors) | [`get_user_chat_color`] |
 //! | [Update User Chat Color](https://dev.twitch.tv/docs/api/reference#update-user-chat-color) | [`HelixClient::update_user_chat_color`](crate::helix::HelixClient::update_user_chat_color) | [`update_user_chat_color`] |
 //!
