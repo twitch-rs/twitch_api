@@ -46,43 +46,64 @@
 
 ### Added
 
+- Added the following helix endpoints:
+  `Get Bits Leaderboard`, `Get Cheermotes`, `Get Content Classification Labels`, `Add Channel Vip`,
+  `Get Ad Schedule`, `Get Channel Editors`, `Get Channel Followers`, `Get Channel Information`,
+  `Get VIPs`, `Modify Channel Information`, `Remove Channel Vip`, `Snooze Next Ad`, `Start Commercial`,
+  `Get Charity Campaign`, `Get Charity Campaign Donations`, `Get Channel Chat Badges`,
+  `Get Channel Emotes`, `Get Chat Settings`, `Get Chatters`, `Get Emote Sets`, `Get Shared Chat Session`,
+  `Get User Chat Color`, `Get User Emotes`, `Send A Shoutout`, `Send Chat Announcement`,
+  `Send Chat Message`, `Update Chat Settings`, `Update User Chat Color`, `Create Clip`, `Get Clips`,
+  `Delete Conduit`, `Delete Eventsub Subscription`, `Get Conduit Shards`, `Get Eventsub Subscriptions`,
+  `Update Conduit`, `Update Conduit Shards`, `Get Games`, `Get Top Games`, `Get Creator Goals`,
+  `Get Hypetrain Events`, `Add Blocked Term`, `Add Channel Moderator`, `Ban User`, `Check Automod Status`,
+  `Delete Chat Messages`, `Get Automod Settings`, `Get Banned Users`, `Get Blocked Terms`,
+  `Get Moderated Channels`, `Get Moderators`, `Get Shield Mode Status`, `Get Unban Requests`,
+  `Manage Held Automod Messages`, `Remove Blocked Term`, `Remove Channel Moderator`, `Resolve Unban Request`,
+  `Unban User`, `Update Automod Settings`, `Update Shield Mode Status`, `Warn Chat User`,
+  `Create Custom Rewards`, `Delete Custom Reward`, `Get Custom Reward`, `Get Custom Reward Redemption`,
+  `Update Custom Reward`, `Update Redemption Status`, `Create Poll`, `End Poll`, `Get Polls`,
+  `Create Prediction`, `End Prediction`, `Get Predictions`, `Cancel A Raid`, `Start A Raid`,
+  `Create Channel Stream Schedule Segment`, `Delete Channel Stream Schedule Segment`,
+  `Get Channel Stream Schedule`, `Update Channel Stream Schedule`, `Update Channel Stream Schedule Segment`,
+  `Search Categories`, `Search Channels`, `Create Stream Marker`, `Get Followed Streams`, `Get Stream Key`,
+  `Get Stream Markers`, `Get Stream Tags`, `Get Streams`, `Replace Stream Tags`, `Check User Subscription`,
+  `Get Broadcaster Subscriptions`, `Get Broadcaster Subscriptions Events`, `Get All Stream Tags`,
+  `Get Channel Teams`, `Get Teams`, `Block User`, `Get User Active Extensions`, `Get User Block List`,
+  `Get Users`, `Get Users Follows`, `Unblock User`, `Update User`, `Update User Extensions`,
+  `Delete Videos`, `Get Videos`, `Send Whisper`
+- Added the following eventsub topics:
+  `Automod Message Hold V1`, `Automod Message Hold V2`, `Automod Message Update V1`,
+  `Automod Message Update V2`, `Automod Settings Update V1`, `Automod Terms Update V1`,
+  `Channel Ad Break Begin V1`, `Channel Points Automatic Reward Redemption Add V1`,
+  `Channel Charity Campaign Donate V1`, `Channel Charity Campaign Progress V1`,
+  `Channel Charity Campaign Start V1`, `Channel Charity Campaign Stop V1`,
+  `Channel Chat Clear V1`, `Channel Chat Clear User Messages V1`, `Channel Chat Message V1`,
+  `Channel Chat Message Delete V1`, `Channel Chat Notification V1`, `Channel Chat User Message Hold V1`,
+  `Channel Chat User Message Update V1`, `Channel Chat Settings Update V1`,
+  `Channel Follow V2`, `Channel Guest Star Guest Update Beta`, `Channel Guest Star Session Begin Beta`,
+  `Channel Guest Star Session End Beta`, `Channel Guest Star Settings Update Beta`,
+  `Channel Moderate V1`, `Channel Moderate V2`, `Channel Moderator Add V1`,
+  `Channel Moderator Remove V1`, `Channel Shared Chat Begin V1`, `Channel Shared Chat End V1`,
+  `Channel Shared Chat Update V1`, `Channel Shield Mode Begin V1`, `Channel Shield Mode End V1`,
+  `Channel Shoutout Create V1`, `Channel Shoutout Receive V1`, `Channel Suspicious User Message V1`,
+  `Channel Suspicious User Update V1`, `Channel Unban Request Create V1`,
+  `Channel Unban Request Resolve V1`, `Channel Update V2`, `Channel Vip Add V1`,
+  `Channel Vip Remove V1`, `Channel Warning Acknowledge V1`, `Channel Warning Send V1`,
+  `Conduit Shard Disabled V1`, `User Whisper Message V1`
 - Added `tags` to `Modify Channel Information`, `Get Channel Information`, `Search Channels`, `Get Followed Streams` and `Get Streams`
 - Added `beta` feature to specifically enable beta endpoints
-- Added `Ban User` and `Unban User`
-- Added `Get Chat Settings` endpoint
 - Added `type` and `user_id` query params to `GetEventSubSubscriptionsRequest`
 - Added `vod_offset` to `Clip`s
-- Added `Start A Raid` and `Cancel A Raid` endpoints
-- Added `Send Chat Announcement` endpoint
-- Added `Delete Chat Messages` endpoint
-- Added `Get User Chat Color` and `Update User Chat Colors` endpoint
-- Added `Add Channel Moderator` and `Remove Channel Moderator` endpoint
-- Added `Get VIPs`, `Add Channel VIP` and `Remove Channel VIP` endpoint
-- Added `Send Whisper` endpoint
 - Added `Delete Channel Stream Schedule Segment` that was accidentally not included in `0.6.0`
 - Added `sort` and `id` to `Get Custom Reward Redemption`
 - Added contribution type `OTHER` for Get Hype Train Events
-- Added `Send a Shoutout` endpoint
-- Added `channel.shoutout.receive` and `channel.shoutout.create` EventSub events
-- Added `channel.follows` v2 EventSub event
-- Added `Get Followed Channels` and `Get Followed Streams`
-- Added `Create Clip` endpoint
-- Added `Get Shield Mode Status` and `Update Shield Mode Status`
-- Added `channel.shield_mode.begin` and `channel.shield_mode.end` EventSub events
 - Added `tower` implementation for `HttpClient`
 - Added `helix::Response::new` and `helix::Response::with_data` to make it possible to create your own responses.
 - Added `is_branded_content` and `content_classification_labels` to `Get Channel Information` and `Modify Channel information`
-- Added `channel.update` v2 EventSub event
 - Added `HelixClient` functions `get_streams_from_logins` and `get_streams_from_ids`
 - Added `is_featured` to Get Clips
-- Added beta `Get Ad Schedule` and `Snooze Next Ad` endpoint
-- Added beta `channel.ad_break.begin` eventsub event
-- Added `conduit.shard.disable` EventSub event
 - Added `title` and `description` as fields in the response of `Get Channel Chat Badges` and `Get Global Chat Badges`
-- Added `Get AutoMod Settings` and `Update AutoMod Settings` endpoints
-- Added `Get Unban Requests` and `Resolve Unban Requests` endpoints
-- Added `Get Moderated Channels` endpoint
-- Added `Get User Emotes` endpoint
 
 ### Fixed
 
