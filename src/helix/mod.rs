@@ -121,7 +121,7 @@
 //! | [Update Chat Settings](https://dev.twitch.tv/docs/api/reference#update-chat-settings) | - | [`chat::update_chat_settings`] |
 //! | [Send Chat Announcement](https://dev.twitch.tv/docs/api/reference#send-chat-announcement) | [`HelixClient::send_chat_announcement`] | [`chat::send_chat_announcement`] |
 //! | [Send a Shoutout](https://dev.twitch.tv/docs/api/reference#send-a-shoutout) | - | [`chat::send_a_shoutout`] |
-//! | [Send Chat Message](https://dev.twitch.tv/docs/api/reference#send-chat-message) | - | [`chat::send_chat_message`] |
+//! | [Send Chat Message](https://dev.twitch.tv/docs/api/reference#send-chat-message) | [`HelixClient::send_chat_message`], [`HelixClient::send_chat_message_reply`] | [`chat::send_chat_message`] |
 //! | [Get User Chat Color](https://dev.twitch.tv/docs/api/reference#get-user-chat-color) | [`HelixClient::get_user_chat_color`], [`HelixClient::get_users_chat_colors`] | [`chat::get_user_chat_color`] |
 //! | [Update User Chat Color](https://dev.twitch.tv/docs/api/reference#update-user-chat-color) | [`HelixClient::update_user_chat_color`] | [`chat::update_user_chat_color`] |
 //!

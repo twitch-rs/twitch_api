@@ -1,0 +1,3 @@
+[[command]]
+trigger = "hello"
+response = "Hello {user}!"

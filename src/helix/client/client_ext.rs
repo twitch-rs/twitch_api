@@ -1192,6 +1192,41 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .data)
     }
 
+    /// Send a chat message
+    pub async fn send_chat_message<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        sender_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        message: impl Into<&'b str> + Send,
+        token: &T,
+    ) -> Result<helix::chat::SendChatMessageResponse, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::chat::SendChatMessageRequest::new();
+        let body = helix::chat::SendChatMessageBody::new(broadcaster_id, sender_id, message.into());
+        Ok(self.req_post(req, body, token).await?.data)
+    }
+
+    /// Send a chat message reply
+    pub async fn send_chat_message_reply<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        sender_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        reply_parent_message_id: impl types::IntoCow<'b, types::MsgIdRef> + Send + 'b,
+        message: impl Into<&'b str> + Send,
+        token: &T,
+    ) -> Result<helix::chat::SendChatMessageResponse, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::chat::SendChatMessageRequest::new();
+        let mut body =
+            helix::chat::SendChatMessageBody::new(broadcaster_id, sender_id, message.into());
+        body.reply_parent_message_id = Some(reply_parent_message_id.into_cow());
+        Ok(self.req_post(req, body, token).await?.data)
+    }
+
     /// Delete a specific chat message
     pub async fn delete_chat_message<'b, T>(
         &'client self,
